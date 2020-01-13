@@ -2,7 +2,8 @@
   <?php 
        
        $request = $_SERVER['REQUEST_URI'];
-       
+      
+      
        switch($request){
             case  '/DevisRecode/'. '':
               require __DIR__ .'/pages/login.php';
