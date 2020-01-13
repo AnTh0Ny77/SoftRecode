@@ -4,15 +4,15 @@
        $request = $_SERVER['REQUEST_URI'];
        
        switch($request){
-            case  '/Devis/'. '':
+            case  '/DevisRecode/'. '':
               require __DIR__ .'/pages/login.php';
             break;
 
-            case '/Devis/login':
+            case '/DevisRecode/login':
               require __DIR__ .'/pages/login.php';
             break;
 
-            case '/Devis/home':
+            case '/DevisRecode/home':
               require __DIR__ .'/pages/home.php';
             break;
             
