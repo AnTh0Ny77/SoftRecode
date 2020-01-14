@@ -1,5 +1,5 @@
 <?php
-
- require_once __DIR__ .'/twigloader.php';
+require "./vendor/autoload.php";
+use App\twigloader;
 ?>
 <h1>Home Works</h1>
