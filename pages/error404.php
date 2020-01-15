@@ -1,5 +1,6 @@
 <?php
- require "./vendor/autoload.php";
- use App\twigloader;
-?>
-<h1>404 Works</h1>
+ 
+ require "./App/twigloader.php";
+ 
+ echo $twig->render('404.twig');
+
