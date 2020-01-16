@@ -1,6 +1,7 @@
 <?php
  require "./vendor/autoload.php";
  require "./App/twigloader.php";
+
  session_start();
     //si une session est ouverte :
     if (!empty($_SESSION['user'])) {

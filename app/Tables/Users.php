@@ -5,6 +5,7 @@ use App\Tables\Table;
 use App\Database;
 use PDO;
 
+
 class Users extends Table {
 
   public string $Table;
@@ -14,7 +15,7 @@ class Users extends Table {
   public function __construct($db,$table) {
     $this->Db = $db;
     $this->Table = $table;
-    $this->Request =$this->Db->Pdo->prepare("SELECT * FROM utilisateur WHERE 
+    $this->Request =$this->Db->Pdo->prepare("SELECT id_utilisateur , prenom , log_nec , nom , icone  FROM utilisateur WHERE 
     login=? AND password=? ");
 }
 
@@ -26,7 +27,8 @@ class Users extends Table {
 
   public function login($login,$pass){
     $this->Request->execute(array($login,$pass));
-    $data = $this->Request->fetch(PDO::FETCH_OBJ);
+    $this->Request->setFetchMode(PDO::FETCH_OBJ);
+    $data = $this->Request->fetch();
     return $data;
   }
 }

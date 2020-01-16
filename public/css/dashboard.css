@@ -14,7 +14,7 @@ body {
   
   .sidebar {
     position: fixed;
-    top: 0;
+    top: 5;
     bottom: 0;
     left: 0;
     z-index: 100; /* Behind the navbar */
@@ -54,6 +54,9 @@ body {
   .sidebar-heading {
     font-size: .75rem;
     text-transform: uppercase;
+  }
+  .nav-item{
+    cursor: pointer;
   }
   
   /*
