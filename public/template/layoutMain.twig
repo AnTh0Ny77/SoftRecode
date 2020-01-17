@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="fr">
   <head>
+
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="public/css/dashboard.css" rel="stylesheet">
     <title>Devis</title>
@@ -14,7 +14,6 @@
   <body>
 
     <!--NavBar -->
- 
     <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">{{ user.prenom ~  " " ~  user.nom }}</a>
       <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
@@ -24,54 +23,46 @@
         </li>
       </ul>
     </nav>
+
     <!--end navbar-->
-   
     <div class="container-fluid" id="accordion">
       <div class="row">
+
         <!--SideBar-->
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
-           <div class="card">
-             <div class="card-header" id="headingOne">
-               <h5 class="mb-0">
-                 <a class="nav-item nav-link"  href="home"   aria-expanded="true" >
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link" href="home">
+                  <span data-feather="file"></span>
                   Tableau de bord
-                 </a>
-               </h5>
-             </div>
-           <div class="card">
-             <div class="card-header" id="headingTwo">
-               <h5 class="mb-0">
-                 <a class="nav-item nav-link"  data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                  Devis
-                 </a>
-               </h5>
-             </div>
-             <div id="collapseTwo" class="collapse hide" aria-labelledby="headingTwo" data-parent="#accordion">
-               <div class="card-body">
-                 <ul class="nav flex-column">
-                   <li class="nav-item">
-                     <a class="nav-link" href="nouveauDevis">
-                       <span data-feather="file"></span>
-                       Nouveau devis
-                     </a>
-                   </li>
-                   <li class="nav-item">
-                     <a class="nav-link" href="mesDevis">
-                       <span data-feather="shopping-cart"></span>
-                       Mes devis
-                     </a>
-                   </li>
-                 </ul>
-               </div>
-             </div>
-           </div>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="nouveauDevis">
+                  <span data-feather="shopping-cart"></span>
+                  Nouveau devis
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="mesDevis">
+                  <span data-feather="bar-chart-2"></span>
+                  Modifier devis
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="layers"></span>
+                  Integrations
+                </a>
+              </li>
+            </ul>
           </div>
         </nav>
+
         <!--end side bar-->
 
         <!--Block -->
-
         {% block main  %}
         {% endblock %}
 

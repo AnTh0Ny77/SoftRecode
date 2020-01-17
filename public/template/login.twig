@@ -2,27 +2,34 @@
  {% block content %}
  <div class="container">
    <div class="row">
-       <div class="col-md-12 min-vh-100 d-flex flex-column justify-content-center">
+       <div class="col-md-12 min-vh-100 d-flex flex-column justify-content-center ">
            <div class="row">
-               <div class="col-lg-6 col-md-8 mx-auto">
+               <div class="col-lg-4 col-md-5 mx-auto">
                    <!-- form card login -->
-                   <div class="card rounded shadow shadow-sm">
-                       <div class="card-header">
-                           <h3 class="mb-0">Connexion</h3>
+                   <div class="form-signin text-center  ">
+                    <img class="mb-4" src="public/img/login.png" alt="" width="72" height="72">
+                       <div class="">
+                           <h2 class="mb-0">Connexion</h2>
                        </div>
-                       <div class="card-body">
+                       <div class=" ">
                            <form class="form" role="form" id="formLogin" novalidate="" method="POST" action="login">
-                               <div class="form-group">
+                               <div class="form-group  ">
                                    <label for="uname1">login</label>
-                                   <input type="text" class="form-control form-control-lg rounded-0" name="login" id="uname1" >
-    
-                                   <!--<div class="alert alert-danger">Oops !!</div>-->
+                                   {% if not loginStatus  %}
+                                   <input type="text" class="form-control form-control-lg rounded-3 is-invalid " name="login" id="uname1" >
+                                   {% else %}
+                                   <input type="text" class="form-control form-control-lg rounded-3 " name="login" id="uname1" >
+                                   {% endif %}
                                </div>
                                <div class="form-group">
-                                   <label>Password</label>
-                                   <input type="password" class="form-control form-control-lg rounded-0" id="pwd1" name="pass" required="" >
+                                   <label>Mot de passe</label>
+                                   {% if  not loginStatus %}
+                                   <input type="password" class="form-control form-control-lg rounded-3 is-invalid " id="pwd1" name="pass" required="" >
+                                   {% else %}
+                                   <input type="password" class="form-control form-control-lg rounded-3 " id="pwd1" name="pass" required="" >
+                                   {% endif %}
                                </div>
-                               <button type="submit" class="btn btn-success btn-lg float-right" id="btnLogin">Login</button>
+                               <button type="submit" class="btn btn-lg btn-success btn-block" id="btnLogin">Se connecter</button>
                            </form>
                        </div>
                        <!--/card-block-->

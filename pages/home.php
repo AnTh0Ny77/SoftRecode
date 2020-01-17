@@ -12,8 +12,4 @@ session_start();
  
 
 // Donnée transmise au template : 
-echo $twig->render('home.twig',['user'=>$user,
-'Get'=> $_GET,
-
-
-]);
+echo $twig->render('home.twig',['user'=>$user]);
