@@ -1,3 +1,3 @@
-// $(document).ready(function() {
-//     $('#Devis').DataTable();
-// } );
+$(document).ready(function() {
+    $('#Devis').DataTable();
+} );
