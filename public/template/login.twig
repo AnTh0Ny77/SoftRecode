@@ -15,7 +15,7 @@
                            <form class="form" role="form" id="formLogin" novalidate="" method="POST" action="login">
                                <div class="form-group  ">
                                    <label for="uname1">login</label>
-                                   {% if not loginStatus  %}
+                                   {% if  loginStatus  == false  %}
                                    <input type="text" class="form-control form-control-lg rounded-3 is-invalid " name="login" id="uname1" >
                                    {% else %}
                                    <input type="text" class="form-control form-control-lg rounded-3 " name="login" id="uname1" >

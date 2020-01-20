@@ -8,7 +8,7 @@
         header('location: home');
     }
         
-       // Connexion à la base de donnée et à la table Utilisateur :
+    // Connexion à la base de donnée et à la table Utilisateur :
         $Database = new App\Database('devisrecode');
         $Database->DbConnect();
         $Users = new App\Tables\Users($Database,'utilisateur');
@@ -17,14 +17,10 @@
         $_SESSION['loginStatus'] = true;
     }  
     
-     // Affichage du template Login :
-     echo $twig->render('login.twig',['loginStatus'=>$_SESSION['loginStatus']]);
+    //si le formulaire a ete soumis : 
+        if (isset($_POST['login'])){
 
-    
-        //si le formulaire a ete soumis : 
-            if (isset($_POST['login'])){
-
-                // verification des concordances en base de donnée : 
+            // verification des concordances en base de donnée : 
             $login = $Users->login($_POST['login'],$_POST['pass']);
                     
                 switch ($login) {
@@ -38,10 +34,10 @@
                     header('location: home');
                     break;
                 }
-     
-    }
+        }
 
-   
+    // Affichage du template Login :
+    echo $twig->render('login.twig',['loginStatus'=>$_SESSION['loginStatus']]);
  
    
 

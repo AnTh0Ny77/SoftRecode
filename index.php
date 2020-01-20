@@ -3,7 +3,6 @@
        
        $request = $_SERVER['REQUEST_URI'];
       
-      
        switch($request){
             case  '/DevisRecode/'. '':
               require __DIR__ .'/pages/login.php';
@@ -23,6 +22,10 @@
 
             case '/DevisRecode/mesDevis';
             require __DIR__ .'/pages/mesDevis.php';
+           break;
+
+           case '/DevisRecode/unlog';
+            require __DIR__ .'/pages/utilities/unlog.php';
            break;
 
             default:
