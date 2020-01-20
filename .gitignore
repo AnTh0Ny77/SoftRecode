@@ -35,7 +35,7 @@
 !bin/console
 !bin/symfony_requirements
 /vendor/
-/public/datatable
+
 # Assets and user uploads
 /web/bundles/
 /web/uploads/

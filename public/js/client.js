@@ -1,3 +1,7 @@
 $(document).ready(function() {
-    $('#Devis').DataTable();
+    $('#Devis').DataTable({
+        "paging": false,
+        "info":   false,
+        "search": false
+    });
 } );
