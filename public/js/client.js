@@ -2,6 +2,7 @@ $(document).ready(function() {
     $('#Devis').DataTable({
         "paging": false,
         "info":   false,
-        "search": false
+        "searching": false,
+        rowReorder: true
     });
 } );
