@@ -15,7 +15,7 @@ class Users extends Table {
   public function __construct($db,$table) {
     $this->Db = $db;
     $this->Table = $table;
-    $this->Request =$this->Db->Pdo->prepare("SELECT id_utilisateur , prenom , log_nec , nom , icone  FROM utilisateur WHERE 
+    $this->Request =$this->Db->Pdo->prepare("SELECT id_utilisateur , prenom , log_nec , nom , icone  FROM  ".$this->Table. " WHERE 
     login=? AND password=? ");
 }
 

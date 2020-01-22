@@ -27,8 +27,8 @@
             <!-- Card Body -->
             <div class="card-body">
               <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
-                <div class=" mb-0 font-weight-bold text-muted">Aucun client sélectionné</div>
-                <div><button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalClient">Ajouter</button></div>
+                <div class=" mb-0 font-weight-bold text-muted">{{ dump(choixClient)}}</div>
+                <div><button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalClient">Choisir</button></div>
               </div>
             </div>
           </div>
@@ -36,7 +36,7 @@
 
         <!-- Modal CLIENT  -->
           <div class="modal fade" id="modalClient" tabindex="-1" role="dialog"  aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" >Client <i class="fal fa-user"></i> </h5>
@@ -45,15 +45,33 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  ...
+                  <table id="client" class="table  display" style="width:100%"> 
+                    <thead class="thead-dark"> 
+                      <tr><th>Id</th><th>Nom</th> <th>Adresse</th> <th>Code Postal</th> <th>Ville</th></tr>
+                     </thead > 
+                    <tbody>
+                      {% for client in clientList %}
+                       <tr class="trClick"><td>{{client.id_client}}</td><td>{{ client.nsoc}}</td> <td>{{client.adr1}}</td><td>{{client.cp}}</td> <td>{{client.ville}}</td></tr>
+                       {% endfor %}
+                    </tbody>
+                  </table>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary">Choisir</button>
-                </div>
+                <form  class="form" role="form"  method="POST" action="nouveauDevis">
+                  <div class="modal-footer justify-content-between ">
+                    <div>
+                      <b><p id="selectClient">Veuillez choisir un client</p></b>
+                      <input type="hidden" name="choixClient" id="choixClient" value="">
+                    </div>
+                    <div>
+                      <button type="submit" class="btn btn-primary">Valider</button>
+                    </div>
+                  </div>
+                </form>
               </div>
+              
             </div>
           </div>
-
+       
 
 
           <!-- Modal PRESTA  -->
@@ -165,10 +183,10 @@
             <!-- Table -->
             <div class="card-body">
               <div class="chart-area">
-                 <table id="Devis" class="display" style="width:100%"> <thead> <tr><th></th> <th>Prestation</th> <th>Désignation</th> <th>Type</th> <th>Garantie</th> <th>Quantité</th> <th>P.u HT</th> </tr> </thead> 
+                 <table id="Devis" class="display table" style="width:100%"> <thead class="thead-dark"> <tr><th></th> <th>Prestation</th> <th>Désignation</th> <th>Type</th> <th>Garantie</th> <th>Quantité</th> <th>P.u HT</th> </tr> </thead> 
                   <tbody>
-                     <tr><td>1</td> <td>vente</td> <td>Ecran 24 pouces</td> <td>Occasion</td> <td>06 mois</td> <td>3</td> <td>89.20</td></tr>
-                     <tr><td>2</td> <td>vente</td> <td>Zebra Zm400</td> <td>neuf</td> <td>06 mois</td> <td>2</td> <td>570,750</td></tr> 
+                     <tr><td class="dragDrop">1</td> <td>vente</td> <td>Ecran 24 pouces</td> <td>Occasion</td> <td>06 mois</td> <td>3</td> <td>89.20</td></tr>
+                     <tr><td class="dragDrop">2</td> <td>vente</td> <td>Zebra Zm400</td> <td>neuf</td> <td>06 mois</td> <td>2</td> <td>570,750</td></tr> 
                   </tbody>
                 </table>
               </div>

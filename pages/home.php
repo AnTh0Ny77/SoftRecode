@@ -8,8 +8,13 @@ session_start();
     header('location: login');
  }
 
+
+
  $user= $_SESSION['user'];
  
 
 // Donnée transmise au template : 
-echo $twig->render('home.twig',['user'=>$user]);
+echo $twig->render('home.twig',[ 
+   'user'=>$user , 
+   
+   ]);

@@ -27,10 +27,12 @@
                 // si erreur envoi info au template : 
                 case false:
                     $_SESSION['loginStatus'] = false;
+                    $Database == NULL;
                     break;
                 // sinon redirection de l'utilisateur vers "home"  : 
                 default:
                     $_SESSION['user'] = $login ;
+                    $Database == NULL;
                     header('location: home');
                     break;
                 }
