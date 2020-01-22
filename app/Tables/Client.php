@@ -23,12 +23,11 @@ class Client extends Table {
     return $data;
 }
 
-  public function getOne($id){
-    $request =$this->Db->Pdo->query('SELECT id_client,  nsoc , adr1 , cp , ville , tel  FROM '.$this->Table.' WHERE id_client = '.$id.' ');
-    $request->setFetchMode(PDO::FETCH_OBJ);
-    $data = $this->Request->fetch();
+public function getOne($id){
+    $request =$this->Db->Pdo->query("SELECT id_client,  nsoc , adr1 , cp , ville , tel  FROM " .$this->Table. " WHERE id_client = " . $id ."");
+    $data = $request->fetch(PDO::FETCH_OBJ);
     return $data;
-  }
+}
 
  
 }

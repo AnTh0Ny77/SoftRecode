@@ -16,14 +16,18 @@ session_start();
 
  $user= $_SESSION['user'];
  $choixClient = null;
+ 
+
+ // si un choix de client a été effectué : 
  if (isset($_POST['choixClient'])) {
-   $choixClient = $_POST['choixClient'];
-  // $client = $Client->getOne($_POST['choixClient']);
+   $choixClient = ($_POST['choixClient']);
+   $client = $Client->getOne($choixClient);
+   $_SESSION['Client'] = $client;
  }
 
 // Donnée transmise au template : 
 echo $twig->render('nouveauDevis.twig',[
    'user'=>$user,
    'clientList'=>$clientList,
-   'client'=>$choixClient
+   'client'=>$client
 ]);;

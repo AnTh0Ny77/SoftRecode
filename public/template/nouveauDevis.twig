@@ -27,7 +27,16 @@
             <!-- Card Body -->
             <div class="card-body">
               <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
-                <div class=" mb-0 font-weight-bold text-muted">{{ dump(choixClient)}}</div>
+                {% if  not client   %}
+                <div class=" mb-0 font-weight-bold text-muted">
+                  Veuillez choisir un client 
+                </div>
+                {% else %}
+                <div class=" mb-0 font-weight-bold text-muted">
+                  {{ client.nsoc }}<br>{{client.adr1  }} <br>  {{client.cp  ~ " "  ~  client.ville }}
+                </div>
+                {% endif %}
+                
                 <div><button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalClient">Choisir</button></div>
               </div>
             </div>
