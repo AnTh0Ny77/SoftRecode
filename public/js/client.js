@@ -12,6 +12,7 @@ $(document).ready(function() {
         "paging": true,
         "info":   true,
         "searching": true,
+        select: true
        
     });
     
