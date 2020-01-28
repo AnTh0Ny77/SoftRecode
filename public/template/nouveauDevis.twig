@@ -15,12 +15,12 @@
        <!-- 1ere ligne -->
        <div class="row">
 
-        <!--carte client -->
+        <!--carte societe -->
         <div class="col-xl-3 col-lg-3">
           <div class="card shadow mb-4">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Client <i class="fal fa-user"></i></h6>
+              <h6 class="m-0 font-weight-bold text-primary">Société <i class="fal fa-building"></i></h6>
               <div class="dropdown no-arrow">
               </div>
             </div>
@@ -33,22 +33,27 @@
                 </div>
                 {% else %}
                 <div class=" mb-0 font-weight-bold text-muted">
-                  {{ client.nsoc }}<br>{{client.adr1  }} <br>  {{client.cp  ~ " "  ~  client.ville }}
+                  {{ client.client__societe }}<br>{{client.client__adr1  }} <br>  {{client.client_ville }}
                 </div>
                 {% endif %}
                 
-                <div><button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalClient">Choisir</button></div>
+                <div>
+                  <div class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#modalClient">Choisir</button>
+                    <button type="button" class="btn btn-outline-primary " data-toggle="modal" data-target="#modalClientCrea">Créer</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Modal CLIENT  -->
+        <!-- Modal Choisir CLIENT  -->
           <div class="modal fade" id="modalClient" tabindex="-1" role="dialog"  aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" >Client <i class="fal fa-user"></i> </h5>
+                  <h5 class="modal-title" >Société <i class="fal fa-building"></i> </h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -56,11 +61,11 @@
                 <div class="modal-body">
                   <table id="client" class="table  display" style="width:100%"> 
                     <thead class="thead-dark"> 
-                      <tr><th>Id</th><th>Nom</th> <th>Adresse</th> <th>Code Postal</th> <th>Ville</th></tr>
+                      <tr><th>Id</th><th>Nom</th> <th>Adresse</th></tr>
                      </thead > 
                     <tbody>
                       {% for client in clientList %}
-                       <tr class="trClick"><td>{{client.id_client}}</td><td>{{ client.nsoc}}</td> <td>{{client.adr1}}</td><td>{{client.cp}}</td> <td>{{client.ville}}</td></tr>
+                       <tr class="trClick"><td>{{client.client__id}}</td><td>{{ client.client__societe}}</td><td>{{client.client__ville}}</td></tr>
                        {% endfor %}
                     </tbody>
                   </table>
@@ -68,7 +73,7 @@
                 <form  class="form" role="form"  method="POST" action="nouveauDevis">
                   <div class="modal-footer justify-content-between ">
                     <div>
-                      <b><p id="selectClient">Veuillez choisir un client</p></b>
+                      <b><p id="selectClient">Veuillez choisir une societe</p></b>
                       <input type="hidden" name="choixClient" id="choixClient" value="">
                     </div>
                     <div>
@@ -77,7 +82,125 @@
                   </div>
                 </form>
               </div>
-              
+            </div>
+          </div>
+
+
+
+             <!-- Modal créer société  -->
+          <div class="modal fade" id="modalClientCrea" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" >Société <i class="fal fa-building"></i> </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="FormClientCrea" method="POST" action="nouveauDevis">
+                    <div class="form-row">
+                      <div class="form-group col-md-8">
+                        <label for="inputEmail4">Société*</label>
+                        <input type="text" class="form-control text-uppercase" id="inputEmail4"  name="societe" required>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="inputAddress">Adresse</label>
+                      <input type="text" class="form-control" id="inputAddress"  name="adr1" >
+                    </div>
+                    <div class="form-group">
+                      
+                      <input type="text" class="form-control" id="inputAddress" name="adr2">
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-2">
+                        <label for="inputZip">CP*</label>
+                        <input type="text" class="form-control" id="inputZip"  name="cp" required>
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputCity">Ville*</label>
+                        <input type="text" class="form-control" id="inputCity"  name="ville" required >
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="inputState">Pays*</label>
+                        <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="pays">
+                          <option value="france" selected>France</option>
+                          <option value="autre" >autre</option>
+                        </select>
+                      </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-end ">
+                  <div>
+                    <button type="submit" class="btn btn-primary">Valider</button>
+                  </div>
+                </div>
+              </form>
+              </div>
+            </div>
+          </div>
+
+
+
+
+           <!-- Modal Contact  -->
+           <div class="modal fade" id="modalContact" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" >Contact <i class="fal fa-user"></i></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  ...
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Contact Creation  -->
+          <div class="modal fade" id="modalContactCrea" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" >Contact <i class="fal fa-user"></i></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="FormClientCrea" method="POST" action="nouveauDevis">
+                    
+                    
+                    
+                    <div class="form-row">
+                      <div class="input-group-prepend col-md-4">
+                        <label for="inputState">Fonction* </label>
+                        <select class="custom-select "  name="fonction">
+                          <option value="standart" selected>Standard</option>
+                          {% for keyword in keywordList %}
+                          <option value="{{keyword.keyword__id}}">{{keyword.keyword__lib}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer justify-content-end ">
+                  <div>
+                    <button type="submit" class="btn btn-primary">Valider</button>
+                  </div>
+                </div>
+              </form>
+              </div>
             </div>
           </div>
        
@@ -127,15 +250,12 @@
             </div>
           </div>
 
-
-          
-
-        <!-- carte désignation -->
-        <div class="col-5">
+          <!-- carte contact -->
+        <div class="col-3">
           <div class="card shadow mb-4">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Ajouter une Prestation <i class="fal fa-plus-circle"></i></h6>
+              <h6 class="m-0 font-weight-bold text-primary">Contact <i class="fal fa-user"></i></h6>
               <div class="dropdown no-arrow">
               </div>
             </div>
@@ -143,16 +263,49 @@
             <div class="card-body">
               <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
                 <div class=" mb-0 font-weight-bold text-muted">Aucun client sélectionné</div>
-                <div><button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalPresta">Ajouter</button></div>
+                {% if  not client %}
+                  <div class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-primary disabled">Choisir</button>
+                    <button type="button" class="btn btn-outline-primary disabled ">Créer</button>
+                  </div>
+                      {% else %}
+                      <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#modalContact">Choisir</button>
+                        <button type="button" class="btn btn-outline-primary " data-toggle="modal" data-target="#modalContactCrea">Créer</button>
+                      </div>
+                {% endif %}
               </div>
             </div>
           </div>
         </div>
 
-        
+        <!-- carte prepstation -->
+        <div class="col-3">
+          <div class="card shadow mb-4">
+            <!-- Card Header - -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Prestation <i class="fal fa-plus-circle"></i></h6>
+              <div class="dropdown no-arrow">
+              </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+              <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
+                <div class=" mb-0 font-weight-bold text-muted">Aucun client sélectionné</div>
+                <div class="btn-group btn-group-sm">
+                  {% if  not client %}
+                      <button type="button" class="btn btn-primary  mb-3 disabled"  >Ajouter</button>
+                      {% else %}
+                      <button type="button" class="btn btn-primary  mb-3" data-toggle="modal" data-target="#modalPresta">Ajouter</button>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
          <!-- Pdf Vieweer -->
-        <div class="col-xl-4 col-lg-5">
+        <div class="col-xl-3 col-lg-3">
           <div class="card shadow mb-4">
 
             <!-- Card Header - -->
@@ -166,7 +319,8 @@
             <div class="card-body">
               <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
                 <div class=" mb-0 font-weight-bold text-muted">Aucun client sélectionné</div>
-                <div><button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#modalPdf">Ajouter</button></div>
+                <div>
+                  <button type="button" class="btn btn-primary btn-sm mb-3" data-toggle="modal" data-target="#modalPdf">Ajouter</button></div>
               </div>
             </div>
           </div>
