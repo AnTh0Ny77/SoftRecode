@@ -31,7 +31,7 @@ public function getOne($id){
 public function insertOne($name , $adresse, $adresse2 , $cp, $ville){
     $request = $this->Db->Pdo->prepare('INSERT INTO ' .$this->Table."(client__societe , client__adr1 , client__adr2, client__cp , client__ville )
      VALUES (:societe, :adr1, :adr2, :cp, :ville)");
-    $request->bindValue(":societe", $name);
+    $request->bindValue(":societe", strtoupper($name));
     $request->bindValue(":adr1", $adresse);
     $request->bindValue(":adr2", $adresse2);
     $request->bindValue(":cp", $cp);

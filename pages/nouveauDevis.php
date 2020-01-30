@@ -38,7 +38,7 @@ if ( isset($_POST['societe']) && !empty($_POST['societe'])) {
 if (!empty($_POST['choixClient'])) {
    $_SESSION['Contact'] = "";
    $_SESSION['Client'] =$Client->getOne($_POST['choixClient']);
-   
+   unset($_POST['choixClient']); 
  }
 
 // Si un client a été entré en session : 
@@ -52,11 +52,12 @@ if (isset( $_SESSION['Client'])) {
 }
 
 // Si un nouveau contact a été crée :  traitement par la classe Form 
-if (!empty($_POST['fonctionContact'])) {
+if (!empty($_POST['fonctionContact']) && isset($_POST['fonctionContact'])) {
   $contact = Forms::contactValidate($_POST);
   if ($contact == !false ) {
     $_POST['choixContact'] = $Contact->insertOne($contact['fonctionContact'],$contact['civiliteContact'],$contact['nomContact'],$contact['prenomContact'],
-    $contact['telContact'],$contact['faxContact'],$contact['mailContact']);
+    $contact['telContact'],$contact['faxContact'],$contact['mailContact'],$_SESSION['Client']->client__id);
+    unset($_POST['fonctionContact']);
   }
 // Si un seul champ à été rempli pas besoin d'enregistrer : 
   elseif ($contact == 206) {
@@ -66,7 +67,6 @@ if (!empty($_POST['fonctionContact'])) {
 // Si un choix de contact à été effectué : 
 if(!empty($_POST['choixContact'])){
   $_SESSION['Contact'] = $Contact->getOne($_POST['choixContact']);
-  
 }
 
 // si la session contact est deja ouverte

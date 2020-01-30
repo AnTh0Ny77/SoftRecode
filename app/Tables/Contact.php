@@ -5,17 +5,14 @@ use App\Tables\Table;
 use App\Database;
 use PDO;
 
-
 class Contact extends Table {
 
   public string $Table = 'contact';
   public Database $Db;
 
-  
   public function __construct($db) {
     $this->Db = $db;
 }
-
 
 public function getFromLiaison($idClient){
     $request =$this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , contact__fonction , k.keyword__lib FROM contact AS c INNER JOIN liaison_client_contact AS l ON c.contact__id = l.liaison__contact__id JOIN keyword as k ON contact__fonction = k.keyword__value WHERE l.liaison__client__id =".$idClient."");
@@ -29,9 +26,11 @@ public function getOne($id){
     return $data;
 }
 
-public function insertOne($fonction , $civilite, $nom , $prenom, $tel, $fax, $mail){
+public function insertOne($fonction , $civilite, $nom , $prenom, $tel, $fax, $mail, $idClient){
     $request = $this->Db->Pdo->prepare('INSERT INTO ' .$this->Table."(contact__fonction , contact__civ , contact__nom, contact__prenom , contact__telephone, contact__fax, contact__email )
      VALUES (:fonction, :civilite, :nom, :prenom, :tel, :fax, :mail)");
+    $requestLiaison = $this->Db->Pdo->prepare('INSERT INTO liaison_client_contact(liaison__client__id, liaison__contact__id) VALUES (:idClient, :idContact)');
+
     $request->bindValue(":fonction", $fonction);
     $request->bindValue(":civilite", $civilite);
     $request->bindValue(":nom", $nom);
@@ -40,7 +39,12 @@ public function insertOne($fonction , $civilite, $nom , $prenom, $tel, $fax, $ma
     $request->bindValue(":fax", $fax);
     $request->bindValue(":mail", $mail);
     $request->execute();
-    return $this->Db->Pdo->lastInsertId();
+    $idContact = $this->Db->Pdo->lastInsertId();
+    $requestLiaison->bindValue(':idClient', $idClient);
+    $requestLiaison->bindValue(':idContact', $idContact);
+    $requestLiaison->execute();
+    return $idContact;
+    //return $this->Db->Pdo->lastInsertId();
 }
 }
 	
