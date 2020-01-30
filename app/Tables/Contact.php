@@ -21,7 +21,7 @@ public function getFromLiaison($idClient){
 }
 
 public function getOne($id){
-    $request =$this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , contact__civ , contact__email , k.keyword__lib FROM " .$this->Table. " JOIN keyword AS k ON contact__fonction = k.keyword__value WHERE contact__id = " . $id ."");
+    $request =$this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , contact__civ , contact__email , k.keyword__lib FROM contact JOIN keyword AS k ON contact__fonction = k.keyword__value WHERE contact__id = ". $id ."");
     $data = $request->fetch(PDO::FETCH_OBJ);
     return $data;
 }
@@ -29,8 +29,8 @@ public function getOne($id){
 public function insertOne($fonction , $civilite, $nom , $prenom, $tel, $fax, $mail, $idClient){
     $request = $this->Db->Pdo->prepare('INSERT INTO ' .$this->Table."(contact__fonction , contact__civ , contact__nom, contact__prenom , contact__telephone, contact__fax, contact__email )
      VALUES (:fonction, :civilite, :nom, :prenom, :tel, :fax, :mail)");
-    $requestLiaison = $this->Db->Pdo->prepare('INSERT INTO liaison_client_contact(liaison__client__id, liaison__contact__id) VALUES (:idClient, :idContact)');
-
+     $requestLiaison = $this->Db->Pdo->prepare('INSERT INTO liaison_client_contact(liaison__client__id, liaison__contact__id) VALUES (:idClient, :idContact)');
+     
     $request->bindValue(":fonction", $fonction);
     $request->bindValue(":civilite", $civilite);
     $request->bindValue(":nom", $nom);
@@ -40,11 +40,11 @@ public function insertOne($fonction , $civilite, $nom , $prenom, $tel, $fax, $ma
     $request->bindValue(":mail", $mail);
     $request->execute();
     $idContact = $this->Db->Pdo->lastInsertId();
+    $requestLiaison = $this->Db->Pdo->prepare('INSERT INTO liaison_client_contact(liaison__client__id, liaison__contact__id) VALUES (:idClient, :idContact)');
     $requestLiaison->bindValue(':idClient', $idClient);
     $requestLiaison->bindValue(':idContact', $idContact);
     $requestLiaison->execute();
     return $idContact;
-    //return $this->Db->Pdo->lastInsertId();
 }
 }
 	

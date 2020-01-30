@@ -5,7 +5,6 @@ use App\Tables\Table;
 use App\Database;
 use PDO;
 
-
 class Client extends Table {
 
   public string $Table = 'client';
