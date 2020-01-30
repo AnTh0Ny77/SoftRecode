@@ -19,7 +19,7 @@ class Keyword extends Table {
 
 
   public function getAll(){
-    $request =$this->Db->Pdo->query('SELECT keyword__id, keyword__lib  FROM '.$this->Table.'');
+    $request =$this->Db->Pdo->query('SELECT keyword__id, keyword__lib , keyword__value FROM '.$this->Table.'');
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
 }

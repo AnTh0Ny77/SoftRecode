@@ -14,40 +14,6 @@
 
        <!-- 1ere ligne -->
        <div class="row">
-
-        <!--carte societe -->
-        <div class="col-xl-3 col-lg-3">
-          <div class="card shadow mb-4">
-            <!-- Card Header - -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Société <i class="fal fa-building"></i></h6>
-              <div class="dropdown no-arrow">
-              </div>
-            </div>
-            <!-- Card Body -->
-            <div class="card-body">
-              <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
-                {% if  not client   %}
-                <div class=" mb-0 font-weight-bold text-muted">
-                  Veuillez choisir un client 
-                </div>
-                {% else %}
-                <div class=" mb-0 font-weight-bold text-muted">
-                  {{ client.client__societe }}<br>{{client.client__adr1  }} <br>  {{client.client_ville }}
-                </div>
-                {% endif %}
-                
-                <div>
-                  <div class="btn-group btn-group-sm">
-                    <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#modalClient">Choisir</button>
-                    <button type="button" class="btn btn-outline-primary " data-toggle="modal" data-target="#modalClientCrea">Créer</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- Modal Choisir CLIENT  -->
           <div class="modal fade" id="modalClient" tabindex="-1" role="dialog"  aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -70,23 +36,14 @@
                     </tbody>
                   </table>
                 </div>
-                <form  class="form" role="form"  method="POST" action="nouveauDevis">
+                <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectClient">
                   <div class="modal-footer justify-content-between ">
-                    <div>
-                      <b><p id="selectClient">Veuillez choisir une societe</p></b>
                       <input type="hidden" name="choixClient" id="choixClient" value="">
-                    </div>
-                    <div>
-                      <button type="submit" class="btn btn-primary">Valider</button>
-                    </div>
                   </div>
                 </form>
               </div>
             </div>
           </div>
-
-
-
              <!-- Modal créer société  -->
           <div class="modal fade" id="modalClientCrea" tabindex="-1" role="dialog"  aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -140,13 +97,9 @@
               </div>
             </div>
           </div>
-
-
-
-
            <!-- Modal Contact  -->
            <div class="modal fade" id="modalContact" tabindex="-1" role="dialog"  aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" >Contact <i class="fal fa-user"></i></h5>
@@ -155,12 +108,27 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  ...
+                  <table id="contactTable" class="table  display" style="width:100%"> 
+                    <thead class="thead-dark"> 
+                      <tr><th>Id</th><th>Nom</th><th>Fonction</th></tr>
+                     </thead > 
+                    <tbody>
+                      {% for contact in contactList %}
+                       <tr class="trClick"><td>{{contact.contact__id}}</td><td>{{contact.contact__nom ~ " " ~ " " ~ contact.contact__prenom}}</td><td>{{contact.keyword__lib}}</td></tr>
+                       {% endfor %}
+                    </tbody>
+                  </table>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectContact">
+                  <input type="hidden" name="choixContact" id="choixContact" value="">
+                </form>
+               
+                  <div class="modal-footer justify-content-end ">
+                    <div>
+                      <button type="button" class="btn btn-outline-primary" data-dismiss="modal" data-toggle="modal" data-target="#modalContactCrea" >Créer</button>
+                    </div>
+                  </div>
+              
               </div>
             </div>
           </div>
@@ -175,24 +143,55 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
+
                 <div class="modal-body">
+                  <!-- debut form-->
                   <form id="FormClientCrea" method="POST" action="nouveauDevis">
-                    
-                    
-                    
                     <div class="form-row">
-                      <div class="input-group-prepend col-md-4">
-                        <label for="inputState">Fonction* </label>
-                        <select class="custom-select "  name="fonction">
-                          <option value="standart" selected>Standard</option>
+                      <div class="form-group col-md-6">
+                        <label for="inputState">Fonction *</label>
+                        <select id="inputState" class="form-control" name="fonctionContact" required>
+                          <option value="STD" selected>Standard</option>
                           {% for keyword in keywordList %}
-                          <option value="{{keyword.keyword__id}}">{{keyword.keyword__lib}}</option>
+                          <option value={{keyword.keyword__value}}>{{keyword.keyword__lib}}</option>
                           {% endfor %}
                         </select>
                       </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputState">Civilité</label>
+                        <select id="inputState" class="form-control" name="civiliteContact" required>
+                          <option  selected>...</option>
+                          <option value="M.">Mr</option>
+                          <option value="Mme">Mme</option>
+                        </select>
+                      </div>
+                      
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputCity">Nom</label>
+                        <input type="text" class="form-control" name="nomContact">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputCity">Prenom</label>
+                        <input type="text" class="form-control" name="prenomContact">
+                      </div>
                     </div>
 
-
+                    <div class="form-row">
+                      <div class="form-group col-md-3">
+                        <label for="inputZip">Telephone</label>
+                        <input type="text" class="form-control" name="telContact">
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label for="inputZip">Fax </label>
+                        <input type="text" class="form-control"name="faxContact">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputCity">Mail</label>
+                        <input type="email" class="form-control"name="mailContact">
+                      </div>
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-end ">
                   <div>
@@ -200,12 +199,10 @@
                   </div>
                 </div>
               </form>
+               <!-- fin form-->
               </div>
             </div>
           </div>
-       
-
-
           <!-- Modal PRESTA  -->
           <div class="modal fade" id="modalPresta" tabindex="-1" role="dialog"  aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -226,8 +223,6 @@
               </div>
             </div>
           </div>
-
-
 
            <!--Modal PDF-->
            <div class="modal fade" id="modalPdf" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -250,6 +245,38 @@
             </div>
           </div>
 
+          <!--carte societe -->
+        <div class="col-xl-3 col-lg-3">
+          <div class="card shadow mb-4">
+            <!-- Card Header - -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Société <i class="fal fa-building"></i></h6>
+              <div class="dropdown no-arrow">
+              </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+              <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
+                {% if  not client   %}
+                <div class=" mb-0 font-weight-bold text-muted">
+                  Veuillez choisir un client 
+                </div>
+                {% else %}
+                <div class=" mb-0 font-weight-bold text-muted">
+                  {{ client.client__societe }}<br>{{client.client__adr1  }} <br>  {{client.client_ville }}
+                </div>
+                {% endif %}
+                <div>
+                  <div class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#modalClient" id="toogleClient">Choisir</button>
+                    <button type="button" class="btn btn-outline-primary " data-toggle="modal" data-target="#modalClientCrea">Créer</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
           <!-- carte contact -->
         <div class="col-3">
           <div class="card shadow mb-4">
@@ -262,29 +289,40 @@
             <!-- Card Body -->
             <div class="card-body">
               <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
-                <div class=" mb-0 font-weight-bold text-muted">Aucun client sélectionné</div>
+                {% if  not contact   %}
+                <div class=" mb-0 font-weight-bold text-muted">
+                  Veuillez choisir un contact 
+                </div>
+                {% else %}
+                <div class=" mb-0 font-weight-bold text-muted">
+                  {{ contact.contact__civ  ~ " " ~ contact.contact__nom ~ " " ~ contact.contact__prenom}}<br>
+                   {{contact.keyword__lib}}
+                </div>
+                {% endif %}
+                <div>
                 {% if  not client %}
                   <div class="btn-group btn-group-sm">
-                    <button type="button" class="btn btn-primary disabled">Choisir</button>
+                    <button type="button" class="btn btn-primary  disabled" >Choisir</button>
                     <button type="button" class="btn btn-outline-primary disabled ">Créer</button>
                   </div>
                       {% else %}
                       <div class="btn-group btn-group-sm">
-                        <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#modalContact">Choisir</button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalContact" id="toogleContact">Choisir</button>
                         <button type="button" class="btn btn-outline-primary " data-toggle="modal" data-target="#modalContactCrea">Créer</button>
                       </div>
                 {% endif %}
+              </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- carte prepstation -->
+        <!-- carte ligne de devis -->
         <div class="col-3">
           <div class="card shadow mb-4">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Prestation <i class="fal fa-plus-circle"></i></h6>
+              <h6 class="m-0 font-weight-bold text-primary">Ligne de devis <i class="fal fa-plus-circle"></i></h6>
               <div class="dropdown no-arrow">
               </div>
             </div>

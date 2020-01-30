@@ -8,19 +8,16 @@ use PDO;
 
 class Client extends Table {
 
-  public string $Table;
+  public string $Table = 'client';
   public Database $Db;
 
   
-  public function __construct($db,$table) {
+  public function __construct($db) {
     $this->Db = $db;
-    $this->Table = $table;
 }
 
-
-
   public function getAll(){
-    $request =$this->Db->Pdo->query('SELECT client__id, client__societe ,  client__ville   FROM '.$this->Table.'');
+    $request =$this->Db->Pdo->query('SELECT  LPAD(client__id,6,0) as client__id, client__societe ,  client__ville   FROM '.$this->Table.'');
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
 }
