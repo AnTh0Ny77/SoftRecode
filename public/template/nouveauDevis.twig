@@ -14,7 +14,7 @@
 
        <!-- 1ere ligne -->
        <div class="row">
-        <!-- Modal Choisir CLIENT  -->
+        <!-- Modal Choisir societe  -->
           <div class="modal fade" id="modalClient" tabindex="-1" role="dialog"  aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div class="modal-content">
@@ -27,7 +27,7 @@
                 <div class="modal-body">
                   <table id="client" class="table  display" style="width:100%"> 
                     <thead class="thead-dark"> 
-                      <tr><th>Id</th><th>Nom</th> <th>Adresse</th></tr>
+                      <tr><th>Id</th><th>Nom</th><th>Adresse</th></tr>
                      </thead > 
                     <tbody>
                       {% for client in clientList %}
@@ -214,10 +214,105 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  ...
+                  <div class="form-row">
+                    <div class="col-md-3 mb-3">
+                      <label for="validationCustom04">Prestation</label>
+                      <select class="custom-select" id="validationCustom04">
+                        <option selected  value="">...</option>
+                        {% for presta in prestaList %}
+                          <option value={{presta.keyword__value}}>{{presta.keyword__lib}}</option>
+                          {% endfor %}
+                      </select>
+                    </div>
+                    <div class="col-6">
+                      <label for="validationCustom04">Désignation</label>
+                      <select class="custom-select" id="choixDesignation">
+                        <option selected  value="">...</option>
+                        {% for article in articleList %}
+                          <option value={{article.art_type}}>{{article.art_type}}</option>
+                          {% endfor %}
+                      </select>
+                    </div>
+                      <div class="custom-control custom-checkbox mt-4">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#choixRef" aria-expanded="false" aria-controls="collapseExample">Modifier</button>
+                      </div>
+                      <div class="collapse col-12" id="choixRef">
+                        <div class="col-12 mt-2 mb-2">
+                          <input type="text" class="form-control" placeholder="...... "  aria-label="Username" aria-describedby="basic-addon1">
+                        </div>
+                      </div>
+                    </div>
+                <div class="form-row align-items-center  d-flex justify-content-between">
+                  <div class="col-4">
+                    <label for="validationCustom04">Etat</label>
+                    <select class="custom-select" id="choixEtat">
+                      <option selected  value="">...</option>
+                      <option   value="neuf">neuf</option>
+                      <option value="occasion">occasion</option>
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <label for="validationCustom04">Garantie</label>
+                    <select class="custom-select" id="choixEtat" >
+                      <option selected disabled value="">...</option>
+                      <option>...</option>
+                    </select>
+                  </div>
+                  
+                  <div class="col-1">
+                    <label for="validationCustom04">Quantité</label>
+                    <input type="number" class="form-control" value="1">
+                  </div>
+                  <div class="col-2">
+                    <label for="validationCustom04">Prix U.HT</label>
+                    <input class="form-control" type="text"  id="example-text-input">
+                  </div>
+
+
+                </div>
+                <div class="form-row mt-2 form-row align-items-center  d-flex justify-content-center">
+                  <div class="d-flex justify-content-start">
+                  
+                  <div class="custom-control custom-checkbox mt-4" id="accordion">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Extensions de garantie</button>
+                  </div>
+                </div>
+                    <div class="custom-control custom-checkbox mt-4">
+                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#commentaire" aria-expanded="false" aria-controls="commentaire">Commentaires</button>
+                    </div>
+                    <div class="collapse col-12" id="xtendGarantie" data-parent="#accordion">
+                      <div class="col-12 mt-2 mb-2 d-flex justify-content-start">
+                        <div class="col-2">
+                          <label for="validationCustom04">Durée</label>
+                          <select class="custom-select" id="choixEtat" >
+                            <option selected disabled value="">...</option>
+                            <option>...</option>
+                          </select>
+                        </div>
+                            <div class="col-3">
+                              <label for="validationCustom04">Prix U.HT</label>
+                              <input class="form-control" type="text"  id="example-text-input">
+                            </div>
+                          <div class="d-flex col-4 align-items-end">
+                            <button type="button" class="btn btn-primary  mt-2 "><i class="fal fa-plus-circle"></i></button>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="collapse col-12" id="commentaire" data-parent="#accordion">
+                      <div class="col-12 mt-2 mb-2 d-flex justify-content-between">
+                        <div class="col-6">
+                        <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Commentaire client...." rows="4"></textarea>
+                        </div>
+                        <div class="col-6">
+                          <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="Commentaire interne...." rows="4"></textarea>
+                          </div>
+                          
+                      </div>
+                    </div>
+                  </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-primary btn-sm">Ajouter</button>
+                  <button type="button" class="btn btn-primary btn-sm ">Ajouter</button>
                 </div>
               </div>
             </div>

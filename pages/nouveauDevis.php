@@ -1,5 +1,6 @@
 <?php
 
+use App\Database;
 use App\Methods\Forms;
 
 require "./vendor/autoload.php";
@@ -16,15 +17,18 @@ session_start();
  $Client = new App\Tables\Client($Database);
  $Keywords = new App\Tables\Keyword($Database);
  $Contact = new App\Tables\Contact($Database);
+ $Article = new App\Tables\Article($Database);
  $Database->DbConnect();
  $clientList = $Client->getAll();
- $keywordList = $Keywords->getAll();
+ $keywordList = $Keywords->getI_con();
 
  //initialisation des variables a false en cas de premiere init :  
  $user =false ;
  $contact = false;
  $choixClient = false;
  $contactList = false;
+ $articleTypeList = false;
+ $prestaList = false;
  
 // Si un nouveau client à été crée  :  traitement par la classe Form 
 if ( isset($_POST['societe']) && !empty($_POST['societe'])) {
@@ -49,6 +53,8 @@ if(!empty($_SESSION['Client'])){
 // si la session client est deja ouverte
 if (isset( $_SESSION['Client'])) {
    $user = $_SESSION['Client'];
+   $articleTypeList = $Article->getAll();
+   $prestaList = $Keywords->getPresta();
 }
 
 // Si un nouveau contact a été crée :  traitement par la classe Form 
@@ -81,5 +87,7 @@ echo $twig->render('nouveauDevis.twig',[
    'client'=>$user,
    'contact'=> $contact,
    'keywordList'=>$keywordList,
-   'contactList'=>$contactList
+   'contactList'=>$contactList,
+   'articleList'=>$articleTypeList,
+   'prestaList'=> $prestaList
 ]);;
