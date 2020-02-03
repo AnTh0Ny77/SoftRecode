@@ -227,35 +227,39 @@
                     <div class="col-6">
                       <label for="validationCustom04">Désignation</label>
                       <select class="custom-select" id="choixDesignation">
-                        <option selected  value="">...</option>
+                        <option   value="">...</option>
                         {% for article in articleList %}
                           <option value={{article.art_type}}>{{article.art_type}}</option>
                           {% endfor %}
                       </select>
                     </div>
                       <div class="custom-control custom-checkbox mt-4">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#choixRef" aria-expanded="false" aria-controls="collapseExample">Modifier</button>
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#choixRef" aria-expanded="false" aria-controls="collapseExample" id="modifReference">Modifier</button>
                       </div>
                       <div class="collapse col-12" id="choixRef">
                         <div class="col-12 mt-2 mb-2">
-                          <input type="text" class="form-control" placeholder="...... "  aria-label="Username" aria-describedby="basic-addon1">
+                          <input type="text" class="form-control" placeholder="...... "  aria-label="Username" aria-describedby="basic-addon1" id='referenceS'>
                         </div>
                       </div>
                     </div>
                 <div class="form-row align-items-center  d-flex justify-content-between">
                   <div class="col-4">
                     <label for="validationCustom04">Etat</label>
-                    <select class="custom-select" id="choixEtat">
+                    <select class="custom-select" id="">
                       <option selected  value="">...</option>
                       <option   value="neuf">neuf</option>
                       <option value="occasion">occasion</option>
                     </select>
                   </div>
                   <div class="col-4">
-                    <label for="validationCustom04">Garantie</label>
-                    <select class="custom-select" id="choixEtat" >
-                      <option selected disabled value="">...</option>
-                      <option>...</option>
+                    <label for="validationCustom04">Garantie/mois</label>
+                    <select class="custom-select" id="" >
+                      <option  value="">..</option>
+                      <option value="06" selected>06</option>
+                      <option value="12">12</option>
+                      <option value="24">24</option>
+                      <option value="36">36</option>
+                      <option value="48">48</option>
                     </select>
                   </div>
                   
@@ -283,10 +287,12 @@
                     <div class="collapse col-12" id="xtendGarantie" data-parent="#accordion">
                       <div class="col-12 mt-2 mb-2 d-flex justify-content-start">
                         <div class="col-2">
-                          <label for="validationCustom04">Durée</label>
-                          <select class="custom-select" id="choixEtat" >
-                            <option selected disabled value="">...</option>
-                            <option>...</option>
+                          <label for="validationCustom04">Durée/mois</label>
+                          <select class="custom-select" id="xtendMois" >
+                            <option value="12">12</option>
+                            <option value="24">24</option>
+                            <option value="36">36</option>
+                            <option value="48">48</option>
                           </select>
                         </div>
                             <div class="col-3">
@@ -294,7 +300,7 @@
                               <input class="form-control" type="text"  id="example-text-input">
                             </div>
                           <div class="d-flex col-4 align-items-end">
-                            <button type="button" class="btn btn-primary  mt-2 "><i class="fal fa-plus-circle"></i></button>
+                            <button type="button" class="btn btn-primary  mt-2 "><i class="fal fa-plus-circle" id="xtendGr"></i></button>
                           </div>
                       </div>
                     </div>

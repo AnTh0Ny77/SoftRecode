@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-//    initialisation table client : nouveauDevis.php
+//    initialisation table client : 
     var tableClient = $('#client').DataTable({
         "paging": true,
         "info":   true,
@@ -9,7 +9,7 @@ $(document).ready(function() {
         "searching": true,   
     });
 
-   // initialisation table devis : nouveauDevis.php
+   // initialisation table devis : 
     $('#Devis').DataTable({
         "paging": false,
         "info":   false,
@@ -27,19 +27,36 @@ $(document).ready(function() {
         "searching": false, 
     })
         
-    // fonction selection du client  : nouveauDevis.php
+    // fonction selection du client  : 
     $('#client tbody').on('click', 'tr', function () {
         var data = tableClient.row( this ).data();
         $("#choixClient").val(data[0]);
         $("#formSelectClient").submit();
     });
 
-    // fonction selection du contact : nouveauDevis.php
+    // fonction selection du contact : 
     $('#contactTable tbody').on('click','tr', function(){
         var text = tableContact.row( this ).data();
         $("#choixContact").val(text[0]);
         $("#formSelectContact").submit();
     })
     
+    // Programme d'ajout de ligne dans le devis : 
+    //traitement du formulaire : 
+    var referenceStricte ;
+    $('#choixDesignation option').on('click', function(){
+        var referenceStricte = $('#referenceS').val($(this).text());
+    });
+    // extension de garantie : 
+    var xtendMois ; 
+    $("#xtendMois ").change(function(){
+        var xtendMois = $(this).val();
+    })
+    var xtendPrix;
+    $("#xtendGr").on('click', function(){
+        xtendMois =  $("#xtendMois").$(this).children("option:selected").val();
+        
+        console.log(xtendMois);
+    })
     
 } );
