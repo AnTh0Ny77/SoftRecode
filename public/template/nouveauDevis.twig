@@ -325,7 +325,7 @@
                         <div class="col-6 col-12 mt-2 mb-2 d-flex justify-content-end">
                           <div class="col-3">
                             <label for="validationCustom04">Prix barré € H.T</label>
-                            <input class="form-control" type="text"  id="xtendPrice">
+                            <input class="form-control" type="text"  id="barrePrice">
                           </div> 
                       </div>
                     </div>
@@ -461,14 +461,14 @@
       <!-- fin 1ere ligne -->
       </div>
        <!-- Deuxième ligne -->
-       <div class="row">
+       <div class="row ">
 
         <!-- Devis/DataTable -->
-        <div class="col-9">
+        <div class="col-10">
           <div class="card shadow mb-4">
 
             <!-- Card Header - -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-center">
               <h6 class="m-0 font-weight-bold text-primary">Devis en cours <i class="fal fa-file-edit"></i></h6>
               <div class="dropdown no-arrow">
               </div>
@@ -477,10 +477,9 @@
             <!-- Table -->
             <div class="card-body">
               <div class="chart-area">
-                 <table id="Devis" class="display table" style="width:100%"> <thead class="thead-dark"> <tr><th></th> <th>Prestation</th> <th>Désignation</th> <th>Type</th> <th>Garantie</th> <th>Quantité</th> <th>P.u HT</th> </tr> </thead> 
+                 <table id="Devis" class="display table" style="width:100%"> <thead class="thead-dark"> <tr><th></th><th></th> <th>Prestation</th> <th>Désignation</th> <th>Type</th> <th>Garantie</th> <th>Quantité</th><th>P.u HT</th><th>Extensions</th><th>Commentaire</th><th>Commentaire interne</th><th>Prix barrés</th><th></th></tr></thead> 
                   <tbody>
-                     <tr><td class="dragDrop">1</td> <td>vente</td> <td>Ecran 24 pouces</td> <td>Occasion</td> <td>06 mois</td> <td>3</td> <td>89.20</td></tr>
-                     <tr><td class="dragDrop">2</td> <td>vente</td> <td>Zebra Zm400</td> <td>neuf</td> <td>06 mois</td> <td>2</td> <td>570,750</td></tr> 
+                    
                   </tbody>
                 </table>
               </div>
@@ -489,7 +488,7 @@
         </div>
 
        <!-- Pdf Vieweer -->
-       <div class="col-3">
+       <div class="col-2">
         <div class="card shadow mb-4">
 
           <!-- Card Header - -->
@@ -509,9 +508,11 @@
           </div>
         </div>
       </div>
+       
     </div>
 
       <!-- fin deuxième ligne -->
+      
       
     </main>
      {% endblock %}
