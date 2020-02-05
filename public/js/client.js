@@ -14,11 +14,23 @@ $(document).ready(function() {
         "paging": false,
         "info":   false,
         "searching": false,
-        deferRender:  true,
         rowReorder: true,
-        
     });
-
+   
+    
+    /* Formatting function for row details  */
+    function format ( d ) {
+   
+    return '<table cellpadding="5" cellspacing="0" style="border-bottom: thick double #32a1ce;"  style="padding-left:50px;">'+
+        '<tr>'+
+            '<td> Extensions de Garantie:</td>'+
+            '<td>'+d[0]+'</td>'+
+        '</tr>'+
+        
+    '</table>';
+    }
+    
+    
     //initialisation table contact  
     let tableContact = $("#contactTable").DataTable({
         "paging": false,
@@ -41,6 +53,16 @@ $(document).ready(function() {
         $("#choixContact").val(text[0]);
         $("#formSelectContact").submit();
     })
+
+
+
+
+
+
+
+
+
+    
     
     // Programme d'ajout de ligne dans le devis : 
     //traitement du formulaire : 
@@ -66,15 +88,22 @@ $(document).ready(function() {
             for (let index = 0; index < xtendArray.length; index++) {
                 let ul = $("#xtendList");
                 let li =  $('<li></li>').text(xtendArray[index][0] + " mois " + xtendArray[index][1] + "€ H.T ").addClass('list-group-item col-4 d-flex justify-content-between align-items-center').appendTo(ul);
-                let i =  $('<i></i>').addClass('fal fa-trash-alt btn btn-link').appendTo(li);
-                $(i).on('click', function(){
-                    $(this).parent().remove();    
-                    xtendArray[index].splice(0,3);
-                    console.log(xtendArray);
-                })
+                let  i =  $('<i></i>').addClass('fal fa-trash-alt btn btn-link deleteParent').val(index).appendTo(li);
+               
             }
              xtendCouple = [];
         }   
+    })
+
+    $("#xtendList").on('click', '.deleteParent' ,function(){
+        xtendArray.splice(parseInt($(this).val()),1);
+        $("#xtendList").empty();
+        for (let index = 0; index < xtendArray.length; index++) {
+            let ul = $("#xtendList");
+            let li =  $('<li></li>').text(xtendArray[index][0] + " mois " + xtendArray[index][1] + "€ H.T ").addClass('list-group-item col-4 d-flex justify-content-between align-items-center').appendTo(ul);
+            let  i =  $('<i></i>').addClass('fal fa-trash-alt btn btn-link deleteParent').val(index).appendTo(li);
+            console.log(xtendArray);
+        }
     })
        
     //ajout d'une ligne de devis :
@@ -90,28 +119,43 @@ $(document).ready(function() {
         row.push(designation);
         let etat = $("#etatRow").val();
         row.push(etat);
-        let garantie = $("#garantieRow").val();
+        let garantie = $("#garantieRow").val() + " mois ";
         row.push( garantie);
-        let quantite =  $("#quantiteRow").val();
+        let quantite =  $("#quantiteRow").val()  ;
         row.push( quantite);
-        let prix = $("#prixRow").val();
+
+        let prix;
+        if ($("#barrePrice").val().length > 0) {
+             prix =  ' <s>' + $("#barrePrice").val()  + "€</s> " + $("#prixRow").val() + " €" ;
+        }else {prix =  $("#prixRow").val() + " €" ;};
         row.push( prix);
-        row.push("x " + xtendArray.length );
+       
+        
         let comClient = $("#comClient").val();
-        row.push(comClient);
+        
         let comInterne = $("#comInterne").val();
-        row.push(comInterne);
+        
         let prixBarre = $("#barrePrice").val();
-        row.push(prixBarre);
+        
         let deleteButton = "<i class='fal fa-trash-alt btn deleteRow'></i>";
         row.push(deleteButton);
+       
+       
         devisTable.row.add(row).draw( false );
+        devisTable.rows().every(function(){
+            if(!this.child.isShown()){
+                this.child(format(this.data())).show();
+                $(this.node()).addClass('');
+        }});
+        devisTable.row().child( format(row)).show();
         row = [];
         xtendArray = [];
         counter ++;
-       
- 
+        
     })
+
+
+
 
      // efface sa propre ligne : 
      devisTable.on('click','.deleteRow',function() {
