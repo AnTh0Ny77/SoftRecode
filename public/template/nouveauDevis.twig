@@ -337,6 +337,142 @@
             </div>
           </div>
 
+
+          <!--modal modif-->
+          <div class="modal fade" id="modalModif" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" >Ligne de devis <i class="fal fa-plus-circle"></i></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-row">
+                    <div class="col-md-3 mb-3">
+                      <label for="validationCustom04">Prestation</label>
+                      <select class="custom-select" id="prestationChoix">
+                        <option selected  value="">...</option>
+                        {% for presta in prestaList %}
+                          <option value={{presta.keyword__value}}>{{presta.keyword__lib}}</option>
+                          {% endfor %}
+                      </select>
+                    </div>
+                    <div class="col-6">
+                      <label for="validationCustom04">Désignation</label>
+                      <select class="custom-select" id="choixDesignation">
+                        <option   value="">...</option>
+                        {% for article in articleList %}
+                          <option value={{article.art_type}}>{{article.art_type}}</option>
+                          {% endfor %}
+                      </select>
+                    </div>
+                      <div class="custom-control custom-checkbox mt-4">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#choixRef" aria-expanded="false" aria-controls="collapseExample" id="modifReference">Modifier</button>
+                      </div>
+                      <div class="collapse col-12" id="choixRef">
+                        <div class="col-12 mt-2 mb-2">
+                          <input type="text" class="form-control" placeholder="...... "  aria-label="Username" aria-describedby="basic-addon1" id='referenceS'>
+                        </div>
+                      </div>
+                    </div>
+                <div class="form-row align-items-center  d-flex justify-content-between">
+                  <div class="col-4">
+                    <label for="validationCustom04">Etat</label>
+                    <select class="custom-select" id="etatRow">
+                      <option selected  value="">...</option>
+                      <option   value="neuf">neuf</option>
+                      <option value="occasion">occasion</option>
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <label for="validationCustom04">Garantie/mois</label>
+                    <select class="custom-select" id="garantieRow" >
+                      <option  value="">..</option>
+                      <option value="06" selected>06</option>
+                      <option value="12">12</option>
+                      <option value="24">24</option>
+                      <option value="36">36</option>
+                      <option value="48">48</option>
+                    </select>
+                  </div>
+                  
+                  <div class="col-1">
+                    <label for="validationCustom04">Quantité</label>
+                    <input type="number" class="form-control" value="1" id="quantiteRow">
+                  </div>
+                  <div class="col-2">
+                    <label for="validationCustom04">Prix € H.T</label>
+                    <input class="form-control" type="text"  id="prixRow">
+                  </div>
+                </div>
+                <div class="form-row mt-2 form-row align-items-center  d-flex justify-content-center">
+                  <div class="d-flex justify-content-start">
+                  
+                  <div class="custom-control custom-checkbox mt-4" id="accordion">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Extensions de garantie</button>
+                  </div>
+                 
+                </div>
+                    <div class="custom-control custom-checkbox mt-4">
+                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#commentaire" aria-expanded="false" aria-controls="commentaire">Commentaires</button>
+                    </div>
+                    <div class="custom-control custom-checkbox mt-4">
+                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#prixBarres" aria-expanded="false" aria-controls="commentaire">Prix barrés</button>
+                    </div>
+                    <div class="collapse col-12" id="xtendGarantie" data-parent="#accordion">
+                      <ul class="list-group list-group-flush" id="xtendList">
+
+                      </ul>
+                      <div class="col-12 mt-2 mb-2 d-flex justify-content-start">
+                        
+                        <div class="col-2">
+                          <label for="validationCustom04">Durée/mois</label>
+                          <select class="custom-select" id="xtendMois" >
+                            <option value="12">12</option>
+                            <option value="24">24</option>
+                            <option value="36">36</option>
+                            <option value="48">48</option>
+                          </select>
+                        </div>
+                            <div class="col-3">
+                              <label for="validationCustom04">Prix € H.T</label>
+                              <input class="form-control" type="text"  id="xtendPrice">
+                            </div>
+                          <div class="d-flex col-4 align-items-end">
+                            <button type="button" class="btn btn-primary  mt-2 "><i class="fal fa-plus-circle" id="xtendGr"></i></button>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="collapse col-12" id="commentaire" data-parent="#accordion">
+                      <div class="col-12 mt-2 mb-2 d-flex justify-content-between">
+                        <div class="col-6">
+                        <textarea class="form-control" id="comClient" placeholder="Commentaire client...." rows="4"></textarea>
+                        </div>
+                        <div class="col-6">
+                          <textarea class="form-control" id="comInterne" placeholder="Commentaire interne...." rows="4"></textarea>
+                          </div>
+                          
+                      </div>
+                    </div>
+                    <div class="collapse col-12 " id="prixBarres" data-parent="#accordion">
+                        <div class="col-6 col-12 mt-2 mb-2 d-flex justify-content-end">
+                          <div class="col-3">
+                            <label for="validationCustom04">Prix barré € H.T</label>
+                            <input class="form-control" type="text"  id="barrePrice">
+                          </div> 
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-primary btn-sm" id="updateRow">Modifier</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
            <!--Modal PDF-->
            <div class="modal fade" id="modalPdf" tabindex="-1" role="dialog"  aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -471,16 +607,16 @@
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Devis en cours <i class="fal fa-file-edit"></i></h6>
               <div class="dropdown no-arrow">
-                <button type="button" id="modifyLine" class="btn btn-info"><i class="fal fa-edit"></i></button>
-                <button type="button" id="removeLine" class="btn btn-danger"><i class="fal fa-trash-alt"></i></button>
+                <button type="button" id="modifyLine" class="btn btn-info notActive"  data-toggle="modal" data-target="#modalModif"><i class="fal fa-edit"></i></button>
+                <button type="button" id="removeLine" class="btn btn-danger notActive"><i class="fal fa-trash-alt"></i></button>
               </div>
             </div>
 
             <!-- Table -->
             <div class="card-body">
               <div class="chart-area">
-                 <table id="Devis" class=" display table " style="width:100%"> <thead class="thead-dark"> <tr><th></th> <th>Prestation</th> <th>Désignation</th> <th>Type</th> <th>Garantie</th> <th>Quantité</th><th>€ H.T</th></tr></thead> 
-                  <tbody>
+                 <table id="Devis" class=" display table " style="width:100%"> <thead class="thead-dark"> <tr><th></th> <th>Prestation</th> <th>Désignation</th> <th>Type</th> <th>Garantie</th> <th>Quantité</th><th>€ H.T</th><th></th></tr></thead> 
+                  <tbody id="DevisBody">
                     
                   </tbody>
                 </table>

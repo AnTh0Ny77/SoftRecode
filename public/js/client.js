@@ -17,7 +17,8 @@ $(document).ready(function() {
             "columnDefs": [
                 { "width": "40%", "targets": 2 },
                 { "width": "20%", "targets": 4 },
-                {"className": "dt-center", "targets": "_all"}
+                {"className": "dt-center", "targets": "_all"},
+                {"targets": [ 7 ], "visible": false}
               ],
             rowReorder: true,
         });
@@ -134,27 +135,62 @@ $(document).ready(function() {
                 prixMultiple =  ' <s>' + prixBarre  + "€</s> " + prix + " €" ;
             }else {prixMultiple =  $("#prixRow").val() + " €" ;};
             row.push(prixMultiple);
+
+            let rowObject = new Object();
+            rowObject.prestation = prestation;
+            rowObject.designation = designation;
+            rowObject.comClient = comClient;
+            rowObject.comInterne = comInterne;
+            rowObject.etat = etat;
+            rowObject.garantie = $("#garantieRow").val();
+            rowObject.xtend = xtendArray;
+            rowObject.quantite = quantite;
+            rowObject.prix = prix;
+            rowObject.prixBarre = prixBarre;
+            row.push(rowObject);
             devisTable.row.add(row).draw( false );
             row = [];
             xtendArray = [];
             counter ++; 
         })
-    
+
+        // disable buttons si pas de ligne:  
+        let checkClass = function(){
+            let test =  $('#DevisBody').find('tr');
+             if (test.hasClass('selected')) {
+                 $('.notActive').removeAttr('disabled');
+             } else {
+                 $('.notActive').prop("disabled", true);
+             }
+          }
+        checkClass();
+        let idRow  = false;
+
          // attribut classe selected: 
          devisTable.on('click','tr',function() {
             if ( $(this).hasClass('selected') ) {
                 $(this).removeClass('selected');
             }
-            else {
+           else  if(devisTable.rows().count() >= 1){
                 devisTable.$('tr.selected').removeClass('selected');
                 $(this).addClass('selected');
+                idRow = devisTable.row('.selected').data()[0];
             }
-        // efface la ligne sur le click : 
-        $('#removeLine').click( function () {
-            devisTable.row('.selected').remove().draw( false );
-        }); 
-          
+            checkClass();
          });
+         
+          // efface la ligne sur le click : 
+        $('#removeLine').click( function () {
+          devisTable.row('.selected').remove().draw( false );  
+          checkClass();  
+         }); 
 
-         // update sa propre ligne :     
+
+         // update sa propre ligne : 
+         $('#modifyLine').click( function () {
+           let dataObject =  devisTable.row('.selected').data[7];   
+           checkClass();   
+         }); 
+        
+
     } );
