@@ -126,7 +126,7 @@ $(document).ready(function() {
 
         let prix;
         if ($("#barrePrice").val().length > 0) {
-             prix =  ' <s>' + $("#barrePrice").val()  + "€</s> " + $("#prixRow").val() + " €" ;
+             prix =  ' <s>' + $("#barrePrice").val()  + "€</s> " + $("#prixRow").val() + "€" ;
         }else {prix =  $("#prixRow").val() + " €" ;};
         row.push( prix);
        
@@ -142,12 +142,12 @@ $(document).ready(function() {
        
        
         devisTable.row.add(row).draw( false );
-        devisTable.rows().every(function(){
-            if(!this.child.isShown()){
-                this.child(format(this.data())).show();
-                $(this.node()).addClass('');
-        }});
-        devisTable.row().child( format(row)).show();
+        // devisTable.rows().every(function(){
+        //     if(!this.child.isShown()){
+        //         this.child(format(this.data())).show();
+        //         $(this.node()).addClass('');
+        // }});
+        // devisTable.row().child( format(row)).show();
         row = [];
         xtendArray = [];
         counter ++;
