@@ -49,9 +49,8 @@ $(document).ready(function() {
 
         // Programme d'ajout de ligne dans le devis : 
         //traitement du formulaire : 
-        let referenceStricte ;
         $('#choixDesignation option').on('click', function(){
-            let referenceStricte = $('#referenceS').val($(this).text());
+            $('#referenceS').val($(this).text());
         });
 
         // extension de garantie : 
@@ -186,9 +185,20 @@ $(document).ready(function() {
          }); 
 
 
-         // update sa propre ligne : 
+         // prerempli le formulaire de modification : 
          $('#modifyLine').click( function () {
-           let dataObject =  devisTable.row('.selected').data[7];   
+           let dataObject =  devisTable.row('.selected').data();
+           let formContent = dataObject[7];
+           $("#UPprestationChoix").val(formContent.prestation);
+           $("#UPreferenceS").val(formContent.designation);
+           $("#UPcomClient").val(formContent.comClient);
+           $("#UPcomInterne").val(formContent.comInterne);
+           $("#UPquantiteRow").val(formContent.quantite);
+           $("#UPgarantieRow").val(formContent.garantie);
+           $("#UPbarrePrice").val(formContent.prixBarre);
+           $("#UPetatRow").val(formContent.etat);
+           $("#UPprixRow").val(formContent.prix);
+           $('#UPreferenceS').val(formContent.designation);
            checkClass();   
          }); 
         

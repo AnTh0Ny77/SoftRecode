@@ -343,7 +343,7 @@
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" >Ligne de devis <i class="fal fa-plus-circle"></i></h5>
+                  <h5 class="modal-title" >Modification <i class="fal fa-plus-circle"></i></h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -352,45 +352,32 @@
                   <div class="form-row">
                     <div class="col-md-3 mb-3">
                       <label for="validationCustom04">Prestation</label>
-                      <select class="custom-select" id="prestationChoix">
+                      <select class="custom-select" id="UPprestationChoix">
                         <option selected  value="">...</option>
                         {% for presta in prestaList %}
                           <option value={{presta.keyword__value}}>{{presta.keyword__lib}}</option>
                           {% endfor %}
                       </select>
                     </div>
-                    <div class="col-6">
+                    <div class="col-8">
                       <label for="validationCustom04">Désignation</label>
-                      <select class="custom-select" id="choixDesignation">
-                        <option   value="">...</option>
-                        {% for article in articleList %}
-                          <option value={{article.art_type}}>{{article.art_type}}</option>
-                          {% endfor %}
-                      </select>
+                      <input type="text" class="form-control" placeholder="...... "  aria-label="Username" aria-describedby="basic-addon1" id='UPreferenceS'>
                     </div>
-                      <div class="custom-control custom-checkbox mt-4">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#choixRef" aria-expanded="false" aria-controls="collapseExample" id="modifReference">Modifier</button>
-                      </div>
-                      <div class="collapse col-12" id="choixRef">
-                        <div class="col-12 mt-2 mb-2">
-                          <input type="text" class="form-control" placeholder="...... "  aria-label="Username" aria-describedby="basic-addon1" id='referenceS'>
-                        </div>
-                      </div>
                     </div>
                 <div class="form-row align-items-center  d-flex justify-content-between">
                   <div class="col-4">
                     <label for="validationCustom04">Etat</label>
-                    <select class="custom-select" id="etatRow">
-                      <option selected  value="">...</option>
+                    <select class="custom-select" id="UPetatRow">
+                      <option   value="">...</option>
                       <option   value="neuf">neuf</option>
-                      <option value="occasion">occasion</option>
+                      <option   value="occasion">occasion</option>
                     </select>
                   </div>
                   <div class="col-4">
                     <label for="validationCustom04">Garantie/mois</label>
-                    <select class="custom-select" id="garantieRow" >
+                    <select class="custom-select" id="UPgarantieRow" >
                       <option  value="">..</option>
-                      <option value="06" selected>06</option>
+                      <option value="06" >06</option>
                       <option value="12">12</option>
                       <option value="24">24</option>
                       <option value="36">36</option>
@@ -400,36 +387,36 @@
                   
                   <div class="col-1">
                     <label for="validationCustom04">Quantité</label>
-                    <input type="number" class="form-control" value="1" id="quantiteRow">
+                    <input type="number" class="form-control" value="1" id="UPquantiteRow">
                   </div>
                   <div class="col-2">
                     <label for="validationCustom04">Prix € H.T</label>
-                    <input class="form-control" type="text"  id="prixRow">
+                    <input class="form-control" type="text"  id="UPprixRow">
                   </div>
                 </div>
                 <div class="form-row mt-2 form-row align-items-center  d-flex justify-content-center">
                   <div class="d-flex justify-content-start">
                   
-                  <div class="custom-control custom-checkbox mt-4" id="accordion">
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Extensions de garantie</button>
+                  <div class="custom-control custom-checkbox mt-4" id="UPaccordion">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#UPxtendGarantie" aria-expanded="false" aria-controls="UPxtendGarantie">Extensions de garantie</button>
                   </div>
                  
                 </div>
                     <div class="custom-control custom-checkbox mt-4">
-                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#commentaire" aria-expanded="false" aria-controls="commentaire">Commentaires</button>
+                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#UPcommentaire" aria-expanded="false" aria-controls="UPcommentaire">Commentaires</button>
                     </div>
                     <div class="custom-control custom-checkbox mt-4">
-                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#prixBarres" aria-expanded="false" aria-controls="commentaire">Prix barrés</button>
+                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#UPprixBarres" aria-expanded="false" aria-controls="UPcommentaire">Prix barrés</button>
                     </div>
-                    <div class="collapse col-12" id="xtendGarantie" data-parent="#accordion">
-                      <ul class="list-group list-group-flush" id="xtendList">
+                    <div class="collapse col-12" id="UPxtendGarantie" data-parent="#UPaccordion">
+                      <ul class="list-group list-group-flush" id="UPxtendList">
 
                       </ul>
                       <div class="col-12 mt-2 mb-2 d-flex justify-content-start">
                         
                         <div class="col-2">
                           <label for="validationCustom04">Durée/mois</label>
-                          <select class="custom-select" id="xtendMois" >
+                          <select class="custom-select" id="UPxtendMois" >
                             <option value="12">12</option>
                             <option value="24">24</option>
                             <option value="36">36</option>
@@ -438,29 +425,29 @@
                         </div>
                             <div class="col-3">
                               <label for="validationCustom04">Prix € H.T</label>
-                              <input class="form-control" type="text"  id="xtendPrice">
+                              <input class="form-control" type="text"  id="UPxtendPrice">
                             </div>
                           <div class="d-flex col-4 align-items-end">
-                            <button type="button" class="btn btn-primary  mt-2 "><i class="fal fa-plus-circle" id="xtendGr"></i></button>
+                            <button type="button" class="btn btn-primary  mt-2 "><i class="fal fa-plus-circle" id="UPxtendGr"></i></button>
                           </div>
                       </div>
                     </div>
-                    <div class="collapse col-12" id="commentaire" data-parent="#accordion">
+                    <div class="collapse col-12" id="UPcommentaire" data-parent="#UPaccordion">
                       <div class="col-12 mt-2 mb-2 d-flex justify-content-between">
                         <div class="col-6">
-                        <textarea class="form-control" id="comClient" placeholder="Commentaire client...." rows="4"></textarea>
+                        <textarea class="form-control" id="UPcomClient" placeholder="Commentaire client...." rows="4"></textarea>
                         </div>
                         <div class="col-6">
-                          <textarea class="form-control" id="comInterne" placeholder="Commentaire interne...." rows="4"></textarea>
+                          <textarea class="form-control" id="UPcomInterne" placeholder="Commentaire interne...." rows="4"></textarea>
                           </div>
                           
                       </div>
                     </div>
-                    <div class="collapse col-12 " id="prixBarres" data-parent="#accordion">
+                    <div class="collapse col-12 " id="UPprixBarres" data-parent="#UPaccordion">
                         <div class="col-6 col-12 mt-2 mb-2 d-flex justify-content-end">
                           <div class="col-3">
                             <label for="validationCustom04">Prix barré € H.T</label>
-                            <input class="form-control" type="text"  id="barrePrice">
+                            <input class="form-control" type="text"  id="UPbarrePrice">
                           </div> 
                       </div>
                     </div>
