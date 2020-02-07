@@ -331,7 +331,7 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-primary btn-sm" id="addRow">Ajouter</button>
+                  <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" id="addRow">Ajouter</button>
                 </div>
               </div>
             </div>
@@ -339,13 +339,12 @@
 
 
           <!--modal modif-->
-          <div class="modal fade" id="modalModif" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div class="modal fade" id="modalModif" tabindex="-1" role="dialog"  aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" >Modification <i class="fal fa-plus-circle"></i></h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
+                 
                   </button>
                 </div>
                 <div class="modal-body">
@@ -377,7 +376,7 @@
                     <label for="validationCustom04">Garantie/mois</label>
                     <select class="custom-select" id="UPgarantieRow" >
                       <option  value="">..</option>
-                      <option value="06" >06</option>
+                      <option value="06">06</option>
                       <option value="12">12</option>
                       <option value="24">24</option>
                       <option value="36">36</option>
@@ -394,10 +393,10 @@
                     <input class="form-control" type="text"  id="UPprixRow">
                   </div>
                 </div>
-                <div class="form-row mt-2 form-row align-items-center  d-flex justify-content-center">
+                <div class="form-row mt-2 form-row align-items-center  d-flex justify-content-center" id="UPaccordion">
                   <div class="d-flex justify-content-start">
                   
-                  <div class="custom-control custom-checkbox mt-4" id="UPaccordion">
+                  <div class="custom-control custom-checkbox mt-4" >
                     <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#UPxtendGarantie" aria-expanded="false" aria-controls="UPxtendGarantie">Extensions de garantie</button>
                   </div>
                  
@@ -451,10 +450,11 @@
                           </div> 
                       </div>
                     </div>
+                   
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-primary btn-sm" id="updateRow">Modifier</button>
+                  <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" id="updateRow">Modifier</button>
                 </div>
               </div>
             </div>
@@ -482,9 +482,9 @@
           </div>
 
            <!-- 1ere ligne -->
-       <div class="d-flex flex-wrap flex-row">
+       <div class="d-flex flex-wrap flex-row justify-content-center">
           <!--carte societe -->
-        <div class="col-4">
+        <div class="col-md-4">
           <div class="card shadow mb-4">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -516,7 +516,7 @@
         </div>
 
           <!-- carte contact -->
-        <div class="col-4">
+        <div class="col-md-4">
           <div class="card shadow mb-4">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -555,45 +555,47 @@
           </div>
         </div>
 
-        <!-- carte ligne de devis -->
-        <div class="col-4">
-          <div class="card shadow mb-4">
-            <!-- Card Header - -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Ligne de devis <i class="fal fa-plus-circle"></i></h6>
-              <div class="dropdown no-arrow">
-              </div>
+       <!-- Pdf Vieweer -->
+       <div class="col-md-3">
+        <div class="card shadow mb-4">
+
+          <!-- Card Header - -->
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Exporter <i class="fal fa-file-export"></i></h6>
+            <div class="dropdown no-arrow">
             </div>
-            <!-- Card Body -->
-            <div class="card-body">
-              <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
-                <div class=" mb-0 font-weight-bold text-muted">Aucune ligne </div>
-                <div class="btn-group btn-group-sm">
-                  {% if  not client %}
-                      <button type="button" class="btn btn-primary  mb-3 disabled"  >Ajouter</button>
-                      {% else %}
-                      <button type="button" class="btn btn-primary  mb-3" data-toggle="modal" data-target="#modalPresta">Ajouter</button>
-                  {% endif %}
-                </div>
-              </div>
+          </div>
+
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
+              <div class=" mb-0 font-weight-bold text-muted"></div>
+              <div>
+                <button type="button" class="btn btn-primary btn-sm mb-3" data-toggle="modal" data-target="#modalPdf">Ajouter</button></div>
             </div>
           </div>
         </div>
+      </div>
 
       <!-- fin 1ere ligne -->
       </div>
 
        <!-- Deuxième ligne -->
-       <div class="row d-flex flex-wrap">
+       <div class="row d-flex flex-wrap justify-content-center">
 
         <!-- Devis/DataTable -->
-        <div class="col-10 ">
+        <div class="col-11 ">
           <div class="card shadow mb-4">
 
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Devis en cours <i class="fal fa-file-edit"></i></h6>
               <div class="dropdown no-arrow">
+                {% if  not client %}
+                <button type="button" class="btn btn-primary disabled"  ><i class="fal fa-plus-circle"></i></button>
+                {% else %}
+                <button type="button" class="btn btn-primary" data-toggle="modal" id="addNewRow" data-target="#modalPresta"><i class="fal fa-plus-circle"></i></button>
+                {% endif %}
                 <button type="button" id="modifyLine" class="btn btn-info notActive"  data-toggle="modal" data-target="#modalModif"><i class="fal fa-edit"></i></button>
                 <button type="button" id="removeLine" class="btn btn-danger notActive"><i class="fal fa-trash-alt"></i></button>
               </div>
@@ -610,29 +612,7 @@
               </div>
             </div>
           </div>
-        </div>
-
-       <!-- Pdf Vieweer -->
-       <div class="col-2">
-        <div class="card shadow mb-4">
-
-          <!-- Card Header - -->
-          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Valider/exporter <i class="fal fa-file-export"></i></h6>
-            <div class="dropdown no-arrow">
-            </div>
-          </div>
-
-          <!-- Card Body -->
-          <div class="card-body">
-            <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
-              <div class=" mb-0 font-weight-bold text-muted"></div>
-              <div>
-                <button type="button" class="btn btn-primary btn-sm mb-3" data-toggle="modal" data-target="#modalPdf">Ajouter</button></div>
-            </div>
-          </div>
-        </div>
-      </div>
+        </div>   
        
     </div>
 
