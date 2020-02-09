@@ -14,6 +14,7 @@ $(document).ready(function() {
             "paging": false,
             "info":   false,
             "searching": false,
+            "ordering": false,
             responsive: {
                 details: false
             },
@@ -22,13 +23,25 @@ $(document).ready(function() {
                 { "width": "20%", "targets": 4 },
                 {"className": "dt-center", "targets": "_all"},
                 {"targets": [ 7 ], "visible": false},
+                {"targets": [ 0 ], "visible": false},
                 { responsivePriority: 1, targets: 2 },
                 { responsivePriority: 2, targets: 5 },
                 { responsivePriority: 3, targets: 6 }
               ],
-            rowReorder: true,
+              rowReorder: {
+                update: false,
+                selector: 'td:first-child'
+            }
         });
-       
+
+        // reset de l'id a chaque changement/ Ajout ou supression : 
+        // devisTable.on( 'row-reorder', function(){
+        //     let rowsNumber = devisTable.rows().count();
+        //     for (let index = 0; index < rowsNumber; index++) {
+        //         setTimeout(function(){ devisTable.cell(index,0).data(index).draw(); }, 300);
+                
+        //     }
+        // }) 
         
         //initialisation table contact  
         let tableContact = $("#contactTable").DataTable({
@@ -208,9 +221,6 @@ $(document).ready(function() {
             xtendArray = [];
          })
 
-       
-        
-
         // prerempli le formulaire de modification : 
          $('#modifyLine').click( function () {
             // vide en cas de fermeture sans modif (UPxtendList double) :
@@ -223,7 +233,6 @@ $(document).ready(function() {
             UpXtendArray = [];
             dataObject =  devisTable.row('.selected').data();
             formContent = dataObject[7];
-            console.log(dataObject[7]);
            $("#UPprestationChoix").val(formContent.prestation);
            $("#UPreferenceS").val(formContent.designation);
            $("#UPcomClient").val(formContent.comClient);
@@ -334,7 +343,7 @@ $(document).ready(function() {
             rowObject.comInterne = comInterne;
             rowObject.etat = etat;
             rowObject.garantie = $("#UPgarantieRow").val();
-            rowObject.xtend = xtendArray;
+            rowObject.xtend = UpXtendArray;
             rowObject.quantite = quantite;
             rowObject.prix = prix;
             rowObject.prixBarre = prixBarre;
