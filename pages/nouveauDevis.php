@@ -75,7 +75,7 @@ if(!empty($_POST['choixContact'])){
   $_SESSION['Contact'] = $Contact->getOne($_POST['choixContact']);
 }
 
-// si la session contact est deja ouverte
+// si la session contact est deja ouverte : 
 if (isset( $_SESSION['Contact'])) {
   $contact = $_SESSION['Contact'];
 }

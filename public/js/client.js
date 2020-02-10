@@ -34,15 +34,6 @@ $(document).ready(function() {
             }
         });
 
-        // reset de l'id a chaque changement/ Ajout ou supression : 
-        // devisTable.on( 'row-reorder', function(){
-        //     let rowsNumber = devisTable.rows().count();
-        //     for (let index = 0; index < rowsNumber; index++) {
-        //         setTimeout(function(){ devisTable.cell(index,0).data(index).draw(); }, 300);
-                
-        //     }
-        // }) 
-        
         //initialisation table contact  
         let tableContact = $("#contactTable").DataTable({
             "paging": false,
@@ -94,6 +85,7 @@ $(document).ready(function() {
                     let  i =  $('<i></i>').addClass('fal fa-trash-alt btn btn-link deleteParent').val(index).appendTo(li);
                    
                 }
+                 $('#xtendPrice').val("");
                  xtendCouple = [];
             }   
         })
@@ -176,13 +168,18 @@ $(document).ready(function() {
 
         // disable buttons si pas de ligne:  
         let checkClass = function(){
-            let test =  $('#DevisBody').find('tr');
-             if (test.hasClass('selected')) {
+            let RowDevis =  $('#DevisBody').find('tr');
+             if (RowDevis.hasClass('selected')) {
                  $('.notActive').removeAttr('disabled');
              } else {
                  $('.notActive').prop("disabled", true);
              }
           }
+
+        // disable le button d'export si pas de ligne :
+        let exportButton = function(){
+            
+        }
         checkClass();
         let idRow  = false;
 
@@ -276,6 +273,7 @@ $(document).ready(function() {
                      let  i =  $('<i></i>').addClass('fal fa-trash-alt btn btn-link deleteParent').val(index).appendTo(li);
                     
                  }
+                 $('#UPxtendPrice').val("");
                  UpXtendCouple = [];
              }   
          })
@@ -348,14 +346,25 @@ $(document).ready(function() {
             rowObject.prix = prix;
             rowObject.prixBarre = prixBarre;
             row.push(rowObject);
-            devisTable.row('.selected').remove().draw( false );  
+            devisTable.row('.selected').data( row ).draw( false );  
             checkClass();  
-            devisTable.row.add(row).draw( false );
             $("#UPxtendList").empty();
             row = [];
             UpXtendArray = [];
              
         })
+
+
+        // Ajax request / envoi au module de traitement PDF : 
+        $('#xPortData').click(function() {
+            let rowData =  devisTable.cells('',7).data();
+            let arrayOfDevis = $.map(rowData, function(value, index) {
+                return [value];
+            });
+            let paramJSON = JSON.stringify(arrayOfDevis);
+           $("dataDevis").val(paramJSON);
+            
+        });
 
         
 

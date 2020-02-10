@@ -28,6 +28,10 @@
             require __DIR__ .'/pages/utilities/unlog.php';
            break;
 
+           case '/DevisRecode/pdf';
+            require __DIR__ .'/pages/utilities/pdf.php';
+           break;
+           
             default:
             header('HTTP/1.0 404 not found');
             require  __DIR__ .'/pages/error404.php';
