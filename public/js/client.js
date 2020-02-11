@@ -5,7 +5,7 @@ $(document).ready(function() {
             "paging": true,
             "info":   true,
             retrieve: true,
-            deferRender: true,
+            "deferRender": true,
             "searching": true,   
         });
     
@@ -38,6 +38,7 @@ $(document).ready(function() {
         let tableContact = $("#contactTable").DataTable({
             "paging": false,
             "info":   true,
+            "deferRender": true,
             retrieve: true,
             deferRender: true,
             "searching": false, 
@@ -362,7 +363,8 @@ $(document).ready(function() {
                 return [value];
             });
             let paramJSON = JSON.stringify(arrayOfDevis);
-           $("dataDevis").val(paramJSON);
+            $("#dataDevis").val(paramJSON);
+          
             
         });
 

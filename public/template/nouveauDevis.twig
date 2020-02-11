@@ -67,7 +67,7 @@
                     </div>
                     <div class="form-group">
                       
-                      <input type="text" class="form-control" id="inputAddress" name="adr2">
+                      <input type="text" class="form-control" id="inputAddress2" name="adr2">
                     </div>
                     <div class="form-row">
                       <div class="form-group col-md-2">
@@ -79,7 +79,7 @@
                         <input type="text" class="form-control" id="inputCity"  name="ville" required >
                       </div>
                       <div class="form-group col-md-4">
-                        <label for="inputState">Pays*</label>
+                        <label for="pays">Pays*</label>
                         <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="pays">
                           <option value="france" selected>France</option>
                           <option value="autre" >autre</option>
@@ -145,7 +145,7 @@
 
                 <div class="modal-body">
                   <!-- debut form-->
-                  <form id="FormClientCrea" method="POST" action="nouveauDevis">
+                  <form id="FormContactCrea" method="POST" action="nouveauDevis">
                     <div class="form-row">
                       <div class="form-group col-md-6">
                         <label for="inputState">Fonction *</label>
@@ -157,8 +157,8 @@
                         </select>
                       </div>
                       <div class="form-group col-md-6">
-                        <label for="inputState">Civilité</label>
-                        <select id="inputState" class="form-control" name="civiliteContact" required>
+                        <label for="inputCiv">Civilité</label>
+                        <select id="inputCiv" class="form-control" name="civiliteContact" required>
                           <option  selected>...</option>
                           <option value="M.">Mr</option>
                           <option value="Mme">Mme</option>
@@ -470,12 +470,12 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <form method="POST" action="pdf">
+               <form method="POST" action="pdf">
                 <div class="modal-body">
                   <input id="dataDevis" name="dataDevis" type="hidden" value="">
                 </div>
                 <div class="modal-footer">
-                  <button type="submit"  class="btn btn-primary" id="xPortData">Exporter</button>
+                  <button type='submit'  class="btn btn-primary" id="xPortData">Exporter</button>
                 </form>
                 </div>
               </div>
