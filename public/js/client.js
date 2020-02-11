@@ -62,8 +62,9 @@ $(document).ready(function() {
         //traitement du formulaire : 
         $('#choixDesignation option').on('click', function(){
             $('#referenceS').val($(this).text());
+            console.log($(this).text());
         });
-
+        
         // extension de garantie : 
         let xtendMois ; 
         let xtendPrix;

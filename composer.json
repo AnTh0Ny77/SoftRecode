@@ -4,7 +4,8 @@
     },
 
     "require": {
-        "twig/twig": "^3.0"
+        "twig/twig": "^3.0",
+        "spipu/html2pdf": "^5.2"
     }
 
 }
