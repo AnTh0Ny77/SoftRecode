@@ -360,9 +360,15 @@ $(document).ready(function() {
         // Ajax request / envoi au module de traitement PDF : 
         $('#xPortData').click(function() {
             let rowData =  devisTable.cells('',7).data();
-            let arrayOfDevis = $.map(rowData, function(value, index) {
+            
+            let arrayOfDevis = $.map(rowData, function(value) {
                 return [value];
             });
+
+        
+            
+            console.log(arrayOfDevis);
+
             let paramJSON = JSON.stringify(arrayOfDevis);
             $("#dataDevis").val(paramJSON);
           
