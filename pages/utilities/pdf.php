@@ -8,9 +8,85 @@ session_start();
 
 // Si un devis a été validé : 
 if (!empty($_POST)) {
-    $devisData = $_POST["dataDevis"];
+    $devisData = json_decode($_POST["dataDevis"]);
 
-    
+
+// fontion d'affichage du prix : 
+    function showPrice($object){
+        $barre = '';
+        $extension = "";
+        $sautDeLigne = "";
+        if (!empty($object->prixBarre)) {
+           $barre = "<s>". $object->prixBarre ." €</s>";
+        }
+        if (!empty($object->prix)) {
+            $price =  $object->prix ." €";
+        }else{ $price =  "00,00 €"; }
+        if (!empty($object->xtend)) {
+            $sautDeLigne = "<br>";
+            foreach($object->xtend as $array=>$value){
+                $extension .= "<br>" . $value[1] . " €";
+            }
+        }
+        return $barre . " " . $price . $sautDeLigne . $extension;
+    }
+// fonction d'affichage  prestation :
+    function showPrestation($object){
+        $prestation = $object->prestation;
+        $extension = "";
+        $sautDeLigne = "";
+        if (!empty($object->xtend)) {
+            $size = sizeof($object->xtend);
+            $sautDeLigne = "<br>";
+            for ($i=0; $i < $size ; $i++) { 
+                $extension .= "<br>garantie";
+            }
+        }
+        return $prestation . $sautDeLigne . $extension;
+    };
+// fonction d'affichage designation : 
+    function showdesignation($object){
+        $designation = $object->designation;
+        $extension = "";
+        $sautDeLigne = "";
+        $sautDecom = "";
+        $commentaire = "";
+        if (!empty($object->xtend)) {
+            $size = sizeof($object->xtend);
+            $sautDeLigne = "<br>";
+            for ($i=0; $i < $size ; $i++) { 
+                $extension .= "<br>extension de garantie";
+            }
+        }
+        return $designation . $sautDeLigne . $extension;
+    }
+// fonction d'affichage de garantie :
+    function showGarantie($object){
+        $garantie = $object->garantie . " mois";
+        $extension = "";
+        $sautDeLigne = "";
+        if (!empty($object->xtend)) {
+            $sautDeLigne = "<br>";
+            foreach($object->xtend as $array=>$value){
+                $extension .= "<br>" . $value[0] . " mois";
+            }
+        }
+        return $garantie . $sautDeLigne . $extension;
+    }
+// fonction d'afficchage de la quatité : 
+    function showQuantite($object){
+        $quantité = $object->quantite;
+        $extension = "";
+        $sautDeLigne = "";
+        if (!empty($object->xtend)) {
+            $size = sizeof($object->xtend);
+            $sautDeLigne = "<br>";
+            for ($i=0; $i < $size ; $i++) { 
+                $extension .= "<br>" . $quantité;
+            }
+        }
+        return $quantité . $sautDeLigne . $extension;
+    }
 
     ob_start();
     ?>
@@ -18,6 +94,11 @@ if (!empty($_POST)) {
          strong{ color:#000;}
          h3{ color:#666666;}
          h2{ color:#3b3b3b;}
+         table{ 
+          border-collapse:separate; 
+          border-spacing: 0 15px; 
+            } 
+            
         
     </style>
     <page backtop="5mm" backleft="20mm" backright="20mm">
@@ -31,13 +112,21 @@ if (!empty($_POST)) {
                 <td style="text-align: left; width:50%"><small>livraison & facturation</small><strong><br><?php echo $_SESSION['Client']->client__societe ?><br><?php echo $_SESSION['Client']->client__adr1 ?><br><?php echo $_SESSION['Client']->client__adr2 ?><br><?php echo $_SESSION['Client']->client__cp . $_SESSION['Client']->client__ville ?></strong></td>
             </tr>
         </table>
-        <table CELLSPACING=0 style="  margin-top: 30px">
-                <tr style="width: 100%; margin-top : 50px; background-color: #dedede; " >
-                   <td style="width: 100px; text-align: left;">Prestation</td><td style="width: 215px; text-align: center">Designation</td><td style="text-align: center">Type matériel</td><td  style="width: 100px; text-align: center">Garantie</td><td style="text-align: center; ">Qté</td><td style="text-align: right; width: 60px">P.u €HT</td>
+        <table CELLSPACING=0 style="width: 100%;  margin-top: 30px; ">
+                <tr style=" margin-top : 50px; background-color: #dedede; " >
+                   <td style="width: 18%; text-align: left;">Prestation</td><td style="width: 37%; text-align: left">Designation</td><td style="text-align: center">Type matériel</td><td  style="width: 12%; text-align: center">Garantie</td><td style="text-align: center; ">Qté</td><td style="text-align: center; width: 17%">P.u € HT</td>
                 </tr> 
 
                 <?php 
-                       // table devis 
+                    foreach($devisData as $value=>$obj){
+                            echo "<tr style='font-size: 85%;'><td style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>" .showPrestation($obj)."</td>
+                            <td valign='top' style='width: 37%; text-align: left; border-bottom: 1px #ccc solid'>" .showdesignation($obj). "</td>
+                            <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'>" .$obj->etat ."</td>
+                            <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'>" .showGarantie($obj) ."</td>
+                            <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .showQuantite($obj) ."</td>
+                            <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid'>" .showPrice($obj) ."</td>
+                            <br></tr>";   
+                    };
                 ?>
         </table>
         <table style=" margin-top: 15px">
