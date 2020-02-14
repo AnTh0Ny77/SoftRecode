@@ -58,7 +58,11 @@ if (!empty($_POST)) {
                 $extension .= "<br>extension de garantie";
             }
         }
-        return $designation . $sautDeLigne . $extension;
+        if (!empty($object->comClient)) {
+            $sautDecom = '<br>';
+            $commentaire = $object->comClient;
+        }
+        return $designation . $sautDeLigne . $extension . $sautDecom .$commentaire;
     }
 // fonction d'affichage de garantie :
     function showGarantie($object){
@@ -87,6 +91,16 @@ if (!empty($_POST)) {
         }
         return $quantité . $sautDeLigne . $extension;
     }
+// function d'affichage des farits de ports : 
+    function showPort($post){
+        $port = " ";
+        if (!empty($post)) {
+           $port = $post;
+        } 
+        else {$port = "00,00";} 
+        return $port . " €";
+    }
+    
 
     ob_start();
     ?>
@@ -97,11 +111,9 @@ if (!empty($_POST)) {
          table{ 
           border-collapse:separate; 
           border-spacing: 0 15px; 
-            } 
-            
-        
+            }  
     </style>
-    <page backtop="5mm" backleft="20mm" backright="20mm">
+    <page backtop="15mm" backleft="15mm" backright="15mm">
         <table style="width: 100%;">
             <tr>
                 <td style="text-align: left;  width: 50%"><img  style=" width:65mm" src="http://localhost:8080/DevisRecode/public/img/recodeDevis.png"/></td>
@@ -109,7 +121,7 @@ if (!empty($_POST)) {
             </tr>
             <tr>
                 <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis- 3190808</h2><br>07/07/07<br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : 07/07/07</small></p></td>
-                <td style="text-align: left; width:50%"><small>livraison & facturation</small><strong><br><?php echo $_SESSION['Client']->client__societe ?><br><?php echo $_SESSION['Client']->client__adr1 ?><br><?php echo $_SESSION['Client']->client__adr2 ?><br><?php echo $_SESSION['Client']->client__cp . $_SESSION['Client']->client__ville ?></strong></td>
+                <td style="text-align: left; width:50%"><small>livraison & facturation</small><strong><br><?php echo $_SESSION['Client']->client__societe ?><br><?php echo $_SESSION['Client']->client__adr1 ?><br><?php echo $_SESSION['Client']->client__adr2 ?><br><?php echo $_SESSION['Client']->client__cp ." ". $_SESSION['Client']->client__ville ?></strong></td>
             </tr>
         </table>
         <table CELLSPACING=0 style="width: 100%;  margin-top: 30px; ">
@@ -119,14 +131,23 @@ if (!empty($_POST)) {
 
                 <?php 
                     foreach($devisData as $value=>$obj){
-                            echo "<tr style='font-size: 85%;'><td style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>" .showPrestation($obj)."</td>
+                            echo "<tr style='font-size: 85%;'>
+                            <td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>" .showPrestation($obj)."</td>
                             <td valign='top' style='width: 37%; text-align: left; border-bottom: 1px #ccc solid'>" .showdesignation($obj). "</td>
                             <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'>" .$obj->etat ."</td>
                             <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'>" .showGarantie($obj) ."</td>
                             <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .showQuantite($obj) ."</td>
                             <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid'>" .showPrice($obj) ."</td>
-                            <br></tr>";   
+                            <br></tr> "; 
                     };
+                            echo "<tr style='font-size: 85%;'>
+                            <td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>port</td>
+                            <td valign='top' style='width: 37%; text-align: left; border-bottom: 1px #ccc solid'></td>
+                            <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'></td>
+                            <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'></td>
+                            <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '></td>
+                            <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid'>" .showPort($_POST['port']) ."</td>
+                            </tr>"
                 ?>
         </table>
         <table style=" margin-top: 15px">
@@ -139,13 +160,18 @@ if (!empty($_POST)) {
             </td>
             </tr>
         </table>
+
+        <div style=" width: 100%; position: absolute; top:73%">
+       
         <table style=" margin-top: 15px">
             <tr><td><strong>Conditions de paiement</strong> : Virement à la réception</td></tr>
             <?php
-            // commentaire client global 
+            if (!empty($_POST['globalComClient'])) {
+               echo '<tr><td>' . $_POST['globalComClient'] .'</td></tr>';
+            }
             ?>
         </table>
-        <table CELLSPACING=0 style=" width: 100%; margin-top: 5px">
+        <table CELLSPACING=0 style=" width: 100%; margin-top: 5px; margin-bottom: 15px;">
             <tr style="background-color: #dedede;"><td style="text-align: left;  width: 50%"><strong>BON POUR COMMANDE</strong><BR>NOM DU SIGNATAIRE: <br>VOTRE N° DE CDE :<br>DATE:</td><td style="text-align: right;  width: 50%; vertical-align:top;">CACHET & SIGNATURE</td></tr>
         </table>
 
@@ -160,7 +186,8 @@ if (!empty($_POST)) {
                 <td  style="text-align: center; font-size: 80%; width: 100%;"><br><small>New Eurocomputer-TVA FR33b 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
                 <strong>RECODE by eurocomputeur - 112 allée François Coli -06210 Mandelieu</strong></small></td>
             </tr>
-        </table>      
+        </table>  
+        </div>  
     </page>
     <?php
     $content = ob_get_contents();
