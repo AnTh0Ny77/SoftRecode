@@ -356,21 +356,6 @@ $(document).ready(function() {
              
         })
 
-
-        // //  envoi data au traitement PDF : 
-        // $('#xPortData').click(function() {
-        //     let arrayOfDevis = [];
-        //     let tempCount = devisTable.rows().count();
-        //     for (let index = 0; index <tempCount; index++) {
-        //         let rowData =  devisTable.row(index).data();
-        //             for (let y = 0; y < rowData.length; y++) { 
-        //                 if (y == 7 ) {
-        //                     arrayOfDevis.push(rowData[y]);
-        //                 } 
-        //             } 
-        //     }
-        //     $("#dataDevis").val(arrayOfDevis);   
-        // });
         // Ajax request / envoi au module de traitement PDF : 
         $('#xPortData').click(function() {
             let rowData =  devisTable.cells('',7).data();
@@ -388,6 +373,8 @@ $(document).ready(function() {
           
             
         });
+       
+            
         
 
     } );

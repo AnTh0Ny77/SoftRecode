@@ -4,12 +4,26 @@ require "./vendor/autoload.php";
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 session_start();
-
+$Database = new App\Database('devisrecode');
+$Database->DbConnect();
+$Devis = new App\Tables\Devis($Database);
 
 // Si un devis a été validé : 
 if (!empty($_POST)) {
     $devisData = json_decode($_POST["dataDevis"]);
-
+    $date = date("Y-m-d H:i:s");
+     $Devis->insertOne(
+       $date,
+       $_SESSION['user']->id_utilisateur,
+       $_SESSION['Client']->client__id,
+       $_SESSION['Client']->client__id,
+       $_POST['port'],
+       $_SESSION['Contact']->contact__id,
+       $_POST['globalComClient'],
+       $_POST['globalComInt'],
+       NULL,
+       NULL,
+       $devisData);
 
 // fontion d'affichage du prix : 
     function showPrice($object){
@@ -100,7 +114,28 @@ if (!empty($_POST)) {
         else {$port = "00,00";} 
         return $port . " €";
     }
-    
+
+// function de calcul du total avec extension: 
+     function xTendTotal($xtendArray){
+        $priceArray = [[],[],[],[]];
+        foreach($xtendArray as $array){
+                switch ($array[0]) {
+                    case '12':
+                        array_push($priceArray[0],floatval($array[1]));
+                    break;
+                    case '24':
+                        array_push($priceArray[1],floatval($array[1]));
+                    break;
+                    case '36':
+                        array_push($priceArray[2],floatval($array[1]));
+                    break;
+                    case '48':
+                        array_push($priceArray[3],floatval($array[1]));
+                    break;
+                }
+        } 
+        return $priceArray;
+    }
 
     ob_start();
     ?>
@@ -130,24 +165,30 @@ if (!empty($_POST)) {
                 </tr> 
 
                 <?php 
+                    $arrayPrice =[];
+                    $arrayGarantie = [];
                     foreach($devisData as $value=>$obj){
                             echo "<tr style='font-size: 85%;'>
                             <td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>" .showPrestation($obj)."</td>
-                            <td valign='top' style='width: 37%; text-align: left; border-bottom: 1px #ccc solid'>" .showdesignation($obj). "</td>
+                            <td valign='top' style='width: 37%; text-align: left; border-bottom: 1px #ccc solid ; padding-bottom:15px'>" .showdesignation($obj). "</td>
                             <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'>" .$obj->etat ."</td>
                             <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'>" .showGarantie($obj) ."</td>
                             <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .showQuantite($obj) ."</td>
-                            <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid'>" .showPrice($obj) ."</td>
+                            <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" .showPrice($obj) ."</td>
                             <br></tr> "; 
+                            array_push( $arrayPrice, floatval(floatval($obj->prix)*intval($obj->quantite)));
+                           
                     };
+                    
                             echo "<tr style='font-size: 85%;'>
                             <td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>port</td>
                             <td valign='top' style='width: 37%; text-align: left; border-bottom: 1px #ccc solid'></td>
                             <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'></td>
                             <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'></td>
                             <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '></td>
-                            <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid'>" .showPort($_POST['port']) ."</td>
-                            </tr>"
+                            <td valign='top' style='text-align: center; width: 20%; padding-bottom:15px; border-bottom: 1px #ccc solid'>" .showPort($_POST['port']) ."</td>
+                            </tr>";
+                            array_push( $arrayPrice, floatval($_POST['port']));
                 ?>
         </table>
         <table style=" margin-top: 15px">
@@ -155,7 +196,13 @@ if (!empty($_POST)) {
             <td style="width: 290px"></td>
             <td>
                 <table CELLSPACING=0  style=" border: 1px black solid;">
-                    <tr style="background-color: #dedede;"><td style="width: 155px; text-align: left">Type de Garantie</td><td style="text-align: center"><strong>total € HT</strong></td><td style="text-align: center">Total € TTC</td></tr>
+                    <tr style="background-color: #dedede;"><td style="width: 155px; text-align: left">Type de Garantie </td><td style="text-align: center"><strong>total € HT </strong></td><td style="text-align: center">Total € TTC</td></tr>
+                    <?php
+                        $totalPrice = number_format(array_sum($arrayPrice),2);
+                          echo  "<tr><td style='width: 155px; text-align: left'>Total hors extensions</td><td style='text-align: center'><strong>  ".$totalPrice. "  </strong></td><td style='text-align: center'>  </td></tr>";
+                          
+                       
+                    ?>
                 </table>
             </td>
             </tr>
@@ -200,7 +247,8 @@ if (!empty($_POST)) {
         $doc->output('exemple.pdf');
     } catch (Html2PdfException $e) {
       die($e); 
-    }}
-    else{ var_dump($_POST);}
+    }
+}
+    
 
    
