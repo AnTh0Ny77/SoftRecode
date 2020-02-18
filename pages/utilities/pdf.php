@@ -115,7 +115,7 @@ if (!empty($_POST)) {
         return $port . " €";
     }
 
-// function de calcul du total avec extension: 
+// function de calcul du total des extension: 
      function xTendTotal($xtendArray){
         $priceArray = [[],[],[],[]];
         foreach($xtendArray as $array){
@@ -167,6 +167,7 @@ if (!empty($_POST)) {
                 <?php 
                     $arrayPrice =[];
                     $arrayGarantie = [];
+                    $array12 = [];
                     foreach($devisData as $value=>$obj){
                             echo "<tr style='font-size: 85%;'>
                             <td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>" .showPrestation($obj)."</td>
@@ -176,8 +177,13 @@ if (!empty($_POST)) {
                             <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .showQuantite($obj) ."</td>
                             <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" .showPrice($obj) ."</td>
                             <br></tr> "; 
+                            $xtendTotal = xTendTotal($obj->xtend);
+                            if (sizeOf($xtendTotal[0])>= 2) {
+                                $price12 = array_sum($xtendTotal[0]);
+                                array_push($array12 , floatval(floatval($obj->prix)*intval($obj->quantite)));
+                                array_push($array12 , floatval(floatval($price12)*intval($obj->quantite)));
+                            }
                             array_push( $arrayPrice, floatval(floatval($obj->prix)*intval($obj->quantite)));
-                           
                     };
                     
                             echo "<tr style='font-size: 85%;'>
@@ -199,8 +205,11 @@ if (!empty($_POST)) {
                     <tr style="background-color: #dedede;"><td style="width: 155px; text-align: left">Type de Garantie </td><td style="text-align: center"><strong>total € HT </strong></td><td style="text-align: center">Total € TTC</td></tr>
                     <?php
                         $totalPrice = number_format(array_sum($arrayPrice),2);
+                        $total12Mois = number_format(array_sum($array12),2);
                           echo  "<tr><td style='width: 155px; text-align: left'>Total hors extensions</td><td style='text-align: center'><strong>  ".$totalPrice. "  </strong></td><td style='text-align: center'>  </td></tr>";
-                          
+                          if (!empty($array12)) {
+                          echo  "<tr><td style='width: 155px; text-align: left'>Total hors extensions</td><td style='text-align: center'><strong>  ".$total12Mois. "  </strong></td><td style='text-align: center'>  </td></tr>";
+                          }
                        
                     ?>
                 </table>
