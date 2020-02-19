@@ -15,16 +15,20 @@ if (!empty($_POST)) {
     
     // corrige la notice lié a l'accesion d'un non objet -> :
     $contactId = NULL;
+    $livraisonId = NULL;
     if (!empty( $_SESSION['Contact'])) {
       $contactId = $_SESSION['Contact']->contact__id;
-    }else{ $contactId = NULL;}
+    }
+    if (!empty($_SESSION['livraison'])) {
+        $livraisonId = $_SESSION['livraison']->client__id;
+    }
 
 
      $Devis->insertOne(
        $date,
        $_SESSION['user']->id_utilisateur,
        $_SESSION['Client']->client__id,
-       $_SESSION['Client']->client__id,
+       $livraisonId,
        $_POST['port'],
        $contactId,
        $_POST['globalComClient'],
@@ -291,15 +295,15 @@ if (!empty($_POST)) {
     $content = ob_get_contents();
     
     
-    // try {
-    //     $doc = new Html2Pdf('P','A4','fr');
-    //     $doc->pdf->SetDisplayMode('fullpage');
-    //     $doc->writeHTML($content);
-    //     ob_clean();
-    //     $doc->output('exemple.pdf');
-    // } catch (Html2PdfException $e) {
-    //   die($e); 
-    // }
+    try {
+        $doc = new Html2Pdf('P','A4','fr');
+        $doc->pdf->SetDisplayMode('fullpage');
+        $doc->writeHTML($content);
+        ob_clean();
+        $doc->output('exemple.pdf');
+    } catch (Html2PdfException $e) {
+      die($e); 
+    }
 }
     
 

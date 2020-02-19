@@ -8,6 +8,19 @@ $(document).ready(function() {
             "deferRender": true,
             "searching": true,   
         });
+
+
+    // init table livraison au click : 
+    let tableLivraison ;
+    $("#buttonLivraison").on('click', function(){
+        tableLivraison = $('#Livraison').DataTable({
+            "paging": true,
+            "info":   true,
+            retrieve: true,
+            "deferRender": true,
+            "searching": true, 
+        })
+    })
     
        // initialisation table devis : 
        let devisTable =  $('#Devis').DataTable({
@@ -43,12 +56,22 @@ $(document).ready(function() {
             deferRender: true,
             "searching": false, 
         })
+
+        
+       
             
         // fonction selection du client  : 
         $('#client tbody').on('click', 'tr', function () {
             let data = tableClient.row( this ).data();
             $("#choixClient").val(data[0]);
             $("#formSelectClient").submit();
+        });
+
+         // fonction selection de l'adresse de livraison  : 
+         $('#Livraison tbody').on('click', 'tr', function () {
+            let data = tableLivraison.row( this ).data();
+            $("#choixLivraison").val(data[0]);
+            $("#formSelectLivraison").submit();
         });
     
         // fonction selection du contact : 
@@ -177,11 +200,7 @@ $(document).ready(function() {
                  $('.notActive').prop("disabled", true);
              }
           }
-
-        // disable le button d'export si pas de ligne :
-        let exportButton = function(){
-            
-        }
+        
         checkClass();
         let idRow  = false;
 

@@ -503,7 +503,68 @@
             </div>
           </div>
 
-           <!-- 1ere ligne -->
+
+          <!--modal d'adresse de livraison -->
+          <div class="modal fade" id="ModalLivraison" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" >Adresse de livraison différente <i class="fal fa-truck"></i></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <table id="Livraison" class="table  display" style="width:100%"> 
+                    <thead class="thead-dark"> 
+                      <tr><th>Id</th><th>Nom</th><th>Adresse</th></tr>
+                     </thead > 
+                    <tbody>
+                      {% for client in clientList %}
+                       <tr class="trClick"><td>{{client.client__id}}</td><td>{{ client.client__societe}}</td><td>{{client.client__ville}}</td></tr>
+                       {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+                <div class="modal-footer">
+                  {% if   livraison   %}
+                  <p>Livraison actuelle : {{ livraison.client__societe ~ " " ~ livraison.client__adr1 ~ " " ~  livraison.client__ville ~ " " }} </p>
+                  {% else %}
+                  <p>Livraison actuelle : {{ client.client__societe ~ " " ~ client.client__adr1 ~ " " ~  client.client__ville ~ " " ~ client.client__cp }} </p>
+                  {% endif %}
+                  <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectLivraison">
+                        <input type="hidden" name="choixLivraison" id="choixLivraison" value="">
+                  </form>
+                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal" data-toggle="modal" data-target="#" >Créer</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Modal supression client  -->
+              <div class="modal fade" id="supprimeContact" tabindex="-1" role="dialog"  aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalCenterTitle"><i class="fal fa-user-slash"></i></h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      Etes vous sur de vouloir supprimer votre choix de contact ? 
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
+                      <button type="button" class="btn btn-danger">Supprimer</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+          
+        <!-- 1ere ligne -->
        <div class="d-flex flex-wrap flex-row justify-content-center">
           <!--carte societe -->
         <div class="col-md-4">
@@ -512,17 +573,22 @@
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Société <i class="fal fa-building"></i></h6>
               <div class="dropdown no-arrow">
+                {% if   client   %}
+                <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#ModalLivraison" id="buttonLivraison"><i class="fal fa-truck"></i></button> 
+                {% else %}
+                <button class="btn btn-success btn-sm disabled"  ><i class="fal fa-truck"></i></button> 
+                {% endif %}
               </div>
             </div>
             <!-- Card Body -->
             <div class="card-body">
-              <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
+              <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between" id="findClient">
                 {% if  not client   %}
                 <div class=" mb-0 font-weight-bold text-muted">
                   Veuillez choisir un client 
                 </div>
                 {% else %}
-                <div class=" mb-0 font-weight-bold text-muted">
+                <div class=" mb-0 font-weight-bold text-muted testIfClient" >
                   {{ client.client__societe }}<br>{{client.client__adr1  }} <br>  {{client.client_ville }}
                 </div>
                 {% endif %}
@@ -544,6 +610,11 @@
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Contact <i class="fal fa-user"></i></h6>
               <div class="dropdown no-arrow">
+                {% if  not contact %}
+                <button type="button" class="btn btn-danger btn-sm disabled"  ><i class="fal fa-trash-alt"></i></button>
+                {% else %}
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#supprimeContact"><i class="fal fa-trash-alt"></i></button>
+                {% endif %}
               </div>
             </div>
             <!-- Card Body -->
@@ -614,12 +685,12 @@
               <h6 class="m-0 font-weight-bold text-primary">Devis en cours <i class="fal fa-file-edit"></i></h6>
               <div class="dropdown no-arrow">
                 {% if  not client %}
-                <button type="button" class="btn btn-primary disabled"  ><i class="fal fa-plus-circle"></i></button>
+                <button type="button" class="btn btn-primary btn-sm disabled"  ><i class="fal fa-plus-circle"></i></button>
                 {% else %}
-                <button type="button" class="btn btn-primary" data-toggle="modal" id="addNewRow" data-target="#modalPresta"><i class="fal fa-plus-circle"></i></button>
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="addNewRow" data-target="#modalPresta"><i class="fal fa-plus-circle"></i></button>
                 {% endif %}
-                <button type="button" id="modifyLine" class="btn btn-info notActive"  data-toggle="modal" data-target="#modalModif"><i class="fal fa-edit"></i></button>
-                <button type="button" id="removeLine" class="btn btn-danger notActive"><i class="fal fa-trash-alt"></i></button>
+                <button type="button" id="modifyLine" class="btn btn-success notActive btn-sm"  data-toggle="modal" data-target="#modalModif"><i class="fal fa-edit"></i></button>
+                <button type="button" id="removeLine" class="btn btn-danger notActive btn-sm"><i class="fal fa-trash-alt"></i></button>
               </div>
             </div>
             <!-- Table -->
@@ -636,6 +707,7 @@
     </div>
       <!-- fin deuxième ligne -->
     </main>
+    
      {% endblock %}
      
     

@@ -26,6 +26,7 @@ session_start();
  $user =false ;
  $contact = false;
  $choixClient = false;
+ $livraison= false;
  $contactList = false;
  $articleTypeList = false;
  $prestaList = false;
@@ -80,6 +81,14 @@ if (isset( $_SESSION['Contact'])) {
   $contact = $_SESSION['Contact'];
 }
 
+
+
+// si un choix d'adresse de livraison à été efectué : 
+if (!empty($_POST['choixLivraison'])) {
+   $_SESSION['livraison'] = $Client->getOne($_POST['choixLivraison']); 
+   $livraison = $_SESSION['livraison'];
+}
+
 // Donnée transmise au template : 
 echo $twig->render('nouveauDevis.twig',[
    'user'=>$_SESSION['user'],
@@ -89,5 +98,6 @@ echo $twig->render('nouveauDevis.twig',[
    'keywordList'=>$keywordList,
    'contactList'=>$contactList,
    'articleList'=>$articleTypeList,
-   'prestaList'=> $prestaList
+   'prestaList'=> $prestaList,
+   'livraison' => $livraison
 ]);;

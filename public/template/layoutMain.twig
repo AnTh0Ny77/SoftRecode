@@ -18,22 +18,21 @@
   <body>
 
     <!--NavBar--> 
-    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">{{ user.prenom ~  " " ~  user.nom }}</a>
-      <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+    <nav class="navbar navbar-light  sticky-top bg-transparent flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-sm-3 col-md-2 ml-4 " href="#">  {{ user.prenom ~  " " ~  user.nom ~ " " }}<i class="fas fa-user"></i></a> 
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-          <a class="nav-link" href="unlog">Se deconnecter</a>
+          <a class="nav-link" href="unlog">Se deconnecter <i class="fad fa-sign-out"></i></a>
         </li>
       </ul>
     </nav>
 
     <!--end navbar-->
-    <div class="container-fluid" id="accordion">
+    <div class="container-fluid " id="accordion">
       <div class="row">
 
         <!--SideBar-->
-        <nav class="col-md-2 d-none d-md-block bg-dark  sidebar">
+        <nav class="col-md-2 d-none d-md-block bg-dark shadow sidebar">
           <div class="sidebar-sticky">
             <ul class="nav flex-column">
               <li class="nav-item">
@@ -88,10 +87,10 @@
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script  type="text/javascript" src="public/bootstrap/jquery/jquery.js"></script>
     <script  type="text/javascript" src="public/bootstrap/js/bootstrap.js"></script>
+    <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
     <script  type="text/javascript" src="public/datatable/datatables.responsive.min.js"></script>
     <script  type="text/javascript" src="public/datatable/datatables.rowReorder.min.js"></script>
     <script  type="text/javascript" src="public/js/client.js"></script>
-    
   </body>
 </html>

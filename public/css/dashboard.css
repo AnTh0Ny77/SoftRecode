@@ -25,8 +25,8 @@ body {
   .sidebar-sticky {
     position: -webkit-sticky;
     position: sticky;
-    top: 48px; /* Height of navbar */
-    height: calc(100vh - 48px);
+    
+    height: calc(100vh - 0px );
     padding-top: .5rem;
     overflow-x: hidden;
     overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
@@ -67,7 +67,6 @@ body {
     padding-top: .75rem;
     padding-bottom: .75rem;
     font-size: 1rem;
-    background-color: rgba(0, 0, 0, .25);
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
   }
   
@@ -75,6 +74,9 @@ body {
     padding: .75rem 1rem;
     border-width: 0;
     border-radius: 0;
+  }
+  .navbar{
+    margin-left: 16%;
   }
   
   .form-control-dark {
