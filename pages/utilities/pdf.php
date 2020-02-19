@@ -12,13 +12,21 @@ $Devis = new App\Tables\Devis($Database);
 if (!empty($_POST)) {
     $devisData = json_decode($_POST["dataDevis"]);
     $date = date("Y-m-d H:i:s");
+    
+    // corrige la notice lié a l'accesion d'un non objet -> :
+    $contactId = NULL;
+    if (!empty( $_SESSION['Contact'])) {
+      $contactId = $_SESSION['Contact']->contact__id;
+    }else{ $contactId = NULL;}
+
+
      $Devis->insertOne(
        $date,
        $_SESSION['user']->id_utilisateur,
        $_SESSION['Client']->client__id,
        $_SESSION['Client']->client__id,
        $_POST['port'],
-       $_SESSION['Contact']->contact__id,
+       $contactId,
        $_POST['globalComClient'],
        $_POST['globalComInt'],
        NULL,
@@ -136,6 +144,12 @@ if (!empty($_POST)) {
         } 
         return $priceArray;
     }
+// function 20% 
+    function ttc($price){
+        $opex = ($price*20)/100;
+        $results = $opex + $price;
+        return $results;
+    }
 
     ob_start();
     ?>
@@ -168,6 +182,9 @@ if (!empty($_POST)) {
                     $arrayPrice =[];
                     $arrayGarantie = [];
                     $array12 = [];
+                    $array24 = [];
+                    $array36 = [];
+                    $array48 = [];
                     foreach($devisData as $value=>$obj){
                             echo "<tr style='font-size: 85%;'>
                             <td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>" .showPrestation($obj)."</td>
@@ -178,11 +195,15 @@ if (!empty($_POST)) {
                             <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" .showPrice($obj) ."</td>
                             <br></tr> "; 
                             $xtendTotal = xTendTotal($obj->xtend);
-                            if (sizeOf($xtendTotal[0])>= 2) {
-                                $price12 = array_sum($xtendTotal[0]);
-                                array_push($array12 , floatval(floatval($obj->prix)*intval($obj->quantite)));
-                                array_push($array12 , floatval(floatval($price12)*intval($obj->quantite)));
-                            }
+                            $price12 = array_sum($xtendTotal[0]);
+                            $price24 = array_sum($xtendTotal[1]);
+                            $price36 = array_sum($xtendTotal[2]);
+                            $price48 = array_sum($xtendTotal[3]);
+                           
+                            array_push($array12 , floatval(floatval($price12)*intval($obj->quantite)));
+                            array_push($array24 , floatval(floatval($price24)*intval($obj->quantite)));
+                            array_push($array36 , floatval(floatval($price36)*intval($obj->quantite)));
+                            array_push($array48 , floatval(floatval($price48)*intval($obj->quantite)));
                             array_push( $arrayPrice, floatval(floatval($obj->prix)*intval($obj->quantite)));
                     };
                     
@@ -202,13 +223,34 @@ if (!empty($_POST)) {
             <td style="width: 290px"></td>
             <td>
                 <table CELLSPACING=0  style=" border: 1px black solid;">
-                    <tr style="background-color: #dedede;"><td style="width: 155px; text-align: left">Type de Garantie </td><td style="text-align: center"><strong>total € HT </strong></td><td style="text-align: center">Total € TTC</td></tr>
+                    <tr style="background-color: #dedede;"><td style="width: 210px; text-align: left">Type de Garantie </td><td style="text-align: center"><strong>total € HT </strong></td><td style="text-align: center">Total € TTC</td></tr>
                     <?php
                         $totalPrice = number_format(array_sum($arrayPrice),2);
-                        $total12Mois = number_format(array_sum($array12),2);
-                          echo  "<tr><td style='width: 155px; text-align: left'>Total hors extensions</td><td style='text-align: center'><strong>  ".$totalPrice. "  </strong></td><td style='text-align: center'>  </td></tr>";
-                          if (!empty($array12)) {
-                          echo  "<tr><td style='width: 155px; text-align: left'>Total hors extensions</td><td style='text-align: center'><strong>  ".$total12Mois. "  </strong></td><td style='text-align: center'>  </td></tr>";
+                       
+                          echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total hors extensions</td><td style='text-align: center'><strong>  ".$totalPrice. "  </strong></td><td style='text-align: center'> " .number_format(ttc($totalPrice),2)." </td></tr>";
+                          if (sizeOf($array12)>= 2) {
+                            array_push($array12 , floatval(floatval($obj->prix)*intval($obj->quantite)));
+                            array_push($array12, floatval($_POST['port']));
+                            $total12Mois = number_format(array_sum($array12),2);
+                          echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 12 mois</td><td style='text-align: center'><strong>  ".$total12Mois. "  </strong></td><td style='text-align: center'> " .number_format(ttc($total12Mois),2)." </td></tr>";
+                          }
+                          if (sizeOf($array24)>= 2) {
+                            array_push($array24 , floatval(floatval($obj->prix)*intval($obj->quantite)));
+                            array_push($array24, floatval($_POST['port']));
+                            $total24Mois = number_format(array_sum($array24),2);
+                          echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 24 mois</td><td style='text-align: center'><strong>  ".$total24Mois. "  </strong></td><td style='text-align: center'> " .number_format(ttc($total24Mois),2)." </td></tr>";
+                          }
+                          if (sizeOf($array36)>= 2) {
+                            array_push($array36 , floatval(floatval($obj->prix)*intval($obj->quantite)));
+                            array_push($array36, floatval($_POST['port']));
+                            $total36Mois = number_format(array_sum($array36),2);
+                          echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 36 mois</td><td style='text-align: center'><strong>  ".$total36Mois. "  </strong></td><td style='text-align: center'> " .number_format(ttc($total36Mois),2)." </td></tr>";
+                          }
+                          if (sizeOf($array48)>= 2) {
+                            array_push($array48 , floatval(floatval($obj->prix)*intval($obj->quantite)));
+                            array_push($array48, floatval($_POST['port']));
+                            $total48Mois = number_format(array_sum($array48),2);
+                          echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 48 mois</td><td style='text-align: center'><strong>  ".$total48Mois. "  </strong></td><td style='text-align: center'> " .number_format(ttc($total48Mois),2)." </td></tr>";
                           }
                        
                     ?>
@@ -248,15 +290,16 @@ if (!empty($_POST)) {
     <?php
     $content = ob_get_contents();
     
-    try {
-        $doc = new Html2Pdf('P','A4','fr');
-        $doc->pdf->SetDisplayMode('fullpage');
-        $doc->writeHTML($content);
-        ob_clean();
-        $doc->output('exemple.pdf');
-    } catch (Html2PdfException $e) {
-      die($e); 
-    }
+    
+    // try {
+    //     $doc = new Html2Pdf('P','A4','fr');
+    //     $doc->pdf->SetDisplayMode('fullpage');
+    //     $doc->writeHTML($content);
+    //     ob_clean();
+    //     $doc->output('exemple.pdf');
+    // } catch (Html2PdfException $e) {
+    //   die($e); 
+    // }
 }
     
 
