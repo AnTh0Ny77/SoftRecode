@@ -23,8 +23,7 @@ if (!empty($_POST)) {
         $livraisonId = $_SESSION['livraison']->client__id;
     }
 
-
-     $Devis->insertOne(
+   $devis = $Devis->insertOne(
        $date,
        $_SESSION['user']->id_utilisateur,
        $_SESSION['Client']->client__id,
@@ -300,10 +299,17 @@ if (!empty($_POST)) {
         $doc->pdf->SetDisplayMode('fullpage');
         $doc->writeHTML($content);
         ob_clean();
-        $doc->output('exemple.pdf');
+        $doc->output('devisN:' . $devis.'.pdf');
+        unset( $_SESSION['Contact']);
+        unset( $_SESSION['Client']);
+        unset( $_SESSION['livraison']);
+       
     } catch (Html2PdfException $e) {
       die($e); 
     }
+
+   
+
 }
     
 

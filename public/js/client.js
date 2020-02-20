@@ -375,7 +375,7 @@ $(document).ready(function() {
              
         })
 
-        // Ajax request / envoi au module de traitement PDF : 
+        // envoi au module de traitement PDF : 
         $('#xPortData').click(function() {
             let rowData =  devisTable.cells('',7).data();
             
@@ -393,7 +393,12 @@ $(document).ready(function() {
             
         });
        
-            
+        //reload page : 
+        $("#xPortData").click(function(){
+            $("#ValidDevis").val(202);
+            $("#DevisValidForm").delay(2000).submit();
+        });
         
+
 
     } );

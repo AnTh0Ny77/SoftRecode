@@ -470,7 +470,7 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-               <form method="POST" action="pdf">
+               <form method="POST" action="pdf" target="_blank">
                 <div class="modal-body ">
                   <input id="dataDevis" name="dataDevis" type="hidden" value="">
                   <div class=" d-flex col-10 mx-auto justify-content-around mb-3">
@@ -496,7 +496,10 @@
                   </div>
                 </div>   
                 <div class="modal-footer">
-                  <button type='submit'  class="btn btn-primary" id="xPortData">Exporter</button>
+                  <button  type='submit'  class="btn btn-primary" id="xPortData">Exporter</button>
+                </form>
+                <form method="POST" action="nouveauDevis" id="DevisValidForm">
+                  <input type="hidden" name="ValidDevis" id="ValidDevis" value="">
                 </form>
                 </div>
               </div>
@@ -664,7 +667,12 @@
             <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
               <div class=" mb-0 font-weight-bold text-muted"></div>
               <div>
+                {% if  not client %}
+                <button type="button" class="btn btn-primary btn-sm mb-3 disabled" >Exporter</button></div>
+                {% else %}
                 <button type="button" class="btn btn-primary btn-sm mb-3" data-toggle="modal" data-target="#modalPdf">Exporter</button></div>
+                {% endif %}
+                
             </div>
           </div>
         </div>

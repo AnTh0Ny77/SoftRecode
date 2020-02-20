@@ -89,6 +89,12 @@ if (!empty($_POST['choixLivraison'])) {
    $livraison = $_SESSION['livraison'];
 }
 
+
+// le formulaire de creation de pdf a été soumis : redirection vers mes devis -> 
+if (!empty($_POST['ValidDevis'])) {
+  header("Location: mesDevis");
+}
+
 // Donnée transmise au template : 
 echo $twig->render('nouveauDevis.twig',[
    'user'=>$_SESSION['user'],
