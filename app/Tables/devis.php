@@ -70,6 +70,16 @@ public function insertOne($date , $user, $client , $livraison, $port, $contact, 
    return $idDevis;
  
 }
+public function getUserDevis($id){
+  $request =$this->Db->Pdo->query("SELECT devis__id,  devis__date_crea , devis__user__id , devis__client__id, devis__etat   FROM " .$this->Table. " WHERE  devis__user__id = " . $id ." ORDER BY  devis__date_crea ASC");
+  $data = $request->fetchAll(PDO::FETCH_OBJ);
+  return $data;
+}
+public function getAll(){
+  $request =$this->Db->Pdo->query("SELECT devis__id,  devis__date_crea , devis__user__id , devis__client__id, devis__etat   FROM " .$this->Table. " ");
+  $data = $request->fetch(PDO::FETCH_OBJ);
+  return $data;
+}
 
  
 }

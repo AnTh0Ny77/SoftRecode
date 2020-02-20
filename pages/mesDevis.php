@@ -9,9 +9,13 @@ session_start();
  }
 
  $user= $_SESSION['user'];
- 
+ $Database = new App\Database('devisrecode');
+ $Database->DbConnect();
+ $Devis = new App\Tables\Devis($Database);
+ $devisList = $Devis->getUserDevis($user->id_utilisateur);
 
 // Donnée transmise au template : 
 echo $twig->render('mesDevis.twig',['user'=>$user,
-'Get'=> $_GET,
+'user'=> $user,
+'devisList'=> $devisList
 ]);
