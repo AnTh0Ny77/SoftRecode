@@ -26,10 +26,6 @@ namespace App\Methods;
                 return false ;
                 header('location : nouveauDevis');
             }
-            elseif (empty( $forms['civiliteContact']) && empty( $forms['nomContact']) && empty( $forms['telContact'])  
-            && empty( $forms['faxContact'])  && empty( $forms['maiContact']) )  {
-                return 206;
-            }
             else{
             return array(
             'fonctionContact'=> $forms['fonctionContact'],

@@ -34,42 +34,64 @@
         <!--SideBar-->
         <nav class="col-md-2 d-none d-md-block bg-dark shadow sidebar">
           <div class="sidebar-sticky">
-            <ul class="nav flex-column">
-              <li class="nav-item">
+            <table class="table table-hover table-dark">
+              <tr>
+                <td>
                 <a class="nav-link text-white" href="home">
                   <span data-feather="file"></span>
-                  Tableau de bord
-                  <i class="fal fa-tachometer-alt-fast"></i>
+                  Commandes
+                  <i class="fal fa-shopping-cart"></i>
                 </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white" href="nouveauDevis">
-                  Nouveau devis
+              </td>
+              </tr>
+              <tr>
+                <td>
+                <a class="nav-link text-white" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                  <span data-feather="file"></span>
+                  Devis
                   <i class="fal fa-file-edit"></i>
                 </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white" href="mesDevis">
-                  <span data-feather="bar-chart-2"></span>
-                  Mes devis
-                  <i class="fal fa-file-search"></i>
+                <div class="collapse" id="collapseExample">
+                  <ul class="list-group">
+                    <li class="list-group-item  bg-transparent border-0" >
+                      <a class="nav-link text-white" href="mesDevis">
+                        <span data-feather="file"></span>
+                        Mes devis
+                        <i class="fal fa-file-search"></i>
+                      </a>
+                    </li>
+                  </ul>
+                  <ul class="list-group">
+                    <li class="list-group-item  bg-transparent border-0" >
+                      <a class="nav-link text-white" href="nouveauDevis">
+                        <span data-feather="file"></span>
+                        Nouveau devis
+                        <i class="fal fa-file-edit"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </td>  
+              </tr>
+              <tr>
+                <td class="nav-item">
+                <a class="nav-link text-white" href="#">
+                  <span data-feather="file"></span>
+                 Saisie transport
+                 <i class="fal fa-truck"></i>
                 </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white" href="documentation">
-                  <span data-feather="bar-chart-2"></span>
-                  Documentation
-                  <i class="fal fa-book-alt"></i>
+              </td>
+              </tr>
+              <tr>
+                <td class="nav-item">
+                <a class="nav-link text-white" href="#">
+                  <span data-feather="file"></span>
+                Factures
+                <i class="fal fa-euro-sign"></i>
                 </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link text-white" href="bug">
-                  <span data-feather="bar-chart-2"></span>
-                   Reporter un Bug
-                 <i class="fal fa-bug"></i>
-                </a>
-              </li>
-            </ul>
+              </td>
+              </tr>
+            </table>
           </div>
         </nav>
 
