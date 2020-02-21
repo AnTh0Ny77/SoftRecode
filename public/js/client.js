@@ -21,6 +21,39 @@ $(document).ready(function() {
             "searching": true, 
         })
     })
+
+    // initi table mesDevis : 
+    let modifDevis = $('#MyDevis').DataTable({
+        "paging": true,
+         "info":   false,
+         retrieve: true,
+        "deferRender": true,
+        "searching": false,  
+       
+    })
+    // disable buttons multiple si pas de ligne select dans la table mes devis:  
+    let checkClassMulti = function(){
+        let RowModif =  $('#MyDevis').find('tr');
+         if (RowModif.hasClass('selected')) {
+             $('.multiButton').removeAttr('disabled');
+         } else {
+             $('.multiButton').prop("disabled", true);
+         }
+      }
+      checkClassMulti();
+    // attribut classe selected: a la table mes devis 
+    modifDevis.on('click','tr',function() {
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+        }
+       else  if(modifDevis.rows().count() >= 1){
+            modifDevis.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+        checkClassMulti();
+     });
+
+    
     
        // initialisation table devis : 
        let devisTable =  $('#Devis').DataTable({
@@ -57,8 +90,6 @@ $(document).ready(function() {
             "searching": false, 
         })
 
-        
-       
             
         // fonction selection du client  : 
         $('#client tbody').on('click', 'tr', function () {
@@ -125,72 +156,29 @@ $(document).ready(function() {
                 
             }
         })
-           
-        //ajout d'une ligne de devis :
+      
+
+        //ajout d'une ligne de devis : function location : devisFunction.js (addOne): 
         counter = 1 ;
         $("#addRow").on('click', function(){
-            let row = []; 
-            row.push(counter);
-            let prestation = $("#prestationChoix").val();
-            row.push(prestation);
-            let designation = $("#referenceS").val();
-            let comClient = $("#comClient").val();
-            let comInterne = $("#comInterne").val();
-            if ( comClient.length > 0 && comInterne.length > 0 ) {
-                row.push(designation + "<br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
-            } 
-            else if(comClient.length > 0 && comInterne.length < 1 ){
-                row.push(designation + "<br>  <hr>" + '<b>Commentaire : </b>' + comClient);
-            }
-            else if(comInterne.length > 0 && comClient.length < 1 ){
-                row.push(designation + "<br> <hr>" + '<b>Commentaire interne</b> :' + comInterne);
-            }
-            else {
-                row.push(designation);
-            }
-            let etat = $("#etatRow").val();
-            row.push(etat);
-            let garantie = $("#garantieRow").val() + " mois ";
-            if (xtendArray.length > 0) {
-                let element;
-                let xtendString = "";
-                for (let index = 0; index < xtendArray.length; index++) {
-                    element  =  xtendArray[index][0] + ' mois ' + + xtendArray[index][1] + ' €<br>';
-                    xtendString += element;
-                }
-                row.push( garantie + " <hr> <b>Extensions</b> : <br>" + xtendString);    
-            } else {
-                row.push( garantie);
-            }
-            let quantite =  $("#quantiteRow").val()  ;
-            row.push( quantite);
-            let prix = $("#prixRow").val();
-            let prixBarre = $("#barrePrice").val()
-            let prixMultiple ;
-            if (prixBarre.length > 0) {
-                prixMultiple =  ' <s>' + prixBarre  + "€</s> " + prix + " €" ;
-            }else {prixMultiple =  $("#prixRow").val() + " €" ;};
-            row.push(prixMultiple);
-
-            let rowObject = new Object();
-            rowObject.id = counter;
-            rowObject.prestation = prestation;
-            rowObject.designation = designation;
-            rowObject.comClient = comClient;
-            rowObject.comInterne = comInterne;
-            rowObject.etat = etat;
-            rowObject.garantie = $("#garantieRow").val();
-            rowObject.xtend = xtendArray;
-            rowObject.quantite = quantite;
-            rowObject.prix = prix;
-            rowObject.prixBarre = prixBarre;
-            row.push(rowObject);
-            devisTable.row.add(row).draw( false );
-            row = [];
-            $('#referenceS').val(designation);
-            counter ++; 
-        })
-
+            addOne(
+                devisTable,
+                counter,
+                $("#prestationChoix").val(),
+                $("#referenceS").val(),
+                $("#comClient").val(),
+                $("#comInterne").val(),
+                $("#etatRow").val(),
+                $("#garantieRow").val(),
+                xtendArray,
+                $("#quantiteRow").val(),
+                $("#prixRow").val(),
+                $("#barrePrice").val()
+                );
+        });
+        
+           
+        
         // disable buttons si pas de ligne:  
         let checkClass = function(){
             let RowDevis =  $('#DevisBody').find('tr');
@@ -393,11 +381,7 @@ $(document).ready(function() {
             
         });
        
-        //reload page : 
-        $("#xPortData").click(function(){
-            $("#ValidDevis").val(202);
-            $("#DevisValidForm").delay(2000).submit();
-        });
+        
         
 
 

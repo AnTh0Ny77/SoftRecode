@@ -12,7 +12,7 @@ session_start();
  $Database = new App\Database('devisrecode');
  $Database->DbConnect();
  $Devis = new App\Tables\Devis($Database);
- $devisList = $Devis->getUserDevis($user->id_utilisateur);
+ $devisList = $Devis->getAll();
 
 // Donnée transmise au template : 
 echo $twig->render('mesDevis.twig',['user'=>$user,

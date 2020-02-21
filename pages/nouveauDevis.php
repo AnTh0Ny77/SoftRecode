@@ -30,6 +30,9 @@ session_start();
  $contactList = false;
  $articleTypeList = false;
  $prestaList = false;
+
+
+ 
  
 // Si un nouveau client à été crée  :  traitement par la classe Form 
 if ( isset($_POST['societe']) && !empty($_POST['societe'])) {

@@ -8,6 +8,11 @@ $Database = new App\Database('devisrecode');
 $Database->DbConnect();
 $Devis = new App\Tables\Devis($Database);
 
+if (empty($_SESSION['user'])) {
+    header('location: login');
+ }
+
+
 // Si un devis a été validé : 
 if (!empty($_POST)) {
     $devisData = json_decode($_POST["dataDevis"]);

@@ -22,13 +22,21 @@
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary"><i class="far fa-ellipsis-v"></i></h6>
             <div class="dropdown no-arrow">
+              <form class="form-inline">
+                <input class="form-control mr-2" type="search" placeholder="Recherche" aria-label="Search">
+                <button class="btn btn-outline-primary my-2 " type="submit"><i class="fal fa-bullseye-arrow"></i></button>
+              </form>
             </div>
           </div>
           <!-- Card Body -->
           <div class="card-body">
             <div class="chart-area">
-              <table id="MyDevis" class=" display table " style="width:100%"> <thead class="thead-dark"> <tr><th></th> <th>Id</th> <th>Date</th> <th>Editeur</th></tr></thead> 
+              <table id="MyDevis" class=" display table " style="width:100%"> <thead class="thead-dark"> <tr> <th>Numéro</th> <th>Date</th><th>Editeur</th><th>Client</th></tr>
+              </thead> 
                <tbody id="DevisBody">
+                {% for devis in devisList %}
+                <tr class="trClick"><td>{{devis.devis__id}}</td><td>{{ devis.devis__date_crea}}</td><td>{{ devis.log_nec}}</td><td>{{ devis.client__societe }} <br>{{ devis.client__ville ~ " " ~ devis.client__cp}}</td></tr>
+                {% endfor %}
                </tbody>
              </table>
            </div>
@@ -50,10 +58,12 @@
             <div class="card-body">
               <div class="d-flex flex-column  justify-content-around px-5">
                 
-                <button type="button" class="btn btn-outline-success btn-lg btn-block ">Commander</button>
-                <button type="button" class="btn btn-outline-primary btn-lg btn-block">Modifier</button>
-                <button type="button" class="btn btn-outline-warning btn-lg btn-block">Dupliquer</button>
-                <button type="button" class="btn btn-outline-danger btn-lg btn-block">Refuser</button>
+                <button type="button" class="btn btn-outline-success btn-lg btn-block multiButton" disabled>Valider</button>
+                <button type="button" class="btn btn-outline-danger btn-lg btn-block multiButton" disabled>Refuser</button>
+                <button type="button" class="btn btn-outline-secondary btn-lg btn-block multiButton" disabled>Voir</button>
+                <button type="button" class="btn btn-outline-primary btn-lg btn-block multiButton" disabled>Modifier</button>
+                <button type="button" class="btn btn-outline-warning btn-lg btn-block multiButton" disabled>Dupliquer</button>
+               
              
             </div>
           </div>
