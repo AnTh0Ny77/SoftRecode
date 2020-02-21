@@ -173,7 +173,7 @@ if (!empty($_POST)) {
     <page backtop="15mm" backleft="15mm" backright="15mm">
         <table style="width: 100%;">
             <tr>
-                <td style="text-align: left;  width: 50%"><img  style=" width:65mm" src="http://localhost:8080/DevisRecode/public/img/recodeDevis.png"/></td>
+                <td style="text-align: left;  width: 50%"><img  style=" width:65mm" src="public/img/recodeDevis.png"/></td>
                 <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br><a>www.recode.fr</a><br><br><br>REF CLIENT :<?php echo $_SESSION['Client']->client__id ?></td>
             </tr>
             <tr>
