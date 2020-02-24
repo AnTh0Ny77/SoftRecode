@@ -18,6 +18,7 @@ session_start();
  $Keywords = new App\Tables\Keyword($Database);
  $Contact = new App\Tables\Contact($Database);
  $Article = new App\Tables\Article($Database);
+ $Devis = new App\Tables\Devis($Database);
  $Database->DbConnect();
  $clientList = $Client->getAll();
  $keywordList = $Keywords->getI_con();
@@ -30,6 +31,21 @@ session_start();
  $contactList = false;
  $articleTypeList = false;
  $prestaList = false;
+ $devisModif = false ;
+
+// si un duplicata de devis a été demandé depuis la page : modifier devis :  
+  if (!empty($_POST['DupliquerDevis'])) {
+  $devisModif = [];
+  $temp =   $Devis->GetById($_POST['DupliquerDevis']);
+  $arrayOfDevisLigne = $Devis->devisLigne($_POST['DupliquerDevis']);
+    foreach ($arrayOfDevisLigne as $ligne) {
+      $xtendArray = $Devis->xtenGarantie($ligne->devl__id);
+      $ligne->ordre = $xtendArray;
+      array_push($devisModif,$ligne);
+    }
+  }
+$test = json_encode($devisModif);
+
 
 
  
@@ -105,5 +121,6 @@ echo $twig->render('nouveauDevis.twig',[
    'contactList'=>$contactList,
    'articleList'=>$articleTypeList,
    'prestaList'=> $prestaList,
-   'livraison' => $livraison
+   'livraison' => $livraison,
+   'devisModif' => $test
 ]);;

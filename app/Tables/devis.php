@@ -83,5 +83,27 @@ public function getAll(){
   return $data;
 }
 
+public function GetById($id){
+  $request =$this->Db->Pdo->query("SELECT devis__user__id , devis__client__id, devis__port, devis__note_client, devis__note_interne, devis__id_client_livraison
+    FROM devis  WHERE devis__id = ". $id ."");
+  $data = $request->fetchAll(PDO::FETCH_OBJ);
+  return $data;
+}
+
+public function devisLigne($id){
+  $request =$this->Db->Pdo->query("SELECT devl__id , devl__type, devl__modele, devl__designation , devl__etat, devl__mois_garantie, devl_quantite, devl__prix_barre, devl_puht,
+  devl__note_client, devl__note_interne, devl__ordre
+  FROM devisligne  WHERE devl__devis__id = ". $id ."");
+  $data = $request->fetchAll(PDO::FETCH_OBJ);
+  return $data;
+}
+
+public function xtenGarantie($id){
+  $request =$this->Db->Pdo->query("SELECT devg__type, devg__prix
+  FROM garantie  WHERE devg__id__devl = ". $id ."");
+  $data = $request->fetchAll(PDO::FETCH_ASSOC);
+  return $data;
+}
+
  
 }

@@ -2,7 +2,7 @@
  
      {% block main %}
 
-     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+     <main  role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
       <div class="d-flex justify-content-between flex-wrap  align-items-center pb-2 mb-3 border-bottom">
         <h1 class="h2">Nouveau devis  <i class="fal fa-file-edit"></i></h1>
        
@@ -12,9 +12,12 @@
         </div>
       </div>
 
+       <!-- input contient données de l'ancien devis -->
+      <input type="hidden" name="AncienDevis" id="AncienDevis" value="{{devisModif}}">
+       <!-- input contient données de l'ancien devis -->
       
         <!-- Modal Choisir societe  -->
-          <div class="modal fade" id="modalClient" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div  class="modal fade" id="modalClient" tabindex="-1" role="dialog"  aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
               <div class="modal-content">
                 <div class="modal-header">

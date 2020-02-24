@@ -15,11 +15,12 @@
     <link rel="stylesheet" href="public/css/dashboard.css">
     <title>Devis</title>
   </head>
-  <body>
+  <body >
 
     <!--NavBar--> 
     <nav class="navbar navbar-light  sticky-top bg-transparent flex-md-nowrap p-0 shadow">
       <a class="navbar-brand col-sm-3 col-md-2 ml-4 " href="#">  {{ user.prenom ~  " " ~  user.nom ~ " " }}<i class="fas fa-user"></i></a> 
+      
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
           <a class="nav-link" href="unlog">Se deconnecter <i class="fad fa-sign-out"></i></a>
@@ -92,7 +93,10 @@
               </td>
               </tr>
             </table>
+           
+            
           </div>
+         
         </nav>
 
         <!--end side bar-->
@@ -106,12 +110,11 @@
     <!-- Optional JavaScript -->
     
 
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script  type="text/javascript" src="public/bootstrap/jquery/jquery.js"></script>
-    <script  type="text/javascript" src="public/bootstrap/js/bootstrap.js"></script>
-    <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery first, then Bootstrap JS -->
+    {# <script  type="text/javascript" src="public/bootstrap/jquery/jquery.js"></script> #}
     <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
-    <script  type="text/javascript" src="public/datatable/datatables.responsive.min.js"></script>
+    <script  type="text/javascript" src="public/bootstrap/js/bootstrap.js"></script>
+    <script  type="text/javascript" src="public/datatable/datatables.responsive.min.js"></script> 
     <script  type="text/javascript" src="public/datatable/datatables.rowReorder.min.js"></script>
     <script  type="text/javascript" src="public/js/devisFunction.js"></script>
     <script  type="text/javascript" src="public/js/client.js"></script>

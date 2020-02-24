@@ -1,5 +1,7 @@
-$(document).ready(function() {
 
+$(document).ready(function() {
+    
+     
     //    initialisation table client : 
         let tableClient = $('#client').DataTable({
             "paging": true,
@@ -50,6 +52,12 @@ $(document).ready(function() {
             modifDevis.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         }
+        let dataRow = modifDevis.row(this).data();
+        $("#ValiderDevis").val(dataRow[0]);
+        $("#RefuserDevis").val(dataRow[0]);
+        $("#VoirDevis").val(dataRow[0]);
+        $("#ModifierDevis").val(dataRow[0]);
+        $("#DupliquerDevis").val(dataRow[0]);
         checkClassMulti();
      });
 
@@ -157,9 +165,33 @@ $(document).ready(function() {
             }
         })
       
+        // Si le programme exécute une modification de Devis existant on check l'existance de l'objet au format jSon correspondant : 
+        counter = 1 ;
+        jsonDataAncienDevis = $('#AncienDevis').val();
+        if (jsonDataAncienDevis ) {
+            jsonDataAncienDevis =  JSON.parse($('#AncienDevis').val())
+            console.log(jsonDataAncienDevis);
+            for (let numberOfLines = 0; numberOfLines < jsonDataAncienDevis.length; numberOfLines++) {
+               addOne(
+                   devisTable,
+                   counter,
+                   jsonDataAncienDevis[numberOfLines].devl__type,
+                   jsonDataAncienDevis[numberOfLines].devl__modele,
+                   jsonDataAncienDevis[numberOfLines].devl__note_client,
+                   jsonDataAncienDevis[numberOfLines].devl__note_interne,
+                   jsonDataAncienDevis[numberOfLines].devl__etat,
+                   jsonDataAncienDevis[numberOfLines].devl__mois_garantie,
+                   jsonDataAncienDevis[numberOfLines].devl__ordre,
+                   jsonDataAncienDevis[numberOfLines].devl_quantite,
+                   jsonDataAncienDevis[numberOfLines].devl_puht,
+                   jsonDataAncienDevis[numberOfLines].devl__prix_barre
+               ) 
+            };
+          }
+    
 
         //ajout d'une ligne de devis : function location : devisFunction.js (addOne): 
-        counter = 1 ;
+        
         $("#addRow").on('click', function(){
             addOne(
                 devisTable,

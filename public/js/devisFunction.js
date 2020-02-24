@@ -1,5 +1,4 @@
 
-
 // fonction ajout de ligne de Devis : 
 /// 1er param -> table 
 /// 2nd param -> count pour ID 
@@ -56,3 +55,7 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
     $('#referenceS').val(designation);
     count ++; 
 }
+
+
+
+

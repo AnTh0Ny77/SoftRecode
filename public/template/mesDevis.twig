@@ -57,13 +57,26 @@
             <!-- Card Body -->
             <div class="card-body">
               <div class="d-flex flex-column  justify-content-around px-5">
-                
-                <button type="button" class="btn btn-outline-success btn-lg btn-block multiButton" disabled>Valider</button>
-                <button type="button" class="btn btn-outline-danger btn-lg btn-block multiButton" disabled>Refuser</button>
-                <button type="button" class="btn btn-outline-secondary btn-lg btn-block multiButton" disabled>Voir</button>
-                <button type="button" class="btn btn-outline-primary btn-lg btn-block multiButton" disabled>Modifier</button>
-                <button type="button" class="btn btn-outline-warning btn-lg btn-block multiButton" disabled>Dupliquer</button>
-               
+                <form class="py-1" action="nouveauDevis" method="POST">
+                  <input type="hidden" name="ValiderDevis" id="ValiderDevis" value="">
+                <button type="submit" class="btn btn-outline-success btn-lg btn-block multiButton" disabled>Valider</button>
+                </form>
+                <form  class="py-1" action="nouveauDevis" method="POST">
+                  <input type="hidden" name="RefuserDevis" id="RefuserDevis" value="">
+                <button type="submit" class="btn btn-outline-danger btn-lg btn-block multiButton" disabled>Refuser</button>
+                </form>
+                <form class="py-1" action="nouveauDevis" method="POST">
+                  <input type="hidden" name="VoirDevis" id="VoirDevis" value="">
+                <button type="submit" class="btn btn-outline-secondary btn-lg btn-block multiButton" disabled>Voir</button>
+                 </form>
+                <form class="py-1" action="nouveauDevis" method="POST">
+                  <input type="hidden" name="ModifierDevis" id="ModifierDevis" value="">
+                <button type="submit" class="btn btn-outline-primary btn-lg btn-block multiButton" disabled>Modifier</button>
+                </form>
+                <form class="py-1" action="nouveauDevis" method="POST">
+                  <input type="hidden" name="DupliquerDevis" id="DupliquerDevis" value="">
+                <button type="submit" class="btn btn-outline-warning btn-lg btn-block multiButton" disabled>Dupliquer</button>
+                </form>
              
             </div>
           </div>
