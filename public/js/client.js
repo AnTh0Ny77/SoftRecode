@@ -116,7 +116,6 @@ $(document).ready(function() {
         //traitement du formulaire : 
         $('#choixDesignation option').on('click', function(){
             $('#referenceS').val($(this).text());
-            console.log($(this).text());
         });
         
         // extension de garantie : 
@@ -155,6 +154,7 @@ $(document).ready(function() {
                 let  i =  $('<i></i>').addClass('fal fa-trash-alt btn btn-link deleteParent').val(index).appendTo(li);
                 
             }
+           
         })
       
 
@@ -175,6 +175,7 @@ $(document).ready(function() {
                 $("#prixRow").val(),
                 $("#barrePrice").val()
                 );
+            xtendArray = [];
         });
         
            

@@ -55,4 +55,5 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
     row = [];
     $('#referenceS').val(designation);
     count ++; 
+    
 }

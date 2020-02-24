@@ -207,11 +207,19 @@ if (!empty($_POST)) {
                             $price24 = array_sum($xtendTotal[1]);
                             $price36 = array_sum($xtendTotal[2]);
                             $price48 = array_sum($xtendTotal[3]);
-                           
-                            array_push($array12 , floatval(floatval($price12)*intval($obj->quantite)));
-                            array_push($array24 , floatval(floatval($price24)*intval($obj->quantite)));
-                            array_push($array36 , floatval(floatval($price36)*intval($obj->quantite)));
-                            array_push($array48 , floatval(floatval($price48)*intval($obj->quantite)));
+
+                            if ( $price12 != 0) {
+                                array_push($array12 , floatval(floatval($price12)*intval($obj->quantite)));
+                            }
+                            if ($price24 != 0) {
+                                array_push($array24 , floatval(floatval($price24)*intval($obj->quantite)));
+                            }
+                            if ($price36 != 0) {
+                                array_push($array36 , floatval(floatval($price36)*intval($obj->quantite)));
+                            }
+                            if ($price48 != 0) {
+                                array_push($array48 , floatval(floatval($price48)*intval($obj->quantite)));
+                            }
                             array_push( $arrayPrice, floatval(floatval($obj->prix)*intval($obj->quantite)));
                     };
                     
@@ -236,37 +244,37 @@ if (!empty($_POST)) {
                         $totalPrice = number_format(array_sum($arrayPrice),2);
                        
                           echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total hors extensions</td><td style='text-align: center'><strong>  ".$totalPrice. "  </strong></td><td style='text-align: center'> " .number_format(ttc($totalPrice),2)." </td></tr>";
-                          if (sizeOf($array12)>= 2) {
-                            array_push($array12 , floatval(floatval($obj->prix)*intval($obj->quantite)));
+                          if (sizeOf($array12) == sizeof($devisData)) {
+                            array_push($array12 , floatval(array_sum($arrayPrice)));
                             array_push($array12, floatval($_POST['port']));
                             $total12Mois = number_format(array_sum($array12),2);
                           echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 12 mois</td><td style='text-align: center'><strong>  ".$total12Mois. "  </strong></td><td style='text-align: center'> " .number_format(ttc($total12Mois),2)." </td></tr>";
                           }
-                          if (sizeOf($array24)>= 2) {
-                            array_push($array24 , floatval(floatval($obj->prix)*intval($obj->quantite)));
+                          if (sizeOf($array24) == sizeof($devisData)) {
+                            array_push($array24 , floatval(array_sum($arrayPrice)));
                             array_push($array24, floatval($_POST['port']));
                             $total24Mois = number_format(array_sum($array24),2);
                           echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 24 mois</td><td style='text-align: center'><strong>  ".$total24Mois. "  </strong></td><td style='text-align: center'> " .number_format(ttc($total24Mois),2)." </td></tr>";
                           }
-                          if (sizeOf($array36)>= 2) {
-                            array_push($array36 , floatval(floatval($obj->prix)*intval($obj->quantite)));
+                          if (sizeOf($array36) == sizeof($devisData)) {
+                            array_push($array36 , floatval(array_sum($arrayPrice)));
                             array_push($array36, floatval($_POST['port']));
                             $total36Mois = number_format(array_sum($array36),2);
                           echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 36 mois</td><td style='text-align: center'><strong>  ".$total36Mois. "  </strong></td><td style='text-align: center'> " .number_format(ttc($total36Mois),2)." </td></tr>";
                           }
-                          if (sizeOf($array48)>= 2) {
-                            array_push($array48 , floatval(floatval($obj->prix)*intval($obj->quantite)));
+                          if (sizeOf($array48) == sizeof($devisData)) {
+                            array_push($array48 , floatval(array_sum($arrayPrice)));
                             array_push($array48, floatval($_POST['port']));
                             $total48Mois = number_format(array_sum($array48),2);
                           echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 48 mois</td><td style='text-align: center'><strong>  ".$total48Mois. "  </strong></td><td style='text-align: center'> " .number_format(ttc($total48Mois),2)." </td></tr>";
                           }
                        
                     ?>
+                  
                 </table>
             </td>
             </tr>
         </table>
-
         <div style=" width: 100%; position: absolute; top:73%">
        
         <table style=" margin-top: 15px">
