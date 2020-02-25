@@ -3,10 +3,12 @@ require "./vendor/autoload.php";
 
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
+use App\Methods\Pdfunctions;
 session_start();
 $Database = new App\Database('devisrecode');
 $Database->DbConnect();
 $Devis = new App\Tables\Devis($Database);
+
 
 if (empty($_SESSION['user'])) {
     header('location: login');
@@ -60,123 +62,6 @@ if (!empty($_POST)) {
     }
     unset($_SESSION['ModifierDevis']);
 
-// fontion d'affichage du prix : 
-    function showPrice($object){
-        $barre = '';
-        $extension = "";
-        $sautDeLigne = "";
-        if (!empty($object->prixBarre)) {
-           $barre = "<s>". $object->prixBarre ." €</s>";
-        }
-        if (!empty($object->prix)) {
-            $price =  $object->prix ." €";
-        }else{ $price =  "00,00 €"; }
-        if (!empty($object->xtend)) {
-            $sautDeLigne = "<br>";
-            foreach($object->xtend as $array=>$value){
-                $extension .= "<br>" . $value[1] . " €";
-            }
-        }
-        return $barre . " " . $price . $sautDeLigne . $extension;
-    }
-// fonction d'affichage  prestation :
-    function showPrestation($object){
-        $prestation = $object->prestation;
-        $extension = "";
-        $sautDeLigne = "";
-        if (!empty($object->xtend)) {
-            $size = sizeof($object->xtend);
-            $sautDeLigne = "<br>";
-            for ($i=0; $i < $size ; $i++) { 
-                $extension .= "<br>garantie";
-            }
-        }
-        return $prestation . $sautDeLigne . $extension;
-    };
-// fonction d'affichage designation : 
-    function showdesignation($object){
-        $designation = $object->designation;
-        $extension = "";
-        $sautDeLigne = "";
-        $sautDecom = "";
-        $commentaire = "";
-        if (!empty($object->xtend)) {
-            $size = sizeof($object->xtend);
-            $sautDeLigne = "<br>";
-            for ($i=0; $i < $size ; $i++) { 
-                $extension .= "<br>extension de garantie";
-            }
-        }
-        if (!empty($object->comClient)) {
-            $sautDecom = '<br>';
-            $commentaire = $object->comClient;
-        }
-        return $designation . $sautDeLigne . $extension . $sautDecom .$commentaire;
-    }
-// fonction d'affichage de garantie :
-    function showGarantie($object){
-        $garantie = $object->garantie . " mois";
-        $extension = "";
-        $sautDeLigne = "";
-        if (!empty($object->xtend)) {
-            $sautDeLigne = "<br>";
-            foreach($object->xtend as $array=>$value){
-                $extension .= "<br>" . $value[0] . " mois";
-            }
-        }
-        return $garantie . $sautDeLigne . $extension;
-    }
-// fonction d'afficchage de la quatité : 
-    function showQuantite($object){
-        $quantité = $object->quantite;
-        $extension = "";
-        $sautDeLigne = "";
-        if (!empty($object->xtend)) {
-            $size = sizeof($object->xtend);
-            $sautDeLigne = "<br>";
-            for ($i=0; $i < $size ; $i++) { 
-                $extension .= "<br>" . $quantité;
-            }
-        }
-        return $quantité . $sautDeLigne . $extension;
-    }
-// function d'affichage des farits de ports : 
-    function showPort($post){
-        $port = " ";
-        if (!empty($post)) {
-           $port = $post;
-        } 
-        else {$port = "00,00";} 
-        return $port . " €";
-    }
-
-// function de calcul du total des extension: 
-     function xTendTotal($xtendArray){
-        $priceArray = [[],[],[],[]];
-        foreach($xtendArray as $array){
-                switch ($array[0]) {
-                    case '12':
-                        array_push($priceArray[0],floatval($array[1]));
-                    break;
-                    case '24':
-                        array_push($priceArray[1],floatval($array[1]));
-                    break;
-                    case '36':
-                        array_push($priceArray[2],floatval($array[1]));
-                    break;
-                    case '48':
-                        array_push($priceArray[3],floatval($array[1]));
-                    break;
-                }
-        } 
-        return $priceArray;
-    }
-// function 20% 
-    function ttc($price){
-        $opex = ($price*20)/100;
-        $results = $opex + $price;
-        return $results;
-    }
 
     ob_start();
     ?>
@@ -214,14 +99,14 @@ if (!empty($_POST)) {
                     $array48 = [];
                     foreach($devisData as $value=>$obj){
                             echo "<tr style='font-size: 85%;'>
-                            <td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>" .showPrestation($obj)."</td>
-                            <td valign='top' style='width: 37%; text-align: left; border-bottom: 1px #ccc solid ; padding-bottom:15px'>" .showdesignation($obj). "</td>
+                            <td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>" .Pdfunctions::showPrestation($obj)."</td>
+                            <td valign='top' style='width: 37%; text-align: left; border-bottom: 1px #ccc solid ; padding-bottom:15px'>" .Pdfunctions::showdesignation($obj). "</td>
                             <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'>" .$obj->etat ."</td>
-                            <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'>" .showGarantie($obj) ."</td>
-                            <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .showQuantite($obj) ."</td>
-                            <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" .showPrice($obj) ."</td>
+                            <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'>" .Pdfunctions::showGarantie($obj) ."</td>
+                            <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .Pdfunctions::showQuantite($obj) ."</td>
+                            <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" . Pdfunctions::showPrice($obj) ."</td>
                             <br></tr> "; 
-                            $xtendTotal = xTendTotal($obj->xtend);
+                            $xtendTotal = Pdfunctions::xTendTotal($obj->xtend);
                             $price12 = array_sum($xtendTotal[0]);
                             $price24 = array_sum($xtendTotal[1]);
                             $price36 = array_sum($xtendTotal[2]);
@@ -240,7 +125,7 @@ if (!empty($_POST)) {
                             <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'></td>
                             <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'></td>
                             <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '></td>
-                            <td valign='top' style='text-align: center; width: 20%; padding-bottom:15px; border-bottom: 1px #ccc solid'>" .showPort($_POST['port']) ."</td>
+                            <td valign='top' style='text-align: center; width: 20%; padding-bottom:15px; border-bottom: 1px #ccc solid'>" .Pdfunctions::showPort($_POST['port']) ."</td>
                             </tr>";
                             array_push( $arrayPrice, floatval($_POST['port']));
                 ?>
@@ -254,30 +139,30 @@ if (!empty($_POST)) {
                     <?php
                         $totalPrice = number_format(array_sum($arrayPrice),2);
                        
-                          echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total hors extensions</td><td style='text-align: center'><strong>  ".$totalPrice. "  </strong></td><td style='text-align: center'> " .number_format(ttc($totalPrice),2)." </td></tr>";
+                          echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total hors extensions</td><td style='text-align: center'><strong>  ".$totalPrice. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($totalPrice),2)." </td></tr>";
                           if (sizeOf($array12)>= 2) {
                             array_push($array12 , floatval(floatval($obj->prix)*intval($obj->quantite)));
                             array_push($array12, floatval($_POST['port']));
                             $total12Mois = number_format(array_sum($array12),2);
-                          echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 12 mois</td><td style='text-align: center'><strong>  ".$total12Mois. "  </strong></td><td style='text-align: center'> " .number_format(ttc($total12Mois),2)." </td></tr>";
+                          echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 12 mois</td><td style='text-align: center'><strong>  ".$total12Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($total12Mois),2)." </td></tr>";
                           }
                           if (sizeOf($array24)>= 2) {
                             array_push($array24 , floatval(floatval($obj->prix)*intval($obj->quantite)));
                             array_push($array24, floatval($_POST['port']));
                             $total24Mois = number_format(array_sum($array24),2);
-                          echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 24 mois</td><td style='text-align: center'><strong>  ".$total24Mois. "  </strong></td><td style='text-align: center'> " .number_format(ttc($total24Mois),2)." </td></tr>";
+                          echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 24 mois</td><td style='text-align: center'><strong>  ".$total24Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($total24Mois),2)." </td></tr>";
                           }
                           if (sizeOf($array36)>= 2) {
                             array_push($array36 , floatval(floatval($obj->prix)*intval($obj->quantite)));
                             array_push($array36, floatval($_POST['port']));
                             $total36Mois = number_format(array_sum($array36),2);
-                          echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 36 mois</td><td style='text-align: center'><strong>  ".$total36Mois. "  </strong></td><td style='text-align: center'> " .number_format(ttc($total36Mois),2)." </td></tr>";
+                          echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 36 mois</td><td style='text-align: center'><strong>  ".$total36Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($total36Mois),2)." </td></tr>";
                           }
                           if (sizeOf($array48)>= 2) {
                             array_push($array48 , floatval(floatval($obj->prix)*intval($obj->quantite)));
                             array_push($array48, floatval($_POST['port']));
                             $total48Mois = number_format(array_sum($array48),2);
-                          echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 48 mois</td><td style='text-align: center'><strong>  ".$total48Mois. "  </strong></td><td style='text-align: center'> " .number_format(ttc($total48Mois),2)." </td></tr>";
+                          echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 48 mois</td><td style='text-align: center'><strong>  ".$total48Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($total48Mois),2)." </td></tr>";
                           }
                        
                     ?>

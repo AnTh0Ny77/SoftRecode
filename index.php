@@ -31,6 +31,10 @@
            case '/DevisRecode/pdf';
             require __DIR__ .'/pages/utilities/pdf.php';
            break;
+
+           case '/DevisRecode/voirDevis';
+            require __DIR__ .'/pages/utilities/viewPdf.php';
+           break;
            
             default:
             header('HTTP/1.0 404 not found');
