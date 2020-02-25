@@ -7,7 +7,10 @@ session_start();
  if (empty($_SESSION['user'])) {
     header('location: login');
  }
-
+ unset($_SESSION['Contact']);
+ unset($_SESSION['Client']);
+ unset($_SESSION['livraison']);
+ unset($_SESSION['ModifierDevis']);
  $user= $_SESSION['user'];
  $Database = new App\Database('devisrecode');
  $Database->DbConnect();

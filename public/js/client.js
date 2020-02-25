@@ -165,13 +165,22 @@ $(document).ready(function() {
             }
         })
       
-        // Si le programme exécute une modification de Devis existant on check l'existance de l'objet au format jSon correspondant : 
+        // on check l'existance de l'objet au format jSon correspondant pour savoir si le programme exécute une modification de Devis existant  : 
+        // ensuite on prérempli la datatable avec les données : 
         counter = 1 ;
-        jsonDataAncienDevis = $('#AncienDevis').val();
-        if (jsonDataAncienDevis ) {
-            jsonDataAncienDevis =  JSON.parse($('#AncienDevis').val())
-            console.log(jsonDataAncienDevis);
+        jsonDataAncienDevis =  JSON.parse($('#AncienDevis').val())
+        if (jsonDataAncienDevis != false) {
             for (let numberOfLines = 0; numberOfLines < jsonDataAncienDevis.length; numberOfLines++) {
+                arrayTemp = [];
+                if (jsonDataAncienDevis[numberOfLines].devl__prix_barre == '0') {
+                    jsonDataAncienDevis[numberOfLines].devl__prix_barre = false;
+                }
+                for (let numberOfXtend = 0; numberOfXtend < jsonDataAncienDevis[numberOfLines].ordre.length ; numberOfXtend++) {
+                     arrayCouple = [];
+                     arrayCouple.push(jsonDataAncienDevis[numberOfLines].ordre[numberOfXtend].devg__type);
+                     arrayCouple.push(jsonDataAncienDevis[numberOfLines].ordre[numberOfXtend].devg__prix);
+                     arrayTemp.push(arrayCouple);
+                }
                addOne(
                    devisTable,
                    counter,
@@ -181,7 +190,7 @@ $(document).ready(function() {
                    jsonDataAncienDevis[numberOfLines].devl__note_interne,
                    jsonDataAncienDevis[numberOfLines].devl__etat,
                    jsonDataAncienDevis[numberOfLines].devl__mois_garantie,
-                   jsonDataAncienDevis[numberOfLines].devl__ordre,
+                   arrayTemp,
                    jsonDataAncienDevis[numberOfLines].devl_quantite,
                    jsonDataAncienDevis[numberOfLines].devl_puht,
                    jsonDataAncienDevis[numberOfLines].devl__prix_barre

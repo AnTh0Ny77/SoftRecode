@@ -28,18 +28,37 @@ if (!empty($_POST)) {
         $livraisonId = $_SESSION['livraison']->client__id;
     }
 
-   $devis = $Devis->insertOne(
-       $date,
-       $_SESSION['user']->id_utilisateur,
-       $_SESSION['Client']->client__id,
-       $livraisonId,
-       $_POST['port'],
-       $contactId,
-       $_POST['globalComClient'],
-       $_POST['globalComInt'],
-       NULL,
-       NULL,
-       $devisData);
+
+    if (!empty($_SESSION['ModifierDevis'])) {
+        $devis = $Devis->Modify(
+        $_SESSION['ModifierDevis'],
+        $date,
+        $_SESSION['user']->id_utilisateur,
+        $_SESSION['Client']->client__id,
+        $livraisonId,
+        $_POST['port'],
+        $contactId,
+        $_POST['globalComClient'],
+        $_POST['globalComInt'],
+        NULL,
+        NULL,
+        $devisData
+      );
+    } else {
+        $devis = $Devis->insertOne(
+            $date,
+            $_SESSION['user']->id_utilisateur,
+            $_SESSION['Client']->client__id,
+            $livraisonId,
+            $_POST['port'],
+            $contactId,
+            $_POST['globalComClient'],
+            $_POST['globalComInt'],
+            NULL,
+            NULL,
+            $devisData);
+    }
+    unset($_SESSION['ModifierDevis']);
 
 // fontion d'affichage du prix : 
     function showPrice($object){

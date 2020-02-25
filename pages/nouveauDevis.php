@@ -33,10 +33,18 @@ session_start();
  $prestaList = false;
  $devisModif = false ;
 
-// si un duplicata de devis a été demandé depuis la page : modifier devis :  
+
+// si un duplicata de devis a été demandée depuis : modifier devis :  
   if (!empty($_POST['DupliquerDevis'])) {
   $devisModif = [];
   $temp =   $Devis->GetById($_POST['DupliquerDevis']);
+  $_SESSION['Client'] = $Client->getOne($temp->devis__client__id);
+  if (!empty($temp->devis__contact__id)) {
+    $_SESSION['Contact'] = $Contact->getOne($temp->devis__contact__id);
+  }
+  if (!empty($temp->devis__id_client_livraison)){
+    $_POST['choixLivraison'] =  $temp->devis__id_client_livraison;
+  }
   $arrayOfDevisLigne = $Devis->devisLigne($_POST['DupliquerDevis']);
     foreach ($arrayOfDevisLigne as $ligne) {
       $xtendArray = $Devis->xtenGarantie($ligne->devl__id);
@@ -46,9 +54,28 @@ session_start();
   }
 $test = json_encode($devisModif);
 
+// si une modication de devis à été demandée depuis : modifier devis : 
+if (!empty($_POST['ModifierDevis'])) {
+  $devisModif = [];
+  $temp =   $Devis->GetById($_POST['ModifierDevis']);
+  $_SESSION['Client'] = $Client->getOne($temp->devis__client__id);
+  if (!empty($temp->devis__contact__id)) {
+    $_SESSION['Contact'] = $Contact->getOne($temp->devis__contact__id);
+  }
+  if (!empty($temp->devis__id_client_livraison)){
+    $_POST['choixLivraison'] =  $temp->devis__id_client_livraison;
+  }
+  $arrayOfDevisLigne = $Devis->devisLigne($_POST['ModifierDevis']);
+    foreach ($arrayOfDevisLigne as $ligne) {
+      $xtendArray = $Devis->xtenGarantie($ligne->devl__id);
+      $ligne->ordre = $xtendArray;
+      array_push($devisModif,$ligne);
+    }
+    // on crée un variable de session pour la modification :
+      $_SESSION['ModifierDevis'] = $_POST['ModifierDevis'];
+}
+$test = json_encode($devisModif);
 
-
- 
  
 // Si un nouveau client à été crée  :  traitement par la classe Form 
 if ( isset($_POST['societe']) && !empty($_POST['societe'])) {
@@ -104,6 +131,12 @@ if (!empty($_POST['choixLivraison'])) {
    $_SESSION['livraison'] = $Client->getOne($_POST['choixLivraison']); 
    $livraison = $_SESSION['livraison'];
    
+}
+
+// si l'utilisateur a demandé la supression du client: 
+if (!empty($_POST['deleteContact'])) {
+ unset($_SESSION['Contact']);
+ $contact = false;
 }
 
 // le formulaire de creation de pdf a été soumis : redirection vers mes devis -> 

@@ -547,7 +547,6 @@
             </div>
           </div>
 
-
           <!-- Modal supression client  -->
               <div class="modal fade" id="supprimeContact" tabindex="-1" role="dialog"  aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -563,7 +562,10 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                      <button type="button" class="btn btn-danger">Supprimer</button>
+                      <form method='POST' action="nouveauDevis">
+                        <input type="hidden" name="deleteContact" value="goodBye">
+                      <button type="submit" class="btn btn-danger">Supprimer</button>
+                     </form>
                     </div>
                   </div>
                 </div>

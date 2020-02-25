@@ -35,7 +35,7 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
     let prixMultiple ;
     if (prixBarre.length > 0) {
         prixMultiple =  ' <s>' + prixBarre  + "€</s> " + prix + " €" ;
-    }else {prixMultiple =  $("#prixRow").val() + " €" ;};
+    }else {prixMultiple =  prix + " €" ;};
     row.push(prixMultiple);
     let rowObject = new Object();
     rowObject.id = counter;
