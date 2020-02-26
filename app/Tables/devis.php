@@ -77,15 +77,15 @@ public function getUserDevis($id){
   return $data;
 }
 public function getAll(){
-  $request =$this->Db->Pdo->query("SELECT devis__id,  devis__date_crea , devis__user__id , devis__client__id, devis__etat , c.client__societe,  c.client__ville, c.client__cp , u.log_nec
-    FROM  devis JOIN client as c ON devis__client__id = c.client__id JOIN utilisateur as u ON devis__user__id = u.id_utilisateur   ORDER BY  devis__date_crea DESC LIMIT 200 ");
+  $request =$this->Db->Pdo->query("SELECT devis__id,  devis__date_crea , devis__user__id , devis__client__id, devis__etat , c.client__societe,  c.client__ville, c.client__cp , u.log_nec , k.keyword__lib
+    FROM  devis JOIN client as c ON devis__client__id = c.client__id JOIN utilisateur as u ON devis__user__id = u.id_utilisateur JOIN keyword as k ON devis__etat = k.keyword__value    ORDER BY  devis__date_crea DESC LIMIT 200 ");
   $data = $request->fetchAll(PDO::FETCH_OBJ);
   return $data;
 }
 
 public function GetById($id){
-  $request =$this->Db->Pdo->query("SELECT devis__user__id , devis__client__id, devis__contact__id, devis__port, devis__note_client, devis__note_interne, devis__id_client_livraison
-    FROM devis  WHERE devis__id = ". $id ."");
+  $request =$this->Db->Pdo->query("SELECT devis__user__id , devis__client__id, devis__contact__id, devis__port, devis__note_client, devis__note_interne,  devis__id_client_livraison ,  k.keyword__lib
+    FROM devis JOIN keyword as k ON devis__etat = k.keyword__value  WHERE devis__id = ". $id ."");
   $data = $request->fetch(PDO::FETCH_OBJ);
   return $data;
 }
@@ -165,6 +165,11 @@ public function Modify( $id, $date , $user, $client , $livraison, $port, $contac
   } 
  return $idDevis;
 
+}
+
+public function updateStatus($etat,$id){
+  $update = $this->Db->Pdo->prepare('UPDATE devis SET devis__etat=? WHERE devis__id =?');
+  $update->execute([$etat,$id]);
 }
 
  

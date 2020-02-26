@@ -29,7 +29,7 @@ if (!empty($_POST)) {
     if (!empty($_SESSION['livraison'])) {
         $livraisonId = $_SESSION['livraison']->client__id;
     }
-
+    $status = 'ATN';
 
     if (!empty($_SESSION['ModifierDevis'])) {
         $devis = $Devis->Modify(
@@ -42,7 +42,7 @@ if (!empty($_POST)) {
         $contactId,
         $_POST['globalComClient'],
         $_POST['globalComInt'],
-        NULL,
+        $status,
         NULL,
         $devisData
       );
@@ -56,7 +56,7 @@ if (!empty($_POST)) {
             $contactId,
             $_POST['globalComClient'],
             $_POST['globalComInt'],
-            NULL,
+            $status,
             NULL,
             $devisData);
     }

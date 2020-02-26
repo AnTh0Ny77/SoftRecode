@@ -120,11 +120,18 @@ $(document).ready(function() {
             $("#formSelectContact").submit();
         })
 
+        // fontion attribut du status de devis et post du formulaire: 
+        $(".statusDevis").on('click' , function(){
+           let temp = $(this).val();
+           console.log(temp);
+           $('#StatuerDevis').val(temp);
+          // $('#StatusForm').submit();
+        })
+
         // Programme d'ajout de ligne dans le devis : 
         //traitement du formulaire : 
         $('#choixDesignation option').on('click', function(){
             $('#referenceS').val($(this).text());
-            console.log($(this).text());
         });
         
         // extension de garantie : 

@@ -36,6 +36,13 @@ public function getPresta(){
   return $data;
 }
 
+public function getStat(){
+  $request =$this->Db->Pdo->query('SELECT  keyword__id, keyword__lib , keyword__value FROM keyword WHERE keyword__type= "stat" ORDER BY  keyword__id ASC ');
+  $data = $request->fetchAll(PDO::FETCH_OBJ);
+  return $data;
+}
+
+
 public function getOne($id){
     $request =$this->Db->Pdo->query("SELECT keyword__id, keyword__lib  FROM " .$this->Table. " WHERE keyword__id = " . $id ."");
     $data = $request->fetch(PDO::FETCH_OBJ);

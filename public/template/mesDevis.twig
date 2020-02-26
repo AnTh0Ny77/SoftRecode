@@ -31,19 +31,33 @@
           <!-- Card Body -->
           <div class="card-body">
             <div class="chart-area">
-              <table id="MyDevis" class=" display table " style="width:100%"> <thead class="thead-dark"> <tr> <th>Numéro</th> <th>Date</th><th>Editeur</th><th>Client</th></tr>
+              <table id="MyDevis" class=" display table " style="width:100%"> <thead class="thead-dark"> <tr> <th>Numéro</th> <th>Date</th><th>Editeur</th><th>Client</th><th>Etat</th></tr>
               </thead> 
                <tbody id="DevisBody">
                 {% for devis in devisList %}
-                <tr class="trClick"><td>{{devis.devis__id}}</td><td>{{ devis.devis__date_crea}}</td><td>{{ devis.log_nec}}</td><td>{{ devis.client__societe }} <br>{{ devis.client__ville ~ " " ~ devis.client__cp}}</td></tr>
+                <tr class="trClick"><td>{{devis.devis__id}}</td><td>{{ devis.devis__date_crea}}</td><td>{{ devis.log_nec}}</td><td>{{ devis.client__societe }} <br>{{ devis.client__ville ~ " " ~ devis.client__cp}}</td><td>{{ devis.keyword__lib}}</td></tr>
                 {% endfor %}
                </tbody>
              </table>
            </div>
           </div>
+          <div class="mx-auto">
+          <ul class="nav nav-tabs">
+            {% for status in listOfStatus %}
+            {% if   status.keyword__lib != 'Commande' %}
+            <li class="nav-item statusDevis" value="{{ status.keyword__lib}}">
+              <a class="nav-link "  href="#">{{ status.keyword__lib}}</a>
+              
+            </li>
+            {% endif %}
+            {% endfor %}
+            <form action="mesDevis" method="POST" id="StatusForm">
+              <input type="hidden" name="StatuerDevis" id="StatuerDevis" value="" >
+            </form>
+          </ul>
+        </div>
         </div>
       </div>
-
 
         <!--carte option -->
         <div class="col-3">
@@ -57,11 +71,11 @@
             <!-- Card Body -->
             <div class="card-body">
               <div class="d-flex flex-column  justify-content-around px-5">
-                <form class="py-1" action="nouveauDevis" method="POST">
+                <form class="py-1" action="mesDevis" method="POST">
                   <input type="hidden" name="ValiderDevis" id="ValiderDevis" value="">
                 <button type="submit" class="btn btn-outline-success btn-lg btn-block multiButton" disabled>Valider</button>
                 </form>
-                <form  class="py-1" action="nouveauDevis" method="POST">
+                <form  class="py-1" action="mesDevis" method="POST">
                   <input type="hidden" name="RefuserDevis" id="RefuserDevis" value="">
                 <button type="submit" class="btn btn-outline-danger btn-lg btn-block multiButton" disabled>Refuser</button>
                 </form>
@@ -80,6 +94,7 @@
              
             </div>
           </div>
+          
         </div>
 
 

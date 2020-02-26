@@ -15,10 +15,20 @@ session_start();
  $Database = new App\Database('devisrecode');
  $Database->DbConnect();
  $Devis = new App\Tables\Devis($Database);
- $devisList = $Devis->getAll();
+ $Keyword = new App\Tables\Keyword($Database);
+ $listOfStatus = $Keyword->getStat();
 
+ if (!empty($_POST['ValiderDevis'])) {
+    $Devis->updateStatus('VLD',$_POST['ValiderDevis']);
+ }
+ if (!empty($_POST['RefuserDevis'])) {
+   $Devis->updateStatus('RFS',$_POST['RefuserDevis']);
+}
+
+ $devisList = $Devis->getAll();
 // Donnée transmise au template : 
 echo $twig->render('mesDevis.twig',['user'=>$user,
 'user'=> $user,
-'devisList'=> $devisList
+'devisList'=> $devisList,
+'listOfStatus'=> $listOfStatus
 ]);
