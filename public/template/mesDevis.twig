@@ -14,6 +14,42 @@
        <div class="d-flex flex-wrap flex-row justify-content-start">
 
 
+        <!-- Modal -->
+        <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Status <i class="fas fa-tasks"></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form action="mesDevis" method="POST">
+              <div class="modal-body">
+                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+
+                    {% for status in listOfStatus %}
+                    {% if   status.keyword__lib != 'Commande'%}
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" name="statusRadio" type="radio" value="{{ status.keyword__value}}" id="defaultCheck1">
+                      <label class="form-check-label" for="defaultCheck1">
+                        {{ status.keyword__lib}}
+                      </label>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    <input type="hidden" name="ValiderDevis" id="ValiderDevis" value="">
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Valider</button>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
 
         <!--carte liste de Devis -->
       <div class="col-8">
@@ -41,21 +77,6 @@
              </table>
            </div>
           </div>
-          <div class="mx-auto">
-          <ul class="nav nav-tabs">
-            {% for status in listOfStatus %}
-            {% if   status.keyword__lib != 'Commande' %}
-            <li class="nav-item statusDevis" value="{{ status.keyword__lib}}">
-              <a class="nav-link "  href="#">{{ status.keyword__lib}}</a>
-              
-            </li>
-            {% endif %}
-            {% endfor %}
-            <form action="mesDevis" method="POST" id="StatusForm">
-              <input type="hidden" name="StatuerDevis" id="StatuerDevis" value="" >
-            </form>
-          </ul>
-        </div>
         </div>
       </div>
 
@@ -71,25 +92,20 @@
             <!-- Card Body -->
             <div class="card-body">
               <div class="d-flex flex-column  justify-content-around px-5">
-                <form class="py-1" action="mesDevis" method="POST">
-                  <input type="hidden" name="ValiderDevis" id="ValiderDevis" value="">
-                <button type="submit" class="btn btn-outline-success btn-lg btn-block multiButton" disabled>Valider</button>
-                </form>
-                <form  class="py-1" action="mesDevis" method="POST">
-                  <input type="hidden" name="RefuserDevis" id="RefuserDevis" value="">
-                <button type="submit" class="btn btn-outline-danger btn-lg btn-block multiButton" disabled>Refuser</button>
-                </form>
-                <form method="POST" action="voirDevis" target="blank">
+                <div class="py-1">
+                  <button type="button" class="btn btn-success btn-lg btn-block multiButton"  data-toggle="modal" data-target="#statusModal" disabled>Statuer</button>
+                </div>
+                <form class="py-1" method="POST" action="voirDevis" target="blank">
                   <input type="hidden" name="VoirDevis" id="VoirDevis" value="">
-                <button type="submit" class="btn btn-outline-secondary btn-lg btn-block multiButton" disabled>Voir</button>
+                <button type="submit" class="btn btn-secondary btn-lg btn-block multiButton" disabled>Voir</button>
                  </form>
                 <form class="py-1" action="nouveauDevis" method="POST">
                   <input type="hidden" name="ModifierDevis" id="ModifierDevis" value="">
-                <button type="submit" class="btn btn-outline-primary btn-lg btn-block multiButton" disabled>Modifier</button>
+                <button type="submit" class="btn btn-primary btn-lg btn-block multiButton" disabled>Modifier</button>
                 </form>
                 <form class="py-1" action="nouveauDevis" method="POST">
                   <input type="hidden" name="DupliquerDevis" id="DupliquerDevis" value="">
-                <button type="submit" class="btn btn-outline-warning btn-lg btn-block multiButton" disabled>Dupliquer</button>
+                <button type="submit" class="btn btn-warning btn-lg btn-block multiButton" disabled>Dupliquer</button>
                 </form>
              
             </div>

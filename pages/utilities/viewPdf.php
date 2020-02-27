@@ -9,21 +9,29 @@ $Database = new App\Database('devisrecode');
 $Database->DbConnect();
 $Devis = new App\Tables\Devis($Database);
 $Client = new \App\Tables\Client($Database);
-
+$devisModif = false ;
 if (empty($_SESSION['user'])) {
     header('location: login');
  }
 
  if (!empty($_POST['VoirDevis'])) {
+    $devisModif = [];
     $temp =   $Devis->GetById($_POST['VoirDevis']);
-    $_SESSION['Client'] = $Client->getOne($temp->devis__client__id);
+    $clientView = $Client->getOne($temp->devis__client__id);
     $arrayOfDevisLigne = $Devis->devisLigne($_POST['VoirDevis']);
- }
+    foreach ($arrayOfDevisLigne as $ligne) {
+      $xtendArray = $Devis->xtenGarantie($ligne->devl__id);
+      $ligne->ordre = $xtendArray;
+      array_push($devisModif,$ligne);
+    }
+$test = json_encode($devisModif);
 
  $date = date("Y-m-d H:i:s");
     
  ob_start();
+
  ?>
+ 
  <style type="text/css">
       strong{ color:#000;}
       h3{ color:#666666;}
@@ -37,11 +45,11 @@ if (empty($_SESSION['user'])) {
      <table style="width: 100%;">
          <tr>
              <td style="text-align: left;  width: 50%"><img  style=" width:65mm" src="public/img/recodeDevis.png"/></td>
-             <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br><a>www.recode.fr</a><br><br><br>REF CLIENT :<?php echo $_SESSION['Client']->client__id ?></td>
+             <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br><a>www.recode.fr</a><br><br><br>REF CLIENT :<?php echo $clientView->client__id ?></td>
          </tr>
          <tr>
              <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis- 3190808</h2><br>07/07/07<br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : 07/07/07</small></p></td>
-             <td style="text-align: left; width:50%"><small>livraison & facturation</small><strong><br><?php echo $_SESSION['Client']->client__societe ?><br><?php echo $_SESSION['Client']->client__adr1 ?><br><?php echo $_SESSION['Client']->client__adr2 ?><br><?php echo $_SESSION['Client']->client__cp ." ". $_SESSION['Client']->client__ville ?></strong></td>
+             <td style="text-align: left; width:50%"><small>livraison & facturation</small><strong><br><?php echo $clientView->client__societe ?><br><?php echo $clientView->client__adr1 ?><br><?php echo $clientView->client__adr2 ?><br><?php echo $clientView->client__cp ." ". $clientView->client__ville ?></strong></td>
          </tr>
      </table>
      <table CELLSPACING=0 style="width: 100%;  margin-top: 30px; ">
@@ -58,24 +66,24 @@ if (empty($_SESSION['user'])) {
                  $array48 = [];
                  foreach($arrayOfDevisLigne as $value=>$obj){
                          echo "<tr style='font-size: 85%;'>
-                         <td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>" .Pdfunctions::showPrestation($obj)."</td>
-                         <td valign='top' style='width: 37%; text-align: left; border-bottom: 1px #ccc solid ; padding-bottom:15px'>" .Pdfunctions::showdesignation($obj). "</td>
-                         <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'>" .$obj->etat ."</td>
-                         <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'>" .Pdfunctions::showGarantie($obj) ."</td>
-                         <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .Pdfunctions::showQuantite($obj) ."</td>
+                         <td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>" .Pdfunctions::showPrestationView($obj)."</td>
+                         <td valign='top' style='width: 37%; text-align: left; border-bottom: 1px #ccc solid ; padding-bottom:15px'>" .Pdfunctions::showdesignationView($obj). "</td>
+                         <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'>" .$obj->devl__etat ."</td>
+                         <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'>" .Pdfunctions::showGarantieView($obj) ."</td>
+                         <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .Pdfunctions::showQuantiteView($obj) ."</td>
                          <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" . Pdfunctions::showPrice($obj) ."</td>
                          <br></tr> "; 
-                         $xtendTotal = Pdfunctions::xTendTotal($obj->xtend);
+                         $xtendTotal = Pdfunctions::xTendTotalView($obj->ordre);
                          $price12 = array_sum($xtendTotal[0]);
                          $price24 = array_sum($xtendTotal[1]);
                          $price36 = array_sum($xtendTotal[2]);
                          $price48 = array_sum($xtendTotal[3]);
                         
-                         array_push($array12 , floatval(floatval($price12)*intval($obj->quantite)));
-                         array_push($array24 , floatval(floatval($price24)*intval($obj->quantite)));
-                         array_push($array36 , floatval(floatval($price36)*intval($obj->quantite)));
-                         array_push($array48 , floatval(floatval($price48)*intval($obj->quantite)));
-                         array_push( $arrayPrice, floatval(floatval($obj->prix)*intval($obj->quantite)));
+                         array_push($array12 , floatval(floatval($price12)*intval($obj->devl_quantite)));
+                         array_push($array24 , floatval(floatval($price24)*intval($obj->devl_quantite)));
+                         array_push($array36 , floatval(floatval($price36)*intval($obj->devl_quantite)));
+                         array_push($array48 , floatval(floatval($price48)*intval($obj->devl_quantite)));
+                         array_push( $arrayPrice, floatval(floatval($obj->devl_puht)*intval($obj->devl_quantite)));
                  };
                  
                          echo "<tr style='font-size: 85%;'>
@@ -84,9 +92,9 @@ if (empty($_SESSION['user'])) {
                          <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'></td>
                          <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'></td>
                          <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '></td>
-                         <td valign='top' style='text-align: center; width: 20%; padding-bottom:15px; border-bottom: 1px #ccc solid'>" .Pdfunctions::showPort($_POST['port']) ."</td>
+                         <td valign='top' style='text-align: center; width: 20%; padding-bottom:15px; border-bottom: 1px #ccc solid'>" .Pdfunctions::showPort($temp->devis__port) ."</td>
                          </tr>";
-                         array_push( $arrayPrice, floatval($_POST['port']));
+                         array_push( $arrayPrice, floatval($temp->devis__port));
              ?>
      </table>
      <table style=" margin-top: 15px">
@@ -100,26 +108,26 @@ if (empty($_SESSION['user'])) {
                     
                        echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total hors extensions</td><td style='text-align: center'><strong>  ".$totalPrice. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($totalPrice),2)." </td></tr>";
                        if (sizeOf($array12)>= 2) {
-                         array_push($array12 , floatval(floatval($obj->prix)*intval($obj->quantite)));
-                         array_push($array12, floatval($_POST['port']));
+                         array_push($array12 , floatval(floatval($obj->devl_puht)*intval($obj->devl_quantite)));
+                         array_push($array12, floatval($temp->devis__port));
                          $total12Mois = number_format(array_sum($array12),2);
                        echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 12 mois</td><td style='text-align: center'><strong>  ".$total12Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($total12Mois),2)." </td></tr>";
                        }
                        if (sizeOf($array24)>= 2) {
-                         array_push($array24 , floatval(floatval($obj->prix)*intval($obj->quantite)));
-                         array_push($array24, floatval($_POST['port']));
+                         array_push($array24 , floatval(floatval($obj->devl_puht)*intval($obj->devl_quantite)));
+                         array_push($array24, floatval($temp->devis__port));
                          $total24Mois = number_format(array_sum($array24),2);
                        echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 24 mois</td><td style='text-align: center'><strong>  ".$total24Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($total24Mois),2)." </td></tr>";
                        }
                        if (sizeOf($array36)>= 2) {
-                         array_push($array36 , floatval(floatval($obj->prix)*intval($obj->quantite)));
-                         array_push($array36, floatval($_POST['port']));
+                         array_push($array36 , floatval(floatval($obj->devl_puht)*intval($obj->devl_quantite)));
+                         array_push($array36, floatval($temp->devis__port));
                          $total36Mois = number_format(array_sum($array36),2);
                        echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 36 mois</td><td style='text-align: center'><strong>  ".$total36Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($total36Mois),2)." </td></tr>";
                        }
                        if (sizeOf($array48)>= 2) {
-                         array_push($array48 , floatval(floatval($obj->prix)*intval($obj->quantite)));
-                         array_push($array48, floatval($_POST['port']));
+                         array_push($array48 , floatval(floatval($obj->devl_puht)*intval($obj->devl_quantite)));
+                         array_push($array48, floatval($temp->devis__port));
                          $total48Mois = number_format(array_sum($array48),2);
                        echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 48 mois</td><td style='text-align: center'><strong>  ".$total48Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($total48Mois),2)." </td></tr>";
                        }
@@ -135,8 +143,8 @@ if (empty($_SESSION['user'])) {
      <table style=" margin-top: 15px">
          <tr><td><strong>Conditions de paiement</strong> : Virement à la réception</td></tr>
          <?php
-         if (!empty($_POST['globalComClient'])) {
-            echo '<tr><td>' . $_POST['globalComClient'] .'</td></tr>';
+         if (!empty($temp->devis__mote_client)) {
+            echo '<tr><td>' . $temp->devis__mote_client .'</td></tr>';
          }
          ?>
      </table>
@@ -175,3 +183,4 @@ if (empty($_SESSION['user'])) {
  } catch (Html2PdfException $e) {
    die($e); 
  }
+}

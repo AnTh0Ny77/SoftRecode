@@ -19,7 +19,7 @@ session_start();
  $listOfStatus = $Keyword->getStat();
 
  if (!empty($_POST['ValiderDevis'])) {
-    $Devis->updateStatus('VLD',$_POST['ValiderDevis']);
+    $Devis->updateStatus($_POST['statusRadio'],$_POST['ValiderDevis']);
  }
  if (!empty($_POST['RefuserDevis'])) {
    $Devis->updateStatus('RFS',$_POST['RefuserDevis']);
