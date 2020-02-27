@@ -84,7 +84,7 @@ public function getAll(){
 }
 
 public function GetById($id){
-  $request =$this->Db->Pdo->query("SELECT devis__user__id , devis__client__id, devis__contact__id, devis__port, devis__note_client, devis__note_interne,  devis__id_client_livraison ,  k.keyword__lib
+  $request =$this->Db->Pdo->query("SELECT devis__user__id , devis__date_crea, devis__client__id, devis__contact__id, devis__port, devis__note_client, devis__note_interne,  devis__id_client_livraison ,  k.keyword__lib
     FROM devis JOIN keyword as k ON devis__etat = k.keyword__value  WHERE devis__id = ". $id ."");
   $data = $request->fetch(PDO::FETCH_OBJ);
   return $data;

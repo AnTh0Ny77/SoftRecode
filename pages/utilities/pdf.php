@@ -61,7 +61,7 @@ if (!empty($_POST)) {
             $devisData);
     }
     unset($_SESSION['ModifierDevis']);
-
+    
 
     ob_start();
     ?>
@@ -81,7 +81,7 @@ if (!empty($_POST)) {
                 <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br><a>www.recode.fr</a><br><br><br>REF CLIENT :<?php echo $_SESSION['Client']->client__id ?></td>
             </tr>
             <tr>
-                <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis- 3190808</h2><br>07/07/07<br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : 07/07/07</small></p></td>
+                <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis- 3190808</h2><br>07/07/07<br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : <?php  echo date("d-m-Y") ?></small></p></td>
                 <td style="text-align: left; width:50%"><small>livraison & facturation</small><strong><br><?php echo $_SESSION['Client']->client__societe ?><br><?php echo $_SESSION['Client']->client__adr1 ?><br><?php echo $_SESSION['Client']->client__adr2 ?><br><?php echo $_SESSION['Client']->client__cp ." ". $_SESSION['Client']->client__ville ?></strong></td>
             </tr>
         </table>

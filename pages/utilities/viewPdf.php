@@ -9,25 +9,21 @@ $Database = new App\Database('devisrecode');
 $Database->DbConnect();
 $Devis = new App\Tables\Devis($Database);
 $Client = new \App\Tables\Client($Database);
-$devisModif = false ;
+
 if (empty($_SESSION['user'])) {
     header('location: login');
  }
-
  if (!empty($_POST['VoirDevis'])) {
-    $devisModif = [];
+    
     $temp =   $Devis->GetById($_POST['VoirDevis']);
     $clientView = $Client->getOne($temp->devis__client__id);
     $arrayOfDevisLigne = $Devis->devisLigne($_POST['VoirDevis']);
     foreach ($arrayOfDevisLigne as $ligne) {
       $xtendArray = $Devis->xtenGarantie($ligne->devl__id);
       $ligne->ordre = $xtendArray;
-      array_push($devisModif,$ligne);
-    }
-$test = json_encode($devisModif);
-
- $date = date("Y-m-d H:i:s");
-    
+    } 
+$date_time = new DateTime( $temp->devis__date_crea);
+$formated_date = $date_time->format('d/m/Y'); 
  ob_start();
 
  ?>
@@ -48,7 +44,7 @@ $test = json_encode($devisModif);
              <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br><a>www.recode.fr</a><br><br><br>REF CLIENT :<?php echo $clientView->client__id ?></td>
          </tr>
          <tr>
-             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis- 3190808</h2><br>07/07/07<br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : 07/07/07</small></p></td>
+             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis- 3190808</h2><br>07/07/07<br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : <?php echo $formated_date ?></small></p></td>
              <td style="text-align: left; width:50%"><small>livraison & facturation</small><strong><br><?php echo $clientView->client__societe ?><br><?php echo $clientView->client__adr1 ?><br><?php echo $clientView->client__adr2 ?><br><?php echo $clientView->client__cp ." ". $clientView->client__ville ?></strong></td>
          </tr>
      </table>
