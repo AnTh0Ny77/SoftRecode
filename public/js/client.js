@@ -120,18 +120,13 @@ $(document).ready(function() {
             $("#formSelectContact").submit();
         })
 
-        // fontion attribut du status de devis et post du formulaire: 
-        $(".statusDevis").on('click' , function(){
-           let temp = $(this).val();
-           console.log(temp);
-           $('#StatuerDevis').val(temp);
-          // $('#StatusForm').submit();
-        })
+       
 
         // Programme d'ajout de ligne dans le devis : 
         //traitement du formulaire : 
         $('#choixDesignation option').on('click', function(){
             $('#referenceS').val($(this).text());
+            console.log($(this).val());
         });
         
         // extension de garantie : 
@@ -175,7 +170,8 @@ $(document).ready(function() {
         // on check l'existance de l'objet au format jSon correspondant pour savoir si le programme exécute une modification de Devis existant  : 
         // ensuite on prérempli la datatable avec les données : 
         counter = 1 ;
-        jsonDataAncienDevis =  JSON.parse($('#AncienDevis').val())
+        if ($('#AncienDevis').val()) {
+            jsonDataAncienDevis =  JSON.parse($('#AncienDevis').val())
         if (jsonDataAncienDevis != false) {
             for (let numberOfLines = 0; numberOfLines < jsonDataAncienDevis.length; numberOfLines++) {
                 arrayTemp = [];
@@ -204,6 +200,9 @@ $(document).ready(function() {
                ) 
             };
           }
+            
+        }
+        
     
 
         //ajout d'une ligne de devis : function location : devisFunction.js (addOne): 
