@@ -71,7 +71,7 @@ $test = json_encode($devisModif);
                          <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'>" .$obj->devl__etat ."</td>
                          <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'>" .Pdfunctions::showGarantieView($obj) ."</td>
                          <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .Pdfunctions::showQuantiteView($obj) ."</td>
-                         <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" . Pdfunctions::showPrice($obj) ."</td>
+                         <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" . Pdfunctions::showPriceView($obj) ."</td>
                          <br></tr> "; 
                          $xtendTotal = Pdfunctions::xTendTotalView($obj->ordre);
                          $price12 = array_sum($xtendTotal[0]);

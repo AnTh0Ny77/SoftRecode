@@ -23,6 +23,29 @@ namespace App\Methods;
     }
     return $barre . " " . $price . $sautDeLigne . $extension;
 }
+
+// fontion d'affichage du prix dans View : 
+public static function showPriceView($object){
+    $barre = '';
+    $extension = "";
+    $sautDeLigne = "";
+    if (!empty($object->devl__prix_barre)) {
+       $barre = "<s>". $object->devl__prix_barre ." €</s>";
+    }
+    if (!empty($object->devl_puht)) {
+        $price =  $object->devl_puht ." €";
+    }else{ $price =  "00,00 €"; }
+    if (!empty($object->ordre)) {
+        $sautDeLigne = "<br>";
+        foreach($object->ordre as $array){
+            $extension .= "<br>" . $array['devg__prix'] . " €";
+        }
+    }
+    return $barre . " " . $price . $sautDeLigne . $extension;
+}
+
+
+
 // fonction d'affichage  prestation :
 public static function showPrestation($object){
     $prestation = $object->prestation;
