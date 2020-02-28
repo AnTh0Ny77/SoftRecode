@@ -1,0 +1,62 @@
+{% extends 'layout.twig' %}
+ {% block content %}
+ 
+ 
+ <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+   <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">{{ user.prenom ~  " " ~  user.nom }}</a>
+   <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+   <ul class="navbar-nav px-3">
+     <li class="nav-item text-nowrap">
+       <a class="nav-link" href="#">Se deconnecter</a>
+     </li>
+   </ul>
+ </nav>
+ 
+ <div class="container-fluid" id="accordion">
+   <div class="row">
+     <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+       <div class="sidebar-sticky">
+        <div class="card">
+          <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+              <a class="nav-item nav-link"  data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+               Tableau de bord
+              </a>
+            </h5>
+          </div>
+        <div class="card">
+          <div class="card-header" id="headingTwo">
+            <h5 class="mb-0">
+              <a class="nav-item nav-link"  data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+               Devis
+              </a>
+            </h5>
+          </div>
+          <div id="collapseTwo" class="collapse hide" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div class="card-body">
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <span data-feather="file"></span>
+                    Nouveau devis
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <span data-feather="shopping-cart"></span>
+                    Mes devis
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+       </div>
+     </nav>
+     {% block main %}
+     {% endblock %}
+     
+    
+   </div>
+ </div>
+ {% endblock %}

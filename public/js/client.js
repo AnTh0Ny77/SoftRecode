@@ -2,7 +2,7 @@
 $(document).ready(function() {
     
      
-    //    initialisation table client : 
+      // initialisation table client : 
         let tableClient = $('#client').DataTable({
             "paging": true,
             "info":   true,
@@ -18,7 +18,7 @@ $(document).ready(function() {
         tableLivraison = $('#Livraison').DataTable({
             "paging": true,
             "info":   true,
-            retrieve: true,
+             retrieve: true,
             "deferRender": true,
             "searching": true, 
         })
@@ -28,7 +28,7 @@ $(document).ready(function() {
     let modifDevis = $('#MyDevis').DataTable({
         "paging": true,
          "info":   false,
-         retrieve: true,
+        retrieve: true,
         "deferRender": true,
         "searching": false,  
        
@@ -61,7 +61,7 @@ $(document).ready(function() {
         checkClassMulti();
      });
 
-    
+   
     
        // initialisation table devis : 
        let devisTable =  $('#Devis').DataTable({
@@ -82,13 +82,14 @@ $(document).ready(function() {
                 { responsivePriority: 2, targets: 5 },
                 { responsivePriority: 3, targets: 6 }
               ],
+             
               rowReorder: {
                 update: false,
                 selector: 'td:first-child'
             }
         });
 
-        //initialisation table contact  
+       // initialisation table contact  
         let tableContact = $("#contactTable").DataTable({
             "paging": false,
             "info":   true,
@@ -126,7 +127,7 @@ $(document).ready(function() {
         //traitement du formulaire : 
         $('#choixDesignation option').on('click', function(){
             $('#referenceS').val($(this).text());
-            console.log($(this).val());
+            console.log($(this));
         });
         
         // extension de garantie : 
@@ -222,7 +223,8 @@ $(document).ready(function() {
                 $("#prixRow").val(),
                 $("#barrePrice").val()
                 );
-        });
+                xtendArray = [];
+            });
         
            
         
@@ -237,7 +239,7 @@ $(document).ready(function() {
           }
         
         checkClass();
-        let idRow  = false;
+         let idRow  = false;
 
          // attribut classe selected: 
          devisTable.on('click','tr',function() {
