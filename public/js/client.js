@@ -95,6 +95,15 @@ let tableLivraison;
         "searching": false,  
        
     })
+    // ini table commandes :
+    let validCmd = $('#MyCommande').DataTable({
+        "paging": true,
+         "info":   false,
+        retrieve: true,
+        "deferRender": true,
+        "searching": false,  
+       
+    })
     // disable buttons multiple si pas de ligne select dans la table mes devis:  
     let checkClassMulti = function(){
         let RowModif =  $('#MyDevis').find('tr');
@@ -104,7 +113,19 @@ let tableLivraison;
              $('.multiButton').prop("disabled", true);
          }
       }
+
+    // disable buttons multiple si pas de ligne select dans la table commandes:  
+    let checkClassCmd = function(){
+        let RowModif =  $('#MyCommande').find('tr');
+         if (RowModif.hasClass('selected')) {
+             $('.multiButton').removeAttr('disabled');
+         } else {
+             $('.multiButton').prop("disabled", true);
+         }
+      }
       checkClassMulti();
+      checkClassCmd();
+
     // attribut classe selected: a la table mes devis 
     modifDevis.on('click','tr',function() {
         if ( $(this).hasClass('selected') ) {
@@ -121,6 +142,21 @@ let tableLivraison;
         $("#ModifierDevis").val(dataRow[0]);
         $("#DupliquerDevis").val(dataRow[0]);
         checkClassMulti();
+     });
+
+      // attribut classe selected: a la table Commandes 
+      validCmd.on('click','tr',function() {
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+        }
+       else  if(validCmd.rows().count() >= 1){
+        validCmd.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+        let dataRow = validCmd.row(this).data();
+        $("ValideCmd").val(dataRow[0]);
+        $("#commandeSend").val(dataRow[0]);
+        checkClassCmd();
      });
 
    

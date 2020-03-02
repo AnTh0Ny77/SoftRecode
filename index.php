@@ -37,7 +37,7 @@
            break;
 
            case '/DevisRecode/AjaxSociete';
-            require __DIR__ .'/pages/utilities/ajaxClient.php';
+            require __DIR__ .'/pages/ajax/ajaxClient.php';
            break;
            
             default:
