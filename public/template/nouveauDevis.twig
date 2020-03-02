@@ -31,10 +31,7 @@
                     <thead class="thead-dark"> 
                       <tr><th>Id</th><th>Nom</th><th>Adresse</th></tr>
                      </thead > 
-                    <tbody>
-                      {% for client in clientList %}
-                       <tr class="trClick"><td>{{client.client__id}}</td><td>{{ client.client__societe}}</td><td>{{client.client__ville}}</td></tr>
-                       {% endfor %}
+                    <tbody class="trClick">
                     </tbody>
                   </table>
                 </div>
@@ -526,10 +523,7 @@
                     <thead class="thead-dark"> 
                       <tr><th>Id</th><th>Nom</th><th>Adresse</th></tr>
                      </thead > 
-                    <tbody>
-                      {% for client in clientList %}
-                       <tr class="trClick"><td>{{client.client__id}}</td><td>{{ client.client__societe}}</td><td>{{client.client__ville}}</td></tr>
-                       {% endfor %}
+                    <tbody class="trClick">
                     </tbody>
                   </table>
                 </div>
@@ -582,7 +576,7 @@
               <h6 class="m-0 font-weight-bold text-primary">Société <i class="fal fa-building"></i></h6>
               <div class="dropdown no-arrow">
                 {% if   client   %}
-                <button class="btn btn-success btn-sm" data-toggle="modal"  data-target="#ModalLivraison" id="buttonLivraison"><i class="fal fa-truck"></i></button>
+                <button class="btn btn-success btn-sm" id="buttonLivraison"><i class="fal fa-truck"></i></button>
                 {% else %}
                 <button class="btn btn-success btn-sm disabled"  ><i class="fal fa-truck"></i></button> 
                 {% endif %}
@@ -602,7 +596,7 @@
                 {% endif %}
                 <div>
                   <div class="btn-group btn-group-sm">
-                    <button type="button" class="btn btn-primary " data-toggle="modal" data-target="#modalClient" id="toogleClient">Choisir</button>
+                    <button type="button" id="AjaxClient" class="btn btn-primary btn-sm" >Choisir</button>
                     <button type="button" class="btn btn-outline-primary " data-toggle="modal" data-target="#modalClientCrea">Créer</button>
                   </div>
                 </div>
@@ -613,7 +607,7 @@
 
           <!-- carte contact -->
         <div class="col-md-4">
-          <div class="card shadow mb-4">
+          <div class="card shadow mb-5">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Contact <i class="fal fa-user"></i></h6>

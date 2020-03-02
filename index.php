@@ -35,6 +35,10 @@
            case '/DevisRecode/voirDevis';
             require __DIR__ .'/pages/utilities/viewPdf.php';
            break;
+
+           case '/DevisRecode/AjaxSociete';
+            require __DIR__ .'/pages/utilities/ajaxClient.php';
+           break;
            
             default:
             header('HTTP/1.0 404 not found');

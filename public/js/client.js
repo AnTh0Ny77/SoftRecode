@@ -1,28 +1,90 @@
 
 $(document).ready(function() {
     
-     
-      // initialisation table client : 
-        let tableClient = $('#client').DataTable({
-            "paging": true,
-            "info":   true,
-            retrieve: true,
-            "deferRender": true,
-            "searching": true,   
-        });
+let tableClient;
+let tableLivraison;
 
+//appel ajax au click table client : 
+    $('#AjaxClient').on('click', function(){
+        let dataSet = [];
+        $.ajax({
+            type: 'post',
+            url: "AjaxSociete",
+            data : 
+            {
+                "AjaxSociete" : 7
+            },
+            success: function(data){
+                dataSet = JSON.parse(data);
+                $('#modalClient').modal('show');
+                //initialisation de la table Client : 
+                 tableClient = $('#client').DataTable({
+                     data: dataSet,
+                     "columns": [
+                        { "data": "client__id" },
+                        { "data": "client__societe" },
+                        { "data": "client__ville" }  
+                    ],
+                    "paging": true,
+                    "info":   true,
+                    retrieve: true,
+                    "deferRender": true,
+                    "searching": true,      
+                    });
+                // fonction selection du client  : 
+                $('#client tbody').on('click', 'tr', function () {
+                let donne = tableClient.row( this ).data();
+                $("#choixClient").val(donne.client__id);
+                $("#formSelectClient").submit();
+                });    
+            },
+            error: function (err) {
+                alert('error: ' + err);
+            }
 
-    // init table livraison au click : 
-    let tableLivraison ;
-    $("#buttonLivraison").on('click', function(){
-        tableLivraison = $('#Livraison').DataTable({
-            "paging": true,
-            "info":   true,
-             retrieve: true,
-            "deferRender": true,
-            "searching": true, 
         })
     })
+
+    //appel ajax au click table livraison : 
+    $('#buttonLivraison').on('click', function(){
+        let dataSet = [];
+        $.ajax({
+            type: 'post',
+            url: "AjaxSociete",
+            data : 
+            {
+                "AjaxLivraison" : 7
+            },
+            success: function(data){
+                dataSet = JSON.parse(data);
+                $('#ModalLivraison').modal('show');
+                //initialisation de la table Client : 
+                tableLivraison = $('#Livraison').DataTable({
+                     data: dataSet,
+                     "columns": [
+                        { "data": "client__id" },
+                        { "data": "client__societe" },
+                        { "data": "client__ville" }  
+                    ],
+                    "paging": true,
+                    "info":   true,
+                    retrieve: true,
+                    "deferRender": true,
+                    "searching": true,      
+                    });
+                 // fonction selection de l'adresse de livraison  : 
+                $('#Livraison tbody').on('click', 'tr', function () {
+                let donne = tableLivraison.row( this ).data();
+                $("#choixLivraison").val(donne.client__id);
+                $("#formSelectLivraison").submit();
+              });
+            },
+            error: function (err) {
+                alert('error: ' + err);
+            }
+        })
+    })
+ 
 
     // initi table mesDevis : 
     let modifDevis = $('#MyDevis').DataTable({
@@ -100,19 +162,9 @@ $(document).ready(function() {
         })
 
             
-        // fonction selection du client  : 
-        $('#client tbody').on('click', 'tr', function () {
-            let data = tableClient.row( this ).data();
-            $("#choixClient").val(data[0]);
-            $("#formSelectClient").submit();
-        });
+       
 
-         // fonction selection de l'adresse de livraison  : 
-         $('#Livraison tbody').on('click', 'tr', function () {
-            let data = tableLivraison.row( this ).data();
-            $("#choixLivraison").val(data[0]);
-            $("#formSelectLivraison").submit();
-        });
+        
     
         // fonction selection du contact : 
         $('#contactTable tbody').on('click','tr', function(){

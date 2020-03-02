@@ -20,7 +20,6 @@ session_start();
  $Article = new App\Tables\Article($Database);
  $Devis = new App\Tables\Devis($Database);
  $Database->DbConnect();
- $clientList = $Client->getAll();
  $keywordList = $Keywords->getI_con();
 
  //initialisation des variables a false en cas de premiere init :  
@@ -32,7 +31,6 @@ session_start();
  $articleTypeList = false;
  $prestaList = false;
  $devisModif = false ;
-
 
 // si un duplicata de devis a été demandée depuis : modifier devis :  
   if (!empty($_POST['DupliquerDevis'])) {
@@ -147,7 +145,6 @@ if (!empty($_POST['ValidDevis'])) {
 // Donnée transmise au template : 
 echo $twig->render('nouveauDevis.twig',[
    'user'=>$_SESSION['user'],
-   'clientList'=>$clientList,
    'client'=>$user,
    'contact'=> $contact,
    'keywordList'=>$keywordList,
