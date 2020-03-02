@@ -122,12 +122,12 @@ $(document).ready(function() {
         })
 
        
-
+      
         // Programme d'ajout de ligne dans le devis : 
         //traitement du formulaire : 
-        $('#choixDesignation option').on('click', function(){
-            $('#referenceS').val($(this).text());
-            console.log($(this));
+        $('#choixDesignation').on('change', function(){
+            var selectedOption = $(this).children("option:selected").text();
+            $('#referenceS').val(selectedOption);
         });
         
         // extension de garantie : 

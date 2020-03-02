@@ -81,7 +81,7 @@ if (!empty($_POST)) {
                 <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br><a>www.recode.fr</a><br><br><br>REF CLIENT :<?php echo $_SESSION['Client']->client__id ?></td>
             </tr>
             <tr>
-                <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis- 3190808</h2><br>07/07/07<br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : <?php  echo date("d-m-Y") ?></small></p></td>
+                <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis- 3190808</h2><br><?php echo date("d-m-Y") ?><br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : <?php  echo date("d-m-Y") ?></small></p></td>
                 <td style="text-align: left; width:50%"><small>livraison & facturation</small><strong><br><?php echo $_SESSION['Client']->client__societe ?><br><?php echo $_SESSION['Client']->client__adr1 ?><br><?php echo $_SESSION['Client']->client__adr2 ?><br><?php echo $_SESSION['Client']->client__cp ." ". $_SESSION['Client']->client__ville ?></strong></td>
             </tr>
         </table>
@@ -148,22 +148,22 @@ if (!empty($_POST)) {
                         $totalPrice = number_format(array_sum($arrayPrice),2);
                        
                           echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total hors extensions</td><td style='text-align: center'><strong>  ".$totalPrice. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($totalPrice),2)." </td></tr>";
-                          if (sizeOf($array12)>= 2) {
+                          if (sizeOf($array12) == sizeof($arrayOfDevisLigne)) {
                             array_push($array12 , floatval($totalPrice));
                             $total12Mois = number_format(array_sum($array12),2);
                           echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 12 mois</td><td style='text-align: center'><strong>  ".$total12Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($total12Mois),2)." </td></tr>";
                           }
-                          if (sizeOf($array24)>= 2) {
+                          if (sizeOf($array24) == sizeof($arrayOfDevisLigne)) {
                            array_push($array24 , floatval($totalPrice));
                             $total24Mois = number_format(array_sum($array24),2);
                           echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 24 mois</td><td style='text-align: center'><strong>  ".$total24Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($total24Mois),2)." </td></tr>";
                           }
-                          if (sizeOf($array36)>= 2) {
+                          if (sizeOf($array36) == sizeof($arrayOfDevisLigne)) {
                            array_push($array36 , floatval($totalPrice));
                             $total36Mois = number_format(array_sum($array36),2);
                           echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 36 mois</td><td style='text-align: center'><strong>  ".$total36Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($total36Mois),2)." </td></tr>";
                           }
-                          if (sizeOf($array48)>= 2) {
+                          if (sizeOf($array48) == sizeof($arrayOfDevisLigne)) {
                            array_push($array48 , floatval($totalPrice));
                             $total48Mois = number_format(array_sum($array48),2);
                           echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 48 mois</td><td style='text-align: center'><strong>  ".$total48Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($total48Mois),2)." </td></tr>";

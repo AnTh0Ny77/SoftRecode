@@ -37,11 +37,31 @@
             <table class="table table-hover table-dark">
               <tr>
                 <td>
-                <a class="nav-link text-white" href="home">
+                <a class="nav-link text-white"data-toggle="collapse" href="#collapseCommandes" role="button" aria-expanded="false" aria-controls="collapseExample">
                   <span data-feather="file"></span>
                   Commandes
                   <i class="fal fa-shopping-cart"></i>
                 </a>
+                <div class="collapse" id="collapseCommandes">
+                  <ul class="list-group">
+                    <li class="list-group-item  bg-transparent border-0" >
+                      <a class="nav-link text-white" href="home">
+                        <span data-feather="file"></span>
+                       Valider Commande
+                       <i class="fal fa-clipboard-check"></i>
+                      </a>
+                    </li>
+                  </ul>
+                  <ul class="list-group">
+                    <li class="list-group-item  bg-transparent border-0" >
+                      <a class="nav-link text-white" href="#">
+                        <span data-feather="file"></span>
+                        Commandes en cours
+                        <i class="fal fa-rabbit-fast"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </td>
               </tr>
               <tr>

@@ -542,7 +542,6 @@
                   <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectLivraison">
                         <input type="hidden" name="choixLivraison" id="choixLivraison" value="">
                   </form>
-                  <button type="button" class="btn btn-outline-primary" data-dismiss="modal" data-toggle="modal" data-target="#" >Créer</button>
                 </div>
               </div>
             </div>
@@ -576,7 +575,7 @@
         <!-- 1ere ligne -->
        <div class="d-flex flex-wrap flex-row justify-content-center">
           <!--carte societe -->
-        <div class="col-md-4">
+        <div class="col-md-5">
           <div class="card shadow mb-4">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -594,7 +593,7 @@
               <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between" id="findClient">
                 {% if  not client   %}
                 <div class=" mb-0 font-weight-bold text-muted">
-                  Veuillez choisir un client 
+                 Choisir un client*
                 </div>
                 {% else %}
                 <div class=" mb-0 font-weight-bold text-muted testIfClient" >
@@ -631,7 +630,7 @@
               <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
                 {% if  not contact   %}
                 <div class=" mb-0 font-weight-bold text-muted">
-                  Veuillez choisir un contact 
+                  Ajouter un contact 
                 </div>
                 {% else %}
                 <div class=" mb-0 font-weight-bold text-muted">
@@ -658,7 +657,7 @@
         </div>
 
        <!-- Pdf Vieweer -->
-       <div class="col-md-3">
+       <div class="col-md-2">
         <div class="card shadow mb-4">
 
           <!-- Card Header - -->
