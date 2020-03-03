@@ -52,7 +52,6 @@ $formated_date = $date_time->format('d/m/Y');
              <tr style=" margin-top : 50px; background-color: #dedede; " >
                 <td style="width: 18%; text-align: left;">Prestation</td><td style="width: 37%; text-align: left">Designation</td><td style="text-align: center">Type matériel</td><td  style="width: 12%; text-align: center">Garantie</td><td style="text-align: center; ">Qté</td><td style="text-align: center; width: 17%">P.u € HT</td>
              </tr> 
-
              <?php 
                  $arrayPrice =[];
                  $arrayGarantie = [];
@@ -169,8 +168,7 @@ $formated_date = $date_time->format('d/m/Y');
  </page>
  <?php
  $content = ob_get_contents();
- 
- 
+
  try {
      $doc = new Html2Pdf('P','A4','fr');
      $doc->pdf->SetDisplayMode('fullpage');

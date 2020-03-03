@@ -128,6 +128,7 @@ let tableLivraison;
 
     // attribut classe selected: a la table mes devis 
     modifDevis.on('click','tr',function() {
+        console.log("hey");
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
         }
@@ -146,6 +147,7 @@ let tableLivraison;
 
       // attribut classe selected: a la table Commandes 
       validCmd.on('click','tr',function() {
+        
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
         }
@@ -154,8 +156,7 @@ let tableLivraison;
             $(this).addClass('selected');
         }
         let dataRow = validCmd.row(this).data();
-        $("ValideCmd").val(dataRow[0]);
-        $("#commandeSend").val(dataRow[0]);
+        $("#ValideCmd").val(parseInt(dataRow[0]));
         checkClassCmd();
      });
 

@@ -40,6 +40,12 @@
             require __DIR__ .'/pages/ajax/ajaxClient.php';
            break;
            
+           case '/DevisRecode/commande';
+            require __DIR__ .'/pages/commandValid.php';
+           break;
+
+
+
             default:
             header('HTTP/1.0 404 not found');
             require  __DIR__ .'/pages/error404.php';

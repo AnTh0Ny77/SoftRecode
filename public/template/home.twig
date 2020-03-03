@@ -4,7 +4,7 @@
      {% block main %}
      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">Commandes<i class="fal fa-shopping-cart"></i></h1>
+        <h1 class="h2">Devis en attente<i class="fal fa-shopping-cart"></i></h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
           </div>
@@ -15,13 +15,16 @@
 
 
         <!--carte liste de Devis -->
-      <div class="col-8">
+      <div class="col-11">
         <div class="card shadow mb-4">
           <!-- Card Header - -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary"><i class="far fa-ellipsis-v"></i></h6>
             <div class="dropdown no-arrow">
-              
+              <form class="py-1" action="commande"  method="POST">
+                <input type="hidden" name="ValideCmd" id="ValideCmd" value="">
+                <button type="submit" class="btn btn-success btn-lg btn-block multiButton"  disabled>Commander</button>
+              </form>
             </div>
           </div>
           <!-- Card Body -->
@@ -38,36 +41,6 @@
            </div>
           </div>
         </div>
-      </div>
-
-        <!--carte option -->
-        <div class="col-3">
-          <div class="card shadow mb-4">
-            <!-- Card Header - -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Options <i class="fal fa-tools"></i></h6>
-              <div class="dropdown no-arrow">
-              </div>
-            </div>
-            <!-- Card Body -->
-            <div class="card-body">
-              <div class="d-flex flex-column  justify-content-around px-5">
-                <div class="py-1">
-                  <input type="hidden" name="ValideCmd" id="ValideCmd" value="">
-                  <button type="button" class="btn btn-success btn-lg btn-block multiButton"  data-toggle="modal" data-target="#statusModal" disabled>Commander</button>
-                </div>
-                <form class="py-1" action="commande"  method="POST">
-                  <input type="hidden" name="commandeSend" id="commandeSend" value="">
-                <button type="submit" class="btn btn-primary btn-lg btn-block multiButton" disabled>Modifier</button>
-                </form>
-                </form>
-             
-            </div>
-          </div>
-          
-        </div>
-
-
       </div>
     </main>
      {% endblock %}

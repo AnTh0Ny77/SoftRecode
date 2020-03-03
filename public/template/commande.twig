@@ -1,0 +1,189 @@
+{% extends 'layoutMain.twig' %}
+ 
+ 
+     {% block main %}
+     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2">Devis N°: {{devis.devis__id}}</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+              <div class="btn-group mr-2">
+              </div>
+            </div>
+          </div>
+           <!-- 1ere ligne -->
+           <div class="d-flex flex-wrap flex-row justify-content-center my-4">
+
+       <!-- Societe -->
+       <div class="col-md-4  ">
+        <div class="card shadow mb-4 h-100">
+          <!-- Card Header - -->
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between ">
+            <h6 class="m-0 font-weight-bold text-primary">Societe et Contact <i class="fal fa-building"></i></h6>
+            <div class="dropdown no-arrow">
+            </div>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body  ">
+            <div class="chart-pie pt-2 pb-2 d-flex flex-row   mb-1 justify-content-between">
+              <div class=" mb-0 font-weight-bold text-muted">
+                {{devis.client__societe}}<br>
+                  {{devis.client__ville ~ " " ~  devis.client__cp}}<br>
+                  {% if devis.contact__id %}
+                  Contact:<br>
+                  {{devis.contact__nom ~ " " ~ devis.contact__prenom}}<br>
+                  {% else %}
+                  <br>
+                  Pas de contact pour ce devis
+                  {% endif %}
+              </div>
+              <div>
+            </div>
+          </div>
+        </div>
+        </div>
+        </div>
+
+
+         <!--Adresse de livraison -->
+       <div class="col-md-4">
+        <div class="card shadow mb-4 h-100">
+          <!-- Card Header - -->
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Adresse de Livraison et frais de port <i class="fal fa-truck"></i></h6>
+            <div class="dropdown no-arrow">
+            </div>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body ">
+            <div class="chart-pie pt-2 pb-2 d-flex flex-row   mb-1 justify-content-between">
+              <div class=" mb-0 font-weight-bold text-muted ">
+                {% if devis.devis__id_client_livraison %}
+                {{devis.client__livraison_societe}}<br>
+                {{devis.client__livraison_ville ~ " " ~ client__livraison_cp}}
+                {% else %}
+                Livré et facturé à la même adresse
+                {% endif %}
+                <br><br>
+                Frais de port: {{devis.devis__port ~ " €"}}
+              </div>
+              <div>
+            </div>
+          </div>
+        </div>
+        </div>
+        </div>
+
+          <!--commentaiire-->
+       <div class="col-md-4">
+        <div class="card shadow mb-4 h-100">
+          <!-- Card Header - -->
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Commentaire Client et interne <i class="fal fa-comment-dots"></i></h6>
+            <div class="dropdown no-arrow">
+            </div>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="chart-pie pt-2 pb-2 d-flex flex-row   mb-1 justify-content-between">
+              <div class=" mb-0 font-weight-bold text-muted">
+                {% if devis.devis__note_client %}
+                {{devis.devis__note_client}}
+                {% else %}
+                Pas de commentaire client
+                {% endif %}
+                <br><br>
+
+                <div >
+                    Commentaire interne :
+                    <textarea class="form-control "  placeholder="Commentaire Interne...." rows="2" cols="40">{{devis.devis__note_interne}}</textarea>
+                </div>
+
+              </div>
+              <div>
+            </div>
+          </div>
+        </div>
+        </div>
+        </div>
+    </div>
+
+
+     <!-- 2eme ligne -->
+     <div class="d-flex flex-wrap flex-row justify-content-center my-4">
+
+
+           <!--Adresse de livraison -->
+       <div class="col-md-12 ">
+        <div class="card shadow mb-4">
+          <!-- Card Header - -->
+          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Items <i class="fas fa-list-ul"></i></h6>
+            <div class="dropdown no-arrow">
+            </div>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body ">
+            <div class="chart-pie pt-2 pb-2 d-flex flex-row   mb-1 ">
+              <div class=" d-flex flex-row flex-wrap w-100 ">
+                  {% for ligne in devisLigne  %}
+                  <div class=" col-4 mt-1" >
+                  <div class="card">
+                    <div class="card-header">
+                       {{ligne.devl__ordre ~ " " ~ ligne.devl__type}}
+                      </div>
+                    <div class="card-body">
+                      <h6 class="card-title">{{ ligne.devl__designation}}</h6>
+                      <ul class="list-group">
+                        <li class="list-group-item "> etat:    <strong>{{ ligne.devl__etat}}</strong></li>
+                        <li class="list-group-item"> garantie:  <strong>{{ ligne.devl__mois_garantie}} mois</strong> </li>
+                        <li class="list-group-item"> quantite:  <strong>{{ ligne.devl_quantite}}</strong> </li>
+                        <li class="list-group-item"> PU.HT :  <strong>{{ ligne.devl_puht}} € </strong> </li>
+                      </ul>
+                      <div >
+                          <div>
+                       Extension de Garantie<br>
+                        <div class="form-check form-check-inline">
+                          <input class="form-check-input" name="" type="radio" value="{{ status.keyword__value}}" >
+                          <label class="form-check-label" for="defaultCheck1">
+                            {{ status.keyword__lib}}
+                          </label>
+                        </div>
+                    </div>
+        
+                          <br>
+                        Commentaire interne :
+                        <textarea class="form-control "  placeholder="Commentaire Interne...." rows="2" cols="40">{{ ligne.devl__note_interne}}</textarea>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+                  {% endfor %}
+              </div>
+          </div>
+        </div>
+        </div>
+        </div>
+
+
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          
+           
+    </main>
+     {% endblock %}
