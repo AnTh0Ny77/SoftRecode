@@ -108,7 +108,7 @@ public function devisLigne($id){
 }
 
 public function xtenGarantie($id){
-  $request =$this->Db->Pdo->query("SELECT devg__type, devg__prix
+  $request =$this->Db->Pdo->query("SELECT devg__id, devg__type, devg__prix
   FROM garantie  WHERE devg__id__devl = ". $id ."");
   $data = $request->fetchAll(PDO::FETCH_ASSOC);
   return $data;

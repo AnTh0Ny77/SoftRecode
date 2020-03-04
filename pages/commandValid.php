@@ -18,16 +18,16 @@ $devis = $Devis->GetById($_POST['ValideCmd']);
 $arrayOfDevisLigne = $Devis->devisLigne($_POST['ValideCmd']);
 foreach ($arrayOfDevisLigne as $ligne) {
     $xtendArray = $Devis->xtenGarantie($ligne->devl__id);
-
+    $ligne->devl__prix_barre = $xtendArray;
   } 
-//var_dump($arrayOfDevisLigne);
-
+$jsonPack = json_encode($arrayOfDevisLigne);
 
 // Donnée transmise au template : 
 echo $twig->render('commande.twig',['user'=>$user,
 'user'=> $user,
 'devis'=> $devis,
-'devisLigne'=> $arrayOfDevisLigne
+'devisLigne'=> $arrayOfDevisLigne,
+'jsonPack'=> $jsonPack
 ]);
 
 

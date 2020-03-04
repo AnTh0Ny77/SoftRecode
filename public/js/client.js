@@ -524,7 +524,44 @@ let tableLivraison;
             $("#ValidDevis").val(202);
             $("#DevisValidForm").submit();
         });
-        
 
+
+        cmdArray = [];
+        // fonction de toogle des input radio : 
+        $(".radioCmd").on('click', function(){
+            $(this).parents('.border').removeClass('border-danger');
+            let borderRed =  $('.remove-border');
+            if (borderRed.hasClass('border-danger')) {
+                $('#SendCmd').prop("disabled", true);
+            }else{
+                $('#SendCmd').removeAttr('disabled');
+            }
+            cmdArray.push(this.value);
+            
+        })
+
+        // fonction de validation de commandes : 
+        $('#SendCmd').on('click', function(){
+            radio = $(".radioCmd");
+            for (let nb = 0; nb < radio.length; nb++) {
+                if(radio[nb].checked == true){
+                    console.log(radio[nb].value);
+                }
+            }
+
+
+
+         arrayOfItem = JSON.parse($('#arrayOfLines').val());
+          for (let index = 0; index < arrayOfItem.length; index++) {
+              let  element = arrayOfItem[index].devl__prix_barre;
+              console.log(element);
+          }
+          
+           
+          
+          
+         
+        })
+        
 
     } );

@@ -7,6 +7,7 @@
             <h1 class="h2">Devis N°: {{devis.devis__id}}</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
               <div class="btn-group mr-2">
+                <button id="SendCmd" type="button" class="btn btn-success  btn-lg" disabled>Commander</button>
               </div>
             </div>
           </div>
@@ -128,31 +129,44 @@
                   {% for ligne in devisLigne  %}
                   <div class=" col-3 mt-1" >
                   <div class="card">
-                    <div class="card-header">
+                    <div class="card-header text-primary">
                        {{ligne.devl__ordre ~ " " ~ ligne.devl__type}}
                       </div>
                     <div class="card-body">
-                      <h6 class="card-title">{{ ligne.devl__designation}}</h6>
-                      <ul class="list-group">
+                      <h6 class="card-title text-bold">{{ ligne.devl__designation}}</h6>
+                      <ul class="list-group shadow">
                         <li class="list-group-item "> etat:    <strong>{{ ligne.devl__etat}}</strong></li>
                         <li class="list-group-item"> garantie:  <strong>{{ ligne.devl__mois_garantie}} mois</strong> </li>
                         <li class="list-group-item"> quantite:  <strong>{{ ligne.devl_quantite}}</strong> </li>
                         <li class="list-group-item"> PU.HT :  <strong>{{ ligne.devl_puht}} € </strong> </li>
                       </ul>
-                      <div >
-                          <div>
-                       Extension de Garantie<br>
+                      <div class="foundBorder">
+                          <div class="my-2 border border-danger p-1 remove-border">
+                       Extension de Garantie:<br>
                         <div class="form-check form-check-inline">
-                          <input class="form-check-input" name="" type="radio" value="{{ status.keyword__value}}" >
-                          <label class="form-check-label" for="defaultCheck1">
-                            {{ status.keyword__lib}}
-                          </label>
+                            {% for xtend in ligne.devl__prix_barre %}
+                            <input class="form-check-input mx-1 radioCmd " name="{{loop.parent.loop.index}}" type="radio" value="{{xtend.devg__type ~ "," ~  xtend.devg__prix }}">
+                            <label class="form-check-label" for="{{xtend.devg__id}}">
+                              <strong> {{xtend.devg__type}} Mois.</strong>
+                            </label>
+                            {% if loop.last %}
+                            <input class="form-check-input mx-1 radioCmd" name="{{loop.parent.loop.index}}" type="radio" value="">
+                            <label class="form-check-label" for="{{xtend.devg__id}}">
+                               <strong>Aucunes </strong>
+                            </label>
+                            {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
-        
-                          <br>
+                        <div class="shadow">
                         Commentaire interne :
                         <textarea class="form-control "  placeholder="Commentaire Interne...." rows="2" cols="40">{{ ligne.devl__note_interne}}</textarea>
+                    </div>
+                    <!--form d'envoi de commande-->
+                    <form  method="POST" action="" id="formCMD">
+                        <input type="hidden" name="comInterneG" id="comInterneG" value="">
+                        <input type="hidden" name="arrayOfLines" id="arrayOfLines" value="{{ jsonPack }}">
+                    </form>
                     </div>
                     </div>
                   </div>
