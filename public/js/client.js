@@ -90,6 +90,7 @@ let tableLivraison;
     let modifDevis = $('#MyDevis').DataTable({
         "paging": true,
          "info":   false,
+         "pageLength": 10,
         retrieve: true,
         "deferRender": true,
         "searching": false,  
@@ -128,7 +129,6 @@ let tableLivraison;
 
     // attribut classe selected: a la table mes devis 
     modifDevis.on('click','tr',function() {
-        console.log("hey");
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
         }
@@ -143,6 +143,42 @@ let tableLivraison;
         $("#ModifierDevis").val(dataRow[0]);
         $("#DupliquerDevis").val(dataRow[0]);
         checkClassMulti();
+        // requete Ajax sur le devis selectionné dans la page mes devis : 
+        $.ajax({
+            type: 'post',
+            url: "AjaxDevis",
+            data : 
+            {
+                "AjaxDevis" : dataRow[0]
+            },
+            success: function(data){
+                dataSet = JSON.parse(data);
+                $('#AjaxId').text(dataSet[0].devis__id);
+                $('#AjaxSociete').html(dataSet[0].client__societe + "<br>" + dataSet[0].client__ville + " " + dataSet[0].client__cp );
+                if (dataSet[0].contact__nom) {
+                    $('#AjaxContact').html(dataSet[0].contact__nom + " " + dataSet[0].contact__prenom );
+                }else {  $('#AjaxContact').html('...') }
+                if (dataSet[0].client__livraison_societe) {
+                    $('#AjaxLivraison').html(dataSet[0].client__livraison__adr1 + "<br>" + dataSet[0].client__livraison_ville + " " + dataSet[0].client__livraison_cp);
+                }else{ $('#AjaxLivraison').html(dataSet[0].client__adr1 + "<br>" + dataSet[0].client__ville + " " + dataSet[0].client__cp ) }
+                $('#AjaxEtat').text(dataSet[0].keyword__lib);
+                $('#AjaxPort').html(dataSet[0].devis__port + ' €' ) ;
+                let listOfItem = $('#listOfAjax');
+                let array = dataSet[1];
+                for (let index = 0; index < array ; index++) {
+                    let li = document.createElement('li');
+                    let content = document.createTextNode(index[i].devl__designation);
+                    li.appendChild(content);
+                    listOfItem.appendChild(li);
+                    
+                }
+                console.log(dataSet);   
+            },
+            error: function (err) {
+                alert('error: ' + err);
+            }
+
+        })
      });
 
       // attribut classe selected: a la table Commandes 
@@ -312,9 +348,23 @@ let tableLivraison;
                 $("#prixRow").val(),
                 $("#barrePrice").val()
                 );
-                xtendArray = [];
+            xtendArray = [];
             });
         
+        // function qui compte les lignes de la table devis et rend possible l'export :
+
+        devisTable.on('draw.dt', function(){
+            let lines = devisTable.data().count();
+            if (lines < 1) {
+                $('#xportPdf').prop("disabled", true);
+            }else{
+                $('#xportPdf').removeAttr('disabled');
+            }
+        })
+
+
+
+
            
         
         // disable buttons si pas de ligne:  
@@ -548,20 +598,14 @@ let tableLivraison;
                     console.log(radio[nb].value);
                 }
             }
-
-
-
          arrayOfItem = JSON.parse($('#arrayOfLines').val());
           for (let index = 0; index < arrayOfItem.length; index++) {
               let  element = arrayOfItem[index].devl__prix_barre;
               console.log(element);
           }
-          
-           
-          
-          
-         
         })
+
+        
         
 
     } );

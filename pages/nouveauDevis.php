@@ -31,6 +31,7 @@ session_start();
  $articleTypeList = false;
  $prestaList = false;
  $devisModif = false ;
+ $sessionModif = false;
 
 // si un duplicata de devis a été demandée depuis : modifier devis :  
   if (!empty($_POST['DupliquerDevis'])) {
@@ -71,8 +72,10 @@ if (!empty($_POST['ModifierDevis'])) {
     }
     // on crée un variable de session pour la modification :
       $_SESSION['ModifierDevis'] = $_POST['ModifierDevis'];
+      $sessionModif = $_SESSION['ModifierDevis'];
 }
 $test = json_encode($devisModif);
+
 
  
 // Si un nouveau client à été crée  :  traitement par la classe Form 
@@ -152,5 +155,6 @@ echo $twig->render('nouveauDevis.twig',[
    'articleList'=>$articleTypeList,
    'prestaList'=> $prestaList,
    'livraison' => $livraison,
-   'devisModif' => $test
+   'devisModif' => $test,
+   'sessionModif'=> $sessionModif
 ]);;

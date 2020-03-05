@@ -2,7 +2,7 @@
 require "./vendor/autoload.php";
 require "./App/twigloader.php";
 session_start();
-
+unset($_SESSION['ModifierDevis']);
  //URL bloqué si pas de connexion :
  if (empty($_SESSION['user']) || empty($_POST['ValideCmd'])) {
     header('location: login');

@@ -88,7 +88,7 @@ public function GetById($id){
     k.keyword__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
-    c2.client__societe as client__livraison_societe, c2.client__ville as client__livraison_ville, c2.client__cp as client__livraison_cp
+    c2.client__societe as client__livraison_societe, c2.client__ville as client__livraison_ville, c2.client__cp as client__livraison_cp , c2.client__adr1 as client__livraison__adr1
     FROM devis
     LEFT JOIN contact as t ON  devis__contact__id = t.contact__id
     LEFT JOIN client as c ON devis__client__id = c.client__id

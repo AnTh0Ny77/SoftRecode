@@ -57,6 +57,26 @@
           <!-- Card Header - -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
             <h6 class="m-0 font-weight-bold text-primary"><i class="far fa-ellipsis-v"></i></h6>
+           
+              <div class="d-flex flex-row flex-wrap justify-content-center px-2 ml-5">
+                <div class="py-1 col-6">
+                  <button type="button" class="btn btn-success btn-block  btn-sm  multiButton"  data-toggle="modal" data-target="#statusModal" disabled>Statuer</button>
+                </div>
+                <form class="py-1  col-6" method="POST" action="voirDevis" target="blank">
+                  <input type="hidden" name="VoirDevis" id="VoirDevis" value="">
+                <button type="submit" class="btn btn-secondary btn-block  btn-sm  multiButton" disabled>PDF</button>
+                 </form>
+                <form class="py-1 col-6" action="nouveauDevis" method="POST">
+                  <input type="hidden" name="ModifierDevis" id="ModifierDevis" value="">
+                <button type="submit" class="btn btn-primary btn-sm  btn-block  multiButton" disabled>Modifier</button>
+                </form>
+                <form class="py-1 col-6" action="nouveauDevis" method="POST">
+                  <input type="hidden" name="DupliquerDevis" id="DupliquerDevis" value="">
+                <button type="submit" class="btn btn-warning btn-block btn-sm  multiButton" disabled>Dupliquer</button>
+                </form>
+             
+          
+            </div>
             <div class="dropdown no-arrow">
               <form class="form-inline">
                 <input class="form-control mr-2" type="search" placeholder="Recherche" aria-label="Search">
@@ -77,38 +97,47 @@
              </table>
            </div>
           </div>
+         
         </div>
       </div>
 
         <!--carte option -->
-        <div class="col-3">
+        <div class="col-4">
           <div class="card shadow mb-4">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Options <i class="fal fa-tools"></i></h6>
+              <h6 class="m-0 font-weight-bold text-primary">Infos <i class="fal fa-info"></i></h6>
               <div class="dropdown no-arrow">
               </div>
             </div>
             <!-- Card Body -->
             <div class="card-body">
-              <div class="d-flex flex-column  justify-content-around px-5">
-                <div class="py-1">
-                  <button type="button" class="btn btn-success btn-lg btn-block multiButton"  data-toggle="modal" data-target="#statusModal" disabled>Statuer</button>
+              <div class="card text-center shadow text-white bg-dark">
+                <div class="card-header">
+                  <h5 >ID du Devis: <strong class="text-primary" id="AjaxId">Aucun</strong></h5>
                 </div>
-                <form class="py-1" method="POST" action="voirDevis" target="blank">
-                  <input type="hidden" name="VoirDevis" id="VoirDevis" value="">
-                <button type="submit" class="btn btn-secondary btn-lg btn-block multiButton" disabled>Voir</button>
-                 </form>
-                <form class="py-1" action="nouveauDevis" method="POST">
-                  <input type="hidden" name="ModifierDevis" id="ModifierDevis" value="">
-                <button type="submit" class="btn btn-primary btn-lg btn-block multiButton" disabled>Modifier</button>
-                </form>
-                <form class="py-1" action="nouveauDevis" method="POST">
-                  <input type="hidden" name="DupliquerDevis" id="DupliquerDevis" value="">
-                <button type="submit" class="btn btn-warning btn-lg btn-block multiButton" disabled>Dupliquer</button>
-                </form>
-             
-            </div>
+                <div class="card-body ">
+                  <h6 class="card-title">Société : <strong class="text-primary" id="AjaxSociete">Aucun devis selectionné </strong></h6>
+                  <ul class="list-group text-justify ">
+                    <li class="list-group-item text-white bg-dark ">Contact: <strong class="text-primary" id="AjaxContact">...  </strong></li>
+                    <li class="list-group-item text-white bg-dark ">Livraison: <strong class="text-primary" id="AjaxLivraison">... </strong> </li>
+                    <li class="list-group-item text-white bg-dark ">Etat: <strong class="text-primary" id="AjaxEtat" >... </strong> </li>
+                    <li class="list-group-item text-white bg-dark ">Frais de port: <strong class="text-primary" id="AjaxPort">...</strong> </li>
+                    <li class="list-group-item text-white bg-dark ">
+                      <ul class="list-group text-justify " id="listOfAjax">
+
+                      </ul>
+
+
+
+                    </li>
+
+                  </ul>
+                </div>
+                <div class="card-footer text-muted">
+                  <strong>...</strong>
+                </div>
+              </div>
           </div>
           
         </div>

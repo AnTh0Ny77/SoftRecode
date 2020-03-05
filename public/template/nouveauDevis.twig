@@ -4,7 +4,11 @@
 
      <main  role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
       <div class="d-flex justify-content-between flex-wrap  align-items-center pb-2 mb-3 border-bottom">
+        {% if sessionModif %}
+        <h1 class="h2">Devis N°:  {{ sessionModif }}  <i class="fal fa-file-edit"></i></h1>
+        {% else %}
         <h1 class="h2">Nouveau devis  <i class="fal fa-file-edit"></i></h1>
+        {% endif %}
        
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
@@ -529,9 +533,9 @@
                 </div>
                 <div class="modal-footer">
                   {% if   livraison   %}
-                  <p>Livraison actuelle : {{ livraison.client__societe ~ " " ~ livraison.client__adr1 ~ " " ~  livraison.client__ville ~ " " }} </p>
+                  <p class="text-danger text-bold">Livraison actuelle : {{ livraison.client__societe ~ " " ~ livraison.client__adr1 ~ " " ~  livraison.client__ville ~ " " }} </p>
                   {% else %}
-                  <p>Livraison actuelle : {{ client.client__societe ~ " " ~ client.client__adr1 ~ " " ~  client.client__ville ~ " " ~ client.client__cp }} </p>
+                  <p class="text-danger text-bold">Livraison actuelle : {{ client.client__societe ~ " " ~ client.client__adr1 ~ " " ~  client.client__ville ~ " " ~ client.client__cp }} </p>
                   {% endif %}
                   <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectLivraison">
                         <input type="hidden" name="choixLivraison" id="choixLivraison" value="">
@@ -575,6 +579,9 @@
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Société <i class="fal fa-building"></i></h6>
               <div class="dropdown no-arrow">
+                {% if livraison %}
+                <i class="far fa-check text-success"></i>
+                {% endif %}
                 {% if   client   %}
                 <button class="btn btn-success btn-sm" id="buttonLivraison"><i class="fal fa-truck"></i></button>
                 {% else %}
@@ -667,9 +674,9 @@
               <div class=" mb-0 font-weight-bold text-muted"></div>
               <div>
                 {% if  not client %}
-                <button type="button" class="btn btn-primary btn-sm mb-3 disabled" >Exporter</button></div>
+                <button type="button" class="btn btn-primary btn-sm mb-3 " disabled>Exporter</button></div>
                 {% else %}
-                <button type="button" class="btn btn-primary btn-sm mb-3" data-toggle="modal" data-target="#modalPdf">Exporter</button></div>
+                <button type="button" class="btn btn-primary btn-sm mb-3" id="xportPdf" data-toggle="modal" data-target="#modalPdf" disabled>Exporter</button></div>
                 {% endif %}
                 
             </div>

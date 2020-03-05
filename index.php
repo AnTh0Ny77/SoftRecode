@@ -39,6 +39,10 @@
            case '/DevisRecode/AjaxSociete';
             require __DIR__ .'/pages/ajax/ajaxClient.php';
            break;
+
+           case '/DevisRecode/AjaxDevis';
+            require __DIR__ .'/pages/ajax/ajaxDevis.php';
+           break;
            
            case '/DevisRecode/commande';
             require __DIR__ .'/pages/commandValid.php';
