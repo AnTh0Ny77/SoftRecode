@@ -33,6 +33,14 @@ session_start();
  $devisModif = false ;
  $sessionModif = false;
 
+ // si le demande de devis est une nouvelle demande on dissous les variable de sessions : 
+ if (!empty($_POST['certificateNew'])) {
+  unset($_SESSION['Contact']);
+  unset($_SESSION['Client']);
+  unset($_SESSION['livraison']);
+  unset($_SESSION['ModifierDevis']);
+ }
+
 // si un duplicata de devis a été demandée depuis : modifier devis :  
   if (!empty($_POST['DupliquerDevis'])) {
   $devisModif = [];
@@ -55,8 +63,10 @@ $test = json_encode($devisModif);
 
 // si une modication de devis à été demandée depuis : modifier devis : 
 if (!empty($_POST['ModifierDevis'])) {
+  // on crée un variable de session pour la modification :
+    $_SESSION['ModifierDevis'] = $_POST['ModifierDevis'];
   $devisModif = [];
-  $temp =   $Devis->GetById($_POST['ModifierDevis']);
+  $temp =   $Devis->GetById($_SESSION['ModifierDevis']);
   $_SESSION['Client'] = $Client->getOne($temp->devis__client__id);
   if (!empty($temp->devis__contact__id)) {
     $_SESSION['Contact'] = $Contact->getOne($temp->devis__contact__id);
@@ -64,16 +74,35 @@ if (!empty($_POST['ModifierDevis'])) {
   if (!empty($temp->devis__id_client_livraison)){
     $_POST['choixLivraison'] =  $temp->devis__id_client_livraison;
   }
-  $arrayOfDevisLigne = $Devis->devisLigne($_POST['ModifierDevis']);
+  $arrayOfDevisLigne = $Devis->devisLigne($_SESSION['ModifierDevis']);
     foreach ($arrayOfDevisLigne as $ligne) {
       $xtendArray = $Devis->xtenGarantie($ligne->devl__id);
       $ligne->ordre = $xtendArray;
       array_push($devisModif,$ligne);
     }
-    // on crée un variable de session pour la modification :
-      $_SESSION['ModifierDevis'] = $_POST['ModifierDevis'];
       $sessionModif = $_SESSION['ModifierDevis'];
 }
+
+// si un rechargement de page a lieu prendant une modifiacation : 
+  if (!empty($_SESSION['ModifierDevis'])) {
+    $devisModif = [];
+    $temp =   $Devis->GetById($_SESSION['ModifierDevis']);
+    $_SESSION['Client'] = $Client->getOne($temp->devis__client__id);
+    if (!empty($temp->devis__contact__id)) {
+      $_SESSION['Contact'] = $Contact->getOne($temp->devis__contact__id);
+    }
+    if (!empty($temp->devis__id_client_livraison)){
+      $_POST['choixLivraison'] =  $temp->devis__id_client_livraison;
+    }
+    $arrayOfDevisLigne = $Devis->devisLigne($_SESSION['ModifierDevis']);
+      foreach ($arrayOfDevisLigne as $ligne) {
+        $xtendArray = $Devis->xtenGarantie($ligne->devl__id);
+        $ligne->ordre = $xtendArray;
+        array_push($devisModif,$ligne);
+      }
+        $sessionModif = $_SESSION['ModifierDevis'];
+  }
+
 $test = json_encode($devisModif);
 
 

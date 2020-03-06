@@ -29,7 +29,8 @@
               <div class=" mb-0 font-weight-bold text-muted">
                 {{devis.client__societe}}<br>
                   {{devis.client__ville ~ " " ~  devis.client__cp}}<br>
-                  {% if devis.contact__id %}
+                  {% if devis.contact__prenom %}
+                  <br>
                   Contact:<br>
                   {{devis.contact__nom ~ " " ~ devis.contact__prenom}}<br>
                   {% else %}
@@ -114,7 +115,7 @@
 
 
            <!--Adresse de livraison -->
-       <div class="col-md-12 ">
+       <div class="col-md-12  ">
         <div class="card shadow mb-4">
           <!-- Card Header - -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -128,17 +129,17 @@
               <div class=" d-flex flex-row flex-wrap w-100 ">
                   {% for ligne in devisLigne  %}
                   <div class=" col-3 mt-1" >
-                  <div class="card">
+                  <div class="card text-white bg-dark">
                     <div class="card-header text-primary">
                        {{ligne.devl__ordre ~ " " ~ ligne.devl__type}}
                       </div>
                     <div class="card-body">
                       <h6 class="card-title text-bold">{{ ligne.devl__designation}}</h6>
                       <ul class="list-group shadow">
-                        <li class="list-group-item "> etat:    <strong>{{ ligne.devl__etat}}</strong></li>
-                        <li class="list-group-item"> garantie:  <strong>{{ ligne.devl__mois_garantie}} mois</strong> </li>
-                        <li class="list-group-item"> quantite:  <strong>{{ ligne.devl_quantite}}</strong> </li>
-                        <li class="list-group-item"> PU.HT :  <strong>{{ ligne.devl_puht}} € </strong> </li>
+                        <li class="list-group-item text-white bg-dark "> etat:    <strong>{{ ligne.devl__etat}}</strong></li>
+                        <li class="list-group-item text-white bg-dark"> garantie:  <strong>{{ ligne.devl__mois_garantie}} mois</strong> </li>
+                        <li class="list-group-item text-white bg-dark"> quantite:  <strong>{{ ligne.devl_quantite}}</strong> </li>
+                        <li class="list-group-item text-white bg-dark"> PU.HT :  <strong>{{ ligne.devl_puht}} € </strong> </li>
                       </ul>
                       <div class="foundBorder">
                           <div class="my-2 border border-danger p-1 remove-border">

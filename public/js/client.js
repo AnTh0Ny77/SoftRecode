@@ -84,6 +84,13 @@ let tableLivraison;
             }
         })
     })
+
+
+    // fonction post du formulaire certificateNew : 
+
+    $("#certificateNew").on('click', function() {
+        $("#formCertificate").submit();
+    })
  
 
     // initi table mesDevis : 
@@ -138,7 +145,6 @@ let tableLivraison;
         }
         let dataRow = modifDevis.row(this).data();
         $("#ValiderDevis").val(dataRow[0]);
-        $("#RefuserDevis").val(dataRow[0]);
         $("#VoirDevis").val(dataRow[0]);
         $("#ModifierDevis").val(dataRow[0]);
         $("#DupliquerDevis").val(dataRow[0]);
@@ -164,15 +170,17 @@ let tableLivraison;
                 $('#AjaxEtat').text(dataSet[0].keyword__lib);
                 $('#AjaxPort').html(dataSet[0].devis__port + ' €' ) ;
                 let listOfItem = $('#listOfAjax');
+                listOfItem.html(' ');
                 let array = dataSet[1];
-                for (let index = 0; index < array ; index++) {
-                    let li = document.createElement('li');
-                    let content = document.createTextNode(index[i].devl__designation);
-                    li.appendChild(content);
-                    listOfItem.appendChild(li);
+                for (let index = 0; index < array.length ; index++) {
+                   let li = document.createElement('li');
+                   let content = document.createTextNode( array[index].devl_quantite + " x " +  array[index].devl__designation + ' : ' + array[index].devl_puht + " €" );
+                   li.appendChild(content);
+                   listOfItem.append(li);
+                   listOfItem.children('li').addClass('list-group-item text-white bg-secondary font-weight-bold');
                     
                 }
-                console.log(dataSet);   
+                 
             },
             error: function (err) {
                 alert('error: ' + err);
@@ -234,11 +242,6 @@ let tableLivraison;
             "searching": false, 
         })
 
-            
-       
-
-        
-    
         // fonction selection du contact : 
         $('#contactTable tbody').on('click','tr', function(){
             let text = tableContact.row( this ).data();
@@ -246,8 +249,6 @@ let tableLivraison;
             $("#formSelectContact").submit();
         })
 
-       
-      
         // Programme d'ajout de ligne dans le devis : 
         //traitement du formulaire : 
         $('#choixDesignation').on('change', function(){
@@ -275,7 +276,6 @@ let tableLivraison;
                     let li =  $('<li></li>').text(xtendArray[index][0] + " mois " + xtendArray[index][1] + "€ H.T ")
                     .addClass('list-group-item col-4 d-flex justify-content-between align-items-center').appendTo(ul);
                     let  i =  $('<i></i>').addClass('fal fa-trash-alt btn btn-link deleteParent').val(index).appendTo(li);
-                   
                 }
                  $('#xtendPrice').val("");
                  xtendCouple = [];
@@ -329,8 +329,6 @@ let tableLivraison;
             
         }
         
-    
-
         //ajout d'une ligne de devis : function location : devisFunction.js (addOne): 
         
         $("#addRow").on('click', function(){
@@ -362,11 +360,6 @@ let tableLivraison;
             }
         })
 
-
-
-
-           
-        
         // disable buttons si pas de ligne:  
         let checkClass = function(){
             let RowDevis =  $('#DevisBody').find('tr');

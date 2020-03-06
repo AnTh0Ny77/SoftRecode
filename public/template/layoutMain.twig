@@ -82,8 +82,11 @@
                     </li>
                   </ul>
                   <ul class="list-group">
-                    <li class="list-group-item  bg-transparent border-0" >
-                      <a class="nav-link text-white" href="nouveauDevis">
+                    <li class="list-group-item  bg-transparent border-0 certificate" >
+                      <form action="nouveauDevis" method="POST" id="formCertificate">
+                        <input type="hidden" name="certificateNew" value="certificateNew">
+                      </form>
+                      <a class="nav-link text-white" id="certificateNew" >
                         <span data-feather="file"></span>
                         Nouveau devis
                         <i class="fal fa-file-edit"></i>
