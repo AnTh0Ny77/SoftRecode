@@ -8,6 +8,8 @@ session_start();
 $Database = new App\Database('devisrecode');
 $Database->DbConnect();
 $Devis = new App\Tables\Devis($Database);
+$Client = new App\Tables\Client($Database);
+$Contact = new \App\Tables\Contact($Database);
 
 
 if (empty($_SESSION['user'])) {
@@ -19,24 +21,27 @@ if (empty($_SESSION['user'])) {
 if (!empty($_POST)) {
     $devisData = json_decode($_POST["dataDevis"]);
     $date = date("Y-m-d H:i:s");
-    
+    $client = $Client->getOne($_POST['clientSelect']);
+   
+
     // corrige la notice lié a l'accesion d'un non objet -> :
     $contactId = NULL;
     $livraisonId = NULL;
-    if (!empty( $_SESSION['Contact'])) {
-      $contactId = $_SESSION['Contact']->contact__id;
+    if (!empty( $_POST['contactSelect'])) {
+      $contactId = $_POST['contactSelect'];
+      $contact = $Contact->getOne($_POST['contactSelect']);
     }
     if (!empty($_SESSION['livraison'])) {
         $livraisonId = $_SESSION['livraison']->client__id;
     }
     $status = 'ATN';
 
-    if (!empty($_SESSION['ModifierDevis'])) {
+    if (!empty($_POST['ModifierDevis'])) {
         $devis = $Devis->Modify(
         $_SESSION['ModifierDevis'],
         $date,
         $_SESSION['user']->id_utilisateur,
-        $_SESSION['Client']->client__id,
+        $_POST['clientSelect'],
         $livraisonId,
         $_POST['port'],
         $contactId,
@@ -50,7 +55,7 @@ if (!empty($_POST)) {
         $devis = $Devis->insertOne(
             $date,
             $_SESSION['user']->id_utilisateur,
-            $_SESSION['Client']->client__id,
+            $_POST['clientSelect'],
             $livraisonId,
             $_POST['port'],
             $contactId,
@@ -78,11 +83,11 @@ if (!empty($_POST)) {
         <table style="width: 100%;">
             <tr>
                 <td style="text-align: left;  width: 50%"><img  style=" width:65mm" src="public/img/recodeDevis.png"/></td>
-                <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br><a>www.recode.fr</a><br><br><br>REF CLIENT :<?php echo $_SESSION['Client']->client__id ?></td>
+                <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br><a>www.recode.fr</a><br><br><br>REF CLIENT :<?php echo $client->client__id ?></td>
             </tr>
             <tr>
                 <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis- 3190808</h2><br><?php echo date("d-m-Y") ?><br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : <?php  echo date("d-m-Y") ?></small></p></td>
-                <td style="text-align: left; width:50%"><small>livraison & facturation</small><strong><br><?php echo $_SESSION['Client']->client__societe ?><br><?php echo $_SESSION['Client']->client__adr1 ?><br><?php echo $_SESSION['Client']->client__adr2 ?><br><?php echo $_SESSION['Client']->client__cp ." ". $_SESSION['Client']->client__ville ?></strong></td>
+                <td style="text-align: left; width:50%"><small>livraison & facturation</small><strong><br><?php echo $client->client__societe ?><br><?php echo $client->client__adr1 ?><br><?php echo $client->client__adr2 ?><br><?php echo $client->client__cp ." ". $client->client__ville ?></strong></td>
             </tr>
         </table>
         <table CELLSPACING=0 style="width: 100%;  margin-top: 30px; ">
@@ -213,8 +218,6 @@ if (!empty($_POST)) {
         $doc->writeHTML($content);
         ob_clean();
         $doc->output('devisN:' . $devis.'.pdf');
-        unset( $_SESSION['Contact']);
-        unset( $_SESSION['Client']);
         unset( $_SESSION['livraison']);
        
     } catch (Html2PdfException $e) {

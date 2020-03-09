@@ -1,8 +1,9 @@
 
 $(document).ready(function() {
-    
+
 let tableClient;
 let tableLivraison;
+let tableContact;
 
 //appel ajax au click table client : 
     $('#AjaxClient').on('click', function(){
@@ -31,12 +32,6 @@ let tableLivraison;
                     "deferRender": true,
                     "searching": true,      
                     });
-                // fonction selection du client  : 
-                $('#client tbody').on('click', 'tr', function () {
-                let donne = tableClient.row( this ).data();
-                $("#choixClient").val(donne.client__id);
-                $("#formSelectClient").submit();
-                });    
             },
             error: function (err) {
                 alert('error: ' + err);
@@ -84,6 +79,202 @@ let tableLivraison;
             }
         })
     })
+
+
+
+    // int de la table contact :
+    tableContact = $('#contactTable').DataTable({
+        "columns": [
+           { "data": "contact__id" },
+           { "data": "contact__nom" },
+           { "data": "keyword__lib" }  
+       ],
+       "paging": true,
+       "info":   true,
+       "deferRender": true,
+       retrieve: true,
+       deferRender: true,
+       "searching": false,      
+       });
+
+    //appel data  table contact : 
+    $('#toogleContact').on('click', function(){
+        let dataSetContact = [];
+        $.ajax({
+            type: 'post',
+            url: "tableContact",
+            data : 
+            {
+                "AjaxContactTable" : $('#clientSelect').val()
+            },
+            success: function(data){
+                tableContact.clear().draw();
+                dataSetContact = JSON.parse(data);
+                $('#modalContact').modal('show');
+               tableContact.rows.add(dataSetContact).draw(); 
+               dataSetContact = [];
+            },
+            error: function (err) {
+                alert('error: ' + err);
+            }
+        })
+    })
+
+
+    //appel ajax au choix du contact : 
+    $('#contactTable tbody').on('click', 'tr', function () {
+        let donne = tableContact.row( this ).data();
+        $.ajax({
+            type: 'post',
+            url: "choixContact",
+            data : 
+            {
+                "AjaxContact" :  donne.contact__id
+            },
+            success: function(data){  
+            dataSet = JSON.parse(data);
+            $('#contactDiv').html(dataSet.contact__nom + '<br>' + dataSet.contact__prenom + '<br>' + dataSet.keyword__lib);
+            $('#contactSelect').val(dataSet.contact__id);
+            $('#modalContact').modal('hide');
+            },
+            error: function (err) {
+                alert('error: ' + err);
+            }
+
+        })
+    
+    });
+
+    //appel ajax a la creation du contact : 
+    $('#postContact').on('click', function () {
+        $.ajax({
+            type: 'post',
+            url: "createContact",
+            data : 
+            {
+                "societeLiaison" : $('#clientSelect').val(),
+                "inputStateContact" : $('#inputStateContact').val() ,
+                "inputCiv" : $('#inputCiv').val(),
+                "nomContact" :  $('#nomContact').val(),
+                "prenomContact" : $('#prenomContact').val(),
+                "telContact" : $('#telContact').val(),
+                "faxContact" : $('#faxContact').val(),
+                "mailContact" : $('#mailContact').val(),
+            },
+            success: function(data){
+            dataSetCreaContact = JSON.parse(data);
+            $('#contactDiv').html(dataSetCreaContact.contact__nom + '<br>' + dataSetCreaContact.contact__prenom + '<br>' + dataSetCreaContact.keyword__lib);
+            $('#contactSelect').val(dataSetCreaContact.contact__id);
+            $('#modalContact').modal('hide');
+            },
+            error: function (err) {
+                alert('error: ' + err);
+            }
+
+        })
+    
+    });
+
+    // appel ajax choix du client : 
+    $('#client tbody').on('click', 'tr', function () {
+        $('#contactDiv').html(" Aucun contact selectionné");
+        $('#contactSelect').val("");
+        let donne = tableClient.row( this ).data();
+        $.ajax({
+            type: 'post',
+            url: "createNew",
+            data : 
+            {
+                "AjaxClient" :  donne.client__id
+            },
+            success: function(data){
+            dataSet = JSON.parse(data);
+            $('#divClient').html(dataSet.client__societe + '<br>' + dataSet.client__adr1 + '<br>' + dataSet.client__ville);
+            $('#clientSelect').val(dataSet.client__id);
+            $('#modalClient').modal('hide');
+            $('#addNewRow').removeAttr('disabled');
+            },
+            error: function (err) {
+                alert('error: ' + err);
+            }
+        })
+    });
+
+
+
+
+    //appel ajax creation de client:  
+    $('#PostClient').on('click', function(){
+        $('#contactDiv').html(" Aucun contact selectionné");
+        $('#contactSelect').val("");
+        $.ajax({
+            type: 'post',
+            url: "createClient",
+            data : 
+            {
+                "inputAddress" : $('#inputAddress').val() ,
+                "inputAddress2" : $('#inputAddress2').val(),
+                "societeNameCreate" :  $('#societeNameCreate').val(),
+                "inputZip" : $('#inputZip').val(),
+                "inputCity" : $('#inputCity').val(),
+                "inlineFormCustomSelect" : $('#SelectClientCountry').val(),
+            },
+            success: function(data){
+            dataSetCrea = JSON.parse(data);
+            $('#divClient').html(dataSetCrea.client__societe + '<br>' + dataSetCrea.client__adr1 + '<br>' + dataSetCrea.client__ville);
+            $('#clientSelect').val(dataSetCrea.client__id);
+            $('#modalClientCrea').modal('hide');
+            $('#addNewRow').removeAttr('disabled');
+            },
+            error: function (err) {
+                alert('error: ' + err);
+            }
+
+        })
+
+    })
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     // fonction post du formulaire certificateNew : 
@@ -232,23 +423,9 @@ let tableLivraison;
             }
         });
 
-       // initialisation table contact  
-        let tableContact = $("#contactTable").DataTable({
-            "paging": false,
-            "info":   true,
-            "deferRender": true,
-            retrieve: true,
-            deferRender: true,
-            "searching": false, 
-        })
+      
 
-        // fonction selection du contact : 
-        $('#contactTable tbody').on('click','tr', function(){
-            let text = tableContact.row( this ).data();
-            $("#choixContact").val(text[0]);
-            $("#formSelectContact").submit();
-        })
-
+      
         // Programme d'ajout de ligne dans le devis : 
         //traitement du formulaire : 
         $('#choixDesignation').on('change', function(){
@@ -551,9 +728,6 @@ let tableLivraison;
             let arrayOfDevis = $.map(rowData, function(value) {
                 return [value];
             });
-
-            console.log(arrayOfDevis);
-            
             let paramJSON = JSON.stringify(arrayOfDevis);
 
             console.log(paramJSON);
@@ -594,9 +768,11 @@ let tableLivraison;
          arrayOfItem = JSON.parse($('#arrayOfLines').val());
           for (let index = 0; index < arrayOfItem.length; index++) {
               let  element = arrayOfItem[index].devl__prix_barre;
-              console.log(element);
           }
         })
+
+
+    
 
         
         

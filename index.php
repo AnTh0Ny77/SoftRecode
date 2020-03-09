@@ -48,6 +48,25 @@
             require __DIR__ .'/pages/commandValid.php';
            break;
 
+           case '/DevisRecode/createNew';
+            require __DIR__ .'/pages/ajax/ajaxCreate.php';
+           break;
+
+           case '/DevisRecode/createClient';
+           require __DIR__ .'/pages/ajax/ajaxCreateClient.php';
+           break;
+
+           case '/DevisRecode/tableContact';
+           require __DIR__ .'/pages/ajax/ajaxTableContact.php';
+           break;
+
+           case '/DevisRecode/choixContact';
+           require __DIR__ .'/pages/ajax/ajaxcontactChoix.php';
+           break;
+
+           case '/DevisRecode/createContact';
+           require __DIR__ .'/pages/ajax/ajaxcreateContact.php';
+           break;
 
 
             default:

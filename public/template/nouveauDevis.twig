@@ -62,7 +62,7 @@
                     <div class="form-row">
                       <div class="form-group col-md-8">
                         <label for="inputEmail4">Société*</label>
-                        <input type="text" class="form-control text-uppercase" id="inputEmail4"  name="societe" required >
+                        <input type="text" class="form-control text-uppercase" id="societeNameCreate"  name="societe" required >
                       </div>
                     </div>
                     <div class="form-group">
@@ -84,7 +84,7 @@
                       </div>
                       <div class="form-group col-md-4">
                         <label for="pays">Pays*</label>
-                        <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="pays">
+                        <select class="custom-select mr-sm-2" id="SelectClientCountry" name="pays">
                           <option value="france" selected>France</option>
                           <option value="autre" >autre</option>
                         </select>
@@ -94,7 +94,7 @@
                 
                 <div class="modal-footer justify-content-end ">
                   <div>
-                    <button type="submit" class="btn btn-primary">Valider</button>
+                    <button type="button" id="PostClient" class="btn btn-primary">Valider</button>
                   </div>
                 </div>
               </form>
@@ -117,9 +117,7 @@
                       <tr><th>Id</th><th>Nom</th><th>Fonction</th></tr>
                      </thead > 
                     <tbody>
-                      {% for contact in contactList %}
-                       <tr class="trClick"><td>{{contact.contact__id}}</td><td>{{contact.contact__nom ~ " " ~ " " ~ contact.contact__prenom}}</td><td>{{contact.keyword__lib}}</td></tr>
-                       {% endfor %}
+            
                     </tbody>
                   </table>
                 </div>
@@ -154,7 +152,7 @@
                     <div class="form-row">
                       <div class="form-group col-md-6">
                         <label for="inputState">Fonction *</label>
-                        <select id="inputState" class="form-control" name="fonctionContact" required>
+                        <select id="inputStateContact" class="form-control" name="fonctionContact" required>
                           <option value="STD" selected>Standard</option>
                           {% for keyword in keywordList %}
                           <option value={{keyword.keyword__value}}>{{keyword.keyword__lib}}</option>
@@ -174,32 +172,32 @@
                     <div class="form-row">
                       <div class="form-group col-md-6">
                         <label for="inputCity">Nom</label>
-                        <input type="text" class="form-control" name="nomContact">
+                        <input type="text" class="form-control" name="nomContact" id="nomContact">
                       </div>
                       <div class="form-group col-md-6">
                         <label for="inputCity">Prenom</label>
-                        <input type="text" class="form-control" name="prenomContact">
+                        <input type="text" class="form-control" name="prenomContact" id="prenomContact">
                       </div>
                     </div>
 
                     <div class="form-row">
                       <div class="form-group col-md-3">
                         <label for="inputZip">Telephone</label>
-                        <input type="text" class="form-control" name="telContact">
+                        <input type="text" class="form-control" name="telContact" id="telContact">
                       </div>
                       <div class="form-group col-md-3">
                         <label for="inputZip">Fax </label>
-                        <input type="text" class="form-control"name="faxContact">
+                        <input type="text" class="form-control"name="faxContact" id="faxContact">
                       </div>
                       <div class="form-group col-md-6">
                         <label for="inputCity">Mail</label>
-                        <input type="email" class="form-control"name="mailContact">
+                        <input type="email" class="form-control"name="mailContact" id="mailContact">
                       </div>
                     </div>
                 </div>
                 <div class="modal-footer justify-content-end ">
                   <div>
-                    <button type="submit" class="btn btn-primary">Valider</button>
+                    <button type="button" class="btn btn-primary" id="postContact">Valider</button>
                   </div>
                 </div>
               </form>
@@ -499,7 +497,25 @@
                         </div>    
                     </div>
                   </div>
-                </div>   
+                </div> 
+                {% if societe %}
+                <input type="hidden" name="clientSelect" id="clientSelect" value="{{societe.client__id}}">
+                {% else %}
+                <input type="hidden" name="clientSelect" id="clientSelect" value="">
+                {% endif %} 
+                
+                {% if contact %}
+                <input type="hidden" name="contactSelect" id="contactSelect" value="{{contact.contact__id}}">
+                {% else %}
+                <input type="hidden" name="contactSelect" id="contactSelect" value="">
+                {% endif %}
+
+                {% if sessionModif %}
+                <input type="hidden" name="ModifierDevis" id="ModifierDevis" value="{{ sessionModif }}">
+                {% else %}
+                <input type="hidden" name="ModifierDevis" id="ModifierDevis" value="">
+                {% endif %}
+              
                 <div class="modal-footer">
                   <button  type='submit'  class="btn btn-primary" id="xPortData">Exporter</button>
                 </form>
@@ -592,15 +608,15 @@
             <!-- Card Body -->
             <div class="card-body">
               <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between" id="findClient">
-                {% if  not client   %}
-                <div class=" mb-0 font-weight-bold text-muted">
-                 Choisir un client*
+                <div class=" mb-0 font-weight-bold text-muted" id="divClient">
+                 {% if not societe %}
+                  Choisir un client*
+                 {% else %}
+                  {{societe.client__societe}} <br>
+                  {{societe.client__ville}} <br>
+                  {{societe.client__cp}}
+                 {% endif %}
                 </div>
-                {% else %}
-                <div class=" mb-0 font-weight-bold text-muted testIfClient" >
-                  {{ client.client__societe }}<br>{{client.client__adr1  }} <br>  {{client.client_ville }}
-                </div>
-                {% endif %}
                 <div>
                   <div class="btn-group btn-group-sm">
                     <button type="button" id="AjaxClient" class="btn btn-primary btn-sm" >Choisir</button>
@@ -619,38 +635,29 @@
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Contact <i class="fal fa-user"></i></h6>
               <div class="dropdown no-arrow">
-                {% if  not contact %}
-                <button type="button" class="btn btn-danger btn-sm disabled"  ><i class="fal fa-trash-alt"></i></button>
-                {% else %}
+               
                 <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#supprimeContact"><i class="fal fa-trash-alt"></i></button>
-                {% endif %}
+               
               </div>
             </div>
             <!-- Card Body -->
             <div class="card-body">
               <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
-                {% if  not contact   %}
-                <div class=" mb-0 font-weight-bold text-muted">
+                <div class=" mb-0 font-weight-bold text-muted" id="contactDiv">
+                  {% if contact %}
+                  {{contact.contact__nom}}<br>
+                  {{contact.contact__prenom }}
+                  {{contact.keyword__value}}
+                  {% else %}
                   Ajouter un contact 
+                  {% endif %}
+                 
                 </div>
-                {% else %}
-                <div class=" mb-0 font-weight-bold text-muted">
-                  {{ contact.contact__civ  ~ " " ~ contact.contact__nom ~ " " ~ contact.contact__prenom}}<br>
-                   {{contact.keyword__lib}}
-                </div>
-                {% endif %}
                 <div>
-                {% if  not client %}
-                  <div class="btn-group btn-group-sm">
-                    <button type="button" class="btn btn-primary  disabled" >Choisir</button>
-                    <button type="button" class="btn btn-outline-primary disabled ">Créer</button>
-                  </div>
-                      {% else %}
                       <div class="btn-group btn-group-sm">
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalContact" id="toogleContact">Choisir</button>
                         <button type="button" class="btn btn-outline-primary " data-toggle="modal" data-target="#modalContactCrea">Créer</button>
                       </div>
-                {% endif %}
               </div>
               </div>
             </div>
@@ -673,12 +680,7 @@
             <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
               <div class=" mb-0 font-weight-bold text-muted"></div>
               <div>
-                {% if  not client %}
-                <button type="button" class="btn btn-primary btn-sm mb-3 " disabled>Exporter</button></div>
-                {% else %}
-                <button type="button" class="btn btn-primary btn-sm mb-3" id="xportPdf" data-toggle="modal" data-target="#modalPdf" disabled>Exporter</button></div>
-                {% endif %}
-                
+                <button type="button" class="btn btn-primary btn-sm mb-3" id="xportPdf" data-toggle="modal" data-target="#modalPdf" disabled>Exporter</button></div>  
             </div>
           </div>
         </div>
@@ -698,11 +700,7 @@
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Devis en cours <i class="fal fa-file-edit"></i></h6>
               <div class="dropdown no-arrow">
-                {% if  not client %}
-                <button type="button" class="btn btn-primary btn-sm disabled"  ><i class="fal fa-plus-circle"></i></button>
-                {% else %}
-                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="addNewRow" data-target="#modalPresta"><i class="fal fa-plus-circle"></i></button>
-                {% endif %}
+                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" id="addNewRow" data-target="#modalPresta" disabled><i class="fal fa-plus-circle"></i></button>
                 <button type="button" id="modifyLine" class="btn btn-success notActive btn-sm"  data-toggle="modal" data-target="#modalModif"><i class="fal fa-edit"></i></button>
                 <button type="button" id="removeLine" class="btn btn-danger notActive btn-sm"><i class="fal fa-trash-alt"></i></button>
               </div>
@@ -721,6 +719,8 @@
     </div>
       <!-- fin deuxième ligne -->
     </main>
+
+
     
      {% endblock %}
      
