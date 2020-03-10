@@ -34,6 +34,8 @@ $('#AjaxClient').on('click', function(){
     alert('error: ' + err);}
     })
 })
+
+
     
 
     //appel ajax au click table livraison : 
@@ -221,6 +223,7 @@ $('#AjaxClient').on('click', function(){
         })
     });
 
+    
 
 
 
@@ -257,6 +260,17 @@ $('#AjaxClient').on('click', function(){
         })
 
     })
+   
+    // verifie si c'est une modifiaction pour l'accesion au newRow
+    if ($('#AncienDevis').val()) {
+        if ($('#AncienDevis').val().length > 0 ){
+            $('#addNewRow').removeAttr('disabled');
+        }else {
+            $('#addNewRow').prop("disabled", true);
+        }
+    }
+    
+    
 
 
     // fonction post du formulaire certificateNew : 
@@ -408,8 +422,7 @@ $('#AjaxClient').on('click', function(){
            
         });
 
-        //check au chargement le nombres de lignes : 
-        //checkTableRows(devisTable);
+       
 
       
 
@@ -492,7 +505,7 @@ $('#AjaxClient').on('click', function(){
           }
             
         }
-        
+        checkTableRows(devisTable);
         //ajout d'une ligne de devis : function location : devisFunction.js (addOne): 
         
         $("#addRow").on('click', function(){
@@ -517,6 +530,8 @@ $('#AjaxClient').on('click', function(){
         devisTable.on('draw.dt', function(){
             checkTableRows(devisTable);
         })
+
+        
 
         // disable buttons si pas de ligne:  
         let checkClass = function(){

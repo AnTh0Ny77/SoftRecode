@@ -69,3 +69,11 @@ let checkTableRows = function(subject){
     }
 
 
+    let checkClient = function(subject){
+        lines = subject.data().count();
+        if (lines < 1) {
+            $('#addNewRow').prop("disabled", true);
+        }else{
+            $('#addNewRow').removeAttr('disabled');
+        }
+        }
