@@ -261,17 +261,7 @@ $('#AjaxClient').on('click', function(){
 
     })
    
-    // verifie si c'est une modifiaction pour l'accesion au newRow
-    if ($('#AncienDevis').val()) {
-        if ($('#AncienDevis').val().length > 0 ){
-            $('#addNewRow').removeAttr('disabled');
-        }else {
-            $('#addNewRow').prop("disabled", true);
-        }
-    }
     
-    
-
 
     // fonction post du formulaire certificateNew : 
 
@@ -476,6 +466,7 @@ $('#AjaxClient').on('click', function(){
         if ($('#AncienDevis').val()) {
             jsonDataAncienDevis =  JSON.parse($('#AncienDevis').val())
         if (jsonDataAncienDevis != false) {
+            $('#addNewRow').removeAttr('disabled');
             for (let numberOfLines = 0; numberOfLines < jsonDataAncienDevis.length; numberOfLines++) {
                 arrayTemp = [];
                 if (jsonDataAncienDevis[numberOfLines].devl__prix_barre == '0') {
