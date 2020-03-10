@@ -116,7 +116,7 @@ public function xtenGarantie($id){
 
 public function Modify( $id, $date , $user, $client , $livraison, $port, $contact, $comClient, $comInterne, $etat, $modele , $arrayOfObject){
 
-  $delete = $this->Db->Pdo->prepare('DELETE from devis WHERE devis__id =  :devis__id');
+  $delete = $this->Db->Pdo->prepare('DELETE  from devis WHERE devis__id =  :devis__id');
  
   $request = $this->Db->Pdo->prepare('INSERT INTO ' .$this->Table."(devis__id, devis__date_crea , devis__user__id, devis__client__id , devis__id_client_livraison,
    devis__port, devis__contact__id, devis__note_client, devis__note_interne, devis__etat , devis__modele )

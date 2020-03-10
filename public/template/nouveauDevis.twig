@@ -515,6 +515,12 @@
                 {% else %}
                 <input type="hidden" name="ModifierDevis" id="ModifierDevis" value="">
                 {% endif %}
+
+                {% if livraison %}
+                <input type="hidden" name="livraisonSelect" id="livraisonSelect" value="{{ livraison.client__id }}">
+                {% else %}
+                <input type="hidden" name="livraisonSelect" id="livraisonSelect" value="">
+                {% endif %}
               
                 <div class="modal-footer">
                   <button  type='submit'  class="btn btn-primary" id="xPortData">Exporter</button>
@@ -549,9 +555,9 @@
                 </div>
                 <div class="modal-footer">
                   {% if   livraison   %}
-                  <p class="text-danger text-bold">Livraison actuelle : {{ livraison.client__societe ~ " " ~ livraison.client__adr1 ~ " " ~  livraison.client__ville ~ " " }} </p>
+                  <p class="text-danger text-bold" id="textLivraison">Livraison actuelle : {{ livraison.client__societe ~ " " ~ livraison.client__adr1 ~ " " ~  livraison.client__ville ~ " " }} </p>
                   {% else %}
-                  <p class="text-danger text-bold">Livraison actuelle : {{ client.client__societe ~ " " ~ client.client__adr1 ~ " " ~  client.client__ville ~ " " ~ client.client__cp }} </p>
+                  <p class="text-danger text-bold" id="textLivraison">Livraison actuelle : </p>
                   {% endif %}
                   <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectLivraison">
                         <input type="hidden" name="choixLivraison" id="choixLivraison" value="">
@@ -595,14 +601,10 @@
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Société <i class="fal fa-building"></i></h6>
               <div class="dropdown no-arrow">
-                {% if livraison %}
-                <i class="far fa-check text-success"></i>
-                {% endif %}
-                {% if   client   %}
+                
+                <i class="far fa-check text-success" id="petitCheck" hidden></i>
+               
                 <button class="btn btn-success btn-sm" id="buttonLivraison"><i class="fal fa-truck"></i></button>
-                {% else %}
-                <button class="btn btn-success btn-sm disabled"  ><i class="fal fa-truck"></i></button> 
-                {% endif %}
               </div>
             </div>
             <!-- Card Body -->

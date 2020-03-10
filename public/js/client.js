@@ -6,39 +6,35 @@ let tableLivraison;
 let tableContact;
 
 //appel ajax au click table client : 
-    $('#AjaxClient').on('click', function(){
-        let dataSet = [];
-        $.ajax({
-            type: 'post',
-            url: "AjaxSociete",
-            data : 
-            {
-                "AjaxSociete" : 7
-            },
-            success: function(data){
-                dataSet = JSON.parse(data);
-                $('#modalClient').modal('show');
-                //initialisation de la table Client : 
-                 tableClient = $('#client').DataTable({
-                     data: dataSet,
-                     "columns": [
-                        { "data": "client__id" },
-                        { "data": "client__societe" },
-                        { "data": "client__ville" }  
-                    ],
-                    "paging": true,
-                    "info":   true,
-                    retrieve: true,
-                    "deferRender": true,
-                    "searching": true,      
-                    });
-            },
-            error: function (err) {
-                alert('error: ' + err);
-            }
+$('#AjaxClient').on('click', function(){
+    let dataSet = [];
 
-        })
+    $.ajax({
+        type: 'post',
+        url: "AjaxSociete",
+        data : {"AjaxSociete" : 7},
+        
+    success: function(data){
+        dataSet = JSON.parse(data);
+        $('#modalClient').modal('show');
+        tableClient = $('#client').DataTable({
+        data: dataSet,
+        "columns": [
+        {"data": "client__id"},
+        {"data": "client__societe"},
+        {"data": "client__ville"}], 
+        "paging": true,
+        "info":   true,
+        retrieve: true,
+        "deferRender": true,
+        "searching": true,});
+        },
+
+    error: function (err) {
+    alert('error: ' + err);}
     })
+})
+    
 
     //appel ajax au click table livraison : 
     $('#buttonLivraison').on('click', function(){
@@ -47,55 +43,77 @@ let tableContact;
             type: 'post',
             url: "AjaxSociete",
             data : 
-            {
-                "AjaxLivraison" : 7
-            },
+            {"AjaxLivraison" : 7},
+                
             success: function(data){
                 dataSet = JSON.parse(data);
-                $('#ModalLivraison').modal('show');
-                //initialisation de la table Client : 
+                $('#ModalLivraison').modal('show'); 
                 tableLivraison = $('#Livraison').DataTable({
-                     data: dataSet,
-                     "columns": [
-                        { "data": "client__id" },
-                        { "data": "client__societe" },
-                        { "data": "client__ville" }  
-                    ],
-                    "paging": true,
-                    "info":   true,
-                    retrieve: true,
-                    "deferRender": true,
-                    "searching": true,      
-                    });
-                 // fonction selection de l'adresse de livraison  : 
-                $('#Livraison tbody').on('click', 'tr', function () {
-                let donne = tableLivraison.row( this ).data();
-                $("#choixLivraison").val(donne.client__id);
-                $("#formSelectLivraison").submit();
-              });
-            },
+                data: dataSet,
+                "columns": [
+                {"data": "client__id"},
+                {"data": "client__societe"},
+                {"data": "client__ville"}], 
+                "paging": true,
+                "info":   true,
+                retrieve: true,
+                "deferRender": true,
+                "searching": true,}
+            );},      
+                
             error: function (err) {
-                alert('error: ' + err);
-            }
-        })
+            alert('error: ' + err);
+            }})   
     })
 
 
+    // fonction selection de l'adresse de livraison  : 
+    $('#Livraison tbody').on('click', 'tr', function () {
+    let donne = tableLivraison.row( this ).data();
+    $.ajax({
+        type: 'post',
+        url: "choixLivraison",
+        data : 
+        {
+            "AjaxLivraison" :  donne.client__id
+        },
+        success: function(data){  
+        dataSet = JSON.parse(data);
+        $('#textLivraison').text("livraison actuelle : " + dataSet.client__societe + ' ' + dataSet.client__adr1 + ' ' + dataSet.client__ville);
+        $('#livraisonSelect').val(dataSet.client__id);
+        $('#ModalLivraison').modal('hide');
+        checkVert();
+        },
+        error: function (err) {
+            alert('error: ' + err);
+        }
+    })
+    });
+
+
+    //fonction qui affiche le ptit check vert de l'adresse de livraison: 
+    let checkVert = function (){
+        if ($('#livraisonSelect').val()) {
+            $('#petitCheck').removeAttr('hidden');
+        } else {
+            $('#petitCheck').prop("hidden", true);
+        }
+    }
+    checkVert();
 
     // int de la table contact :
     tableContact = $('#contactTable').DataTable({
-        "columns": [
-           { "data": "contact__id" },
-           { "data": "contact__nom" },
-           { "data": "keyword__lib" }  
-       ],
-       "paging": true,
-       "info":   true,
-       "deferRender": true,
-       retrieve: true,
-       deferRender: true,
-       "searching": false,      
-       });
+    "columns": [
+    {"data": "contact__id"},
+    {"data": "contact__nom"},
+    {"data": "keyword__lib"}],  
+    "paging": true,
+    "info":   true,
+    "deferRender": true,
+    retrieve: true,
+    deferRender: true,
+    "searching": false,      
+    });
 
     //appel data  table contact : 
     $('#toogleContact').on('click', function(){
@@ -165,7 +183,7 @@ let tableContact;
             dataSetCreaContact = JSON.parse(data);
             $('#contactDiv').html(dataSetCreaContact.contact__nom + '<br>' + dataSetCreaContact.contact__prenom + '<br>' + dataSetCreaContact.keyword__lib);
             $('#contactSelect').val(dataSetCreaContact.contact__id);
-            $('#modalContact').modal('hide');
+            $('#modalContactCrea').modal('hide');
             },
             error: function (err) {
                 alert('error: ' + err);
@@ -179,6 +197,9 @@ let tableContact;
     $('#client tbody').on('click', 'tr', function () {
         $('#contactDiv').html(" Aucun contact selectionné");
         $('#contactSelect').val("");
+        $('#textLivraison').text("");
+        $('#livraisonSelect').val("");
+        checkVert();
         let donne = tableClient.row( this ).data();
         $.ajax({
             type: 'post',
@@ -207,6 +228,9 @@ let tableContact;
     $('#PostClient').on('click', function(){
         $('#contactDiv').html(" Aucun contact selectionné");
         $('#contactSelect').val("");
+        $('#textLivraison').text("");
+        $('#livraisonSelect').val("");
+        checkVert();
         $.ajax({
             type: 'post',
             url: "createClient",
@@ -235,48 +259,6 @@ let tableContact;
     })
 
 
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // fonction post du formulaire certificateNew : 
 
     $("#certificateNew").on('click', function() {
@@ -294,6 +276,7 @@ let tableContact;
         "searching": false,  
        
     })
+
     // ini table commandes :
     let validCmd = $('#MyCommande').DataTable({
         "paging": true,
@@ -303,6 +286,7 @@ let tableContact;
         "searching": false,  
        
     })
+
     // disable buttons multiple si pas de ligne select dans la table mes devis:  
     let checkClassMulti = function(){
         let RowModif =  $('#MyDevis').find('tr');
@@ -421,11 +405,14 @@ let tableContact;
                 update: false,
                 selector: 'td:first-child'
             }
+           
         });
 
-      
+        //check au chargement le nombres de lignes : 
+        //checkTableRows(devisTable);
 
       
+
         // Programme d'ajout de ligne dans le devis : 
         //traitement du formulaire : 
         $('#choixDesignation').on('change', function(){
@@ -433,12 +420,12 @@ let tableContact;
             $('#referenceS').val(selectedOption);
         });
         
+
         // extension de garantie : 
         let xtendMois ; 
         let xtendPrix;
         let xtendArray = [];
         $("#xtendGr").on('click', function(){
-            
             if (!$("#xtendPrice").val() && !$("#xtendPrice").val()) {
                 $("#xtendPrice").addClass('alert alert-danger');
             }else {
@@ -527,14 +514,8 @@ let tableContact;
             });
         
         // function qui compte les lignes de la table devis et rend possible l'export :
-
         devisTable.on('draw.dt', function(){
-            let lines = devisTable.data().count();
-            if (lines < 1) {
-                $('#xportPdf').prop("disabled", true);
-            }else{
-                $('#xportPdf').removeAttr('disabled');
-            }
+            checkTableRows(devisTable);
         })
 
         // disable buttons si pas de ligne:  

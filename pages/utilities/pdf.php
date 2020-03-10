@@ -31,14 +31,15 @@ if (!empty($_POST)) {
       $contactId = $_POST['contactSelect'];
       $contact = $Contact->getOne($_POST['contactSelect']);
     }
-    if (!empty($_SESSION['livraison'])) {
-        $livraisonId = $_SESSION['livraison']->client__id;
+    if (!empty($_POST['livraisonSelect'])) {
+        $livraisonId = $_POST['livraisonSelect'];
     }
     $status = 'ATN';
 
+
     if (!empty($_POST['ModifierDevis'])) {
         $devis = $Devis->Modify(
-        $_SESSION['ModifierDevis'],
+        intval($_POST['ModifierDevis']),
         $date,
         $_SESSION['user']->id_utilisateur,
         $_POST['clientSelect'],
@@ -65,9 +66,7 @@ if (!empty($_POST)) {
             NULL,
             $devisData);
     }
-    unset($_SESSION['ModifierDevis']);
     
-
     ob_start();
     ?>
     <style type="text/css">

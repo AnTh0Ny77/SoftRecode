@@ -68,6 +68,10 @@
            require __DIR__ .'/pages/ajax/ajaxcreateContact.php';
            break;
 
+           case '/DevisRecode/choixLivraison';
+           require __DIR__ .'/pages/ajax/ajaxChoixLivraison.php';
+           break;
+
 
             default:
             header('HTTP/1.0 404 not found');

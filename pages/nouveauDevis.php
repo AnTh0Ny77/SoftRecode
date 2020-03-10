@@ -33,7 +33,7 @@ session_start();
  $devisModif = false ;
  $sessionModif = false;
  $societe = false;
-
+ $temp = false;
 
 
 
@@ -52,7 +52,7 @@ session_start();
   }
 
   if (!empty($temp->devis__id_client_livraison)){
-    $_POST['choixLivraison'] =  $temp->devis__id_client_livraison;
+    $livraison =  $Client->getOne($temp->devis__id_client_livraison);
   }
 
   $arrayOfDevisLigne = $Devis->devisLigne($_POST['DupliquerDevis']);
@@ -78,7 +78,7 @@ if (!empty($_POST['ModifierDevis'])) {
   }
 
   if (!empty($temp->devis__id_client_livraison)){
-    $_POST['choixLivraison'] =  $temp->devis__id_client_livraison;
+    $livraison =  $Client->getOne($temp->devis__id_client_livraison);
   }
 
   $arrayOfDevisLigne = $Devis->devisLigne($_POST['ModifierDevis']);
@@ -96,16 +96,6 @@ if (!empty($_POST['ModifierDevis'])) {
 $test = json_encode($devisModif);
 $articleTypeList = $Article->getAll();
 $prestaList = $Keywords->getPresta();
-
-
-
-
-// si un choix d'adresse de livraison à été efectué : 
-if (!empty($_POST['choixLivraison'])) {
-   $_SESSION['livraison'] = $Client->getOne($_POST['choixLivraison']); 
-   $livraison = $_SESSION['livraison'];
-   
-}
 
 
 

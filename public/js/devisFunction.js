@@ -58,4 +58,14 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
 
 
 
+// function qui check le nombre de ligne de la table et rend possible l'export :
+let checkTableRows = function(subject){
+    lines = subject.data().count();
+    if (lines < 1) {
+        $('#xportPdf').prop("disabled", true);
+    }else{
+        $('#xportPdf').removeAttr('disabled');
+    }
+    }
+
 
