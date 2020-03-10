@@ -33,6 +33,7 @@
                   <br>
                   Contact:<br>
                   {{devis.contact__nom ~ " " ~ devis.contact__prenom}}<br>
+                 
                   {% else %}
                   <br>
                   Pas de contact pour ce devis
@@ -142,8 +143,14 @@
                         <li class="list-group-item text-white bg-dark"> PU.HT :  <strong>{{ ligne.devl_puht}} € </strong> </li>
                       </ul>
                       <div class="foundBorder">
+                          {% if not  ligne.devl__prix_barre %}
+                          <div class="my-2   p-1 ">
+                          Aucunes extensions de Garantie <br>
+                          {% else %}
                           <div class="my-2 border border-danger p-1 remove-border">
-                       Extension de Garantie:<br>
+                          Extension de Garantie:<br>
+                          {% endif %}
+                       
                         <div class="form-check form-check-inline">
                             {% for xtend in ligne.devl__prix_barre %}
                             <input class="form-check-input mx-1 radioCmd " name="{{loop.parent.loop.index}}" type="radio" value="{{xtend.devg__type ~ "," ~  xtend.devg__prix }}">
@@ -161,7 +168,7 @@
                     </div>
                         <div class="shadow">
                         Commentaire interne :
-                        <textarea class="form-control "  placeholder="Commentaire Interne...." rows="2" cols="40">{{ ligne.devl__note_interne}}</textarea>
+                        <textarea class="form-control CMD-COM" id="cmdInterneNote"  placeholder="Commentaire Interne...." rows="2" cols="40">{{ ligne.devl__note_interne}}</textarea>
                     </div>
                     <!--form d'envoi de commande-->
                     <form  method="POST" action="" id="formCMD">
@@ -178,7 +185,14 @@
         </div>
         </div>
         </div>
-
+              <form method="POST" action="" name="formValideCMD">
+                <input type="hidden" name="clientCommande" id="clientCommande" value="{{devis.devis__client__id}}">
+                <input type="hidden" name="contactCommande" id="contactCommande" value="{{devis.devis__contact__id}}">
+                <input type="hidden" name="userCommande" id="userCommande" value="{{devis.devis__user__id}}">
+                <input type="hidden" name="ComClientCommande" id="ComClientCommande" value="{{devis.devis__note_client}}">
+                <input type="hidden" name="ComInterCommande" id="ComInterCommande" value="{{devis.devis__note_interne}}">
+                <input type="hidden" name="arrayLigneDeCommande" id="arrayLigneDeCommande" value="">
+              </form>
 
       </div>
 

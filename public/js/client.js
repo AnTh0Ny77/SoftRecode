@@ -747,21 +747,24 @@ $('#AjaxClient').on('click', function(){
         // fonction de validation de commandes : 
         $('#SendCmd').on('click', function(){
             radio = $(".radioCmd");
+            arrayOFsheet = [];
+            arrayOFcom = [];
             for (let nb = 0; nb < radio.length; nb++) {
                 if(radio[nb].checked == true){
-                    console.log(radio[nb].value);
+                    arrayOFsheet.push(radio[nb].value);    
                 }
             }
+            commentaireLigne = $('.CMD-COM');
+            for (let nb2 = 0; nb2 < commentaireLigne.length; nb2++) {
+                arrayOFcom.push(commentaireLigne[nb2].value);
+            }
+
          arrayOfItem = JSON.parse($('#arrayOfLines').val());
           for (let index = 0; index < arrayOfItem.length; index++) {
-              let  element = arrayOfItem[index].devl__prix_barre;
+               arrayOfItem[index].devl__prix_barre = arrayOFsheet[index];
+               arrayOfItem[index].devl__note_interne = arrayOFcom[index];
           }
+          $('#arrayLigneDeCommande').val(JSON.stringify(arrayOfItem));
+          $('#ComInterCommande').val($('#cmdInterneNote').val());
         })
-
-
-    
-
-        
-        
-
     } );
