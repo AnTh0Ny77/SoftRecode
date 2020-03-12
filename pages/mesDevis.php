@@ -25,7 +25,7 @@ session_start();
    $Devis->updateStatus('RFS',$_POST['RefuserDevis']);
 }
 
- $devisList = $Devis->getAll();
+ $devisList = $Devis->getNotCMD();
 // Donnée transmise au template : 
 echo $twig->render('mesDevis.twig',['user'=>$user,
 'user'=> $user,

@@ -86,7 +86,7 @@ public function getAll(){
 public function GetById($id){
   $request =$this->Db->Pdo->query("SELECT devis__id, devis__user__id , devis__date_crea, devis__client__id, devis__contact__id, devis__port, devis__note_client, devis__note_interne,  devis__id_client_livraison ,
     k.keyword__lib,
-    t.contact__nom, t.contact__prenom, t.contact__email,
+     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
     c2.client__societe as client__livraison_societe, c2.client__ville as client__livraison_ville, c2.client__cp as client__livraison_cp , c2.client__adr1 as client__livraison__adr1
     FROM devis
@@ -187,6 +187,29 @@ public function getFromStatus(){
   JOIN utilisateur as u ON devis__user__id = u.id_utilisateur 
   JOIN keyword as k ON devis__etat = k.keyword__value
   WHERE devis__etat = 'VLD'     
+  ORDER BY  devis__date_crea DESC LIMIT 200 ");
+$data = $request->fetchAll(PDO::FETCH_OBJ);
+return $data;
+}
+
+public function getFromStatusCMD(){
+  $request =$this->Db->Pdo->query("SELECT devis__id,  devis__date_crea , devis__user__id , devis__client__id, devis__etat , c.client__societe,  c.client__ville, c.client__cp , u.log_nec , k.keyword__lib
+  FROM  devis JOIN client as c ON devis__client__id = c.client__id 
+  JOIN utilisateur as u ON devis__user__id = u.id_utilisateur 
+  JOIN keyword as k ON devis__etat = k.keyword__value
+  WHERE devis__etat = 'CMD'     
+  ORDER BY  devis__date_crea DESC LIMIT 200 ");
+$data = $request->fetchAll(PDO::FETCH_OBJ);
+return $data;
+}
+
+
+public function getNotCMD(){
+  $request =$this->Db->Pdo->query("SELECT devis__id,  devis__date_crea , devis__user__id , devis__client__id, devis__etat , c.client__societe,  c.client__ville, c.client__cp , u.log_nec , k.keyword__lib
+  FROM  devis JOIN client as c ON devis__client__id = c.client__id 
+  JOIN utilisateur as u ON devis__user__id = u.id_utilisateur 
+  JOIN keyword as k ON devis__etat = k.keyword__value
+  WHERE devis__etat <> 'CMD'     
   ORDER BY  devis__date_crea DESC LIMIT 200 ");
 $data = $request->fetchAll(PDO::FETCH_OBJ);
 return $data;

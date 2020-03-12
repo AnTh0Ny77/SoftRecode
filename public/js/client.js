@@ -36,6 +36,8 @@ $('#AjaxClient').on('click', function(){
 })
 
 
+
+
     
 
     //appel ajax au click table livraison : 
@@ -705,7 +707,6 @@ $('#AjaxClient').on('click', function(){
             $("#UPxtendList").empty();
             row = [];
             UpXtendArray = [];
-             
         })
 
         // envoi au module de traitement PDF : 
@@ -719,8 +720,6 @@ $('#AjaxClient').on('click', function(){
 
             console.log(paramJSON);
             $("#dataDevis").val(paramJSON);
-          
-            
         });
        
         //reload page : 
@@ -729,6 +728,10 @@ $('#AjaxClient').on('click', function(){
             $("#DevisValidForm").submit();
         });
 
+
+
+
+        
 
         cmdArray = [];
         // fonction de toogle des input radio : 
@@ -744,14 +747,19 @@ $('#AjaxClient').on('click', function(){
             
         })
 
+
         // fonction de validation de commandes : 
         $('#SendCmd').on('click', function(){
             radio = $(".radioCmd");
+            radioP = $('.radioCmdP');
             arrayOFsheet = [];
             arrayOFcom = [];
+            
             for (let nb = 0; nb < radio.length; nb++) {
                 if(radio[nb].checked == true){
-                    arrayOFsheet.push(radio[nb].value);    
+                    arrayTemp = [];
+                    arrayTemp.push(radio[nb].value,radioP[nb].value);
+                    arrayOFsheet.push(arrayTemp);    
                 }
             }
             commentaireLigne = $('.CMD-COM');
@@ -761,10 +769,24 @@ $('#AjaxClient').on('click', function(){
 
          arrayOfItem = JSON.parse($('#arrayOfLines').val());
           for (let index = 0; index < arrayOfItem.length; index++) {
+                
+                if (arrayOFsheet[index] === undefined) {
+                    arrayOFsheet[index] = [null,null];
+                }
                arrayOfItem[index].devl__prix_barre = arrayOFsheet[index];
                arrayOfItem[index].devl__note_interne = arrayOFcom[index];
           }
           $('#arrayLigneDeCommande').val(JSON.stringify(arrayOfItem));
           $('#ComInterCommande').val($('#cmdInterneNote').val());
+          $('#formValideCMD').submit();
         })
+
+
+
+
+
+
+
+
+        
     } );

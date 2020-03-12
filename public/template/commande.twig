@@ -46,7 +46,6 @@
         </div>
         </div>
 
-
          <!--Adresse de livraison -->
        <div class="col-md-4">
         <div class="card shadow mb-4 h-100">
@@ -95,12 +94,10 @@
                 Pas de commentaire client
                 {% endif %}
                 <br><br>
-
                 <div >
                     Commentaire interne :
                     <textarea class="form-control "  placeholder="Commentaire Interne...." rows="2" cols="40">{{devis.devis__note_interne}}</textarea>
                 </div>
-
               </div>
               <div>
             </div>
@@ -109,7 +106,6 @@
         </div>
         </div>
     </div>
-
 
      <!-- 2eme ligne -->
      <div class="d-flex flex-wrap flex-row justify-content-center my-4">
@@ -153,12 +149,14 @@
                        
                         <div class="form-check form-check-inline">
                             {% for xtend in ligne.devl__prix_barre %}
-                            <input class="form-check-input mx-1 radioCmd " name="{{loop.parent.loop.index}}" type="radio" value="{{xtend.devg__type ~ "," ~  xtend.devg__prix }}">
+                            <input type="hidden" class="radioCmdP" value="{{xtend.devg__prix}}">
+                            <input class="form-check-input mx-1 radioCmd " name="{{loop.parent.loop.index}}" type="radio" value="{{xtend.devg__type}}">
                             <label class="form-check-label" for="{{xtend.devg__id}}">
                               <strong> {{xtend.devg__type}} Mois.</strong>
                             </label>
                             {% if loop.last %}
-                            <input class="form-check-input mx-1 radioCmd" name="{{loop.parent.loop.index}}" type="radio" value="">
+                            <input type="hidden" class="radioCmdP">
+                            <input class="form-check-input mx-1 radioCmd" name="{{loop.parent.loop.index}}" type="radio">
                             <label class="form-check-label" for="{{xtend.devg__id}}">
                                <strong>Aucunes </strong>
                             </label>
@@ -185,15 +183,17 @@
         </div>
         </div>
         </div>
-              <form method="POST" action="" name="formValideCMD">
+              <form method="POST" action="commandCours"  id="formValideCMD">
+                <input type="hidden" name="devisCommande" id="devisCommande" value="{{devis.devis__id}}">
                 <input type="hidden" name="clientCommande" id="clientCommande" value="{{devis.devis__client__id}}">
                 <input type="hidden" name="contactCommande" id="contactCommande" value="{{devis.devis__contact__id}}">
+                <input type="hidden" name="portCommande" id="portCommande" value="{{devis.devis__port}}">
                 <input type="hidden" name="userCommande" id="userCommande" value="{{devis.devis__user__id}}">
+                <input type="hidden" name="LivraisonCommande" id="LivraisonCommande" value="{{devis.devis__id_client_livraison}}">
                 <input type="hidden" name="ComClientCommande" id="ComClientCommande" value="{{devis.devis__note_client}}">
                 <input type="hidden" name="ComInterCommande" id="ComInterCommande" value="{{devis.devis__note_interne}}">
                 <input type="hidden" name="arrayLigneDeCommande" id="arrayLigneDeCommande" value="">
               </form>
-
       </div>
 
 
