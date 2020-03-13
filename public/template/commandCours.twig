@@ -27,12 +27,13 @@
               <h6 class="m-0 font-weight-bold text-primary"><i class="far fa-ellipsis-v"></i></h6>
              
                 <div class="d-flex flex-row flex-wrap justify-content-center px-2 ml-5">
-                  <div class="py-1 col-10">
-                    <button type="button" class="btn btn-success btn-block  btn-sm  multiButton"  disabled>Fiche de travail</button>
-                  </div>
+                  <form class="py-1 col-10" method="POST" action="pdfTravail" target="blank">
+                    <input type="hidden" name="travailFiche" id="travailFiche" value="">
+                    <button type="submit"  id="TravailButton" class="btn btn-success btn-block  btn-sm  TravailButton"  disabled>Fiche de travail</button>
+                  </form>
                   <form class="py-1  col-10" method="POST" action="voirDevis" target="blank">
                     <input type="hidden" name="VoirDevis" id="VoirDevis" value="">
-                  <button type="submit" class="btn btn-secondary btn-block  btn-sm  multiButton" disabled>Bon de livraison</button>
+                  <button type="submit" class="btn btn-secondary btn-block  btn-sm  TravailButton" disabled>Bon de livraison</button>
                    </form>
 
               </div>

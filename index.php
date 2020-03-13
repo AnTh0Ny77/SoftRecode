@@ -76,6 +76,10 @@
            require __DIR__ .'/pages/commandCours.php';
            break;
 
+           case '/DevisRecode/pdfTravail';
+            require __DIR__ .'/pages/utilities/pdfTravail.php';
+           break;
+
 
             default:
             header('HTTP/1.0 404 not found');
