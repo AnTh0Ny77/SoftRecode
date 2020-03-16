@@ -12,9 +12,9 @@ class Users extends Table {
   public Database $Db;
   private object $Request;
 
-  public function __construct($db,$table) {
+  public function __construct($db) {
     $this->Db = $db;
-    $this->Table = $table;
+    $this->Table = 'utilisateur';
     $this->Request =$this->Db->Pdo->prepare("SELECT id_utilisateur , prenom , log_nec , nom , icone ,email  FROM  ".$this->Table. " WHERE 
     login=? AND password=? ");
 }
@@ -23,6 +23,12 @@ class Users extends Table {
       $request =$this->Db->Pdo->query('SELECT * FROM utilisateur');
       $data = $request->fetchAll(PDO::FETCH_CLASS);
       return $data;
+  }
+
+  public function getByID($id){
+    $request = $this->Db->Pdo->prepare("SELECT * FROM utilistateur WHERE id_utilisateur = ".$id."");
+    $data = $request->fetch(PDO::FETCH_CLASS);
+    return $data;
   }
 
   public function login($login,$pass){

@@ -16,10 +16,7 @@
       <!-- 1ere ligne -->
       <div class="d-flex flex-wrap flex-row justify-content-start">
 
-
-
-          
-        <!--carte liste de commandes -->
+      <!--carte liste de commandes -->
       <div class="col-7">
           <div class="card shadow mb-4">
             <!-- Card Header - -->
@@ -32,9 +29,9 @@
                     <button type="submit"  id="TravailButton" class="btn btn-success btn-block  btn-sm  TravailButton"  disabled>Fiche de travail</button>
                   </form>
                   <form class="py-1  col-10" method="POST" action="voirDevis" target="blank">
-                    <input type="hidden" name="VoirDevis" id="VoirDevis" value="">
+                    <input type="hidden" name="bonLivraison" id="bonLivraison" value="">
                   <button type="submit" class="btn btn-secondary btn-block  btn-sm  TravailButton" disabled>Bon de livraison</button>
-                   </form>
+                  </form>
 
               </div>
               <div class="dropdown no-arrow">
@@ -51,16 +48,18 @@
                          <th>Vendeur</th>
                          <th>Client</th>
                          <th>Etat</th>
+                         <th></th>
                       </tr>
                     </thead> 
                   <tbody>
                     {% for command in listOfCommand %}
-                    <tr>
+                    <tr class="trClick">
                         <td>{{command.cmd__id}}</td>
                         <td>{{command.cmd__date_crea}}</td>
                         <td>{{command.log_nec}}</td>
                         <td>{{ command.client__societe}} <br>{{ command.client__cp ~ "  " ~ command.client__ville}}</td>
                         <td>{{command.keyword__lib}}</td>
+                        <td> {{ command.cmd__devis__id }}</td>
                    </tr>
                  {% endfor %}
                   </tbody>
@@ -70,9 +69,54 @@
            
           </div>
         </div>
+
+        <!--Fin 1ere ligne -->
+
+         <!--carte option -->
+         <div class="col-4">
+          <div class="card shadow mb-4">
+            <!-- Card Header - -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Infos <i class="fal fa-info"></i></h6>
+              <div class="dropdown no-arrow">
+              </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body">
+              <div class="card text-center shadow text-white bg-dark">
+                <div class="card-header">
+                  <h5 > <strong class="text-primary" id="AjaxIdCMD">Détails</strong></h5>
+                </div>
+                <div class="card-body ">
+                  <h6 class="card-title">Société : <strong class="text-primary" id="AjaxCommande">Aucune commande selectionnée </strong></h6>
+                  <ul class="list-group text-justify shadow ">
+                    <li class="list-group-item text-white bg-dark ">Contact: <strong class="text-primary" id="AjaxContactCMD">...  </strong></li>
+                    <li class="list-group-item text-white bg-dark ">Livraison: <strong class="text-primary" id="AjaxLivraisonCMD">... </strong> </li>
+                    <li class="list-group-item text-white bg-dark ">Etat: <strong class="text-primary" id="AjaxEtatCMD" >... </strong> </li>
+                    <li class="list-group-item text-white bg-dark ">Frais de port: <strong class="text-primary" id="AjaxPortCMD">...</strong> </li>
+                    <li class="list-group-item text-white bg-dark ">
+                    <ul class="list-group text-justify shadow " id="listOfAjaxCMD">
+                    </ul>
+                    </li>
+
+                  </ul>
+                </div>
+                <div class="card-footer text-muted">
+                  <strong>...</strong>
+                </div>
+              </div>
+          </div>
+          
+        </div>
+
+
+      </div>
           
       </div>
-      <!--Fin 1ere ligne -->
+      
+
+
+      
 
      <main/>
      {% endblock %}
