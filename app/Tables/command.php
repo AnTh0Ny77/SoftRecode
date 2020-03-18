@@ -79,9 +79,10 @@ public function getAll(){
     $request =$this->Db->Pdo->query('SELECT 
     cmd__id, cmd__date_crea , cmd__devis__id,
     cmd__user__id, cmd__client__id, cmd__contact__id,
-    cmd__client__id_livraison, cmd__note_interne, cmd__etat,
+    cmd__client__id_livraison, cmd__note_interne, cmd__etat, cmd__port,
     t.contact__nom, t.contact__prenom,  t.contact__telephone ,
-    c.client__societe, c.client__adr1 , c.client__adr2,  c.client__ville, c.client__cp
+    c.client__societe, c.client__adr1 , c.client__adr2,  c.client__ville, c.client__cp,
+    k.keyword__lib
     FROM commande
     LEFT JOIN contact as t ON   cmd__contact__id = t.contact__id
     LEFT JOIN client as c ON cmd__client__id = c.client__id
@@ -93,9 +94,15 @@ public function getAll(){
 
 public function commandLigne($id){
   $request =$this->Db->Pdo->query("SELECT cmdligne__id , cmdligne__cmd__id, cmdligne__type , cmdligne__model, cmdligne__designation, cmdligne__etat
-  , cmdligne__quantite, cmdligne__mois_extension, cmdligne__mois_garantie , cmdligne__note_interne
+  , cmdligne__quantite, cmdligne__mois_extension, cmdligne__mois_garantie , cmdligne__note_interne , cmdligne_puht
   FROM commandeligne  WHERE cmdligne__cmd__id = ". $id ."");
   $data = $request->fetchAll(PDO::FETCH_OBJ);
   return $data;
+}
+
+public function updateStatus($id,$status){
+  $update = $this->Db->Pdo->prepare('UPDATE commande SET cmd__etat=? WHERE cmd__id =?');
+  $update->execute([$status,$id]);
+
 }
 }

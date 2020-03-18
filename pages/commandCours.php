@@ -16,6 +16,7 @@ $Command = new \App\Tables\Command($Database);
 $Devis = new \App\Tables\Devis($Database);
 
 
+
 // si une validation de devis a été effectuée : 
 if(!empty($_POST['devisCommande'])){
     $date = date("Y-m-d H:i:s");
@@ -37,6 +38,12 @@ if(!empty($_POST['devisCommande'])){
 }
 // listes de commandes : 
 $listOfCommand = $Command->getAll();
+
+foreach ($listOfCommand as $command) {
+   $commandDate = date_create($command->cmd__date_crea);
+   $date = date_format($commandDate, 'd/m/Y');
+   $command->cmd__date_crea = $date;
+}
 
 // Donnée transmise au template : 
 echo $twig->render('commandCours.twig',[

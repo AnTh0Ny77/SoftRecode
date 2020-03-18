@@ -24,15 +24,7 @@
               <h6 class="m-0 font-weight-bold text-primary"><i class="far fa-ellipsis-v"></i></h6>
              
                 <div class="d-flex flex-row flex-wrap justify-content-center px-2 ml-5">
-                  <form class="py-1 col-10" method="POST" action="pdfTravail" target="blank">
-                    <input type="hidden" name="travailFiche" id="travailFiche" value="">
-                    <button type="submit"  id="TravailButton" class="btn btn-success btn-block  btn-sm  TravailButton"  disabled>Fiche de travail</button>
-                  </form>
-                  <form class="py-1  col-10" method="POST" action="voirDevis" target="blank">
-                    <input type="hidden" name="bonLivraison" id="bonLivraison" value="">
-                  <button type="submit" class="btn btn-secondary btn-block  btn-sm  TravailButton" disabled>Bon de livraison</button>
-                  </form>
-
+                  
               </div>
               <div class="dropdown no-arrow">
               </div>
@@ -102,7 +94,17 @@
                   </ul>
                 </div>
                 <div class="card-footer text-muted">
-                  <strong>...</strong>
+                  <div class="d-flex justify-content-center">
+                  <form class="py-1 col-5" method="POST" action="pdfTravail" target="blank">
+                    <input type="hidden" name="travailFiche" id="travailFiche" value="">
+                    <button type="submit"  id="TravailButton" class="btn btn-success btn-block  btn-sm  TravailButton"  disabled>Fiche de travail</button>
+                  </form>
+                  <form class="py-1  col-5" method="POST" action="pdfBL" target="blank">
+                    <input type="hidden" name="bonLivraison" id="bonLivraison" value="">
+                  <button type="submit" class="btn btn-secondary btn-block  btn-sm  TravailButton" disabled>Bon de livraison</button>
+                  </form>
+                </div>
+
                 </div>
               </div>
           </div>

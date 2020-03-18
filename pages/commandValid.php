@@ -15,6 +15,8 @@ $Devis = new App\Tables\Devis($Database);
 $Database->DbConnect();
 $Devis = new App\Tables\Devis($Database);
 $devis = $Devis->GetById($_POST['ValideCmd']);
+
+
 $arrayOfDevisLigne = $Devis->devisLigne($_POST['ValideCmd']);
 foreach ($arrayOfDevisLigne as $ligne) {
     $xtendArray = $Devis->xtenGarantie($ligne->devl__id);
@@ -27,7 +29,7 @@ echo $twig->render('commande.twig',['user'=>$user,
 'user'=> $user,
 'devis'=> $devis,
 'devisLigne'=> $arrayOfDevisLigne,
-'jsonPack'=> $jsonPack
+'jsonPack'=> $jsonPack,
 ]);
 
 

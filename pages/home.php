@@ -13,6 +13,11 @@ unset($_SESSION['ModifierDevis']);
  $Database->DbConnect();
  $user= $_SESSION['user'];
  $devisList = $Devis->getFromStatus();
+ foreach ($devisList as $devis) {
+   $devisDate = date_create($devis->devis__date_crea);
+   $date = date_format($devisDate, 'd/m/Y');
+   $devis->devis__date_crea = $date;
+}
 
 // Donnée transmise au template : 
 echo $twig->render('home.twig',[ 

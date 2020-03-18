@@ -19,9 +19,10 @@ if (empty($_SESSION['user'])) {
 if(!empty($_POST['travailFiche'])) {
 $command = $Command->getById(intval($_POST['travailFiche']));
 $commandLignes = $Command->commandLigne($_POST['travailFiche']);
-
+$Command->updateStatus($_POST['travailFiche'],'IMP');
 $date_time = new DateTime( $command->cmd__date_crea);
 $formated_date = $date_time->format('d/m/Y'); 
+
 ob_start();
 ?>
 <style type="text/css">

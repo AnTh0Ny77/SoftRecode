@@ -88,7 +88,7 @@
             require __DIR__ .'/pages/ajax/ajaxCMDcours.php';
            break;
 
-
+          
             default:
             header('HTTP/1.0 404 not found');
             require  __DIR__ .'/pages/error404.php';
