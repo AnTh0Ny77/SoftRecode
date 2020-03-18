@@ -745,7 +745,7 @@ $('#AjaxClient').on('click', function(){
         $(".radioCmd").on('click', function(){
             $(this).parents('.border').removeClass('border-danger');
             let borderRed =  $('.remove-border');
-            if (borderRed.hasClass('border-danger')) {
+            if (borderRed.hasClass('border-danger')  ) {
                 $('#SendCmd').prop("disabled", true);
             }else{
                 $('#SendCmd').removeAttr('disabled');
@@ -753,6 +753,17 @@ $('#AjaxClient').on('click', function(){
             cmdArray.push(this.value);
             
         })
+
+        // fonction qui check si extensions de garanties absentes : 
+        let checkXtend = function(){
+        let borderCount = $('.remove-border').length;
+        if (borderCount > 0 ) { 
+            $('#SendCmd').prop("disabled", true);
+        }else{
+            $('#SendCmd').removeAttr('disabled');
+        }
+        }
+        checkXtend();
 
 
         // fonction de validation de commandes : 

@@ -48,6 +48,14 @@
             require __DIR__ .'/pages/commandValid.php';
            break;
 
+           case '/DevisRecode/saisie';
+            require __DIR__ .'/pages/saisie.php';
+           break;
+
+           case '/DevisRecode/saisieLivraison';
+            require __DIR__ .'/pages/saisieValid.php';
+           break;
+
            case '/DevisRecode/createNew';
             require __DIR__ .'/pages/ajax/ajaxCreate.php';
            break;
@@ -86,6 +94,10 @@
 
            case '/DevisRecode/AjaxCMDcours';
             require __DIR__ .'/pages/ajax/ajaxCMDcours.php';
+           break;
+
+           case '/DevisRecode/AjaxSaisie';
+            require __DIR__ .'/pages/ajax/ajaxSaisie.php';
            break;
 
           

@@ -1,0 +1,128 @@
+{% extends 'layoutMain.twig' %}
+ 
+ 
+     {% block main %}
+     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2">Saisie Transport <i class="fal fa-truck"></i></h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+            </div>
+          </div>
+           <!-- 1ere ligne -->
+           <div class="d-flex flex-wrap flex-row justify-content-center my-4">
+
+         
+
+        <!--carte liste de commandes -->
+        <div class="col-7">
+            <div class="card shadow mb-4">
+              <!-- Card Header - -->
+              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Commandes Imprimées</h6>
+               
+                  <div class="d-flex flex-row flex-wrap justify-content-center px-2 ml-5">
+                    
+                </div>
+                <div class="dropdown no-arrow">
+                </div>
+              </div>
+              <!-- Card Body -->
+              <div class="card-body">
+                <div class="chart-area">
+                  <table id="saisieTable"  class=" display table "  style="width:100%">
+                        <thead class="thead-dark">
+                        <tr>
+                           <th>Numéro</th>
+                           <th>Date</th>
+                           <th>Vendeur</th>
+                           <th>Client</th>
+                           <th>Etat</th>
+                           <th></th>
+                        </tr>
+                      </thead> 
+                    <tbody>
+                      {% for command in listOfCommand %}
+                      <tr class="trClick">
+                          <td>{{command.cmd__id}}</td>
+                          <td>{{command.cmd__date_crea}}</td>
+                          <td>{{command.log_nec}}</td>
+                          <td>{{ command.client__societe}} <br>{{ command.client__cp ~ "  " ~ command.client__ville}}</td>
+                          <td>{{command.keyword__lib}}</td>
+                          <td> {{ command.cmd__devis__id }}</td>
+                     </tr>
+                   {% endfor %}
+                    </tbody>
+                 </table>
+               </div>
+              </div> 
+            </div>
+      </div>
+
+          
+          <!--carte option -->
+         <div class="col-4">
+            <div class="card shadow mb-4">
+              <!-- Card Header - -->
+              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Infos <i class="fal fa-info"></i></h6>
+                <div class="dropdown no-arrow">
+                </div>
+              </div>
+              <!-- Card Body -->
+              <div class="card-body">
+                <div class="card text-center shadow text-white bg-dark">
+                  <div class="card-header">
+                    <h5 > <strong class="text-primary" id="AjaxIdCMD">Aucune commande selectionnée</strong></h5>
+                  </div>
+                  <div class="card-body ">
+                    <h6 class="card-title">Société : <strong class="text-primary" id="AjaxSaisie">Aucune commande selectionnée </strong></h6>
+                    <ul class="list-group text-justify shadow ">
+                      <li class="list-group-item text-white bg-dark ">Contact: <strong class="text-primary" id="AjaxContactSaisie">...  </strong></li>
+                      <li class="list-group-item text-white bg-dark ">Livraison: <strong class="text-primary" id="AjaxLivraisonSaisie">... </strong></li>
+                      <li class="list-group-item text-white bg-dark ">Etat: <strong class="text-primary" id="AjaxEtatSaisie" >... </strong> </li>
+                      <li class="list-group-item text-white bg-dark ">Frais de port: <strong class="text-primary" id="AjaxPortSaisie">...</strong></li>
+                      <li class="list-group-item text-white bg-dark ">
+                      <ul class="list-group text-justify shadow " id="listOfAjaxSaisie">
+                      </ul>
+                      </li>
+  
+                    </ul>
+                  </div>
+                  <div class="card-footer text-muted">
+                    <div class="d-flex justify-content-center">
+                    <form class="py-1 col-5" method="POST" action="saisieLivraison" >
+                      <input type="hidden" name="saisieLivraison" id="saisieLivraison" value="">
+                      <button type="submit"  id="saisieButton" class="btn btn-success btn-block  btn-sm "  disabled>Saisir</button>
+                    </form>
+                   
+                  </div>
+  
+                  </div>
+                </div>
+            </div>
+            
+          </div>
+  
+  
+        </div>
+          
+
+
+
+
+
+
+
+
+      </div>
+
+
+
+
+
+
+
+          
+           
+    </main>
+     {% endblock %}
