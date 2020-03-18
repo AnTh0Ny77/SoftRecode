@@ -567,36 +567,14 @@
             </div>
           </div>
 
-          <!-- Modal supression client  -->
-              <div class="modal fade" id="supprimeContact" tabindex="-1" role="dialog"  aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalCenterTitle"><i class="fal fa-user-slash"></i></h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      Etes vous sur de vouloir supprimer votre choix de contact ? 
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Retour</button>
-                      <form method='POST' action="nouveauDevis">
-                        <input type="hidden" name="deleteContact" value="goodBye">
-                      <button type="submit" class="btn btn-danger">Supprimer</button>
-                     </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
+         
 
           
         <!-- 1ere ligne -->
        <div class="d-flex flex-wrap flex-row justify-content-center">
           <!--carte societe -->
-        <div class="col-md-5">
-          <div class="card shadow mb-4">
+        <div class="col-md-6">
+          <div class="card h-100  shadow mb-2">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Société <i class="fal fa-building"></i></h6>
@@ -609,7 +587,7 @@
             </div>
             <!-- Card Body -->
             <div class="card-body">
-              <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between" id="findClient">
+              <div class="chart-pie pt-2  d-flex flex-row   mb-1 justify-content-between" id="findClient">
                 <div class=" mb-0 font-weight-bold text-muted" id="divClient">
                  {% if not societe %}
                   Choisir un client*
@@ -631,20 +609,20 @@
         </div>
 
           <!-- carte contact -->
-        <div class="col-md-4">
-          <div class="card shadow mb-5">
+        <div class="col-md-5">
+          <div class="card h-100  shadow mb-2">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Contact <i class="fal fa-user"></i></h6>
               <div class="dropdown no-arrow">
                
-                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#supprimeContact"><i class="fal fa-trash-alt"></i></button>
+                <button type="button" class="btn btn-danger btn-sm" id="trash4Contact"><i class="fal fa-trash-alt"></i></button>
                
               </div>
             </div>
             <!-- Card Body -->
             <div class="card-body">
-              <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
+              <div class="chart-pie pt-2  d-flex flex-row   mb-1 justify-content-between">
                 <div class=" mb-0 font-weight-bold text-muted" id="contactDiv">
                   {% if contact %}
                   {{contact.contact__nom}}<br>
@@ -666,33 +644,13 @@
           </div>
         </div>
 
-       <!-- Pdf Vieweer -->
-       <div class="col-md-2">
-        <div class="card shadow mb-4">
-
-          <!-- Card Header - -->
-          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Exporter <i class="fal fa-file-export"></i></h6>
-            <div class="dropdown no-arrow">
-            </div>
-          </div>
-
-          <!-- Card Body -->
-          <div class="card-body">
-            <div class="chart-pie pt-4 pb-2 d-flex flex-row   mb-1 justify-content-between">
-              <div class=" mb-0 font-weight-bold text-muted"></div>
-              <div>
-                <button type="button" class="btn btn-primary btn-sm mb-3" id="xportPdf" data-toggle="modal" data-target="#modalPdf" disabled>Exporter</button></div>  
-            </div>
-          </div>
-        </div>
-      </div>
+       
 
       <!-- fin 1ere ligne -->
       </div>
 
        <!-- Deuxième ligne -->
-       <div class="row d-flex flex-wrap justify-content-center">
+       <div class="row d-flex flex-wrap justify-content-center mt-4">
 
         <!-- Devis/DataTable -->
         <div class="col-11 ">
@@ -715,6 +673,10 @@
                   </tbody>
                 </table>
               </div>
+              <div class="card-footer text-muted d-flex justify-content-end">
+                <button type="button" class="btn btn-success  mb-1" id="xportPdf" data-toggle="modal" data-target="#modalPdf" disabled>Valider <i class="fal fa-file-export"></i></button>
+              </div>
+                
             </div>
           </div>
         </div>   

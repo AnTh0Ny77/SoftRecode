@@ -524,6 +524,13 @@ $('#AjaxClient').on('click', function(){
             checkTableRows(devisTable);
         })
 
+        // function efface le contact et vide la valeur de l'input :  
+        $('#trash4Contact').on('click', function(){
+            $('#contactSelect').val('');
+            $('#contactDiv').text('Choisir un contact')
+        })
+
+
         
 
         // disable buttons si pas de ligne:  

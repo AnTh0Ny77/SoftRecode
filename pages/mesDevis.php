@@ -26,6 +26,11 @@ session_start();
 }
 
  $devisList = $Devis->getNotCMD();
+ foreach ($devisList as $devis) {
+   $devisDate = date_create($devis->devis__date_crea);
+   $date = date_format($devisDate, 'd/m/Y');
+   $devis->devis__date_crea = $date;
+}
 // Donnée transmise au template : 
 echo $twig->render('mesDevis.twig',['user'=>$user,
 'user'=> $user,
