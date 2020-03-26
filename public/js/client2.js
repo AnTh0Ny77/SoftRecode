@@ -149,14 +149,35 @@ saisieTable.on('click', 'tr', function(){
 
 
 
+//init de la table utilisateur: 
+
+let userTable = $('#userTable').DataTable({
+    "paging": true,
+    "info": true,
+    retrieve: true,
+    "deferRender": true,
+    "searching": true,
+    "columnDefs": [{
+        "targets": [ 0 ],
+        "visible": false,
+        "searchable": false
+    },]
+})
 
 
+// $('#userButton').removeAttr('disabled');
+//     } else { $('#userButton').prop("disabled", true);}
 
-
-
-
-
-
+userTable.on('click', 'tr', function(){
+    if ( $(this).hasClass('selected') ){
+    $(this).removeClass('selected');}
+    else if(userTable.rows().count() >= 1){
+    $('#userTable tr.selected').removeClass('selected');
+    $(this).addClass('selected');
+    
+    dataRow = userTable.row('.selected').data()[0];
+    $("#modifyUser").val(dataRow);
+}})
 
 
 

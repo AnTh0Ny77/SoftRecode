@@ -100,6 +100,22 @@
             require __DIR__ .'/pages/ajax/ajaxSaisie.php';
            break;
 
+           case '/DevisRecode/utilisateurs';
+            require __DIR__ .'/pages/utilisateurs.php';
+           break;
+
+           case '/DevisRecode/addUser';
+            require __DIR__ .'/pages/addUser.php';
+           break;
+
+           case '/DevisRecode/addUser';
+            require __DIR__ .'/pages/addUser.php';
+           break;
+
+           case '/DevisRecode/modifyUser';
+            require __DIR__ .'/pages/utilities/modifyUser.php';
+           break;
+
           
             default:
             header('HTTP/1.0 404 not found');

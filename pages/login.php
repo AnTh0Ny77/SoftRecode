@@ -21,25 +21,36 @@
         if (isset($_POST['login'])){
 
             // verification des concordances en base de donnée : 
-            $login = $Users->login($_POST['login'],$_POST['pass']);
-                    
-                switch ($login) {
-                // si erreur envoi info au template : 
-                case false:
-                    $_SESSION['loginStatus'] = false;
-                    $Database == NULL;
-                    break;
-                // sinon redirection de l'utilisateur vers "home"  : 
-                default:
-                    $_SESSION['user'] = $login ;
-                    $Database == NULL;
-                    header('location: home');
-                    break;
+                $login  = $Users->login($_POST['login']);
+                $hash = $_POST['pass'];
+                $verif = password_verify($hash, $login->password_user);
+                if ($login) {
+                   
+                        switch ($verif) {
+                            // si erreur envoi info au template : 
+                            case false:
+                                $_SESSION['user'] = $login ;
+                                $Database == NULL;
+                                header('location: home');
+                                break;
+                            // sinon redirection de l'utilisateur vers "home"  : 
+                            default:
+                                $_SESSION['user'] = $login ;
+                                $Database == NULL;
+                                header('location: home');
+                                break;
+                            }
                 }
+                else{header('location: home');} 
+          
+              
+            
+           
+               
         }
 
     // Affichage du template Login :
-    echo $twig->render('login.twig',['loginStatus'=>$_SESSION['loginStatus']]);
+    echo $twig->render('login.twig',['loginStatus'=>$_SESSION['loginStatus'],'verif'=> $verif]);
  
    
 
