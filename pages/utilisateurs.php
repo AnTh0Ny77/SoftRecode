@@ -9,7 +9,7 @@ session_start();
  }
 
  $user= $_SESSION['user'];
- $Database = new App\Database('devisrecode');
+ $Database = new App\Database('devis');
  $Database->DbConnect();
  $User = new App\Tables\Users($Database);
  $userList = $User->getAll();

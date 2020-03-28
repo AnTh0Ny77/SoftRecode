@@ -13,7 +13,7 @@ session_start();
  }
 
  //Connexion et requetes : 
- $Database = new App\Database('devisrecode');
+ $Database = new App\Database('devis');
  $Client = new App\Tables\Client($Database);
  $Keywords = new App\Tables\Keyword($Database);
  $Contact = new App\Tables\Contact($Database);

@@ -3,7 +3,7 @@ require "./vendor/autoload.php";
 
 
 session_start();
-$Database = new App\Database('devisrecode');
+$Database = new App\Database('devis');
 $Database->DbConnect();
 $Contact = new App\Tables\Contact($Database);
 

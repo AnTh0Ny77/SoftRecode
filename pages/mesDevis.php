@@ -12,7 +12,7 @@ session_start();
  unset($_SESSION['livraison']);
  unset($_SESSION['ModifierDevis']);
  $user= $_SESSION['user'];
- $Database = new App\Database('devisrecode');
+ $Database = new App\Database('devis');
  $Database->DbConnect();
  $Devis = new App\Tables\Devis($Database);
  $Keyword = new App\Tables\Keyword($Database);

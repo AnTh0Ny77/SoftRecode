@@ -108,12 +108,13 @@
             require __DIR__ .'/pages/addUser.php';
            break;
 
-           case '/DevisRecode/addUser';
-            require __DIR__ .'/pages/addUser.php';
-           break;
+           case '/DevisRecode/createUser';
+           require __DIR__ .'/pages/utilities/formUser.php';
+          break;
 
+           
            case '/DevisRecode/modifyUser';
-            require __DIR__ .'/pages/utilities/modifyUser.php';
+            require __DIR__ .'/pages/modifyUser.php';
            break;
 
           

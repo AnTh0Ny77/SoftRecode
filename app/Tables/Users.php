@@ -26,7 +26,7 @@ class Users extends Table {
   }
 
   public function getByID($id){
-    $request = $this->Db->Pdo->prepare("SELECT * FROM utilistateur WHERE id_utilisateur = ".$id."");
+    $request = $this->Db->Pdo->prepare("SELECT *  FROM " .$this->Table. " WHERE id_utilisateur = " . $id ."");
     $data = $request->fetch(PDO::FETCH_CLASS);
     return $data;
   }
@@ -40,7 +40,7 @@ class Users extends Table {
 
 public function create($id, $login, $date, $prenom, $nom, $log_nec, $email, $postefix, $gsm , $t_crm , $po_valid , $devis, $cmd ,$saisie, $facture , $admin , $password){
   $request = $this->Db->Pdo->prepare('INSERT INTO ' .$this->Table.
-  "(id_utilisateur, login, datearrive, prenom, nom, log_nec, email, postefix, gsmperso , t_crm, po_valid, user__devis_acces, user__cmd_acces, user__admin_acces, user__facture_acces, user__saisie_acces , password )
+  "(id_utilisateur, login, datearrive, prenom, nom, log_nec, email, postefix, gsmperso , t_crm, po_valid, user__devis_acces, user__cmd_acces, user__admin_acces, user__facture_acces, user__saisie_acces , password_user )
    VALUES (:id, :login, :date, :prenom, :nom, :log_nec , :email, :postefix, :gsm, :t_crm , :po_valid, :devis, :cmd, :facture, :saisie, :admin , :password)");
    $request->bindValue(":id", $id);
    $request->bindValue(":login", $login);

@@ -5,7 +5,7 @@ use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Methods\Pdfunctions;
 session_start();
-$Database = new App\Database('devisrecode');
+$Database = new App\Database('devis');
 $Database->DbConnect();
 $Command = new \App\Tables\Command($Database);
 $Client = new \App\Tables\Client($Database);

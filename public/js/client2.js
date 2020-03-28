@@ -165,17 +165,22 @@ let userTable = $('#userTable').DataTable({
 })
 
 
-// $('#userButton').removeAttr('disabled');
-//     } else { $('#userButton').prop("disabled", true);}
+
+
 
 userTable.on('click', 'tr', function(){
+    
     if ( $(this).hasClass('selected') ){
-    $(this).removeClass('selected');}
+    $(this).removeClass('selected');
+    $('#buttonUser').prop("disabled", true);}
+
     else if(userTable.rows().count() >= 1){
+   
     $('#userTable tr.selected').removeClass('selected');
     $(this).addClass('selected');
-    
+    $('#buttonUser').removeAttr('disabled');
     dataRow = userTable.row('.selected').data()[0];
+    console.log(dataRow);
     $("#modifyUser").val(dataRow);
 }})
 

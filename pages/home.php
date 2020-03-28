@@ -8,7 +8,7 @@ unset($_SESSION['ModifierDevis']);
     header('location: login');
  }else{
  //connexion et requetes :
- $Database = new App\Database('devisrecode');
+ $Database = new App\Database('devis');
  $Devis = new App\Tables\Devis($Database);
  $Database->DbConnect();
  $user= $_SESSION['user'];

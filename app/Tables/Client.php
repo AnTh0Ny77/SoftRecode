@@ -16,7 +16,7 @@ class Client extends Table {
 }
 
   public function getAll(){
-    $request =$this->Db->Pdo->query('SELECT  LPAD(client__id,6,0) as client__id, client__societe ,  client__ville   FROM client ORDER BY client__societe asc LIMIT 1500');
+    $request =$this->Db->Pdo->query('SELECT  LPAD(client__id,6,0) as client__id, client__societe ,  client__ville   FROM client ORDER BY client__societe asc LIMIT 150000');
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
 }

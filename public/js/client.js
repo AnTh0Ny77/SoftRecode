@@ -732,7 +732,7 @@ $('#AjaxClient').on('click', function(){
         //reload page : 
         $("#xPortData").click(function(){
             $("#ValidDevis").val(202);
-            $("#DevisValidForm").submit();
+           $("#DevisValidForm").submit();
         });
 
 

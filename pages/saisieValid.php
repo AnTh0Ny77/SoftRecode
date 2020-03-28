@@ -11,7 +11,7 @@ session_start();
  if (!empty($_POST['saisieLivraison'])) {
     $user = $_SESSION['user'];
     //Connexion et requetes : 
-    $Database = new App\Database('devisrecode');
+    $Database = new App\Database('devis');
     $Command = new App\Tables\Command($Database);
     $TransporteurList = new App\Tables\Transporteur($Database);
     $Database->DbConnect();

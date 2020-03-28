@@ -29,14 +29,11 @@
                         switch ($verif) {
                             // si erreur envoi info au template : 
                             case false:
-                                $_SESSION['user'] = $login ;
-                                $Database == NULL;
-                                header('location: home');
+                                $_SESSION['loginStatus'] = false;
                                 break;
                             // sinon redirection de l'utilisateur vers "home"  : 
                             default:
                                 $_SESSION['user'] = $login ;
-                                $Database == NULL;
                                 header('location: home');
                                 break;
                             }
@@ -50,7 +47,8 @@
         }
 
     // Affichage du template Login :
-    echo $twig->render('login.twig',['loginStatus'=>$_SESSION['loginStatus'],'verif'=> $verif]);
+    echo $twig->render('login.twig',['loginStatus'=>$_SESSION['loginStatus'],
+    ]);
  
    
 

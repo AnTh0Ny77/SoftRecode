@@ -10,7 +10,7 @@ session_start();
 
 
 //Connexion et requetes : 
-$Database = new App\Database('devisrecode');
+$Database = new App\Database('devis');
 $Database->DbConnect();
 $User = new App\Tables\Users($Database);
 
