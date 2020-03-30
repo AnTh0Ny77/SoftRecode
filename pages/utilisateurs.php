@@ -8,6 +8,10 @@ session_start();
     header('location: login');
  }
 
+ if ($_SESSION['user']->user__admin_acces < 10 ) {
+   header('location: noAccess');
+ }
+
  $user= $_SESSION['user'];
  $Database = new App\Database('devis');
  $Database->DbConnect();

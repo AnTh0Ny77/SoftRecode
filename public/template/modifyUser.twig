@@ -6,7 +6,7 @@
    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
 
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">Modification {{ dump(thisUser) }} <i class="fas fa-user-plus"></i></h1>
+        <h1 class="h2">Modification {{ sujet.nom ~ " " ~ sujet.prenom }} <i class="fas fa-user-plus"></i></h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
           
@@ -33,7 +33,7 @@
 
                 
 
-                <form class="d-flex flex-column" method="POST" action="createUser">
+                <form class="d-flex flex-column" method="POST" action="modifyForms">
 
 
                     <div class="d-flex justify-content-start">
@@ -42,14 +42,14 @@
                             <div class="input-group-prepend ">
                               <span class="input-group-text" >ID*</span>
                             </div>
-                            <input type="text"class="form-control" name="idUser" required>
+                            <input type="text"class="form-control" name="idUser" value="{{ sujet.id_utilisateur}}" required>
                           </div>
     
                           <div class="input-group mb-3 mx-2">
                             <div class="input-group-prepend">
                               <span class="input-group-text">Login*</span>
                             </div>
-                            <input type="text" class="form-control" name="loginUser" required>
+                            <input type="text" class="form-control" name="loginUser" value="{{ sujet.login }}" required>
                           </div>
     
                           <div class="input-group mb-3 mx-2">
@@ -68,21 +68,21 @@
                         <div class="input-group-prepend ">
                           <span class="input-group-text" >Nom*</span>
                         </div>
-                        <input type="text" class="form-control" name="nameUser">
+                        <input type="text" class="form-control" name="nameUser" value="{{ sujet.nom }}">
                       </div>
 
                       <div class="input-group mb-3 mx-2">
                         <div class="input-group-prepend">
                           <span class="input-group-text">Prenom</span>
                         </div>
-                        <input type="text" class="form-control" name="prenomUser">
+                        <input type="text" class="form-control" name="prenomUser" value="{{ sujet.prenom }}">
                       </div>
 
                       <div class="input-group mb-3 mx-2">
                         <div class="input-group-prepend">
                           <span class="input-group-text">Fonction</span>
                         </div>
-                        <input type="text" class="form-control" name="fonctionUser">
+                        <input type="text" class="form-control" name="fonctionUser" value="{{ sujet.fonction }}">
                       </div>
 
                     </div>
@@ -92,14 +92,14 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text">email</span>
                         </div>
-                        <input type="email" class="form-control" name="emailUser">
+                        <input type="email" class="form-control" name="emailUser" value="{{ sujet.email }}">
                       </div>
 
                       <div class="input-group mb-3 mx-2">
                         <div class="input-group-prepend">
                           <span class="input-group-text">GSM</span>
                         </div>
-                        <input type="text" class="form-control" name="gsmUser">
+                        <input type="text" class="form-control" name="gsmUser" value="{{ sujet.gsmperso }}">
                       </div>
 
                     
@@ -110,7 +110,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text">N° Poste</span>
                         </div>
-                        <input type="text" class="form-control" name="posteUser">
+                        <input type="text" class="form-control" name="posteUser" value="{{ sujet.postefix }}">
                       </div>
                     </div>
 
@@ -145,7 +145,7 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text">LogNec*</span>
                         </div>
-                        <input type="text" class="form-control" name="lognecUser" required>
+                        <input type="text" class="form-control" name="lognecUser" value="{{ sujet.log_nec }}" required>
                       </div>
 
                    
@@ -233,12 +233,12 @@
                         <div class="input-group-prepend">
                           <span class="input-group-text">Mot de Passe</span>
                         </div>
-                        <input type="password" class="form-control" name="passwordUser">
+                        <input type="password" class="form-control" name="passwordUser" value="">
                       </div>
                     </div>
 
                     
-
+                
                     
 
                       <div class=" card input-group mb-3 mx-2">

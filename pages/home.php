@@ -7,6 +7,10 @@ unset($_SESSION['ModifierDevis']);
  if (empty($_SESSION['user'])) {
     header('location: login');
  }else{
+
+   if ($_SESSION['user']->user__cmd_acces < 10 ) {
+      header('location: noAccess');
+    }
  //connexion et requetes :
  $Database = new App\Database('devis');
  $Devis = new App\Tables\Devis($Database);

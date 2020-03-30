@@ -7,6 +7,9 @@ session_start();
  if (empty($_SESSION['user'])) {
     header('location: login');
  }
+ if ($_SESSION['user']->user__saisie_acces < 10 ) {
+   header('location: noAccess');
+ }
 
  if (!empty($_POST['saisieLivraison'])) {
     $user = $_SESSION['user'];

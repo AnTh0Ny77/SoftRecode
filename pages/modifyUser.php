@@ -8,6 +8,9 @@ session_start();
  if (empty($_SESSION['user'])) {
     header('location: login');
  }
+ if ($_SESSION['user']->user__admin_acces < 10 ) {
+   header('location: noAccess');
+ }
 
    if (!empty($_POST['modifyUser'])) {
       //Connexion et requetes : 
@@ -15,14 +18,14 @@ session_start();
    $user = $_SESSION['user'];
    $Database->DbConnect();
    $User = new App\Tables\Users($Database);
-   $thisUser = $User->getByID($_POST['modifyUser']);
+   $sujet = $User->getByID(intval($_POST['modifyUser']));
     
 
     
     // Donnée transmise au template : 
     echo $twig->render('modifyUser.twig',[
     'user'=> $user,
-    'thisUser'=> $thisUser
+    'sujet'=> $sujet
     ]);
    }else {
       header('location: utilisateurs');

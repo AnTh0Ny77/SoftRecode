@@ -7,6 +7,9 @@ session_start();
  if (empty($_SESSION['user'])) {
     header('location: login');
  }
+ if ($_SESSION['user']->user__devis_acces < 10 ) {
+   header('location: noAccess');
+ }
  unset($_SESSION['Contact']);
  unset($_SESSION['Client']);
  unset($_SESSION['livraison']);

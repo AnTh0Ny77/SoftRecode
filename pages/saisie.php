@@ -7,6 +7,10 @@ session_start();
  if (empty($_SESSION['user'])) {
     header('location: login');
  }else{
+
+if ($_SESSION['user']->user__saisie_acces < 10 ) {
+header('location: noAccess');
+}
 $user = $_SESSION['user'];
 
 //Connexion et requetes : 

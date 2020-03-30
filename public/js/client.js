@@ -18,6 +18,28 @@ $('#AjaxClient').on('click', function(){
         dataSet = JSON.parse(data);
         $('#modalClient').modal('show');
         tableClient = $('#client').DataTable({
+            "language": {
+                "decimal":        "",
+                "emptyTable":     "aucuns résultats",
+                "info":           "Voir _START_ to _END_ of _TOTAL_ résultats",
+                "infoEmpty":      "Voir 0 to 0 of 0 résultats",
+                "infoFiltered":   "(filtré dans _MAX_ total résultats)",
+                "infoPostFix":    "",
+                "thousands":      ",",
+                "lengthMenu":     "Voir _MENU_ résultats par pages",
+                "loadingRecords": "Loading...",
+                "processing":     "Processing...",
+                "search":         "Recherche:",
+                "zeroRecords":    "Aucun résultats",
+                "paginate": {
+                    "first":      "Première",
+                    "last":       "Dernière",
+                    "next":       "Suivante",
+                    "previous":   "Précédente"
+                }
+                  
+                    
+            },
         data: dataSet,
         "columns": [
         {"data": "client__id"},
@@ -53,6 +75,28 @@ $('#AjaxClient').on('click', function(){
                 dataSet = JSON.parse(data);
                 $('#ModalLivraison').modal('show'); 
                 tableLivraison = $('#Livraison').DataTable({
+                    "language": {
+                        "decimal":        "",
+                        "emptyTable":     "aucuns résultats",
+                        "info":           "Voir _START_ to _END_ of _TOTAL_ résultats",
+                        "infoEmpty":      "Voir 0 to 0 of 0 résultats",
+                        "infoFiltered":   "(filtré dans _MAX_ total résultats)",
+                        "infoPostFix":    "",
+                        "thousands":      ",",
+                        "lengthMenu":     "Voir _MENU_ résultats par pages",
+                        "loadingRecords": "Loading...",
+                        "processing":     "Processing...",
+                        "search":         "Recherche:",
+                        "zeroRecords":    "Aucun résultats",
+                        "paginate": {
+                            "first":      "Première",
+                            "last":       "Dernière",
+                            "next":       "Suivante",
+                            "previous":   "Précédente"
+                        }
+                          
+                            
+                    },
                 data: dataSet,
                 "columns": [
                 {"data": "client__id"},
@@ -107,6 +151,28 @@ $('#AjaxClient').on('click', function(){
 
     // int de la table contact :
     tableContact = $('#contactTable').DataTable({
+        "language": {
+            "decimal":        "",
+            "emptyTable":     "aucuns résultats",
+            "info":           "Voir _START_ to _END_ of _TOTAL_ résultats",
+            "infoEmpty":      "Voir 0 to 0 of 0 résultats",
+            "infoFiltered":   "(filtré dans _MAX_ total résultats)",
+            "infoPostFix":    "",
+            "thousands":      ",",
+            "lengthMenu":     "Voir _MENU_ résultats par pages",
+            "loadingRecords": "Loading...",
+            "processing":     "Processing...",
+            "search":         "Recherche:",
+            "zeroRecords":    "Aucun résultats",
+            "paginate": {
+                "first":      "Première",
+                "last":       "Dernière",
+                "next":       "Suivante",
+                "previous":   "Précédente"
+            }
+              
+                
+        },
     "columns": [
     {"data": "contact__id"},
     {"data": "contact__nom"},
@@ -274,17 +340,62 @@ $('#AjaxClient').on('click', function(){
 
     // initi table mesDevis : 
     let modifDevis = $('#MyDevis').DataTable({
+        "language": {
+            "decimal":        "",
+            "emptyTable":     "aucuns résultats",
+            "info":           "Voir _START_ to _END_ of _TOTAL_ résultats",
+            "infoEmpty":      "Voir 0 to 0 of 0 résultats",
+            "infoFiltered":   "(filtré dans _MAX_ total résultats)",
+            "infoPostFix":    "",
+            "thousands":      ",",
+            "lengthMenu":     "Voir _MENU_ résultats par pages",
+            "loadingRecords": "Loading...",
+            "processing":     "Processing...",
+            "search":         "Recherche:",
+            "zeroRecords":    "Aucun résultats",
+            "paginate": {
+                "first":      "Première",
+                "last":       "Dernière",
+                "next":       "Suivante",
+                "previous":   "Précédente"
+            }
+              
+                
+        },
         "paging": true,
          "info":   false,
          "pageLength": 10,
         retrieve: true,
         "deferRender": true,
         "searching": false,  
+        
        
     })
 
     // ini table commandes :
     let validCmd = $('#MyCommande').DataTable({
+        "language": {
+            "decimal":        "",
+            "emptyTable":     "aucuns résultats",
+            "info":           "Voir _START_ to _END_ of _TOTAL_ résultats",
+            "infoEmpty":      "Voir 0 to 0 of 0 résultats",
+            "infoFiltered":   "(filtré dans _MAX_ total résultats)",
+            "infoPostFix":    "",
+            "thousands":      ",",
+            "lengthMenu":     "Voir _MENU_ résultats par pages",
+            "loadingRecords": "Loading...",
+            "processing":     "Processing...",
+            "search":         "Recherche:",
+            "zeroRecords":    "Aucun résultats",
+            "paginate": {
+                "first":      "Première",
+                "last":       "Dernière",
+                "next":       "Suivante",
+                "previous":   "Précédente"
+            }
+              
+                
+        },
         "paging": true,
          "info":   false,
         retrieve: true,
@@ -395,6 +506,28 @@ $('#AjaxClient').on('click', function(){
             "ordering": false,
             responsive: {
                 details: false
+            },
+            "language": {
+                "decimal":        "",
+                "emptyTable":     "aucuns résultats",
+                "info":           "Voir _START_ to _END_ of _TOTAL_ résultats",
+                "infoEmpty":      "Voir 0 to 0 of 0 résultats",
+                "infoFiltered":   "(filtré dans _MAX_ total résultats)",
+                "infoPostFix":    "",
+                "thousands":      ",",
+                "lengthMenu":     "Voir _MENU_ résultats par pages",
+                "loadingRecords": "Loading...",
+                "processing":     "Processing...",
+                "search":         "Recherche:",
+                "zeroRecords":    "Aucun résultats",
+                "paginate": {
+                    "first":      "Première",
+                    "last":       "Dernière",
+                    "next":       "Suivante",
+                    "previous":   "Précédente"
+                }
+                  
+                    
             },
             "columnDefs": [
                 { "width": "40%", "targets": 2 },

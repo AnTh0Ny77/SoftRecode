@@ -11,6 +11,9 @@ session_start();
  if (empty($_SESSION['user'])) {
     header('location: login');
  }
+ if ($_SESSION['user']->user__devis_acces < 10 ) {
+  header('location: noAccess');
+}
 
  //Connexion et requetes : 
  $Database = new App\Database('devis');

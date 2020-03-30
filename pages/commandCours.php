@@ -9,6 +9,10 @@ session_start();
  }else{
 $user = $_SESSION['user'];
 
+if ($_SESSION['user']->user__cmd_acces < 10 ) {
+    header('location: noAccess');
+  }
+
 //Connexion et requetes : 
 $Database = new App\Database('devis');
 $Database->DbConnect();
