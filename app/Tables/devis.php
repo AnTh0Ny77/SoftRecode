@@ -71,8 +71,11 @@ public function insertOne($date , $user, $client , $livraison, $port, $contact, 
 }
 
 public function getUserDevis($id){
-  $request =$this->Db->Pdo->query("SELECT devis__id,  devis__date_crea , devis__user__id , devis__client__id, devis__etat   
-  FROM " .$this->Table. " WHERE  devis__user__id = " . $id ." ORDER BY  devis__date_crea ASC");
+  $request =$this->Db->Pdo->query("SELECT devis__id,  devis__date_crea , devis__user__id , devis__client__id, devis__etat , c.client__societe,  c.client__ville, c.client__cp , u.log_nec , k.keyword__lib
+  FROM  devis JOIN client as c ON devis__client__id = c.client__id 
+  JOIN utilisateur as u ON devis__user__id = u.id_utilisateur 
+  JOIN keyword as k ON devis__etat = k.keyword__value
+   WHERE  devis__user__id = " . $id ." ORDER BY  devis__date_crea DESC");
   $data = $request->fetchAll(PDO::FETCH_OBJ);
   return $data;
 }

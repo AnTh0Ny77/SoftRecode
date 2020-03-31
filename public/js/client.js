@@ -44,7 +44,8 @@ $('#AjaxClient').on('click', function(){
         "columns": [
         {"data": "client__id"},
         {"data": "client__societe"},
-        {"data": "client__ville"}], 
+        {"data": "client__ville"},
+        {"data": "client__cp"}], 
         "paging": true,
         "info":   true,
         retrieve: true,
@@ -73,6 +74,7 @@ $('#AjaxClient').on('click', function(){
                 
             success: function(data){
                 dataSet = JSON.parse(data);
+                console.log(dataSet)
                 $('#ModalLivraison').modal('show'); 
                 tableLivraison = $('#Livraison').DataTable({
                     "language": {
@@ -97,11 +99,16 @@ $('#AjaxClient').on('click', function(){
                           
                             
                     },
+                   
                 data: dataSet,
+               
                 "columns": [
                 {"data": "client__id"},
                 {"data": "client__societe"},
-                {"data": "client__ville"}], 
+                {"data": "client__ville"} , 
+                {"data": "client__cp"}
+                ], 
+                
                 "paging": true,
                 "info":   true,
                 retrieve: true,
@@ -280,7 +287,7 @@ $('#AjaxClient').on('click', function(){
             },
             success: function(data){
             dataSet = JSON.parse(data);
-            $('#divClient').html(dataSet.client__societe + '<br>' + dataSet.client__adr1 + '<br>' + dataSet.client__ville);
+            $('#divClient').html( dataSet.client__id + " " + dataSet.client__societe + '<br>' + dataSet.client__adr1 + '<br>' + dataSet.client__ville);
             $('#clientSelect').val(dataSet.client__id);
             $('#modalClient').modal('hide');
             $('#addNewRow').removeAttr('disabled');
@@ -362,6 +369,7 @@ $('#AjaxClient').on('click', function(){
               
                 
         },
+        "order": [[ 2, "asc" ]],
         "paging": true,
          "info":   false,
          "pageLength": 10,
@@ -396,6 +404,7 @@ $('#AjaxClient').on('click', function(){
               
                 
         },
+        "order": [[ 2, "asc" ]],
         "paging": true,
          "info":   false,
         retrieve: true,
@@ -413,6 +422,8 @@ $('#AjaxClient').on('click', function(){
              $('.multiButton').prop("disabled", true);
          }
       }
+
+   
 
     // disable buttons multiple si pas de ligne select dans la table commandes:  
     let checkClassCmd = function(){
@@ -480,6 +491,62 @@ $('#AjaxClient').on('click', function(){
 
         })
      });
+
+      // Attribue automatiquement la classe selected à la première ligne : 
+    let selectFirst = function(){
+        let firstOne = $('#MyDevis').find('tr').eq(1);
+        firstOne.addClass('selected');
+        
+        let dataRow = modifDevis.row(0).data();
+        
+        $("#ValiderDevis").val(dataRow[0]);
+        $("#VoirDevis").val(dataRow[0]);
+        $("#ModifierDevis").val(dataRow[0]);
+        $("#DupliquerDevis").val(dataRow[0]);
+        checkClassMulti();
+        // requete Ajax sur le devis selectionné dans la page mes devis : 
+        $.ajax({
+            type: 'post',
+            url: "AjaxDevis",
+            data : 
+            {
+                "AjaxDevis" : dataRow[0]
+            },
+            success: function(data){
+                dataSet = JSON.parse(data);
+                $('#AjaxId').text(dataSet[0].devis__id);
+                $('#AjaxSociete').html(dataSet[0].client__societe + "<br>" + dataSet[0].client__ville + " " + dataSet[0].client__cp );
+                if (dataSet[0].contact__nom) {
+                    $('#AjaxContact').html(dataSet[0].contact__nom + " " + dataSet[0].contact__prenom );
+                }else {  $('#AjaxContact').html('...') }
+                if (dataSet[0].client__livraison_societe) {
+                    $('#AjaxLivraison').html(dataSet[0].client__livraison__adr1 + "<br>" + dataSet[0].client__livraison_ville + " " + dataSet[0].client__livraison_cp);
+                }else{ $('#AjaxLivraison').html(dataSet[0].client__adr1 + "<br>" + dataSet[0].client__ville + " " + dataSet[0].client__cp ) }
+                $('#AjaxEtat').text(dataSet[0].keyword__lib);
+                $('#AjaxPort').html(dataSet[0].devis__port + ' €' ) ;
+                let listOfItem = $('#listOfAjax');
+                listOfItem.html(' ');
+                let array = dataSet[1];
+                for (let index = 0; index < array.length ; index++) {
+                   let li = document.createElement('li');
+                   let content = document.createTextNode( array[index].devl_quantite + " x " +  array[index].devl__designation + ' : ' + array[index].devl_puht + " €" );
+                   li.appendChild(content);
+                   listOfItem.append(li);
+                   listOfItem.children('li').addClass('list-group-item text-white bg-secondary font-weight-bold');
+                    
+                }
+                 
+            },
+            error: function (err) {
+                alert('error: ' + err);
+            }
+
+        })
+    }
+    if ($('#MyDevis').length > 0) {
+        selectFirst();
+    }
+   
 
       // attribut classe selected: a la table Commandes 
       validCmd.on('click','tr',function() {
@@ -605,7 +672,7 @@ $('#AjaxClient').on('click', function(){
             for (let numberOfLines = 0; numberOfLines < jsonDataAncienDevis.length; numberOfLines++) {
                 arrayTemp = [];
                 if (jsonDataAncienDevis[numberOfLines].devl__prix_barre == '0') {
-                    jsonDataAncienDevis[numberOfLines].devl__prix_barre = false;
+                    jsonDataAncienDevis[numberOfLines].devl__prix_barre = '';
                 }
                 for (let numberOfXtend = 0; numberOfXtend < jsonDataAncienDevis[numberOfLines].ordre.length ; numberOfXtend++) {
                      arrayCouple = [];
@@ -650,6 +717,15 @@ $('#AjaxClient').on('click', function(){
                 $("#barrePrice").val()
                 );
             xtendArray = [];
+            $("#prestationChoix").val(""),
+                $("#referenceS").val(""),
+                $("#comClient").val(""),
+                $("#comInterne").val(""),
+                $("#etatRow").val(""),
+                $("#garantieRow").val(""),
+                $("#quantiteRow").val(""),
+                $("#prixRow").val(""),
+                $("#barrePrice").val("")
             });
         
         // function qui compte les lignes de la table devis et rend possible l'export :

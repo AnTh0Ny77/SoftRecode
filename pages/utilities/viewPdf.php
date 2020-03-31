@@ -44,7 +44,7 @@ $formated_date = $date_time->format('d/m/Y');
              <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br><a>www.recode.fr</a><br><br><br>REF CLIENT :<?php echo $clientView->client__id ?></td>
          </tr>
          <tr>
-             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis- 3190808</h2><br><?php echo date("d-m-Y") ?><br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : <?php echo $formated_date ?></small></p></td>
+             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis-<?php echo $temp->devis__id ?></h2><br><?php echo date("d-m-Y") ?><br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : <?php echo $formated_date ?></small></p></td>
              <td style="text-align: left; width:50%"><small>livraison & facturation</small><strong><br><?php echo $clientView->client__societe ?><br><?php echo $clientView->client__adr1 ?><br><?php echo $clientView->client__adr2 ?><br><?php echo $clientView->client__cp ." ". $clientView->client__ville ?></strong></td>
          </tr>
      </table>

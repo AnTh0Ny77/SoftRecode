@@ -20,7 +20,7 @@ class Users extends Table {
 }
 
   public function getAll(){
-      $request =$this->Db->Pdo->query('SELECT * FROM utilisateur');
+      $request =$this->Db->Pdo->query('SELECT * FROM utilisateur WHERE type_user > 0');
       $data = $request->fetchAll(PDO::FETCH_CLASS);
       return $data;
   }

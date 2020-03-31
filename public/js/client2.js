@@ -25,6 +25,7 @@ $(document).ready(function() {
           
             
     },
+    "order": [[ 2, "desc" ]],
     "paging": true,
     "info": true,
     retrieve: true,
@@ -218,6 +219,7 @@ let userTable = $('#userTable').DataTable({
           
             
     },
+    "order": [[ 1, "asc" ]],
     "paging": true,
     "info": true,
     retrieve: true,

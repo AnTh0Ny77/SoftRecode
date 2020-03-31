@@ -33,7 +33,7 @@
                 <div class="modal-body">
                   <table id="client" class="table  display" style="width:100%"> 
                     <thead class="thead-dark"> 
-                      <tr><th>Id</th><th>Nom</th><th>Adresse</th></tr>
+                      <tr><th>Id</th><th>Nom</th><th>Adresse</th><th>CP</th></tr>
                      </thead > 
                     <tbody class="trClick">
                     </tbody>
@@ -153,7 +153,7 @@
                       <div class="form-group col-md-6">
                         <label for="inputState">Fonction *</label>
                         <select id="inputStateContact" class="form-control" name="fonctionContact" required>
-                          <option value="STD" selected>Standard</option>
+                         
                           {% for keyword in keywordList %}
                           <option value={{keyword.keyword__value}}>{{keyword.keyword__lib}}</option>
                           {% endfor %}
@@ -219,10 +219,11 @@
                   <div class="form-row">
                     <div class="col-md-3 mb-3">
                       <label for="validationCustom04">Prestation</label>
-                      <select class="custom-select" id="prestationChoix">
-                        <option selected  value="">...</option>
+                      <select class="custom-select" id="prestationChoix" >
+                        <option   value="" selected></option>
+                        
                         {% for presta in prestaList %}
-                          <option value={{presta.keyword__value}}>{{presta.keyword__lib}}</option>
+                          <option class="optionSelect"  value={{presta.keyword__value}}>{{presta.keyword__lib}}</option>
                           {% endfor %}
                       </select>
                     </div>
@@ -355,7 +356,7 @@
                     <div class="col-md-3 mb-3">
                       <label for="validationCustom04">Prestation</label>
                       <select class="custom-select" id="UPprestationChoix">
-                        <option selected  value="">...</option>
+                        <option selected  value="Vente">Vente</option>
                         {% for presta in prestaList %}
                           <option value={{presta.keyword__value}}>{{presta.keyword__lib}}</option>
                           {% endfor %}
@@ -468,18 +469,28 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-header">
+                  {% if sessionModif %}
+                  <h5 class="modal-title">Modifier <i class="fal fa-file-export"></i></h5>
+                  {% else %}
                   <h5 class="modal-title">Exporter <i class="fal fa-file-export"></i></h5>
+                  {% endif %}
+                 
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-               <form target="_blank" method="POST" action="pdf" >
+               
+               <form onsubmit="window.open('mesDevis')" method="POST" action="pdf" >
                 <div class="modal-body ">
                   <input id="dataDevis" name="dataDevis" type="hidden" value="">
                   <div class=" d-flex col-10 mx-auto justify-content-around mb-3">
                     <div class="col-5">
                     <label for="validationCustom04">Frais de port € H.T</label>
+                    {% if temp %}
+                    <input class="form-control " type="text"  id="port" name="port" value="{{temp.devis__port}}">
+                    {% else %}
                     <input class="form-control " type="text"  id="port" name="port">
+                    {% endif %}
                     </div>
                     <div>
                     <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseGlobal" aria-expanded="false" aria-controls="collapseExample">
@@ -488,6 +499,16 @@
                   </div>
                   </div>
                   <div class="collapse " id="collapseGlobal">
+                    {% if temp %}
+                    <div class="col-12 mt-2 mb-2 d-flex justify-content-center mx-auto">
+                      <div class="col-6">
+                      <textarea class="form-control" id="globalComClient" name="globalComClient" placeholder="Commentaire client...." rows="4">{{temp.devis__note_client}}</textarea>
+                      </div>
+                      <div class="col-6">
+                        <textarea class="form-control" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." rows="4">{{temp.devis__note_interne}}</textarea>
+                        </div>    
+                    </div>
+                    {% else %}
                     <div class="col-12 mt-2 mb-2 d-flex justify-content-center mx-auto">
                       <div class="col-6">
                       <textarea class="form-control" id="globalComClient" name="globalComClient" placeholder="Commentaire client...." rows="4"></textarea>
@@ -496,6 +517,7 @@
                         <textarea class="form-control" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." rows="4"></textarea>
                         </div>    
                     </div>
+                    {% endif %}
                   </div>
                 </div> 
                 {% if societe %}
@@ -523,10 +545,14 @@
                 {% endif %}
               
                 <div class="modal-footer">
-                  <button  type='submit'  class="btn btn-primary" id="xPortData">Exporter</button>
+                  {% if sessionModif %}
+                  <button  type='submit'  class="btn btn-primary" id="xPortData"  >Modifier</button>
+                  {% else %}
+                  <button  type='submit'  class="btn btn-primary" id="xPortData"  >Exporter</button>
+                  {% endif %}
                 </form>
                 <form method="POST" action="nouveauDevis" id="DevisValidForm">
-                  <input type="hidden" name="ValidDevis" id="ValidDevis" value="">
+                   <input type="hidden" name="ValidDevis" id="ValidDevis" value="">
                 </form>
                 </div>
               </div>
@@ -547,7 +573,7 @@
                 <div class="modal-body">
                   <table id="Livraison" class="table  display" style="width:100%"> 
                     <thead class="thead-dark"> 
-                      <tr><th>Id</th><th>Nom</th><th>Adresse</th></tr>
+                      <tr><th>Id</th><th>Nom</th><th>Adresse</th><th>CP</th></tr>
                      </thead > 
                     <tbody class="trClick">
                     </tbody>
@@ -592,7 +618,7 @@
                  {% if not societe %}
                   Choisir un client*
                  {% else %}
-                  {{societe.client__societe}} <br>
+                  {{societe.client__id ~ " " ~ societe.client__societe}}  <br>
                   {{societe.client__ville}} <br>
                   {{societe.client__cp}}
                  {% endif %}

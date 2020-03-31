@@ -25,7 +25,7 @@ class Keyword extends Table {
 }
 
 public function getI_con(){
-  $request =$this->Db->Pdo->query('SELECT keyword__id, keyword__lib , keyword__value FROM keyword WHERE keyword__type= "i_con" ORDER BY  keyword__id ASC ');
+  $request =$this->Db->Pdo->query('SELECT keyword__id, keyword__lib , keyword__value FROM keyword WHERE keyword__type= "i_con" ORDER BY  keyword__ordre  ASC , keyword__lib ASC');
   $data = $request->fetchAll(PDO::FETCH_OBJ);
   return $data;
 }
@@ -37,7 +37,7 @@ public function getPresta(){
 }
 
 public function getStat(){
-  $request =$this->Db->Pdo->query('SELECT  keyword__id, keyword__lib , keyword__value FROM keyword WHERE keyword__type= "stat" ORDER BY  keyword__id ASC ');
+  $request =$this->Db->Pdo->query('SELECT  keyword__id, keyword__lib , keyword__value  FROM keyword WHERE keyword__type= "stat" ');
   $data = $request->fetchAll(PDO::FETCH_OBJ);
   return $data;
 }

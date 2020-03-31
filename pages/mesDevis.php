@@ -20,6 +20,7 @@ session_start();
  $Devis = new App\Tables\Devis($Database);
  $Keyword = new App\Tables\Keyword($Database);
  $listOfStatus = $Keyword->getStat();
+ $devisList = [];
 
  if (!empty($_POST['ValiderDevis'])) {
     $Devis->updateStatus($_POST['statusRadio'],$_POST['ValiderDevis']);
@@ -27,8 +28,12 @@ session_start();
  if (!empty($_POST['RefuserDevis'])) {
    $Devis->updateStatus('RFS',$_POST['RefuserDevis']);
 }
+if ($_SESSION['user']->user__devis_acces < 20 ) {
+$devisList = $Devis->getUserDevis($_SESSION['user']->id_utilisateur);
+}else {
+$devisList = $Devis->getNotCMD();
+}
 
- $devisList = $Devis->getNotCMD();
  foreach ($devisList as $devis) {
    $devisDate = date_create($devis->devis__date_crea);
    $date = date_format($devisDate, 'd/m/Y');
