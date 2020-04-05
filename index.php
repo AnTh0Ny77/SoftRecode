@@ -114,16 +114,15 @@
 
           case '/DevisRecode/modifyForms';
           require __DIR__ .'/pages/utilities/formUserModify.php';
-         break;
+          break;
 
-         case '/DevisRecode/noAccess';
-         require __DIR__ .'/pages/noAccess.php';
-        break;
+          case '/DevisRecode/noAccess';
+          require __DIR__ .'/pages/noAccess.php';
+          break;
 
-           
-           case '/DevisRecode/modifyUser';
-            require __DIR__ .'/pages/modifyUser.php';
-           break;
+          case '/DevisRecode/modifyUser';
+          require __DIR__ .'/pages/modifyUser.php';
+          break;
 
           
             default:

@@ -27,12 +27,17 @@ if (!empty($_POST)) {
     // corrige la notice lié a l'accesion d'un non objet -> :
     $contactId = NULL;
     $livraisonId = NULL;
+    $livraisonContact = NULL;
     if (!empty( $_POST['contactSelect'])) {
       $contactId = $_POST['contactSelect'];
       $contact = $Contact->getOne($_POST['contactSelect']);
     }
     if (!empty($_POST['livraisonSelect'])) {
         $livraisonId = $_POST['livraisonSelect'];
+    }
+
+    if (!empty($_POST['contact_livraison'])) {
+        $livraisonContact = $_POST['contact_livraison'];
     }
     $status = 'ATN';
 
@@ -50,7 +55,8 @@ if (!empty($_POST)) {
         $_POST['globalComInt'],
         $status,
         NULL,
-        $devisData
+        $devisData , 
+        $livraisonContact 
       );
     } else {
         $devis = $Devis->insertOne(
@@ -64,7 +70,8 @@ if (!empty($_POST)) {
             $_POST['globalComInt'],
             $status,
             NULL,
-            $devisData);
+            $devisData,
+            $livraisonContact );
     }
     
     ob_start();
@@ -85,7 +92,7 @@ if (!empty($_POST)) {
                 <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br><a>www.recode.fr</a><br><br><br>REF CLIENT :<?php echo $client->client__id ?></td>
             </tr>
             <tr>
-                <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis- 3190808</h2><br><?php echo date("d-m-Y") ?><br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : <?php  echo date("d-m-Y") ?></small></p></td>
+                <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis-<?php echo $devis ?></h2><br><?php echo date("d-m-Y") ?><br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : <?php  echo date("d-m-Y") ?></small></p></td>
                 <td style="text-align: left; width:50%"><small>livraison & facturation</small><strong><br><?php echo $client->client__societe ?><br><?php echo $client->client__adr1 ?><br><?php echo $client->client__adr2 ?><br><?php echo $client->client__cp ." ". $client->client__ville ?></strong></td>
             </tr>
         </table>

@@ -108,7 +108,6 @@ if (!empty($_POST['ValidDevis'])) {
 }
 
 
-
 // Donnée transmise au template : 
 echo $twig->render('nouveauDevis.twig',[
    'user'=>$_SESSION['user'],

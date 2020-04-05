@@ -250,7 +250,7 @@ public static function xTendTotalView($xtendArray){
 
 // function 20% 
 public static function ttc($price){
-    var_dump($price);
+    
     $opex = floatval(($price*20)/100);
     $results = $opex + $price;
     return $results;

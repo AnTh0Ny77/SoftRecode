@@ -15,7 +15,7 @@ session_start();
  
     //Connexion et requetes : 
     $Database = new App\Database('devis');
-   $user = $_SESSION['user'];
+    $user = $_SESSION['user'];
     $Database->DbConnect();
     
     

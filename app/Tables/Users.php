@@ -73,7 +73,6 @@ public function modify($id,  $login, $date, $prenom, $nom, $log_nec, $email, $po
   "(id_utilisateur, login, datearrive, prenom, nom, log_nec, email, postefix, gsmperso , t_crm, po_valid, user__devis_acces, user__cmd_acces, user__admin_acces, user__facture_acces, user__saisie_acces , password_user , fonction )
    VALUES (:id, :login, :date, :prenom, :nom, :log_nec , :email, :postefix, :gsm, :t_crm , :po_valid, :devis, :cmd, :facture, :saisie, :admin , :password , :fonction)");
    $request->bindValue(":id", $id);
-  
    $request->bindValue(":login", $login);
    $request->bindValue(":date", $date);
    $request->bindValue(":prenom", $prenom);
@@ -91,7 +90,6 @@ public function modify($id,  $login, $date, $prenom, $nom, $log_nec, $email, $po
    $request->bindValue(":admin", $admin);
    $request->bindValue(":password", $password);
    $request->bindValue(":fonction", $fonction);
-   
    $request->execute();
    $idUser = $this->Db->Pdo->lastInsertId();
    return $idUser;

@@ -101,6 +101,123 @@
               </div>
             </div>
           </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- Modal créer société de livraison  -->
+            <div class="modal fade" id="modalSocieteLivraison" tabindex="-1" role="dialog"  aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" >Société  livraison<i class="fal fa-building"></i> </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="FormClientCrea" method="POST" action="">
+                      <div class="form-row">
+                        <div class="form-group col-md-8">
+                          <label for="inputEmail4">Société*</label>
+                          <input type="text" class="form-control text-uppercase" id="societeNameCreateLVR"  name="societe" required >
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="inputAddress">Adresse</label>
+                        <input type="text" class="form-control" id="inputAddressLVR"  name="adr1" >
+                      </div>
+                      <div class="form-group">
+                        
+                        <input type="text" class="form-control" id="inputAddress2LVR" name="adr2">
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-2">
+                          <label for="inputZip">CP*</label>
+                          <input type="text" class="form-control" id="inputZipLVR"  name="cp" required >
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="inputCity">Ville*</label>
+                          <input type="text" class="form-control" id="inputCityLVR"  name="ville" required >
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="pays">Pays*</label>
+                          <select class="custom-select mr-sm-2" id="SelectClientCountryLVR" name="pays">
+                            <option value="france" selected>France</option>
+                            <option value="autre" >autre</option>
+                          </select>
+                        </div>
+                      </div>
+                  </div>
+                  
+                  <div class="modal-footer justify-content-end ">
+                    <div>
+                      <button type="button" id="PostSocieteLivraison" class="btn btn-primary">Valider</button>
+                    </div>
+                  </div>
+                </form>
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
            <!-- Modal Contact  -->
            <div class="modal fade" id="modalContact" tabindex="-1" role="dialog"  aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -134,6 +251,78 @@
               </div>
             </div>
           </div>
+
+
+
+
+
+
+
+
+
+
+          
+           <!-- Modal Contact Livraison  -->
+           <div class="modal fade" id="modalContactLVR" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" >Contact <i class="fal fa-user"></i></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <table id="contactTableLVR" class="table  display" style="width:100%"> 
+                    <thead class="thead-dark"> 
+                      <tr><th>Id</th><th>Nom</th><th>Fonction</th></tr>
+                     </thead > 
+                    <tbody>
+            
+                    </tbody>
+                  </table>
+                </div>
+                <form  class="form" role="form"  method="POST" action="" id="formSelectContactLVR">
+                  <input type="hidden" name="choixContactLVR" id="choixContactLVR" value="">
+                </form>
+               
+                  <div class="modal-footer justify-content-end ">
+                    <div>
+                      <button type="button" class="btn btn-outline-primary" data-dismiss="modal" data-toggle="modal" data-target="#modalContactCrea" >Créer</button>
+                    </div>
+                  </div>
+              
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
           <!-- Modal Contact Creation  -->
           <div class="modal fade" id="modalContactCrea" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -205,6 +394,110 @@
               </div>
             </div>
           </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- Modal Contact Livraison Creation  -->
+            <div class="modal fade" id="modalContactCreaLVR" tabindex="-1" role="dialog"  aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" >Contact Livraison <i class="fal fa-user"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+  
+                  <div class="modal-body">
+                    <!-- debut form-->
+                    <form id="FormContactCrea" method="POST" action="">
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="inputState">Fonction *</label>
+                          <select id="inputStateContactLVR" class="form-control" name="fonctionContactLVR" required>
+                           
+                            {% for keyword in keywordList %}
+                            <option value={{keyword.keyword__value}}>{{keyword.keyword__lib}}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="inputCiv">Civilité</label>
+                          <select id="inputCivLVR" class="form-control" name="civiliteContactLVR" required>
+                            <option  selected>...</option>
+                            <option value="M.">Mr</option>
+                            <option value="Mme">Mme</option>
+                          </select>
+                        </div>
+                        
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-6">
+                          <label for="inputCity">Nom</label>
+                          <input type="text" class="form-control" name="nomContactLVR" id="nomContactLVR">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="inputCity">Prenom</label>
+                          <input type="text" class="form-control" name="prenomContactLVR" id="prenomContactLVR">
+                        </div>
+                      </div>
+  
+                      <div class="form-row">
+                        <div class="form-group col-md-3">
+                          <label for="inputZip">Telephone</label>
+                          <input type="text" class="form-control" name="telContactLVR" id="telContactLVR">
+                        </div>
+                        <div class="form-group col-md-3">
+                          <label for="inputZip">Fax </label>
+                          <input type="text" class="form-control"name="faxContactLVR" id="faxContactLVR">
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="inputCity">Mail</label>
+                          <input type="email" class="form-control"name="mailContactLVR" id="mailContactLVR">
+                        </div>
+                      </div>
+                  </div>
+                  <div class="modal-footer justify-content-end ">
+                    <div>
+                      <button type="button" class="btn btn-primary" id="postContactLVR">Valider</button>
+                    </div>
+                  </div>
+                </form>
+                 <!-- fin form-->
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           <!-- Modal PRESTA  -->
           <div class="modal fade" id="modalPresta" tabindex="-1" role="dialog"  aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -538,6 +831,12 @@
                 <input type="hidden" name="ModifierDevis" id="ModifierDevis" value="">
                 {% endif %}
 
+                {% if contactlivraison %}
+                <input type="hidden" name="contact_livraison" id="contact_livraison" value="{{ contactlivraison }}">
+                {% else %}
+                <input type="hidden" name="contact_livraison" id="contact_livraison" value="">
+                {% endif %}
+
                 {% if livraison %}
                 <input type="hidden" name="livraisonSelect" id="livraisonSelect" value="{{ livraison.client__id }}">
                 {% else %}
@@ -581,9 +880,9 @@
                 </div>
                 <div class="modal-footer">
                   {% if   livraison   %}
-                  <p class="text-danger text-bold" id="textLivraison">Livraison actuelle : {{ livraison.client__societe ~ " " ~ livraison.client__adr1 ~ " " ~  livraison.client__ville ~ " " }} </p>
+                  <p class="text-danger text-bold" id="">Livraison actuelle : {{ livraison.client__societe ~ " " ~ livraison.client__adr1 ~ " " ~  livraison.client__ville ~ " " }} </p>
                   {% else %}
-                  <p class="text-danger text-bold" id="textLivraison">Livraison actuelle : </p>
+                  <p class="text-danger text-bold" id="">Livraison actuelle : </p>
                   {% endif %}
                   <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectLivraison">
                         <input type="hidden" name="choixLivraison" id="choixLivraison" value="">
@@ -599,24 +898,37 @@
         <!-- 1ere ligne -->
        <div class="d-flex flex-wrap flex-row justify-content-center">
           <!--carte societe -->
-        <div class="col-md-6">
+        <div class="col-md-11">
           <div class="card h-100  shadow mb-2">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Société <i class="fal fa-building"></i></h6>
+              <h6 class="m-0 font-weight-bold text-primary">Société et Contact <i class="fal fa-building"></i></h6>
               <div class="dropdown no-arrow">
                 
                 <i class="far fa-check text-success" id="petitCheck" hidden></i>
                
-                <button class="btn btn-success btn-sm" id="buttonLivraison"><i class="fal fa-truck"></i></button>
+              
               </div>
             </div>
             <!-- Card Body -->
-            <div class="card-body">
-              <div class="chart-pie pt-2  d-flex flex-row   mb-1 justify-content-between" id="findClient">
+            <div class="card-body d-flex flex-row justify-content-around " style=" height: 18rem;">
+
+
+
+
+
+
+
+              <!--première sous carte principale-->
+
+              <div class="card shadow h-100  col-5 pt-2  d-flex flex-column    mb-1 justify-content-start" id="findClient">
+                <div class="   d-flex flex-column justify-content-center">
+                  <span class="badge badge-primary ">Principale*</span>
+                <!--societe-->
+                <div class="  chart-pie my-4 d-flex flex-row justify-content-between">
                 <div class=" mb-0 font-weight-bold text-muted" id="divClient">
                  {% if not societe %}
-                  Choisir un client*
+                  Choisir une Société*
                  {% else %}
                   {{societe.client__id ~ " " ~ societe.client__societe}}  <br>
                   {{societe.client__ville}} <br>
@@ -624,51 +936,146 @@
                  {% endif %}
                 </div>
                 <div>
-                  <div class="btn-group btn-group-sm">
+                  <div class="btn-group btn-group-sm mx-4">
                     <button type="button" id="AjaxClient" class="btn btn-primary btn-sm" >Choisir</button>
-                    <button type="button" class="btn btn-outline-primary " data-toggle="modal" data-target="#modalClientCrea">Créer</button>
+                    <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#modalClientCrea">Créer</button>
                   </div>
                 </div>
               </div>
+
+              <!-- carte contact -->
+                <div class=" mt-4">
+                  <div class=" mb-2">
+                    <!-- Card Header - -->
+                  
+                    <!-- Card Body -->
+                    <div class="">
+                      <div class="chart-pie pt-2  d-flex flex-row   mb-1 justify-content-between">
+                        
+                        <div class=" mb-0 font-weight-bold text-muted " id="contactDiv">
+                          {% if contact %}
+                          {{contact.contact__nom}}<br>
+                          {{contact.contact__prenom }}
+                          {{contact.keyword__value}}
+                          {% else %}
+                          Ajouter un contact 
+                          {% endif %}
+                          
+                        </div>
+                        <div>
+                              <div class="btn-group btn-group-sm mx-4">
+                                <button type="button" class="btn btn-primary btn-sm " data-toggle="modal" data-target="#modalContact" id="toogleContact" disabled>Choisir</button>
+                                <button type="button" class="btn btn-outline-primary btn-sm " id="toogleCreaContact" data-toggle="modal" data-target="#modalContactCrea" disabled>Créer</button>
+                                
+                              </div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </div>
+
+
+
+              <!--2eme sous carte livraison-->
+              <div class="card shadow h-100  col-5 pt-2  d-flex flex-column    mb-1 justify-content-start" id="findClient">
+                <div class="   d-flex flex-column justify-content-center">
+                  <span class="badge badge-success ">Livraison</span>
+                <!--societe-->
+                <div class="  chart-pie my-4 d-flex flex-row justify-content-between">
+                <div class=" mb-0 font-weight-bold text-muted" id="divClient">
+                  {% if   livraison   %}
+                  <p class="text-danger text-bold" id="textLivraison">Livraison actuelle : {{ livraison.client__societe ~ " " ~ livraison.client__adr1 ~ " " ~  livraison.client__ville ~ " " }} </p>
+                  {% else %}
+                  <p class="text-muted text-bold" id="textLivraison">Livré à la meme adresse</p>
+                  {% endif %}
+                  <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectLivraison">
+                        <input type="hidden" name="choixLivraison" id="choixLivraison" value="">
+                  </form>
+                </div>
+                <div>
+                  <div class="btn-group btn-group-sm mx-4">
+                    <button type="button" id="buttonLivraison" class="btn btn-success btn-sm " disabled>Choisir</button>
+                    <button type="button" id="buttonCrealivraison" class="btn btn-outline-success btn-sm " data-toggle="modal" data-target="#modalSocieteLivraison" disabled>Créer</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- carte contact -->
+                <div class=" mt-2">
+                  <div class=" mb-2">
+                    <!-- Card Header - -->
+                  
+                    <!-- Card Body -->
+                    <div class="">
+                      <div class="chart-pie pt-2  d-flex flex-row   mb-1 justify-content-between">
+                        
+                        <div class=" mb-0 font-weight-bold text-muted " id="contactDivLVR">
+                          {% if contact %}
+                          {{contact.contact__nom}}<br>
+                          {{contact.contact__prenom }}
+                          {{contact.keyword__value}}
+                          {% else %}
+                          Ajouter un contact 
+                          {% endif %}
+                          
+                        </div>
+                        <div>
+                              <div class="btn-group btn-group-sm mx-4">
+                                <button type="button" class="btn btn-success btn-sm "  data-toggle="modal" data-target="#modalContactLVR" id="toogleContactLVR" disabled>Choisir</button>
+                                <button type="button" class="btn btn-outline-success btn-sm " data-toggle="modal" data-target="#modalContactCreaLVR" id="toogleContactCreaLVR" disabled>Créer</button>
+                                
+                              </div>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </div>
+              </div>
+
+
+
+
+
+
+
+
+
+
+
             </div>
           </div>
         </div>
 
-          <!-- carte contact -->
-        <div class="col-md-5">
-          <div class="card h-100  shadow mb-2">
-            <!-- Card Header - -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Contact <i class="fal fa-user"></i></h6>
-              <div class="dropdown no-arrow">
-               
-                <button type="button" class="btn btn-danger btn-sm" id="trash4Contact"><i class="fal fa-trash-alt"></i></button>
-               
-              </div>
-            </div>
-            <!-- Card Body -->
-            <div class="card-body">
-              <div class="chart-pie pt-2  d-flex flex-row   mb-1 justify-content-between">
-                <div class=" mb-0 font-weight-bold text-muted" id="contactDiv">
-                  {% if contact %}
-                  {{contact.contact__nom}}<br>
-                  {{contact.contact__prenom }}
-                  {{contact.keyword__value}}
-                  {% else %}
-                  Ajouter un contact 
-                  {% endif %}
-                 
-                </div>
-                <div>
-                      <div class="btn-group btn-group-sm">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalContact" id="toogleContact">Choisir</button>
-                        <button type="button" class="btn btn-outline-primary " data-toggle="modal" data-target="#modalContactCrea">Créer</button>
-                      </div>
-              </div>
-              </div>
-            </div>
-          </div>
-        </div>
+
+
+
+
+
+
+
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+        
 
        
 

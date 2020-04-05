@@ -19,7 +19,7 @@ if (empty($_SESSION['user'])) {
     echo  json_encode($client);
  }
  else {
-    echo 'request failed';
+    echo  json_encode('request failed');
  }
 
 

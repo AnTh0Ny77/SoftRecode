@@ -134,10 +134,13 @@ $('#AjaxClient').on('click', function(){
         },
         success: function(data){  
         dataSet = JSON.parse(data);
-        $('#textLivraison').text("livraison actuelle : " + dataSet.client__societe + ' ' + dataSet.client__adr1 + ' ' + dataSet.client__ville);
+        $('#textLivraison').text( dataSet.client__societe + ' ' + dataSet.client__adr1 + ' ' + dataSet.client__ville + ' ' + dataSet.client__cp);
         $('#livraisonSelect').val(dataSet.client__id);
+        $('#contactDivLVR').html("Aucun Contact");
+        $('#contact_livraison').val("");
         $('#ModalLivraison').modal('hide');
-        checkVert();
+        $('#toogleContactLVR').removeAttr('disabled');
+        $('#toogleContactCreaLVR').removeAttr('disabled');
         },
         error: function (err) {
             alert('error: ' + err);
@@ -191,6 +194,107 @@ $('#AjaxClient').on('click', function(){
     deferRender: true,
     "searching": false,      
     });
+
+
+
+
+
+  
+
+
+
+
+    // int de la table contact Livraison :
+    tableContactLVR = $('#contactTableLVR').DataTable({
+        "language": {
+            "decimal":        "",
+            "emptyTable":     "aucuns résultats",
+            "info":           "Voir _START_ to _END_ of _TOTAL_ résultats",
+            "infoEmpty":      "Voir 0 to 0 of 0 résultats",
+            "infoFiltered":   "(filtré dans _MAX_ total résultats)",
+            "infoPostFix":    "",
+            "thousands":      ",",
+            "lengthMenu":     "Voir _MENU_ résultats par pages",
+            "loadingRecords": "Loading...",
+            "processing":     "Processing...",
+            "search":         "Recherche:",
+            "zeroRecords":    "Aucun résultats",
+            "paginate": {
+                "first":      "Première",
+                "last":       "Dernière",
+                "next":       "Suivante",
+                "previous":   "Précédente"
+            }
+              
+                
+        },
+    "columns": [
+    {"data": "contact__id"},
+    {"data": "contact__nom"},
+    {"data": "keyword__lib"}],  
+    "paging": true,
+    "info":   true,
+    "deferRender": true,
+    retrieve: true,
+    deferRender: true,
+    "searching": false,      
+    });
+
+
+
+
+
+     //appel data  table contact Livraison: 
+     $('#toogleContactLVR').on('click', function(){
+        let dataSetContact = [];
+        $.ajax({
+            type: 'post',
+            url: "tableContact",
+            data : 
+            {
+                "AjaxContactTable" : $('#livraisonSelect').val()
+            },
+            success: function(data){
+                tableContactLVR.clear().draw();
+                dataSetContact = JSON.parse(data);
+                $('#modalContactLVR').modal('show');
+               tableContactLVR.rows.add(dataSetContact).draw(); 
+               dataSetContact = [];
+            },
+            error: function (err) {
+                alert('error: ' + err);
+            }
+        })
+    })
+
+
+     //appel ajax au choix du contact livraison : 
+     $('#contactTableLVR tbody').on('click', 'tr', function () {
+        
+        let donne = tableContactLVR.row( this ).data();
+        $.ajax({
+            type: 'post',
+            url: "choixContact",
+            data : 
+            {
+                "AjaxContact" :  donne.contact__id
+            },
+            success: function(data){  
+            dataSet = JSON.parse(data);
+            $('#contactDivLVR').html(dataSet.contact__nom + '<br>' + dataSet.contact__prenom + '<br>' + dataSet.keyword__lib);
+            $('#contact_livraison').val(dataSet.contact__id);
+            $('#modalContactLVR').modal('hide');
+            },
+            error: function (err) {
+                alert('error: ' + err);
+            }
+
+        })
+    
+    });
+
+
+
 
     //appel data  table contact : 
     $('#toogleContact').on('click', function(){
@@ -270,13 +374,75 @@ $('#AjaxClient').on('click', function(){
     
     });
 
+
+
+
+    
+
+
+
+
+
+     //appel ajax a la creation du contact Livraison : 
+     $('#postContactLVR').on('click', function () {
+        $.ajax({
+            type: 'post',
+            url: "createContact",
+            data : 
+            {
+                "societeLiaison" : $('#livraisonSelect').val(),
+                "inputStateContact" : $('#inputStateContactLVR').val() ,
+                "inputCiv" : $('#inputCivLVR').val(),
+                "nomContact" :  $('#nomContactLVR').val(),
+                "prenomContact" : $('#prenomContactLVR').val(),
+                "telContact" : $('#telContactLVR').val(),
+                "faxContact" : $('#faxContactLVR').val(),
+                "mailContact" : $('#mailContactLVR').val(),
+            },
+            success: function(data){
+            dataSetCreaContact = JSON.parse(data);
+            $('#contactDivLVR').html(dataSetCreaContact.contact__nom + '<br>' + dataSetCreaContact.contact__prenom + '<br>' + dataSetCreaContact.keyword__lib);
+            $('#contact_livraison').val(dataSetCreaContact.contact__id);
+            $('#modalContactCreaLVR').modal('hide');
+            
+            },
+            error: function (err) {
+                alert('error: ' + err);
+            }
+
+        })
+    
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     // appel ajax choix du client : 
     $('#client tbody').on('click', 'tr', function () {
         $('#contactDiv').html(" Aucun contact selectionné");
         $('#contactSelect').val("");
-        $('#textLivraison').text("");
+        $('#contactDivLVR').html("Livré à la meme adresse");
+        $('#contact_livraison').val("");
+        $('#textLivraison').text("Livré à la meme adresse");
         $('#livraisonSelect').val("");
-        checkVert();
         let donne = tableClient.row( this ).data();
         $.ajax({
             type: 'post',
@@ -291,6 +457,12 @@ $('#AjaxClient').on('click', function(){
             $('#clientSelect').val(dataSet.client__id);
             $('#modalClient').modal('hide');
             $('#addNewRow').removeAttr('disabled');
+            $('#toogleContact').removeAttr('disabled');
+            $('#buttonLivraison').removeAttr('disabled');
+            $('#buttonCrealivraison').removeAttr('disabled');
+            $('#toogleCreaContact').removeAttr('disabled');
+            
+            
             },
             error: function (err) {
                 alert('error: ' + err);
@@ -306,9 +478,9 @@ $('#AjaxClient').on('click', function(){
     $('#PostClient').on('click', function(){
         $('#contactDiv').html(" Aucun contact selectionné");
         $('#contactSelect').val("");
-        $('#textLivraison').text("");
+        $('#textLivraison').text("Livré à la meme adresse");
         $('#livraisonSelect').val("");
-        checkVert();
+        
         $.ajax({
             type: 'post',
             url: "createClient",
@@ -326,7 +498,45 @@ $('#AjaxClient').on('click', function(){
             $('#divClient').html(dataSetCrea.client__societe + '<br>' + dataSetCrea.client__adr1 + '<br>' + dataSetCrea.client__ville);
             $('#clientSelect').val(dataSetCrea.client__id);
             $('#modalClientCrea').modal('hide');
-            $('#addNewRow').removeAttr('disabled');
+            $('#toogleContact').removeAttr('disabled');
+            $('#buttonLivraison').removeAttr('disabled');
+            $('#buttonCrealivraison').removeAttr('disabled');
+            $('#toogleCreaContact').removeAttr('disabled');
+            
+            },
+            error: function (err) {
+                alert('error: ' + err);
+            }
+
+        })
+
+    })
+
+
+
+
+     //appel ajax creation de societe livrée:  
+     $('#PostSocieteLivraison').on('click', function(){
+        $('#livraisonSelect').val("");
+        $.ajax({
+            type: 'post',
+            url: "createClient",
+            data : 
+            {
+                "inputAddress" : $('#inputAddressLVR').val() ,
+                "inputAddress2" : $('#inputAddress2LVR').val(),
+                "societeNameCreate" :  $('#societeNameCreateLVR').val(),
+                "inputZip" : $('#inputZipLVR').val(),
+                "inputCity" : $('#inputCityLVR').val(),
+                "inlineFormCustomSelect" : $('#SelectClientCountryLVR').val(),
+            },
+            success: function(data){
+            dataSetCrea = JSON.parse(data);
+            $('#textLivraison').html(dataSetCrea.client__societe + '<br>' + dataSetCrea.client__adr1 + '<br>' + dataSetCrea.client__ville);
+            $('#livraisonSelect').val(dataSetCrea.client__id);
+            $('#modalSocieteLivraison').modal('hide');
+            $('#toogleContactLVR').removeAttr('disabled');
+            $('#toogleContactCreaLVR').removeAttr('disabled');
             },
             error: function (err) {
                 alert('error: ' + err);

@@ -14,12 +14,12 @@ class Devis extends Table {
     $this->Db = $db;
 }
 
-public function insertOne($date , $user, $client , $livraison, $port, $contact, $comClient, $comInterne, $etat, $modele , $arrayOfObject){
+public function insertOne($date , $user, $client , $livraison, $port, $contact, $comClient, $comInterne, $etat, $modele , $arrayOfObject , $contact_livraison){
  
     $request = $this->Db->Pdo->prepare('INSERT INTO ' .$this->Table."( devis__date_crea , devis__user__id, devis__client__id , devis__id_client_livraison,
-     devis__port, devis__contact__id, devis__note_client, devis__note_interne, devis__etat , devis__modele )
+     devis__port, devis__contact__id, devis__note_client, devis__note_interne, devis__etat , devis__modele , devis__contact_livraison)
      VALUES ( :devis__date_crea, :devis__user__id, :devis__client__id, :devis__id_client_livraison, :devis__port , :devis__contact__id, :devis__note_client,
-      :devis__note_interne, :devis__etat , :devis__modele)");
+      :devis__note_interne, :devis__etat , :devis__modele , :devis__id_contact_livraison)");
 
     $requestLigne =  $this->Db->Pdo->prepare('INSERT INTO  devisligne (devl__devis__id,devl__type,devl__modele,devl__designation,devl__etat,devl__mois_garantie,
     devl_quantite , devl__prix_barre, devl_puht,devl__note_client ,devl__note_interne ,devl__ordre ) VALUES (:devl__devis__id, :devl__type, :devl__modele, :devl__designation,
@@ -38,6 +38,7 @@ public function insertOne($date , $user, $client , $livraison, $port, $contact, 
     $request->bindValue(":devis__note_interne", $comInterne);
     $request->bindValue(":devis__etat", $etat);
     $request->bindValue(":devis__modele", $modele);
+    $request->bindValue(":devis__id_contact_livraison", $contact_livraison);
     $request->execute();
     $idDevis = $this->Db->Pdo->lastInsertId();
     $count = 0 ;
@@ -117,14 +118,14 @@ public function xtenGarantie($id){
   return $data;
 }
 
-public function Modify( $id, $date , $user, $client , $livraison, $port, $contact, $comClient, $comInterne, $etat, $modele , $arrayOfObject){
+public function Modify( $id, $date , $user, $client , $livraison, $port, $contact, $comClient, $comInterne, $etat, $modele , $arrayOfObject ,  $contact_livraison){
 
   $delete = $this->Db->Pdo->prepare('DELETE  from devis WHERE devis__id =  :devis__id');
  
   $request = $this->Db->Pdo->prepare('INSERT INTO ' .$this->Table."(devis__id, devis__date_crea , devis__user__id, devis__client__id , devis__id_client_livraison,
-   devis__port, devis__contact__id, devis__note_client, devis__note_interne, devis__etat , devis__modele )
+   devis__port, devis__contact__id, devis__note_client, devis__note_interne, devis__etat , devis__modele ,  devis__contact_livraison)
    VALUES (:devis__id, :devis__date_crea, :devis__user__id, :devis__client__id, :devis__id_client_livraison, :devis__port , :devis__contact__id, :devis__note_client,
-    :devis__note_interne, :devis__etat , :devis__modele)");
+    :devis__note_interne, :devis__etat , :devis__modele , :devis__contact_livraison)");
 
   $requestLigne =  $this->Db->Pdo->prepare('INSERT INTO  devisligne (devl__devis__id,devl__type,devl__modele,devl__designation,devl__etat,devl__mois_garantie,
   devl_quantite , devl__prix_barre, devl_puht,devl__note_client ,devl__note_interne ,devl__ordre ) VALUES (:devl__devis__id, :devl__type, :devl__modele, :devl__designation,
@@ -146,6 +147,7 @@ public function Modify( $id, $date , $user, $client , $livraison, $port, $contac
   $request->bindValue(":devis__note_interne", $comInterne);
   $request->bindValue(":devis__etat", $etat);
   $request->bindValue(":devis__modele", $modele);
+  $request->bindValue(":devis__contact_livraison",$contact_livraison);
   $request->execute();
   $idDevis = $this->Db->Pdo->lastInsertId();
   $count = 0 ;
