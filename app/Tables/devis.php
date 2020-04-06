@@ -72,7 +72,7 @@ public function insertOne($date , $user, $client , $livraison, $port, $contact, 
 }
 
 public function getUserDevis($id){
-  $request =$this->Db->Pdo->query("SELECT devis__id,  devis__date_crea , devis__user__id , devis__client__id, devis__etat , c.client__societe,  c.client__ville, c.client__cp , u.log_nec , k.keyword__lib
+  $request =$this->Db->Pdo->query("SELECT devis__id,  devis__date_crea , devis__user__id , devis__client__id, devis__etat , LPAD(c.client__id,6,0) as client__id , c.client__societe,  c.client__ville, c.client__cp , u.log_nec , k.keyword__lib
   FROM  devis JOIN client as c ON devis__client__id = c.client__id 
   JOIN utilisateur as u ON devis__user__id = u.id_utilisateur 
   JOIN keyword as k ON devis__etat = k.keyword__value
@@ -81,7 +81,7 @@ public function getUserDevis($id){
   return $data;
 }
 public function getAll(){
-  $request =$this->Db->Pdo->query("SELECT devis__id,  devis__date_crea , devis__user__id , devis__client__id, devis__etat , c.client__societe,  c.client__ville, c.client__cp , u.log_nec , k.keyword__lib
+  $request =$this->Db->Pdo->query("SELECT devis__id,  devis__date_crea , devis__user__id , devis__client__id, devis__etat , LPAD(c.client__id,6,0) as client__id , c.client__societe,  c.client__ville, c.client__cp , u.log_nec , k.keyword__lib
     FROM  devis JOIN client as c ON devis__client__id = c.client__id JOIN utilisateur as u ON devis__user__id = u.id_utilisateur JOIN keyword as k ON devis__etat = k.keyword__value    ORDER BY  devis__date_crea DESC LIMIT 200 ");
   $data = $request->fetchAll(PDO::FETCH_OBJ);
   return $data;
@@ -187,7 +187,7 @@ public function updateStatus($etat,$id){
 }
 
 public function getFromStatus(){
-  $request =$this->Db->Pdo->query("SELECT devis__id,  devis__date_crea , devis__user__id , devis__client__id, devis__etat , c.client__societe,  c.client__ville, c.client__cp , u.log_nec , k.keyword__lib
+  $request =$this->Db->Pdo->query("SELECT devis__id,  devis__date_crea , devis__user__id , devis__client__id, devis__etat , LPAD(c.client__id,6,0) as client__id ,  c.client__societe,  c.client__ville, c.client__cp , u.log_nec , k.keyword__lib
   FROM  devis JOIN client as c ON devis__client__id = c.client__id 
   JOIN utilisateur as u ON devis__user__id = u.id_utilisateur 
   JOIN keyword as k ON devis__etat = k.keyword__value
@@ -210,7 +210,7 @@ return $data;
 
 
 public function getNotCMD(){
-  $request =$this->Db->Pdo->query("SELECT devis__id,  devis__date_crea , devis__user__id , devis__client__id, devis__etat , c.client__societe,  c.client__ville, c.client__cp , u.log_nec , k.keyword__lib
+  $request =$this->Db->Pdo->query("SELECT devis__id,  devis__date_crea , devis__user__id , devis__client__id, devis__etat , LPAD(c.client__id,6,0) as client__id , c.client__societe,  c.client__ville, c.client__cp , u.log_nec , k.keyword__lib
   FROM  devis JOIN client as c ON devis__client__id = c.client__id 
   JOIN utilisateur as u ON devis__user__id = u.id_utilisateur 
   JOIN keyword as k ON devis__etat = k.keyword__value

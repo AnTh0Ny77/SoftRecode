@@ -92,7 +92,7 @@
               </thead> 
                <tbody id="DevisBody">
                 {% for devis in devisList %}
-                <tr class="trClick"><td>{{devis.devis__id}}</td><td>{{ devis.devis__date_crea}}</td><td>{{ devis.log_nec}}</td><td>{{ devis.client__societe }} <br>{{ devis.client__ville ~ " " ~ devis.client__cp}}</td><td>{{ devis.keyword__lib}}</td></tr>
+                <tr class="trClick"><td>{{devis.devis__id}}</td><td>{{ devis.devis__date_crea}}</td><td>{{ devis.log_nec  }}</td><td>{{ devis.client__societe ~ " (" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td><td>{{ devis.keyword__lib}}</td></tr>
                 {% endfor %}
                </tbody>
              </table>
