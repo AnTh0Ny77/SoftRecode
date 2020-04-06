@@ -1,6 +1,6 @@
 
 RewriteEngine On
-RewriteBase /DevisRecode/
+RewriteBase /SoftRecode/
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.+)$ index.php [QSA,L]

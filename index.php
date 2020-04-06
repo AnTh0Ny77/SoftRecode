@@ -1,136 +1,119 @@
+<?php
 
-  <?php 
-       
-       $request = $_SERVER['REQUEST_URI'];
-      
-       switch($request){
-            case  '/DevisRecode/'. '':
-              require __DIR__ .'/pages/login.php';
-            break;
+   /*    8888b.  88""Yb 888888 .dP"Y8 .dP"Y8    db     dP""b8 888888     8888b.  888888     88""Yb    db     dP""b8 888888 .dP"Y8 
+  dPYb    8I  Yb 88__dP 88__   `Ybo." `Ybo."   dPYb   dP   `" 88__        8I  Yb 88__       88__dP   dPYb   dP   `" 88__   `Ybo." 
+ dP__Yb   8I  dY 88"Yb  88""   o.`Y8b o.`Y8b  dP__Yb  Yb  "88 88""        8I  dY 88""       88"""   dP__Yb  Yb  "88 88""   o.`Y8b 
+dP""""Yb 8888Y"  88  Yb 888888 8bodP' 8bodP' dP""""Yb  YboodP 888888     8888Y"  888888     88     dP""""Yb  YboodP 888888 8bodP*/ 
 
-            case '/DevisRecode/login':
-              require __DIR__ .'/pages/login.php';
-            break;
+  $request = $_SERVER['REQUEST_URI'];
 
-            case '/DevisRecode/home':
-              require __DIR__ .'/pages/home.php';
-            break;
+  switch($request)
+  {
 
-            case '/DevisRecode/nouveauDevis';
-             require __DIR__ .'/pages/nouveauDevis.php';
-            break;
+/*    d8 888888 88b 88 88   88 
+88b  d88 88__   88Yb88 88   88 
+88YbdP88 88""   88 Y88 Y8   8P 
+88 YY 88 888888 88  Y8 `Ybod*/ 
+    case '/SoftRecode/'.'':
+        require __DIR__ .'/pages/login.php'; break;
+    case '/SoftRecode/login':
+      require __DIR__ .'/pages/login.php'; break;
+    case '/SoftRecode/home':
+      require __DIR__ .'/pages/home.php'; break;
+    case '/SoftRecode/unlog';
+      require __DIR__ .'/pages/utilities/unlog.php'; break;
+    case '/SoftRecode/noAccess';
+      require __DIR__ .'/pages/noAccess.php'; break;
 
-            case '/DevisRecode/mesDevis';
-            require __DIR__ .'/pages/mesDevis.php';
-           break;
+/*   88 .dP"Y8 888888 88""Yb 
+88   88 `Ybo." 88__   88__dP 
+Y8   8P o.`Y8b 88""   88"Yb  
+`YbodP' 8bodP' 888888 88  Y*/ 
+    case '/SoftRecode/utilisateurs';
+      require __DIR__ .'/pages/user.php'; break;
+    case '/SoftRecode/User';
+      require __DIR__ .'/pages/user.php'; break;
+    case '/SoftRecode/U_UserUpdate';
+      require __DIR__ .'/pages/utilities/U_UserUpdate.php'; break;
+    case '/SoftRecode/UserModif';
+      require __DIR__ .'/pages/UserModif.php'; break;
+    case '/SoftRecode/UserCreat';
+      require __DIR__ .'/pages/UserCreat.php'; break;
 
-           case '/DevisRecode/unlog';
-            require __DIR__ .'/pages/utilities/unlog.php';
-           break;
 
-           case '/DevisRecode/pdf';
-            require __DIR__ .'/pages/utilities/pdf.php';
-           break;
 
-           case '/DevisRecode/voirDevis';
-            require __DIR__ .'/pages/utilities/viewPdf.php';
-           break;
+    case '/SoftRecode/nouveauDevis';
+      require __DIR__ .'/pages/nouveauDevis.php';break;
 
-           case '/DevisRecode/AjaxSociete';
-            require __DIR__ .'/pages/ajax/ajaxClient.php';
-           break;
+    case '/SoftRecode/mesDevis';
+      require __DIR__ .'/pages/mesDevis.php'; break;
 
-           case '/DevisRecode/AjaxDevis';
-            require __DIR__ .'/pages/ajax/ajaxDevis.php';
-           break;
-           
-           case '/DevisRecode/commande';
-            require __DIR__ .'/pages/commandValid.php';
-           break;
+    case '/SoftRecode/pdf';
+      require __DIR__ .'/pages/utilities/pdf.php'; break;
 
-           case '/DevisRecode/saisie';
-            require __DIR__ .'/pages/saisie.php';
-           break;
+    case '/SoftRecode/voirDevis';
+      require __DIR__ .'/pages/utilities/viewPdf.php'; break;
 
-           case '/DevisRecode/saisieLivraison';
-            require __DIR__ .'/pages/saisieValid.php';
-           break;
+    case '/SoftRecode/AjaxSociete';
+      require __DIR__ .'/pages/ajax/ajaxClient.php'; break;
 
-           case '/DevisRecode/createNew';
-            require __DIR__ .'/pages/ajax/ajaxCreate.php';
-           break;
+    case '/SoftRecode/AjaxDevis';
+      require __DIR__ .'/pages/ajax/ajaxDevis.php'; break;
 
-           case '/DevisRecode/createClient';
-           require __DIR__ .'/pages/ajax/ajaxCreateClient.php';
-           break;
+    case '/SoftRecode/commande';
+      require __DIR__ .'/pages/commandValid.php'; break;
 
-           case '/DevisRecode/tableContact';
-           require __DIR__ .'/pages/ajax/ajaxTableContact.php';
-           break;
+    case '/SoftRecode/saisie';
+      require __DIR__ .'/pages/saisie.php'; break;
 
-           case '/DevisRecode/choixContact';
-           require __DIR__ .'/pages/ajax/ajaxcontactChoix.php';
-           break;
+    case '/SoftRecode/saisieLivraison';
+      require __DIR__ .'/pages/saisieValid.php'; break;
 
-           case '/DevisRecode/createContact';
-           require __DIR__ .'/pages/ajax/ajaxcreateContact.php';
-           break;
+    case '/SoftRecode/createNew';
+      require __DIR__ .'/pages/ajax/ajaxCreate.php'; break;
 
-           case '/DevisRecode/choixLivraison';
-           require __DIR__ .'/pages/ajax/ajaxChoixLivraison.php';
-           break;
+    case '/SoftRecode/createClient';
+      require __DIR__ .'/pages/ajax/ajaxCreateClient.php'; break;
 
-           case '/DevisRecode/commandCours';
-           require __DIR__ .'/pages/commandCours.php';
-           break;
+    case '/SoftRecode/tableContact';
+      require __DIR__ .'/pages/ajax/ajaxTableContact.php'; break;
 
-           case '/DevisRecode/pdfTravail';
-            require __DIR__ .'/pages/utilities/pdfTravail.php';
-           break;
+    case '/SoftRecode/choixContact';
+      require __DIR__ .'/pages/ajax/ajaxcontactChoix.php'; break;
 
-           case '/DevisRecode/pdfBL';
-            require __DIR__ .'/pages/utilities/pdfBL.php';
-           break;
+    case '/SoftRecode/createContact';
+      require __DIR__ .'/pages/ajax/ajaxcreateContact.php'; break;
 
-           case '/DevisRecode/AjaxCMDcours';
-            require __DIR__ .'/pages/ajax/ajaxCMDcours.php';
-           break;
+    case '/SoftRecode/choixLivraison';
+      require __DIR__ .'/pages/ajax/ajaxChoixLivraison.php'; break;
 
-           case '/DevisRecode/AjaxSaisie';
-            require __DIR__ .'/pages/ajax/ajaxSaisie.php';
-           break;
+    case '/SoftRecode/commandCours';
+      require __DIR__ .'/pages/commandCours.php'; break;
 
-           case '/DevisRecode/utilisateurs';
-            require __DIR__ .'/pages/utilisateurs.php';
-           break;
+    case '/SoftRecode/pdfTravail';
+      require __DIR__ .'/pages/utilities/pdfTravail.php'; break;
 
-           case '/DevisRecode/addUser';
-            require __DIR__ .'/pages/addUser.php';
-           break;
+    case '/SoftRecode/pdfBL';
+      require __DIR__ .'/pages/utilities/pdfBL.php'; break;
 
-           case '/DevisRecode/createUser';
-           require __DIR__ .'/pages/utilities/formUser.php';
-          break;
+    case '/SoftRecode/AjaxCMDcours';
+      require __DIR__ .'/pages/ajax/ajaxCMDcours.php'; break;
 
-          case '/DevisRecode/modifyForms';
-          require __DIR__ .'/pages/utilities/formUserModify.php';
-          break;
+    case '/SoftRecode/AjaxSaisie';
+      require __DIR__ .'/pages/ajax/ajaxSaisie.php'; break;
 
-          case '/DevisRecode/noAccess';
-          require __DIR__ .'/pages/noAccess.php';
-          break;
+    case '/SoftRecode/TicketVisu';
+      require __DIR__ .'/pages/TicketVisu.php'; break;
 
-          case '/DevisRecode/modifyUser';
-          require __DIR__ .'/pages/modifyUser.php';
-          break;
 
-          
-            default:
-            header('HTTP/1.0 404 not found');
-            require  __DIR__ .'/pages/error404.php';
-          break;
-       }
+  /*88   dP"Yb    dP88  
+ dP 88  dP   Yb  dP 88  
+d888888 Yb   dP d888888 
+    88   YbodP      88     */  
+      default:
+        header('HTTP/1.0 404 not found');
+        require  __DIR__ .'/pages/error404.php';
+        break;
+  }
 
-      
-
-      
+?>

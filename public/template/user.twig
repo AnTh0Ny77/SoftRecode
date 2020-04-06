@@ -1,0 +1,56 @@
+{% extends 'layoutMain.twig' %}
+{% block main %}
+
+{#8888    db    88""Yb 88     888888    db    88   88     88   88 .dP"Y8 888888 88""Yb 
+  88     dPYb   88__dP 88     88__     dPYb   88   88     88   88 `Ybo." 88__   88__dP 
+  88    dP__Yb  88""Yb 88  .o 88""    dP__Yb  Y8   8P     Y8   8P o.`Y8b 88""   88"Yb  
+  88   dP""""Yb 88oodP 88ood8 888888 dP""""Yb `YbodP'     `YbodP' 8bodP' 888888 88  Y#}
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">Utilisateurs <i class="fad fa-user-tag"></i></h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group mr-2">
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-9">
+    <div class="card shadow mb-4">
+
+{# Entête #}
+      <div class="card-header py-3 d-flex flex-row align-items-center justify-content-start">
+        <div class="d-flex flex-row flex-wrap justify-content-center px-2 ml-5">
+          <div class="py-1 mx-4">
+            <a type="button" class=" text-white btn btn-success btn-block  btn-sm" href="UserCreat" >Création</a>
+          </div>
+          <form class="py-1 " action="UserModif" method="POST">
+            <input type="hidden" name="UserModif" id="UserModif" value=""> <!-- valeur de UserModif complété dans fonction userTable dans js/client2.js  -->
+            <button type="submit" class="btn btn-primary btn-sm  btn-block  " id="buttonUser" disabled>Modifier</button>
+          </form>
+        </div>
+      
+        <div class="d-flex flex-row flex-wrap justify-content-center px-2 ml-5"></div>
+        <div class="dropdown no-arrow"></div>
+      </div>
+
+{# Tableau #}
+      <div class="card-body">
+        <div class="chart-area">
+          <table id="userTable" class="display table" style="width:100%">
+            <thead class="thead-dark"><tr><th></th><th>Nom</th><th>Prenom</th><th>Poste</th><th>email</th></tr></thead> 
+            <tbody id="userBody">
+              {% for user in userList %}
+                <tr class="trClick"><td>{{user.id_utilisateur}}</td><td>{{user.nom}}</td><td>{{user.prenom}}</td><td>{{ user.fonction}}</td><td>{{user.email}}</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+{% endblock %}

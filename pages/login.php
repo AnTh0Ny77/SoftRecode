@@ -11,7 +11,7 @@
     // Connexion à la base de donnée et à la table Utilisateur :
         $Database = new App\Database('devisrecode');
         $Database->DbConnect();
-        $Users = new App\Tables\Users($Database,'utilisateur');
+        $Users = new App\Tables\User($Database,'utilisateur');
 
     if ( !isset($_SESSION['loginStatus'])) {
         $_SESSION['loginStatus'] = true;

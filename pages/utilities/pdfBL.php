@@ -9,7 +9,7 @@ $Database = new App\Database('devis');
 $Database->DbConnect();
 $Command = new \App\Tables\Command($Database);
 $Client = new \App\Tables\Client($Database);
-$User = new App\Tables\Users($Database);
+$User = new App\Tables\User($Database);
 
 
 if (empty($_SESSION['user'])) {

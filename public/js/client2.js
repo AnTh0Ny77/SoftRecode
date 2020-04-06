@@ -249,7 +249,7 @@ userTable.on('click', 'tr', function(){
     $('#buttonUser').removeAttr('disabled');
     dataRow = userTable.row('.selected').data()[0];
     console.log(dataRow);
-    $("#modifyUser").val(dataRow);
+    $("#UserModif").val(dataRow);
 }})
 
 
