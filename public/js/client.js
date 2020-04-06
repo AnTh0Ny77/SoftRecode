@@ -44,8 +44,9 @@ $('#AjaxClient').on('click', function(){
         "columns": [
         {"data": "client__id"},
         {"data": "client__societe"},
-        {"data": "client__ville"},
-        {"data": "client__cp"}], 
+        {"data": "client__cp"},
+        {"data": "client__ville"}], 
+        
         "paging": true,
         "info":   true,
         retrieve: true,
@@ -105,8 +106,8 @@ $('#AjaxClient').on('click', function(){
                 "columns": [
                 {"data": "client__id"},
                 {"data": "client__societe"},
-                {"data": "client__ville"} , 
-                {"data": "client__cp"}
+                {"data": "client__cp"},
+                {"data": "client__ville"} 
                 ], 
                 
                 "paging": true,
@@ -512,6 +513,32 @@ $('#AjaxClient').on('click', function(){
 
     })
 
+
+    // check la valeur des inputs et disabled buttons a l'ouverture de la page: 
+    let checkIfModify = function(){
+        if ($('#clientSelect').val()) {
+            if ($('#clientSelect').val().length > 0 ) {
+                $('#toogleContact').removeAttr('disabled');
+                $('#buttonLivraison').removeAttr('disabled');
+                $('#buttonCrealivraison').removeAttr('disabled');
+                $('#toogleCreaContact').removeAttr('disabled');
+            }
+        }
+        
+    }
+    checkIfModify();
+
+    // check la valeur des inputs de livraison a l'ouverture de la page : 
+    let checkIfLivraison = function(){
+        if ($('#livraisonSelect').val()) {
+            if ($('#livraisonSelect').val().length > 0 ) {
+                $('#toogleContactLVR').removeAttr('disabled');
+                $('#toogleContactCreaLVR').removeAttr('disabled');
+            }
+        }   
+    }
+
+    checkIfLivraison();
 
 
 
@@ -927,13 +954,15 @@ $('#AjaxClient').on('click', function(){
                 $("#barrePrice").val()
                 );
             xtendArray = [];
-            $("#prestationChoix").val(""),
-                $("#referenceS").val(""),
+                $("#prestationChoix").val(""),
+                $("#choixDesignation").val("");
+                $("#referenceS").val("");
                 $("#comClient").val(""),
                 $("#comInterne").val(""),
                 $("#etatRow").val(""),
                 $("#garantieRow").val(""),
-                $("#quantiteRow").val(""),
+                $("#quantiteRow").val("1"),
+                $("#quantiteRow").text("1"),
                 $("#prixRow").val(""),
                 $("#barrePrice").val("")
             });
@@ -991,7 +1020,7 @@ $('#AjaxClient').on('click', function(){
 
          // vide le formulaire d'ajout de ligne à chaque ouverture afin d'éviter les conflit en cas de fermeture sans validation : 
          $('#addNewRow').click( function (){
-            $("#prestationChoix").val('..');
+            $("#prestationChoix").val('Vente');
             $("#xtendList").empty();
             $("#comClient").val('');
             $("#comInterne").val('');
@@ -1003,7 +1032,7 @@ $('#AjaxClient').on('click', function(){
         // prerempli le formulaire de modification : 
          $('#modifyLine').click( function () {
             // vide en cas de fermeture sans modif (UPxtendList double) :
-            $("#UPprestationChoix").val('..');
+            $("#UPprestationChoix").val('Vente');
             $("#UPxtendList").empty();
             $("#UPcomClient").val('');
             $("#UPcomInterne").val('');

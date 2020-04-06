@@ -14,7 +14,7 @@ class Database {
    public PDO $Pdo;
 
 
-    public function __construct($db_name,$db_user='root',$db_pass='root',$db_host='localhost'){
+    public function __construct($db_name,$db_user='root',$db_pass='',$db_host='localhost'){
 
         $this->db_Name = $db_name;
         $this->$db_pass = $db_pass;
@@ -27,7 +27,7 @@ class Database {
 
         if(!isset($this->Pdo)){
             try {
-                $pdo = new PDO('mysql:dbname=devis;host=localhost', 'root', 'root');
+                $pdo = new PDO('mysql:dbname=devis;host=localhost', 'root', '' ,  array(1002 => 'SET NAMES utf8'));
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $this->Pdo = $pdo;
                 return $this->Pdo;

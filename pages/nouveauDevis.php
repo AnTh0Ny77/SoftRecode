@@ -29,6 +29,7 @@ session_start();
  //initialisation des variables a false en cas de premiere init :  
  $user =false ;
  $contact = false;
+ $contactLVR = false;
  $choixClient = false;
  $livraison= false;
  $articleTypeList = false;
@@ -58,6 +59,10 @@ session_start();
     $livraison =  $Client->getOne($temp->devis__id_client_livraison);
   }
 
+  if (!empty($temp->devis__contact_livraison)) {
+    $contactLVR = $Contact->getOne( $temp->devis__contact_livraison);
+  }
+
   $arrayOfDevisLigne = $Devis->devisLigne($_POST['DupliquerDevis']);
     foreach ($arrayOfDevisLigne as $ligne) {
       $xtendArray = $Devis->xtenGarantie($ligne->devl__id);
@@ -82,6 +87,10 @@ if (!empty($_POST['ModifierDevis'])) {
 
   if (!empty($temp->devis__id_client_livraison)){
     $livraison =  $Client->getOne($temp->devis__id_client_livraison);
+  }
+
+  if (!empty($temp->devis__contact_livraison)) {
+    $contactLVR = $Contact->getOne( $temp->devis__contact_livraison);
   }
 
   $arrayOfDevisLigne = $Devis->devisLigne($_POST['ModifierDevis']);
@@ -119,5 +128,6 @@ echo $twig->render('nouveauDevis.twig',[
    'prestaList'=> $prestaList,
    'livraison' => $livraison,
    'devisModif' => $test,
-   'sessionModif'=> $sessionModif
+   'sessionModif'=> $sessionModif , 
+   'contactLVR' => $contactLVR
 ]);;
