@@ -4,24 +4,22 @@ namespace App\Methods;
 
  class Pdfunctions {
 
- // fontion d'affichage du prix : 
- public static function showPrice($object){
-    $barre = '';
-    $extension = "";
-    $sautDeLigne = "";
-    if (!empty($object->prixBarre)) {
-       $barre = "<s>". $object->prixBarre ." €</s>";
+ 
+
+// fonction d'affichage de la societe : nom (id) adr1 adr2 cp ville : 
+
+public static function showSociete($object){
+    if ($object->client__adr2) {
+        $text = $object->client__societe . " (" . $object->client__id . ") <br>" .
+        $object->client__adr1 . "<br>" . $object->client__adr2 . "<br>" . $object->client__cp . " " . $object->client__ville ;
+        return $text ;
     }
-    if (!empty($object->prix)) {
-        $price =  $object->prix ." €";
-    }else{ $price =  "00,00 €"; }
-    if (!empty($object->xtend)) {
-        $sautDeLigne = "<br>";
-        foreach($object->xtend as $array=>$value){
-            $extension .= "<br>" . $value[1] . " €";
-        }
+    else {
+        $text = $object->client__societe . " (" . $object->client__id . ") <br>" .
+        $object->client__adr1 . "<br>"  . $object->client__cp . " " . $object->client__ville ;
+        return $text ;
     }
-    return $barre . " " . $price . $sautDeLigne . $extension;
+   
 }
 
 // fontion d'affichage du prix dans View : 
@@ -46,20 +44,7 @@ public static function showPriceView($object){
 
 
 
-// fonction d'affichage  prestation :
-public static function showPrestation($object){
-    $prestation = $object->prestation;
-    $extension = "";
-    $sautDeLigne = "";
-    if (!empty($object->xtend)) {
-        $size = sizeof($object->xtend);
-        $sautDeLigne = "<br>";
-        for ($i=0; $i < $size ; $i++) { 
-            $extension .= "<br>garantie";
-        }
-    }
-    return $prestation . $sautDeLigne . $extension;
-} 
+
 // fonction d'affichage  prestation dans View :
 public static function showPrestationView($object){
     $prestation = $object->devl__type;
@@ -75,26 +60,7 @@ public static function showPrestationView($object){
     return $prestation . $sautDeLigne . $extension;
 } 
 
-// fonction d'affichage designation : 
-public static function showdesignation($object){
-    $designation = $object->designation;
-    $extension = "";
-    $sautDeLigne = "";
-    $sautDecom = "";
-    $commentaire = "";
-    if (!empty($object->xtend)) {
-        $size = sizeof($object->xtend);
-        $sautDeLigne = "<br>";
-        for ($i=0; $i < $size ; $i++) { 
-            $extension .= "<br>extension de garantie";
-        }
-    }
-    if (!empty($object->comClient)) {
-        $sautDecom = '<br>';
-        $commentaire = $object->comClient;
-    }
-    return $designation . $sautDeLigne . $extension . $sautDecom .$commentaire;
-}
+
 
 // fonction d'affichage designation View : 
 public static function showdesignationView($object){
@@ -122,19 +88,7 @@ public static function showdesignationView($object){
 
 
 
-// fonction d'affichage de garantie :
-public static function showGarantie($object){
-    $garantie = $object->garantie . " mois";
-    $extension = "";
-    $sautDeLigne = "";
-    if (!empty($object->xtend)) {
-        $sautDeLigne = "<br>";
-        foreach($object->xtend as $array=>$value){
-            $extension .= "<br>" . $value[0] . " mois";
-        }
-    }
-    return $garantie . $sautDeLigne . $extension;
-}
+
 
 
 // fonction d'affichage de garantie dans View :
@@ -151,20 +105,7 @@ public static function showGarantieView($object){
     return $garantie . $sautDeLigne . $extension;
 }
 
-// fonction d'afficchage de la quatité : 
-public static function showQuantite($object){
-    $quantité = $object->quantite;
-    $extension = "";
-    $sautDeLigne = "";
-    if (!empty($object->xtend)) {
-        $size = sizeof($object->xtend);
-        $sautDeLigne = "<br>";
-        for ($i=0; $i < $size ; $i++) { 
-            $extension .= "<br>" . $quantité;
-        }
-    }
-    return $quantité . $sautDeLigne . $extension;
-}
+
 
 // fonction d'afficchage de la quatité dans view : 
 public static function showQuantiteView($object){
@@ -197,27 +138,7 @@ public static function showPort($post){
     return $port . " €";
 }
 
-// function de calcul du total des extension: 
-public static function xTendTotal($xtendArray){
-    $priceArray = [[],[],[],[]];
-    foreach($xtendArray as $array){
-            switch ($array[0]) {
-                case '12':
-                    array_push($priceArray[0],floatval($array[1]));
-                break;
-                case '24':
-                    array_push($priceArray[1],floatval($array[1]));
-                break;
-                case '36':
-                    array_push($priceArray[2],floatval($array[1]));
-                break;
-                case '48':
-                    array_push($priceArray[3],floatval($array[1]));
-                break;
-            }
-    } 
-    return $priceArray;
-}
+
 
 // function de calcul du total des extension dans View: 
 public static function xTendTotalView($xtendArray){

@@ -17,6 +17,10 @@ if (empty($_SESSION['user'])) {
     
     $temp =   $Devis->GetById($_POST['VoirDevis']);
     $clientView = $Client->getOne($temp->devis__client__id);
+    $societeLivraison = false ;
+    if ($temp->devis__id_client_livraison) {
+        $societeLivraison = $Client->getOne($temp->devis__id_client_livraison);
+    }
     $arrayOfDevisLigne = $Devis->devisLigne($_POST['VoirDevis']);
     foreach ($arrayOfDevisLigne as $ligne) {
       $xtendArray = $Devis->xtenGarantie($ligne->devl__id);
@@ -41,11 +45,27 @@ $formated_date = $date_time->format('d/m/Y');
      <table style="width: 100%;">
          <tr>
              <td style="text-align: left;  width: 50%"><img  style=" width:65mm" src="public/img/recodeDevis.png"/></td>
-             <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br><a>www.recode.fr</a><br><br><br>REF CLIENT :<?php echo $clientView->client__id ?></td>
+             <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br><a>www.recode.fr</a><br><br></td>
          </tr>
          <tr>
              <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis-<?php echo $temp->devis__id ?></h2><br><?php echo date("d-m-Y") ?><br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : <?php echo $formated_date ?></small></p></td>
-             <td style="text-align: left; width:50%"><small>livraison & facturation</small><strong><br><?php echo $clientView->client__societe ?><br><?php echo $clientView->client__adr1 ?><br><?php echo $clientView->client__adr2 ?><br><?php echo $clientView->client__cp ." ". $clientView->client__ville ?></strong></td>
+             <td style="text-align: left; width:50%"><?php 
+             if ($societeLivraison) {
+                echo "<small>facturation :</small><strong><br>";
+                echo Pdfunctions::showSociete($clientView) ." </strong> 
+                <br> <small>Livraison :</small><strong><br>";
+                echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>"; 
+
+
+
+                
+                
+             } 
+             else{
+                echo "<small>livraison & facturation</small><strong><br>";
+                echo Pdfunctions::showSociete($clientView)  ."</strong></td>";
+
+             } ?>
          </tr>
      </table>
      <table CELLSPACING=0 style="width: 100%;  margin-top: 30px; ">
@@ -108,28 +128,28 @@ $formated_date = $date_time->format('d/m/Y');
                  <tr style="background-color: #dedede;"><td style="width: 210px; text-align: left">Type de Garantie </td><td style="text-align: center"><strong>total € HT </strong></td><td style="text-align: center">Total € TTC</td></tr>
                  <?php
                      $totalPrice = number_format(array_sum($arrayPrice),2);
-                    
-                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total hors extensions</td><td style='text-align: center'><strong>  ".$totalPrice. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($totalPrice),2)." </td></tr>";
+                       
+                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total hors extensions</td><td style='text-align: center'><strong>  ".$totalPrice. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc(floatval($totalPrice)),2)." </td></tr>";
                        
                        if (sizeOf($array12) == sizeof($arrayOfDevisLigne)) {
                          array_push($array12 , floatval($totalPrice));
                          $total12Mois = number_format(array_sum($array12),2);
-                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 12 mois</td><td style='text-align: center'><strong>  ".$total12Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($total12Mois),2)." </td></tr>";
+                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 12 mois</td><td style='text-align: center'><strong>  ".$total12Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc( floatval($total12Mois)),2)." </td></tr>";
                        }
                        if (sizeOf($array24) == sizeof($arrayOfDevisLigne)) {
                         array_push($array24 , floatval($totalPrice));
                          $total24Mois = number_format(array_sum($array24),2);
-                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 24 mois</td><td style='text-align: center'><strong>  ".$total24Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($total24Mois),2)." </td></tr>";
+                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 24 mois</td><td style='text-align: center'><strong>  ".$total24Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc(floatval($total24Mois)),2)." </td></tr>";
                        }
                        if (sizeOf($array36) == sizeof($arrayOfDevisLigne)) {
                         array_push($array36 , floatval($totalPrice));
                          $total36Mois = number_format(array_sum($array36),2);
-                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 36 mois</td><td style='text-align: center'><strong>  ".$total36Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($total36Mois),2)." </td></tr>";
+                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 36 mois</td><td style='text-align: center'><strong>  ".$total36Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc(floatval($total36Mois)),2)." </td></tr>";
                        }
                        if (sizeOf($array48) == sizeof($arrayOfDevisLigne)) {
                         array_push($array48 , floatval($totalPrice));
                          $total48Mois = number_format(array_sum($array48),2);
-                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 48 mois</td><td style='text-align: center'><strong>  ".$total48Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc($total48Mois),2)." </td></tr>";
+                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 48 mois</td><td style='text-align: center'><strong>  ".$total48Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc(floatval($total48Mois)),2)." </td></tr>";
                        }
                     
                  ?>
