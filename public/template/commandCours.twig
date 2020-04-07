@@ -49,7 +49,7 @@
                         <td>{{command.cmd__id}}</td>
                         <td>{{command.cmd__date_crea}}</td>
                         <td>{{command.log_nec}}</td>
-                        <td>{{ command.client__societe}} <br>{{ command.client__cp ~ "  " ~ command.client__ville}}</td>
+                        <td>{{ command.client__societe ~ " (" ~ command.client__id ~ ")" }} <br>{{ command.client__cp ~ " " ~ " " ~  command.client__ville}}</td>
                         <td>{{command.keyword__lib}}</td>
                         <td> {{ command.cmd__devis__id }}</td>
                    </tr>
