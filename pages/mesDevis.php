@@ -87,10 +87,21 @@ if (!empty($_POST['clientSelect'])) {
  if (!empty($_POST['RefuserDevis'])) {
    $Devis->updateStatus('RFS',$_POST['RefuserDevis']);
 }
-if ($_SESSION['user']->user__devis_acces < 20 ) {
-$devisList = $Devis->getUserDevis($_SESSION['user']->id_utilisateur);
-}else {
-$devisList = $Devis->getNotCMD();
+
+//accès au button Voir mes devis si droit ok : 
+$AllDevis = "Voir tous";
+if ($_SESSION['user']->user__devis_acces >= 15 ) {
+      if (!empty($_POST['MyDevis']) && $_POST['MyDevis'] == "Voir mes devis") {
+          $devisList = $Devis->getUserDevis($_SESSION['user']->id_utilisateur);
+          $AllDevis = "Voir tous";
+      }
+      else{
+          $devisList = $Devis->getNotCMD();
+          $AllDevis = "Voir mes devis";
+      }
+}
+else {
+  $devisList = $Devis->getUserDevis($_SESSION['user']->id_utilisateur);
 }
 
  foreach ($devisList as $devis) {
@@ -102,5 +113,6 @@ $devisList = $Devis->getNotCMD();
 echo $twig->render('mesDevis.twig',['user'=>$user,
 'user'=> $user,
 'devisList'=> $devisList,
-'listOfStatus'=> $listOfStatus
+'listOfStatus'=> $listOfStatus ,
+'AllDevis'=> $AllDevis
 ]);

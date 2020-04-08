@@ -82,7 +82,21 @@
                 <input class="form-control mr-2" type="search" placeholder="Recherche" aria-label="Search">
                 <button class="btn btn-outline-primary my-2 " type="submit"><i class="fal fa-bullseye-arrow"></i></button>
               </form>
-              <a class="btn btn btn-sm btn-info" href="nouveauDevis">Nouveau Devis</a>
+              
+              <div class="d-flex flex-row justify-content-around" >
+                <div>
+                  <a class="btn btn btn-sm btn-info" href="nouveauDevis">Nouveau Devis</a>
+                </div>
+                {% if user.user__devis_acces >= 15 %}
+                <div>
+                  <form action="mesDevis" method="POST"> 
+                      <input type="hidden" value="{{ AllDevis }}" name="MyDevis">
+                      <button type="submit" class="btn btn-sm btn-secondary">{{ AllDevis }}</button>
+                  </form>
+                </div>
+                {% endif %}
+              </div>
+              
             </div>
           </div>
           <!-- Card Body -->
