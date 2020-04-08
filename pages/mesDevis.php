@@ -95,7 +95,7 @@ $devisList = $Devis->getNotCMD();
 
  foreach ($devisList as $devis) {
    $devisDate = date_create($devis->devis__date_crea);
-   $date = date_format($devisDate, 'd/m/Y');
+   $date = date_format($devisDate, 'Y/m/d');
    $devis->devis__date_crea = $date;
 }
 // Donnée transmise au template : 
