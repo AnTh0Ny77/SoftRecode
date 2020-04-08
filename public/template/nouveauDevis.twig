@@ -861,11 +861,6 @@
                   </table>
                 </div>
                 <div class="modal-footer">
-                  {% if   livraison   %}
-                  <p class="text-danger text-bold" id="">Livraison actuelle : {{ livraison.client__societe ~ " " ~ livraison.client__adr1 ~ " " ~  livraison.client__ville ~ " " }} </p>
-                  {% else %}
-                  <p class="text-danger text-bold" id="">Livraison actuelle : </p>
-                  {% endif %}
                   <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectLivraison">
                         <input type="hidden" name="choixLivraison" id="choixLivraison" value="">
                   </form>
@@ -966,7 +961,7 @@
                   <span class="badge badge-success ">Livraison</span>
                 <!--societe-->
                 <div class="  chart-pie my-4 d-flex flex-row justify-content-between">
-                <div class=" mb-0 font-weight-bold text-muted" id="divClient">
+                <div class=" mb-0 font-weight-bold text-muted" id="textLivraison">
                   {% if not livraison %}
                  livré à la meme adresse
                  {% else %}
