@@ -594,7 +594,7 @@ $('#AjaxClient').on('click', function(){
               
                 
         },
-        "order": [[ 2, "asc" ]],
+        "order": [[ 2, "asc" ] , [3 , "desc"]],
         "paging": true,
          "info":   false,
          "pageLength": 10,
