@@ -912,9 +912,9 @@
                  {% if not societe %}
                   Choisir une Société*
                  {% else %}
-                  {{societe.client__id ~ " " ~ societe.client__societe}}  <br>
-                  {{societe.client__ville}} <br>
-                  {{societe.client__cp}}
+                  {{ societe.client__societe ~ " (" ~ societe.client__id ~ ")"}}  <br>
+                  {{societe.client__adr1}} <br>
+                  {{societe.client__cp  ~ " " ~ societe.client__ville}}
                  {% endif %}
                 </div>
                 <div>
@@ -937,10 +937,10 @@
                         <div class=" mb-0 font-weight-bold text-muted " id="contactDiv">
                           {% if contact %}
                           {{contact.contact__nom}}<br>
-                          {{contact.contact__prenom }}
-                          {{contact.keyword__value}}
+                          {{contact.contact__prenom }} <br>
+                          {{contact.keyword__lib}}
                           {% else %}
-                          Ajouter un contact 
+                         Aucun contact
                           {% endif %}
                           
                         </div>
@@ -967,11 +967,13 @@
                 <!--societe-->
                 <div class="  chart-pie my-4 d-flex flex-row justify-content-between">
                 <div class=" mb-0 font-weight-bold text-muted" id="divClient">
-                  {% if   livraison   %}
-                  <p class="text-muted text-bold" id="textLivraison">Livraison actuelle : {{ livraison.client__societe ~ " " ~ livraison.client__adr1 ~ " " ~  livraison.client__ville ~ " " }} </p>
-                  {% else %}
-                  <p class="text-muted text-bold" id="textLivraison">Livré à la meme adresse</p>
-                  {% endif %}
+                  {% if not livraison %}
+                 livré à la meme adresse
+                 {% else %}
+                  {{ livraison.client__societe ~ " (" ~ livraison.client__id ~ ")"}}  <br>
+                  {{livraison.client__adr1}} <br>
+                  {{livraison.client__cp ~ " " ~  livraison.client__ville}}
+                 {% endif %}
                   <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectLivraison">
                         <input type="hidden" name="choixLivraison" id="choixLivraison" value="">
                   </form>
@@ -996,10 +998,10 @@
                         <div class=" mb-0 font-weight-bold text-muted " id="contactDivLVR">
                           {% if contactLVR %}
                           {{contactLVR.contact__nom}}<br>
-                          {{contactLVR.contact__prenom }}
-                          {{contactLVR.keyword__value}}
+                          {{contactLVR.contact__prenom }} <br>
+                          {{contactLVR.keyword__lib}}
                           {% else %}
-                          Ajouter un contact 
+                         Aucun contact
                           {% endif %}
                           
                         </div>

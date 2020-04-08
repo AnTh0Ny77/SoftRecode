@@ -62,7 +62,7 @@ public function insertOne($date ,$devis, $user, $client , $livraison, $port, $co
 public function getAll(){
   $request =$this->Db->Pdo->query("SELECT
    cmd__id, cmd__date_crea,  cmd__devis__id , cmd__user__id , cmd__client__id, cmd__contact__id , cmd__client__id_livraison,
-   cmd__port, cmd__note_interne , cmd__etat , k.keyword__lib , u.log_nec , c.client__societe, c.client__ville, c.client__cp,
+   cmd__port, cmd__note_interne , cmd__etat , k.keyword__lib , u.log_nec , LPAD(c.client__id,6,0) as client__id , c.client__societe, c.client__ville, c.client__cp,
    c.client__adr1
     FROM  commande
     JOIN client as c ON cmd__client__id = c.client__id 
@@ -98,7 +98,7 @@ public function getByStatus(){
   cmd__user__id, cmd__client__id, cmd__contact__id,
   cmd__client__id_livraison, cmd__note_interne, cmd__etat, cmd__port,
   t.contact__nom, t.contact__prenom,  t.contact__telephone ,
-  c.client__societe, c.client__adr1 , c.client__adr2,  c.client__ville, c.client__cp,
+  LPAD(c.client__id,6,0) as client__id ,c.client__societe, c.client__adr1 , c.client__adr2,  c.client__ville, c.client__cp,
   k.keyword__lib , u.log_nec
   FROM commande
   LEFT JOIN contact as t ON   cmd__contact__id = t.contact__id

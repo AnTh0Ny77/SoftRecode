@@ -77,3 +77,18 @@ let checkTableRows = function(subject){
             $('#addNewRow').removeAttr('disabled');
         }
         }
+
+    
+
+    // function d'afficchage d'une societe dans le DOM :  
+
+    let showClient = function(data){
+      let text =    data.client__societe + ' (' + data.client__id +')<br>' + data.client__adr1 + '<br>' + data.client__cp + " " + data.client__ville;
+      return text ;
+    }
+
+    // function d'affichage d'un contact : 
+    let showContact = function(data){
+      let text = data.contact__nom + '<br>' + data.contact__prenom + '<br>' + data.keyword__lib ;
+      return text; 
+    }

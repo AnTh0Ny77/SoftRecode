@@ -135,7 +135,8 @@ $('#AjaxClient').on('click', function(){
         },
         success: function(data){  
         dataSet = JSON.parse(data);
-        $('#textLivraison').text( dataSet.client__societe + ' ' + dataSet.client__adr1 + ' ' + dataSet.client__ville + ' ' + dataSet.client__cp);
+        let content = showClient(dataSet);
+        $('#textLivraison').html(content);
         $('#livraisonSelect').val(dataSet.client__id);
         $('#contactDivLVR').html("Aucun Contact");
         $('#contact_livraison').val("");
@@ -282,7 +283,8 @@ $('#AjaxClient').on('click', function(){
             },
             success: function(data){  
             dataSet = JSON.parse(data);
-            $('#contactDivLVR').html(dataSet.contact__nom + '<br>' + dataSet.contact__prenom + '<br>' + dataSet.keyword__lib);
+            let content = showContact(dataSet)
+            $('#contactDivLVR').html(content);
             $('#contact_livraison').val(dataSet.contact__id);
             $('#modalContactLVR').modal('hide');
             },
@@ -333,7 +335,8 @@ $('#AjaxClient').on('click', function(){
             },
             success: function(data){  
             dataSet = JSON.parse(data);
-            $('#contactDiv').html(dataSet.contact__nom + '<br>' + dataSet.contact__prenom + '<br>' + dataSet.keyword__lib);
+            let content = showContact(dataSet)
+            $('#contactDiv').html(content);
             $('#contactSelect').val(dataSet.contact__id);
             $('#modalContact').modal('hide');
             },
@@ -363,7 +366,8 @@ $('#AjaxClient').on('click', function(){
             },
             success: function(data){
             dataSetCreaContact = JSON.parse(data);
-            $('#contactDiv').html(dataSetCreaContact.contact__nom + '<br>' + dataSetCreaContact.contact__prenom + '<br>' + dataSetCreaContact.keyword__lib);
+            let content = showContact(dataSetCreaContact)
+            $('#contactDiv').html(content);
             $('#contactSelect').val(dataSetCreaContact.contact__id);
             $('#modalContactCrea').modal('hide');
             },
@@ -402,7 +406,8 @@ $('#AjaxClient').on('click', function(){
             },
             success: function(data){
             dataSetCreaContact = JSON.parse(data);
-            $('#contactDivLVR').html(dataSetCreaContact.contact__nom + '<br>' + dataSetCreaContact.contact__prenom + '<br>' + dataSetCreaContact.keyword__lib);
+            let content = showContact(dataSetCreaContact);
+            $('#contactDivLVR').html(content);
             $('#contact_livraison').val(dataSetCreaContact.contact__id);
             $('#modalContactCreaLVR').modal('hide');
             
@@ -416,31 +421,11 @@ $('#AjaxClient').on('click', function(){
     });
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // appel ajax choix du client : 
     $('#client tbody').on('click', 'tr', function () {
-        $('#contactDiv').html(" Aucun contact selectionné");
+        $('#contactDiv').html(" Aucun contact");
         $('#contactSelect').val("");
-        $('#contactDivLVR').html("Livré à la meme adresse");
+        $('#contactDivLVR').html("Aucun contact");
         $('#contact_livraison').val("");
         $('#textLivraison').text("Livré à la meme adresse");
         $('#livraisonSelect').val("");
@@ -454,7 +439,8 @@ $('#AjaxClient').on('click', function(){
             },
             success: function(data){
             dataSet = JSON.parse(data);
-            $('#divClient').html( dataSet.client__id + " " + dataSet.client__societe + '<br>' + dataSet.client__adr1 + '<br>' + dataSet.client__ville);
+            let content = showClient(dataSet);
+            $('#divClient').html(content);
             $('#clientSelect').val(dataSet.client__id);
             $('#modalClient').modal('hide');
             $('#addNewRow').removeAttr('disabled');
@@ -477,8 +463,10 @@ $('#AjaxClient').on('click', function(){
 
     //appel ajax creation de client:  
     $('#PostClient').on('click', function(){
-        $('#contactDiv').html(" Aucun contact selectionné");
+        $('#contactDiv').html(" Aucun contact");
         $('#contactSelect').val("");
+        $('#contactDivLVR').html("Aucun contact");
+        $('#contact_livraison').val("");
         $('#textLivraison').text("Livré à la meme adresse");
         $('#livraisonSelect').val("");
         
@@ -496,8 +484,8 @@ $('#AjaxClient').on('click', function(){
             },
             success: function(data){
             dataSetCrea = JSON.parse(data);
-            $('#divClient').html(dataSetCrea.client__societe + '<br>' + dataSetCrea.client__adr1 + '<br>' + dataSetCrea.client__ville);
-            $('#clientSelect').val(dataSetCrea.client__id);
+            let content = showClient(dataSetCrea);
+            $('#divClient').html(content);
             $('#modalClientCrea').modal('hide');
             $('#toogleContact').removeAttr('disabled');
             $('#buttonLivraison').removeAttr('disabled');
