@@ -31,7 +31,7 @@
                     {% for status in listOfStatus %}
                     {% if   status.keyword__lib != 'Commande'%}
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" name="statusRadio" type="radio" value="{{ status.keyword__value}}" >
+                      <input class="form-check-input statusRadio" name="statusRadio" type="radio" value="{{ status.keyword__value}}" >
                       <label class="form-check-label" for="defaultCheck1">
                         {{ status.keyword__lib}}
                       </label>

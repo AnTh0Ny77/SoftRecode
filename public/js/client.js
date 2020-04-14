@@ -650,7 +650,7 @@ $('#AjaxClient').on('click', function(){
 
    
 
-    // disable buttons multiple si pas de ligne select dans la table commandes:  
+ // disable buttons multiple si pas de ligne select dans la table commandes:
     let checkClassCmd = function(){
         let RowModif =  $('#MyCommande').find('tr');
          if (RowModif.hasClass('selected')) {
@@ -661,6 +661,27 @@ $('#AjaxClient').on('click', function(){
       }
       checkClassMulti();
       checkClassCmd();
+
+
+
+
+
+
+
+
+
+
+// Fontion qui selct l'input radion en fonction du devis selectionné : mes devis 
+let checkradio = function(object){
+   let statusRadio = $('.statusRadio');
+  for (const key in statusRadio) {
+          const element = statusRadio[key].value;
+          if (element == object.devis__etat) {
+              statusRadio[key].checked = true;
+          } 
+  }  
+}
+
 
     // attribut classe selected: a la table mes devis 
     modifDevis.on('click','tr',function() {
@@ -687,6 +708,7 @@ $('#AjaxClient').on('click', function(){
             },
             success: function(data){
                 dataSet = JSON.parse(data);
+                checkradio(dataSet[0]);
                 $('#AjaxId').text(dataSet[0].devis__id);
                 $('#AjaxSociete').html(dataSet[0].client__societe + "<br>" + dataSet[0].client__ville + " " + dataSet[0].client__cp );
                 if (dataSet[0].contact__nom) {
@@ -739,6 +761,7 @@ $('#AjaxClient').on('click', function(){
             },
             success: function(data){
                 dataSet = JSON.parse(data);
+                checkradio(dataSet[0]);
                 $('#AjaxId').text(dataSet[0].devis__id);
                 $('#AjaxSociete').html(dataSet[0].client__societe + "<br>" + dataSet[0].client__ville + " " + dataSet[0].client__cp );
                 if (dataSet[0].contact__nom) {
@@ -1200,6 +1223,9 @@ $('#AjaxClient').on('click', function(){
         }
         }
         checkXtend();
+
+
+         
 
 
         // fonction de validation de commandes : 

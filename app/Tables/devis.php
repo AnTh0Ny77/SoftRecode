@@ -88,7 +88,7 @@ public function getAll(){
 }
 
 public function GetById($id){
-  $request =$this->Db->Pdo->query("SELECT devis__id, devis__user__id , devis__date_crea, devis__client__id, devis__contact__id, devis__port, devis__note_client, devis__note_interne,  devis__id_client_livraison , devis__contact_livraison , 
+  $request =$this->Db->Pdo->query("SELECT devis__id, devis__user__id , devis__date_crea, devis__client__id, devis__contact__id, devis__etat, devis__port, devis__note_client, devis__note_interne,  devis__id_client_livraison , devis__contact_livraison , 
     k.keyword__lib,
      t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
