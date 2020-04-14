@@ -163,8 +163,8 @@ $formated_date = $date_time->format('d/m/Y');
      <table style=" margin-top: 15px">
          <tr><td><strong>Conditions de paiement</strong> : Virement à la réception</td></tr>
          <?php
-         if (!empty($temp->devis__mote_client)) {
-            echo '<tr><td>' . $temp->devis__mote_client .'</td></tr>';
+         if (!empty($temp->devis__note_client)) {
+            echo '<tr><td>' . $temp->devis__note_client .'</td></tr>';
          }
          ?>
      </table>
