@@ -663,14 +663,6 @@ $('#AjaxClient').on('click', function(){
       checkClassCmd();
 
 
-
-
-
-
-
-
-
-
 // Fontion qui selct l'input radion en fonction du devis selectionné : mes devis 
 let checkradio = function(object){
    let statusRadio = $('.statusRadio');
@@ -862,9 +854,6 @@ let checkradio = function(object){
            
         });
 
-       
-
-      
 
         // Programme d'ajout de ligne dans le devis : 
         //traitement du formulaire : 

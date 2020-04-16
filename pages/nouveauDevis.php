@@ -22,6 +22,7 @@ session_start();
  $Contact = new App\Tables\Contact($Database);
  $Article = new App\Tables\Article($Database);
  $Devis = new App\Tables\Devis($Database);
+ 
  $Database->DbConnect();
  $keywordList = $Keywords->getI_con();
 

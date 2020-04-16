@@ -21,6 +21,7 @@ session_start();
  $Keyword = new App\Tables\Keyword($Database);
  $Client = new App\Tables\Client($Database);
  $Contact = new \App\Tables\Contact($Database);
+ $Cmd = new App\Tables\Cmd($Database);
  $listOfStatus = $Keyword->getStat();
  $devisList = [];
 
@@ -79,6 +80,21 @@ if (!empty($_POST['clientSelect'])) {
            NULL,
            $devisData,
            $livraisonContact );
+
+           
+       $cmd  = $Cmd->insertOne(
+        $date,
+        $_SESSION['user']->id_utilisateur,
+        $_POST['clientSelect'],
+        $livraisonId,
+        $_POST['port'],
+        $contactId,
+        $_POST['globalComClient'],
+        $_POST['globalComInt'],
+        $status,
+        NULL,
+        $devisData,
+        $livraisonContact );
    }}
 
  if (!empty($_POST['ValiderDevis'])) {
