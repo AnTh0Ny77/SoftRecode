@@ -752,6 +752,7 @@ let checkradio = function(object){
                 "AjaxDevis" : dataRow[0]
             },
             success: function(data){
+                
                 dataSet = JSON.parse(data);
                 checkradio(dataSet[0]);
                 $('#AjaxId').text(dataSet[0].devis__id);

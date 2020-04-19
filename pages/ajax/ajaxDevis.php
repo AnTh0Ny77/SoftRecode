@@ -4,7 +4,7 @@ require "./vendor/autoload.php";
 session_start();
 $Database = new App\Database('devis');
 $Database->DbConnect();
-$Devis = new App\Tables\Devis($Database);
+$Cmd = new App\Tables\Cmd($Database);
 
 // si pas connecté on ne vole rien ici :
 if (empty($_SESSION['user'])) {
@@ -15,8 +15,8 @@ if (empty($_SESSION['user'])) {
 // requete table client:
  if (!empty($_POST['AjaxDevis'])){
     $resArray = [];
-    $devis =  $Devis->GetById($_POST['AjaxDevis']);
-    $ligne = $Devis->devisLigne($_POST['AjaxDevis']);
+    $devis =  $Cmd->GetById($_POST['AjaxDevis']);
+    $ligne = $Cmd->devisLigne($_POST['AjaxDevis']);
     array_push($resArray , $devis , $ligne) ; 
     echo  json_encode($resArray);
  }

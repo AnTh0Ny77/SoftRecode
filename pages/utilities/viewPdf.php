@@ -7,7 +7,7 @@ use App\Methods\Pdfunctions;
 session_start();
 $Database = new App\Database('devis');
 $Database->DbConnect();
-$Devis = new App\Tables\Devis($Database);
+$Cmd = new App\Tables\Cmd($Database);
 $Client = new \App\Tables\Client($Database);
 
 if (empty($_SESSION['user'])) {
@@ -15,15 +15,15 @@ if (empty($_SESSION['user'])) {
  }
  if (!empty($_POST['VoirDevis'])) {
     
-    $temp =   $Devis->GetById($_POST['VoirDevis']);
-    $clientView = $Client->getOne($temp->devis__client__id);
+    $temp =   $Cmd->GetById($_POST['VoirDevis']);
+    $clientView = $Client->getOne($temp->client__id);
     $societeLivraison = false ;
     if ($temp->devis__id_client_livraison) {
         $societeLivraison = $Client->getOne($temp->devis__id_client_livraison);
     }
-    $arrayOfDevisLigne = $Devis->devisLigne($_POST['VoirDevis']);
+    $arrayOfDevisLigne = $Cmd->devisLigne($_POST['VoirDevis']);
     foreach ($arrayOfDevisLigne as $ligne) {
-      $xtendArray = $Devis->xtenGarantie($ligne->devl__id);
+      $xtendArray = $Cmd->xtenGarantie($ligne->devl__id);
       $ligne->ordre = $xtendArray;
     } 
 $date_time = new DateTime( $temp->devis__date_crea);

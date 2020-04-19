@@ -22,6 +22,7 @@ session_start();
  $Contact = new App\Tables\Contact($Database);
  $Article = new App\Tables\Article($Database);
  $Devis = new App\Tables\Devis($Database);
+ $Cmd = new App\Tables\Cmd($Database);
  
  $Database->DbConnect();
  $keywordList = $Keywords->getI_con();
@@ -48,9 +49,9 @@ session_start();
 
   $devisModif = [];
 
-  $temp =   $Devis->GetById($_POST['DupliquerDevis']);
+  $temp =   $Cmd->GetById($_POST['DupliquerDevis']);
 
-  $societe = $Client->getOne($temp->devis__client__id);
+  $societe = $Client->getOne($temp->client__id);
 
   if (!empty($temp->devis__contact__id)) {
     $contact = $Contact->getOne($temp->devis__contact__id);
@@ -64,9 +65,9 @@ session_start();
     $contactLVR = $Contact->getOne( $temp->devis__contact_livraison);
   }
 
-  $arrayOfDevisLigne = $Devis->devisLigne($_POST['DupliquerDevis']);
+  $arrayOfDevisLigne = $Cmd->devisLigne($_POST['DupliquerDevis']);
     foreach ($arrayOfDevisLigne as $ligne) {
-      $xtendArray = $Devis->xtenGarantie($ligne->devl__id);
+      $xtendArray = $Cmd->xtenGarantie($ligne->devl__id);
       $ligne->ordre = $xtendArray;
       array_push($devisModif,$ligne);
     }
@@ -78,9 +79,9 @@ session_start();
 if (!empty($_POST['ModifierDevis'])) {
   $devisModif = [];
 
-  $temp =   $Devis->GetById($_POST['ModifierDevis']);
+  $temp =   $Cmd->GetById($_POST['ModifierDevis']);
 
-  $societe = $Client->getOne($temp->devis__client__id);
+  $societe = $Client->getOne($temp->client__id);
 
   if (!empty($temp->devis__contact__id)) {
     $contact = $Contact->getOne($temp->devis__contact__id);
@@ -94,9 +95,9 @@ if (!empty($_POST['ModifierDevis'])) {
     $contactLVR = $Contact->getOne( $temp->devis__contact_livraison);
   }
 
-  $arrayOfDevisLigne = $Devis->devisLigne($_POST['ModifierDevis']);
+  $arrayOfDevisLigne = $Cmd->devisLigne($_POST['ModifierDevis']);
     foreach ($arrayOfDevisLigne as $ligne) {
-      $xtendArray = $Devis->xtenGarantie($ligne->devl__id);
+      $xtendArray = $Cmd->xtenGarantie($ligne->devl__id);
       $ligne->ordre = $xtendArray;
       array_push($devisModif,$ligne);
     }

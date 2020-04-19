@@ -123,11 +123,6 @@ public static function showQuantiteView($object){
 }
 
 
-
-
-
-
-
 // function d'affichage des farits de ports : 
 public static function showPort($post){
     $port = " ";
@@ -161,11 +156,6 @@ public static function xTendTotalView($xtendArray){
     } 
     return $priceArray;
 }
-
-
-
-
-
 
 
 

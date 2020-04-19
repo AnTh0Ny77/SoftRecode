@@ -13,7 +13,7 @@ unset($_SESSION['ModifierDevis']);
     }
  //connexion et requetes :
  $Database = new App\Database('devis');
- $Devis = new App\Tables\Devis($Database);
+ $Devis = new App\Tables\Cmd($Database);
  $Database->DbConnect();
  $user= $_SESSION['user'];
  $devisList = $Devis->getFromStatus();

@@ -16,9 +16,8 @@ if ($_SESSION['user']->user__cmd_acces < 10 ) {
 $user = $_SESSION['user'];
 //Connexion et requetes : 
 $Database = new App\Database('devis');
-$Devis = new App\Tables\Devis($Database);
+$Devis = new App\Tables\Cmd($Database);
 $Database->DbConnect();
-$Devis = new App\Tables\Devis($Database);
 $devis = $Devis->GetById($_POST['ValideCmd']);
 
 

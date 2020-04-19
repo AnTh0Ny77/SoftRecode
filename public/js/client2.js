@@ -116,13 +116,13 @@ commandTableCours.on('click','tr',function(){
     $('#AjaxLivraisonCMD').html(dataSet[0].client__livraison__adr1 + "<br>" + dataSet[0].client__livraison_ville + " " + dataSet[0].client__livraison_cp);
     }else{ $('#AjaxLivraisonCMD').html(dataSet[0].client__adr1 + "<br>" + dataSet[0].client__ville + " " + dataSet[0].client__cp ) }
     $('#AjaxEtatCMD').text(dataSet[0].keyword__lib);
-    $('#AjaxPortCMD').html(dataSet[0].cmd__port + ' €' ) ;
+    $('#AjaxPortCMD').html(dataSet[0].devis__port + ' €' ) ;
     let listOfItem = $('#listOfAjaxCMD');
     listOfItem.html(' ');
     let array = dataSet[1];
     for (let index = 0; index < array.length ; index++) {
     let li = document.createElement('li');
-    let content = document.createTextNode( array[index].cmdligne__quantite + " x " +  array[index].cmdligne__designation + ' : ' + array[index].cmdligne_puht + " €" );
+    let content = document.createTextNode( array[index].devl_quantite + " x " +  array[index].devl__designation + ' : ' + array[index].devl_puht + " €" );
     li.appendChild(content);
     listOfItem.append(li);
     listOfItem.children('li').addClass('list-group-item text-white bg-secondary font-weight-bold');       

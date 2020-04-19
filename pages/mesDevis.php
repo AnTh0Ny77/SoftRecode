@@ -17,7 +17,6 @@ session_start();
  $user= $_SESSION['user'];
  $Database = new App\Database('devis');
  $Database->DbConnect();
- $Devis = new App\Tables\Devis($Database);
  $Keyword = new App\Tables\Keyword($Database);
  $Client = new App\Tables\Client($Database);
  $Contact = new \App\Tables\Contact($Database);
@@ -51,7 +50,7 @@ if (!empty($_POST['clientSelect'])) {
 
 
    if (!empty($_POST['ModifierDevis'])) {
-       $devis = $Devis->Modify(
+       $devis = $Cmd->Modify(
        intval($_POST['ModifierDevis']),
        $date,
        $_SESSION['user']->id_utilisateur,
@@ -67,7 +66,7 @@ if (!empty($_POST['clientSelect'])) {
        $livraisonContact 
      );
    } else {
-       $devis = $Devis->insertOne(
+       $devis = $Cmd->insertOne(
            $date,
            $_SESSION['user']->id_utilisateur,
            $_POST['clientSelect'],
@@ -80,44 +79,29 @@ if (!empty($_POST['clientSelect'])) {
            NULL,
            $devisData,
            $livraisonContact );
-
-           
-       $cmd  = $Cmd->insertOne(
-        $date,
-        $_SESSION['user']->id_utilisateur,
-        $_POST['clientSelect'],
-        $livraisonId,
-        $_POST['port'],
-        $contactId,
-        $_POST['globalComClient'],
-        $_POST['globalComInt'],
-        $status,
-        NULL,
-        $devisData,
-        $livraisonContact );
    }}
 
  if (!empty($_POST['ValiderDevis'])) {
-    $Devis->updateStatus($_POST['statusRadio'],$_POST['ValiderDevis']);
+    $Cmd->updateStatus($_POST['statusRadio'],$_POST['ValiderDevis']);
  }
  if (!empty($_POST['RefuserDevis'])) {
-   $Devis->updateStatus('RFS',$_POST['RefuserDevis']);
+   $Cmd->updateStatus('RFS',$_POST['RefuserDevis']);
 }
 
 //accès au button Voir mes devis si droit ok : 
 $AllDevis = "Voir tous";
 if ($_SESSION['user']->user__devis_acces >= 15 ) {
       if (!empty($_POST['MyDevis']) && $_POST['MyDevis'] == "Voir mes devis") {
-          $devisList = $Devis->getUserDevis($_SESSION['user']->id_utilisateur);
+          $devisList = $Cmd->getUserDevis($_SESSION['user']->id_utilisateur);
           $AllDevis = "Voir tous";
       }
       else{
-          $devisList = $Devis->getNotCMD();
+          $devisList = $Cmd->getNotCMD();
           $AllDevis = "Voir mes devis";
       }
 }
 else {
-  $devisList = $Devis->getUserDevis($_SESSION['user']->id_utilisateur);
+  $devisList = $Cmd->getUserDevis($_SESSION['user']->id_utilisateur);
 }
 
  foreach ($devisList as $devis) {

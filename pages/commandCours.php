@@ -16,37 +16,25 @@ if ($_SESSION['user']->user__cmd_acces < 10 ) {
 //Connexion et requetes : 
 $Database = new App\Database('devis');
 $Database->DbConnect();
-$Command = new \App\Tables\Command($Database);
-$Devis = new \App\Tables\Devis($Database);
+$Devis = new \App\Tables\Cmd($Database);
 
 
 
 // si une validation de devis a été effectuée : 
 if(!empty($_POST['devisCommande'])){
     $date = date("Y-m-d H:i:s");
-    $command = $Command->insertOne(
-        $date,
-        $_POST['devisCommande'],
-        $_POST['userCommande'],
-        intval($_POST['clientCommande']),
-        intval($_POST['LivraisonCommande']),
-        $_POST['portCommande'],
-        intval($_POST['contactCommande']),
-        $_POST['ComClientCommande'],
-        $_POST['ComInterCommande'],
-        'ATN',
-        json_decode($_POST['arrayLigneDeCommande']),
-    );
     $Devis->updateStatus('CMD',$_POST['devisCommande']);
+    $Devis->updateDate('cmd__date_cmd' , $date , $_POST['devisCommande'] );
+    $Devis->updateAuthor('cmd__user__id_cmd' , $_SESSION['user']->id_utilisateur , $_POST['devisCommande'] );
     header('Location: commandCours');
 }
 // listes de commandes : 
-$listOfCommand = $Command->getAll();
+$listOfCommand = $Devis->getFromStatusCMD();
 
 foreach ($listOfCommand as $command) {
-   $commandDate = date_create($command->cmd__date_crea);
+   $commandDate = date_create($command->cmd__date_cmd);
    $date = date_format($commandDate, 'd/m/Y');
-   $command->cmd__date_crea = $date;
+   $command->cmd__date_cmd = $date;
 }
 
 // Donnée transmise au template : 
