@@ -63,7 +63,7 @@ class Cmd extends Table {
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
-    k.keyword__lib,
+    k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
     c2.client__societe as client__livraison_societe,
@@ -75,7 +75,7 @@ class Cmd extends Table {
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
-    LEFT JOIN keyword as k ON cmd__etat = k.keyword__value
+    LEFT JOIN 2_keyword as k ON cmd__etat = k.kw__value
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     WHERE  cmd__user__id_devis = " . $id ." ORDER BY  devis__date_crea DESC , c.client__societe ASC LIMIT 200");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -96,7 +96,7 @@ class Cmd extends Table {
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
-    k.keyword__lib,
+    k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
     c2.client__societe as client__livraison_societe,
@@ -108,7 +108,7 @@ class Cmd extends Table {
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
-    LEFT JOIN keyword as k ON cmd__etat = k.keyword__value
+    LEFT JOIN 2_keyword as k ON cmd__etat = k.kw__value
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200 ");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -172,7 +172,7 @@ class Cmd extends Table {
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
-    k.keyword__lib,
+    k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
     c2.client__societe as client__livraison_societe,
@@ -184,7 +184,7 @@ class Cmd extends Table {
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
-    LEFT JOIN keyword as k ON cmd__etat = k.keyword__value
+    LEFT JOIN 2_keyword as k ON cmd__etat = k.kw__value
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     WHERE cmd__etat = 'VLD'     
     ORDER BY  cmd__date_devis DESC , c.client__societe ASC  LIMIT 200 ");
@@ -207,7 +207,7 @@ class Cmd extends Table {
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
     cmd__date_cmd,
-    k.keyword__lib,
+    k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
     c2.client__societe as client__livraison_societe,
@@ -219,7 +219,7 @@ class Cmd extends Table {
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
-    LEFT JOIN keyword as k ON cmd__etat = k.keyword__value
+    LEFT JOIN 2_keyword as k ON cmd__etat = k.kw__value
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     WHERE cmd__etat = 'CMD'     
     ORDER BY  cmd__date_devis DESC , c.client__societe ASC  LIMIT 200 ");
@@ -240,7 +240,7 @@ class Cmd extends Table {
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
-    k.keyword__lib,
+    k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
     c2.client__societe as client__livraison_societe,
@@ -252,7 +252,7 @@ class Cmd extends Table {
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
-    LEFT JOIN keyword as k ON cmd__etat = k.keyword__value
+    LEFT JOIN 2_keyword as k ON cmd__etat = k.kw__value
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     WHERE cmd__etat <> 'CMD'     
     ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC  LIMIT 200 ");

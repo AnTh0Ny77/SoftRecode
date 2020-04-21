@@ -31,9 +31,9 @@
                     {% for status in listOfStatus %}
                     {% if   status.keyword__lib != 'Commande'%}
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input statusRadio" name="statusRadio" type="radio" value="{{ status.keyword__value}}" >
+                      <input class="form-check-input statusRadio" name="statusRadio" type="radio" value="{{ status.kw__value}}" >
                       <label class="form-check-label" for="defaultCheck1">
-                        {{ status.keyword__lib}}
+                        {{ status.kw__lib}}
                       </label>
                     </div>
                     {% endif %}
@@ -106,7 +106,7 @@
               </thead> 
                <tbody id="DevisBody">
                 {% for devis in devisList %}
-                <tr class="trClick"><td>{{devis.devis__id}}</td><td>{{ devis.devis__date_crea}}</td><td>{{ devis.log_nec  }}</td><td>{{ devis.client__societe ~ " (" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td><td>{{ devis.keyword__lib}}</td></tr>
+                <tr class="trClick"><td>{{devis.devis__id}}</td><td>{{ devis.devis__date_crea}}</td><td>{{ devis.log_nec  }}</td><td>{{ devis.client__societe ~ " (" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td><td>{{ devis.kw__lib}}</td></tr>
                 {% endfor %}
                </tbody>
              </table>

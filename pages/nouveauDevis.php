@@ -25,7 +25,7 @@ session_start();
  $Cmd = new App\Tables\Cmd($Database);
  
  $Database->DbConnect();
- $keywordList = $Keywords->getI_con();
+ $keywordList = $Keywords->get2_icon();
 
 
  //initialisation des variables a false en cas de premiere init :  

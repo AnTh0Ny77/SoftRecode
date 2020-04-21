@@ -344,7 +344,7 @@
                         <select id="inputStateContact" class="form-control" name="fonctionContact" required>
                          
                           {% for keyword in keywordList %}
-                          <option value={{keyword.keyword__value}}>{{keyword.keyword__lib}}</option>
+                          <option value={{keyword.kw__value}}>{{keyword.kw__lib}}</option>
                           {% endfor %}
                         </select>
                       </div>
@@ -427,7 +427,7 @@
                           <select id="inputStateContactLVR" class="form-control" name="fonctionContactLVR" required>
                            
                             {% for keyword in keywordList %}
-                            <option value={{keyword.keyword__value}}>{{keyword.keyword__lib}}</option>
+                            <option value={{keyword.kw__value}}>{{keyword.kw__lib}}</option>
                             {% endfor %}
                           </select>
                         </div>
@@ -498,7 +498,7 @@
                         <option   value="Vente" selected>Vente</option>
                         
                         {% for presta in prestaList %}
-                          <option class="optionSelect"  value={{presta.keyword__value}}>{{presta.keyword__lib}}</option>
+                          <option class="optionSelect"  value={{presta.kw__value}}>{{presta.kw__lib}}</option>
                           {% endfor %}
                       </select>
                     </div>

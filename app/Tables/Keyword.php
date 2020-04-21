@@ -30,14 +30,20 @@ public function getI_con(){
   return $data;
 }
 
+public function get2_icon(){
+  $request =$this->Db->Pdo->query('SELECT  kw__type,  kw__lib , kw__value FROM 2_keyword WHERE kw__type= "i_con" ORDER BY  kw__value ASC ');
+  $data = $request->fetchAll(PDO::FETCH_OBJ);
+  return $data;
+}
+
 public function getPresta(){
-  $request =$this->Db->Pdo->query('SELECT  keyword__id, keyword__lib , keyword__value FROM keyword WHERE keyword__type= "pres" ORDER BY  keyword__id ASC ');
+  $request =$this->Db->Pdo->query('SELECT  kw__type,  kw__lib , kw__value FROM 2_keyword WHERE kw__type= "pres" ORDER BY  kw__value ASC ');
   $data = $request->fetchAll(PDO::FETCH_OBJ);
   return $data;
 }
 
 public function getStat(){
-  $request =$this->Db->Pdo->query('SELECT  keyword__id, keyword__lib , keyword__value  FROM keyword WHERE keyword__type= "stat" ');
+  $request =$this->Db->Pdo->query('SELECT kw__type,   kw__lib , kw__value  FROM 2_keyword WHERE kw__type= "stat" ');
   $data = $request->fetchAll(PDO::FETCH_OBJ);
   return $data;
 }
