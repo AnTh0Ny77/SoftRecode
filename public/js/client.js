@@ -1173,16 +1173,11 @@ let checkradio = function(object){
                 return [value];
             });
             let paramJSON = JSON.stringify(arrayOfDevis);
-
-            console.log(paramJSON);
             $("#dataDevis").val(paramJSON);
+            $("#devisSend").submit();
         });
        
-        //reload page : 
-        $("#xPortData").click(function(){
-            $("#ValidDevis").val(202);
-           $("#DevisValidForm").submit();
-        });
+       
 
 
 
@@ -1253,9 +1248,20 @@ let checkradio = function(object){
 
 
 
+        //masques le elements à l'ouverture de la page : 
+        let hideElement = function(){
+            $('#navLivraison').hide();
+            $('#navDevis').hide();
+            $('#navLivraison').removeClass("d-none");
+            $('#navDevis').removeClass("d-none");
+        }
+        
+        hideElement();
 
-
-
+        //navigation menu du nouveau devis :
+        Nav($("#toogleSociete") , $('#navSociete'), $('#navLivraison'), $('#navDevis'));
+        Nav($("#toogleLivraison") , $('#navLivraison'), $('#navSociete'), $('#navDevis'));
+        Nav($("#toogleDevis") , $('#navDevis'), $('#navSociete'),  $('#navLivraison'));
 
 
         

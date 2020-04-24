@@ -3,879 +3,50 @@
      {% block main %}
 
      <main  role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-      <div class="d-flex justify-content-between flex-wrap  align-items-center pb-2 mb-3 border-bottom">
+
+
+
+
+
+ <!--  ██╗██╗                 ███╗   ███╗███████╗███╗   ██╗██╗   ██╗               ██╗  
+       ██╔╝██║                ████╗ ████║██╔════╝████╗  ██║██║   ██║               ╚██╗ 
+      ██╔╝ ██║█████╗█████╗    ██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║    █████╗█████╗╚██╗
+      ╚██╗ ╚═╝╚════╝╚════╝    ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║    ╚════╝╚════╝██╔╝
+       ╚██╗██╗                ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝               ██╔╝ 
+        ╚═╝╚═╝                ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝                ╚═╝  -->
+                                                                                        
+      <div class="d-flex justify-content-start flex-column    mb-5 border-bottom">
         {% if sessionModif %}
         <h1 class="h2">Devis N°:  {{ sessionModif }}  <i class="fal fa-file-edit"></i></h1>
         {% else %}
         <h1 class="h2">Nouveau devis  <i class="fal fa-file-edit"></i></h1>
         {% endif %}
-       
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-          </div>
-        </div>
+        <nav class="nav mt-3">
+          <a class="nav-link active font-weight-bold  " href="#" id="toogleSociete">Société</a>
+          <a class="nav-link font-weight-bold" href="#" id="toogleLivraison">Livraison</a>
+          <a class="nav-link font-weight-bold" href="#" id="toogleDevis" >Devis</a>
+        </nav>
       </div>
-
        <!-- input contient données de l'ancien devis -->
       <input type="hidden" name="AncienDevis" id="AncienDevis" value="{{devisModif}}">
        <!-- input contient données de l'ancien devis -->
       
-        <!-- Modal Choisir societe  -->
-          <div  class="modal fade" id="modalClient" tabindex="-1" role="dialog"  aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" >Société <i class="fal fa-building"></i> </h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <table id="client" class="table  display" style="width:100%"> 
-                    <thead class="thead-dark"> 
-                      <tr><th>Id</th><th>Nom</th><th>CP</th><th>Ville</th></tr>
-                     </thead > 
-                    <tbody class="trClick">
-                    </tbody>
-                  </table>
-                </div>
-                <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectClient">
-                  <div class="modal-footer justify-content-between ">
-                      <input type="hidden" name="choixClient" id="choixClient" value="">
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-             <!-- Modal créer société  -->
-          <div class="modal fade" id="modalClientCrea" tabindex="-1" role="dialog"  aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" >Société <i class="fal fa-building"></i> </h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form id="FormClientCrea" method="POST" action="nouveauDevis">
-                    <div class="form-row">
-                      <div class="form-group col-md-8">
-                        <label for="inputEmail4">Société*</label>
-                        <input type="text" class="form-control text-uppercase" id="societeNameCreate"  name="societe" required >
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="inputAddress">Adresse</label>
-                      <input type="text" class="form-control" id="inputAddress"  name="adr1" >
-                    </div>
-                    <div class="form-group">
-                      
-                      <input type="text" class="form-control" id="inputAddress2" name="adr2">
-                    </div>
-                    <div class="form-row">
-                      <div class="form-group col-md-2">
-                        <label for="inputZip">CP*</label>
-                        <input type="text" class="form-control" id="inputZip"  name="cp" required >
-                      </div>
-                      <div class="form-group col-md-6">
-                        <label for="inputCity">Ville*</label>
-                        <input type="text" class="form-control" id="inputCity"  name="ville" required >
-                      </div>
-                      <div class="form-group col-md-4">
-                        <label for="pays">Pays*</label>
-                        <select class="custom-select mr-sm-2" id="SelectClientCountry" name="pays">
-                          <option value="france" selected>France</option>
-                          <option value="autre" >autre</option>
-                        </select>
-                      </div>
-                    </div>
-                </div>
-                
-                <div class="modal-footer justify-content-end ">
-                  <div>
-                    <button type="button" id="PostClient" class="btn btn-primary">Valider</button>
-                  </div>
-                </div>
-              </form>
-              </div>
-            </div>
-          </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <!-- Modal créer société de livraison  -->
-            <div class="modal fade" id="modalSocieteLivraison" tabindex="-1" role="dialog"  aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" >Société  livraison<i class="fal fa-building"></i> </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <form id="FormClientCrea" method="POST" action="">
-                      <div class="form-row">
-                        <div class="form-group col-md-8">
-                          <label for="inputEmail4">Société*</label>
-                          <input type="text" class="form-control text-uppercase" id="societeNameCreateLVR"  name="societe" required >
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputAddress">Adresse</label>
-                        <input type="text" class="form-control" id="inputAddressLVR"  name="adr1" >
-                      </div>
-                      <div class="form-group">
-                        
-                        <input type="text" class="form-control" id="inputAddress2LVR" name="adr2">
-                      </div>
-                      <div class="form-row">
-                        <div class="form-group col-md-2">
-                          <label for="inputZip">CP*</label>
-                          <input type="text" class="form-control" id="inputZipLVR"  name="cp" required >
-                        </div>
-                        <div class="form-group col-md-6">
-                          <label for="inputCity">Ville*</label>
-                          <input type="text" class="form-control" id="inputCityLVR"  name="ville" required >
-                        </div>
-                        <div class="form-group col-md-4">
-                          <label for="pays">Pays*</label>
-                          <select class="custom-select mr-sm-2" id="SelectClientCountryLVR" name="pays">
-                            <option value="france" selected>France</option>
-                            <option value="autre" >autre</option>
-                          </select>
-                        </div>
-                      </div>
-                  </div>
-                  
-                  <div class="modal-footer justify-content-end ">
-                    <div>
-                      <button type="button" id="PostSocieteLivraison" class="btn btn-primary">Valider</button>
-                    </div>
-                  </div>
-                </form>
-                </div>
-              </div>
-            </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-           <!-- Modal Contact  -->
-           <div class="modal fade" id="modalContact" tabindex="-1" role="dialog"  aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" >Contact <i class="fal fa-user"></i></h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <table id="contactTable" class="table  display" style="width:100%"> 
-                    <thead class="thead-dark"> 
-                      <tr><th>Id</th><th>Nom</th><th>Fonction</th></tr>
-                     </thead > 
-                    <tbody>
-            
-                    </tbody>
-                  </table>
-                </div>
-                <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectContact">
-                  <input type="hidden" name="choixContact" id="choixContact" value="">
-                </form>
-               
-                  <div class="modal-footer justify-content-end ">
-                    <div>
-                      <button type="button" class="btn btn-outline-primary" data-dismiss="modal" data-toggle="modal" data-target="#modalContactCrea" >Créer</button>
-                    </div>
-                  </div>
-              
-              </div>
-            </div>
-          </div>
-
-
-
-
-
-
-
-
-
-
-          
-           <!-- Modal Contact Livraison  -->
-           <div class="modal fade" id="modalContactLVR" tabindex="-1" role="dialog"  aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" >Contact <i class="fal fa-user"></i></h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <table id="contactTableLVR" class="table  display" style="width:100%"> 
-                    <thead class="thead-dark"> 
-                      <tr><th>Id</th><th>Nom</th><th>Fonction</th></tr>
-                     </thead > 
-                    <tbody>
-            
-                    </tbody>
-                  </table>
-                </div>
-                <form  class="form" role="form"  method="POST" action="" id="formSelectContactLVR">
-                  <input type="hidden" name="choixContactLVR" id="choixContactLVR" value="">
-                </form>
-               
-                  <div class="modal-footer justify-content-end ">
-                    <div>
-                      <button type="button" class="btn btn-outline-primary" data-dismiss="modal" data-toggle="modal" data-target="#modalContactCrea" >Créer</button>
-                    </div>
-                  </div>
-              
-              </div>
-            </div>
-          </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-          <!-- Modal Contact Creation  -->
-          <div class="modal fade" id="modalContactCrea" tabindex="-1" role="dialog"  aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" >Contact <i class="fal fa-user"></i></h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-
-                <div class="modal-body">
-                  <!-- debut form-->
-                  <form id="FormContactCrea" method="POST" action="nouveauDevis">
-                    <div class="form-row">
-                      <div class="form-group col-md-6">
-                        <label for="inputState">Fonction *</label>
-                        <select id="inputStateContact" class="form-control" name="fonctionContact" required>
-                         
-                          {% for keyword in keywordList %}
-                          <option value={{keyword.kw__value}}>{{keyword.kw__lib}}</option>
-                          {% endfor %}
-                        </select>
-                      </div>
-                      <div class="form-group col-md-6">
-                        <label for="inputCiv">Civilité</label>
-                        <select id="inputCiv" class="form-control" name="civiliteContact" required>
-                          <option  selected>...</option>
-                          <option value="M.">Mr</option>
-                          <option value="Mme">Mme</option>
-                        </select>
-                      </div>
-                      
-                    </div>
-                    <div class="form-row">
-                      <div class="form-group col-md-6">
-                        <label for="inputCity">Nom</label>
-                        <input type="text" class="form-control" name="nomContact" id="nomContact">
-                      </div>
-                      <div class="form-group col-md-6">
-                        <label for="inputCity">Prenom</label>
-                        <input type="text" class="form-control" name="prenomContact" id="prenomContact">
-                      </div>
-                    </div>
-
-                    <div class="form-row">
-                      <div class="form-group col-md-3">
-                        <label for="inputZip">Telephone</label>
-                        <input type="text" class="form-control" name="telContact" id="telContact">
-                      </div>
-                      <div class="form-group col-md-3">
-                        <label for="inputZip">Fax </label>
-                        <input type="text" class="form-control"name="faxContact" id="faxContact">
-                      </div>
-                      <div class="form-group col-md-6">
-                        <label for="inputCity">Mail</label>
-                        <input type="email" class="form-control"name="mailContact" id="mailContact">
-                      </div>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-end ">
-                  <div>
-                    <button type="button" class="btn btn-primary" id="postContact">Valider</button>
-                  </div>
-                </div>
-              </form>
-               <!-- fin form-->
-              </div>
-            </div>
-          </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <!-- Modal Contact Livraison Creation  -->
-            <div class="modal fade" id="modalContactCreaLVR" tabindex="-1" role="dialog"  aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" >Contact Livraison <i class="fal fa-user"></i></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-  
-                  <div class="modal-body">
-                    <!-- debut form-->
-                    <form id="FormContactCrea" method="POST" action="">
-                      <div class="form-row">
-                        <div class="form-group col-md-6">
-                          <label for="inputState">Fonction *</label>
-                          <select id="inputStateContactLVR" class="form-control" name="fonctionContactLVR" required>
-                           
-                            {% for keyword in keywordList %}
-                            <option value={{keyword.kw__value}}>{{keyword.kw__lib}}</option>
-                            {% endfor %}
-                          </select>
-                        </div>
-                        <div class="form-group col-md-6">
-                          <label for="inputCiv">Civilité</label>
-                          <select id="inputCivLVR" class="form-control" name="civiliteContactLVR" required>
-                            <option  selected>...</option>
-                            <option value="M.">Mr</option>
-                            <option value="Mme">Mme</option>
-                          </select>
-                        </div>
-                        
-                      </div>
-                      <div class="form-row">
-                        <div class="form-group col-md-6">
-                          <label for="inputCity">Nom</label>
-                          <input type="text" class="form-control" name="nomContactLVR" id="nomContactLVR">
-                        </div>
-                        <div class="form-group col-md-6">
-                          <label for="inputCity">Prenom</label>
-                          <input type="text" class="form-control" name="prenomContactLVR" id="prenomContactLVR">
-                        </div>
-                      </div>
-  
-                      <div class="form-row">
-                        <div class="form-group col-md-3">
-                          <label for="inputZip">Telephone</label>
-                          <input type="text" class="form-control" name="telContactLVR" id="telContactLVR">
-                        </div>
-                        <div class="form-group col-md-3">
-                          <label for="inputZip">Fax </label>
-                          <input type="text" class="form-control"name="faxContactLVR" id="faxContactLVR">
-                        </div>
-                        <div class="form-group col-md-6">
-                          <label for="inputCity">Mail</label>
-                          <input type="email" class="form-control"name="mailContactLVR" id="mailContactLVR">
-                        </div>
-                      </div>
-                  </div>
-                  <div class="modal-footer justify-content-end ">
-                    <div>
-                      <button type="button" class="btn btn-primary" id="postContactLVR">Valider</button>
-                    </div>
-                  </div>
-                </form>
-                 <!-- fin form-->
-                </div>
-              </div>
-            </div>
-
-
-
-          <!-- Modal PRESTA  -->
-          <div class="modal fade" id="modalPresta" tabindex="-1" role="dialog"  aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" >Ligne de devis <i class="fal fa-plus-circle"></i></h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <div class="form-row">
-                    <div class="col-md-3 mb-3">
-                      <label for="validationCustom04">Prestation</label>
-                      <select class="custom-select" id="prestationChoix" >
-                        <option   value="Vente" selected>Vente</option>
-                        
-                        {% for presta in prestaList %}
-                          <option class="optionSelect"  value={{presta.kw__value}}>{{presta.kw__lib}}</option>
-                          {% endfor %}
-                      </select>
-                    </div>
-                    <div class="col-6">
-                      <label for="validationCustom04">Désignation</label>
-                      <select class="custom-select" id="choixDesignation">
-                        <option   value="">...</option>
-                        {% for article in articleList %}
-                          <option class="optionSelect" value={{article.art_type}}>{{article.art_type}}</option>
-                          {% endfor %}
-                      </select>
-                    </div>
-                      <div class="custom-control custom-checkbox mt-4">
-                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#choixRef" aria-expanded="false" aria-controls="collapseExample" id="modifReference">Modifier</button>
-                      </div>
-                      <div class="collapse col-12" id="choixRef">
-                        <div class="col-12 mt-2 mb-2">
-                          <input type="text" class="form-control" placeholder="...... "  aria-label="Username" aria-describedby="basic-addon1" id='referenceS'>
-                        </div>
-                      </div>
-                    </div>
-                <div class="form-row align-items-center  d-flex justify-content-between">
-                  <div class="col-4">
-                    <label for="validationCustom04">Etat</label>
-                    <select class="custom-select" id="etatRow">
-                      <option selected  value="">...</option>
-                      <option   value="neuf">neuf</option>
-                      <option value="occasion">reconditionné</option>
-                    </select>
-                  </div>
-                  <div class="col-4">
-                    <label for="validationCustom04">Garantie/mois</label>
-                    <select class="custom-select" id="garantieRow" >
-                      <option  value="">..</option>
-                      <option value="06" selected>06</option>
-                      <option value="12">12</option>
-                      <option value="24">24</option>
-                      <option value="36">36</option>
-                      <option value="48">48</option>
-                    </select>
-                  </div>
-                  
-                  <div class="col-1">
-                    <label for="validationCustom04">Quantité</label>
-                    <input type="number" class="form-control" value="1" id="quantiteRow">
-                  </div>
-                  <div class="col-2">
-                    <label for="validationCustom04">Prix € H.T</label>
-                    <input class="form-control" type="text"  id="prixRow">
-                  </div>
-                </div>
-                <div class="form-row mt-2 form-row align-items-center  d-flex justify-content-center">
-                  <div class="d-flex justify-content-start">
-                  
-                  <div class="custom-control custom-checkbox mt-4" id="accordion">
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Extensions de garantie</button>
-                  </div>
-                 
-                </div>
-                    <div class="custom-control custom-checkbox mt-4">
-                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#commentaire" aria-expanded="false" aria-controls="commentaire">Commentaires</button>
-                    </div>
-                    <div class="custom-control custom-checkbox mt-4">
-                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#prixBarres" aria-expanded="false" aria-controls="commentaire">Prix barrés</button>
-                    </div>
-                    <div class="collapse col-12" id="xtendGarantie" data-parent="#accordion">
-                      <ul class="list-group list-group-flush" id="xtendList">
-
-                      </ul>
-                      <div class="col-12 mt-2 mb-2 d-flex justify-content-start">
-                        
-                        <div class="col-2">
-                          <label for="validationCustom04">Durée/mois</label>
-                          <select class="custom-select" id="xtendMois" >
-                            <option value="12">12</option>
-                            <option value="24">24</option>
-                            <option value="36">36</option>
-                            <option value="48">48</option>
-                          </select>
-                        </div>
-                            <div class="col-3">
-                              <label for="validationCustom04">Prix € H.T</label>
-                              <input class="form-control" type="text"  id="xtendPrice">
-                            </div>
-                          <div class="d-flex col-4 align-items-end">
-                            <button type="button" class="btn btn-primary  mt-2 "><i class="fal fa-plus-circle" id="xtendGr"></i></button>
-                          </div>
-                      </div>
-                    </div>
-                    <div class="collapse col-12" id="commentaire" data-parent="#accordion">
-                      <div class="col-12 mt-2 mb-2 d-flex justify-content-between">
-                        <div class="col-6">
-                        <textarea class="form-control" id="comClient" placeholder="Commentaire client...." rows="4"></textarea>
-                        </div>
-                        <div class="col-6">
-                          <textarea class="form-control" id="comInterne" placeholder="Commentaire interne...." rows="4"></textarea>
-                          </div>
-                          
-                      </div>
-                    </div>
-                    <div class="collapse col-12 " id="prixBarres" data-parent="#accordion">
-                        <div class="col-6 col-12 mt-2 mb-2 d-flex justify-content-end">
-                          <div class="col-3">
-                            <label for="validationCustom04">Prix barré € H.T</label>
-                            <input class="form-control" type="text"  id="barrePrice">
-                          </div> 
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" id="addRow">Ajouter</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-          <!--modal modif-->
-          <div class="modal fade" id="modalModif" tabindex="-1" role="dialog"  aria-hidden="true" data-backdrop="static" data-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" >Modification <i class="fal fa-plus-circle"></i></h5>
-                 
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <div class="form-row">
-                    <div class="col-md-3 mb-3">
-                      <label for="validationCustom04">Prestation</label>
-                      <select class="custom-select" id="UPprestationChoix">
-                        <option selected  value="Vente">Vente</option>
-                        {% for presta in prestaList %}
-                          <option value={{presta.keyword__value}}>{{presta.keyword__lib}}</option>
-                          {% endfor %}
-                      </select>
-                    </div>
-                    <div class="col-8">
-                      <label for="validationCustom04">Désignation</label>
-                      <input type="text" class="form-control" placeholder="...... "  aria-label="Username" aria-describedby="basic-addon1" id='UPreferenceS'>
-                    </div>
-                    </div>
-                <div class="form-row align-items-center  d-flex justify-content-between">
-                  <div class="col-4">
-                    <label for="validationCustom04">Etat</label>
-                    <select class="custom-select" id="UPetatRow">
-                      <option   value="">...</option>
-                      <option   value="neuf">neuf</option>
-                      <option   value="occasion">reconditionné</option>
-                    </select>
-                  </div>
-                  <div class="col-4">
-                    <label for="validationCustom04">Garantie/mois</label>
-                    <select class="custom-select" id="UPgarantieRow" >
-                      <option  value="">..</option>
-                      <option value="06">06</option>
-                      <option value="12">12</option>
-                      <option value="24">24</option>
-                      <option value="36">36</option>
-                      <option value="48">48</option>
-                    </select>
-                  </div>
-                  
-                  <div class="col-1">
-                    <label for="validationCustom04">Quantité</label>
-                    <input type="number" class="form-control" value="1" id="UPquantiteRow">
-                  </div>
-                  <div class="col-2">
-                    <label for="validationCustom04">Prix € H.T</label>
-                    <input class="form-control" type="text"  id="UPprixRow">
-                  </div>
-                </div>
-                <div class="form-row mt-2 form-row align-items-center  d-flex justify-content-center" id="UPaccordion">
-                  <div class="d-flex justify-content-start">
-                  
-                  <div class="custom-control custom-checkbox mt-4" >
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#UPxtendGarantie" aria-expanded="false" aria-controls="UPxtendGarantie">Extensions de garantie</button>
-                  </div>
-                 
-                </div>
-                    <div class="custom-control custom-checkbox mt-4">
-                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#UPcommentaire" aria-expanded="false" aria-controls="UPcommentaire">Commentaires</button>
-                    </div>
-                    <div class="custom-control custom-checkbox mt-4">
-                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#UPprixBarres" aria-expanded="false" aria-controls="UPcommentaire">Prix barrés</button>
-                    </div>
-                    <div class="collapse col-12" id="UPxtendGarantie" data-parent="#UPaccordion">
-                      <ul class="list-group list-group-flush" id="UPxtendList">
-
-                      </ul>
-                      <div class="col-12 mt-2 mb-2 d-flex justify-content-start">
-                        
-                        <div class="col-2">
-                          <label for="validationCustom04">Durée/mois</label>
-                          <select class="custom-select" id="UPxtendMois" >
-                            <option value="12">12</option>
-                            <option value="24">24</option>
-                            <option value="36">36</option>
-                            <option value="48">48</option>
-                          </select>
-                        </div>
-                            <div class="col-3">
-                              <label for="validationCustom04">Prix € H.T</label>
-                              <input class="form-control" type="text"  id="UPxtendPrice">
-                            </div>
-                          <div class="d-flex col-4 align-items-end">
-                            <button type="button" class="btn btn-primary  mt-2 "><i class="fal fa-plus-circle" id="UPxtendGr"></i></button>
-                          </div>
-                      </div>
-                    </div>
-                    
-                    <div class="collapse col-12" id="UPcommentaire" data-parent="#UPaccordion">
-                      <div class="col-12 mt-2 mb-2 d-flex justify-content-between">
-                        <div class="col-6">
-                        <textarea class="form-control" id="UPcomClient" placeholder="Commentaire client...." rows="4"></textarea>
-                        </div>
-                        <div class="col-6">
-                          <textarea class="form-control" id="UPcomInterne" placeholder="Commentaire interne...." rows="4"></textarea>
-                          </div>
-                      </div>
-                    </div>
-                    <div class="collapse col-12 " id="UPprixBarres" data-parent="#UPaccordion">
-                        <div class="col-6 col-12 mt-2 mb-2 d-flex justify-content-end">
-                          <div class="col-3">
-                            <label for="validationCustom04">Prix barré € H.T</label>
-                            <input class="form-control" type="text"  id="UPbarrePrice">
-                          </div> 
-                      </div>
-                    </div>
-                   
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" id="updateRow">Modifier</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-           <!--Modal PDF-->
-           <div class="modal fade" id="modalPdf" tabindex="-1" role="dialog"  aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  {% if sessionModif %}
-                  <h5 class="modal-title">Modifier <i class="fal fa-file-export"></i></h5>
-                  {% else %}
-                  <h5 class="modal-title">Exporter <i class="fal fa-file-export"></i></h5>
-                  {% endif %}
-                 
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-               
-               <form  method="POST" action="mesDevis" >
-                <div class="modal-body ">
-                  <input id="dataDevis" name="dataDevis" type="hidden" value="">
-                  <div class=" d-flex col-10 mx-auto justify-content-around mb-3">
-                    <div class="col-5">
-                    <label for="validationCustom04">Frais de port € H.T</label>
-                    {% if temp %}
-                    <input class="form-control " type="text"  id="port" name="port" value="{{temp.devis__port}}">
-                    {% else %}
-                    <input class="form-control " type="text"  id="port" name="port">
-                    {% endif %}
-                    </div>
-                    <div>
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseGlobal" aria-expanded="false" aria-controls="collapseExample">
-                      Ajouter Commentaires
-                    </button>
-                  </div>
-                  </div>
-                  <div class="collapse " id="collapseGlobal">
-                    {% if temp %}
-                    <div class="col-12 mt-2 mb-2 d-flex justify-content-center mx-auto">
-                      <div class="col-6">
-                      <textarea class="form-control" id="globalComClient" name="globalComClient" placeholder="Commentaire client...." rows="4">{{temp.devis__note_client}}</textarea>
-                      </div>
-                      <div class="col-6">
-                        <textarea class="form-control" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." rows="4">{{temp.devis__note_interne}}</textarea>
-                        </div>    
-                    </div>
-                    {% else %}
-                    <div class="col-12 mt-2 mb-2 d-flex justify-content-center mx-auto">
-                      <div class="col-6">
-                      <textarea class="form-control" id="globalComClient" name="globalComClient" placeholder="Commentaire client...." rows="4"></textarea>
-                      </div>
-                      <div class="col-6">
-                        <textarea class="form-control" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." rows="4"></textarea>
-                        </div>    
-                    </div>
-                    {% endif %}
-                  </div>
-                </div> 
-                {% if societe %}
-                <input type="hidden" name="clientSelect" id="clientSelect" value="{{societe.client__id}}">
-                {% else %}
-                <input type="hidden" name="clientSelect" id="clientSelect" value="">
-                {% endif %} 
-                
-                {% if contact %}
-                <input type="hidden" name="contactSelect" id="contactSelect" value="{{contact.contact__id}}">
-                {% else %}
-                <input type="hidden" name="contactSelect" id="contactSelect" value="">
-                {% endif %}
-
-                {% if sessionModif %}
-                <input type="hidden" name="ModifierDevis" id="ModifierDevis" value="{{ sessionModif }}">
-                {% else %}
-                <input type="hidden" name="ModifierDevis" id="ModifierDevis" value="">
-                {% endif %}
-
-                {% if contactlivraison %}
-                <input type="hidden" name="contact_livraison" id="contact_livraison" value="{{ contactlivraison }}">
-                {% else %}
-                <input type="hidden" name="contact_livraison" id="contact_livraison" value="">
-                {% endif %}
-
-                {% if livraison %}
-                <input type="hidden" name="livraisonSelect" id="livraisonSelect" value="{{ livraison.client__id }}">
-                {% else %}
-                <input type="hidden" name="livraisonSelect" id="livraisonSelect" value="">
-                {% endif %}
-              
-                <div class="modal-footer">
-                  {% if sessionModif %}
-                  <button  type='submit'  class="btn btn-primary" id="xPortData"  >Modifier</button>
-                  {% else %}
-                  <button  type='submit'  class="btn btn-primary" id="xPortData"  >Exporter</button>
-                  {% endif %}
-                </form>
-                <form method="POST" action="nouveauDevis" id="DevisValidForm">
-                   <input type="hidden" name="ValidDevis" id="ValidDevis" value="">
-                </form>
-                </div>
-              </div>
-            </div>
-          </div>
-
-
-          <!--modal d'adresse de livraison -->
-          <div class="modal fade" id="ModalLivraison" tabindex="-1" role="dialog"  aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" >Adresse de livraison différente <i class="fal fa-truck"></i></h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <table id="Livraison" class="table  display" style="width:100%"> 
-                    <thead class="thead-dark"> 
-                      <tr><th>Id</th><th>Nom</th><th>CP</th><th>Adresse</th></tr>
-                     </thead > 
-                    <tbody class="trClick">
-                    </tbody>
-                  </table>
-                </div>
-                <div class="modal-footer">
-                  <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectLivraison">
-                        <input type="hidden" name="choixLivraison" id="choixLivraison" value="">
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-
-         
 
           
         <!-- 1ere ligne -->
        <div class="d-flex flex-wrap flex-row justify-content-center">
-          <!--carte societe -->
-        <div class="col-md-11">
+
+
+          <!-- ██████╗ █████╗ ██████╗ ████████╗███████╗    ███████╗ ██████╗  ██████╗██╗███████╗████████╗███████╗
+             ██╔════╝██╔══██╗██╔══██╗╚══██╔══╝██╔════╝    ██╔════╝██╔═══██╗██╔════╝██║██╔════╝╚══██╔══╝██╔════╝
+             ██║     ███████║██████╔╝   ██║   █████╗      ███████╗██║   ██║██║     ██║█████╗     ██║   █████╗  
+             ██║     ██╔══██║██╔══██╗   ██║   ██╔══╝      ╚════██║██║   ██║██║     ██║██╔══╝     ██║   ██╔══╝  
+          ╚   ██████╗██║  ██║██║  ██║   ██║   ███████╗    ███████║╚██████╔╝╚██████╗██║███████╗   ██║   ███████╗
+              ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚══════╝ ╚═════╝  ╚═════╝╚═╝╚══════╝   ╚═╝   ╚══════╝
+                                                                                                           -->
+        <div class="col-11 " id="navSociete">
+        <div class="col-12 d-flex justify-content-center">
+        <div class="col-6 " >
           <div class="card h-100  shadow mb-2">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -888,21 +59,10 @@
               </div>
             </div>
             <!-- Card Body -->
-            <div class="card-body d-flex flex-row justify-content-around " style=" height: 18rem;">
+            <div class="card-body d-flex flex-column justify-content-around " style=" height: 18rem;">
 
-
-
-
-
-
-
-              <!--première sous carte principale-->
-
-              <div class="card shadow h-100  col-5 pt-2  d-flex flex-column    mb-1 justify-content-start" id="findClient">
-                <div class="   d-flex flex-column justify-content-center">
-                  <span class="badge badge-primary ">Société facturée*</span>
-                <!--societe-->
-                <div class="  chart-pie my-4 d-flex flex-row justify-content-between">
+               <!--societe-->
+               <div class="  chart-pie my-4 d-flex flex-row justify-content-between">
                 <div class=" mb-0 font-weight-bold text-muted" id="divClient">
                  {% if not societe %}
                   Choisir une Société*
@@ -920,47 +80,164 @@
                 </div>
               </div>
 
-              <!-- carte contact -->
-                <div class=" mt-4">
-                  <div class=" mb-2">
-                    <!-- Card Header - -->
-                  
-                    <!-- Card Body -->
-                    <div class="">
-                      <div class="chart-pie pt-2  d-flex flex-row   mb-1 justify-content-between">
+
+
+              <div class="chart-pie pt-2  d-flex flex-row   mb-1 justify-content-between">
                         
-                        <div class=" mb-0 font-weight-bold text-muted " id="contactDiv">
-                          {% if contact %}
-                          {{contact.contact__nom}}<br>
-                          {{contact.contact__prenom }} <br>
-                          {{contact.keyword__lib}}
-                          {% else %}
-                         Aucun contact
-                          {% endif %}
-                          
-                        </div>
-                        <div>
-                              <div class="btn-group btn-group-sm mx-4">
-                                <button type="button" class="btn btn-primary btn-sm " data-toggle="modal" data-target="#modalContact" id="toogleContact" disabled>Choisir</button>
-                                <button type="button" class="btn btn-outline-primary btn-sm " id="toogleCreaContact" data-toggle="modal" data-target="#modalContactCrea" disabled>Créer</button>
-                                
-                              </div>
-                      </div>
-                      </div>
-                    </div>
-                  </div>
+                <div class=" mb-0 font-weight-bold text-muted " id="contactDiv">
+                  {% if contact %}
+                  {{contact.contact__nom}}<br>
+                  {{contact.contact__prenom }} <br>
+                  {{contact.keyword__lib}}
+                  {% else %}
+                 Aucun contact
+                  {% endif %}
+                  
                 </div>
+                <div>
+                      <div class="btn-group btn-group-sm mx-4">
+                        <button type="button" class="btn btn-primary btn-sm " data-toggle="modal" data-target="#modalContact" id="toogleContact" disabled>Choisir</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm " id="toogleCreaContact" data-toggle="modal" data-target="#modalContactCrea" disabled>Créer</button>
+                        
+                      </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!--██████╗  ██████╗ ██████╗ ████████╗    ███████╗████████╗     ██████╗ ██████╗ ███╗   ███╗
+            ██╔══██╗██╔═══██╗██╔══██╗╚══██╔══╝    ██╔════╝╚══██╔══╝    ██╔════╝██╔═══██╗████╗ ████║
+            ██████╔╝██║   ██║██████╔╝   ██║       █████╗     ██║       ██║     ██║   ██║██╔████╔██║
+            ██╔═══╝ ██║   ██║██╔══██╗   ██║       ██╔══╝     ██║       ██║     ██║   ██║██║╚██╔╝██║
+            ██║     ╚██████╔╝██║  ██║   ██║       ███████╗   ██║       ╚██████╗╚██████╔╝██║ ╚═╝ ██║
+            ╚═╝      ╚═════╝ ╚═╝  ╚═╝   ╚═╝       ╚══════╝   ╚═╝        ╚═════╝ ╚═════╝ ╚═╝     ╚═╝
+                                                                                               -->
+
+
+        <div class="col-6 " >
+          <div class="card h-100  shadow mb-2">
+            <!-- Card Header - -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Port et commantaires <i class="fal fa-building"></i></h6>
+              <div class="dropdown no-arrow">
+                
+                <i class="far fa-check text-success" id="petitCheck" hidden></i>
+               
+              
+              </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body d-flex flex-column justify-content-around " style=" height: 18rem;">
+
+               
+               <div class="  chart-pie my-4 d-flex flex-row justify-content-between">
+                
+                <div>
+                  <form  method="POST" action="mesDevis" id="devisSend">
+                    <div class="modal-body ">
+                      <input id="dataDevis" name="dataDevis" type="hidden" value="">
+                      <div class=" d-flex col-10  justify-content-start mb-3">
+                        <div class="col-5">
+                        <label for="validationCustom04">Frais de port € H.T</label>
+                        {% if temp %}
+                        <input class="form-control " type="text"  id="port" name="port" value="{{temp.devis__port}}">
+                        {% else %}
+                        <input class="form-control " type="text"  id="port" name="port">
+                        {% endif %}
+                        </div>
+                      
+                      </div>
+                     
+                        {% if temp %}
+                        <div class="col-12 mt-2 mb-2 d-flex justify-content-center ">
+                          <div class="col-6">
+                          <textarea class="form-control" id="globalComClient" name="globalComClient" placeholder="Commentaire client...." rows="4">{{temp.devis__note_client}}</textarea>
+                          </div>
+                          <div class="col-6">
+                            <textarea class="form-control" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." rows="4">{{temp.devis__note_interne}}</textarea>
+                            </div>    
+                        </div>
+                        {% else %}
+                        <div class="col-12 mt-2 mb-2 d-flex justify-content-center ">
+                          <div class="col-6">
+                          <textarea class="form-control" id="globalComClient" name="globalComClient" placeholder="Commentaire client...." rows="4"></textarea>
+                          </div>
+                          <div class="col-6">
+                            <textarea class="form-control" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." rows="4"></textarea>
+                            </div>    
+                        </div>
+                        {% endif %}
+                      
+                    </div> 
+                    {% if societe %}
+                    <input type="hidden" name="clientSelect" id="clientSelect" value="{{societe.client__id}}">
+                    {% else %}
+                    <input type="hidden" name="clientSelect" id="clientSelect" value="">
+                    {% endif %} 
+                    
+                    {% if contact %}
+                    <input type="hidden" name="contactSelect" id="contactSelect" value="{{contact.contact__id}}">
+                    {% else %}
+                    <input type="hidden" name="contactSelect" id="contactSelect" value="">
+                    {% endif %}
+      
+                    {% if sessionModif %}
+                    <input type="hidden" name="ModifierDevis" id="ModifierDevis" value="{{ sessionModif }}">
+                    {% else %}
+                    <input type="hidden" name="ModifierDevis" id="ModifierDevis" value="">
+                    {% endif %}
+      
+                    {% if contactlivraison %}
+                    <input type="hidden" name="contact_livraison" id="contact_livraison" value="{{ contactlivraison }}">
+                    {% else %}
+                    <input type="hidden" name="contact_livraison" id="contact_livraison" value="">
+                    {% endif %}
+      
+                    {% if livraison %}
+                    <input type="hidden" name="livraisonSelect" id="livraisonSelect" value="{{ livraison.client__id }}">
+                    {% else %}
+                    <input type="hidden" name="livraisonSelect" id="livraisonSelect" value="">
+                    {% endif %}
+                  
+                    
+                     
+                    </form>
+                  
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
+        <!--██╗     ██╗██╗   ██╗██████╗  █████╗ ██╗███████╗ ██████╗ ███╗   ██╗
+            ██║     ██║██║   ██║██╔══██╗██╔══██╗██║██╔════╝██╔═══██╗████╗  ██║
+            ██║     ██║██║   ██║██████╔╝███████║██║███████╗██║   ██║██╔██╗ ██║
+            ██║     ██║╚██╗ ██╔╝██╔══██╗██╔══██║██║╚════██║██║   ██║██║╚██╗██║
+            ███████╗██║ ╚████╔╝ ██║  ██║██║  ██║██║███████║╚██████╔╝██║ ╚████║
+            ╚══════╝╚═╝  ╚═══╝  ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝╚══════╝ ╚═════╝ ╚═╝  ╚═══╝
+                                                                         -->
 
+        <div class="col-6 d-none" id="navLivraison">
+          <div class="card h-100  shadow mb-2">
+            <!-- Card Header - -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Livraison <i class="fal fa-truck"></i></h6>
+              <div class="dropdown no-arrow">
+                
+                <i class="far fa-check text-success" id="petitCheck" hidden></i>
+               
+              
+              </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body d-flex flex-column justify-content-around " style=" height: 18rem;">
 
-              <!--2eme sous carte livraison-->
-              <div class="card shadow h-100  col-5 pt-2  d-flex flex-column    mb-1 justify-content-start" id="findClient">
-                <div class="   d-flex flex-column justify-content-center">
-                  <span class="badge badge-success ">Livraison</span>
-                <!--societe-->
-                <div class="  chart-pie my-4 d-flex flex-row justify-content-between">
+               <!--societe-->
+               <div class="  chart-pie my-4 d-flex flex-row justify-content-between">
                 <div class=" mb-0 font-weight-bold text-muted" id="textLivraison">
                   {% if not livraison %}
                  livré à la meme adresse
@@ -981,91 +258,39 @@
                 </div>
               </div>
 
-              <!-- carte contact -->
-                <div class=" mt-2">
-                  <div class=" mb-2">
-                    <!-- Card Header - -->
-                  
-                    <!-- Card Body -->
-                    <div class="">
-                      <div class="chart-pie pt-2  d-flex flex-row   mb-1 justify-content-between">
+
+
+              <div class="chart-pie pt-2  d-flex flex-row   mb-1 justify-content-between">
                         
-                        <div class=" mb-0 font-weight-bold text-muted " id="contactDivLVR">
-                          {% if contactLVR %}
-                          {{contactLVR.contact__nom}}<br>
-                          {{contactLVR.contact__prenom }} <br>
-                          {{contactLVR.keyword__lib}}
-                          {% else %}
-                         Aucun contact
-                          {% endif %}
-                          
-                        </div>
-                        <div>
-                              <div class="btn-group btn-group-sm mx-4">
-                                <button type="button" class="btn btn-success btn-sm "  data-toggle="modal" data-target="#modalContactLVR" id="toogleContactLVR" disabled>Choisir</button>
-                                <button type="button" class="btn btn-outline-success btn-sm " data-toggle="modal" data-target="#modalContactCreaLVR" id="toogleContactCreaLVR" disabled>Créer</button>
-                                
-                              </div>
-                      </div>
-                      </div>
-                    </div>
-                  </div>
+                <div class=" mb-0 font-weight-bold text-muted " id="contactDivLVR">
+                  {% if contactLVR %}
+                  {{contactLVR.contact__nom}}<br>
+                  {{contactLVR.contact__prenom }} <br>
+                  {{contactLVR.keyword__lib}}
+                  {% else %}
+                 Aucun contact
+                  {% endif %}
+                  
                 </div>
-                </div>
+                <div>
+                      <div class="btn-group btn-group-sm mx-4">
+                        <button type="button" class="btn btn-success btn-sm "  data-toggle="modal" data-target="#modalContactLVR" id="toogleContactLVR" disabled>Choisir</button>
+                        <button type="button" class="btn btn-outline-success btn-sm " data-toggle="modal" data-target="#modalContactCreaLVR" id="toogleContactCreaLVR" disabled>Créer</button>
+                      </div>
               </div>
-
-
-
-
-
-
-
-
-
-
-
+              </div>
             </div>
           </div>
         </div>
-
-
-
-
-
-
-
-
-
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-        
-
-       
-
-      <!-- fin 1ere ligne -->
-      </div>
-
-       <!-- Deuxième ligne -->
-       <div class="row d-flex flex-wrap justify-content-center mt-4">
-
-        <!-- Devis/DataTable -->
-        <div class="col-11 ">
+        <!-- ██████╗ ███████╗██╗   ██╗██╗███████╗
+             ██╔══██╗██╔════╝██║   ██║██║██╔════╝
+             ██║  ██║█████╗  ██║   ██║██║███████╗
+             ██║  ██║██╔══╝  ╚██╗ ██╔╝██║╚════██║
+             ██████╔╝███████╗ ╚████╔╝ ██║███████║
+             ╚═════╝ ╚══════╝  ╚═══╝  ╚═╝╚══════╝
+                                                 -->
+        <div class="col-12 d-none" id="navDevis">
+         <div class="col-11 ">
           <div class="card shadow mb-4">
 
             <!-- Card Header - -->
@@ -1091,14 +316,735 @@
                      Frais de port  : {{temp.devis__port}} €
                   </div>
                 {% endif %}
-                <button type="button" class="btn btn-success  mb-1" id="xportPdf" data-toggle="modal" data-target="#modalPdf" disabled>Valider <i class="fal fa-file-export"></i></button>
+                <button type="button" class="btn btn-success mb-1" id="xPortData" disabled>Valider <i class="fal fa-file-export"></i></button>
               </div>
                 
             </div>
           </div>
         </div>   
-    </div>
-      <!-- fin deuxième ligne -->
+      </div>
+
+      <!-- ███████╗██╗███╗   ██╗    ███╗   ███╗ █████╗ ██╗███╗   ██╗
+           ██╔════╝██║████╗  ██║    ████╗ ████║██╔══██╗██║████╗  ██║
+           █████╗  ██║██╔██╗ ██║    ██╔████╔██║███████║██║██╔██╗ ██║
+           ██╔══╝  ██║██║╚██╗██║    ██║╚██╔╝██║██╔══██║██║██║╚██╗██║
+           ██║     ██║██║ ╚████║    ██║ ╚═╝ ██║██║  ██║██║██║ ╚████║
+           ╚═╝     ╚═╝╚═╝  ╚═══╝    ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝
+                                                                     -->
+      </div>
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+      <!-- ███╗   ███╗ ██████╗ ██████╗  █████╗ ██╗     
+         ████╗ ████║██╔═══██╗██╔══██╗██╔══██╗██║     
+         ██╔████╔██║██║   ██║██║  ██║███████║██║     
+         ██║╚██╔╝██║██║   ██║██║  ██║██╔══██║██║     
+         ██║ ╚═╝ ██║╚██████╔╝██████╔╝██║  ██║███████╗
+         ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝ -->
+                                                    
+        <!-- Modal Choisir societe  -->
+        <div  class="modal fade" id="modalClient" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" >Société <i class="fal fa-building"></i> 
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <table id="client" class="table  display" style="width:100%"> 
+                  <thead class="thead-dark"> 
+                    <tr><th>Id</th><th>Nom</th><th>CP</th><th>Ville</th></tr>
+                   </thead > 
+                  <tbody class="trClick">
+                  </tbody>
+                </table>
+              </div>
+              <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectClient">
+                <div class="modal-footer justify-content-between ">
+                    <input type="hidden" name="choixClient" id="choixClient" value="">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+           <!-- Modal créer société  -->
+        <div class="modal fade" id="modalClientCrea" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" >Société <i class="fal fa-building"></i> </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form id="FormClientCrea" method="POST" action="nouveauDevis">
+                  <div class="form-row">
+                    <div class="form-group col-md-8">
+                      <label for="inputEmail4">Société*</label>
+                      <input type="text" class="form-control text-uppercase" id="societeNameCreate"  name="societe" required >
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputAddress">Adresse</label>
+                    <input type="text" class="form-control" id="inputAddress"  name="adr1" >
+                  </div>
+                  <div class="form-group">
+                    
+                    <input type="text" class="form-control" id="inputAddress2" name="adr2">
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-2">
+                      <label for="inputZip">CP*</label>
+                      <input type="text" class="form-control" id="inputZip"  name="cp" required >
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="inputCity">Ville*</label>
+                      <input type="text" class="form-control" id="inputCity"  name="ville" required >
+                    </div>
+                    <div class="form-group col-md-4">
+                      <label for="pays">Pays*</label>
+                      <select class="custom-select mr-sm-2" id="SelectClientCountry" name="pays">
+                        <option value="france" selected>France</option>
+                        <option value="autre" >autre</option>
+                      </select>
+                    </div>
+                  </div>
+              </div>
+              
+              <div class="modal-footer justify-content-end ">
+                <div>
+                  <button type="button" id="PostClient" class="btn btn-primary">Valider</button>
+                </div>
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+
+
+
+          <!-- Modal créer société de livraison  -->
+          <div class="modal fade" id="modalSocieteLivraison" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" >Société  livraison<i class="fal fa-building"></i> </h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="FormClientCrea" method="POST" action="">
+                    <div class="form-row">
+                      <div class="form-group col-md-8">
+                        <label for="inputEmail4">Société*</label>
+                        <input type="text" class="form-control text-uppercase" id="societeNameCreateLVR"  name="societe" required >
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="inputAddress">Adresse</label>
+                      <input type="text" class="form-control" id="inputAddressLVR"  name="adr1" >
+                    </div>
+                    <div class="form-group">
+                      
+                      <input type="text" class="form-control" id="inputAddress2LVR" name="adr2">
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-2">
+                        <label for="inputZip">CP*</label>
+                        <input type="text" class="form-control" id="inputZipLVR"  name="cp" required >
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputCity">Ville*</label>
+                        <input type="text" class="form-control" id="inputCityLVR"  name="ville" required >
+                      </div>
+                      <div class="form-group col-md-4">
+                        <label for="pays">Pays*</label>
+                        <select class="custom-select mr-sm-2" id="SelectClientCountryLVR" name="pays">
+                          <option value="france" selected>France</option>
+                          <option value="autre" >autre</option>
+                        </select>
+                      </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer justify-content-end ">
+                  <div>
+                    <button type="button" id="PostSocieteLivraison" class="btn btn-primary">Valider</button>
+                  </div>
+                </div>
+              </form>
+              </div>
+            </div>
+          </div>
+
+         <!-- Modal Contact  -->
+         <div class="modal fade" id="modalContact" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" >Contact <i class="fal fa-user"></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <table id="contactTable" class="table  display" style="width:100%"> 
+                  <thead class="thead-dark"> 
+                    <tr><th>Id</th><th>Nom</th><th>Fonction</th></tr>
+                   </thead > 
+                  <tbody>
+          
+                  </tbody>
+                </table>
+              </div>
+              <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectContact">
+                <input type="hidden" name="choixContact" id="choixContact" value="">
+              </form>
+             
+                <div class="modal-footer justify-content-end ">
+                  <div>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal" data-toggle="modal" data-target="#modalContactCrea" >Créer</button>
+                  </div>
+                </div>
+            
+            </div>
+          </div>
+        </div>
+
+
+        
+         <!-- Modal Contact Livraison  -->
+         <div class="modal fade" id="modalContactLVR" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" >Contact <i class="fal fa-user"></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <table id="contactTableLVR" class="table  display" style="width:100%"> 
+                  <thead class="thead-dark"> 
+                    <tr><th>Id</th><th>Nom</th><th>Fonction</th></tr>
+                   </thead > 
+                  <tbody>
+          
+                  </tbody>
+                </table>
+              </div>
+              <form  class="form" role="form"  method="POST" action="" id="formSelectContactLVR">
+                <input type="hidden" name="choixContactLVR" id="choixContactLVR" value="">
+              </form>
+             
+                <div class="modal-footer justify-content-end ">
+                  <div>
+                    <button type="button" class="btn btn-outline-primary" data-dismiss="modal" data-toggle="modal" data-target="#modalContactCrea" >Créer</button>
+                  </div>
+                </div>
+            
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Modal Contact Creation  -->
+        <div class="modal fade" id="modalContactCrea" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" >Contact <i class="fal fa-user"></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div class="modal-body">
+                <!-- debut form-->
+                <form id="FormContactCrea" method="POST" action="nouveauDevis">
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="inputState">Fonction *</label>
+                      <select id="inputStateContact" class="form-control" name="fonctionContact" required>
+                       
+                        {% for keyword in keywordList %}
+                        <option value={{keyword.kw__value}}>{{keyword.kw__lib}}</option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="inputCiv">Civilité</label>
+                      <select id="inputCiv" class="form-control" name="civiliteContact" required>
+                        <option  selected>...</option>
+                        <option value="M.">Mr</option>
+                        <option value="Mme">Mme</option>
+                      </select>
+                    </div>
+                    
+                  </div>
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label for="inputCity">Nom</label>
+                      <input type="text" class="form-control" name="nomContact" id="nomContact">
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="inputCity">Prenom</label>
+                      <input type="text" class="form-control" name="prenomContact" id="prenomContact">
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group col-md-3">
+                      <label for="inputZip">Telephone</label>
+                      <input type="text" class="form-control" name="telContact" id="telContact">
+                    </div>
+                    <div class="form-group col-md-3">
+                      <label for="inputZip">Fax </label>
+                      <input type="text" class="form-control"name="faxContact" id="faxContact">
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label for="inputCity">Mail</label>
+                      <input type="email" class="form-control"name="mailContact" id="mailContact">
+                    </div>
+                  </div>
+              </div>
+              <div class="modal-footer justify-content-end ">
+                <div>
+                  <button type="button" class="btn btn-primary" id="postContact">Valider</button>
+                </div>
+              </div>
+            </form>
+             <!-- fin form-->
+            </div>
+          </div>
+        </div>
+
+
+          <!-- Modal Contact Livraison Creation  -->
+          <div class="modal fade" id="modalContactCreaLVR" tabindex="-1" role="dialog"  aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered  modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" >Contact Livraison <i class="fal fa-user"></i></h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <div class="modal-body">
+                  <!-- debut form-->
+                  <form id="FormContactCrea" method="POST" action="">
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputState">Fonction *</label>
+                        <select id="inputStateContactLVR" class="form-control" name="fonctionContactLVR" required>
+                         
+                          {% for keyword in keywordList %}
+                          <option value={{keyword.kw__value}}>{{keyword.kw__lib}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputCiv">Civilité</label>
+                        <select id="inputCivLVR" class="form-control" name="civiliteContactLVR" required>
+                          <option  selected>...</option>
+                          <option value="M.">Mr</option>
+                          <option value="Mme">Mme</option>
+                        </select>
+                      </div>
+                      
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="inputCity">Nom</label>
+                        <input type="text" class="form-control" name="nomContactLVR" id="nomContactLVR">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputCity">Prenom</label>
+                        <input type="text" class="form-control" name="prenomContactLVR" id="prenomContactLVR">
+                      </div>
+                    </div>
+
+                    <div class="form-row">
+                      <div class="form-group col-md-3">
+                        <label for="inputZip">Telephone</label>
+                        <input type="text" class="form-control" name="telContactLVR" id="telContactLVR">
+                      </div>
+                      <div class="form-group col-md-3">
+                        <label for="inputZip">Fax </label>
+                        <input type="text" class="form-control"name="faxContactLVR" id="faxContactLVR">
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="inputCity">Mail</label>
+                        <input type="email" class="form-control"name="mailContactLVR" id="mailContactLVR">
+                      </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-end ">
+                  <div>
+                    <button type="button" class="btn btn-primary" id="postContactLVR">Valider</button>
+                  </div>
+                </div>
+              </form>
+               <!-- fin form-->
+              </div>
+            </div>
+          </div>
+
+
+
+        <!-- Modal PRESTA  -->
+        <div class="modal fade" id="modalPresta" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" >Ligne de devis <i class="fal fa-plus-circle"></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-row">
+                  <div class="col-md-3 mb-3">
+                    <label for="validationCustom04">Prestation</label>
+                    <select class="custom-select" id="prestationChoix" >
+                      <option   value="Vente" selected>Vente</option>
+                      
+                      {% for presta in prestaList %}
+                        <option class="optionSelect"  value={{presta.kw__value}}>{{presta.kw__lib}}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                  <div class="col-6">
+                    <label for="validationCustom04">Désignation</label>
+                    <select class="custom-select" id="choixDesignation">
+                      <option   value="">...</option>
+                      {% for article in articleList %}
+                        <option class="optionSelect" value={{article.art_type}}>{{article.art_type}}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                    <div class="custom-control custom-checkbox mt-4">
+                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#choixRef" aria-expanded="false" aria-controls="collapseExample" id="modifReference">Modifier</button>
+                    </div>
+                    <div class="collapse col-12" id="choixRef">
+                      <div class="col-12 mt-2 mb-2">
+                        <input type="text" class="form-control" placeholder="...... "  aria-label="Username" aria-describedby="basic-addon1" id='referenceS'>
+                      </div>
+                    </div>
+                  </div>
+              <div class="form-row align-items-center  d-flex justify-content-between">
+                <div class="col-4">
+                  <label for="validationCustom04">Etat</label>
+                  <select class="custom-select" id="etatRow">
+                    <option selected  value="">...</option>
+                    <option   value="neuf">neuf</option>
+                    <option value="occasion">reconditionné</option>
+                  </select>
+                </div>
+                <div class="col-4">
+                  <label for="validationCustom04">Garantie/mois</label>
+                  <select class="custom-select" id="garantieRow" >
+                    <option  value="">..</option>
+                    <option value="06" selected>06</option>
+                    <option value="12">12</option>
+                    <option value="24">24</option>
+                    <option value="36">36</option>
+                    <option value="48">48</option>
+                  </select>
+                </div>
+                
+                <div class="col-1">
+                  <label for="validationCustom04">Quantité</label>
+                  <input type="number" class="form-control" value="1" id="quantiteRow">
+                </div>
+                <div class="col-2">
+                  <label for="validationCustom04">Prix € H.T</label>
+                  <input class="form-control" type="text"  id="prixRow">
+                </div>
+              </div>
+              <div class="form-row mt-2 form-row align-items-center  d-flex justify-content-center">
+                <div class="d-flex justify-content-start">
+                
+                <div class="custom-control custom-checkbox mt-4" id="accordion">
+                  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Extensions de garantie</button>
+                </div>
+               
+              </div>
+                  <div class="custom-control custom-checkbox mt-4">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#commentaire" aria-expanded="false" aria-controls="commentaire">Commentaires</button>
+                  </div>
+                  <div class="custom-control custom-checkbox mt-4">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#prixBarres" aria-expanded="false" aria-controls="commentaire">Prix barrés</button>
+                  </div>
+                  <div class="collapse col-12" id="xtendGarantie" data-parent="#accordion">
+                    <ul class="list-group list-group-flush" id="xtendList">
+
+                    </ul>
+                    <div class="col-12 mt-2 mb-2 d-flex justify-content-start">
+                      
+                      <div class="col-2">
+                        <label for="validationCustom04">Durée/mois</label>
+                        <select class="custom-select" id="xtendMois" >
+                          <option value="12">12</option>
+                          <option value="24">24</option>
+                          <option value="36">36</option>
+                          <option value="48">48</option>
+                        </select>
+                      </div>
+                          <div class="col-3">
+                            <label for="validationCustom04">Prix € H.T</label>
+                            <input class="form-control" type="text"  id="xtendPrice">
+                          </div>
+                        <div class="d-flex col-4 align-items-end">
+                          <button type="button" class="btn btn-primary  mt-2 "><i class="fal fa-plus-circle" id="xtendGr"></i></button>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="collapse col-12" id="commentaire" data-parent="#accordion">
+                    <div class="col-12 mt-2 mb-2 d-flex justify-content-between">
+                      <div class="col-6">
+                      <textarea class="form-control" id="comClient" placeholder="Commentaire client...." rows="4"></textarea>
+                      </div>
+                      <div class="col-6">
+                        <textarea class="form-control" id="comInterne" placeholder="Commentaire interne...." rows="4"></textarea>
+                        </div>
+                        
+                    </div>
+                  </div>
+                  <div class="collapse col-12 " id="prixBarres" data-parent="#accordion">
+                      <div class="col-6 col-12 mt-2 mb-2 d-flex justify-content-end">
+                        <div class="col-3">
+                          <label for="validationCustom04">Prix barré € H.T</label>
+                          <input class="form-control" type="text"  id="barrePrice">
+                        </div> 
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" id="addRow">Ajouter</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!--modal modif-->
+        <div class="modal fade" id="modalModif" tabindex="-1" role="dialog"  aria-hidden="true" data-backdrop="static" data-keyboard="false">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" >Modification <i class="fal fa-plus-circle"></i></h5>
+               
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="form-row">
+                  <div class="col-md-3 mb-3">
+                    <label for="validationCustom04">Prestation</label>
+                    <select class="custom-select" id="UPprestationChoix">
+                      <option selected  value="Vente">Vente</option>
+                      {% for presta in prestaList %}
+                        <option value={{presta.keyword__value}}>{{presta.keyword__lib}}</option>
+                        {% endfor %}
+                    </select>
+                  </div>
+                  <div class="col-8">
+                    <label for="validationCustom04">Désignation</label>
+                    <input type="text" class="form-control" placeholder="...... "  aria-label="Username" aria-describedby="basic-addon1" id='UPreferenceS'>
+                  </div>
+                  </div>
+              <div class="form-row align-items-center  d-flex justify-content-between">
+                <div class="col-4">
+                  <label for="validationCustom04">Etat</label>
+                  <select class="custom-select" id="UPetatRow">
+                    <option   value="">...</option>
+                    <option   value="neuf">neuf</option>
+                    <option   value="occasion">reconditionné</option>
+                  </select>
+                </div>
+                <div class="col-4">
+                  <label for="validationCustom04">Garantie/mois</label>
+                  <select class="custom-select" id="UPgarantieRow" >
+                    <option  value="">..</option>
+                    <option value="06">06</option>
+                    <option value="12">12</option>
+                    <option value="24">24</option>
+                    <option value="36">36</option>
+                    <option value="48">48</option>
+                  </select>
+                </div>
+                
+                <div class="col-1">
+                  <label for="validationCustom04">Quantité</label>
+                  <input type="number" class="form-control" value="1" id="UPquantiteRow">
+                </div>
+                <div class="col-2">
+                  <label for="validationCustom04">Prix € H.T</label>
+                  <input class="form-control" type="text"  id="UPprixRow">
+                </div>
+              </div>
+              <div class="form-row mt-2 form-row align-items-center  d-flex justify-content-center" id="UPaccordion">
+                <div class="d-flex justify-content-start">
+                
+                <div class="custom-control custom-checkbox mt-4" >
+                  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#UPxtendGarantie" aria-expanded="false" aria-controls="UPxtendGarantie">Extensions de garantie</button>
+                </div>
+               
+              </div>
+                  <div class="custom-control custom-checkbox mt-4">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#UPcommentaire" aria-expanded="false" aria-controls="UPcommentaire">Commentaires</button>
+                  </div>
+                  <div class="custom-control custom-checkbox mt-4">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#UPprixBarres" aria-expanded="false" aria-controls="UPcommentaire">Prix barrés</button>
+                  </div>
+                  <div class="collapse col-12" id="UPxtendGarantie" data-parent="#UPaccordion">
+                    <ul class="list-group list-group-flush" id="UPxtendList">
+
+                    </ul>
+                    <div class="col-12 mt-2 mb-2 d-flex justify-content-start">
+                      
+                      <div class="col-2">
+                        <label for="validationCustom04">Durée/mois</label>
+                        <select class="custom-select" id="UPxtendMois" >
+                          <option value="12">12</option>
+                          <option value="24">24</option>
+                          <option value="36">36</option>
+                          <option value="48">48</option>
+                        </select>
+                      </div>
+                          <div class="col-3">
+                            <label for="validationCustom04">Prix € H.T</label>
+                            <input class="form-control" type="text"  id="UPxtendPrice">
+                          </div>
+                        <div class="d-flex col-4 align-items-end">
+                          <button type="button" class="btn btn-primary  mt-2 "><i class="fal fa-plus-circle" id="UPxtendGr"></i></button>
+                        </div>
+                    </div>
+                  </div>
+                  
+                  <div class="collapse col-12" id="UPcommentaire" data-parent="#UPaccordion">
+                    <div class="col-12 mt-2 mb-2 d-flex justify-content-between">
+                      <div class="col-6">
+                      <textarea class="form-control" id="UPcomClient" placeholder="Commentaire client...." rows="4"></textarea>
+                      </div>
+                      <div class="col-6">
+                        <textarea class="form-control" id="UPcomInterne" placeholder="Commentaire interne...." rows="4"></textarea>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="collapse col-12 " id="UPprixBarres" data-parent="#UPaccordion">
+                      <div class="col-6 col-12 mt-2 mb-2 d-flex justify-content-end">
+                        <div class="col-3">
+                          <label for="validationCustom04">Prix barré € H.T</label>
+                          <input class="form-control" type="text"  id="UPbarrePrice">
+                        </div> 
+                    </div>
+                  </div>
+                 
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" id="updateRow">Modifier</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+         <!--Modal PDF-->
+        
+       
+
+
+        <!--modal d'adresse de livraison -->
+        <div class="modal fade" id="ModalLivraison" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" >Adresse de livraison différente <i class="fal fa-truck"></i></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <table id="Livraison" class="table  display" style="width:100%"> 
+                  <thead class="thead-dark"> 
+                    <tr><th>Id</th><th>Nom</th><th>CP</th><th>Adresse</th></tr>
+                   </thead > 
+                  <tbody class="trClick">
+                  </tbody>
+                </table>
+              </div>
+              <div class="modal-footer">
+                <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectLivraison">
+                      <input type="hidden" name="choixLivraison" id="choixLivraison" value="">
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+       
+        <!-- ███████╗██╗███╗   ██╗    ███╗   ███╗ ██████╗ ██████╗  █████╗ ██╗     
+        ██╔════╝██║████╗  ██║    ████╗ ████║██╔═══██╗██╔══██╗██╔══██╗██║     
+        █████╗  ██║██╔██╗ ██║    ██╔████╔██║██║   ██║██║  ██║███████║██║     
+        ██╔══╝  ██║██║╚██╗██║    ██║╚██╔╝██║██║   ██║██║  ██║██╔══██║██║     
+        ██║     ██║██║ ╚████║    ██║ ╚═╝ ██║╚██████╔╝██████╔╝██║  ██║███████╗
+        ╚═╝     ╚═╝╚═╝  ╚═══╝    ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝ -->
+                                                                             
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </main>
 
 

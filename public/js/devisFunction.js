@@ -62,9 +62,9 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
 let checkTableRows = function(subject){
     lines = subject.data().count();
     if (lines < 1) {
-        $('#xportPdf').prop("disabled", true);
+        $('#xPortData').prop("disabled", true);
     }else{
-        $('#xportPdf').removeAttr('disabled');
+        $('#xPortData').removeAttr('disabled');
     }
     }
 
@@ -92,3 +92,18 @@ let checkTableRows = function(subject){
       let text = data.contact__nom + '<br>' + data.contact__prenom + '<br>' + data.keyword__lib ;
       return text; 
     }
+
+
+    //function du menu navigation dans mes devis : 
+    let Nav = function (button , show , hide , hide2 ){
+        $(button).on('click', function(){
+            $(hide).hide();
+            $(hide2).hide();
+
+            $(show).show();
+        })
+
+    }
+
+
+    
