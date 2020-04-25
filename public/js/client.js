@@ -140,6 +140,8 @@ $('#AjaxClient').on('click', function(){
         $('#livraisonSelect').val(dataSet.client__id);
         $('#contactDivLVR').html("Aucun Contact");
         $('#contact_livraison').val("");
+        $('#spanLivraison').removeClass('d-none');
+        $('#spanLivraison').text(dataSet.client__societe);
         $('#ModalLivraison').modal('hide');
         $('#toogleContactLVR').removeAttr('disabled');
         $('#toogleContactCreaLVR').removeAttr('disabled');
@@ -425,6 +427,8 @@ $('#AjaxClient').on('click', function(){
     $('#client tbody').on('click', 'tr', function () {
         $('#contactDiv').html(" Aucun contact");
         $('#contactSelect').val("");
+        $('#spanLivraison').html('');
+        $('#spanLivraison').addClass('d-none');
         $('#contactDivLVR').html("Aucun contact");
         $('#contact_livraison').val("");
         $('#textLivraison').text("Livré à la meme adresse");
@@ -442,6 +446,7 @@ $('#AjaxClient').on('click', function(){
             let content = showClient(dataSet);
             $('#divClient').html(content);
             $('#clientSelect').val(dataSet.client__id);
+            $('#spanSociete').text(dataSet.client__societe);
             $('#modalClient').modal('hide');
             $('#addNewRow').removeAttr('disabled');
             $('#toogleContact').removeAttr('disabled');
@@ -465,6 +470,8 @@ $('#AjaxClient').on('click', function(){
     $('#PostClient').on('click', function(){
         $('#contactDiv').html(" Aucun contact");
         $('#contactSelect').val("");
+        $('#spanLivraison').html('');
+        $('#spanLivraison').addClass('d-none');
         $('#contactDivLVR').html("Aucun contact");
         $('#contact_livraison').val("");
         $('#textLivraison').text("Livré à la meme adresse");
@@ -487,6 +494,7 @@ $('#AjaxClient').on('click', function(){
             let content = showClient(dataSetCrea);
             $('#divClient').html(content);
             $('#modalClientCrea').modal('hide');
+            $('#spanSociete').text(dataSetCrea.client__societe);
             $('#toogleContact').removeAttr('disabled');
             $('#buttonLivraison').removeAttr('disabled');
             $('#buttonCrealivraison').removeAttr('disabled');
@@ -550,6 +558,8 @@ $('#AjaxClient').on('click', function(){
             $('#textLivraison').html(dataSetCrea.client__societe + '<br>' + dataSetCrea.client__adr1 + '<br>' + dataSetCrea.client__ville);
             $('#livraisonSelect').val(dataSetCrea.client__id);
             $('#modalSocieteLivraison').modal('hide');
+            $('#spanLivraison').removeClass('d-none');
+            $('#spanLivraison').text(dataSetCrea.client__societe);
             $('#toogleContactLVR').removeAttr('disabled');
             $('#toogleContactCreaLVR').removeAttr('disabled');
             },

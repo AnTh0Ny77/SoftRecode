@@ -22,9 +22,17 @@
         <h1 class="h2">Nouveau devis  <i class="fal fa-file-edit"></i></h1>
         {% endif %}
         <nav class="nav mt-3">
-          <a class="nav-link active font-weight-bold  " href="#" id="toogleSociete">Société</a>
-          <a class="nav-link font-weight-bold" href="#" id="toogleLivraison">Livraison</a>
-          <a class="nav-link font-weight-bold" href="#" id="toogleDevis" >Devis</a>
+          {% if not societe %}
+          <button class="btn btn-link font-weight-bold mx-4  " href="#" id="toogleSociete">Société <span class="badge badge-pill badge-primary d-none" id="spanSociete"></span></button>
+          {% else %}
+          <button class="btn btn-link font-weight-bold mx-4  " href="#" id="toogleSociete">Société <span class="badge badge-pill badge-primary" id="spanSociete">{{societe.client__societe}}</span></button>
+          {% endif %}
+          {% if not livraison %}
+          <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleLivraison">Livraison <span class="badge badge-pill badge-primary d-none" id="spanLivraison"></span></button>
+          {% else %}
+          <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleLivraison">Livraison <span class="badge badge-pill badge-primary "  id="spanLivraison">{{livraison.client__societe}}</span></button>
+          {% endif %}
+          <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleDevis" >Devis </button>
         </nav>
       </div>
        <!-- input contient données de l'ancien devis -->
