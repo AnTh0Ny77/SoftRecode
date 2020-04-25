@@ -446,6 +446,7 @@ $('#AjaxClient').on('click', function(){
             let content = showClient(dataSet);
             $('#divClient').html(content);
             $('#clientSelect').val(dataSet.client__id);
+            $('#spanSociete').removeClass('d-none');
             $('#spanSociete').text(dataSet.client__societe);
             $('#modalClient').modal('hide');
             $('#addNewRow').removeAttr('disabled');
@@ -494,6 +495,7 @@ $('#AjaxClient').on('click', function(){
             let content = showClient(dataSetCrea);
             $('#divClient').html(content);
             $('#modalClientCrea').modal('hide');
+            $('#spanSociete').removeClass('d-none');
             $('#spanSociete').text(dataSetCrea.client__societe);
             $('#toogleContact').removeAttr('disabled');
             $('#buttonLivraison').removeAttr('disabled');
