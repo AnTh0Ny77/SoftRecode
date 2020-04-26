@@ -314,7 +314,7 @@ class Cmd extends Table {
         $requestLigne->bindValue(":devl__modele", $object->designation);
         $requestLigne->bindValue(":devl__designation", $object->designation);
         $requestLigne->bindValue(":devl__etat", $object->etat);
-        $requestLigne->bindValue(":devl__mois_garantie", $object->garantie);
+        $requestLigne->bindValue(":devl__mois_garantie", intval($object->garantie));
         $requestLigne->bindValue(":devl_quantite", $object->quantite);
         $requestLigne->bindValue(":devl__prix_barre", floatval($object->prixBarre));
         $requestLigne->bindValue(":devl_puht", floatval($object->prix));
@@ -424,7 +424,7 @@ public function modify(
 
     public function devisLigne($id){
       $request =$this->Db->Pdo->query("SELECT
-      cmdl__cmd__id as devl__id ,cmdl__prestation as  devl__type, 
+      cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
       cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
       cmdl__etat as devl__etat, cmdl__garantie_base as devl__mois_garantie,
       cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
