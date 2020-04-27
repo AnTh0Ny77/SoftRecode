@@ -728,35 +728,43 @@
               </div>
               <div class="modal-body">
                 <div class="form-row">
-                  <div class="col-md-3 mb-3">
-                    <label for="validationCustom04">Prestation</label>
-                    <select class="custom-select" id="prestationChoix" >
+                  <div class="col-md-5 mb-3">
+                   
+                    <select class="selectpicker" id="prestationChoix" >
                       <option   value="Vente" selected>Vente</option>
                       
                       {% for presta in prestaList %}
-                        <option class="optionSelect"  value={{presta.kw__value}}>{{presta.kw__lib}}</option>
+                        <option class=""  value={{presta.kw__value}}>{{presta.kw__lib}}</option>
                         {% endfor %}
                     </select>
                   </div>
-                  <div class="col-6">
-                    <label for="validationCustom04">Désignation</label>
-                    <select class="custom-select" id="choixDesignation">
+                  <div class="col-5">
+                    <label for="validationCustom04">Modèle: </label>
+                    <select class="selectpicker" id="choixDesignation" data-live-search="true">
                       <option   value="">...</option>
                       {% for article in articleList %}
-                        <option class="optionSelect" value={{article.art_type}}>{{article.art_type}}</option>
+                        <option class="optionSelect modelSelect" value={{article.afmm__id}}>{{article.afmm__modele}}</option>
                         {% endfor %}
-                    </select>
+                    </select> 
                   </div>
-                    <div class="custom-control custom-checkbox mt-4">
+                    <div class="custom-control custom-checkbox ">
                       <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#choixRef" aria-expanded="false" aria-controls="collapseExample" id="modifReference">Modifier</button>
                     </div>
                     <div class="collapse col-12" id="choixRef">
-                      <div class="col-12 mt-2 mb-2">
+                      <div class="col-12 mt-2 mb-2 d-flex justify-content-between">
+                        <div class="col-6">
                         <input type="text" class="form-control" placeholder="...... "  aria-label="Username" aria-describedby="basic-addon1" id='referenceS'>
+                      </div>
+                      <div>
+                        <label for="choixPn">Pn associé: </label>
+                        <select class="selectpicker" id="choixPn"  data-none-selected-text>
+                          <option   value="">...</option>
+                        </select>
+                      </div>
                       </div>
                     </div>
                   </div>
-              <div class="form-row align-items-center  d-flex justify-content-between">
+              <div class="form-row align-items-center  d-flex justify-content-between mt-3">
                 <div class="col-4">
                   <label for="validationCustom04">Etat</label>
                   <select class="custom-select" id="etatRow">

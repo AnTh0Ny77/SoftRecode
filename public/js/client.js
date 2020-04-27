@@ -1275,6 +1275,42 @@ let checkradio = function(object){
         Nav($("#toogleLivraison") , $('#navLivraison'), $('#navSociete'), $('#navDevis'));
         Nav($("#toogleDevis") , $('#navDevis'), $('#navSociete'),  $('#navLivraison'));
 
+        $(".selectpicker").selectpicker({
+            noneSelectedText : '...' 
+        });
+
+
+        //function de selection de l'affichage : 
+        $('#choixDesignation').on('change', function(){
+            var selectedOption = parseInt($(this).children("option:selected").val());
+            $.ajax({
+                type: 'post',
+                url: "AjaxPn",
+                data : 
+                {
+                    "AjaxPn" : selectedOption
+                },
+                success: function(data){
+                    dataSet = JSON.parse(data);
+                    $('#choixPn option').remove();
+                    $('#choixPn').append(new Option('..', '' , false, true));
+                    for (let index = 0; index < dataSet.length; index++) {
+                        var opt = $("<option>").val(dataSet[index].apn__pn).text(dataSet[index].apn__pn);
+                        $('#choixPn').append(new Option(dataSet[index].apn__pn, dataSet[index].apn__pn));
+                        
+                    }
+                    $('.selectpicker').selectpicker('refresh'); 
+    
+                },
+                error: function (err) {
+                    alert('error: ' + err);
+                }
+    
+            })
+            
+           
+        });
+
 
         
     } );

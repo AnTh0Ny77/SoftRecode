@@ -102,6 +102,9 @@ Y8   8P o.`Y8b 88""   88"Yb
     case '/SoftRecode/AjaxSaisie';
       require __DIR__ .'/pages/ajax/ajaxSaisie.php'; break;
 
+    case '/SoftRecode/AjaxPn';
+      require __DIR__ .'/pages/ajax/ajaxPn.php'; break;
+
     case '/SoftRecode/TicketVisu';
       require __DIR__ .'/pages/TicketVisu.php'; break;
 

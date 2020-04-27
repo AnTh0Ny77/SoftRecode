@@ -21,6 +21,22 @@ class Article extends Table {
     return $data;
 }
 
+public function getModels(){
+  $request = $this->Db->Pdo->query('SELECT  afmm__id , afmm__modele FROM art_fmm ORDER BY afmm__id ASC ');
+  $data = $request->fetchAll(PDO::FETCH_OBJ);
+  return $data ; 
+}
+
+public function getPn($id){
+$request = $this->Db->Pdo->query(
+  'SELECT  apn__pn , apn__afmm__id 
+   FROM art_pn
+   WHERE apn__afmm__id = '.$id.' 
+   ORDER BY apn__pn ASC ');
+   $data = $request->fetchAll(PDO::FETCH_OBJ);
+  return $data ; 
+}
+
 
 
 

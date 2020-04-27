@@ -108,7 +108,7 @@ if (!empty($_POST['ModifierDevis'])) {
 
 // tableau si devis modif et requete des differentes listes de la page: 
 $test = json_encode($devisModif);
-$articleTypeList = $Article->getAll();
+$articleTypeList = $Article->getModels();
 $prestaList = $Keywords->getPresta();
 
 
