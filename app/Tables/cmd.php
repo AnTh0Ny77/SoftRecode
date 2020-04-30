@@ -364,11 +364,11 @@ public function modify(
      'INSERT INTO  2_cmd_ligne (
       cmdl__cmd__id, cmdl__prestation, cmdl__pn , cmdl__designation ,
       cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  , cmdl__prix_barre , 
-      cmdl__puht , cmdl__note_client  , cmdl__note_interne  , cmdl__ordre)
+      cmdl__puht , cmdl__note_client  , cmdl__note_interne  , cmdl__ordre , cmdl__id__fmm)
       VALUES (
       :devl__devis__id, :devl__type, :devl__modele, :devl__designation,
       :devl__etat, :devl__mois_garantie , :devl_quantite, :devl__prix_barre, 
-      :devl_puht , :devl__note_client , :devl__note_interne , :devl__ordre)');
+      :devl_puht , :devl__note_client , :devl__note_interne , :devl__ordre , :id__fmm)');
 
     $requestGarantie =  $this->Db->Pdo->prepare(
      'INSERT INTO  2_cmd_garantie ( 
@@ -397,7 +397,8 @@ public function modify(
         $count+= 1 ;
         $requestLigne->bindValue(":devl__devis__id", $idDevis);
         $requestLigne->bindValue(":devl__type", $object->prestation);
-        $requestLigne->bindValue(":devl__modele", $object->designation);
+        $requestLigne->bindValue(":devl__modele", $object->pn);
+        $requestLigne->bindValue(":id__fmm", $object->id__fmm);
         $requestLigne->bindValue(":devl__designation", $object->designation);
         $requestLigne->bindValue(":devl__etat", $object->etat);
         $requestLigne->bindValue(":devl__mois_garantie", $object->garantie);
@@ -428,7 +429,7 @@ public function modify(
       cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
       cmdl__etat as devl__etat, cmdl__garantie_base as devl__mois_garantie,
       cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
-      cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre ,
+      cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
       cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne
       FROM 2_cmd_ligne 
       WHERE cmdl__cmd__id = ". $id ."");

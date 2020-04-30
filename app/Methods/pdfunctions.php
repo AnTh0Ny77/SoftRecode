@@ -27,7 +27,7 @@ public static function showPriceView($object){
     $barre = '';
     $extension = "";
     $sautDeLigne = "";
-    if (!empty($object->devl__prix_barre)) {
+    if ($object->devl__prix_barre < 0 ) {
        $barre = "<s>". $object->devl__prix_barre ." €</s>";
     }
     if (!empty($object->devl_puht)) {

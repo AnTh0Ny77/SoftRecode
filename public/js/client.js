@@ -75,7 +75,6 @@ $('#AjaxClient').on('click', function(){
                 
             success: function(data){
                 dataSet = JSON.parse(data);
-                console.log(dataSet)
                 $('#ModalLivraison').modal('show'); 
                 tableLivraison = $('#Livraison').DataTable({
                     "language": {
@@ -868,13 +867,10 @@ let checkradio = function(object){
         });
 
 
-        // Programme d'ajout de ligne dans le devis : 
-        //traitement du formulaire : 
-        $('#choixDesignation').on('change', function(){
-            var selectedOption = $(this).children("option:selected").text();
-            $('#referenceS').val(selectedOption);
-        });
         
+        // fonction select to text : devis fonction
+        selectToText($('#choixDesignation'),$('#referenceS'));
+        selectToText($('#UPchoixDesignation'),$('#UPreferenceS'));
 
         // extension de garantie : 
         let xtendMois ; 
@@ -921,7 +917,7 @@ let checkradio = function(object){
             $('#addNewRow').removeAttr('disabled');
             for (let numberOfLines = 0; numberOfLines < jsonDataAncienDevis.length; numberOfLines++) {
                 arrayTemp = [];
-                if (jsonDataAncienDevis[numberOfLines].devl__prix_barre == '0') {
+                if (jsonDataAncienDevis[numberOfLines].devl__prix_barre == 0 ) {
                     jsonDataAncienDevis[numberOfLines].devl__prix_barre = '';
                 }
                 for (let numberOfXtend = 0; numberOfXtend < jsonDataAncienDevis[numberOfLines].ordre.length ; numberOfXtend++) {
@@ -934,7 +930,7 @@ let checkradio = function(object){
                    devisTable,
                    counter,
                    jsonDataAncienDevis[numberOfLines].devl__type,
-                   jsonDataAncienDevis[numberOfLines].devl__modele,
+                   jsonDataAncienDevis[numberOfLines].devl__designation,
                    jsonDataAncienDevis[numberOfLines].devl__note_client,
                    jsonDataAncienDevis[numberOfLines].devl__note_interne,
                    jsonDataAncienDevis[numberOfLines].devl__etat,
@@ -942,7 +938,11 @@ let checkradio = function(object){
                    arrayTemp,
                    jsonDataAncienDevis[numberOfLines].devl_quantite,
                    jsonDataAncienDevis[numberOfLines].devl_puht,
-                   jsonDataAncienDevis[numberOfLines].devl__prix_barre
+                   jsonDataAncienDevis[numberOfLines].devl__prix_barre ,
+                   jsonDataAncienDevis[numberOfLines].devl__modele, 
+                   jsonDataAncienDevis[numberOfLines].id__fmm 
+                  
+
                ) 
             };
           }
@@ -950,34 +950,57 @@ let checkradio = function(object){
         }
         checkTableRows(devisTable);
         //ajout d'une ligne de devis : function location : devisFunction.js (addOne): 
+
+        $('#addNewRow').on('click' , function(){
+            $('#alertLine').addClass('invisible');
+        })
         
         $("#addRow").on('click', function(){
-            addOne(
-                devisTable,
-                counter,
-                $("#prestationChoix").val(),
-                $("#referenceS").val(),
-                $("#comClient").val(),
-                $("#comInterne").val(),
-                $("#etatRow").val(),
-                $("#garantieRow").val(),
-                xtendArray,
-                $("#quantiteRow").val(),
-                $("#prixRow").val(),
-                $("#barrePrice").val()
-                );
-            xtendArray = [];
-                $("#prestationChoix").val(""),
-                $("#choixDesignation").val("");
-                $("#referenceS").val("");
-                $("#comClient").val(""),
-                $("#comInterne").val(""),
-                $("#etatRow").val(""),
-                $("#garantieRow").val(""),
-                $("#quantiteRow").val("1"),
-                $("#quantiteRow").text("1"),
-                $("#prixRow").val(""),
-                $("#barrePrice").val("")
+           
+            if ($('#choixDesignation').val() &&  $("#garantieRow").val() && $("#prixRow").val() ) {
+                
+                addOne(
+                    devisTable,
+                    counter,
+                    $("#prestationChoix").val(),
+                    $("#referenceS").val(),
+                    $("#comClient").val(),
+                    $("#comInterne").val(),
+                    $("#etatRow").val(),
+                    $("#garantieRow").val(),
+                    xtendArray,
+                    $("#quantiteRow").val(),
+                    $("#prixRow").val(),
+                    $("#barrePrice").val() ,
+                    $("#choixPn").val(), 
+                    $("#choixDesignation").val(), 
+                    
+                    );
+                xtendArray = [];
+                    $("#prestationChoix").val(""),
+                    $("#choixDesignation").val("");
+                    $('#choixDesignation').selectpicker('val', '');
+                    $("#referenceS").val("");
+                    $("#comClient").val(""),
+                    $("#comInterne").val(""),
+                    $("#garantieRow").val("06"),
+                    $("#quantiteRow").val("1"),
+                    $("#quantiteRow").text("1"),
+                    $("#prixRow").val(""),
+                    $("#barrePrice").val(""),
+                    $('#choixPn option').remove();
+                    $('#choixPn').append(new Option('..', '' , false, true));
+                    $('.selectpicker').selectpicker('refresh'); 
+                    $('#choixPn').selectpicker('val', '');
+                    $('#modalPresta').modal('hide');
+                
+            } else {
+                    $('#modalPresta').modal('show');
+                    $('#alertLine').removeClass('invisible');
+               
+                
+            }
+           
             });
         
         // function qui compte les lignes de la table devis et rend possible l'export :
@@ -1033,7 +1056,7 @@ let checkradio = function(object){
 
          // vide le formulaire d'ajout de ligne à chaque ouverture afin d'éviter les conflit en cas de fermeture sans validation : 
          $('#addNewRow').click( function (){
-            $("#prestationChoix").val('Vente');
+            $('#prestationChoix').selectpicker('val', 'VTE');
             $("#xtendList").empty();
             $("#comClient").val('');
             $("#comInterne").val('');
@@ -1044,26 +1067,68 @@ let checkradio = function(object){
 
         // prerempli le formulaire de modification : 
          $('#modifyLine').click( function () {
+            
             // vide en cas de fermeture sans modif (UPxtendList double) :
-            $("#UPprestationChoix").val('Vente');
+           
+            $('#UPprestationChoix').selectpicker('val', 'VTE');
+            $("#UPchoixDesignation").val('ZT420');
+            
             $("#UPxtendList").empty();
             $("#UPcomClient").val('');
+            $("#UPchoixDesignation").val('');
             $("#UPcomInterne").val('');
             $("#UPprixRow").val('');
             $("#UPbarrePrice").val('');
             UpXtendArray = [];
             dataObject =  devisTable.row('.selected').data();
             formContent = dataObject[7];
+            // charge les pn correspondant à la famille 
+            $.ajax({
+                type: 'post',
+                url: "AjaxPn",
+                data : 
+                {
+                    "AjaxPn" : formContent.id__fmm
+                },
+                success: function(data){
+                   
+                    dataSet = JSON.parse(data);
+                    $('#UPchoixPn option').remove();
+                    $('#UPchoixPn').append(new Option('..', '' , false, true));
+                    for (let index = 0; index < dataSet.length; index++) {
+                        var opt = $("<option>").val(dataSet[index].apn__pn).text(dataSet[index].apn__pn);
+                        $('#UPchoixPn').append(new Option(dataSet[index].apn__pn, dataSet[index].apn__pn));
+                        
+                    }
+                    
+                   
+                    $('.selectpicker').selectpicker('refresh'); 
+                    $('#UPchoixPn').selectpicker('val', formContent.pn);
+                    
+    
+                },
+                error: function (err) {
+                    alert('error: ' + err);
+                }
+    
+            })
            $("#UPprestationChoix").val(formContent.prestation);
            $("#UPreferenceS").val(formContent.designation);
            $("#UPcomClient").val(formContent.comClient);
+           $("#UPchoixDesignation").val(formContent.id__fmm);
+           
            $("#UPcomInterne").val(formContent.comInterne);
            $("#UPquantiteRow").val(formContent.quantite);
-           $("#UPgarantieRow").val(formContent.garantie);
+
+           
+           $('#UPgarantieRow').selectpicker('val', formContent.garantie);
+           $('#UPetatRow').selectpicker('val', formContent.etat);
+           
            $("#UPbarrePrice").val(formContent.prixBarre);
-           $("#UPetatRow").val(formContent.etat);
+           
            $("#UPprixRow").val(formContent.prix);
            $('#UPreferenceS').val(formContent.designation);
+           
            UpXtendArray = formContent.xtend;
            idUpdate = formContent.id;
            if (UpXtendArray.length > 0) {
@@ -1076,6 +1141,12 @@ let checkradio = function(object){
            }
            checkClass();   
          }); 
+
+
+
+
+
+
 
         //extensions de garanties dans le formulaire de mofification : 
          let UpXtendMois ; 
@@ -1112,70 +1183,47 @@ let checkradio = function(object){
              }
          })
 
+         // fait disparaitre l'alerte : 
+         $('#modifyLine').on('click' , function(){
+            $('#alertLineModif').addClass('invisible');
+        })
          // suprime la ligne selctionnee et la remplace par cette meme ligne modifie avec id identique : 
          $("#updateRow").on('click', function(){
-            let row = []; 
-            row.push(idUpdate);
-            let prestation = $("#UPprestationChoix").val();
-            row.push(prestation);
-            let designation = $("#UPreferenceS").val();
-            let comClient = $("#UPcomClient").val();
-            let comInterne = $("#UPcomInterne").val();
-            if ( comClient.length > 0 && comInterne.length > 0 ) {
-                row.push(designation + "<br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
-            } 
-            else if(comClient.length > 0 && comInterne.length < 1 ){
-                row.push(designation + "<br>  <hr>" + '<b>Commentaire : </b>' + comClient);
-            }
-            else if(comInterne.length > 0 && comClient.length < 1 ){
-                row.push(designation + "<br> <hr>" + '<b>Commentaire interne</b> :' + comInterne);
-            }
-            else {
-                row.push(designation);
-            }
-            let etat = $("#UPetatRow").val();
-            row.push(etat);
-            let garantie = $("#UPgarantieRow").val() + " mois ";
-            if (UpXtendArray.length > 0) {
-                let element;
-                let UpXtendString = "";
-                for (let index = 0; index < UpXtendArray.length; index++) {
-                    element  =  UpXtendArray[index][0] + ' mois ' + + UpXtendArray[index][1] + ' €<br>';
-                    UpXtendString += element;
-                }
-                row.push( garantie + " <hr> <b>Extensions</b> : <br>" + UpXtendString);    
+           
+            if ($('#UPchoixDesignation').val() &&  $("#UPgarantieRow").val() && $("#UPprixRow").val()) {
+                modifyLine(
+                    devisTable,
+                    idUpdate,
+                    $("#UPprestationChoix").val(),
+                    $("#UPreferenceS").val(),
+                    $("#UPcomClient").val(),
+                    $("#UPcomInterne").val(),
+                    $("#UPetatRow").val(),
+                    $("#UPgarantieRow").val(),
+                    UpXtendArray,
+                    $("#UPquantiteRow").val(),
+                    $("#UPprixRow").val(),
+                    $("#UPbarrePrice").val() ,
+                    $("#UPchoixPn").val(),
+                    $("#UPchoixDesignation").val(),
+                   
+                    
+                ) 
+                checkClass();  
+                $("#UPxtendList").empty();
+                UpXtendArray = [];
+                $('#modalModif').modal('hide');
+                
             } else {
-                row.push( garantie);
+                $('#modalModif').modal('show');
+                $('#alertLineModif').removeClass('invisible');
+                
             }
-            let quantite =  $("#UPquantiteRow").val()  ;
-            row.push( quantite);
-            let prix = $("#UPprixRow").val();
-            let prixBarre = $("#UPbarrePrice").val()
-            let prixMultiple ;
-            if (prixBarre.length > 0) {
-                prixMultiple =  ' <s>' + prixBarre  + "€</s> " + prix + " €" ;
-            }else {prixMultiple =  $("#UPprixRow").val() + " €" ;};
-            row.push(prixMultiple);
+           
 
-            let rowObject = new Object();
-            rowObject.id = idUpdate;
-            rowObject.prestation = prestation;
-            rowObject.designation = designation;
-            rowObject.comClient = comClient;
-            rowObject.comInterne = comInterne;
-            rowObject.etat = etat;
-            rowObject.garantie = $("#UPgarantieRow").val();
-            rowObject.xtend = UpXtendArray;
-            rowObject.quantite = quantite;
-            rowObject.prix = prix;
-            rowObject.prixBarre = prixBarre;
-            row.push(rowObject);
-            devisTable.row('.selected').data( row ).draw( false );  
-            checkClass();  
-            $("#UPxtendList").empty();
-            row = [];
-            UpXtendArray = [];
         })
+
+
 
         // envoi au module de traitement PDF : 
         $('#xPortData').click(function() {
@@ -1189,12 +1237,6 @@ let checkradio = function(object){
             $("#devisSend").submit();
         });
        
-       
-
-
-
-
-        
 
         cmdArray = [];
         // fonction de toogle des input radio : 
@@ -1280,7 +1322,7 @@ let checkradio = function(object){
         });
 
 
-        //function de selection de l'affichage : 
+        //function de selection de l'affichage PN : 
         $('#choixDesignation').on('change', function(){
             var selectedOption = parseInt($(this).children("option:selected").val());
             $.ajax({
@@ -1297,6 +1339,40 @@ let checkradio = function(object){
                     for (let index = 0; index < dataSet.length; index++) {
                         var opt = $("<option>").val(dataSet[index].apn__pn).text(dataSet[index].apn__pn);
                         $('#choixPn').append(new Option(dataSet[index].apn__pn, dataSet[index].apn__pn));
+                        
+                    }
+                    $('.selectpicker').selectpicker('refresh'); 
+    
+                },
+                error: function (err) {
+                    alert('error: ' + err);
+                }
+    
+            })
+            
+           
+        });
+
+        
+
+        $('#UPchoixDesignation').on('change', function(){
+            
+            var selectedOption = parseInt($(this).children("option:selected").val());
+            $.ajax({
+                type: 'post',
+                url: "AjaxPn",
+                data : 
+                {
+                    "AjaxPn" : selectedOption
+                },
+                success: function(data){
+                   
+                    dataSet = JSON.parse(data);
+                    $('#UPchoixPn option').remove();
+                    $('#UPchoixPn').append(new Option('..', '' , false, true));
+                    for (let index = 0; index < dataSet.length; index++) {
+                        var opt = $("<option>").val(dataSet[index].apn__pn).text(dataSet[index].apn__pn);
+                        $('#UPchoixPn').append(new Option(dataSet[index].apn__pn, dataSet[index].apn__pn));
                         
                     }
                     $('.selectpicker').selectpicker('refresh'); 

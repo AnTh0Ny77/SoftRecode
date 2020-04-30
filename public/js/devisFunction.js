@@ -3,7 +3,7 @@
 /// 1er param -> table 
 /// 2nd param -> count pour ID 
 /// ensuite  -> la valeur des inputs correspondant à la désignation des parametres 
-let addOne = function(table,count,prestation,designation,comClient, comInterne , etat, garantie , xtendAdd , quantite , prix, prixBarre){
+let addOne = function(table,count,prestation,designation,comClient, comInterne , etat, garantie , xtendAdd , quantite , prix, prixBarre , pn , id__fmm ){
     let row = [];
     row.push(count);
     row.push(prestation);
@@ -27,10 +27,17 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
             element  =  xtendAdd[index][0] + ' mois ' + +xtendAdd[index][1] + ' €<br>';
             xtendString += element;
         }
-        row.push( garantie + " mois" + " <hr> <b>Extensions</b> : <br>" + xtendString);    
+            if (garantie) {
+                row.push( garantie + " mois" + " <hr> <b>Extensions</b> : <br>" + xtendString);  
+            }else {  row.push(""  +  " <hr> <b>Extensions</b> : <br>" + xtendString )  }
+          
     } else {
-        row.push( garantie +'mois');
+       
+        if (!garantie || garantie.length == 0 ) {
+            row.push("Pas de garantie")
+        }else { row.push( garantie + " mois");}
     }
+    
     row.push( quantite);
     let prixMultiple ;
     if (prixBarre.length > 0) {
@@ -47,14 +54,79 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
     rowObject.garantie = garantie;
     rowObject.xtend = xtendAdd;
     rowObject.quantite = quantite;
+    rowObject.pn = pn ;
     rowObject.prix = prix;
     rowObject.prixBarre = prixBarre;
+    rowObject.id__fmm = id__fmm;
     row.push(rowObject);
     table.row.add(row).draw( false );
     row = [];
     $('#referenceS').val(designation);
     count ++; 
 }
+
+
+
+let modifyLine = function (table,id,prestation,designation,comClient, comInterne , etat, garantie , xtendAdd , quantite , prix, prixBarre ,pn , id__fmm ) {
+        let row = [];
+        row.push(id);
+        row.push(prestation);
+        if ( comClient.length > 0 && comInterne.length > 0 ) {
+            row.push(designation + "<br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
+        } 
+        else if(comClient.length > 0 && comInterne.length < 1 ){
+            row.push(designation + "<br>  <hr>" + '<b>Commentaire : </b>' + comClient);
+        }
+        else if(comInterne.length > 0 && comClient.length < 1 ){
+            row.push(designation + "<br> <hr>" + '<b>Commentaire interne</b> :' + comInterne);
+        }
+        else {
+            row.push(designation);
+        }
+        row.push(etat);
+        if (xtendAdd.length > 0) {
+            let element;
+            let xtendString = "";
+            for (let index = 0; index < xtendAdd.length; index++) {
+                element  =  xtendAdd[index][0] + ' mois ' + +xtendAdd[index][1] + ' €<br>';
+                xtendString += element;
+            }
+                if (garantie) {
+                    row.push( garantie + " mois" + " <hr> <b>Extensions</b> : <br>" + xtendString);  
+                }else {  row.push(""  +  " <hr> <b>Extensions</b> : <br>" + xtendString )  }
+            
+        } else {
+        
+            if (!garantie || garantie.length == 0 ) {
+                row.push("Pas de garantie")
+            }else { row.push( garantie + " mois");}
+        }
+        
+        row.push( quantite);
+        let prixMultiple ;
+        if (prixBarre.length > 0) {
+            prixMultiple =  ' <s>' + prixBarre  + "€</s> " + prix + " €" ;
+        }else {prixMultiple =  prix + " €" ;};
+        row.push(prixMultiple);
+        let rowObject = new Object();
+        rowObject.id = counter;
+        rowObject.prestation = prestation;
+        rowObject.designation = designation;
+        rowObject.comClient = comClient;
+        rowObject.comInterne = comInterne;
+        rowObject.etat = etat;
+        rowObject.garantie = garantie;
+        rowObject.pn = pn ;
+        rowObject.xtend = xtendAdd;
+        rowObject.quantite = quantite;
+        rowObject.prix = prix;
+        rowObject.prixBarre = prixBarre;
+        rowObject.id__fmm = id__fmm;
+        console.log(rowObject);
+
+        row.push(rowObject);
+        table.row('.selected').data( row ).draw( false );
+    }
 
 
 
@@ -104,6 +176,27 @@ let checkTableRows = function(subject){
         })
 
     }
+
+
+    // function qui renvoi le selected dans le text approprié  :  
+    let selectToText = function(select , text ){
+        $(select).on('change' , function(){
+          var selectedOption = $(this).children("option:selected").text();
+          $(text).val(selectedOption);
+        })
+    }
+
+
+    
+
+
+
+
+
+
+
+
+    
 
 
     

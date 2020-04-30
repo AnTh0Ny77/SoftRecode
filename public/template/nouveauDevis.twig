@@ -727,33 +727,31 @@
                 </button>
               </div>
               <div class="modal-body">
-                <div class="form-row">
-                  <div class="col-md-5 mb-3">
+                <div class="form-row border-bottom mb-3 pb-3">
+                  <div class="col-md-4 mb-3">
                    
                     <select class="selectpicker" id="prestationChoix" >
-                      <option   value="Vente" selected>Vente</option>
+                      
                       
                       {% for presta in prestaList %}
                         <option class=""  value={{presta.kw__value}}>{{presta.kw__lib}}</option>
                         {% endfor %}
                     </select>
                   </div>
-                  <div class="col-5">
-                    <label for="validationCustom04">Modèle: </label>
-                    <select class="selectpicker" id="choixDesignation" data-live-search="true">
-                      <option   value="">...</option>
-                      {% for article in articleList %}
-                        <option class="optionSelect modelSelect" value={{article.afmm__id}}>{{article.afmm__modele}}</option>
+                  <div class="col-8">
+                    <label for="validationCustom04">Modèle:</label>
+                    <select class="selectpicker col-10" id="choixDesignation" data-live-search="true">
+                      <option class="optionSelect modelSelect" value="">..</option>
+                      {% for article in articleList %} 
+                        <option class="optionSelect modelSelect" value={{article.afmm__id}}>{{article.afmm__modele   ~ " " ~ article.famille ~ " " ~ article.Marque }}</option>
                         {% endfor %}
                     </select> 
                   </div>
-                    <div class="custom-control custom-checkbox ">
-                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#choixRef" aria-expanded="false" aria-controls="collapseExample" id="modifReference">Modifier</button>
-                    </div>
-                    <div class="collapse col-12" id="choixRef">
+                   
+                    <div class=" col-12" id="choixRef">
                       <div class="col-12 mt-2 mb-2 d-flex justify-content-between">
                         <div class="col-6">
-                        <input type="text" class="form-control" placeholder="...... "  aria-label="Username" aria-describedby="basic-addon1" id='referenceS'>
+                        <input type="text" class="form-control" placeholder="Désignation Client"  aria-label="Username" aria-describedby="basic-addon1" id='referenceS'>
                       </div>
                       <div>
                         <label for="choixPn">Pn associé: </label>
@@ -767,16 +765,14 @@
               <div class="form-row align-items-center  d-flex justify-content-between mt-3">
                 <div class="col-4">
                   <label for="validationCustom04">Etat</label>
-                  <select class="custom-select" id="etatRow">
-                    <option selected  value="">...</option>
-                    <option   value="neuf">neuf</option>
+                  <select class="selectpicker" id="etatRow">
+                    <option   value="neuf" selected>neuf</option>
                     <option value="occasion">reconditionné</option>
                   </select>
                 </div>
                 <div class="col-4">
                   <label for="validationCustom04">Garantie/mois</label>
-                  <select class="custom-select" id="garantieRow" >
-                    <option  value="">..</option>
+                  <select class="selectpicker" id="garantieRow" >
                     <option value="06" selected>06</option>
                     <option value="12">12</option>
                     <option value="24">24</option>
@@ -854,7 +850,10 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" id="addRow">Ajouter</button>
+                <div class="alert alert-danger invisible " id="alertLine" role="alert" >
+                  Le modèle , la garantie et le prix sont obligatoires 
+                </div>
+                <button type="button" class="btn btn-primary btn-sm"  id="addRow">Ajouter</button>
               </div>
             </div>
           </div>
@@ -871,35 +870,64 @@
                 </button>
               </div>
               <div class="modal-body">
-                <div class="form-row">
-                  <div class="col-md-3 mb-3">
-                    <label for="validationCustom04">Prestation</label>
-                    <select class="custom-select" id="UPprestationChoix">
-                      <option selected  value="Vente">Vente</option>
+                <div class="form-row justify-content-between">
+                  <div class="col-md-3 mb-3 mx-3">
+                    <select class="selectpicker" id="UPprestationChoix">
+                      
                       {% for presta in prestaList %}
-                        <option value={{presta.keyword__value}}>{{presta.keyword__lib}}</option>
+                        <option value={{presta.kw__value}}>{{presta.kw__lib}}</option>
                         {% endfor %}
                     </select>
                   </div>
+
                   <div class="col-8">
+                    <label for="validationCustom04">Modèle: </label>
+                    <select class="selectpicker col-10" id="UPchoixDesignation"  data-live-search="true">
+                      
+                      {% for article in articleList %}
+                     
+                        <option class="optionSelect modelSelect" value={{article.afmm__id}}>{{article.afmm__modele   ~ " " ~ article.famille ~ " " ~ article.Marque  }}</option>
+                        {% endfor %}
+                    </select> 
+                  </div>
+                  <!-- <div class="col-8">
                     <label for="validationCustom04">Désignation</label>
                     <input type="text" class="form-control" placeholder="...... "  aria-label="Username" aria-describedby="basic-addon1" id='UPreferenceS'>
+                  </div> -->
                   </div>
+
+
+
+                  <div class="form-row mb-3 pb-3 border-bottom">
+                    <div class="col-12 mt-2 mb-2 d-flex justify-content-between">
+                      <div class="col-6">
+                      <input type="text" class="form-control" placeholder="Désignation Client "  aria-label="Username" aria-describedby="basic-addon1" id="UPreferenceS">
+                    </div>
+                    <div>
+                      <label for="UPchoixPn">Pn associé: </label>
+                      <select class="selectpicker" id="UPchoixPn"  data-none-selected-text>
+                        <option   value="">...</option>
+                      </select>
+                    </div>
+                    </div>
                   </div>
-              <div class="form-row align-items-center  d-flex justify-content-between">
+
+
+
+
+
+              <div class="form-row align-items-center mt-2  d-flex justify-content-between">
                 <div class="col-4">
                   <label for="validationCustom04">Etat</label>
-                  <select class="custom-select" id="UPetatRow">
-                    <option   value="">...</option>
-                    <option   value="neuf">neuf</option>
+                  <select class="selectpicker" id="UPetatRow">
+                    <option   value="neuf" selected>neuf</option>
                     <option   value="occasion">reconditionné</option>
                   </select>
                 </div>
                 <div class="col-4">
                   <label for="validationCustom04">Garantie/mois</label>
-                  <select class="custom-select" id="UPgarantieRow" >
-                    <option  value="">..</option>
-                    <option value="06">06</option>
+                  <select class="selectpicker" id="UPgarantieRow" >
+                    <option value="06" >06</option>
                     <option value="12">12</option>
                     <option value="24">24</option>
                     <option value="36">36</option>
@@ -977,7 +1005,10 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" id="updateRow">Modifier</button>
+                <div class="alert alert-danger invisible " id="alertLineModif" role="alert" >
+                  Le modèle , la garantie et le prix sont obligatoires 
+                </div>
+                <button type="button" class="btn btn-primary btn-sm"  id="updateRow">Modifier</button>
               </div>
             </div>
           </div>
