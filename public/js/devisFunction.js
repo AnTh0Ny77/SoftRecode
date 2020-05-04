@@ -33,9 +33,8 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
           
     } else {
        
-        if (!garantie || garantie.length == 0 ) {
-            row.push("Pas de garantie")
-        }else { row.push( garantie + " mois");}
+       
+        row.push( garantie + " mois");
     }
     
     row.push( quantite);
@@ -53,11 +52,13 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
     rowObject.etat = etat;
     rowObject.garantie = garantie;
     rowObject.xtend = xtendAdd;
-    rowObject.quantite = quantite;
+    rowObject.quantite =  quantite;
     rowObject.pn = pn ;
     rowObject.prix = prix;
     rowObject.prixBarre = prixBarre;
     rowObject.id__fmm = id__fmm;
+   
+
     row.push(rowObject);
     table.row.add(row).draw( false );
     row = [];
@@ -97,9 +98,7 @@ let modifyLine = function (table,id,prestation,designation,comClient, comInterne
             
         } else {
         
-            if (!garantie || garantie.length == 0 ) {
-                row.push("Pas de garantie")
-            }else { row.push( garantie + " mois");}
+             row.push( garantie + " mois");
         }
         
         row.push( quantite);
@@ -122,7 +121,7 @@ let modifyLine = function (table,id,prestation,designation,comClient, comInterne
         rowObject.prix = prix;
         rowObject.prixBarre = prixBarre;
         rowObject.id__fmm = id__fmm;
-        console.log(rowObject);
+       
 
         row.push(rowObject);
         table.row('.selected').data( row ).draw( false );

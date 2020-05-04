@@ -916,6 +916,7 @@ let checkradio = function(object){
         if (jsonDataAncienDevis != false) {
             $('#addNewRow').removeAttr('disabled');
             for (let numberOfLines = 0; numberOfLines < jsonDataAncienDevis.length; numberOfLines++) {
+                
                 arrayTemp = [];
                 if (jsonDataAncienDevis[numberOfLines].devl__prix_barre == 0 ) {
                     jsonDataAncienDevis[numberOfLines].devl__prix_barre = '';
@@ -926,6 +927,7 @@ let checkradio = function(object){
                      arrayCouple.push(jsonDataAncienDevis[numberOfLines].ordre[numberOfXtend].devg__prix);
                      arrayTemp.push(arrayCouple);
                 }
+                
                addOne(
                    devisTable,
                    counter,
@@ -1072,7 +1074,7 @@ let checkradio = function(object){
            
             $('#UPprestationChoix').selectpicker('val', 'VTE');
             $("#UPchoixDesignation").val('ZT420');
-            
+           
             $("#UPxtendList").empty();
             $("#UPcomClient").val('');
             $("#UPchoixDesignation").val('');
@@ -1093,6 +1095,7 @@ let checkradio = function(object){
                 success: function(data){
                    
                     dataSet = JSON.parse(data);
+                  
                     $('#UPchoixPn option').remove();
                     $('#UPchoixPn').append(new Option('..', '' , false, true));
                     for (let index = 0; index < dataSet.length; index++) {
@@ -1101,9 +1104,9 @@ let checkradio = function(object){
                         
                     }
                     
-                   
                     $('.selectpicker').selectpicker('refresh'); 
                     $('#UPchoixPn').selectpicker('val', formContent.pn);
+                    
                     
     
                 },
@@ -1112,16 +1115,18 @@ let checkradio = function(object){
                 }
     
             })
+            
            $("#UPprestationChoix").val(formContent.prestation);
            $("#UPreferenceS").val(formContent.designation);
            $("#UPcomClient").val(formContent.comClient);
-           $("#UPchoixDesignation").val(formContent.id__fmm);
-           
+           $("#UPchoixDesignation").selectpicker('val', formContent.id__fmm);
+          
+                   
            $("#UPcomInterne").val(formContent.comInterne);
            $("#UPquantiteRow").val(formContent.quantite);
 
-           
-           $('#UPgarantieRow').selectpicker('val', formContent.garantie);
+          console.log(formContent.garantie);
+           $('#UPgarantieRow').selectpicker('val' ,formContent.garantie);
            $('#UPetatRow').selectpicker('val', formContent.etat);
            
            $("#UPbarrePrice").val(formContent.prixBarre);
