@@ -431,9 +431,14 @@ public function modify(
       cmdl__etat as devl__etat, cmdl__garantie_base as devl__mois_garantie,
       cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
       cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
-      cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne
+      cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
+      k.kw__lib , k.kw__value , 
+      k2.kw__lib as prestaLib
       FROM 2_cmd_ligne 
+      LEFT JOIN 2_keyword as k ON cmdl__etat = k.kw__value
+      LEFT JOIN 2_keyword as k2 ON cmdl__prestation = k2.kw__value 
       WHERE cmdl__cmd__id = ". $id ."");
+     
       $data = $request->fetchAll(PDO::FETCH_OBJ);
       return $data;
     }

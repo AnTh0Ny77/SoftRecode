@@ -3,10 +3,10 @@
 /// 1er param -> table 
 /// 2nd param -> count pour ID 
 /// ensuite  -> la valeur des inputs correspondant à la désignation des parametres 
-let addOne = function(table,count,prestation,designation,comClient, comInterne , etat, garantie , xtendAdd , quantite , prix, prixBarre , pn , id__fmm ){
+let addOne = function(table,count,prestation,designation,comClient, comInterne , etat, garantie , xtendAdd , quantite , prix, prixBarre , pn , id__fmm ,textEtat , textPresta ){
     let row = [];
     row.push(count);
-    row.push(prestation);
+    row.push(textPresta);
     if ( comClient.length > 0 && comInterne.length > 0 ) {
         row.push(designation + "<br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
     } 
@@ -19,7 +19,7 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
     else {
         row.push(designation);
     }
-    row.push(etat);
+    row.push(textEtat);
     if (xtendAdd.length > 0) {
         let element;
         let xtendString = "";
@@ -68,10 +68,10 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
 
 
 
-let modifyLine = function (table,id,prestation,designation,comClient, comInterne , etat, garantie , xtendAdd , quantite , prix, prixBarre ,pn , id__fmm ) {
+let modifyLine = function (table,id,prestation,designation,comClient, comInterne , etat, garantie , xtendAdd , quantite , prix, prixBarre ,pn , id__fmm  , textEtat ,textPresta) {
         let row = [];
         row.push(id);
-        row.push(prestation);
+        row.push(textPresta);
         if ( comClient.length > 0 && comInterne.length > 0 ) {
             row.push(designation + "<br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
         } 
@@ -84,7 +84,7 @@ let modifyLine = function (table,id,prestation,designation,comClient, comInterne
         else {
             row.push(designation);
         }
-        row.push(etat);
+        row.push(textEtat);
         if (xtendAdd.length > 0) {
             let element;
             let xtendString = "";

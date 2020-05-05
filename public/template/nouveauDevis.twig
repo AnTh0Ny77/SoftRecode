@@ -749,13 +749,14 @@
                   </div>
                    
                     <div class=" col-12" id="choixRef">
-                      <div class="col-12 mt-2 mb-2 d-flex justify-content-between">
-                        <div class="col-6">
-                        <input type="text" class="form-control" placeholder="Désignation Client"  aria-label="Username" aria-describedby="basic-addon1" id='referenceS'>
+                      <div class="col-12 my-2 ">
+                        <div class="col-12">
+                          <label for="referenceS">Désignation sur le devis/facture: </label>
+                        <input type="text" class="form-control mx-3"  aria-label="Username" aria-describedby="basic-addon1" id='referenceS'>
                       </div>
-                      <div>
+                      <div class="col-12 my-2">
                         <label for="choixPn">Pn associé: </label>
-                        <select class="selectpicker" id="choixPn"  data-none-selected-text>
+                        <select class="selectpicker col-12" id="choixPn"  data-none-selected-text>
                           <option   value="">...</option>
                         </select>
                       </div>
@@ -764,10 +765,11 @@
                   </div>
               <div class="form-row align-items-center  d-flex justify-content-between mt-3">
                 <div class="col-4">
-                  <label for="validationCustom04">Etat</label>
-                  <select class="selectpicker" id="etatRow">
-                    <option   value="neuf" selected>neuf</option>
-                    <option value="reconditionné">reconditionné</option>
+                  <label class="ml-3" for="etatRow">Etat</label>
+                  <select class="selectpicker col-12" id="etatRow">
+                    {% for etat in etatList %}
+                    <option   value="{{etat.kw__value}}" >{{etat.kw__lib}}</option>
+                    {% endfor %}
                   </select>
                 </div>
                 <div class="col-4">
@@ -899,18 +901,21 @@
 
 
                   <div class="form-row mb-3 pb-3 border-bottom">
-                    <div class="col-12 mt-2 mb-2 d-flex justify-content-between">
-                      <div class="col-6">
-                      <input type="text" class="form-control" placeholder="Désignation Client "  aria-label="Username" aria-describedby="basic-addon1" id="UPreferenceS">
+                    <div class="col-12 my-2 ">
+                      <div class="col-12">
+                       
+                        <label for="UPchoixPn">Désignation sur le devis/facture:</label>
+                      <input type="text" class="form-control"   aria-label="Username" aria-describedby="basic-addon1" id="UPreferenceS">
                     </div>
-                    <div>
+                    <div class="col-12 my-2">
                       <label for="UPchoixPn">Pn associé: </label>
-                      <select class="selectpicker" id="UPchoixPn"  data-none-selected-text>
+                      <select class="selectpicker col-11" id="UPchoixPn"  data-none-selected-text>
                         <option   value="">...</option>
                       </select>
                     </div>
                     </div>
                   </div>
+              
 
 
 
@@ -918,10 +923,11 @@
 
               <div class="form-row align-items-center mt-2  d-flex justify-content-between">
                 <div class="col-4">
-                  <label for="validationCustom04">Etat</label>
-                  <select class="selectpicker" id="UPetatRow">
-                    <option   value="neuf" selected>neuf</option>
-                    <option   value="reconditionné">reconditionné</option>
+                  <label  class =" mx-3"for="UPetatRow">Etat</label>
+                  <select class="selectpicker col-12" id="UPetatRow">
+                    {% for etat in etatList %}
+                    <option   value="{{etat.kw__value}}" >{{etat.kw__lib}}</option>
+                    {% endfor %}
                   </select>
                 </div>
                 <div class="col-4">

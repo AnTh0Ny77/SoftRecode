@@ -26,6 +26,7 @@ session_start();
  
  $Database->DbConnect();
  $keywordList = $Keywords->get2_icon();
+ $etatList = $Keywords->getEtat();
 
 
  //initialisation des variables a false en cas de premiere init :  
@@ -131,5 +132,6 @@ echo $twig->render('nouveauDevis.twig',[
    'livraison' => $livraison,
    'devisModif' => $test,
    'sessionModif'=> $sessionModif , 
-   'contactLVR' => $contactLVR
+   'contactLVR' => $contactLVR , 
+   'etatList' => $etatList
 ]);;

@@ -47,7 +47,7 @@ public static function showPriceView($object){
 
 // fonction d'affichage  prestation dans View :
 public static function showPrestationView($object){
-    $prestation = $object->devl__type;
+    $prestation = $object->prestaLib;
     $extension = "";
     $sautDeLigne = "";
     if (!empty($object->ordre)) {

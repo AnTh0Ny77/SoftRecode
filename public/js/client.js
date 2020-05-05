@@ -942,12 +942,15 @@ let checkradio = function(object){
                    jsonDataAncienDevis[numberOfLines].devl_puht,
                    jsonDataAncienDevis[numberOfLines].devl__prix_barre ,
                    jsonDataAncienDevis[numberOfLines].devl__modele, 
-                   jsonDataAncienDevis[numberOfLines].id__fmm 
+                   jsonDataAncienDevis[numberOfLines].id__fmm , 
+                   jsonDataAncienDevis[numberOfLines].kw__lib ,
+                   jsonDataAncienDevis[numberOfLines].prestaLib
                   
 
                ) 
             };
           }
+          $("#referenceS").val("");
             
         }
         checkTableRows(devisTable);
@@ -955,12 +958,14 @@ let checkradio = function(object){
 
         $('#addNewRow').on('click' , function(){
             $('#alertLine').addClass('invisible');
+           
         })
         
         $("#addRow").on('click', function(){
            
             if ($('#choixDesignation').val() &&  $("#garantieRow").val() && $("#prixRow").val() ) {
-                
+                var selectedOption = ($("#etatRow").children("option:selected").text());
+                var selectedOptionPresta = ($("#prestationChoix").children("option:selected").text());
                 addOne(
                     devisTable,
                     counter,
@@ -976,8 +981,12 @@ let checkradio = function(object){
                     $("#barrePrice").val() ,
                     $("#choixPn").val(), 
                     $("#choixDesignation").val(), 
+                    selectedOption , 
+                    selectedOptionPresta
                     
                     );
+                    
+                    
                 xtendArray = [];
                     $("#prestationChoix").val(""),
                     $("#choixDesignation").val("");
@@ -1100,7 +1109,7 @@ let checkradio = function(object){
                     $('#UPchoixPn').append(new Option('..', '' , false, true));
                     for (let index = 0; index < dataSet.length; index++) {
                         var opt = $("<option>").val(dataSet[index].apn__pn).text(dataSet[index].apn__pn);
-                        $('#UPchoixPn').append(new Option(dataSet[index].apn__pn, dataSet[index].apn__pn));
+                        $('#UPchoixPn').append(new Option(dataSet[index].apn__pn_long + " " + dataSet[index].apn__desc_short ,dataSet[index].apn__pn));
                         
                     }
                     
@@ -1194,7 +1203,8 @@ let checkradio = function(object){
         })
          // suprime la ligne selctionnee et la remplace par cette meme ligne modifie avec id identique : 
          $("#updateRow").on('click', function(){
-           
+            var selectedOption = ($("#UPetatRow").children("option:selected").text());
+            var selectedOptionPresta = ($("#UPprestationChoix").children("option:selected").text());
             if ($('#UPchoixDesignation').val() &&  $("#UPgarantieRow").val() && $("#UPprixRow").val()) {
                 modifyLine(
                     devisTable,
@@ -1211,7 +1221,8 @@ let checkradio = function(object){
                     $("#UPbarrePrice").val() ,
                     $("#UPchoixPn").val(),
                     $("#UPchoixDesignation").val(),
-                   
+                    selectedOption , 
+                    selectedOptionPresta
                     
                 ) 
                 checkClass();  
@@ -1342,8 +1353,8 @@ let checkradio = function(object){
                     $('#choixPn option').remove();
                     $('#choixPn').append(new Option('..', '' , false, true));
                     for (let index = 0; index < dataSet.length; index++) {
-                        var opt = $("<option>").val(dataSet[index].apn__pn).text(dataSet[index].apn__pn);
-                        $('#choixPn').append(new Option(dataSet[index].apn__pn, dataSet[index].apn__pn));
+                     
+                        $('#choixPn').append(new Option(dataSet[index].apn__pn_long + " " + dataSet[index].apn__desc_short ,dataSet[index].apn__pn));
                         
                     }
                     $('.selectpicker').selectpicker('refresh'); 
@@ -1376,8 +1387,8 @@ let checkradio = function(object){
                     $('#UPchoixPn option').remove();
                     $('#UPchoixPn').append(new Option('..', '' , false, true));
                     for (let index = 0; index < dataSet.length; index++) {
-                        var opt = $("<option>").val(dataSet[index].apn__pn).text(dataSet[index].apn__pn);
-                        $('#UPchoixPn').append(new Option(dataSet[index].apn__pn, dataSet[index].apn__pn));
+                       
+                        $('#UPchoixPn').append(new Option(dataSet[index].apn__pn_long + " " + dataSet[index].apn__desc_short ,dataSet[index].apn__pn));
                         
                     }
                     $('.selectpicker').selectpicker('refresh'); 

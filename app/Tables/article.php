@@ -38,7 +38,7 @@ public function getModels(){
 
 public function getPn($id){
 $request = $this->Db->Pdo->query(
-  'SELECT  apn__pn , apn__afmm__id 
+  'SELECT  apn__pn , apn__afmm__id  , apn__desc_short , apn__pn_long
    FROM art_pn
    WHERE apn__afmm__id = '.$id.' 
    ORDER BY apn__pn ASC ');
