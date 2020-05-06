@@ -52,7 +52,7 @@
 
 
         <!--carte liste de Devis -->
-      <div class="col-8">
+      <div class="col-7">
         <div class="card shadow mb-4">
           <!-- Card Header - -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -118,47 +118,37 @@
       </div>
 
         <!--carte option -->
-        <div class="col-4">
+        <div class="col-5 " >
           <div class="card shadow mb-4">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Infos <i class="fal fa-info"></i></h6>
-              <div class="dropdown no-arrow">
-              </div>
+              <h6 class="m-0 font-weight-bold text-primary">Devis <i class="far fa-eye"></i></h6>
+              
+       
             </div>
             <!-- Card Body -->
             <div class="card-body">
-              <div class="card text-center shadow text-white bg-dark">
-                <div class="card-header">
-                  <h5 >ID du Devis: <strong class="text-primary" id="AjaxId">Aucun</strong></h5>
-                </div>
-                <div class="card-body ">
-                  <h6 class="card-title">Société : <strong class="text-primary" id="AjaxSociete">Aucun devis selectionné </strong></h6>
-                  <ul class="list-group text-justify shadow ">
-                    <li class="list-group-item text-white bg-dark ">Contact: <strong class="text-primary" id="AjaxContact">...  </strong></li>
-                    <li class="list-group-item text-white bg-dark ">Livraison: <strong class="text-primary" id="AjaxLivraison">... </strong> </li>
-                    <li class="list-group-item text-white bg-dark ">Etat: <strong class="text-primary" id="AjaxEtat" >... </strong> </li>
-                    <li class="list-group-item text-white bg-dark ">Frais de port: <strong class="text-primary" id="AjaxPort">...</strong> </li>
-                    <li class="list-group-item text-white bg-dark ">
-                      <ul class="list-group text-justify shadow " id="listOfAjax">
+              <iframe id="iframeDevis" src="" width="100%" height="600px">
+              </iframe>
 
-                      </ul>
+              <div id="loaderPdf">
+                <div class="  d-flex  flex-column  justify-content-center align-items-center ">
+                  <div class="spinner-border text-primary "  role="status">
+                  </div>
+                  <div> 
+                    <h5 class="text-primary">chargement du devis ...</h5>
 
-
-
-                    </li>
-
-                  </ul>
-                </div>
-                <div class="card-footer text-muted">
-                  <strong>...</strong>
-                </div>
-              </div>
+                  </div>
+                
+             </div>
+             
           </div>
           
         </div>
 
 
+
+       
       </div>
     </main>
      {% endblock %}

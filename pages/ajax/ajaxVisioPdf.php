@@ -10,21 +10,21 @@ $Database->DbConnect();
 $Cmd = new App\Tables\Cmd($Database);
 $Client = new \App\Tables\Client($Database);
 
+// si pas connecté on ne vole rien ici :
 if (empty($_SESSION['user'])) {
-    header('location: login');
+    echo 'no no no .... ';
  }
- if (!empty($_POST['VoirDevis'])) {
-     
-   
-    
-    $temp =   $Cmd->GetById($_POST['VoirDevis']);
-  
+ else {
+
+// requete table client:
+ if (!empty($_POST['AjaxDevis'])){
+    $temp =   $Cmd->GetById($_POST['AjaxDevis']);
     $clientView = $Client->getOne($temp->client__id);
     $societeLivraison = false ;
     if ($temp->devis__id_client_livraison) {
         $societeLivraison = $Client->getOne($temp->devis__id_client_livraison);
     }
-    $arrayOfDevisLigne = $Cmd->devisLigne($_POST['VoirDevis']);
+    $arrayOfDevisLigne = $Cmd->devisLigne($_POST['AjaxDevis']);
     foreach ($arrayOfDevisLigne as $ligne) {
       $xtendArray = $Cmd->xtenGarantie($ligne->devl__id);
       $ligne->ordre = $xtendArray;
@@ -201,8 +201,15 @@ $formated_date = $date_time->format('d/m/Y');
      unset( $_SESSION['Contact']);
      unset( $_SESSION['Client']);
      unset( $_SESSION['livraison']);
-    
+     
  } catch (Html2PdfException $e) {
    die($e); 
  }
+ echo  json_encode($temp);
+
+ }
+ else {
+    echo 'request failed';
+ }
+
 }

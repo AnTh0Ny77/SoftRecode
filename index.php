@@ -57,6 +57,9 @@ Y8   8P o.`Y8b 88""   88"Yb
     case '/SoftRecode/AjaxSociete';
       require __DIR__ .'/pages/ajax/ajaxClient.php'; break;
 
+    case '/SoftRecode/AjaxVisio';
+      require __DIR__ .'/pages/ajax/AjaxVisioPdf.php'; break;
+
     case '/SoftRecode/AjaxDevis';
       require __DIR__ .'/pages/ajax/ajaxDevis.php'; break;
 

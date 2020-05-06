@@ -688,6 +688,7 @@ let checkradio = function(object){
 
     // attribut classe selected: a la table mes devis 
     modifDevis.on('click','tr',function() {
+        $('#iframeDevis').hide();
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
         }
@@ -701,38 +702,25 @@ let checkradio = function(object){
         $("#ModifierDevis").val(dataRow[0]);
         $("#DupliquerDevis").val(dataRow[0]);
         checkClassMulti();
+        $('#iframeDevis').attr('src', '');
+       
+        $('#loaderPdf').show();
         // requete Ajax sur le devis selectionné dans la page mes devis : 
         $.ajax({
             type: 'post',
-            url: "AjaxDevis",
+            url: "AjaxVisio",
             data : 
             {
                 "AjaxDevis" : dataRow[0]
             },
             success: function(data){
                 dataSet = JSON.parse(data);
-                checkradio(dataSet[0]);
-                $('#AjaxId').text(dataSet[0].devis__id);
-                $('#AjaxSociete').html(dataSet[0].client__societe + "<br>" + dataSet[0].client__ville + " " + dataSet[0].client__cp );
-                if (dataSet[0].contact__nom) {
-                    $('#AjaxContact').html(dataSet[0].contact__nom + " " + dataSet[0].contact__prenom );
-                }else {  $('#AjaxContact').html('...') }
-                if (dataSet[0].client__livraison_societe) {
-                    $('#AjaxLivraison').html(dataSet[0].client__livraison__adr1 + "<br>" + dataSet[0].client__livraison_ville + " " + dataSet[0].client__livraison_cp);
-                }else{ $('#AjaxLivraison').html(dataSet[0].client__adr1 + "<br>" + dataSet[0].client__ville + " " + dataSet[0].client__cp ) }
-                $('#AjaxEtat').text(dataSet[0].keyword__lib);
-                $('#AjaxPort').html(dataSet[0].devis__port + ' €' ) ;
-                let listOfItem = $('#listOfAjax');
-                listOfItem.html(' ');
-                let array = dataSet[1];
-                for (let index = 0; index < array.length ; index++) {
-                   let li = document.createElement('li');
-                   let content = document.createTextNode( array[index].devl_quantite + " x " +  array[index].devl__designation + ' : ' + array[index].devl_puht + " €" );
-                   li.appendChild(content);
-                   listOfItem.append(li);
-                   listOfItem.children('li').addClass('list-group-item text-white bg-secondary font-weight-bold');
-                    
-                }
+               checkradio(dataSet);
+               $('#loaderPdf').hide();
+               $('#iframeDevis').attr('src', 'pages/ajax/devisN.pdf');
+               $('#iframeDevis').show();
+
+            
                  
             },
             error: function (err) {
@@ -744,6 +732,7 @@ let checkradio = function(object){
 
       // Attribue automatiquement la classe selected à la première ligne : 
     let selectFirst = function(){
+       
         let firstOne = $('#MyDevis').find('tr').eq(1);
         firstOne.addClass('selected');
         
@@ -754,10 +743,13 @@ let checkradio = function(object){
         $("#ModifierDevis").val(dataRow[0]);
         $("#DupliquerDevis").val(dataRow[0]);
         checkClassMulti();
+        $('#iframeDevis').attr('src', '');
+        $('#iframeDevis').hide();
+        $('#loaderPdf').show();
         // requete Ajax sur le devis selectionné dans la page mes devis : 
         $.ajax({
             type: 'post',
-            url: "AjaxDevis",
+            url: "AjaxVisio",
             data : 
             {
                 "AjaxDevis" : dataRow[0]
@@ -765,28 +757,10 @@ let checkradio = function(object){
             success: function(data){
                 
                 dataSet = JSON.parse(data);
-                checkradio(dataSet[0]);
-                $('#AjaxId').text(dataSet[0].devis__id);
-                $('#AjaxSociete').html(dataSet[0].client__societe + "<br>" + dataSet[0].client__ville + " " + dataSet[0].client__cp );
-                if (dataSet[0].contact__nom) {
-                    $('#AjaxContact').html(dataSet[0].contact__nom + " " + dataSet[0].contact__prenom );
-                }else {  $('#AjaxContact').html('...') }
-                if (dataSet[0].client__livraison_societe) {
-                    $('#AjaxLivraison').html(dataSet[0].client__livraison__adr1 + "<br>" + dataSet[0].client__livraison_ville + " " + dataSet[0].client__livraison_cp);
-                }else{ $('#AjaxLivraison').html(dataSet[0].client__adr1 + "<br>" + dataSet[0].client__ville + " " + dataSet[0].client__cp ) }
-                $('#AjaxEtat').text(dataSet[0].keyword__lib);
-                $('#AjaxPort').html(dataSet[0].devis__port + ' €' ) ;
-                let listOfItem = $('#listOfAjax');
-                listOfItem.html(' ');
-                let array = dataSet[1];
-                for (let index = 0; index < array.length ; index++) {
-                   let li = document.createElement('li');
-                   let content = document.createTextNode( array[index].devl_quantite + " x " +  array[index].devl__designation + ' : ' + array[index].devl_puht + " €" );
-                   li.appendChild(content);
-                   listOfItem.append(li);
-                   listOfItem.children('li').addClass('list-group-item text-white bg-secondary font-weight-bold');
-                    
-                }
+                checkradio(dataSet);
+                $('#loaderPdf').hide();
+                $('#iframeDevis').attr('src', 'pages/ajax/devisN.pdf');
+                $('#iframeDevis').show();
                  
             },
             error: function (err) {
