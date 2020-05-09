@@ -96,12 +96,19 @@ if ($_SESSION['user']->user__devis_acces >= 15 ) {
           $AllDevis = "Voir tous";
       }
       else{
-          $devisList = $Cmd->getNotCMD();
+          $devisList = $Cmd->getAll();
           $AllDevis = "Voir mes devis";
       }
 }
 else {
   $devisList = $Cmd->getUserDevis($_SESSION['user']->id_utilisateur);
+}
+
+$notifValid = 0 ;
+foreach ($devisList as $devis) {
+  if ($devis->kw__lib == "Valide") {
+   $notifValid +=1 ;
+  }
 }
 
  foreach ($devisList as $devis) {
@@ -114,5 +121,6 @@ echo $twig->render('mesDevis.twig',['user'=>$user,
 'user'=> $user,
 'devisList'=> $devisList,
 'listOfStatus'=> $listOfStatus ,
-'AllDevis'=> $AllDevis
+'AllDevis'=> $AllDevis , 
+'notifValid'=> $notifValid
 ]);

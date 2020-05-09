@@ -52,49 +52,56 @@
 
 
         <!--carte liste de Devis -->
-      <div class="col-7">
+      <div class="col-6">
         <div class="card shadow mb-4">
           <!-- Card Header - -->
-          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary"></h6>
-           
-              <div class="d-flex flex-row flex-wrap justify-content-center px-2 ml-5">
-                <div class="py-1 col-6">
-                  <button type="button" class="btn btn-success btn-block  btn-sm  multiButton"  data-toggle="modal" data-target="#statusModal" disabled>Statuer</button>
-                </div>
-                <form class="py-1  col-6" method="POST" action="voirDevis" target="_blank">
-                  <input type="hidden" name="VoirDevis" id="VoirDevis" value="">
-                <button type="submit" class="btn btn-secondary btn-block  btn-sm  multiButton" disabled>PDF</button>
-                 </form>
-                <form class="py-1 col-6" action="nouveauDevis" method="POST">
-                  <input type="hidden" name="ModifierDevis" id="ModifierDevis" value="">
-                <button type="submit" class="btn btn-primary btn-sm  btn-block  multiButton" disabled>Modifier</button>
-                </form>
-                <form class="py-1 col-6" action="nouveauDevis" method="POST">
-                  <input type="hidden" name="DupliquerDevis" id="DupliquerDevis" value="">
-                <button type="submit" class="btn btn-warning btn-block btn-sm  multiButton" disabled>Dupliquer</button>
-                </form>
-              
-          
-            </div>
-            <div class="dropdown no-arrow">
+          <div class="my-2 mx-4">
+            <h6 class="m-0 font-weight-bold text-primary">Selection <i class="far fa-mouse-pointer"></i></h6>
+          </div>
+
+          <div class="card-header d-flex flex-row align-items-center justify-content-between">
+            
+            <div>
               <form class="form-inline">
                 <input class="form-control mr-2" type="search" placeholder="Recherche" aria-label="Search">
-                <button class="btn btn-outline-primary my-2 " type="submit"><i class="fal fa-bullseye-arrow"></i></button>
+                <button class="btn btn-outline-primary  " type="submit"><i class="fal fa-bullseye-arrow"></i></button>
               </form>
+
+            </div>
+           
+            
+            <div class=" ">
+             
               
               <div class="d-flex flex-row justify-content-around" >
+                
                 <div>
-                  <a class="btn btn btn-sm btn-info" href="nouveauDevis">Nouveau Devis</a>
+                  <a class="btn btn btn-sm btn-link mx-2" href="nouveauDevis">Nouveau Devis</a>
                 </div>
                 {% if user.user__devis_acces >= 15 %}
                 <div>
                   <form action="mesDevis" method="POST"> 
                       <input type="hidden" value="{{ AllDevis }}" name="MyDevis">
-                      <button type="submit" class="btn btn-sm btn-secondary">{{ AllDevis }}</button>
+                      <button type="submit" class="btn btn-sm btn-link">{{ AllDevis }}</button>
                   </form>
                 </div>
                 {% endif %}
+                {% if notifValid > 0 %}
+                <div class="ml-5" data-toggle="tooltip" data-placement="top" title="En attente de commande">
+                  <a href="home" class="btn btn-link">
+                    <i class="fas fa-bell" style="font-size: 26px; color: Dodgerblue;"> </i>
+                    <span class="badge badge-danger " >{{ notifValid }}</span>
+                  </a>
+                </div>
+                {% else %}
+                <div class="ml-5" data-toggle="tooltip" data-placement="top" title="Aucun devis en attente de commande">
+                  <a href="#" class="btn btn-link">
+                    <i class="far fa-bell-slash disabled" style="font-size: 26px; color: Dodgerblue;"> </i>
+                  </a>
+                </div>
+                {% endif %}
+
+                
               </div>
               
             </div>
@@ -102,11 +109,33 @@
           <!-- Card Body -->
           <div class="card-body">
             <div class="chart-area">
-              <table id="MyDevis" class=" display table " style="width:100%"> <thead class="thead-dark"> <tr> <th>Numéro</th> <th>Date</th><th>Editeur</th><th>Client</th><th>Etat</th></tr>
+              <table id="MyDevis" class=" display table " style="width:100%"> <thead class="thead-dark"> 
+                <tr> 
+                  <th>Numéro</th> 
+                  <th>Date</th>
+                  <th>N°/Date</th>
+                  <th>Client</th>
+                  <th>Etat</th>
+              </tr>
               </thead> 
                <tbody id="DevisBody">
                 {% for devis in devisList %}
-                <tr class="trClick"><td>{{devis.devis__id}}</td><td>{{ devis.devis__date_crea}}</td><td>{{ devis.log_nec  }}</td><td>{{ devis.client__societe ~ " (" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td><td>{{ devis.kw__lib}}</td></tr>
+                <tr class="trClick">
+                  <td>{{devis.devis__id}}</td>
+                  <td>{{ devis.devis__date_crea}}</td>
+                  <td> {{ "N°: " ~ devis.devis__id}} <br> {{ devis.devis__date_crea}}</td>
+                  <td>{{ devis.client__societe ~ " (" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td>
+                  <td>
+                    {% if devis.kw__lib == 'En attente'  %}
+                    {{ devis.kw__lib}} <i class="fas fa-hourglass" style="color:Dodgerblue;"></i> <br> {{ devis.log_nec  }}</td>
+                    {% elseif devis.kw__lib == 'Commande' %}
+                    {{ devis.kw__lib}} <i class="fas fa-shopping-basket" style="color:#00cc00;"></i> <br> {{ devis.log_nec  }}</td>
+                    {% elseif devis.kw__lib == 'Refuse' %}
+                    {{ devis.kw__lib}} <i class="fas fa-trash" style="color:#ff0000;"></i> <br> {{ devis.log_nec  }}</td>
+                    {% elseif devis.kw__lib == 'Valide' %}
+                    {{ devis.kw__lib}} <i class="fas fa-check-square" style="color: limegreen;"></i> <br> {{ devis.log_nec  }}</td>
+                    {% endif %}
+                </tr>
                 {% endfor %}
                </tbody>
              </table>
@@ -118,11 +147,33 @@
       </div>
 
         <!--carte option -->
-        <div class="col-5 " >
+        <div class="col-6 cardVisio" >
           <div class="card shadow mb-4">
             <!-- Card Header - -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <div class="my-2 mx-4">
               <h6 class="m-0 font-weight-bold text-primary">Devis <i class="far fa-eye"></i></h6>
+            </div>
+            <div class="card-header py-3 px-5 d-flex flex-row align-items-center justify-content-between">
+              
+              
+                <div class=" ">
+                  <button type="button" class="btn btn-link   btn-sm  multiButton"  data-toggle="modal" data-target="#statusModal" disabled>Statuer</button>
+                </div>
+                <form class=" " method="POST" action="voirDevis" target="_blank">
+                  <input type="hidden" name="VoirDevis" id="VoirDevis" value="">
+                <button type="submit" class="btn btn-link   btn-sm  multiButton" disabled>PDF</button>
+                 </form>
+                <form class=" " action="nouveauDevis" method="POST">
+                  <input type="hidden" name="ModifierDevis" id="ModifierDevis" value="">
+                <button type="submit" class="btn btn-link btn-sm    multiButton" disabled>Modifier</button>
+                </form>
+                <form class=" " action="nouveauDevis" method="POST">
+                  <input type="hidden" name="DupliquerDevis" id="DupliquerDevis" value="">
+                <button type="submit" class="btn btn-link  btn-sm  multiButton" disabled>Dupliquer</button>
+                </form>
+              
+          
+           
               
        
             </div>

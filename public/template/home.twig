@@ -15,7 +15,7 @@
 
 
         <!--carte liste de Devis -->
-      <div class="col-11">
+      <div class="col-6">
         <div class="card shadow mb-4">
           <!-- Card Header - -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -23,7 +23,7 @@
             <div class="dropdown no-arrow">
               <form class="py-1" action="commande"  method="POST">
                 <input type="hidden" name="ValideCmd" id="ValideCmd" value="">
-                <button type="submit" class="btn btn-success btn-lg btn-block multiButton"  disabled>Commander</button>
+                <button type="submit" class="btn btn-success  btn-block multiButton"  disabled>Commander</button>
               </form>
             </div>
           </div>
@@ -34,7 +34,7 @@
               </thead> 
                <tbody id="CommandeBody">
                 {% for devis in devisList %}
-                <tr class="trClick"><td>{{devis.devis__id}}</td><td>{{ devis.devis__date_crea}}</td><td>{{ devis.log_nec}}</td><td>{{ devis.client__societe ~ " (" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td><td>{{ devis.keyword__lib}}</td></tr>
+                <tr class="trClick"><td>{{devis.devis__id}}</td><td>{{ devis.devis__date_crea}}</td><td>{{ devis.log_nec}}</td><td>{{ devis.client__societe ~ " (" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td><td>{{ devis.kw__lib}}</td></tr>
                 {% endfor %}
                </tbody>
              </table>

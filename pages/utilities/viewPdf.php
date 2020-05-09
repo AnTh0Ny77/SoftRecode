@@ -197,7 +197,7 @@ $formated_date = $date_time->format('d/m/Y');
      $doc->pdf->SetDisplayMode('fullpage');
      $doc->writeHTML($content);
      ob_clean();
-     $doc->output(__DIR__ .'/devisN.pdf', 'F');
+     $doc->output();
      unset( $_SESSION['Contact']);
      unset( $_SESSION['Client']);
      unset( $_SESSION['livraison']);

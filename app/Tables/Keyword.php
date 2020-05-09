@@ -43,7 +43,7 @@ public function getPresta(){
 }
 
 public function getStat(){
-  $request =$this->Db->Pdo->query('SELECT kw__type,   kw__lib , kw__value  FROM 2_keyword WHERE kw__type= "stat" ');
+  $request =$this->Db->Pdo->query('SELECT kw__type,   kw__lib , kw__value  FROM 2_keyword WHERE kw__type= "stat" AND kw__value <> "IMP" AND kw__value <> "CMD"  ORDER BY kw__ordre ');
   $data = $request->fetchAll(PDO::FETCH_OBJ);
   return $data;
 }

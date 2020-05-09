@@ -605,7 +605,15 @@ $('#AjaxClient').on('click', function(){
               
                 
         },
-        "order": [[ 2, "asc" ] , [3 , "desc"]],
+        "columnDefs": [
+            
+            {"className": "dt-center", "targets": 4},
+            {"targets": [ 1 ], "visible": false},
+            {"targets": [ 0 ], "visible": false},
+           
+            
+          ],
+        "order": [[ 1, "asc" ] ],
         "paging": true,
          "info":   false,
          "pageLength": 10,
@@ -685,9 +693,15 @@ let checkradio = function(object){
   }  
 }
 
+//init tout les tooltips 
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+
 
     // attribut classe selected: a la table mes devis 
     modifDevis.on('click','tr',function() {
+        $('.multiButton').prop("disabled", true);
         $('#iframeDevis').hide();
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
@@ -701,7 +715,7 @@ let checkradio = function(object){
         $("#VoirDevis").val(dataRow[0]);
         $("#ModifierDevis").val(dataRow[0]);
         $("#DupliquerDevis").val(dataRow[0]);
-        checkClassMulti();
+       
         $('#iframeDevis').attr('src', '');
        
         $('#loaderPdf').show();
@@ -719,6 +733,8 @@ let checkradio = function(object){
                $('#loaderPdf').hide();
                $('#iframeDevis').attr('src', 'pages/ajax/devisN.pdf');
                $('#iframeDevis').show();
+               $('.multiButton').removeAttr('disabled');
+              
 
             
                  
@@ -732,7 +748,7 @@ let checkradio = function(object){
 
       // Attribue automatiquement la classe selected à la première ligne : 
     let selectFirst = function(){
-       
+        $('.multiButton').prop("disabled", true);
         let firstOne = $('#MyDevis').find('tr').eq(1);
         firstOne.addClass('selected');
         
@@ -742,7 +758,7 @@ let checkradio = function(object){
         $("#VoirDevis").val(dataRow[0]);
         $("#ModifierDevis").val(dataRow[0]);
         $("#DupliquerDevis").val(dataRow[0]);
-        checkClassMulti();
+        
         $('#iframeDevis').attr('src', '');
         $('#iframeDevis').hide();
         $('#loaderPdf').show();
@@ -761,6 +777,7 @@ let checkradio = function(object){
                 $('#loaderPdf').hide();
                 $('#iframeDevis').attr('src', 'pages/ajax/devisN.pdf');
                 $('#iframeDevis').show();
+                $('.multiButton').removeAttr('disabled');
                  
             },
             error: function (err) {
