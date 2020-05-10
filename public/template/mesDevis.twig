@@ -127,9 +127,9 @@
                   <td>{{ devis.client__societe ~ " (" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td>
                   <td>
                     {% if devis.kw__lib == 'En attente'  %}
-                    {{ devis.kw__lib}} <i class="fas fa-hourglass" style="color:Dodgerblue;"></i> <br> {{ devis.log_nec  }}</td>
+                    {{ devis.kw__lib}} <i class="fas fa-hourglass" style="color:#cc9900;"></i> <br> {{ devis.log_nec  }}</td>
                     {% elseif devis.kw__lib == 'Commande' %}
-                    {{ devis.kw__lib}} <i class="fas fa-shopping-basket" style="color:#00cc00;"></i> <br> {{ devis.log_nec  }}</td>
+                    {{ devis.kw__lib}} <i class="fas fa-shopping-basket" style="color:DodgerBlue;"></i> <br> {{ devis.log_nec  }}</td>
                     {% elseif devis.kw__lib == 'Refuse' %}
                     {{ devis.kw__lib}} <i class="fas fa-trash" style="color:#ff0000;"></i> <br> {{ devis.log_nec  }}</td>
                     {% elseif devis.kw__lib == 'Valide' %}
