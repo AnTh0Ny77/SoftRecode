@@ -36,7 +36,7 @@ public static function showPriceView($object){
     if (!empty($object->ordre)) {
         $sautDeLigne = "<br>";
         foreach($object->ordre as $array){
-            $extension .= "<br>" . $array['devg__prix'] . " €";
+            $extension .= "<br>" . number_format(floatVal($array['devg__prix']),2) . " €";
         }
     }
     return $barre . " " . $price . $sautDeLigne . $extension;
@@ -47,7 +47,7 @@ public static function showPriceView($object){
 
 // fonction d'affichage  prestation dans View :
 public static function showPrestationView($object){
-    $prestation = $object->prestaLib;
+    $prestation = strtolower($object->prestaLib);
     $extension = "";
     $sautDeLigne = "";
     if (!empty($object->ordre)) {
@@ -76,9 +76,9 @@ public static function showdesignationView($object){
             $extension .= "<br>extension de garantie";
         }
     }
-    if (!empty($object->comClient)) {
+    if (!empty($object->devl__note_client)) {
         $sautDecom = '<br>';
-        $commentaire = $object->comClient;
+        $commentaire = $object->devl__note_client;
     }
     return $designation . $sautDeLigne . $extension . $sautDecom .$commentaire;
 }
@@ -130,7 +130,7 @@ public static function showPort($post){
        $port = $post;
     } 
     else {$port = "00,00";} 
-    return $port . " €";
+    return floatVal($port) ;
 }
 
 

@@ -22,6 +22,7 @@ $devis = $Devis->GetById($_POST['ValideCmd']);
 
 
 $arrayOfDevisLigne = $Devis->devisLigne($_POST['ValideCmd']);
+
 foreach ($arrayOfDevisLigne as $ligne) {
     $xtendArray = $Devis->xtenGarantie($ligne->devl__id);
     $ligne->devl__prix_barre = $xtendArray;

@@ -75,7 +75,7 @@ class Cmd extends Table {
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
-    LEFT JOIN 2_keyword as k ON cmd__etat = k.kw__value
+    LEFT JOIN 2_keyword as k ON cmd__etat = k.kw__value and k.kw__type = 'stat'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     WHERE  cmd__user__id_devis = " . $id ." ORDER BY  devis__date_crea DESC , c.client__societe ASC LIMIT 200");
     $data = $request->fetchAll(PDO::FETCH_OBJ);

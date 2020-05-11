@@ -789,11 +789,54 @@ $(function () {
     if ($('#MyDevis').length > 0) {
         selectFirst();
     }
+
+    // select la prmeière ligne dans home :
+    let selectFirstCMD = function(){
+        $('.multiButton').prop("disabled", true);
+        let firstOne = $('#MyCommande').find('tr').eq(1);
+        firstOne.addClass('selected');
+        
+        let dataRow = validCmd.row(0).data();
+        
+        $("#ValideCmd").val(parseInt(dataRow[0]));
+        
+        $('#iframeCMD').attr('src', '');
+        $('#iframeCMD').hide();
+        $('#loaderCMD').show();
+        // requete Ajax sur le devis selectionné dans la page mes devis : 
+        $.ajax({
+            type: 'post',
+            url: "AjaxVisio",
+            data : 
+            {
+                "AjaxDevis" : dataRow[0]
+            },
+            success: function(data){
+                
+                dataSet = JSON.parse(data);
+                checkradio(dataSet);
+                $('#loaderCMD').hide();
+                $('#iframeCMD').attr('src', 'pages/ajax/devisN.pdf');
+                $('#iframeCMD').show();
+                $('.multiButton').removeAttr('disabled');
+                 
+            },
+            error: function (err) {
+                alert('error: ' + err);
+            }
+
+        })
+    }
    
+    selectFirstCMD();
+
+
 
       // attribut classe selected: a la table Commandes 
-      validCmd.on('click','tr',function() {
-        
+      $('#MyCommande').on('click','tr',function() {
+        $('#iframeCMD').hide();
+        $('#loaderCMD').show();
+        console.log('hey');
         if ( $(this).hasClass('selected') ) {
             $(this).removeClass('selected');
         }
@@ -804,6 +847,25 @@ $(function () {
         let dataRow = validCmd.row(this).data();
         $("#ValideCmd").val(parseInt(dataRow[0]));
         checkClassCmd();
+        $.ajax({
+            type: 'post',
+            url: "AjaxVisio",
+            data : 
+            {
+                "AjaxDevis" : dataRow[0]
+            },
+            success: function(data){
+                dataSet = JSON.parse(data);
+               checkradio(dataSet);
+               $('#loaderCMD').hide();
+               $('#iframeCMD').attr('src', 'pages/ajax/devisN.pdf');
+               $('#iframeCMD').show();    
+            },
+            error: function (err) {
+                alert('error: ' + err);
+            }
+
+        })
      });
 
    

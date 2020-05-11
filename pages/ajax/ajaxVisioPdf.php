@@ -48,10 +48,10 @@ $formated_date = $date_time->format('d/m/Y');
      <table style="width: 100%;">
          <tr>
              <td style="text-align: left;  width: 50%"><img  style=" width:65mm" src="public/img/recodeDevis.png"/></td>
-             <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br><a>www.recode.fr</a><br><br></td>
+             <td style="text-align: left; width:50%"><h3>REPARATION-LOCATION-VENTE</h3>imprimantes lecteurs codes barres<br><a style="color: green;">www.recode.fr</a><br><br></td>
          </tr>
          <tr>
-             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis-<?php echo $temp->devis__id ?></h2><br><?php echo date("d-m-Y") ?><br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : <?php echo $formated_date ?></small></p></td>
+             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis <?php echo $temp->devis__id ?></h2><br><?php echo date("d-m-Y") ?><br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : <?php echo $formated_date ?></small></p></td>
              <td style="text-align: left; width:50%"><?php 
              if ($societeLivraison) {
                 echo "<small>facturation :</small><strong><br>";
@@ -71,9 +71,9 @@ $formated_date = $date_time->format('d/m/Y');
              } ?>
          </tr>
      </table>
-     <table CELLSPACING=0 style="width: 100%;  margin-top: 30px; ">
+     <table CELLSPACING=0 style="width: 100%;  margin-top: 50px;  ">
              <tr style=" margin-top : 50px; background-color: #dedede; " >
-                <td style="width: 18%; text-align: left;">Prestation</td><td style="width: 37%; text-align: left">Designation</td><td style="text-align: center">Type matériel</td><td  style="width: 12%; text-align: center">Garantie</td><td style="text-align: center; ">Qté</td><td style="text-align: center; width: 17%">P.u € HT</td>
+                <td style="width: 18%; text-align: left;  padding-top: 4px; padding-bottom: 4px;">Prestation</td><td style="width: 37%; text-align: left; padding-top: 4px; padding-bottom: 4px;">Designation</td><td style="text-align: center; padding-top: 4px; padding-bottom: 4px;"></td><td  style="width: 12%; text-align: center; padding-top: 4px; padding-bottom: 4px;"></td><td style="text-align: center; padding-top: 4px; padding-bottom: 4px;">Qté</td><td style="text-align: center; width: 17%; padding-top: 4px; padding-bottom: 4px;">P.u € HT</td>
              </tr> 
              <?php 
                  $arrayPrice =[];
@@ -118,41 +118,41 @@ $formated_date = $date_time->format('d/m/Y');
                          <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'></td>
                          <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'></td>
                          <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '></td>
-                         <td valign='top' style='text-align: center; width: 20%; padding-bottom:15px; border-bottom: 1px #ccc solid'>" .Pdfunctions::showPort($temp->devis__port) ."</td>
+                         <td valign='top' style='text-align: center; width: 20%; padding-bottom:15px; border-bottom: 1px #ccc solid'>" . number_format(Pdfunctions::showPort($temp->devis__port),2) ." €</td>
                          </tr>";
                          array_push( $arrayPrice, floatval($temp->devis__port));
              ?>
      </table>
-     <table style=" margin-top: 15px">
+     <table style=" margin-top: 25px">
          <tr>
-         <td style="width: 290px"></td>
+         <td style="width: 270px"></td>
          <td>
              <table CELLSPACING=0  style=" border: 1px black solid;">
-                 <tr style="background-color: #dedede;"><td style="width: 210px; text-align: left">Type de Garantie </td><td style="text-align: center"><strong>total € HT </strong></td><td style="text-align: center">Total € TTC</td></tr>
+                 <tr style="background-color: #dedede;"><td style="width: 210px; text-align: left">Type de Garantie </td><td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td><td style="text-align: center">Total € TTC</td></tr>
                  <?php
                      $totalPrice = number_format(array_sum($arrayPrice),2);
                        
-                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total hors extensions</td><td style='text-align: center'><strong>  ".$totalPrice. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc(floatval($totalPrice)),2)." </td></tr>";
+                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>hors garanties</td><td style='text-align: center'><strong>  ".$totalPrice. " €</strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc(floatval($totalPrice)),2)." €</td></tr>";
                        
                        if (sizeOf($array12) == sizeof($arrayOfDevisLigne)) {
                          array_push($array12 , floatval($totalPrice));
                          $total12Mois = number_format(array_sum($array12),2);
-                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 12 mois</td><td style='text-align: center'><strong>  ".$total12Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc( floatval($total12Mois)),2)." </td></tr>";
+                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>garantie 12 mois</td><td style='text-align: center'><strong>  ".$total12Mois. " €</strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc( floatval($total12Mois)),2)." €</td></tr>";
                        }
                        if (sizeOf($array24) == sizeof($arrayOfDevisLigne)) {
                         array_push($array24 , floatval($totalPrice));
                          $total24Mois = number_format(array_sum($array24),2);
-                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 24 mois</td><td style='text-align: center'><strong>  ".$total24Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc(floatval($total24Mois)),2)." </td></tr>";
+                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>garentie 24 mois</td><td style='text-align: center'><strong>  ".$total24Mois. " €</strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc(floatval($total24Mois)),2)." €</td></tr>";
                        }
                        if (sizeOf($array36) == sizeof($arrayOfDevisLigne)) {
                         array_push($array36 , floatval($totalPrice));
                          $total36Mois = number_format(array_sum($array36),2);
-                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 36 mois</td><td style='text-align: center'><strong>  ".$total36Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc(floatval($total36Mois)),2)." </td></tr>";
+                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>garantie 36 mois</td><td style='text-align: center'><strong>  ".$total36Mois. " €</strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc(floatval($total36Mois)),2)." €</td></tr>";
                        }
                        if (sizeOf($array48) == sizeof($arrayOfDevisLigne)) {
                         array_push($array48 , floatval($totalPrice));
                          $total48Mois = number_format(array_sum($array48),2);
-                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 48 mois</td><td style='text-align: center'><strong>  ".$total48Mois. "  </strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc(floatval($total48Mois)),2)." </td></tr>";
+                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>Total extensions 48 mois</td><td style='text-align: center'><strong>  ".$total48Mois. " €</strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc(floatval($total48Mois)),2)." €</td></tr>";
                        }
                     
                  ?>
@@ -161,7 +161,7 @@ $formated_date = $date_time->format('d/m/Y');
          </tr>
      </table>
 
-     <div style=" width: 100%; position: absolute; top:73%">
+     <div style=" width: 100%; position: absolute; top:70%">
     
      <table style=" margin-top: 15px">
          <tr><td><strong>Conditions de paiement</strong> : Virement à la réception</td></tr>
@@ -171,8 +171,8 @@ $formated_date = $date_time->format('d/m/Y');
          }
          ?>
      </table>
-     <table CELLSPACING=0 style=" width: 100%; margin-top: 5px; margin-bottom: 15px;">
-         <tr style="background-color: #dedede;"><td style="text-align: left;  width: 50%"><strong>BON POUR COMMANDE</strong><BR>NOM DU SIGNATAIRE: <br>VOTRE N° DE CDE :<br>DATE:</td><td style="text-align: right;  width: 50%; vertical-align:top;">CACHET & SIGNATURE</td></tr>
+     <table CELLSPACING=0 style=" width: 100%; margin-top: 15px; margin-bottom: 15px;">
+         <tr style="background-color: #dedede;  "><td style="text-align: left;  width: 50%; padding-top: 7px; padding-bottom: 7px;"><strong>BON POUR COMMANDE</strong><BR>NOM DU SIGNATAIRE: <br>VOTRE N° DE CDE :<br>DATE:</td><td style="text-align: right;  width: 50%; vertical-align:top; padding-top: 7px;">CACHET & SIGNATURE</td></tr>
      </table>
 
      <table style=" margin-top: 10px; color: #8c8c8c; width: 100%;">
@@ -183,7 +183,7 @@ $formated_date = $date_time->format('d/m/Y');
               IBAN : FR76 1460 7003 6569 0218 9841 804- BIC: CCBPFRPPMAR</small></td>
          </tr>
          <tr >
-             <td  style="text-align: center; font-size: 80%; width: 100%;"><br><small>New Eurocomputer-TVA FR33b 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
+             <td  style="text-align: center; font-size: 80%; width: 100%;"><br><br><small>New Eurocomputer-TVA FR33b 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
              <strong>RECODE by eurocomputeur - 112 allée François Coli -06210 Mandelieu</strong></small></td>
          </tr>
      </table>  
