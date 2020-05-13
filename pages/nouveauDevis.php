@@ -21,13 +21,13 @@ session_start();
  $Keywords = new App\Tables\Keyword($Database);
  $Contact = new App\Tables\Contact($Database);
  $Article = new App\Tables\Article($Database);
- $Devis = new App\Tables\Devis($Database);
+ 
  $Cmd = new App\Tables\Cmd($Database);
  
  $Database->DbConnect();
  $keywordList = $Keywords->get2_icon();
  $etatList = $Keywords->getEtat();
-
+ $garantiesList = $Keywords->getGaranties();
 
  //initialisation des variables a false en cas de premiere init :  
  $user =false ;
@@ -133,5 +133,6 @@ echo $twig->render('nouveauDevis.twig',[
    'devisModif' => $test,
    'sessionModif'=> $sessionModif , 
    'contactLVR' => $contactLVR , 
-   'etatList' => $etatList
+   'etatList' => $etatList ,
+   'garantiesList' => $garantiesList
 ]);;

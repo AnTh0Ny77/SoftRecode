@@ -699,6 +699,12 @@ $(function () {
   })
 
 
+
+    idUtilisateur = $('#idUtilisateur').val();
+   
+   
+
+
     // attribut classe selected: a la table mes devis 
     modifDevis.on('click','tr',function() {
         $('.multiButton').prop("disabled", true);
@@ -731,7 +737,7 @@ $(function () {
                 dataSet = JSON.parse(data);
                checkradio(dataSet);
                $('#loaderPdf').hide();
-               $('#iframeDevis').attr('src', 'pages/ajax/devisN.pdf');
+               $('#iframeDevis').attr('src', 'pages/ajax/' + idUtilisateur + 'devis.pdf');
                $('#iframeDevis').show();
                $('.multiButton').removeAttr('disabled');
               
@@ -745,13 +751,13 @@ $(function () {
 
         })
      });
-
+    
       // Attribue automatiquement la classe selected à la première ligne : 
     let selectFirst = function(){
         $('.multiButton').prop("disabled", true);
         let firstOne = $('#MyDevis').find('tr').eq(1);
         firstOne.addClass('selected');
-        
+       
         let dataRow = modifDevis.row(0).data();
         
         $("#ValiderDevis").val(dataRow[0]);
@@ -775,7 +781,7 @@ $(function () {
                 dataSet = JSON.parse(data);
                 checkradio(dataSet);
                 $('#loaderPdf').hide();
-                $('#iframeDevis').attr('src', 'pages/ajax/devisN.pdf');
+                $('#iframeDevis').attr('src', 'pages/ajax/'+idUtilisateur+'devis.pdf');
                 $('#iframeDevis').show();
                 $('.multiButton').removeAttr('disabled');
                  

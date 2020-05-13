@@ -128,7 +128,7 @@
           <div class="card h-100  shadow mb-2">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Port et commantaires <i class="fal fa-building"></i></h6>
+              <h6 class="m-0 font-weight-bold text-primary">Port et commentaires <i class="fal fa-building"></i></h6>
               <div class="dropdown no-arrow">
                 
                 <i class="far fa-check text-success" id="petitCheck" hidden></i>
@@ -775,11 +775,9 @@
                 <div class="col-4">
                   <label for="validationCustom04">Garantie/mois</label>
                   <select class="selectpicker" id="garantieRow" >
-                    <option value="06" selected>06</option>
-                    <option value="12">12</option>
-                    <option value="24">24</option>
-                    <option value="36">36</option>
-                    <option value="48">48</option>
+                    {% for garantie in garantiesList %}
+                    <option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}}</option>
+                    {% endfor %}
                   </select>
                 </div>
                 
@@ -933,11 +931,9 @@
                 <div class="col-4">
                   <label for="validationCustom04">Garantie/mois</label>
                   <select class="selectpicker" id="UPgarantieRow" >
-                    <option value="06" >06</option>
-                    <option value="12">12</option>
-                    <option value="24">24</option>
-                    <option value="36">36</option>
-                    <option value="48">48</option>
+                    {% for garantie in garantiesList %}
+                    <option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}}</option>
+                    {% endfor %}
                   </select>
                 </div>
                 

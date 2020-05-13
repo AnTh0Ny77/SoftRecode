@@ -93,16 +93,19 @@ public static function showdesignationView($object){
 
 // fonction d'affichage de garantie dans View :
 public static function showGarantieView($object){
-    $garantie = $object->devl__mois_garantie . " mois";
-    $extension = "";
-    $sautDeLigne = "";
-    if (!empty($object->ordre)) {
-        $sautDeLigne = "<br>";
-        foreach($object->ordre as $array){
-            $extension .= "<br>" . $array['devg__type'] . " mois";
+    if ($object->devl__mois_garantie > 0) {
+        $garantie = $object->devl__mois_garantie . " mois";
+        $extension = "";
+        $sautDeLigne = "";
+        if (!empty($object->ordre)) {
+            $sautDeLigne = "<br>";
+            foreach($object->ordre as $array){
+                $extension .= "<br>" . $array['devg__type'] . " mois";
+            }
         }
+        return $garantie . $sautDeLigne . $extension;
     }
-    return $garantie . $sautDeLigne . $extension;
+    
 }
 
 

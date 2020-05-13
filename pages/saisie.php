@@ -16,8 +16,8 @@ $user = $_SESSION['user'];
 //Connexion et requetes : 
 $Database = new App\Database('devis');
 $Database->DbConnect();
-$Command = new \App\Tables\Command($Database);
-$commandList =  $Command->getByStatus();
+$Command = new \App\Tables\Cmd($Database);
+$commandList =  $Command->getAll();
 
 foreach ($commandList as $command) {
     $commandDate = date_create($command->cmd__date_crea);

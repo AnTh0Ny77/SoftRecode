@@ -28,7 +28,7 @@ class Cmd extends Table {
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
-    k.keyword__lib,
+    k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
     c2.client__societe as client__livraison_societe,
@@ -36,11 +36,11 @@ class Cmd extends Table {
     c2.client__cp as client__livraison_cp , 
     c2.client__adr1 as client__livraison__adr1 , 
     u.log_nec
-    FROM 2_cmd
+    FROM cmd
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
-    LEFT JOIN keyword as k ON cmd__etat = k.keyword__value
+    LEFT JOIN keyword as k ON cmd__etat = k.kw__value AND  k.kw__type = 'stat'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     WHERE cmd__id = ". $id ."");
     $data = $request->fetch(PDO::FETCH_OBJ);
@@ -71,11 +71,11 @@ class Cmd extends Table {
     c2.client__cp as client__livraison_cp , 
     c2.client__adr1 as client__livraison__adr1 ,
     u.log_nec
-    FROM 2_cmd
+    FROM cmd
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
-    LEFT JOIN 2_keyword as k ON cmd__etat = k.kw__value and k.kw__type = 'stat'
+    LEFT JOIN keyword as k ON cmd__etat = k.kw__value and k.kw__type = 'stat'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     WHERE  cmd__user__id_devis = " . $id ." ORDER BY  devis__date_crea DESC , c.client__societe ASC LIMIT 200");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -104,11 +104,11 @@ class Cmd extends Table {
     c2.client__cp as client__livraison_cp , 
     c2.client__adr1 as client__livraison__adr1 , 
     u.log_nec 
-    FROM 2_cmd
+    FROM cmd
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
-    LEFT JOIN 2_keyword as k ON cmd__etat = k.kw__value and k.kw__type = 'stat'
+    LEFT JOIN keyword as k ON cmd__etat = k.kw__value and k.kw__type = 'stat'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200 ");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -118,7 +118,7 @@ class Cmd extends Table {
 
   public function updateStatus($etat,$id){
     $update = $this->Db->Pdo->prepare(
-    'UPDATE 2_cmd
+    'UPDATE cmd
      SET cmd__etat=? 
      WHERE cmd__id =?');
     $update->execute([$etat,$id]);
@@ -126,7 +126,7 @@ class Cmd extends Table {
 
   public function updateDate( $column , $date,  $id){
     $update = $this->Db->Pdo->prepare(
-    'UPDATE 2_cmd 
+    'UPDATE cmd 
      SET ' . $column. ' = ? 
      WHERE cmd__id =?    
     ');
@@ -135,7 +135,7 @@ class Cmd extends Table {
 
   public function updateAuthor($column , $author , $id){
     $update = $this->Db->Pdo->prepare(
-    'UPDATE 2_cmd 
+    'UPDATE cmd 
      SET '. $column .' = ? 
      WHERE cmd__id = ? 
     ');
@@ -144,7 +144,7 @@ class Cmd extends Table {
 
   public function updateGarantie($mois, $prix , $comInterne , $comClient ,  $id , $ordre){
     $update = $this->Db->Pdo->prepare(
-    'UPDATE 2_cmd_ligne
+    'UPDATE cmd_ligne
      SET  
      cmdl__garantie_option  = ? , 
      cmdl__garantie_puht = ? ,
@@ -180,11 +180,11 @@ class Cmd extends Table {
     c2.client__cp as client__livraison_cp , 
     c2.client__adr1 as client__livraison__adr1 , 
     u.log_nec
-    FROM 2_cmd
+    FROM cmd
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
-    LEFT JOIN 2_keyword as k ON cmd__etat = k.kw__value
+    LEFT JOIN keyword as k ON cmd__etat = k.kw__value and k.kw__type = 'stat'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     WHERE cmd__etat = 'VLD'     
     ORDER BY  cmd__date_devis DESC , c.client__societe ASC  LIMIT 200 ");
@@ -215,11 +215,11 @@ class Cmd extends Table {
     c2.client__cp as client__livraison_cp , 
     c2.client__adr1 as client__livraison__adr1 , 
     u.log_nec
-    FROM 2_cmd
+    FROM cmd
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
-    LEFT JOIN 2_keyword as k ON cmd__etat = k.kw__value
+    LEFT JOIN keyword as k ON cmd__etat = k.kw__value and k.kw__type = 'stat'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     WHERE cmd__etat = 'CMD'     
     ORDER BY  cmd__date_devis DESC , c.client__societe ASC  LIMIT 200 ");
@@ -248,11 +248,11 @@ class Cmd extends Table {
     c2.client__cp as client__livraison_cp , 
     c2.client__adr1 as client__livraison__adr1 , 
     u.log_nec
-    FROM 2_cmd
+    FROM cmd
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
-    LEFT JOIN 2_keyword as k ON cmd__etat = k.kw__value
+    LEFT JOIN keyword as k ON cmd__etat = k.kw__value and k.kw__type = 'stat'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     WHERE cmd__etat <> 'CMD'     
     ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC  LIMIT 200 ");
@@ -266,7 +266,7 @@ class Cmd extends Table {
     $comInterne, $etat, $modele , $arrayOfObject , $contact_livraison)
     {
     $request = $this->Db->Pdo->prepare(
-       'INSERT INTO 2_cmd (
+       'INSERT INTO cmd (
         cmd__date_devis , cmd__user__id_devis, cmd__client__id_fact ,
         cmd__client__id_livr, cmd__port, cmd__contact__id_fact,
         cmd__note_client, cmd__note_interne,
@@ -278,7 +278,7 @@ class Cmd extends Table {
         :devis__modele , :devis__id_contact_livraison)');
 
     $requestLigne =  $this->Db->Pdo->prepare(
-       'INSERT INTO  2_cmd_ligne (
+       'INSERT INTO  cmd_ligne (
         cmdl__cmd__id, cmdl__prestation, cmdl__pn , cmdl__designation ,
         cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  , cmdl__prix_barre , 
         cmdl__puht , cmdl__note_client  , cmdl__note_interne  , cmdl__ordre , cmdl__id__fmm)
@@ -288,7 +288,7 @@ class Cmd extends Table {
         :devl_puht , :devl__note_client , :devl__note_interne , :devl__ordre , :id__fmm)');
 
     $requestGarantie =  $this->Db->Pdo->prepare(
-       'INSERT INTO  2_cmd_garantie ( 
+       'INSERT INTO  cmd_garantie ( 
         cmdg__id__cmdl , cmdg__type , cmdg__prix  , cmdg__ordre )
         VALUES (
         :devg__id__devl , :devg__type , :devg__prix, :devg__ordre )');
@@ -345,12 +345,12 @@ public function modify(
     {
 
     $delete = $this->Db->Pdo->prepare(
-    'DELETE  from 2_cmd
+    'DELETE  from cmd
      WHERE cmd__id =  :cmd__id');
 
 
     $request = $this->Db->Pdo->prepare(
-     'INSERT INTO 2_cmd (
+     'INSERT INTO cmd (
       cmd__id, cmd__date_devis , cmd__user__id_devis, cmd__client__id_fact ,
       cmd__client__id_livr, cmd__port, cmd__contact__id_fact,
       cmd__note_client, cmd__note_interne,
@@ -362,7 +362,7 @@ public function modify(
       :devis__modele , :devis__id_contact_livraison)');
 
     $requestLigne =  $this->Db->Pdo->prepare(
-     'INSERT INTO  2_cmd_ligne (
+     'INSERT INTO  cmd_ligne (
       cmdl__cmd__id, cmdl__prestation, cmdl__pn , cmdl__designation ,
       cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  , cmdl__prix_barre , 
       cmdl__puht , cmdl__note_client  , cmdl__note_interne  , cmdl__ordre , cmdl__id__fmm)
@@ -372,7 +372,7 @@ public function modify(
       :devl_puht , :devl__note_client , :devl__note_interne , :devl__ordre , :id__fmm)');
 
     $requestGarantie =  $this->Db->Pdo->prepare(
-     'INSERT INTO  2_cmd_garantie ( 
+     'INSERT INTO  cmd_garantie ( 
       cmdg__id__cmdl , cmdg__type , cmdg__prix  , cmdg__ordre )
       VALUES (
       :devg__id__devl , :devg__type , :devg__prix, :devg__ordre )');
@@ -428,15 +428,15 @@ public function modify(
       $request =$this->Db->Pdo->query("SELECT
       cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
       cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
-      cmdl__etat as devl__etat, cmdl__garantie_base as devl__mois_garantie,
+      cmdl__etat as devl__etat, LPAD(cmdl__garantie_base,2,0) as devl__mois_garantie,
       cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
       cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
       cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
       k.kw__lib , k.kw__value , 
       k2.kw__lib as prestaLib
-      FROM 2_cmd_ligne 
-      LEFT JOIN 2_keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
-      LEFT JOIN 2_keyword as k2 ON cmdl__prestation = k2.kw__value AND k.kw__type = 'pres'
+      FROM cmd_ligne 
+      LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
+      LEFT JOIN keyword as k2 ON cmdl__prestation = k2.kw__value AND k2.kw__type = 'pres'
       WHERE cmdl__cmd__id = ". $id ."");
      
       $data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -446,7 +446,7 @@ public function modify(
     public function xtenGarantie($id){
       $request =$this->Db->Pdo->query("SELECT 
       cmdg__id as devg__id, cmdg__type  as  devg__type, cmdg__prix as  devg__prix
-      FROM 2_cmd_garantie  
+      FROM cmd_garantie  
       WHERE cmdg__id__cmdl = ". $id ."");
       $data = $request->fetchAll(PDO::FETCH_ASSOC);
       return $data;
