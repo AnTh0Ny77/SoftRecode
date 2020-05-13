@@ -18,8 +18,9 @@
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
-
+<link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css"> <!-- File Upload -->
 <link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css">
 <title>Devis</title>
 </head>
 <body >
@@ -161,7 +162,28 @@ Yb      Yb   dP 88YbdP88 88YbdP88  dP__Yb  88 Y88  8I  dY 88""   o.`Y8b
           </td>
           </tr>
 
-
+{#    d8    db    888888  dP"Yb  .dP"Y8 
+88b  d88   dPYb     88   dP   Yb `Ybo." 
+88YbdP88  dP__Yb    88   Yb   dP o.`Y8b 
+88 YY 88 dP""""Yb   88    YbodP  8bod#}
+<tr>
+  <td>
+  <a class="nav-link text-white"data-toggle="collapse" href="#collapseMatos" role="button" aria-expanded="false" aria-controls="collapseMatos">
+    <span data-feather="file"></span>
+    <i class="fad fa-user-robot fa-lg fa-fw" style="color: Gainsboro;"></i> Matos
+  </a>
+  <div class="collapse" id="collapseMatos">
+    <ul class="list-group">
+      <li class="list-group-item  bg-transparent border-0" >
+        <a class="nav-link text-white" href="catalogue">
+          <span data-feather="file"></span>
+          <i class="fad fa-clipboard-check fa-fw"></i> Catalogue
+        </a>
+      </li>
+    </ul>
+  </div>
+</td>
+</tr>
    {#    8888b.  8b    d8 88 88b 88 
   dPYb    8I  Yb 88b  d88 88 88Yb88 
  dP__Yb   8I  dY 88YbdP88 88 88 Y88 
@@ -204,5 +226,8 @@ dP""""Yb 8888Y"  88 YY 88 88 88  #}
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script  type="text/javascript" src="public/js/client.js"></script>
 <script  type="text/javascript" src="public/js/client2.js"></script>
+<script type="text/javascript" src="public/mdb/js/mdb.min.js"></script> <!-- MDB core JavaScript -->
+<script type="text/javascript" src="public/mdb/js/mdb-file-upload.min.js"></script>
+<script>$('.file_upload').file_upload();</script> {# pour le file_upload #}
 </body>
 </html>

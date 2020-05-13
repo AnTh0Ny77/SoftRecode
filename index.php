@@ -24,6 +24,8 @@ dP""""Yb 8888Y"  88  Yb 888888 8bodP' 8bodP' dP""""Yb  YboodP 888888     8888Y" 
       require __DIR__ .'/pages/utilities/unlog.php'; break;
     case '/SoftRecode/noAccess';
       require __DIR__ .'/pages/noAccess.php'; break;
+      case '/SoftRecode/test';
+      require __DIR__ .'/pages/test.php'; break;
 
 /*   88 .dP"Y8 888888 88""Yb 
 88   88 `Ybo." 88__   88__dP 
@@ -39,6 +41,22 @@ Y8   8P o.`Y8b 88""   88"Yb
       require __DIR__ .'/pages/UserModif.php'; break;
     case '/SoftRecode/UserCreat';
       require __DIR__ .'/pages/UserCreat.php'; break;
+
+
+       /*    88""Yb 888888 88  dP""b8 88     888888 
+  dPYb   88__dP   88   88 dP   `" 88     88__   
+ dP__Yb  88"Yb    88   88 Yb      88  .o 88""   
+dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/ 
+    case '/SoftRecode/catalogue';
+    require __DIR__ .'/pages/ArtCataloguePN.php';break;
+  case '/SoftRecode/ArtCataloguePN';
+    require __DIR__ .'/pages/ArtCataloguePN.php';break;
+  case '/SoftRecode/ArtCatalogueModele';
+    require __DIR__ .'/pages/ArtCatalogueModele.php';break;
+  case '/SoftRecode/ArtCreation';
+    require __DIR__ .'/pages/ArtCreat.php';break;
+  case '/SoftRecode/U_ArtUpdate';
+    require __DIR__ .'/pages/utilities/U_ArtUpdate.php'; break;
 
 
 

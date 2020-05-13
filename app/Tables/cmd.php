@@ -435,8 +435,8 @@ public function modify(
       k.kw__lib , k.kw__value , 
       k2.kw__lib as prestaLib
       FROM 2_cmd_ligne 
-      LEFT JOIN 2_keyword as k ON cmdl__etat = k.kw__value
-      LEFT JOIN 2_keyword as k2 ON cmdl__prestation = k2.kw__value 
+      LEFT JOIN 2_keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
+      LEFT JOIN 2_keyword as k2 ON cmdl__prestation = k2.kw__value AND k.kw__type = 'pres'
       WHERE cmdl__cmd__id = ". $id ."");
      
       $data = $request->fetchAll(PDO::FETCH_OBJ);

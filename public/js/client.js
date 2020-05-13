@@ -189,7 +189,7 @@ $('#AjaxClient').on('click', function(){
     "columns": [
     {"data": "contact__id"},
     {"data": "contact__nom"},
-    {"data": "keyword__lib"}],  
+    {"data": "kw__lib"}],  
     "paging": true,
     "info":   true,
     "deferRender": true,
@@ -234,7 +234,7 @@ $('#AjaxClient').on('click', function(){
     "columns": [
     {"data": "contact__id"},
     {"data": "contact__nom"},
-    {"data": "keyword__lib"}],  
+    {"data": "kw__lib"}],  
     "paging": true,
     "info":   true,
     "deferRender": true,
@@ -827,8 +827,11 @@ $(function () {
 
         })
     }
+    if ($('#MyCommande').length > 0) {
+         selectFirstCMD();
+    }
    
-    selectFirstCMD();
+   
 
 
 
@@ -1157,7 +1160,6 @@ $(function () {
                 success: function(data){
                    
                     dataSet = JSON.parse(data);
-                  
                     $('#UPchoixPn option').remove();
                     $('#UPchoixPn').append(new Option('..', '' , false, true));
                     for (let index = 0; index < dataSet.length; index++) {

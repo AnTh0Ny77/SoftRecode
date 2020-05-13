@@ -1,0 +1,133 @@
+{% extends 'layoutMain.twig' %}
+{% block main %}
+
+{# en paramettre je recupere action qui me donne Creat ou Modif, l'option par defaut est Creat. #}
+{% set Modif = FALSE %}
+{% if action == 'Modif' %}
+    {% set Modif = TRUE %}
+{% endif %}
+
+{#8888 88 888888 88""Yb 888888 
+  88   88   88   88__dP 88__   
+  88   88   88   88"Yb  88""   
+  88   88   88   88  Yb 88888#}
+    <main role="main" class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        {% if Modif %}
+            <h1 class="h2">Modification de Modèle {{ sujet.nom ~ " " ~ sujet.prenom }} <i class="fad fa-user-edit"></i></h1>
+        {% else %}
+            <h1 class="h2">Création de Modèle <i class="fad fa-robot"></i></h1>
+        {% endif %}
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+            </div>
+        </div>
+    </div>
+
+{#""Yb 88      dP"Yb   dP""b8     .dP"Y8    db    88 .dP"Y8 88 888888 
+88__dP 88     dP   Yb dP   `"     `Ybo."   dPYb   88 `Ybo." 88 88__   
+88""Yb 88  .o Yb   dP Yb          o.`Y8b  dP__Yb  88 o.`Y8b 88 88""   
+88oodP 88ood8  YbodP   YboodP     8bodP' dP""""Yb 88 8bodP' 88 88888#}
+    <div class="col-8">
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <form  enctype="multipart/form-data" method="POST" action="U_ArtUpdate">
+                    <input type="hidden" name={{ action }}>
+                    {% if Modif %}
+                        <input type="hidden" name="idUser" id="idUser" value="{{sujet.id_utilisateur}}">
+                    {% endif %}
+
+{# Famille #}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <div class="form-control-lg">
+                                <i class="fad fa-object-group fa-lg fa-fw"></i> Famille :
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <select class="selectpicker form-control" name="famille" multiple data-live-search="true" title="Choisir une famille" data-live-search-placeholder="Rechercher ici" data-max-options="1" required>
+                                {% for Famille in ArtFamille  %}
+                                <option value="{{Famille.kw__value}}">{{Famille.kw__lib}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+{# Marque #}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <div class="form-control-lg">
+                                <i class="fad fa-trademark fa-lg fa-fw"></i> Marque :
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <select class="selectpicker form-control" name="marque" multiple data-live-search="true" title="Choisir une marque" data-live-search-placeholder="Rechercher ici" data-max-options="1" required>
+                                {% for Marque in ArtMarque  %}
+                                <option value="{{Marque.am__id}}">{{Marque.am__marque}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+{# Modele #}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <div class="form-control-lg">
+                                <i class="fad fa-clipboard-check fa-lg fa-fw"></i> Modèle :
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="modele" placeholder="Saisir votre nouveau modele" required>
+                            </div>
+                        </div>
+                    </div>
+
+{# Image #}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <div class="form-control-lg">
+                                <i class="fad fa-image fa-lg fa-fw"></i> Photo :
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <div class="file-upload-wrapper">
+                                    <input type="file" name="modele_image" id="modele_image" class="file_upload" data-max-file-size="2M" data-height="300"/>
+                            </div>
+                        </div>
+                    </div>
+
+{# Doc #}
+                    <div class="form-group row">
+                        <div class="col-3">
+                            <div class="form-control-lg">
+                                <i class="fad fa-file-pdf fa-lg fa-fw"></i> Doc (PDF) :
+                            </div>
+                        </div>
+                        <div class="col-9">
+                            <div class="file-upload-wrapper">
+                                <div class="input-group">
+                                    <input type="file" name="modele_doc" id="modele_doc" class="file_upload" data-max-file-size="3M" data-height="80"/>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+
+{# Validation #}
+                    <div class="form-group row">
+                        <div class="col-9">
+                        </div>
+                        <div class="col-3">
+                            <div class="card">
+                                <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top" title="Valider votre création"> Valider</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    </main>
+
+{% endblock %}

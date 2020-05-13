@@ -160,7 +160,7 @@ let checkTableRows = function(subject){
 
     // function d'affichage d'un contact : 
     let showContact = function(data){
-      let text = data.contact__nom + '<br>' + data.contact__prenom + '<br>' + data.keyword__lib ;
+      let text = data.contact__nom + '<br>' + data.contact__prenom + '<br>' + data.kw__lib ;
       return text; 
     }
 

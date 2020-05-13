@@ -1,0 +1,99 @@
+{% extends 'layoutMain.twig' %}
+{% block main %}
+
+
+ {#""b8    db    888888    db    88      dP"Yb   dP""b8 88   88 888888     8b    d8  dP"Yb  8888b.  888888 88     888888 
+dP   `"   dPYb     88     dPYb   88     dP   Yb dP   `" 88   88 88__       88b  d88 dP   Yb  8I  Yb 88__   88     88__   
+Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88YbdP88 Yb   dP  8I  dY 88""   88  .o 88""   
+ YboodP dP""""Yb   88   dP""""Yb 88ood8  YbodP   YboodP `YbodP' 888888     88 YY 88  YbodP  8888Y"  888888 88ood8 88888#} 
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+{# Titre #}
+	<div class="col-11 d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+		<div class="h2">Catalogue Modèle <i class="fad fa-clipboard-check"></i></div>
+		<a class="btn btn-outline-secondary btn-sm ml-3" href="ArtCataloguePN">Voir par PN</a>
+	</div>
+{# Bloc Ombragé #}
+	<div class="col-11">
+		<div class="card shadow mb-4">
+{# Barre de recherche et bouton #}
+		<form role="form" method="post" action="ArtCatalogueModele">
+			<div class="card-header d-flex flex-row align-items-center justify-content-center">
+				<div class="input-group input-group-lg">
+					<input type="text" autofocus class="form-control" name="art_filtre" id="art_filtre" placeholder="Rechercher dans le catalogue" value="{{ArtFiltre}}">
+					<div class="input-group-append ">
+						<button class="btn btn-lg input-group-text" type="submit" name="art_btn_filtre" title="Ajouter un materiel"><i class="fad fa-bullseye-arrow fa-lg"></i></button>
+					</div>
+					<a class="btn btn-info btn-lg ml-3" href="ArtCreation">Création</a>
+				</div>
+			</div>
+		</form>
+{# Tableau #}
+		<div class="card-body">
+			<div class="chart-area">
+				{# Boucle de 4 pour : 0->Articles de base les 1->ACC , 2->CON , 3->PID #}
+				{% for i in 0..3 %}
+					{% if i == 0 %} {# ArtListe#}
+						{% set CountX = CountListe %}
+						{% set CountParts = CountACC + CountCON + CountPID %}
+						{% set TblColor = '' %}
+						{% set ArtX = ArtListe %}
+					{% endif %}
+					{% if i == 1 %} {# ACC - Accessoire et option #}
+						{% set Titre = 'Accessoires / Options' %}
+						{% set CountX = CountACC %}
+						{% set TblColor = 'table-info' %}
+						{% set ArtX = ArtACC %}
+					{% endif %}
+					{% if i == 2 %} {# CON - Consommable #}
+						{% set Titre = 'Consommables' %}
+						{% set CountX = CountCON %}
+						{% set TblColor = 'table-warning' %}
+						{% set ArtX = ArtCON %}
+					{% endif %}
+					{% if i == 3 %} {# PID - Pièces Détachées #}
+						{% set Titre = 'Pièces détachées' %}
+						{% set CountX = CountPID %}
+						{% set TblColor = 'table-active' %}
+						{% set ArtX = ArtPID %}
+					{% endif %}
+					{% if CountX > 0 %}
+					<table class="table {{TblColor}}">
+						{% if i == 0 %} 
+							<div class="h5">{{CountListe}} Modèles {% if CountParts > 0 %}& {{CountParts}} références connexes{% endif %}</div>
+						{% else %}
+							<div class="h5">{{CountX}} {{Titre}}</div>
+						{% endif %}
+						<tbody>
+							{% for Art in ArtX %}
+							<form method="post" action="ArtCatalogueModele">
+							<input type="hidden" name="filtre_famille" value=",{{Art.Famille}}">
+							<input type="hidden" name="filtre_marque"  value=";{{Art.Marque}}">
+							<input type="hidden" name="filtre_modele"  value=":{{Art.Modele}}">
+							<tr>
+								<td align=left>
+								<button type="submit" name="link_famille" class="btn btn-link py-0 px-0 ">{{Art.Famille}}</button> -
+								<button type="submit" name="link_marque"  class="btn btn-link py-0 px-0 ">{{Art.Marque}}</button> -
+								<button type="submit" name="link_modele"  class="btn btn-link py-0 px-0 ">{{Art.Modele}}</button>
+								</td>
+								<td align=center>{{Art.Image|raw}}</td>
+								<td align=center>{% if Art.Doc %}<a href="{{Art.Doc}}" target="_blank"><i class="fad fa-file-pdf fa-lg" style="--fa-primary-color: orangered;"></i></a>{% endif %}
+								<i class="fal fa-cubes fa-lg"></i></td>
+							</tr>
+							</form>
+							{% endfor %}
+						</tbody>
+					</table>
+					{% endif %}
+				{% endfor %}
+				{% if CountListe == 0 %}
+					<div class="h5">Aucun résultat pour votre recherche.</div>
+				{% endif %}
+			</div>
+		</div>
+
+	</div>
+</div>
+</main>
+
+{% endblock %}

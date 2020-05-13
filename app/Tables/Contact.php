@@ -15,17 +15,20 @@ class Contact extends Table {
 }
 
 public function getFromLiaison($idClient){
-    $request =$this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , contact__fonction , k.keyword__lib 
+    $request =$this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , contact__fonction , k.kw__lib 
     FROM contact AS c 
     INNER JOIN liaison_client_contact AS l ON c.contact__id = l.liaison__contact__id 
-    JOIN keyword as k ON contact__fonction = k.keyword__value 
+    JOIN 2_keyword as k ON contact__fonction = k.kw__value AND k.kw__type = 'i_con'
     WHERE l.liaison__client__id =".$idClient."");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
 }
 
 public function getOne($id){
-    $request =$this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , contact__civ , contact__email , k.keyword__lib FROM contact JOIN keyword AS k ON contact__fonction = k.keyword__value WHERE contact__id = ". $id ."");
+    $request =$this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , contact__civ , contact__email , k.kw__lib 
+    FROM contact 
+    JOIN 2_keyword AS k ON contact__fonction = k.kw__value AND k.kw__type = 'i_con'
+    WHERE contact__id = ". $id ."");
     $data = $request->fetch(PDO::FETCH_OBJ);
     return $data;
 }
