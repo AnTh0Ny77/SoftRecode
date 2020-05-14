@@ -144,10 +144,10 @@
                 
                 <div>
                   <form  method="POST" action="mesDevis" id="devisSend">
-                    <div class="modal-body ">
+                    <div class="modal-body my-3 ">
                       <input id="dataDevis" name="dataDevis" type="hidden" value="">
-                      <div class=" d-flex col-10  justify-content-start mb-3">
-                        <div class="col-5">
+                      <div class=" d-flex col-12  justify-content-between mb-3">
+                        <div class="col-4">
                         <label for="validationCustom04">Frais de port € H.T</label>
                         {% if temp %}
                         <input class="form-control " type="text"  id="port" name="port" value="{{temp.devis__port}}">
@@ -155,16 +155,24 @@
                         <input class="form-control " type="text"  id="port" name="port">
                         {% endif %}
                         </div>
+                        <div class="col-6">
+                          <label for="validationCustom04">Titre du devis </label>
+                          
+                          <input class="form-control " type="text"  id="titre" name="titre" value="">
+                        
+                          </div>
                       
                       </div>
                      
                         {% if temp %}
                         <div class="col-12 mt-2 mb-2 d-flex justify-content-center ">
                           <div class="col-6">
-                          <textarea class="form-control" id="globalComClient" name="globalComClient" placeholder="Commentaire client...." rows="4">{{temp.devis__note_client}}</textarea>
+                            <label for="globalComClient">Commentaire Client</label>
+                          <textarea class="form-control" id="globalComClient" name="globalComClient" placeholder="Commentaire client...." rows="5">{{temp.devis__note_client}}</textarea>
                           </div>
                           <div class="col-6">
-                            <textarea class="form-control" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." rows="4">{{temp.devis__note_interne}}</textarea>
+                            <label for="globalComInt">Commentaire Interne</label>
+                            <textarea class="form-control" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." rows="5">{{temp.devis__note_interne}}</textarea>
                             </div>    
                         </div>
                         {% else %}

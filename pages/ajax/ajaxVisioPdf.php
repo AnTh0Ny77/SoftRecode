@@ -36,6 +36,8 @@ $formated_date = $date_time->format('d/m/Y');
  ?>
  
  <style type="text/css">
+      table{   font-size: 15px; font-style: normal; font-variant: normal;}
+     
       strong{ color:#000;}
       h3{ color:#666666;}
       h2{ color:#3b3b3b;}
@@ -112,7 +114,7 @@ $formated_date = $date_time->format('d/m/Y');
                          array_push( $arrayPrice, floatval(floatval($obj->devl_puht)*intval($obj->devl_quantite)));
                  };
                  
-                         echo "<tr style='font-size: 85%;'>
+                         echo "<tr style='font-size: 85%;  font-style: italic;'>
                          <td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>port</td>
                          <td valign='top' style='width: 37%; text-align: left; border-bottom: 1px #ccc solid'></td>
                          <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'></td>
