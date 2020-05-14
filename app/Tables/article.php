@@ -42,11 +42,11 @@ class Article extends Table
     {
       $first_digit = substr($art_filtre,0,1);
       $art_filtre_special = trim(substr($art_filtre,1));
-      $SQL_ORDER = 'ORDER BY 2_keyword.kw__ordre ASC, art_fmm.afmm__modele ASC, art_pn.apn__pn ASC ';
+      $SQL_ORDER = 'ORDER BY keyword.kw__ordre ASC, art_fmm.afmm__modele ASC, art_pn.apn__pn ASC ';
       switch ($first_digit) 
       {
         case ",": // Famille
-          $SQL_WHERE .= 'WHERE ( 2_keyword.kw__lib     like(\''.$art_filtre_special.'\') ) ';
+          $SQL_WHERE .= 'WHERE ( keyword.kw__lib     like(\''.$art_filtre_special.'\') ) ';
           break;
         case ";": // Marque
           $SQL_WHERE .= 'WHERE ( art_marque.am__marque like(\''.$art_filtre_special.'\') ) ';
@@ -77,7 +77,7 @@ class Article extends Table
               $SQL_WHERE .= 'art_fmm.afmm__modele     like(\'%'.$mots_filtre[$i].'%\') OR ';
               $SQL_WHERE .= 'art_marque.am__marque    like(\'%'.$mots_filtre[$i].'%\') OR ';
               $SQL_WHERE .= 'art_pn.apn__pn           like(\'%'.$mots_filtre[$i].'%\') OR ';
-              $SQL_WHERE .= '2_keyword.kw__lib        like(\'%'.$mots_filtre[$i].'%\') OR ';
+              $SQL_WHERE .= 'keyword.kw__lib        like(\'%'.$mots_filtre[$i].'%\') OR ';
               $SQL_WHERE .= 'art_pn.apn__desc_short   like(\'%'.$mots_filtre[$i].'%\') ';
               $SQL_WHERE .= ') '.$opperateur;
             }
@@ -87,7 +87,7 @@ class Article extends Table
       }
     }
     $SQL = 'SELECT 
-    2_keyword.kw__lib as Famille, art_marque.am__marque as Marque, art_fmm.afmm__modele as Modele, 
+    keyword.kw__lib as Famille, art_marque.am__marque as Marque, art_fmm.afmm__modele as Modele, 
     art_pn.apn__pn_long as PN, art_pn.apn__desc_short as Info, 
     art_pn.apn__id_user_modif as ID_User_Modif, art_pn.apn__date_modif as Date_Modif,
     art_fmm.afmm__image as FMM_Image, art_fmm.afmm__doc as FMM_Doc,
@@ -95,7 +95,7 @@ class Article extends Table
     FROM art_pn
     INNER JOIN art_fmm ON art_pn.apn__afmm__id = art_fmm.afmm__id
     INNER JOIN art_marque ON art_fmm.afmm__marque = art_marque.am__id
-    INNER JOIN 2_keyword ON art_fmm.afmm__famille = 2_keyword.kw__value and 2_keyword.kw__type = \'famil\' '.
+    INNER JOIN keyword ON art_fmm.afmm__famille = keyword.kw__value and keyword.kw__type = \'famil\' '.
     $SQL_WHERE.$SQL_ORDER.
     'LIMIT 0,50 ';
     //print $SQL; // pour debug
@@ -141,11 +141,11 @@ class Article extends Table
     {
       $first_digit = substr($filtre,0,1);
       $filtre_special = trim(substr($filtre,1));
-      $SQL_ORDER = 'ORDER BY 2_keyword.kw__ordre ASC, art_fmm.afmm__modele ASC ';
+      $SQL_ORDER = 'ORDER BY keyword.kw__ordre ASC, art_fmm.afmm__modele ASC ';
       switch ($first_digit) 
       {
         case ",": // Famille
-          $SQL_WHERE .= 'WHERE ( 2_keyword.kw__lib     like(\''.$filtre_special.'\') ) ';
+          $SQL_WHERE .= 'WHERE ( keyword.kw__lib     like(\''.$filtre_special.'\') ) ';
           break;
         case ";": // Marque
           $SQL_WHERE .= 'WHERE ( art_marque.am__marque like(\''.$filtre_special.'\') ) ';
@@ -171,7 +171,7 @@ class Article extends Table
               $SQL_WHERE .= '( ';
               $SQL_WHERE .= 'art_fmm.afmm__modele     like(\'%'.$mots_filtre[$i].'%\') OR ';
               $SQL_WHERE .= 'art_marque.am__marque    like(\'%'.$mots_filtre[$i].'%\') OR ';
-              $SQL_WHERE .= '2_keyword.kw__lib        like(\'%'.$mots_filtre[$i].'%\') ';
+              $SQL_WHERE .= 'keyword.kw__lib        like(\'%'.$mots_filtre[$i].'%\') ';
               $SQL_WHERE .= ') '.$opperateur;
             }
             $SQL_WHERE = substr($SQL_WHERE,0,-1*strlen($opperateur)); // supprimer le dernier opperateur.
@@ -180,11 +180,11 @@ class Article extends Table
       }
     }
     $SQL = 'SELECT 
-    2_keyword.kw__lib as Famille, art_marque.am__marque as Marque, art_fmm.afmm__modele as Modele, 
+    keyword.kw__lib as Famille, art_marque.am__marque as Marque, art_fmm.afmm__modele as Modele, 
     art_fmm.afmm__image as FMM_Image, art_fmm.afmm__doc as FMM_Doc, art_fmm.afmm__id as FMM_ID 
     FROM art_fmm
     INNER JOIN art_marque ON art_fmm.afmm__marque = art_marque.am__id
-    INNER JOIN 2_keyword ON art_fmm.afmm__famille = 2_keyword.kw__value and 2_keyword.kw__type = \'famil\' '.
+    INNER JOIN keyword ON art_fmm.afmm__famille = keyword.kw__value and keyword.kw__type = \'famil\' '.
     $SQL_WHERE.$SQL_ORDER.
     'LIMIT 0,50 ';
     //print $SQL; // pour debug
@@ -239,7 +239,7 @@ class Article extends Table
     }
 
     $SQL = 'SELECT 
-    2_keyword.kw__lib as Famille, art_fmm.afmm__famille as Famille_Key, art_marque.am__marque as Marque, art_fmm.afmm__modele as Modele,
+    keyword.kw__lib as Famille, art_fmm.afmm__famille as Famille_Key, art_marque.am__marque as Marque, art_fmm.afmm__modele as Modele,
     art_pn.apn__pn_long as PN, art_pn.apn__desc_short as Info, art_pn.apn__id_user_modif as ID_User_Modif,
     art_pn.apn__date_modif as Date_Modif, art_fmm.afmm__image as FMM_Image, art_fmm.afmm__doc as FMM_Doc,
     art_pn.apn__image as PN_Image, art_pn.apn__doc as PN_Doc, art_parts.apa__pa2_info as Parts_Info
@@ -247,9 +247,9 @@ class Article extends Table
     INNER JOIN art_pn ON art_parts.apa__pn = art_pn.apn__pn
     INNER JOIN art_fmm ON art_pn.apn__afmm__id = art_fmm.afmm__id
     INNER JOIN art_marque ON art_fmm.afmm__marque = art_marque.am__id
-    INNER JOIN 2_keyword ON art_fmm.afmm__famille = 2_keyword.kw__value and 2_keyword.kw__type = \'famil\' '.
+    INNER JOIN keyword ON art_fmm.afmm__famille = keyword.kw__value and keyword.kw__type = \'famil\' '.
     $SQL_WHERE.
-    'ORDER BY 2_keyword.kw__ordre ASC, art_pn.apn__pn ASC limit 0,50 ';
+    'ORDER BY keyword.kw__ordre ASC, art_pn.apn__pn ASC limit 0,50 ';
 
     // print $SQL; // pour debug
     $request =$this->Db->Pdo->query($SQL);
@@ -307,7 +307,7 @@ class Article extends Table
   public function getFAMILLE()
   { /* Liste des famille dans keyword.famil */
     $SQL = 'SELECT kw__value, kw__lib, kw__lib_uk, kw__info
-    FROM 2_keyword WHERE kw__type = \'famil\' ORDER BY kw__ordre, kw__lib';
+    FROM keyword WHERE kw__type = \'famil\' ORDER BY kw__ordre, kw__lib';
     $request =$this->Db->Pdo->query($SQL);
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
