@@ -27,14 +27,14 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
             element  =  xtendAdd[index][0] + ' mois ' + +xtendAdd[index][1] + ' €<br>';
             xtendString += element;
         }
-            if (garantie) {
+            if (garantie > 0) {
                 row.push( garantie + " mois" + " <hr> <b>Extensions</b> : <br>" + xtendString);  
-            }else {  row.push(""  +  " <hr> <b>Extensions</b> : <br>" + xtendString )  }
+            }else {  row.push("sans garantie"  +  " <hr> <b>Extensions</b> : <br>" + xtendString )  }
           
     } else {
-       
-       
-        row.push( garantie + " mois");
+        if (garantie != "00") {
+            row.push( garantie + " mois"); 
+        }else {  row.push("sans garantie"  )  }
     }
     
     row.push( quantite);
@@ -92,13 +92,16 @@ let modifyLine = function (table,id,prestation,designation,comClient, comInterne
                 element  =  xtendAdd[index][0] + ' mois ' + +xtendAdd[index][1] + ' €<br>';
                 xtendString += element;
             }
-                if (garantie) {
+                if (garantie != "00") {
                     row.push( garantie + " mois" + " <hr> <b>Extensions</b> : <br>" + xtendString);  
-                }else {  row.push(""  +  " <hr> <b>Extensions</b> : <br>" + xtendString )  }
+                }else {  row.push("sans garantie"  +  " <hr> <b>Extensions</b> : <br>" + xtendString )  }
             
         } else {
+            if (garantie != "00") {
+                row.push( garantie + " mois"); 
+            }else {  row.push("sans garantie"  )  }
         
-             row.push( garantie + " mois");
+            
         }
         
         row.push( quantite);

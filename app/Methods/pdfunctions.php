@@ -43,6 +43,19 @@ public static function showPriceView($object){
 }
 
 
+//fonction d'affichage de l'etat : 
+public static function showEtat($object){
+    $none = "";
+    if ($object == 'Non Concerné') {
+       
+       return $none;
+    }
+    else {
+        return $object;
+    }
+
+}
+
 
 
 // fonction d'affichage  prestation dans View :

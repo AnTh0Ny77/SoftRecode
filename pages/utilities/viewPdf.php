@@ -86,7 +86,7 @@ $formated_date = $date_time->format('d/m/Y');
                          echo "<tr style='font-size: 85%;'>
                          <td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>" .Pdfunctions::showPrestationView($obj)."</td>
                          <td valign='top' style='width: 37%; text-align: left; border-bottom: 1px #ccc solid ; padding-bottom:15px'>" .Pdfunctions::showdesignationView($obj). "</td>
-                         <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'>" .$obj->kw__lib ."</td>
+                         <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'>" .Pdfunctions::showEtat($obj->kw__lib) ."</td>
                          <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'>" .Pdfunctions::showGarantieView($obj) ."</td>
                          <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .Pdfunctions::showQuantiteView($obj) ."</td>
                          <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" . Pdfunctions::showPriceView($obj) ."</td>
