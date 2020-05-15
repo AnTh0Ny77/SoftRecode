@@ -37,7 +37,7 @@ $formated_date = $date_time->format('d/m/Y');
  
  <style type="text/css">
       strong{ color:#000;}
-      table{   font-size: 15px; font-style: normal; font-variant: normal;}
+      table{   font-size: 14px; font-style: normal; font-variant: normal;}
       h3{ color:#666666;}
       h2{ color:#3b3b3b;}
       table{ 
@@ -84,14 +84,15 @@ $formated_date = $date_time->format('d/m/Y');
                  $array36 = [];
                  $array48 = [];
                  foreach($arrayOfDevisLigne as $value=>$obj){
-                         echo "<tr style='font-size: 85%;'>
-                         <td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>" .Pdfunctions::showPrestationView($obj)."</td>
-                         <td valign='top' style='width: 37%; text-align: left; border-bottom: 1px #ccc solid ; padding-bottom:15px'>" .Pdfunctions::showdesignationView($obj). "</td>
-                         <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'>" .Pdfunctions::showEtat($obj->kw__lib) ."</td>
-                         <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'>" .Pdfunctions::showGarantieView($obj) ."</td>
-                         <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .Pdfunctions::showQuantiteView($obj) ."</td>
-                         <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" . Pdfunctions::showPriceView($obj) ."</td>
-                         <br></tr> "; 
+                        //  echo "<tr style='font-size: 85%;'>
+                        //  <td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>" .Pdfunctions::showPrestationView($obj)."</td>
+                        //  <td valign='top' style='width: 37%; text-align: left; border-bottom: 1px #ccc solid ; padding-bottom:15px'>" .Pdfunctions::showdesignationView($obj). "</td>
+                        //  <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'>" .Pdfunctions::showEtat($obj->kw__lib) ."</td>
+                        //  <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'>" .Pdfunctions::showGarantieView($obj) ."</td>
+                        //  <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .Pdfunctions::showQuantiteView($obj) ."</td>
+                        //  <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" . Pdfunctions::showPriceView($obj) ."</td>
+                        //  <br></tr> "; 
+                        echo Pdfunctions::magicLine($obj);
                          $xtendTotal = Pdfunctions::xTendTotalView($obj->ordre);
                          $price12 = array_sum($xtendTotal[0]);
                          $price24 = array_sum($xtendTotal[1]);
