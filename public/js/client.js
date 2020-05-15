@@ -613,7 +613,7 @@ $('#AjaxClient').on('click', function(){
            
             
           ],
-        "order": [[ 1, "asc" ] ],
+        "order": [[ 1, "desc" ] ],
         "paging": true,
          "info":   false,
          "pageLength": 10,
@@ -648,7 +648,7 @@ $('#AjaxClient').on('click', function(){
               
                 
         },
-        "order": [[ 2, "asc" ] ],
+        "order": [[ 2, "asc" ] , [4 ,"desc"]],
         "paging": true,
          "info":   false,
         retrieve: true,
