@@ -39,7 +39,7 @@ public static function showPriceView($object){
     if (!empty($object->ordre)) {
         $sautDeLigne = "<br>";
         foreach($object->ordre as $array){
-            $extension .= "<br>" . number_format(floatVal($array['devg__prix']),2) . " €";
+            $extension .= "<br>" . number_format(floatVal($array['devg__prix']),2 , ',' , ' ') . " €";
         }
     }
     return $barre . " " . $price . $sautDeLigne . $extension;
@@ -130,7 +130,7 @@ public static function magicLine($object){
 
      // prix et prix barre 
     if ($object->devl__prix_barre > 0 ) {
-        $barre = "<s>". $object->devl__prix_barre ." €</s>";
+        $barre = "<s>". number_format(floatVal($object->devl__prix_barre),2 , ',',' ') ." €</s>";
      } 
      else {
         $barre = '';
@@ -138,7 +138,7 @@ public static function magicLine($object){
     
 
      if (!empty($object->devl_puht)) {
-        $price =  $object->devl_puht ." €";
+        $price = number_format(floatVal($object->devl_puht),2 , ',',' ')  ." €";
     }
     else{ $price =  "offert"; }
 
@@ -200,7 +200,7 @@ public static function magicLine($object){
             $thirdCell2 =  "<td valign='top' style='text-align: left; '></td>";
             $fourthCell2 = "<td valign='top' style='width: 12%; text-align: center; '>" . $array['devg__type'] ." mois </td>";
             $fifthCell2 ="<td valign='top' style='text-align: center;  '>" .$quantité ."</td>";
-            $lastCell2 = "<td valign='top' style='text-align: center; width: 20%; ; '>" . number_format(floatVal($array['devg__prix']),2) ." €</td>" ;
+            $lastCell2 = "<td valign='top' style='text-align: center; width: 20%; ; '>" . number_format(floatVal($array['devg__prix']),2 , ',',' ') ." €</td>" ;
             $endSecondLine = "</tr> ";
             if ( $array === end($object->ordre2)) {
                 $secondLine = "<tr style='font-size: 85%; font-style: italic;'>" ;
@@ -214,7 +214,7 @@ public static function magicLine($object){
                 $thirdCell2 =  "<td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'></td>";
                 $fourthCell2 = "<td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'>" . $array['devg__type'] ." mois </td>";
                 $fifthCell2 ="<td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .$quantité ."</td>";
-                $lastCell2 = "<td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" . number_format(floatVal($array['devg__prix']),2) ." €</td>" ;
+                $lastCell2 = "<td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" . number_format(floatVal($array['devg__prix']),2 , "," , " ") ." €</td>" ;
             }
             $extensionLine = $secondLine . $firstCell2 . $secondCell2 . $thirdCell2 . $fourthCell2 . $fifthCell2 . $lastCell2 . $endSecondLine ;
             $extension .= $extensionLine ;
@@ -306,7 +306,7 @@ public static function xTendTotalView($xtendArray){
 
 // function 20% 
 public static function ttc($price){
-    
+   
     $opex = floatval(($price*20)/100);
     $results = $opex + $price;
     return $results;
