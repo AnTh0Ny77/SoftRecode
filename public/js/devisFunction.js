@@ -63,7 +63,7 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
     table.row.add(row).draw( false );
     row = [];
     $('#referenceS').val(designation);
-    count ++; 
+   
 }
 
 

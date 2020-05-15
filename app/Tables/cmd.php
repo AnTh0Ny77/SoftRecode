@@ -321,7 +321,7 @@ class Cmd extends Table {
         $requestLigne->bindValue(":devl_puht", floatval($object->prix));
         $requestLigne->bindValue(":devl__note_client", $object->comClient);
         $requestLigne->bindValue(":devl__note_interne", $object->comInterne);
-        $requestLigne->bindValue(":devl__ordre", $count);
+        $requestLigne->bindValue(":devl__ordre", $object->id);
         $requestLigne->execute();  
         $idLigne = $this->Db->Pdo->lastInsertId();
         $count2 = 0;  
@@ -408,7 +408,7 @@ public function modify(
         $requestLigne->bindValue(":devl_puht", floatval($object->prix));
         $requestLigne->bindValue(":devl__note_client", $object->comClient);
         $requestLigne->bindValue(":devl__note_interne", $object->comInterne);
-        $requestLigne->bindValue(":devl__ordre", $count);
+        $requestLigne->bindValue(":devl__ordre", $object->id);
         $requestLigne->execute();  
         $idLigne = $this->Db->Pdo->lastInsertId();
         $count2 = 0;  
@@ -437,7 +437,8 @@ public function modify(
       FROM cmd_ligne 
       LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
       LEFT JOIN keyword as k2 ON cmdl__prestation = k2.kw__value AND k2.kw__type = 'pres'
-      WHERE cmdl__cmd__id = ". $id ."");
+      WHERE cmdl__cmd__id = ". $id ."
+      ORDER BY devl__ordre ");
      
       $data = $request->fetchAll(PDO::FETCH_OBJ);
       return $data;

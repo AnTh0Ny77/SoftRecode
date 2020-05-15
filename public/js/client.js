@@ -884,7 +884,7 @@ $(function () {
             "paging": false,
             "info":   false,
             "searching": false,
-            "ordering": false,
+            "ordering": true,
             responsive: {
                 details: false
             },
@@ -922,11 +922,22 @@ $(function () {
               ],
              
               rowReorder: {
-                update: false,
+                update: true,
                 selector: 'td:first-child'
             }
            
         });
+
+
+        devisTable.on( 'row-reorder', function ( e, diff, edit ) {
+            for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
+                var rowData = devisTable.row( diff[i].node ).data();
+                rowData[7].id = parseInt(diff[i].newData);
+            }   
+
+        } );
+        
+   
 
 
         
@@ -992,7 +1003,7 @@ $(function () {
                 
                addOne(
                    devisTable,
-                   counter,
+                   jsonDataAncienDevis[numberOfLines].devl__ordre,
                    jsonDataAncienDevis[numberOfLines].devl__type,
                    jsonDataAncienDevis[numberOfLines].devl__designation,
                    jsonDataAncienDevis[numberOfLines].devl__note_client,
@@ -1010,6 +1021,8 @@ $(function () {
                   
 
                ) 
+               counter +=1 ;
+               
             };
           }
           $("#referenceS").val("");
@@ -1047,6 +1060,7 @@ $(function () {
                     selectedOptionPresta
                     
                     );
+                    counter +=1 ;
                     
                     
                 xtendArray = [];

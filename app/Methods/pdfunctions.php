@@ -167,7 +167,7 @@ public static function magicLine($object){
 
     //extensions 
     $extension = "";
-    if (!empty($object->ordre)) {
+    if (!empty($object->ordre2)) {
         $fisrtLine = "<tr style='font-size: 85%; font-style: italic;'>";
 
         $firstCell = "<td valign='top' style='width: 18%; text-align: left;'>" . $presta  . "</td>";
@@ -185,7 +185,7 @@ public static function magicLine($object){
         
         $endline = "</tr>";
         $counter = 0 ;
-        foreach($object->ordre as $array){
+        foreach($object->ordre2 as $array){
             $counter = $counter + 1; 
             $extensionLine = "";
             $secondLine = "<tr style='font-size: 85%; font-style: italic;'>" ;
@@ -202,7 +202,7 @@ public static function magicLine($object){
             $fifthCell2 ="<td valign='top' style='text-align: center;  '>" .$quantité ."</td>";
             $lastCell2 = "<td valign='top' style='text-align: center; width: 20%; ; '>" . number_format(floatVal($array['devg__prix']),2) ." €</td>" ;
             $endSecondLine = "</tr> ";
-            if ( $array === end($object->ordre)) {
+            if ( $array === end($object->ordre2)) {
                 $secondLine = "<tr style='font-size: 85%; font-style: italic;'>" ;
                 $firstCell2 = "<td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>garantie</td>";
                 if ($presta == "reparation") {

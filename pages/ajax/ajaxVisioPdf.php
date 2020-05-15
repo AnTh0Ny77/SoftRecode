@@ -27,7 +27,7 @@ if (empty($_SESSION['user'])) {
     $arrayOfDevisLigne = $Cmd->devisLigne($_POST['AjaxDevis']);
     foreach ($arrayOfDevisLigne as $ligne) {
       $xtendArray = $Cmd->xtenGarantie($ligne->devl__id);
-      $ligne->ordre = $xtendArray;
+      $ligne->ordre2 = $xtendArray;
     } 
 $date_time = new DateTime( $temp->devis__date_crea);
 $formated_date = $date_time->format('d/m/Y'); 
@@ -88,7 +88,7 @@ $formated_date = $date_time->format('d/m/Y');
                         
 
                         echo Pdfunctions::magicLine($obj);
-                         $xtendTotal = Pdfunctions::xTendTotalView($obj->ordre);
+                         $xtendTotal = Pdfunctions::xTendTotalView($obj->ordre2);
                          $price12 = array_sum($xtendTotal[0]);
                          $price24 = array_sum($xtendTotal[1]);
                          $price36 = array_sum($xtendTotal[2]);
