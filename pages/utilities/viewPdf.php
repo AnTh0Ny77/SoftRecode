@@ -75,7 +75,7 @@ $formated_date = $date_time->format('d/m/Y');
      </table>
      <table CELLSPACING=0 style="width: 100%;  margin-top: 50px;  ">
              <tr style=" margin-top : 50px; background-color: #dedede; " >
-                <td style="width: 18%; text-align: left;  padding-top: 4px; padding-bottom: 4px;">Prestation</td><td style="width: 37%; text-align: left; padding-top: 4px; padding-bottom: 4px;">Designation</td><td style="text-align: center; padding-top: 4px; padding-bottom: 4px;"></td><td  style="width: 12%; text-align: center; padding-top: 4px; padding-bottom: 4px;"></td><td style="text-align: center; padding-top: 4px; padding-bottom: 4px;">Qté</td><td style="text-align: center; width: 17%; padding-top: 4px; padding-bottom: 4px;">P.u € HT</td>
+                <td style="width: 18%; text-align: left;  padding-top: 4px; padding-bottom: 4px;">Prestation</td><td style="width: 37%; text-align: left; padding-top: 4px; padding-bottom: 4px;">Designation</td><td style="text-align: center; padding-top: 4px; padding-bottom: 4px;"></td><td  style="width: 12%; text-align: center; padding-top: 4px; padding-bottom: 4px;"></td><td style="text-align: center; padding-top: 4px; padding-bottom: 4px;">Qté</td><td style="text-align: right; width: 17%; padding-top: 4px; padding-bottom: 4px;">P.u € HT</td>
              </tr> 
              <?php 
                  $arrayPrice =[];
@@ -129,27 +129,27 @@ $formated_date = $date_time->format('d/m/Y');
                  <?php
                      $totalPrice = array_sum($arrayPrice);
                        
-                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>hors garanties</td><td style='text-align: center'><strong>  ". number_format($totalPrice,2  ,',', ' ') . " €</strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc(floatval($totalPrice)),2 ,',', ' ')." €</td></tr>";
+                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>hors garanties</td><td style='text-align: center'><strong>  ". number_format($totalPrice,2  ,',', ' ') . " €</strong></td><td style='text-align: right'> " .number_format(Pdfunctions::ttc(floatval($totalPrice)),2 ,',', ' ')." €</td></tr>";
                        
                        if (sizeOf($array12) == sizeof($arrayOfDevisLigne)) {
                          array_push($array12 , floatval($totalPrice));
                          $total12Mois = array_sum($array12);
-                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>garantie 12 mois</td><td style='text-align: center'><strong>  ". number_format($total12Mois,2  ,',', ' '). " €</strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc( floatval($total12Mois)),2 ,',', ' ')." €</td></tr>";
+                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>garantie 12 mois</td><td style='text-align: center'><strong>  ". number_format($total12Mois,2  ,',', ' '). " €</strong></td><td style='text-align: right'> " .number_format(Pdfunctions::ttc( floatval($total12Mois)),2 ,',', ' ')." €</td></tr>";
                        }
                        if (sizeOf($array24) == sizeof($arrayOfDevisLigne)) {
                         array_push($array24 , floatval($totalPrice));
                          $total24Mois = array_sum($array24);
-                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>garantie 24 mois</td><td style='text-align: center'><strong>  ". number_format($total24Mois,2  ,',', ' '). " €</strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc(floatval($total24Mois)),2 ,',', ' ')." €</td></tr>";
+                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>garantie 24 mois</td><td style='text-align: center'><strong>  ". number_format($total24Mois,2  ,',', ' '). " €</strong></td><td style='text-align: right'> " .number_format(Pdfunctions::ttc(floatval($total24Mois)),2 ,',', ' ')." €</td></tr>";
                        }
                        if (sizeOf($array36) == sizeof($arrayOfDevisLigne)) {
                         array_push($array36 , floatval($totalPrice));
                          $total36Mois = array_sum($array36);
-                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>garantie 36 mois</td><td style='text-align: center'><strong>  ". number_format($total36Mois,2  ,',', ' '). " €</strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc(floatval($total36Mois)),2 ,',', ' ')." €</td></tr>";
+                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>garantie 36 mois</td><td style='text-align: center'><strong>  ". number_format($total36Mois,2  ,',', ' '). " €</strong></td><td style='text-align: right'> " .number_format(Pdfunctions::ttc(floatval($total36Mois)),2 ,',', ' ')." €</td></tr>";
                        }
                        if (sizeOf($array48) == sizeof($arrayOfDevisLigne)) {
                         array_push($array48 , floatval($totalPrice));
                          $total48Mois = array_sum($array48);
-                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>garantie 48 mois</td><td style='text-align: center'><strong>  ".number_format($total48Mois,2  ,',', ' '). " €</strong></td><td style='text-align: center'> " .number_format(Pdfunctions::ttc(floatval($total48Mois)),2 ,',', ' ')." €</td></tr>";
+                       echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>garantie 48 mois</td><td style='text-align: center'><strong>  ".number_format($total48Mois,2  ,',', ' '). " €</strong></td><td style='text-align: right'> " .number_format(Pdfunctions::ttc(floatval($total48Mois)),2 ,',', ' ')." €</td></tr>";
                        }
                     
                  ?>

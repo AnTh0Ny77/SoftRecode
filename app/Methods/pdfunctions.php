@@ -100,15 +100,7 @@ public static function showdesignationView($object){
 }
 
 
-// function globale d'affichage ligne + : 
-// "<tr style='font-size: 85%;'>
-//                          <td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>" .Pdfunctions::showPrestationView($obj)."</td>
-//                          <td valign='top' style='width: 37%; text-align: left; border-bottom: 1px #ccc solid ; padding-bottom:15px'>" .Pdfunctions::showdesignationView($obj). "</td>
-//                          <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'>" .Pdfunctions::showEtat($obj->kw__lib) ."</td>
-//                          <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'>" .Pdfunctions::showGarantieView($obj) ."</td>
-//                          <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .Pdfunctions::showQuantiteView($obj) ."</td>
-//                          <td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" . Pdfunctions::showPriceView($obj) ."</td>
-//                          <br></tr> "; 
+
 
 public static function magicLine($object){
     // presation
@@ -161,7 +153,7 @@ public static function magicLine($object){
 
     $fifthCell ="<td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .$quantité ."</td>";
 
-    $lastCell = "<td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" . $barre . " " . $price ."</td>" ;
+    $lastCell = "<td valign='top' style='text-align: right; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" . $barre . " " . $price ."</td>" ;
 
     $endline = "<br></tr> ";
 
@@ -180,7 +172,7 @@ public static function magicLine($object){
     
         $fifthCell ="<td valign='top' style='text-align: center;  '>" .$quantité ."</td>";
     
-        $lastCell = "<td valign='top' style='text-align: center; width: 20%;  padding-bottom:15px'>" . $barre . " " . $price ."</td>" ;
+        $lastCell = "<td valign='top' style='text-align: right; width: 20%;  padding-bottom:15px'>" . $barre . " " . $price ."</td>" ;
     
         
         $endline = "</tr>";
@@ -200,7 +192,7 @@ public static function magicLine($object){
             $thirdCell2 =  "<td valign='top' style='text-align: left; '></td>";
             $fourthCell2 = "<td valign='top' style='width: 12%; text-align: center; '>" . $array['devg__type'] ." mois </td>";
             $fifthCell2 ="<td valign='top' style='text-align: center;  '>" .$quantité ."</td>";
-            $lastCell2 = "<td valign='top' style='text-align: center; width: 20%; ; '>" . number_format(floatVal($array['devg__prix']),2 , ',',' ') ." €</td>" ;
+            $lastCell2 = "<td valign='top' style='text-align: right; width: 20%; ; '>" . number_format(floatVal($array['devg__prix']),2 , ',',' ') ." €</td>" ;
             $endSecondLine = "</tr> ";
             if ( $array === end($object->ordre2)) {
                 $secondLine = "<tr style='font-size: 85%; font-style: italic;'>" ;
@@ -214,7 +206,7 @@ public static function magicLine($object){
                 $thirdCell2 =  "<td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'></td>";
                 $fourthCell2 = "<td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'>" . $array['devg__type'] ." mois </td>";
                 $fifthCell2 ="<td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .$quantité ."</td>";
-                $lastCell2 = "<td valign='top' style='text-align: center; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" . number_format(floatVal($array['devg__prix']),2 , "," , " ") ." €</td>" ;
+                $lastCell2 = "<td valign='top' style='text-align: right; width: 20%; border-bottom: 1px #ccc solid; padding-bottom:15px'>" . number_format(floatVal($array['devg__prix']),2 , "," , " ") ." €</td>" ;
             }
             $extensionLine = $secondLine . $firstCell2 . $secondCell2 . $thirdCell2 . $fourthCell2 . $fifthCell2 . $lastCell2 . $endSecondLine ;
             $extension .= $extensionLine ;

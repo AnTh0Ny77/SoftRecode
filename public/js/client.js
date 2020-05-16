@@ -913,7 +913,14 @@ $(function () {
             "columnDefs": [
                 { "width": "40%", "targets": 2 },
                 { "width": "20%", "targets": 4 },
-                {"className": "dt-center", "targets": "_all"},
+                
+                {"className": "dt-right", "targets": 6},
+                {"targets": [ 1 ], className: 'dt-center'},
+                {"targets": [ 2 ], className: 'dt-center'},
+                {"targets": [ 3 ], className: 'dt-center'},
+                {"targets": [ 4 ], className: 'dt-center'},
+                {"targets": [ 5 ], className: 'dt-center'},
+                {"targets": [ 6 ], className: 'dt-right'},
                 {"targets": [ 7 ], "visible": false},
                 {"targets": [ 0 ], "visible": false},
                 { responsivePriority: 1, targets: 2 },
