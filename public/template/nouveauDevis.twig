@@ -822,8 +822,10 @@
                         <label for="validationCustom04">Durée/mois</label>
                         <select class="custom-select" id="xtendMois" >
                           {% for garantie in garantiesList %}
-                          <option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}}</option>
-                          {% endfor %}
+                          {% if garantie.kw__value != 00 %}
+                           <option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}}</option>
+                           {% endif %}
+                           {% endfor %}
                         </select>
                       </div>
                           <div class="col-3">
@@ -977,7 +979,9 @@
                         <label for="validationCustom04">Durée/mois</label>
                         <select class="custom-select" id="UPxtendMois" >
                           {% for garantie in garantiesList %}
+                          {% if garantie.kw__value != 00 %}
                            <option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}}</option>
+                           {% endif %}
                            {% endfor %}
                         </select>
                       </div>
