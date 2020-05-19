@@ -446,7 +446,7 @@ public function modify(
 
     public function xtenGarantie($id){
       $request =$this->Db->Pdo->query("SELECT 
-      cmdg__id as devg__id, cmdg__type  as  devg__type, cmdg__prix as  devg__prix
+      cmdg__id as devg__id,  LPAD(cmdg__type ,2,0)  as  devg__type, cmdg__prix as  devg__prix
       FROM cmd_garantie  
       WHERE cmdg__id__cmdl = ". $id ."");
       $data = $request->fetchAll(PDO::FETCH_ASSOC);

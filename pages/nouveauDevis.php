@@ -96,13 +96,14 @@ if (!empty($_POST['ModifierDevis'])) {
     $contactLVR = $Contact->getOne( $temp->devis__contact_livraison);
   }
 
+
   $arrayOfDevisLigne = $Cmd->devisLigne($_POST['ModifierDevis']);
     foreach ($arrayOfDevisLigne as $ligne) {
       $xtendArray = $Cmd->xtenGarantie($ligne->devl__id);
       $ligne->ordre = $xtendArray;
       array_push($devisModif,$ligne);
     }
-
+    
       $sessionModif = $_POST['ModifierDevis'];
 }
 
