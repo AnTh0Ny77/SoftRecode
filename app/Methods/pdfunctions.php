@@ -181,6 +181,13 @@ public static function magicLine($object){
         else {
             $thirdCell =  "<td valign='top' style=' text-align: left; '>" .$object->kw__lib ."</td>";
         }
+
+        if ($object->devl__mois_garantie > 0){
+            $fourthCell = "<td valign='top' style=' text-align: center; border-bottom: 1px #ccc solid'>" . $garantie ." </td>";
+        }
+        else {
+            $fourthCell = "<td valign='top' style='  color: white; text-align: center; border-bottom: 1px #ccc solid'>" . $garantie ." </td>";
+        }
     
         $fourthCell = "<td valign='top' style=' text-align: center; '>" . $garantie ." </td>";
     
