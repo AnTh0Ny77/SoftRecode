@@ -63,7 +63,8 @@ if (!empty($_POST['clientSelect'])) {
        $status,
        NULL,
        $devisData , 
-       $livraisonContact 
+       $livraisonContact  , 
+       $_POST['titreDevis']
      );
    } else {
        $devis = $Cmd->insertOne(
@@ -78,7 +79,8 @@ if (!empty($_POST['clientSelect'])) {
            $status,
            NULL,
            $devisData,
-           $livraisonContact );
+           $livraisonContact , 
+           $_POST['titreDevis'] );
    }}
 
  if (!empty($_POST['ValiderDevis'])) {

@@ -28,6 +28,7 @@ class Cmd extends Table {
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
+    cmd__nom_devis,
     k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
@@ -263,19 +264,19 @@ class Cmd extends Table {
 
   public function insertOne(
     $date , $user, $client , $livraison, $port, $contact, $comClient,
-    $comInterne, $etat, $modele , $arrayOfObject , $contact_livraison)
+    $comInterne, $etat, $modele , $arrayOfObject , $contact_livraison , $titreDevis)
     {
     $request = $this->Db->Pdo->prepare(
        'INSERT INTO cmd (
         cmd__date_devis , cmd__user__id_devis, cmd__client__id_fact ,
         cmd__client__id_livr, cmd__port, cmd__contact__id_fact,
         cmd__note_client, cmd__note_interne,
-        cmd__etat , cmd__modele_devis , cmd__contact__id_livr)
+        cmd__etat , cmd__modele_devis , cmd__contact__id_livr , cmd__nom_devis)
         VALUES ( 
         :devis__date_crea, :devis__user__id, :devis__client__id, 
         :devis__id_client_livraison, :devis__port , :devis__contact__id, 
         :devis__note_client, :devis__note_interne, :devis__etat ,
-        :devis__modele , :devis__id_contact_livraison)');
+        :devis__modele , :devis__id_contact_livraison, :nom_devis)');
 
     $requestLigne =  $this->Db->Pdo->prepare(
        'INSERT INTO  cmd_ligne (
@@ -304,6 +305,7 @@ class Cmd extends Table {
     $request->bindValue(":devis__etat", $etat);
     $request->bindValue(":devis__modele", $modele);
     $request->bindValue(":devis__id_contact_livraison", $contact_livraison);
+    $request->bindValue(":nom_devis", $titreDevis);
     $request->execute();
     $idDevis = $this->Db->Pdo->lastInsertId();
     $count = 0 ;
@@ -341,7 +343,7 @@ class Cmd extends Table {
 
 public function modify(
     $id , $date , $user, $client , $livraison, $port, $contact, $comClient,
-    $comInterne, $etat, $modele , $arrayOfObject , $contact_livraison)
+    $comInterne, $etat, $modele , $arrayOfObject , $contact_livraison , $titreDevis)
     {
 
     $delete = $this->Db->Pdo->prepare(
@@ -354,12 +356,12 @@ public function modify(
       cmd__id, cmd__date_devis , cmd__user__id_devis, cmd__client__id_fact ,
       cmd__client__id_livr, cmd__port, cmd__contact__id_fact,
       cmd__note_client, cmd__note_interne,
-      cmd__etat , cmd__modele_devis , cmd__contact__id_livr)
+      cmd__etat , cmd__modele_devis , cmd__contact__id_livr , cmd__nom_devis)
       VALUES ( 
       :cmd__id , :devis__date_crea, :devis__user__id, :devis__client__id, 
       :devis__id_client_livraison, :devis__port , :devis__contact__id, 
       :devis__note_client, :devis__note_interne, :devis__etat ,
-      :devis__modele , :devis__id_contact_livraison)');
+      :devis__modele , :devis__id_contact_livraison , :nomDevis)');
 
     $requestLigne =  $this->Db->Pdo->prepare(
      'INSERT INTO  cmd_ligne (
@@ -391,6 +393,7 @@ public function modify(
     $request->bindValue(":devis__etat", $etat);
     $request->bindValue(":devis__modele", $modele);
     $request->bindValue(":devis__id_contact_livraison",$contact_livraison);
+    $request->bindValue(":nomDevis", $titreDevis);
     $request->execute();
     $idDevis = $this->Db->Pdo->lastInsertId();
     $count = 0 ;

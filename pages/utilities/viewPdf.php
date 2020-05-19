@@ -149,12 +149,19 @@ $garanties = $Keyword->getGaranties();
  <?php
  $content = ob_get_contents();
 
+ if ($temp->cmd__nom_devis) {
+  $name  = $temp->cmd__nom_devis;
+ }
+ else {
+    $name = $temp->devis__id;
+ }
+
  try {
      $doc = new Html2Pdf('P','A4','fr');
      $doc->pdf->SetDisplayMode('fullpage');
      $doc->writeHTML($content);
      ob_clean();
-     $doc->output();
+     $doc->output(''.$name.'.pdf');
      unset( $_SESSION['Contact']);
      unset( $_SESSION['Client']);
      unset( $_SESSION['livraison']);

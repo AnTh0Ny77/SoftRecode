@@ -157,8 +157,14 @@
                         </div>
                         <div class="col-6">
                           <label for="validationCustom04">Titre du devis </label>
+
+                          {% if temp %}
+                          <input class="form-control " type="text"  id="titreDevis" name="titreDevis" value="{{temp.cmd__nom_devis}}">
+                          {% else %}
+                          <input class="form-control " type="text"  id="titreDevis" name="titreDevis" value="">
+                          {% endif %}
                           
-                          <input class="form-control " type="text"  id="titre" name="titre" value="">
+                          
                         
                           </div>
                       
