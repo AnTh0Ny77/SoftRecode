@@ -922,7 +922,7 @@ $(function () {
                 {"targets": [ 5 ], className: 'dt-center'},
                 {"targets": [ 6 ], className: 'dt-right'},
                 {"targets": [ 7 ], "visible": false},
-                {"targets": [ 0 ], "visible": false},
+                {"targets": [ 0 ], "visible": true},
                 { responsivePriority: 1, targets: 2 },
                 { responsivePriority: 2, targets: 5 },
                 { responsivePriority: 3, targets: 6 }
@@ -995,6 +995,7 @@ $(function () {
             jsonDataAncienDevis =  JSON.parse($('#AncienDevis').val())
         if (jsonDataAncienDevis != false) {
             $('#addNewRow').removeAttr('disabled');
+            
             for (let numberOfLines = 0; numberOfLines < jsonDataAncienDevis.length; numberOfLines++) {
                 
                 arrayTemp = [];
@@ -1028,10 +1029,12 @@ $(function () {
                   
 
                ) 
-               counter +=1 ;
+
+               counter =  parseInt(jsonDataAncienDevis[numberOfLines].devl__ordre) + 1 ;
                
             };
           }
+          
           $("#referenceS").val("");
             
         }
