@@ -1486,5 +1486,31 @@ $(function () {
         });
 
 
+
+        //init des editeur de texte mdb : 
+
+        $("#globalComClient").mdbWYSIWYG({
+        });
+
+        $("#globalComInt").mdbWYSIWYG({
+        });
+        
+
+        $("#comClient").mdbWYSIWYG({ 
+         });
+
+         $("#UPcomClient").mdbWYSIWYG({ 
+        });
+        
+
+         $("#comInterne").mdbWYSIWYG({ 
+        });
+
+        $("#UPcomInterne").mdbWYSIWYG({ 
+        });
+
+
+       
+
         
     } );

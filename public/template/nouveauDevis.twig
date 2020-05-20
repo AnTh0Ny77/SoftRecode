@@ -54,8 +54,8 @@
                                                                                                            -->
         <div class="col-11 " id="navSociete">
         <div class="col-12 d-flex justify-content-center">
-        <div class="col-6 " >
-          <div class="card h-100  shadow mb-2">
+        <div class="col-5 " >
+          <div class="card  shadow mb-2 " style="height: 27rem;">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Société et Contact <i class="fal fa-building"></i></h6>
@@ -124,8 +124,8 @@
                                                                                                -->
 
 
-        <div class="col-6 " >
-          <div class="card h-100  shadow mb-2">
+        <div class="col-7 " >
+          <div class="card   shadow mb-2"  style="height: 37rem;">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Port et commentaires <i class="fal fa-building"></i></h6>
@@ -137,17 +137,17 @@
               </div>
             </div>
             <!-- Card Body -->
-            <div class="card-body d-flex flex-column justify-content-around " style=" height: 18rem;">
+            <div class="card-body d-flex flex-column justify-content-around " >
 
                
-               <div class="  chart-pie my-4 d-flex flex-row justify-content-between">
+               <div class="  chart-pie my-5 d-flex flex-row justify-content-between">
                 
                 <div>
                   <form  method="POST" action="mesDevis" id="devisSend">
-                    <div class="modal-body my-3 ">
+                    <div class="modal-body ">
                       <input id="dataDevis" name="dataDevis" type="hidden" value="">
                       <div class=" d-flex col-12  justify-content-between mb-3">
-                        <div class="col-4">
+                        <div class="col-4 mt-2">
                         <label for="validationCustom04">Frais de port € H.T</label>
                         {% if temp %}
                         <input class="form-control " type="text"  id="port" name="port" value="{{temp.devis__port}}">
@@ -155,7 +155,7 @@
                         <input class="form-control " type="text"  id="port" name="port">
                         {% endif %}
                         </div>
-                        <div class="col-6">
+                        <div class="col-6 mt-2">
                           <label for="validationCustom04">Titre du devis </label>
 
                           {% if temp %}
@@ -163,31 +163,30 @@
                           {% else %}
                           <input class="form-control " type="text"  id="titreDevis" name="titreDevis" value="">
                           {% endif %}
-                          
-                          
-                        
                           </div>
-                      
                       </div>
                      
                         {% if temp %}
-                        <div class="col-12 mt-2 mb-2 d-flex justify-content-center ">
-                          <div class="col-6">
+                        <div class="col-12 mt-2 mb-2 d-flex flex-column ">
+                        
+                          <div class="col-12 my-2   multi-col">
                             <label for="globalComClient">Commentaire Client</label>
-                          <textarea class="form-control" id="globalComClient" name="globalComClient" placeholder="Commentaire client...." rows="5">{{temp.devis__note_client}}</textarea>
+                          <textarea class="" id="globalComClient" name="globalComClient" placeholder="Commentaire client...." >{{temp.devis__note_client}}</textarea>
                           </div>
-                          <div class="col-6">
+                          <div class="col-12  multi-col">
                             <label for="globalComInt">Commentaire Interne</label>
-                            <textarea class="form-control" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." rows="5">{{temp.devis__note_interne}}</textarea>
+                            <textarea class="" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." >{{temp.devis__note_interne}}</textarea>
                             </div>    
                         </div>
                         {% else %}
                         <div class="col-12 mt-2 mb-2 d-flex justify-content-center ">
-                          <div class="col-6">
-                          <textarea class="form-control" id="globalComClient" name="globalComClient" placeholder="Commentaire client...." rows="4"></textarea>
+                          <div class="col-12 my-2  show multi-col">
+                            <label for="globalComClient">Commentaire Client</label>
+                          <textarea class="" id="globalComClient" name="globalComClient" placeholder="Commentaire client...."></textarea>
                           </div>
-                          <div class="col-6">
-                            <textarea class="form-control" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." rows="4"></textarea>
+                          <div class="col-12  multi-col">
+                            <label for="globalComInt">Commentaire Interne</label>
+                            <textarea class="" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." ></textarea>
                             </div>    
                         </div>
                         {% endif %}
@@ -741,29 +740,37 @@
                 </button>
               </div>
               <div class="modal-body">
-                <div class="form-row border-bottom mb-3 pb-3">
-                  <div class="col-md-4 mb-3">
-                   
+                <div class="form-row border-bottom mb-3 pb-3 ">
+
+
+
+                  <div class="d-flex flex-row col-12 justify-content-between mb-3">
+
+
+                  <div class="col-md-3 ">
+                    <label for="prestationChoix">Prestation:</label>
                     <select class="selectpicker" id="prestationChoix" >
-                      
-                      
                       {% for presta in prestaList %}
                         <option class=""  value={{presta.kw__value}}>{{presta.kw__lib}}</option>
                         {% endfor %}
                     </select>
                   </div>
                   <div class="col-8">
-                    <label for="validationCustom04">Modèle:</label>
-                    <select class="selectpicker col-10" id="choixDesignation" data-live-search="true">
+                    <label for="choixDesignation">Modèle:</label>
+                    <select class="selectpicker col-12" id="choixDesignation" data-live-search="true">
                       <option class="optionSelect modelSelect" value="">..</option>
                       {% for article in articleList %} 
                         <option class="optionSelect modelSelect" value={{article.afmm__id}}>{{article.afmm__modele   ~ " " ~ article.famille ~ " " ~ article.Marque }}</option>
                         {% endfor %}
                     </select> 
                   </div>
+
+
+
+                </div>
                    
                     <div class=" col-12" id="choixRef">
-                      <div class="col-12 my-2 ">
+                      <div class="col-12  ">
                         <div class="col-12">
                           <label for="referenceS">Désignation sur le devis/facture: </label>
                         <input type="text" class="form-control mx-3"  aria-label="Username" aria-describedby="basic-addon1" id='referenceS'>
@@ -776,6 +783,10 @@
                       </div>
                       </div>
                     </div>
+
+
+
+
                   </div>
               <div class="form-row align-items-center  d-flex justify-content-between mt-3">
                 <div class="col-4">
@@ -804,7 +815,7 @@
                   <input class="form-control" type="text"  id="prixRow">
                 </div>
               </div>
-              <div class="form-row mt-2 form-row align-items-center  d-flex justify-content-center">
+              <div class="form-row mt-2 form-row align-items-center  d-flex justify-content-start">
                 <div class="d-flex justify-content-start">
                 
                 <div class="custom-control custom-checkbox mt-4" id="accordion">
@@ -843,13 +854,15 @@
                         </div>
                     </div>
                   </div>
-                  <div class="collapse col-12" id="commentaire" data-parent="#accordion">
-                    <div class="col-12 mt-2 mb-2 d-flex justify-content-between">
+                  <div class="collapse show col-12" id="commentaire" data-parent="#accordion">
+                    <div class="col-12 mt-3 mb-2 d-flex justify-content-between">
                       <div class="col-6">
-                      <textarea class="form-control" id="comClient" placeholder="Commentaire client...." rows="4"></textarea>
+                        <label for="comClient">Commentaire Client</label>
+                      <textarea class="" id="comClient" placeholder="Commentaire client...." rows="4"></textarea>
                       </div>
                       <div class="col-6">
-                        <textarea class="form-control" id="comInterne" placeholder="Commentaire interne...." rows="4"></textarea>
+                        <label for="comInterne">Commentaire Interne</label>
+                        <textarea class="" id="comInterne" placeholder="Commentaire interne...." rows="4"></textarea>
                         </div>
                         
                     </div>
@@ -886,9 +899,11 @@
               </div>
               <div class="modal-body">
                 <div class="form-row justify-content-between">
+
+
                   <div class="col-md-3 mb-3 mx-3">
+                    <label for="UPprestationChoix">Prestation: </label>
                     <select class="selectpicker" id="UPprestationChoix">
-                      
                       {% for presta in prestaList %}
                         <option value={{presta.kw__value}}>{{presta.kw__lib}}</option>
                         {% endfor %}
@@ -896,8 +911,8 @@
                   </div>
 
                   <div class="col-8">
-                    <label for="validationCustom04">Modèle: </label>
-                    <select class="selectpicker col-10" id="UPchoixDesignation"  data-live-search="true">
+                    <label for="UPchoixDesignation">Modèle: </label>
+                    <select class="selectpicker col-11" id="UPchoixDesignation"  data-live-search="true">
                       
                       {% for article in articleList %}
                      
@@ -905,10 +920,7 @@
                         {% endfor %}
                     </select> 
                   </div>
-                  <!-- <div class="col-8">
-                    <label for="validationCustom04">Désignation</label>
-                    <input type="text" class="form-control" placeholder="...... "  aria-label="Username" aria-describedby="basic-addon1" id='UPreferenceS'>
-                  </div> -->
+                 
                   </div>
 
 
@@ -961,7 +973,7 @@
                   <input class="form-control" type="text"  id="UPprixRow">
                 </div>
               </div>
-              <div class="form-row mt-2 form-row align-items-center  d-flex justify-content-center" id="UPaccordion">
+              <div class="form-row mt-2 form-row align-items-center  d-flex justify-content-start" id="UPaccordion">
                 <div class="d-flex justify-content-start">
                 
                 <div class="custom-control custom-checkbox mt-4" >
@@ -1001,13 +1013,15 @@
                     </div>
                   </div>
                   
-                  <div class="collapse col-12" id="UPcommentaire" data-parent="#UPaccordion">
-                    <div class="col-12 mt-2 mb-2 d-flex justify-content-between">
+                  <div class="collapse show col-12" id="UPcommentaire" data-parent="#UPaccordion">
+                    <div class="col-12 mt-3 mb-2 d-flex justify-content-between">
                       <div class="col-6">
-                      <textarea class="form-control" id="UPcomClient" placeholder="Commentaire client...." rows="4"></textarea>
+                        <label for="UPcomClient">Commentaire Client</label>
+                      <textarea class="" id="UPcomClient" placeholder="Commentaire client...." rows="4"></textarea>
                       </div>
                       <div class="col-6">
-                        <textarea class="form-control" id="UPcomInterne" placeholder="Commentaire interne...." rows="4"></textarea>
+                        <label for="UPcomInterne">Commentaire Interne</label>
+                        <textarea class="" id="UPcomInterne" placeholder="Commentaire interne...." rows="4"></textarea>
                         </div>
                     </div>
                   </div>
