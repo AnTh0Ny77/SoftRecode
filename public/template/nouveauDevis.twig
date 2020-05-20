@@ -125,10 +125,10 @@
 
 
         <div class="col-7 " >
-          <div class="card   shadow mb-2"  style="height: 37rem;">
+          <div class="card   shadow mb-2"  style="height: 39rem;">
             <!-- Card Header - -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-              <h6 class="m-0 font-weight-bold text-primary">Port et commentaires <i class="fal fa-building"></i></h6>
+              <h6 class="m-0 font-weight-bold text-primary">Titre et commentaires <i class="fal fa-building"></i></h6>
               <div class="dropdown no-arrow">
                 
                 <i class="far fa-check text-success" id="petitCheck" hidden></i>
@@ -137,25 +137,17 @@
               </div>
             </div>
             <!-- Card Body -->
-            <div class="card-body d-flex flex-column justify-content-around " >
+            <div class="card-body col-12 d-flex flex-column justify-content-around " >
 
                
                <div class="  chart-pie my-5 d-flex flex-row justify-content-between">
                 
-                <div>
+                <div class="col-12">
                   <form  method="POST" action="mesDevis" id="devisSend">
-                    <div class="modal-body ">
+                    
                       <input id="dataDevis" name="dataDevis" type="hidden" value="">
                       <div class=" d-flex col-12  justify-content-between mb-3">
-                        <div class="col-4 mt-2">
-                        <label for="validationCustom04">Frais de port € H.T</label>
-                        {% if temp %}
-                        <input class="form-control " type="text"  id="port" name="port" value="{{temp.devis__port}}">
-                        {% else %}
-                        <input class="form-control " type="text"  id="port" name="port">
-                        {% endif %}
-                        </div>
-                        <div class="col-6 mt-2">
+                        <div class="col-12 mt-2">
                           <label for="validationCustom04">Titre du devis </label>
 
                           {% if temp %}
@@ -173,7 +165,7 @@
                             <label for="globalComClient">Commentaire Client</label>
                           <textarea class="" id="globalComClient" name="globalComClient" placeholder="Commentaire client...." >{{temp.devis__note_client}}</textarea>
                           </div>
-                          <div class="col-12  multi-col">
+                          <div class="col-12 my-2  multi-col">
                             <label for="globalComInt">Commentaire Interne</label>
                             <textarea class="" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." >{{temp.devis__note_interne}}</textarea>
                             </div>    
@@ -184,14 +176,14 @@
                             <label for="globalComClient">Commentaire Client</label>
                           <textarea class="" id="globalComClient" name="globalComClient" placeholder="Commentaire client...."></textarea>
                           </div>
-                          <div class="col-12  multi-col">
+                          <div class="col-12 my-2  multi-col">
                             <label for="globalComInt">Commentaire Interne</label>
                             <textarea class="" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." ></textarea>
                             </div>    
                         </div>
                         {% endif %}
                       
-                    </div> 
+                    
                     {% if societe %}
                     <input type="hidden" name="clientSelect" id="clientSelect" value="{{societe.client__id}}">
                     {% else %}
