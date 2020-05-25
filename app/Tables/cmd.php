@@ -278,6 +278,7 @@ class Cmd extends Table {
         :devis__note_client, :devis__note_interne, :devis__etat ,
         :devis__modele , :devis__id_contact_livraison, :nom_devis)');
 
+
     $requestLigne =  $this->Db->Pdo->prepare(
        'INSERT INTO  cmd_ligne (
         cmdl__cmd__id, cmdl__prestation, cmdl__pn , cmdl__designation ,
@@ -309,14 +310,28 @@ class Cmd extends Table {
     $idDevis = $this->Db->Pdo->lastInsertId();
     $count = 0 ;
     foreach ($arrayOfObject as $object){
+      
+        $verify = $this->Db->Pdo->query('
+        SELECT  afmm__famille FROM art_fmm WHERE afmm__id = '.  $object->id__fmm .'');
+        $response  = $verify->fetch(PDO::FETCH_OBJ);
         $count+= 1 ;
         $requestLigne->bindValue(":devl__devis__id", $idDevis);
         $requestLigne->bindValue(":devl__type", $object->prestation);
         $requestLigne->bindValue(":devl__modele", $object->pn);
         $requestLigne->bindValue(":devl__designation", $object->designation);
         $requestLigne->bindValue(":id__fmm", $object->id__fmm);
-        $requestLigne->bindValue(":devl__etat", $object->etat);
-        $requestLigne->bindValue(":devl__mois_garantie", intval($object->garantie));
+
+
+        
+        if ($response->afmm__famille == 'SER') {
+          $requestLigne->bindValue(":devl__mois_garantie", intval( 0 ));
+          $requestLigne->bindValue(":devl__etat",'NC.');
+        }
+        else {
+          $requestLigne->bindValue(":devl__etat", $object->etat);
+          $requestLigne->bindValue(":devl__mois_garantie", intval($object->garantie));
+        }
+        
         $requestLigne->bindValue(":devl_quantite", $object->quantite);
         $requestLigne->bindValue(":devl__prix_barre", floatval($object->prixBarre));
         $requestLigne->bindValue(":devl_puht", floatval($object->prix));
@@ -396,14 +411,25 @@ public function modify(
     $idDevis = $this->Db->Pdo->lastInsertId();
     $count = 0 ;
     foreach ($arrayOfObject as $object){
+        $verify = $this->Db->Pdo->query('
+        SELECT  afmm__famille FROM art_fmm WHERE afmm__id = '.  $object->id__fmm .'');
+        $respnse =  $verify->fetch(PDO::FETCH_OBJ);
+        
         $count+= 1 ;
         $requestLigne->bindValue(":devl__devis__id", $idDevis);
         $requestLigne->bindValue(":devl__type", $object->prestation);
         $requestLigne->bindValue(":devl__modele", $object->pn);
         $requestLigne->bindValue(":id__fmm", $object->id__fmm);
         $requestLigne->bindValue(":devl__designation", $object->designation);
-        $requestLigne->bindValue(":devl__etat", $object->etat);
-        $requestLigne->bindValue(":devl__mois_garantie", $object->garantie);
+        
+        if ($respnse->afmm__famille == 'SER') {
+          $requestLigne->bindValue(":devl__mois_garantie", intval( 0 ));
+          $requestLigne->bindValue(":devl__etat",'NC.');
+        }
+        else {
+          $requestLigne->bindValue(":devl__etat", $object->etat);
+          $requestLigne->bindValue(":devl__mois_garantie", intval($object->garantie));
+        }
         $requestLigne->bindValue(":devl_quantite", $object->quantite);
         $requestLigne->bindValue(":devl__prix_barre", floatval($object->prixBarre));
         $requestLigne->bindValue(":devl_puht", floatval($object->prix));
