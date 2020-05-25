@@ -49,6 +49,15 @@ if (!empty($_POST['clientSelect'])) {
    $status = 'ATN';
 
 
+   // traitament du titre du devis  :  
+   if (!empty($_POST['titreDevis'])) {
+    $accents = array('/[áàâãªäÁÀÂÃÄ]/u'=>'a','/[ÍÌÎÏíìîï]/u'=>'i','/[éèêëÉÈÊË]/u'=>'e','/[óòôõºöÓÒÔÕÖ]/u'=>'o','/[úùûüÚÙÛÜ]/u'=>'u','/[çÇ]/u' =>'c');
+    $titre = preg_replace(array_keys($accents), array_values($accents), $_POST['titreDevis']); 
+    $titre  = strtoupper($titre);
+    $titre = preg_replace('/([^.a-z0-9]+)/i', '-', $titre);
+   } else { $titre = '' ;}
+
+
    if (!empty($_POST['ModifierDevis'])) {
        $devis = $Cmd->Modify(
        intval($_POST['ModifierDevis']),
@@ -63,7 +72,7 @@ if (!empty($_POST['clientSelect'])) {
        NULL,
        $devisData , 
        $livraisonContact  , 
-       $_POST['titreDevis']
+       $titre
      );
    } else {
        $devis = $Cmd->insertOne(
@@ -78,7 +87,7 @@ if (!empty($_POST['clientSelect'])) {
            NULL,
            $devisData,
            $livraisonContact , 
-           $_POST['titreDevis'] );
+           $titre );
    }}
 
  if (!empty($_POST['ValiderDevis'])) {
