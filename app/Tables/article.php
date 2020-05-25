@@ -342,7 +342,6 @@ class Article extends Table
   }
 
   public function getModels(){
-    $famil = 'famil';
     $request = $this->Db->Pdo->query(
     'SELECT afmm__id , afmm__modele, k.kw__lib as famille , m.am__marque as Marque
       FROM art_fmm

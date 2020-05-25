@@ -70,7 +70,7 @@ $garanties = $Keyword->getGaranties();
              } ?>
          </tr>
      </table>
-     <table CELLSPACING=0 style="width: 100%;  margin-top: 65px; margin: auto  ">
+     <table CELLSPACING=0 style="width: 760px;  margin-top: 65px;  margin-top: 65px;  ">
              <tr style=" margin-top : 50px; background-color: #dedede;  " >
                 <td style=" text-align: left;   padding-top: 4px; padding-bottom: 4px;">Prestation</td>
                 <td style=" text-align: left; padding-top: 4px; padding-bottom: 4px;">Designation</td>
