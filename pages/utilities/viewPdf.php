@@ -94,15 +94,8 @@ $garanties = $Keyword->getGaranties();
                          array_push( $arrayPrice, floatval(floatval($obj->devl_puht)*intval($obj->devl_quantite)));
                  };
                  
-                        //  echo "<tr style='font-size: 85%;  font-style: italic;'>
-                        //  <td valign='top' style='width: 18%; text-align: left; border-bottom: 1px #ccc solid'>port</td>
-                        //  <td valign='top' style='width: 37%; text-align: left; border-bottom: 1px #ccc solid'></td>
-                        //  <td valign='top' style='text-align: left; border-bottom: 1px #ccc solid'></td>
-                        //  <td valign='top' style='width: 12%; text-align: center; border-bottom: 1px #ccc solid'></td>
-                        //  <td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '></td>
-                        //  <td valign='top' style='text-align: center; width: 20%; padding-bottom:15px; border-bottom: 1px #ccc solid'>" . number_format(Pdfunctions::showPort($temp->devis__port),2) ." €</td>
-                        //  </tr>";
-                         array_push( $arrayPrice, floatval($temp->devis__port));
+                       
+                        
              ?>
      </table>
      <table style=" margin-top: 25px">

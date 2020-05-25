@@ -263,18 +263,18 @@ class Cmd extends Table {
 
 
   public function insertOne(
-    $date , $user, $client , $livraison, $port, $contact, $comClient,
+    $date , $user, $client , $livraison, $contact, $comClient,
     $comInterne, $etat, $modele , $arrayOfObject , $contact_livraison , $titreDevis)
     {
     $request = $this->Db->Pdo->prepare(
        'INSERT INTO cmd (
         cmd__date_devis , cmd__user__id_devis, cmd__client__id_fact ,
-        cmd__client__id_livr, cmd__port, cmd__contact__id_fact,
+        cmd__client__id_livr, cmd__contact__id_fact,
         cmd__note_client, cmd__note_interne,
         cmd__etat , cmd__modele_devis , cmd__contact__id_livr , cmd__nom_devis)
         VALUES ( 
         :devis__date_crea, :devis__user__id, :devis__client__id, 
-        :devis__id_client_livraison, :devis__port , :devis__contact__id, 
+        :devis__id_client_livraison, :devis__contact__id, 
         :devis__note_client, :devis__note_interne, :devis__etat ,
         :devis__modele , :devis__id_contact_livraison, :nom_devis)');
 
@@ -298,7 +298,6 @@ class Cmd extends Table {
     $request->bindValue(":devis__user__id", $user);
     $request->bindValue(":devis__client__id", $client);
     $request->bindValue(":devis__id_client_livraison", $livraison);
-    $request->bindValue(":devis__port", floatval($port));
     $request->bindValue(":devis__contact__id", $contact);
     $request->bindValue(":devis__note_client", $comClient);
     $request->bindValue(":devis__note_interne", $comInterne);
@@ -342,7 +341,7 @@ class Cmd extends Table {
 
 
 public function modify(
-    $id , $date , $user, $client , $livraison, $port, $contact, $comClient,
+    $id , $date , $user, $client , $livraison,  $contact, $comClient,
     $comInterne, $etat, $modele , $arrayOfObject , $contact_livraison , $titreDevis)
     {
 
@@ -354,12 +353,12 @@ public function modify(
     $request = $this->Db->Pdo->prepare(
      'INSERT INTO cmd (
       cmd__id, cmd__date_devis , cmd__user__id_devis, cmd__client__id_fact ,
-      cmd__client__id_livr, cmd__port, cmd__contact__id_fact,
+      cmd__client__id_livr,  cmd__contact__id_fact,
       cmd__note_client, cmd__note_interne,
       cmd__etat , cmd__modele_devis , cmd__contact__id_livr , cmd__nom_devis)
       VALUES ( 
       :cmd__id , :devis__date_crea, :devis__user__id, :devis__client__id, 
-      :devis__id_client_livraison, :devis__port , :devis__contact__id, 
+      :devis__id_client_livraison,  :devis__contact__id, 
       :devis__note_client, :devis__note_interne, :devis__etat ,
       :devis__modele , :devis__id_contact_livraison , :nomDevis)');
 
@@ -386,7 +385,6 @@ public function modify(
     $request->bindValue(":devis__user__id", $user);
     $request->bindValue(":devis__client__id", $client);
     $request->bindValue(":devis__id_client_livraison", $livraison);
-    $request->bindValue(":devis__port", floatval($port));
     $request->bindValue(":devis__contact__id", $contact);
     $request->bindValue(":devis__note_client", $comClient);
     $request->bindValue(":devis__note_interne", $comInterne);

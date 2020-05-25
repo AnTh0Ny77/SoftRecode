@@ -1493,6 +1493,7 @@ $(function () {
         //init des editeur de texte mdb : 
 
         $("#globalComClient").mdbWYSIWYG({
+            
         });
 
         $("#globalComInt").mdbWYSIWYG({
