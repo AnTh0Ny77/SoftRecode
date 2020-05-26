@@ -147,9 +147,9 @@
                     
                       <input id="dataDevis" name="dataDevis" type="hidden" value="">
                       <div class=" d-flex col-12  justify-content-between mb-3">
+
                         <div class="col-12 mt-2">
                           <label for="validationCustom04">Titre du devis </label>
-
                           {% if temp %}
                           <input class="form-control " type="text"  id="titreDevis" name="titreDevis" value="{{temp.cmd__nom_devis}}">
                           {% else %}
@@ -157,6 +157,19 @@
                           {% endif %}
                           </div>
                       </div>
+
+                       <!-- Masquer Total -->
+                       <div class="col-12 mt-2 ml-3">
+                          <div class="custom-control custom-checkbox">
+                             
+                              {% if temp.cmd__modele_devis == 'STX' %}
+                              <input type="checkbox" class="custom-control-input" id="ShowTotal" name="ShowTotal" checked>
+                              {% else %}
+                              <input type="checkbox" class="custom-control-input" id="ShowTotal" name="ShowTotal">
+                              {% endif %}
+                              <label class="custom-control-label" for="ShowTotal">Masquer le Total du devis  </label>
+                          </div>
+                       </div>
                      
                         {% if temp %}
                         <div class="col-12 mt-2 mb-2 d-flex flex-column ">

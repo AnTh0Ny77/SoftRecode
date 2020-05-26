@@ -28,7 +28,7 @@ class Cmd extends Table {
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
-    cmd__nom_devis,
+    cmd__nom_devis, cmd__modele_devis , 
     k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
@@ -264,7 +264,7 @@ class Cmd extends Table {
 
   public function insertOne(
     $date , $user, $client , $livraison, $contact, $comClient,
-    $comInterne, $etat, $modele , $arrayOfObject , $contact_livraison , $titreDevis)
+    $comInterne, $etat, $modele , $arrayOfObject , $contact_livraison , $titreDevis )
     {
     $request = $this->Db->Pdo->prepare(
        'INSERT INTO cmd (

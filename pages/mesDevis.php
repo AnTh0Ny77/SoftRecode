@@ -48,6 +48,11 @@ if (!empty($_POST['clientSelect'])) {
    }
    $status = 'ATN';
 
+   // traite l'affichage du total :
+   if (isset($_POST['ShowTotal'])) {
+    $total = 'STX';
+   }else{ $total = 'STT'; }
+
 
    // traitament du titre du devis  :  
    if (!empty($_POST['titreDevis'])) {
@@ -69,7 +74,7 @@ if (!empty($_POST['clientSelect'])) {
        $_POST['globalComClient'],
        $_POST['globalComInt'],
        $status,
-       NULL,
+       $total,
        $devisData , 
        $livraisonContact  , 
        $titre
@@ -85,7 +90,7 @@ if (!empty($_POST['clientSelect'])) {
            $_POST['globalComClient'],
            $_POST['globalComInt'],
            $status,
-           NULL,
+           $total,
            $devisData,
            $livraisonContact , 
            $titre );
