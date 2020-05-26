@@ -74,6 +74,7 @@ if (!empty($_POST['clientSelect'])) {
        $livraisonContact  , 
        $titre
      );
+     header('location: mesDevis');
    } else {
        $devis = $Cmd->insertOne(
            $date,
@@ -88,6 +89,7 @@ if (!empty($_POST['clientSelect'])) {
            $devisData,
            $livraisonContact , 
            $titre );
+           header('location: mesDevis');
    }}
 
  if (!empty($_POST['ValiderDevis'])) {

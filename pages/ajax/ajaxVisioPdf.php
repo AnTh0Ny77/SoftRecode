@@ -9,7 +9,9 @@ $Database = new App\Database('devis');
 $Database->DbConnect();
 $Cmd = new App\Tables\Cmd($Database);
 $Client = new \App\Tables\Client($Database);
+$Contact = new \App\Tables\Contact($Database);
 $Keyword = new \App\Tables\Keyword($Database);
+
 
 // si pas connecté on ne vole rien ici :
 if (empty($_SESSION['user'])) {
@@ -30,6 +32,7 @@ if (empty($_SESSION['user'])) {
       $xtendArray = $Cmd->xtenGarantie($ligne->devl__id);
       $ligne->ordre2 = $xtendArray;
     } 
+
 $date_time = new DateTime( $temp->devis__date_crea);
 $formated_date = $date_time->format('d/m/Y'); 
 $garanties = $Keyword->getGaranties();
@@ -57,17 +60,57 @@ $garanties = $Keyword->getGaranties();
          <tr>
              <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis <?php echo $temp->devis__id ?></h2><br><?php echo date("d-m-Y") ?><br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : <?php echo $formated_date ?></small></p></td>
              <td style="text-align: left; width:50%"><?php 
+             // si une societe de livraion est présente 
              if ($societeLivraison) {
-                echo "<small>facturation :</small><strong><br>";
-                echo Pdfunctions::showSociete($clientView) ." </strong> 
-                <br> <small>Livraison :</small><strong><br>";
-                echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>";   
-             } 
-             else{
-                echo "<small>livraison & facturation</small><strong><br>";
-                echo Pdfunctions::showSociete($clientView)  ."</strong></td>";
 
-             } ?>
+                    if ($temp->devis__contact__id) {
+                        // si un contact est présent dans l'adresse de facturation :
+                        $contact = $Contact->getOne($temp->devis__contact__id);
+                        echo "<small>facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom. "</small><strong><br>";
+                        echo Pdfunctions::showSociete($clientView) ." </strong> ";
+                    
+                        if ($temp->devis__contact_livraison) {
+                            //si un contact est présent dans l'adresse de livraison : 
+                            $contact2 = $Contact->getOne($temp->devis__contact_livraison);
+                            echo "<br> <small>Livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
+                            echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>"; 
+                        }
+                        else {
+                            // si pas de contact de livraison : 
+                            echo "<br> <small>Livraison :</small><strong><br>";
+                            echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>"; 
+                        } 
+                    }
+
+                    else {
+                        echo "<small>facturation :</small><strong><br>";
+                        echo Pdfunctions::showSociete($clientView) ." </strong>" ;
+                        if ($temp->devis__contact_livraison) {
+                            $contact2 = $Contact->getOne($temp->devis__contact_livraison);
+                            echo "<br> <small>Livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
+                            echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>"; 
+                        } else {
+                            echo "<br> <small>Livraison :</small><strong><br>";
+                            echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>"; 
+                        }  
+                    }  
+             } 
+
+
+
+             else{
+                if ($temp->devis__contact__id) {
+                $contact = $Contact->getOne($temp->devis__contact__id);
+                echo "<small>livraison & facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."</small><strong><br>";
+                echo Pdfunctions::showSociete($clientView)  ."</strong></td>";
+                }
+                else{
+                    echo "<small>livraison & facturation : </small><strong><br>";
+                    echo Pdfunctions::showSociete($clientView)  ."</strong></td>";
+                }
+
+             } 
+             ?>
          </tr>
      </table>
      <table CELLSPACING=0 style="width: 760px;  margin-top: 65px;   ">
