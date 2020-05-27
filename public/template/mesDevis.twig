@@ -124,7 +124,12 @@
                   <td>{{devis.devis__id}}</td>
                   <td>{{ devis.devis__date_crea}}</td>
                   <td> {{ "N°: " ~ devis.devis__id}} <br> {{ devis.devis__date_crea}}</td>
+                  {% if devis.cmd__nom_devis %}
+                  <td> <div  data-toggle="tooltip" data-placement="top" title="{{devis.cmd__nom_devis}}">
+                  {{ devis.client__societe ~ " (" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}} </div></td>
+                  {% else  %}
                   <td>{{ devis.client__societe ~ " (" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td>
+                  {% endif %}
                   <td>
                     {% if devis.kw__lib == 'En attente'  %}
                     {{ devis.kw__lib}} <i class="fas fa-hourglass" style="color:#cc9900;"></i> <br> {{ devis.log_nec  }}</td>

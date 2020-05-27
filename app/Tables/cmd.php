@@ -71,6 +71,7 @@ class Cmd extends Table {
     c2.client__ville as client__livraison_ville,
     c2.client__cp as client__livraison_cp , 
     c2.client__adr1 as client__livraison__adr1 ,
+    cmd__nom_devis,
     u.log_nec
     FROM cmd
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
@@ -104,6 +105,7 @@ class Cmd extends Table {
     c2.client__ville as client__livraison_ville,
     c2.client__cp as client__livraison_cp , 
     c2.client__adr1 as client__livraison__adr1 , 
+    cmd__nom_devis,
     u.log_nec 
     FROM cmd
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
