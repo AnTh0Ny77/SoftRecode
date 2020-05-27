@@ -3,21 +3,53 @@
 /// 1er param -> table 
 /// 2nd param -> count pour ID 
 /// ensuite  -> la valeur des inputs correspondant à la désignation des parametres 
-let addOne = function(table,count,prestation,designation,comClient, comInterne , etat, garantie , xtendAdd , quantite , prix, prixBarre , pn , id__fmm ,textEtat , textPresta ){
+let addOne = function(table,count,prestation,designation,comClient, comInterne , etat, garantie , xtendAdd , quantite , prix, prixBarre , pn , id__fmm ,textEtat , textPresta  ){
     let row = [];
     row.push(count);
     row.push(textPresta);
+
     if ( comClient.length > 0 && comInterne.length > 0 ) {
-        row.push(designation + "<br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
+
+        if (pn.length > 0) {
+            row.push(designation + "<br>" + pn +  "<br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
+        }
+        else{
+            row.push(designation +  "<br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
+        }
+ 
     } 
+
     else if(comClient.length > 0 && comInterne.length < 1 ){
-        row.push(designation + "<br>  <hr>" + '<b>Commentaire : </b>' + comClient);
+
+        if (pn.length > 0) {
+            row.push(designation + "<br>" + pn +  "<br>  <hr>" + '<b>Commentaire : </b>' + comClient);
+        }
+
+        else{
+            row.push(designation + "<br>  <hr>" + '<b>Commentaire : </b>' + comClient);
+        }
+
+       
     }
+
     else if(comInterne.length > 0 && comClient.length < 1 ){
-        row.push(designation + "<br> <hr>" + '<b>Commentaire interne</b> :' + comInterne);
+
+        if (pn.length > 0) {
+            row.push(designation + "<br>" + pn +  "<br> <hr>" + '<b>Commentaire interne</b> :' + comInterne);
+        }
+        else {
+            row.push(designation  +  "<br> <hr>" + '<b>Commentaire interne</b> :' + comInterne);
+        }
+       
     }
     else {
-        row.push(designation);
+        if (pn.length > 0) {
+            row.push(designation + "<br>" + pn );
+        }
+        else{
+            row.push(designation);
+        }
+       
     }
     row.push(textEtat);
     if (xtendAdd.length > 0) {
@@ -73,16 +105,47 @@ let modifyLine = function (table,id,prestation,designation,comClient, comInterne
         row.push(id);
         row.push(textPresta);
         if ( comClient.length > 0 && comInterne.length > 0 ) {
-            row.push(designation + "<br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
+
+            if (pn.length > 0) {
+                row.push(designation + "<br>" + pn +  "<br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
+            }
+            else{
+                row.push(designation +  "<br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
+            }
+     
         } 
+    
         else if(comClient.length > 0 && comInterne.length < 1 ){
-            row.push(designation + "<br>  <hr>" + '<b>Commentaire : </b>' + comClient);
+    
+            if (pn.length > 0) {
+                row.push(designation + "<br>" + pn +  "<br>  <hr>" + '<b>Commentaire : </b>' + comClient);
+            }
+    
+            else{
+                row.push(designation + "<br>  <hr>" + '<b>Commentaire : </b>' + comClient);
+            }
+    
+           
         }
+    
         else if(comInterne.length > 0 && comClient.length < 1 ){
-            row.push(designation + "<br> <hr>" + '<b>Commentaire interne</b> :' + comInterne);
+    
+            if (pn.length > 0) {
+                row.push(designation + "<br>" + pn +  "<br> <hr>" + '<b>Commentaire interne</b> :' + comInterne);
+            }
+            else {
+                row.push(designation  +  "<br> <hr>" + '<b>Commentaire interne</b> :' + comInterne);
+            }
+           
         }
         else {
-            row.push(designation);
+            if (pn.length > 0) {
+                row.push(designation + "<br>" + pn );
+            }
+            else{
+                row.push(designation);
+            }
+           
         }
         row.push(textEtat);
         if (xtendAdd.length > 0) {
