@@ -150,16 +150,19 @@ $garanties = $Keyword->getGaranties();
          // on affiche le tableau de totaux en cas de modèle adéquate :
             if ($temp->cmd__modele_devis == 'STT') {
 
+            $typeG = 'Type de garantie ';
+            $libCheck = '<input type="checkbox"> hors garanties';
+
             $totable =  '<table CELLSPACING=0  style=" border: 1px black solid;">
             <tr style="background-color: #dedede;">
-            <td style="width: 210px; text-align: left">Type de Garantie </td>
+            <td style="width: 210px; text-align: left">'. $typeG.' </td>
             <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
             <td style="text-align: center">Total € TTC</td>
             </tr>';
 
             $totalPrice = array_sum($arrayPrice);
             echo $totable;
-            echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'> hors garanties</td>
+            echo  "<tr><td style='width: 210px; text-align: left'>". $libCheck."</td>
             <td style='text-align: center'><strong>  ". number_format($totalPrice,2  ,',', ' ') . " €</strong></td>
             <td style='text-align: right'> " .number_format(Pdfunctions::ttc(floatval($totalPrice)),2 ,',', ' ')." €</td>
             </tr>";

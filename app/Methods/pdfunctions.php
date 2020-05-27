@@ -364,6 +364,8 @@ public static function magicXtend($lignes, $garantiesArray , $prixTotal ){
        
             
     }
+
+     
     
 
    

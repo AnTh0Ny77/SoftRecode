@@ -174,7 +174,7 @@ let modifyLine = function (table,id,prestation,designation,comClient, comInterne
         }else {prixMultiple =  prix + " €" ;};
         row.push(prixMultiple);
         let rowObject = new Object();
-        rowObject.id = counter;
+        rowObject.id = id;
         rowObject.prestation = prestation;
         rowObject.designation = designation;
         rowObject.comClient = comClient;
