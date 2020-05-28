@@ -11,7 +11,7 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
     if ( comClient.length > 0 && comInterne.length > 0 ) {
 
         if (pn.length > 0) {
-            row.push(designation + "<br>" + pn +  "<br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
+            row.push(designation + "<br> pn: <i>" + pn +  "</i><br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
         }
         else{
             row.push(designation +  "<br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
@@ -22,7 +22,7 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
     else if(comClient.length > 0 && comInterne.length < 1 ){
 
         if (pn.length > 0) {
-            row.push(designation + "<br>" + pn +  "<br>  <hr>" + '<b>Commentaire : </b>' + comClient);
+            row.push(designation + "<br> pn: <i>" + pn +  " </i><br>  <hr>" + '<b>Commentaire : </b>' + comClient);
         }
 
         else{
@@ -35,7 +35,7 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
     else if(comInterne.length > 0 && comClient.length < 1 ){
 
         if (pn.length > 0) {
-            row.push(designation + "<br>" + pn +  "<br> <hr>" + '<b>Commentaire interne</b> :' + comInterne);
+            row.push(designation + "<br> pn: <i>" + pn +  " </i> <br> <hr>" + '<b>Commentaire interne</b> :' + comInterne);
         }
         else {
             row.push(designation  +  "<br> <hr>" + '<b>Commentaire interne</b> :' + comInterne);
@@ -44,7 +44,7 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
     }
     else {
         if (pn.length > 0) {
-            row.push(designation + "<br>" + pn );
+            row.push(designation + " pn: <i><br>" + pn + '</i>' );
         }
         else{
             row.push(designation);
@@ -107,7 +107,7 @@ let modifyLine = function (table,id,prestation,designation,comClient, comInterne
         if ( comClient.length > 0 && comInterne.length > 0 ) {
 
             if (pn.length > 0) {
-                row.push(designation + "<br>" + pn +  "<br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
+                row.push(designation + "<br> pn: <i>" + pn +  "</i><br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
             }
             else{
                 row.push(designation +  "<br>  <hr>" + '<b>Commentaire : </b>' + comClient  + '<br> <b>Commentaire interne</b> : ' + comInterne )
@@ -118,7 +118,7 @@ let modifyLine = function (table,id,prestation,designation,comClient, comInterne
         else if(comClient.length > 0 && comInterne.length < 1 ){
     
             if (pn.length > 0) {
-                row.push(designation + "<br>" + pn +  "<br>  <hr>" + '<b>Commentaire : </b>' + comClient);
+                row.push(designation + "<br> pn: <i>" + pn +  " </i><br>  <hr>" + '<b>Commentaire : </b>' + comClient);
             }
     
             else{
@@ -131,7 +131,7 @@ let modifyLine = function (table,id,prestation,designation,comClient, comInterne
         else if(comInterne.length > 0 && comClient.length < 1 ){
     
             if (pn.length > 0) {
-                row.push(designation + "<br>" + pn +  "<br> <hr>" + '<b>Commentaire interne</b> :' + comInterne);
+                row.push(designation + "<br> pn: <i>" + pn +  " </i> <br> <hr>" + '<b>Commentaire interne</b> :' + comInterne);
             }
             else {
                 row.push(designation  +  "<br> <hr>" + '<b>Commentaire interne</b> :' + comInterne);
@@ -140,7 +140,7 @@ let modifyLine = function (table,id,prestation,designation,comClient, comInterne
         }
         else {
             if (pn.length > 0) {
-                row.push(designation + "<br>" + pn );
+                row.push(designation + " pn: <i><br>" + pn + '</i>' );
             }
             else{
                 row.push(designation);
