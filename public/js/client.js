@@ -1051,13 +1051,15 @@ $(function () {
             if ($('#choixDesignation').val() &&  $("#garantieRow").val() && $("#prixRow").val() ) {
                 var selectedOption = ($("#etatRow").children("option:selected").text());
                 var selectedOptionPresta = ($("#prestationChoix").children("option:selected").text());
+                let commentaireClient  = ckComClient.getData();
+                let commentaireInterne = ckCOMInt.getData();
                 addOne(
                     devisTable,
                     counter,
                     $("#prestationChoix").val(),
                     $("#referenceS").val(),
-                    $("#comClient").val(),
-                    $("#comInterne").val(),
+                    commentaireClient,
+                    commentaireInterne,
                     $("#etatRow").val(),
                     $("#garantieRow").val(),
                     xtendArray,
@@ -1078,8 +1080,8 @@ $(function () {
                     $("#choixDesignation").val("");
                     $('#choixDesignation').selectpicker('val', '');
                     $("#referenceS").val("");
-                    $("#comClient").val(""),
-                    $("#comInterne").val(""),
+                    ckComClient.setData('');
+                    ckCOMInt.setData('');
                     $("#garantieRow").val("06"),
                     $("#quantiteRow").val("1"),
                     $("#quantiteRow").text("1"),
@@ -1171,9 +1173,9 @@ $(function () {
             $("#UPchoixDesignation").val('ZT420');
            
             $("#UPxtendList").empty();
-            $("#UPcomClient").val('');
+            ckUpClient.setData('');
+            ckUpInt.setData('');
             $("#UPchoixDesignation").val('');
-            $("#UPcomInterne").val('');
             $("#UPprixRow").val('');
             $("#UPbarrePrice").val('');
             UpXtendArray = [];
@@ -1212,14 +1214,15 @@ $(function () {
             
            $("#UPprestationChoix").val(formContent.prestation);
            $("#UPreferenceS").val(formContent.designation);
-           $("#UPcomClient").val(formContent.comClient);
+           
            $("#UPchoixDesignation").selectpicker('val', formContent.id__fmm);
           
-                   
-           $("#UPcomInterne").val(formContent.comInterne);
+            ckUpClient.setData(formContent.comClient);
+            ckUpInt.setData(formContent.comInterne);
+           
            $("#UPquantiteRow").val(formContent.quantite);
 
-          console.log(formContent.garantie);
+         
            $('#UPgarantieRow').selectpicker('val' ,formContent.garantie);
            $('#UPetatRow').selectpicker('val', formContent.etat);
            
@@ -1291,13 +1294,17 @@ $(function () {
             var selectedOption = ($("#UPetatRow").children("option:selected").text());
             var selectedOptionPresta = ($("#UPprestationChoix").children("option:selected").text());
             if ($('#UPchoixDesignation').val() &&  $("#UPgarantieRow").val() && $("#UPprixRow").val()) {
+
+                let modifComCLient = ckUpClient.getData();
+                let modifComInt = ckUpInt.getData();
+                
                 modifyLine(
                     devisTable,
                     idUpdate,
                     $("#UPprestationChoix").val(),
                     $("#UPreferenceS").val(),
-                    $("#UPcomClient").val(),
-                    $("#UPcomInterne").val(),
+                    modifComCLient,
+                    modifComInt,
                     $("#UPetatRow").val(),
                     $("#UPgarantieRow").val(),
                     UpXtendArray,
@@ -1491,29 +1498,78 @@ $(function () {
 
 
         //init des editeur de texte mdb : 
+      
+       ClassicEditor
+       .create( document.querySelector( '#globalComClient' ) , {
+        toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+       } )
+       .catch( error => {
+           console.error( error );
+       } );
 
-        $("#globalComClient").mdbWYSIWYG({
-            
-        });
-
-        $("#globalComInt").mdbWYSIWYG({
-        });
-        
-
-        $("#comClient").mdbWYSIWYG({ 
-         });
-
-         $("#UPcomClient").mdbWYSIWYG({ 
-        });
-        
-
-         $("#comInterne").mdbWYSIWYG({ 
-        });
-
-        $("#UPcomInterne").mdbWYSIWYG({ 
-        });
+       ClassicEditor
+       .create( document.querySelector( '#globalComInt' ) , {
+        toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+       })
+       .catch( error => {
+           console.error( error );
+       } );
 
 
+
+
+       // commentaire client pour chaque ligne : 
+       let ckComClient ;
+       ClassicEditor
+       .create( document.querySelector( '#comClient' ) , {
+        toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+       })
+       .then( newEditor => {
+        ckComClient = newEditor;
+        } )
+       .catch( error => {
+           console.error( error );
+       } );
+
+       // comentaire interne pour chaque ligne : 
+       let ckCOMInt ;
+       ClassicEditor
+       .create( document.querySelector( '#comInterne' ) , {
+        toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+       })
+       .then( newEditor => {
+        ckCOMInt = newEditor;
+        } )
+       .catch( error => {
+           console.error( error );
+       } );
+
+       // commentaire client mise a jour de ligne : 
+       let ckUpClient ; 
+       ClassicEditor
+       .create( document.querySelector( '#UPcomClient' ) , {
+        toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+       })
+       .then( newEditor => {
+        ckUpClient = newEditor;
+        } )
+       .catch( error => {
+           console.error( error );
+       } );
+
+
+       // commentaire interne mise à jour de ligne : 
+       let ckUpInt;
+       ClassicEditor
+       .create( document.querySelector( '#UPcomInterne' ) , {
+        toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+       })
+       .then( newEditor => {
+        ckUpInt = newEditor;
+        } )
+       .catch( error => {
+           console.error( error );
+       } );
        
 
         

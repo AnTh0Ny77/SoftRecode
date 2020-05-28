@@ -137,18 +137,18 @@
               </div>
             </div>
             <!-- Card Body -->
-            <div class="card-body col-12 d-flex flex-column justify-content-around " >
+            <div class="card-body col-12 d-flex flex-column justify-content-between " >
 
                
-               <div class="  chart-pie my-5 d-flex flex-row justify-content-between">
+               <div class="  d-flex flex-row justify-content-between">
                 
                 <div class="col-12">
                   <form  method="POST" action="mesDevis" id="devisSend">
                     
                       <input id="dataDevis" name="dataDevis" type="hidden" value="">
-                      <div class=" d-flex col-12  justify-content-between mb-3">
+                      <div class=" d-flex col-12  justify-content-between">
 
-                        <div class="col-12 mt-2">
+                        <div class="col-12 ">
                           <label for="validationCustom04">Titre du devis </label>
                           {% if temp %}
                           <input class="form-control " type="text"  id="titreDevis" name="titreDevis" value="{{temp.cmd__nom_devis}}">
@@ -176,22 +176,22 @@
                         
                           <div class="col-12 my-2   multi-col">
                             <label for="globalComClient">Commentaire Client</label>
-                          <textarea class="" id="globalComClient" name="globalComClient" placeholder="Commentaire client...." >{{temp.devis__note_client}}</textarea>
+                          <textarea class="CKE" id="globalComClient" name="globalComClient" placeholder="Commentaire client...." >{{temp.devis__note_client}}</textarea>
                           </div>
                           <div class="col-12 my-2  multi-col">
                             <label for="globalComInt">Commentaire Interne</label>
-                            <textarea class="" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." >{{temp.devis__note_interne}}</textarea>
+                            <textarea class="CKE" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." >{{temp.devis__note_interne}}</textarea>
                             </div>    
                         </div>
                         {% else %}
                         <div class="col-12 mt-2 mb-2 d-flex flex-column">
                           <div class="col-12 my-2  show multi-col">
                             <label for="globalComClient">Commentaire Client</label>
-                          <textarea class="" id="globalComClient" name="globalComClient" placeholder="Commentaire client...."></textarea>
+                          <textarea class="CKE" id="globalComClient" name="globalComClient" placeholder="Commentaire client...."></textarea>
                           </div>
                           <div class="col-12 my-2  multi-col">
                             <label for="globalComInt">Commentaire Interne</label>
-                            <textarea class="" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." ></textarea>
+                            <textarea class="CKE" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." ></textarea>
                             </div>    
                         </div>
                         {% endif %}
@@ -863,11 +863,11 @@
                     <div class="col-12 mt-3 mb-2 d-flex justify-content-between">
                       <div class="col-6">
                         <label for="comClient">Commentaire Client</label>
-                      <textarea class="" id="comClient" placeholder="Commentaire client...." rows="4"></textarea>
+                      <textarea class="CKE" id="comClient" placeholder="Commentaire client...." rows="4"></textarea>
                       </div>
                       <div class="col-6">
                         <label for="comInterne">Commentaire Interne</label>
-                        <textarea class="" id="comInterne" placeholder="Commentaire interne...." rows="4"></textarea>
+                        <textarea class="CKE" id="comInterne" placeholder="Commentaire interne...." rows="4"></textarea>
                         </div>
                         
                     </div>
@@ -1022,11 +1022,11 @@
                     <div class="col-12 mt-3 mb-2 d-flex justify-content-between">
                       <div class="col-6">
                         <label for="UPcomClient">Commentaire Client</label>
-                      <textarea class="" id="UPcomClient" placeholder="Commentaire client...." rows="4"></textarea>
+                      <textarea class="CKE" id="UPcomClient" placeholder="Commentaire client...." rows="4"></textarea>
                       </div>
                       <div class="col-6">
                         <label for="UPcomInterne">Commentaire Interne</label>
-                        <textarea class="" id="UPcomInterne" placeholder="Commentaire interne...." rows="4"></textarea>
+                        <textarea class="CKE" id="UPcomInterne" placeholder="Commentaire interne...." rows="4"></textarea>
                         </div>
                     </div>
                   </div>
