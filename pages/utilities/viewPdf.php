@@ -176,7 +176,11 @@ $garanties = $Keyword->getGaranties();
      </table>
 
      <div style=" width: 100%; position: absolute; top:78%">
-    
+     <?php
+     if ($temp->devis__note_client) {
+        echo $temp->devis__note_client;
+     }
+     ?>
    
      <table CELLSPACING=0 style=" width: 100%;  margin-bottom: 5px;">
          <tr style="background-color: #dedede;  "><td style="text-align: left;  width: 50%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;"><strong>BON POUR COMMANDE</strong><BR>NOM DU SIGNATAIRE: <br>VOTRE N° DE CDE :<br>DATE:</td><td style="text-align: right;  width: 50%; vertical-align:top; padding-top: 7px; padding-right: 6px;">CACHET & SIGNATURE</td></tr>

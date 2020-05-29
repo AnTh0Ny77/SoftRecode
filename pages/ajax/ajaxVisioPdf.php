@@ -181,6 +181,12 @@ $garanties = $Keyword->getGaranties();
      </table>
 
      <div style=" width: 100%; position: absolute; top:78%">
+
+     <?php
+     if ($temp->devis__note_client) {
+        echo $temp->devis__note_client;
+     }
+     ?>
     
    
      <table CELLSPACING=0 style=" width: 100%;  margin-bottom: 5px;">

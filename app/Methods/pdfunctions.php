@@ -318,51 +318,51 @@ public static function xTendTotalView($xtendArray){
 
 // function du calcul des extension de garanties avec keyword : 
 public static function magicXtend($lignes, $garantiesArray , $prixTotal ){
+    // pour chaque type de garanties dans keyword push dans le tableau global array ;
     $globalArray = array();
-    // creation des array garanties / prix ;
-    foreach ($garantiesArray as  $value) {
 
+    foreach ($garantiesArray as  $value) {
+        // création d'un tableau multidimensionnel pour chaque valeur présente dans le tableau : 
         $type = intval($value->kw__value);
-       
         $globalArray[$type]  = [$type];
     }  
-
-    foreach ($lignes as $ligne ) {
-           
+    // pour sur chaque ligne de garantie 
+    foreach ($lignes as $ligne ) { 
+        // variable $xtend déclaré pour chaque tableau d'extension de garanties : 
         $xtend =  $ligne->ordre2;
-
+        // pour sur chaque tableau d'extension du tableau des extensions de  garantie : 
         foreach ( $xtend as $array) {
-
+            //  sur chaque valeur du tableau des garantie dans keyword : 
             foreach ($globalArray as  $value) {
-              
+                // si la valeur du nombre de mois dans l'extension correspond à la valeur du  tableau de la liste keyword : 
                 if ( intval($array['devg__type']) == $value[0] ) {
-                  
+                    // la variable $results est le résultat du prix de l'extension correspondante X la quantité 
                     $results = floatval($array['devg__prix']) * intval($ligne->devl_quantite);
-
+                    //  pousse dans le tableau correspondant à la valeur de la garantie :
                     array_push( $globalArray[$value[0]] , $results );     
                 } 
                 else {
+                    // sinon détruit la valeur : 
                     unset($value);
                 }
             }    
         }      
     }
-           
+    //pour chaque tableau de résultat présent dans le tableau global 
     foreach ($globalArray as  $resultsArray) {
-       
+       // si la taille du tableau correspond au nombre de ligne +1 alors chaque ligne possède la garantie : 
         if (sizeof($resultsArray)  == sizeof($lignes) + 1) {
-
+            //on retire l'index 0 corespondant à la valeur de la garantie :
             $prixTemp =  floatval(array_sum($resultsArray) - $resultsArray[0]);
-
+            // on additionne au prix total  :
             $prix = $prixTemp + $prixTotal;
+            // renvoi dans le template html => 
             echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style='text-align: center'><strong>  "
             . number_format($prix,2  ,',', ' ').
              " €</strong></td><td style='text-align: right'> " 
              .number_format(Pdfunctions::ttc( floatval($prix)),2 ,',', ' ').
              " €</td></tr>";
-        }
-       
-            
+        }       
     }
 
      
