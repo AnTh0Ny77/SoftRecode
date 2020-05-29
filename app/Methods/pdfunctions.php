@@ -330,13 +330,13 @@ public static function magicXtend($lignes, $garantiesArray , $prixTotal ){
     // pour sur chaque ligne de garantie 
     foreach ($lignes as $ligne ) { 
         // si il s'agit d''un service incremente le marqueur : 
-        if ($ligne->devl__type == 'SER') {
+        if ($ligne->famille == 'SER') {
             $marqueurServices += 1;
         }
         // variable $xtend déclaré pour chaque tableau d'extension de garanties : 
         $xtend =  $ligne->ordre2;
         // si il ne s'agit pas d'un service pour sur chaque tableau d'extension du tableau des extensions de  garantie : 
-        if ($ligne->devl__type != 'SER') {
+        if ($ligne->famille != 'SER') {
             foreach ( $xtend as $array) {
                 //  sur chaque valeur du tableau des garantie dans keyword : 
                 foreach ($globalArray as  $value) {

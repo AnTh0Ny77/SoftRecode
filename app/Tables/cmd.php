@@ -462,10 +462,12 @@ public function modify(
       cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
       cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
       k.kw__lib , k.kw__value , 
+      f.afmm__famille as famille ,
       k2.kw__lib as prestaLib
       FROM cmd_ligne 
       LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
       LEFT JOIN keyword as k2 ON cmdl__prestation = k2.kw__value AND k2.kw__type = 'pres'
+      LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
       WHERE cmdl__cmd__id = ". $id ."
       ORDER BY devl__ordre ");
      

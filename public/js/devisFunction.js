@@ -44,7 +44,7 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
     }
     else {
         if (pn.length > 0) {
-            row.push(designation + " pn: <i><br>" + pn + '</i>' );
+            row.push(designation + "<br> pn: <i><br>" + pn + '</i>' );
         }
         else{
             row.push(designation);
@@ -140,7 +140,7 @@ let modifyLine = function (table,id,prestation,designation,comClient, comInterne
         }
         else {
             if (pn.length > 0) {
-                row.push(designation + " pn: <i><br>" + pn + '</i>' );
+                row.push(designation + " <br> pn: <i><br>" + pn + '</i>' );
             }
             else{
                 row.push(designation);
