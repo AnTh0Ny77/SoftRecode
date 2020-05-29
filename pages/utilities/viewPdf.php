@@ -157,7 +157,7 @@ $garanties = $Keyword->getGaranties();
 
             $totalPrice = array_sum($arrayPrice);
             echo $totable;
-            echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'> hors garanties</td>
+            echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'>  garantie standard</td>
             <td style='text-align: center'><strong>  ". number_format($totalPrice,2  ,',', ' ') . " €</strong></td>
             <td style='text-align: right'> " .number_format(Pdfunctions::ttc(floatval($totalPrice)),2 ,',', ' ')." €</td>
             </tr>";
@@ -176,7 +176,7 @@ $garanties = $Keyword->getGaranties();
      </table>
 
      <div style=" width: 100%; position: absolute; top:78%">
-     <?php
+      <?php
      if ($temp->devis__note_client) {
         echo $temp->devis__note_client;
      }

@@ -29,7 +29,6 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
             row.push(designation + "<br>  <hr>" + '<b>Commentaire : </b>' + comClient);
         }
 
-       
     }
 
     else if(comInterne.length > 0 && comClient.length < 1 ){
@@ -44,7 +43,7 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
     }
     else {
         if (pn.length > 0) {
-            row.push(designation + "<br> pn: <i><br>" + pn + '</i>' );
+            row.push(designation + "<br> pn: <i>" + pn + '</i>' );
         }
         else{
             row.push(designation);
@@ -140,7 +139,7 @@ let modifyLine = function (table,id,prestation,designation,comClient, comInterne
         }
         else {
             if (pn.length > 0) {
-                row.push(designation + " <br> pn: <i><br>" + pn + '</i>' );
+                row.push(designation + " <br> pn: <i>" + pn + '</i>' );
             }
             else{
                 row.push(designation);

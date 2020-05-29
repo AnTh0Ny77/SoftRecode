@@ -151,7 +151,7 @@ $garanties = $Keyword->getGaranties();
             if ($temp->cmd__modele_devis == 'STT') {
 
             $typeG = 'Type de garantie ';
-            $libCheck = '<input type="checkbox"> hors garanties';
+            $libCheck = '<input type="checkbox">  garantie standard';
 
             $totable =  '<table CELLSPACING=0  style=" border: 1px black solid;">
             <tr style="background-color: #dedede;">
