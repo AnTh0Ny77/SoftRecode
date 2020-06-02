@@ -28,16 +28,14 @@
               <div class="modal-body">
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
 
+
+                  <select class="selectpicker " id="selectStatus" name="statusRadio" >
                     {% for status in listOfStatus %}
                     {% if   status.keyword__lib != 'Commande'%}
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input statusRadio" name="statusRadio" type="radio" value="{{ status.kw__value}}" >
-                      <label class="form-check-label" for="defaultCheck1">
-                        {{ status.kw__lib}}
-                      </label>
-                    </div>
+                        <option class="optionSelect modelSelect" value={{status.kw__value}}>{{status.kw__lib }}</option>
                     {% endif %}
                     {% endfor %}
+                  </select> 
                     <input type="hidden" name="ValiderDevis" id="ValiderDevis" value="">
                   </div>
               </div>

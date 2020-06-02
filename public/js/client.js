@@ -695,13 +695,8 @@ $('#AjaxClient').on('click', function(){
 
 // Fontion qui selct l'input radion en fonction du devis selectionné : mes devis 
 let checkradio = function(object){
-   let statusRadio = $('.statusRadio');
-  for (const key in statusRadio) {
-          const element = statusRadio[key].value;
-          if (element == object.devis__etat) {
-              statusRadio[key].checked = true;
-          } 
-  }  
+   let statusRadio = $('#selectStatus');
+              $('#selectStatus').selectpicker('val', object.devis__etat);
 }
 
 //init tout les tooltips 
