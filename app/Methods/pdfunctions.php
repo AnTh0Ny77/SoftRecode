@@ -355,18 +355,30 @@ public static function magicXtend($lignes, $garantiesArray , $prixTotal ){
             } 
         }
     }
+
+   $marqueurPresta = ' <input type="checkbox"> garantie standard';
+   $marqueurType = '';
+   foreach ($lignes  as $ligne) {
+        if ($ligne->devl__type == 'REP') {
+        $marqueurPresta = 'hors garantie' ;
+        }
+    }
+
    // égal le nombre de ligne - les services :
    $compare = sizeof($lignes) - $marqueurServices;
     //pour chaque tableau de résultat présent dans le tableau global 
+   $echoArrays = "";
     foreach ($globalArray as  $resultsArray) {
+
        // si la taille du tableau correspond au nombre de ligne +1 (index 0 )alors chaque ligne possède la garantie : 
         if (sizeof($resultsArray)  ==  $compare + 1) {
+            $marqueurType = "Type de garantie";
             //on retire l'index 0 corespondant à la valeur de la garantie :
             $prixTemp =  floatval(array_sum($resultsArray) - $resultsArray[0]);
             // on additionne au prix total  :
             $prix = $prixTemp + $prixTotal;
             // renvoi dans le template html => 
-            echo  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style='text-align: center'><strong>  "
+            $echoArrays .=  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style='text-align: center'><strong>  "
             . number_format($prix,2  ,',', ' ').
              " €</strong></td><td style='text-align: right'> " 
              .number_format(Pdfunctions::ttc( floatval($prix)),2 ,',', ' ').
@@ -374,12 +386,16 @@ public static function magicXtend($lignes, $garantiesArray , $prixTotal ){
         }       
     }
 
-     
-    
-
-   
-    
-
+    echo '<table CELLSPACING=0  style=" border: 1px black solid;">
+    <tr style="background-color: #dedede;">
+    <td style="width: 210px; text-align: left"> '. $marqueurType .'</td>
+    <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
+    <td style="text-align: center">Total € TTC</td>
+    </tr>
+    <tr><td style="width: 210px; text-align: left"> '.$marqueurPresta.'</td>
+    <td style="text-align: center"><strong>  '. number_format($prixTotal,2  ,',', ' ') . '€</strong></td>
+    <td style="text-align: right"> ' .number_format(Pdfunctions::ttc(floatval($prixTotal)),2 ,',', ' ').' €</td>
+    </tr>' . $echoArrays;
 }
 
 

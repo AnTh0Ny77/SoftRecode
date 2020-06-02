@@ -117,8 +117,8 @@ $garanties = $Keyword->getGaranties();
              <tr style=" margin-top : 50px; background-color: #dedede;  " >
                 <td style=" text-align: left;   padding-top: 4px; padding-bottom: 4px;">Prestation</td>
                 <td style=" text-align: left; padding-top: 4px; padding-bottom: 4px;">Designation</td>
-                <td style="text-align: center; padding-top: 4px; padding-bottom: 4px;"></td>
-                <td  style=" text-align: center; padding-top: 4px; padding-bottom: 4px;"></td>
+                <td style="text-align: center; padding-top: 4px; padding-bottom: 4px;">Etat</td>
+                <td  style=" text-align: center; padding-top: 4px; padding-bottom: 4px;">Garantie</td>
                 <td style="text-align: center; padding-top: 4px; padding-bottom: 4px;">Qté</td>
                 <td style="text-align: right; ; padding-top: 4px; padding-bottom: 4px;">P.u € HT</td>
              </tr> 
@@ -150,22 +150,22 @@ $garanties = $Keyword->getGaranties();
          // on affiche le tableau de totaux en cas de modèle adéquate :
             if ($temp->cmd__modele_devis == 'STT') {
 
-            $typeG = 'Type de garantie ';
-            $libCheck = '<input type="checkbox">  garantie standard';
+            // $typeG = 'Type de garantie ';
+            // $libCheck = '<input type="checkbox">  garantie standard';
 
-            $totable =  '<table CELLSPACING=0  style=" border: 1px black solid;">
-            <tr style="background-color: #dedede;">
-            <td style="width: 210px; text-align: left">'. $typeG.' </td>
-            <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
-            <td style="text-align: center">Total € TTC</td>
-            </tr>';
+            // $totable =  '<table CELLSPACING=0  style=" border: 1px black solid;">
+            // <tr style="background-color: #dedede;">
+            // <td style="width: 210px; text-align: left">'. $typeG.' </td>
+            // <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
+            // <td style="text-align: center">Total € TTC</td>
+            // </tr>';
 
             $totalPrice = array_sum($arrayPrice);
-            echo $totable;
-            echo  "<tr><td style='width: 210px; text-align: left'>". $libCheck."</td>
-            <td style='text-align: center'><strong>  ". number_format($totalPrice,2  ,',', ' ') . " €</strong></td>
-            <td style='text-align: right'> " .number_format(Pdfunctions::ttc(floatval($totalPrice)),2 ,',', ' ')." €</td>
-            </tr>";
+            // echo $totable;
+            // echo  "<tr><td style='width: 210px; text-align: left'>". $libCheck."</td>
+            // <td style='text-align: center'><strong>  ". number_format($totalPrice,2  ,',', ' ') . " €</strong></td>
+            // <td style='text-align: right'> " .number_format(Pdfunctions::ttc(floatval($totalPrice)),2 ,',', ' ')." €</td>
+            // </tr>";
             $totaux = Pdfunctions::magicXtend($arrayOfDevisLigne , $garanties , array_sum($arrayPrice));
             echo '</table>';
             }
