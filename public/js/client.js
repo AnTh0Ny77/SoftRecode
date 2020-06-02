@@ -17,6 +17,7 @@ $('#AjaxClient').on('click', function(){
     success: function(data){
         dataSet = JSON.parse(data);
         $('#modalClient').modal('show');
+        
         tableClient = $('#client').DataTable({
             "language": {
                 "decimal":        "",
@@ -114,8 +115,8 @@ $('#AjaxClient').on('click', function(){
                 retrieve: true,
                 "deferRender": true,
                 "searching": true,}
-            );},      
-                
+            );},
+                    
             error: function (err) {
             alert('error: ' + err);
             }})   
@@ -200,9 +201,8 @@ $('#AjaxClient').on('click', function(){
 
 
 
-
-
-  
+    
+   
 
 
 
@@ -461,6 +461,17 @@ $('#AjaxClient').on('click', function(){
             }
         })
     });
+
+    //supression de l'adresse de livraison au click : 
+    $('#deleteLivraison').on('click', function(){
+        $('#spanLivraison').html('');
+        $('#spanLivraison').addClass('d-none');
+        $('#contactDivLVR').html("Aucun contact");
+        $('#contact_livraison').val("");
+        $('#textLivraison').text("Livré à la meme adresse");
+        $('#livraisonSelect').val("");
+
+    })
 
     
 

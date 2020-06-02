@@ -258,12 +258,17 @@
                
               
               </div>
+              <div  data-toggle="tooltip" data-placement="top" title="Suprimer l'adresse de livraison">
+              <button type="button" class="btn btn-sm btn-danger" id="deleteLivraison"><i class="fas fa-trash-alt"></i></button>
             </div>
+            </div>
+           
             <!-- Card Body -->
             <div class="card-body d-flex flex-column justify-content-around " style=" height: 18rem;">
-
+            
                <!--societe-->
                <div class="  chart-pie my-4 d-flex flex-row justify-content-between">
+               
                 <div class=" mb-0 font-weight-bold text-muted" id="textLivraison">
                   {% if not livraison %}
                  livré à la meme adresse
@@ -275,8 +280,11 @@
                   <form  class="form" role="form"  method="POST" action="nouveauDevis" id="formSelectLivraison">
                         <input type="hidden" name="choixLivraison" id="choixLivraison" value="">
                   </form>
+                 
                 </div>
+               
                 <div>
+                 
                   <div class="btn-group btn-group-sm mx-4">
                     <button type="button" id="buttonLivraison" class="btn btn-success btn-sm " disabled>Choisir</button>
                     <button type="button" id="buttonCrealivraison" class="btn btn-outline-success btn-sm " data-toggle="modal" data-target="#modalSocieteLivraison" disabled>Créer</button>

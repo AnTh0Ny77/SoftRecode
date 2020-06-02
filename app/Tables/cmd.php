@@ -23,7 +23,6 @@ class Cmd extends Table {
     LPAD(cmd__client__id_fact ,6,0)   as client__id, 
     cmd__contact__id_fact  as  devis__contact__id,
     cmd__etat as devis__etat, 
-    cmd__port as devis__port,
     cmd__note_client as  devis__note_client , 
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
@@ -59,7 +58,7 @@ class Cmd extends Table {
     LPAD(cmd__client__id_fact ,6,0)   as client__id,
     cmd__contact__id_fact  as  devis__contact__id,
     cmd__etat as devis__etat, 
-    cmd__port as devis__port,
+   
     cmd__note_client as  devis__note_client , 
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
@@ -93,7 +92,7 @@ class Cmd extends Table {
     LPAD(cmd__client__id_fact ,6,0)   as client__id,
     cmd__contact__id_fact  as  devis__contact__id,
     cmd__etat as devis__etat, 
-    cmd__port as devis__port,
+   
     cmd__note_client as  devis__note_client , 
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
@@ -170,7 +169,7 @@ class Cmd extends Table {
     LPAD(cmd__client__id_fact ,6,0)   as client__id ,
     cmd__contact__id_fact  as  devis__contact__id,
     cmd__etat as devis__etat, 
-    cmd__port as devis__port,
+   
     cmd__note_client as  devis__note_client , 
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
@@ -204,7 +203,7 @@ class Cmd extends Table {
     LPAD(cmd__client__id_fact ,6,0)   as client__id ,
     cmd__contact__id_fact  as  devis__contact__id,
     cmd__etat as devis__etat, 
-    cmd__port as devis__port,
+   
     cmd__note_client as  devis__note_client , 
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
@@ -238,7 +237,7 @@ class Cmd extends Table {
     LPAD(cmd__client__id_fact ,6,0)   as client__id,
     cmd__contact__id_fact  as  devis__contact__id,
     cmd__etat as devis__etat, 
-    cmd__port as devis__port,
+   
     cmd__note_client as  devis__note_client , 
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
