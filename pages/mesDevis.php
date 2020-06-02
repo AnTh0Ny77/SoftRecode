@@ -127,6 +127,8 @@ foreach ($devisList as $devis) {
   }
 }
 
+$NbDevis = count($devisList);
+
  foreach ($devisList as $devis) {
    $devisDate = date_create($devis->devis__date_crea);
    $date = date_format($devisDate, 'Y/m/d');
@@ -138,5 +140,6 @@ echo $twig->render('mesDevis.twig',['user'=>$user,
 'devisList'=> $devisList,
 'listOfStatus'=> $listOfStatus ,
 'AllDevis'=> $AllDevis , 
-'notifValid'=> $notifValid
+'notifValid'=> $notifValid , 
+'NbDevis' => $NbDevis
 ]);

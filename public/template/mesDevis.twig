@@ -54,7 +54,7 @@
         <div class="card shadow mb-4">
           <!-- Card Header - -->
           <div class="my-2 mx-4">
-            <h6 class="m-0 font-weight-bold text-primary">Selection <i class="far fa-mouse-pointer"></i></h6>
+            <h6 class="m-0 font-weight-bold text-primary">Selection <i class="far fa-mouse-pointer"> </i> <small class="ml-3"> {{  " " ~ NbDevis }} devis</small></h6>
           </div>
 
           <div class="card-header d-flex flex-row align-items-center justify-content-between">
@@ -123,8 +123,8 @@
                   <td>{{ devis.devis__date_crea}}</td>
                   <td> {{ "N°: " ~ devis.devis__id}} <br> {{ devis.devis__date_crea}}</td>
                   {% if devis.cmd__nom_devis %}
-                  <td> <div  data-toggle="tooltip" data-placement="top" title="{{devis.cmd__nom_devis}}">
-                  {{ devis.client__societe ~ " (" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}} </div></td>
+                  <td> 
+                  {{ devis.client__societe ~ " (" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }} <br> {{devis.cmd__nom_devis}} </td>
                   {% else  %}
                   <td>{{ devis.client__societe ~ " (" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td>
                   {% endif %}
@@ -182,8 +182,7 @@
             </div>
             <!-- Card Body -->
             <div class="card-body">
-              <iframe id="iframeDevis" src="" width="100%" height="600px">
-              </iframe>
+
 
               <div id="loaderPdf">
                 <div class="  d-flex  flex-column  justify-content-center align-items-center ">
@@ -191,12 +190,21 @@
                   </div>
                   <div> 
                     <h5 class="text-primary">chargement du devis ...</h5>
+                  </div> 
+               </div>  
+              </div>
 
-                  </div>
-                
-             </div>
-             
-          </div>
+
+
+
+
+
+
+
+              <iframe id="iframeDevis" src="" width="100%" height="600px">
+              </iframe>
+
+          
           
         </div>
 
