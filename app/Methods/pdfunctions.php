@@ -104,6 +104,14 @@ public static function showdesignationView($object){
 
 public static function magicLine($object){
     // presation
+    $firstW = '80px';
+    $secondW = '260px';
+    $thirdW ='100px';
+    $fourthW = '80px';
+    $fifthW = '40px';
+    $lastW= '100px';
+
+
     $presta = strtolower($object->prestaLib);
 
     // designation
@@ -134,35 +142,31 @@ public static function magicLine($object){
      //quantite 
     $quantité = $object->devl_quantite;
 
-
-
-   
-
     $fisrtLine = "<tr style='font-size: 85%; font-style: italic;'>";
 
-    $firstCell = "<td valign='top' style=' width: 13%; text-align: left; border-bottom: 1px #ccc solid'>" . $presta  . "</td>";
+    $firstCell = "<td valign='top' style=' width: ".$firstW.";  max-width: ".$firstW."; text-align: left; border-bottom: 1px #ccc solid'>" . $presta  . "</td>";
 
-    $secondCell = "<td valign='top' style='  width: 33%; text-align: left; border-bottom: 1px #ccc solid ; padding-bottom:15px'>"  . $designation. "</td>";
+    $secondCell = "<td valign='top' style='  width: ".$secondW.";  max-width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid ; padding-bottom:15px'>"  . $designation. "</td>";
 
     if ($object->kw__lib == 'Non Concerné') {
-        $thirdCell =  "<td valign='top' style='  color: white ; text-align: left; border-bottom: 1px #ccc solid'>" .$object->kw__lib ."</td>";
+        $thirdCell =  "<td valign='top' style='  width: ".$thirdW."; max-width: ".$thirdW."; color: white ; text-align: left; border-bottom: 1px #ccc solid'>" .$object->kw__lib ."</td>";
     }
     else {
-        $thirdCell =  "<td valign='top' style=' text-align: left; border-bottom: 1px #ccc solid'>" .$object->kw__lib ."</td>";
+        $thirdCell =  "<td valign='top' style=' width: ".$thirdW."; max-width: ".$thirdW."; text-align: left; border-bottom: 1px #ccc solid'>" .$object->kw__lib ."</td>";
     }
 
     if ($object->devl__mois_garantie > 0){
-        $fourthCell = "<td valign='top' style=' text-align: center; border-bottom: 1px #ccc solid'>" . $garantie ." </td>";
+        $fourthCell = "<td valign='top' style=' width: ".$fourthW."; max-width: ".$fourthW."; text-align: center; border-bottom: 1px #ccc solid'>" . $garantie ." </td>";
     }
     else {
-        $fourthCell = "<td valign='top' style='  color: white; text-align: center; border-bottom: 1px #ccc solid'>" . $garantie ." </td>";
+        $fourthCell = "<td valign='top' style=' width: ".$fourthW."; max-width: ".$fourthW.";  color: white; text-align: center; border-bottom: 1px #ccc solid'>" . $garantie ." </td>";
     }
 
     
 
-    $fifthCell ="<td valign='top' style='text-align: center; border-bottom: 1px #ccc solid '>" .$quantité ."</td>";
+    $fifthCell ="<td valign='top' style=' width: ".$fifthW."; max-width: ".$fifthW."; text-align: center; border-bottom: 1px #ccc solid '>" .$quantité ."</td>";
 
-    $lastCell = "<td valign='top' style=' width: 15%; text-align: right;  border-bottom: 1px #ccc solid; padding-bottom:15px'>" . $barre . " " . $price ."</td>" ;
+    $lastCell = "<td valign='top' style=' width: ".$lastW."; max-width: ".$lastW."; text-align: right;  border-bottom: 1px #ccc solid; padding-bottom:15px'>" . $barre . " " . $price ."</td>" ;
 
     $endline = "<br></tr> ";
 
@@ -171,29 +175,29 @@ public static function magicLine($object){
     if (!empty($object->ordre2)) {
         $fisrtLine = "<tr style='font-size: 85%; font-style: italic;'>";
 
-        $firstCell = "<td valign='top' style=' width: 13%; text-align: left;'>" . $presta  . "</td>";
+        $firstCell = "<td valign='top' style=' width: ".$firstW."; max-width: ".$firstW."; text-align: left;'>" . $presta  . "</td>";
     
-        $secondCell = "<td valign='top' style=' width: 33%; text-align: left;  padding-bottom:15px'>"  . $designation. "</td>";
+        $secondCell = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  padding-bottom:15px'>"  . $designation. "</td>";
     
         if ($object->kw__lib == 'Non Concerné') {
-            $thirdCell =  "<td valign='top' style='  color: white ; text-align: left; '>" .$object->kw__lib ."</td>";
+            $thirdCell =  "<td valign='top' style=' width: ".$thirdW."; max-width: ".$thirdW.";  color: white ; text-align: left; '>" .$object->kw__lib ."</td>";
         }
         else {
-            $thirdCell =  "<td valign='top' style=' text-align: left; '>" .$object->kw__lib ."</td>";
+            $thirdCell =  "<td valign='top' style=' width: ".$thirdW."; max-width: ".$thirdW."; text-align: left; '>" .$object->kw__lib ."</td>";
         }
 
          if ($object->devl__mois_garantie > 0){
-        $fourthCell = "<td valign='top' style=' text-align: center; '>" . $garantie ." </td>";
+        $fourthCell = "<td valign='top' style=' width: ".$fourthW."; max-width: ".$fourthW.";  text-align: center; '>" . $garantie ." </td>";
             }
          else {
-        $fourthCell = "<td valign='top' style='  color: white; text-align: center; '>" . $garantie ." </td>";
+        $fourthCell = "<td valign='top' style=' width: ".$fourthW."; max-width: ".$fourthW.";  color: white; text-align: center; '>" . $garantie ." </td>";
             }
     
      
     
-        $fifthCell ="<td valign='top' style=' width: 7%; text-align: center;  '>" .$quantité ."</td>";
+        $fifthCell ="<td valign='top' style=' width: ".$fifthW."; max-width: ".$fifthW."; text-align: center;  '>" .$quantité ."</td>";
     
-        $lastCell = "<td valign='top' style=' width: 17%; text-align: right;   padding-bottom:15px'>" . $barre . " " . $price ."</td>" ;
+        $lastCell = "<td valign='top' style=' width: ".$lastW."; max-width: ".$lastW.";  text-align: right;   padding-bottom:15px'>" . $barre . " " . $price ."</td>" ;
     
         
         $endline = "</tr>";
@@ -202,32 +206,32 @@ public static function magicLine($object){
             $counter = $counter + 1; 
             $extensionLine = "";
             $secondLine = "<tr style='font-size: 85%; font-style: italic;'>" ;
-            $firstCell2 = "<td valign='top' style=' width: 13%; text-align: left; '>garantie</td>";
+            $firstCell2 = "<td valign='top' style=' width:".$firstW."; max-width: ".$firstW."; text-align: left; '>garantie</td>";
             if ($presta == "reparation") {
-                $secondCell2 = "<td valign='top' style=' width: 33%; text-align: left;  '>mise sous garantie du matériel réparé optionnelle - retour atelier & renvoi sous 24h </td>";
+                $secondCell2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW.";  text-align: left;  '>mise sous garantie du matériel réparé optionnelle - retour atelier & renvoi sous 24h </td>";
             }
             else {
-                $secondCell2 = "<td valign='top' style=' width: 33%; text-align: left;  ;'> extension de garantie</td>";
+                $secondCell2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie</td>";
             }
             
-            $thirdCell2 =  "<td valign='top' style=' width: 13%; text-align: left; '></td>";
-            $fourthCell2 = "<td valign='top' style=' text-align: center; '>" . $array['devg__type'] ." mois </td>";
-            $fifthCell2 ="<td valign='top' style=' width: 7%; text-align: center;  '>" .$quantité ."</td>";
-            $lastCell2 = "<td valign='top' style=' width: 17%; text-align: right;   '>" . number_format(floatVal($array['devg__prix']),2 , ',',' ') ." €</td>" ;
+            $thirdCell2 =  "<td valign='top' style=' width: ".$thirdW."; max-width: ".$thirdW."; text-align: left; '></td>";
+            $fourthCell2 = "<td valign='top' style=' width: ".$fourthW."; max-width: ".$fourthW."; text-align: center; '>" . $array['devg__type'] ." mois </td>";
+            $fifthCell2 ="<td valign='top' style=' width:".$fifthW."; max-width: ".$fifthW."; text-align: center;  '>" .$quantité ."</td>";
+            $lastCell2 = "<td valign='top' style=' width: ".$lastW."; max-width: ".$lastW."; text-align: right;   '>" . number_format(floatVal($array['devg__prix']),2 , ',',' ') ." €</td>" ;
             $endSecondLine = "</tr> ";
             if ( $array === end($object->ordre2)) {
                 $secondLine = "<tr style='font-size: 85%; font-style: italic;'>" ;
-                $firstCell2 = "<td valign='top' style=' text-align: left; border-bottom: 1px #ccc solid'>garantie</td>";
+                $firstCell2 = "<td valign='top' style=' width:".$firstW."; text-align: left; border-bottom: 1px #ccc solid'>garantie</td>";
                 if ($presta == "reparation") {
-                    $secondCell2 = "<td valign='top' style=' width: 33%; text-align: left; border-bottom: 1px #ccc solid; padding-bottom:15px '>mise sous garantie du matériel réparé optionnelle - retour atelier & renvoi sous 24h </td>";
+                    $secondCell2 = "<td valign='top' style=' width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid; padding-bottom:15px '>mise sous garantie du matériel réparé optionnelle - retour atelier & renvoi sous 24h </td>";
                 }
                 else {
-                    $secondCell2 = "<td valign='top' style=' width: 33%; text-align: left; border-bottom: 1px #ccc solid  ; padding-bottom:15px'> extension de garantie</td>";
+                    $secondCell2 = "<td valign='top' style=' width:".$secondW."; text-align: left; border-bottom: 1px #ccc solid  ; padding-bottom:15px'> extension de garantie</td>";
                 }
-                $thirdCell2 =  "<td valign='top' style=' width: 13%; text-align: left; border-bottom: 1px #ccc solid'></td>";
-                $fourthCell2 = "<td valign='top' style=' text-align: center; border-bottom: 1px #ccc solid'>" . $array['devg__type'] ." mois </td>";
-                $fifthCell2 ="<td valign='top' style=' width: 7%; text-align: center; border-bottom: 1px #ccc solid '>" .$quantité ."</td>";
-                $lastCell2 = "<td valign='top' style=' width: 17%; text-align: right;  border-bottom: 1px #ccc solid; padding-bottom:15px'>" . number_format(floatVal($array['devg__prix']),2 , "," , " ") ." €</td>" ;
+                $thirdCell2 =  "<td valign='top' style=' width: ".$thirdW."; text-align: left; border-bottom: 1px #ccc solid'></td>";
+                $fourthCell2 = "<td valign='top' style=' width: ".$fourthW."; text-align: center; border-bottom: 1px #ccc solid'>" . $array['devg__type'] ." mois </td>";
+                $fifthCell2 ="<td valign='top' style=' width:".$fifthW."; text-align: center; border-bottom: 1px #ccc solid '>" .$quantité ."</td>";
+                $lastCell2 = "<td valign='top' style=' width:".$lastW."; text-align: right;  border-bottom: 1px #ccc solid; padding-bottom:15px'>" . number_format(floatVal($array['devg__prix']),2 , "," , " ") ." €</td>" ;
             }
             $extensionLine = $secondLine . $firstCell2 . $secondCell2 . $thirdCell2 . $fourthCell2 . $fifthCell2 . $lastCell2 . $endSecondLine ;
             $extension .= $extensionLine ;

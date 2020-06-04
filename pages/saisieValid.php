@@ -15,12 +15,12 @@ session_start();
     $user = $_SESSION['user'];
     //Connexion et requetes : 
     $Database = new App\Database('devis');
-    $Command = new App\Tables\Command($Database);
+    $Command = new App\Tables\Cmd($Database);
     $TransporteurList = new App\Tables\Transporteur($Database);
     $Database->DbConnect();
     $transporteurList = $TransporteurList->getAll();
     $command = $Command->getById($_POST['saisieLivraison']);
-    $arrayOfCommandLigne= $Command->commandLigne($_POST['saisieLivraison']);
+    $arrayOfCommandLigne= $Command->devisLigne($_POST['saisieLivraison']);
     $jsonPack = json_encode($arrayOfCommandLigne);
 
     

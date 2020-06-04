@@ -113,7 +113,7 @@ $garanties = $Keyword->getGaranties();
              ?>
          </tr>
      </table>
-     <table CELLSPACING=0 style="width: 760px;  margin-top: 65px;   ">
+     <table CELLSPACING=0 style="   margin-top: 65px;   ">
              <tr style=" margin-top : 50px; background-color: #dedede;  " >
                 <td style=" text-align: left;   padding-top: 4px; padding-bottom: 4px;">Prestation</td>
                 <td style=" text-align: left; padding-top: 4px; padding-bottom: 4px;">Designation</td>
@@ -149,46 +149,22 @@ $garanties = $Keyword->getGaranties();
          <?php
          // on affiche le tableau de totaux en cas de modèle adéquate :
             if ($temp->cmd__modele_devis == 'STT') {
-
-            // $typeG = 'Type de garantie ';
-            // $libCheck = '<input type="checkbox">  garantie standard';
-
-            // $totable =  '<table CELLSPACING=0  style=" border: 1px black solid;">
-            // <tr style="background-color: #dedede;">
-            // <td style="width: 210px; text-align: left">'. $typeG.' </td>
-            // <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
-            // <td style="text-align: center">Total € TTC</td>
-            // </tr>';
-
             $totalPrice = array_sum($arrayPrice);
-            // echo $totable;
-            // echo  "<tr><td style='width: 210px; text-align: left'>". $libCheck."</td>
-            // <td style='text-align: center'><strong>  ". number_format($totalPrice,2  ,',', ' ') . " €</strong></td>
-            // <td style='text-align: right'> " .number_format(Pdfunctions::ttc(floatval($totalPrice)),2 ,',', ' ')." €</td>
-            // </tr>";
             $totaux = Pdfunctions::magicXtend($arrayOfDevisLigne , $garanties , array_sum($arrayPrice));
             echo '</table>';
-            }
-            
-                
-                 
-                    
-                    
-                 ?>
+            }               
+         ?>
              
          </td>
          </tr>
      </table>
-
-     <div style=" width: 100%; position: absolute; top:78%">
-
      <?php
      if ($temp->devis__note_client) {
         echo $temp->devis__note_client;
      }
      ?>
-    
-   
+
+     <div style=" width: 100%; position: absolute; top:76%">
      <table CELLSPACING=0 style=" width: 100%;  margin-bottom: 5px;">
          <tr style="background-color: #dedede;  "><td style="text-align: left;  width: 50%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;"><strong>BON POUR COMMANDE</strong><BR>NOM DU SIGNATAIRE: <br>VOTRE N° DE CDE :<br>DATE:</td><td style="text-align: right;  width: 50%; vertical-align:top; padding-top: 7px; padding-right: 6px;">CACHET & SIGNATURE</td></tr>
      </table>

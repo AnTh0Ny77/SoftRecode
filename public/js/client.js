@@ -8,51 +8,14 @@ let tableContact;
 //appel ajax au click table client : 
 $('#AjaxClient').on('click', function(){
     let dataSet = [];
-
     $.ajax({
         type: 'post',
         url: "AjaxSociete",
-        data : {"AjaxSociete" : 7},
-        
+        data : {"AjaxSociete" : 7},    
     success: function(data){
         dataSet = JSON.parse(data);
         $('#modalClient').modal('show');
-        
-        tableClient = $('#client').DataTable({
-            "language": {
-                "decimal":        "",
-                "emptyTable":     "aucuns résultats",
-                "info":           "Voir _START_ to _END_ of _TOTAL_ résultats",
-                "infoEmpty":      "Voir 0 to 0 of 0 résultats",
-                "infoFiltered":   "(filtré dans _MAX_ total résultats)",
-                "infoPostFix":    "",
-                "thousands":      ",",
-                "lengthMenu":     "Voir _MENU_ résultats par pages",
-                "loadingRecords": "Loading...",
-                "processing":     "Processing...",
-                "search":         "Recherche:",
-                "zeroRecords":    "Aucun résultats",
-                "paginate": {
-                    "first":      "Première",
-                    "last":       "Dernière",
-                    "next":       "Suivante",
-                    "previous":   "Précédente"
-                }
-                  
-                    
-            },
-        data: dataSet,
-        "columns": [
-        {"data": "client__id"},
-        {"data": "client__societe"},
-        {"data": "client__cp"},
-        {"data": "client__ville"}], 
-        
-        "paging": true,
-        "info":   true,
-        retrieve: true,
-        "deferRender": true,
-        "searching": true,});
+        tableClient=$("#client").DataTable({language:{decimal:"",emptyTable:"aucuns résultats",info:"Voir _START_ to _END_ of _TOTAL_ résultats",infoEmpty:"Voir 0 to 0 of 0 résultats",infoFiltered:"(filtré dans _MAX_ total résultats)",infoPostFix:"",thousands:",",lengthMenu:"Voir _MENU_ résultats par pages",loadingRecords:"Loading...",processing:"Processing...",search:"Recherche:",zeroRecords:"Aucun résultats",paginate:{first:"Première",last:"Dernière",next:"Suivante",previous:"Précédente"}},data:dataSet,columns:[{data:"client__id"},{data:"client__societe"},{data:"client__cp"},{data:"client__ville"}],paging:!0,info:!0,retrieve:!0,deferRender:!0,searching:!0});
         },
 
     error: function (err) {
@@ -60,71 +23,42 @@ $('#AjaxClient').on('click', function(){
     })
 })
 
-
-
-
-    
-
-    //appel ajax au click table livraison : 
-    $('#buttonLivraison').on('click', function(){
-        let dataSet = [];
-        $.ajax({
-            type: 'post',
-            url: "AjaxSociete",
-            data : 
-            {"AjaxLivraison" : 7},
-                
+//appel ajax au click table livraison : 
+$('#buttonLivraison').on('click', function(){
+    let dataSet = [];
+    $.ajax({
+        type: 'post',
+        url: "AjaxSociete",
+        data : 
+        {"AjaxLivraison" : 7},    
             success: function(data){
-                dataSet = JSON.parse(data);
-                $('#ModalLivraison').modal('show'); 
-                tableLivraison = $('#Livraison').DataTable({
-                    "language": {
-                        "decimal":        "",
-                        "emptyTable":     "aucuns résultats",
-                        "info":           "Voir _START_ to _END_ of _TOTAL_ résultats",
-                        "infoEmpty":      "Voir 0 to 0 of 0 résultats",
-                        "infoFiltered":   "(filtré dans _MAX_ total résultats)",
-                        "infoPostFix":    "",
-                        "thousands":      ",",
-                        "lengthMenu":     "Voir _MENU_ résultats par pages",
-                        "loadingRecords": "Loading...",
-                        "processing":     "Processing...",
-                        "search":         "Recherche:",
-                        "zeroRecords":    "Aucun résultats",
-                        "paginate": {
-                            "first":      "Première",
-                            "last":       "Dernière",
-                            "next":       "Suivante",
-                            "previous":   "Précédente"
-                        }
-                          
-                            
-                    },
-                   
-                data: dataSet,
-               
-                "columns": [
-                {"data": "client__id"},
-                {"data": "client__societe"},
-                {"data": "client__cp"},
-                {"data": "client__ville"} 
-                ], 
-                
-                "paging": true,
-                "info":   true,
-                retrieve: true,
-                "deferRender": true,
-                "searching": true,}
-            );},
-                    
+            dataSet = JSON.parse(data);
+            $('#ModalLivraison').modal('show'); 
+            tableLivraison=$("#Livraison").DataTable({language:{decimal:"",emptyTable:"aucuns résultats",info:"Voir _START_ to _END_ of _TOTAL_ résultats",infoEmpty:"Voir 0 to 0 of 0 résultats",infoFiltered:"(filtré dans _MAX_ total résultats)",infoPostFix:"",thousands:",",lengthMenu:"Voir _MENU_ résultats par pages",loadingRecords:"Loading...",processing:"Processing...",search:"Recherche:",zeroRecords:"Aucun résultats",paginate:{first:"Première",last:"Dernière",next:"Suivante",previous:"Précédente"}},data:dataSet,columns:[{data:"client__id"},{data:"client__societe"},{data:"client__cp"},{data:"client__ville"}],paging:!0,info:!0,retrieve:!0,deferRender:!0,searching:!0});},     
             error: function (err) {
             alert('error: ' + err);
-            }})   
+        }})   
     })
 
+// int de la table contact :
+tableContact=$("#contactTable").DataTable({language:{decimal:"",emptyTable:"aucuns résultats",info:"Voir _START_ to _END_ of _TOTAL_ résultats",infoEmpty:"Voir 0 to 0 of 0 résultats",infoFiltered:"(filtré dans _MAX_ total résultats)",infoPostFix:"",thousands:",",lengthMenu:"Voir _MENU_ résultats par pages",loadingRecords:"Loading...",processing:"Processing...",search:"Recherche:",zeroRecords:"Aucun résultats",paginate:{first:"Première",last:"Dernière",next:"Suivante",previous:"Précédente"}},columns:[{data:"contact__id"},{data:"contact__nom"},{data:"kw__lib"}],paging:!0,info:!0,deferRender:!0,retrieve:!0,deferRender:!0,searching:!1});
+// int de la table contact Livraison :
+tableContactLVR=$("#contactTableLVR").DataTable({language:{decimal:"",emptyTable:"aucuns résultats",info:"Voir _START_ to _END_ of _TOTAL_ résultats",infoEmpty:"Voir 0 to 0 of 0 résultats",infoFiltered:"(filtré dans _MAX_ total résultats)",infoPostFix:"",thousands:",",lengthMenu:"Voir _MENU_ résultats par pages",loadingRecords:"Loading...",processing:"Processing...",search:"Recherche:",zeroRecords:"Aucun résultats",paginate:{first:"Première",last:"Dernière",next:"Suivante",previous:"Précédente"}},columns:[{data:"contact__id"},{data:"contact__nom"},{data:"kw__lib"}],paging:!0,info:!0,deferRender:!0,retrieve:!0,deferRender:!0,searching:!1}),tableContact=$("#contactTable").DataTable({language:{decimal:"",emptyTable:"aucuns résultats",info:"Voir _START_ to _END_ of _TOTAL_ résultats",infoEmpty:"Voir 0 to 0 of 0 résultats",infoFiltered:"(filtré dans _MAX_ total résultats)",infoPostFix:"",thousands:",",lengthMenu:"Voir _MENU_ résultats par pages",loadingRecords:"Loading...",processing:"Processing...",search:"Recherche:",zeroRecords:"Aucun résultats",paginate:{first:"Première",last:"Dernière",next:"Suivante",previous:"Précédente"}},columns:[{data:"contact__id"},{data:"contact__nom"},{data:"kw__lib"}],paging:!0,info:!0,deferRender:!0,retrieve:!0,deferRender:!0,searching:!1});
+// initi table mesDevis : 
+let modifDevis=$("#MyDevis").DataTable({language:{decimal:"",emptyTable:"aucuns résultats",info:"Voir _START_ to _END_ of _TOTAL_ résultats",infoEmpty:"Voir 0 to 0 of 0 résultats",infoFiltered:"(filtré dans _MAX_ total résultats)",infoPostFix:"",thousands:",",lengthMenu:"Voir _MENU_ résultats par pages",loadingRecords:"Loading...",processing:"Processing...",search:"Recherche:",zeroRecords:"Aucun résultats",paginate:{first:"Première",last:"Dernière",next:"Suivante",previous:"Précédente"}},columnDefs:[{className:"dt-center",targets:4},{targets:[1],visible:!1},{targets:[0],visible:!1}],order:[[1,"desc"]],paging:!0,info:!1,pageLength:25,retrieve:!0,deferRender:!0,searching:!1});
+// ini table commandes :
+let validCmd=$("#MyCommande").DataTable({language:{decimal:"",emptyTable:"aucuns résultats",info:"Voir _START_ to _END_ of _TOTAL_ résultats",infoEmpty:"Voir 0 to 0 of 0 résultats",infoFiltered:"(filtré dans _MAX_ total résultats)",infoPostFix:"",thousands:",",lengthMenu:"Voir _MENU_ résultats par pages",loadingRecords:"Loading...",processing:"Processing...",search:"Recherche:",zeroRecords:"Aucun résultats",paginate:{first:"Première",last:"Dernière",next:"Suivante",previous:"Précédente"}},order:[[2,"asc"],[4,"desc"]],paging:!0,info:!1,retrieve:!0,deferRender:!0,searching:!1});
+// initialisation table devis : 
+let devisTable=$("#Devis").DataTable({paging:!1,info:!1,searching:!1,ordering:!0,responsive:{details:!1},language:{decimal:"",emptyTable:"aucuns résultats",info:"Voir _START_ to _END_ of _TOTAL_ résultats",infoEmpty:"Voir 0 to 0 of 0 résultats",infoFiltered:"(filtré dans _MAX_ total résultats)",infoPostFix:"",thousands:",",lengthMenu:"Voir _MENU_ résultats par pages",loadingRecords:"Loading...",processing:"Processing...",search:"Recherche:",zeroRecords:"Aucun résultats",paginate:{first:"Première",last:"Dernière",next:"Suivante",previous:"Précédente"}},columnDefs:[{width:"40%",targets:2},{width:"20%",targets:4},{className:"dt-right",targets:6},{targets:[1],className:"dt-center"},{targets:[2],className:"dt-center"},{targets:[3],className:"dt-center"},{targets:[4],className:"dt-center"},{targets:[5],className:"dt-center"},{targets:[6],className:"dt-right"},{targets:[7],visible:!1},{targets:[0],visible:!0},{responsivePriority:1,targets:2},{responsivePriority:2,targets:5},{responsivePriority:3,targets:6}],rowReorder:{update:!0,selector:"td:first-child"}});
+    devisTable.on( 'row-reorder', function ( e, diff, edit ) {
+        for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
+            var rowData = devisTable.row( diff[i].node ).data();
+            rowData[7].id = parseInt(diff[i].newData);
+        }   
+    });
 
-    // fonction selection de l'adresse de livraison  : 
-    $('#Livraison tbody').on('click', 'tr', function () {
+// fonction selection de l'adresse de livraison  : 
+$('#Livraison tbody').on('click', 'tr', function () {
     let donne = tableLivraison.row( this ).data();
     $.ajax({
         type: 'post',
@@ -150,110 +84,15 @@ $('#AjaxClient').on('click', function(){
             alert('error: ' + err);
         }
     })
-    });
-
-
-    //fonction qui affiche le ptit check vert de l'adresse de livraison: 
-    let checkVert = function (){
-        if ($('#livraisonSelect').val()) {
-            $('#petitCheck').removeAttr('hidden');
-        } else {
-            $('#petitCheck').prop("hidden", true);
-        }
-    }
-    checkVert();
-
-    // int de la table contact :
-    tableContact = $('#contactTable').DataTable({
-        "language": {
-            "decimal":        "",
-            "emptyTable":     "aucuns résultats",
-            "info":           "Voir _START_ to _END_ of _TOTAL_ résultats",
-            "infoEmpty":      "Voir 0 to 0 of 0 résultats",
-            "infoFiltered":   "(filtré dans _MAX_ total résultats)",
-            "infoPostFix":    "",
-            "thousands":      ",",
-            "lengthMenu":     "Voir _MENU_ résultats par pages",
-            "loadingRecords": "Loading...",
-            "processing":     "Processing...",
-            "search":         "Recherche:",
-            "zeroRecords":    "Aucun résultats",
-            "paginate": {
-                "first":      "Première",
-                "last":       "Dernière",
-                "next":       "Suivante",
-                "previous":   "Précédente"
-            }
-              
-                
-        },
-    "columns": [
-    {"data": "contact__id"},
-    {"data": "contact__nom"},
-    {"data": "kw__lib"}],  
-    "paging": true,
-    "info":   true,
-    "deferRender": true,
-    retrieve: true,
-    deferRender: true,
-    "searching": false,      
-    });
-
-
-
+});
     
-   
-
-
-
-
-    // int de la table contact Livraison :
-    tableContactLVR = $('#contactTableLVR').DataTable({
-        "language": {
-            "decimal":        "",
-            "emptyTable":     "aucuns résultats",
-            "info":           "Voir _START_ to _END_ of _TOTAL_ résultats",
-            "infoEmpty":      "Voir 0 to 0 of 0 résultats",
-            "infoFiltered":   "(filtré dans _MAX_ total résultats)",
-            "infoPostFix":    "",
-            "thousands":      ",",
-            "lengthMenu":     "Voir _MENU_ résultats par pages",
-            "loadingRecords": "Loading...",
-            "processing":     "Processing...",
-            "search":         "Recherche:",
-            "zeroRecords":    "Aucun résultats",
-            "paginate": {
-                "first":      "Première",
-                "last":       "Dernière",
-                "next":       "Suivante",
-                "previous":   "Précédente"
-            }
-              
-                
-        },
-    "columns": [
-    {"data": "contact__id"},
-    {"data": "contact__nom"},
-    {"data": "kw__lib"}],  
-    "paging": true,
-    "info":   true,
-    "deferRender": true,
-    retrieve: true,
-    deferRender: true,
-    "searching": false,      
-    });
-
-
-
-
-
-     //appel data  table contact Livraison: 
-     $('#toogleContactLVR').on('click', function(){
-        let dataSetContact = [];
-        $.ajax({
-            type: 'post',
-            url: "tableContact",
-            data : 
+//appel data  table contact Livraison: 
+$('#toogleContactLVR').on('click', function(){
+let dataSetContact = [];
+    $.ajax({
+        type: 'post',
+        url: "tableContact",
+        data : 
             {
                 "AjaxContactTable" : $('#livraisonSelect').val()
             },
@@ -270,10 +109,8 @@ $('#AjaxClient').on('click', function(){
         })
     })
 
-
-     //appel ajax au choix du contact livraison : 
-     $('#contactTableLVR tbody').on('click', 'tr', function () {
-        
+//appel ajax au choix du contact livraison : 
+$('#contactTableLVR tbody').on('click', 'tr', function () {
         let donne = tableContactLVR.row( this ).data();
         $.ajax({
             type: 'post',
@@ -292,16 +129,11 @@ $('#AjaxClient').on('click', function(){
             error: function (err) {
                 alert('error: ' + err);
             }
-
         })
-    
     });
 
-
-
-
-    //appel data  table contact : 
-    $('#toogleContact').on('click', function(){
+//appel data  table contact : 
+$('#toogleContact').on('click', function(){
         let dataSetContact = [];
         $.ajax({
             type: 'post',
@@ -323,9 +155,8 @@ $('#AjaxClient').on('click', function(){
         })
     })
 
-
-    //appel ajax au choix du contact : 
-    $('#contactTable tbody').on('click', 'tr', function () {
+//appel ajax au choix du contact : 
+$('#contactTable tbody').on('click', 'tr', function () {
         let donne = tableContact.row( this ).data();
         $.ajax({
             type: 'post',
@@ -344,13 +175,11 @@ $('#AjaxClient').on('click', function(){
             error: function (err) {
                 alert('error: ' + err);
             }
-
         })
-    
     });
 
-    //appel ajax a la creation du contact : 
-    $('#postContact').on('click', function () {
+//appel ajax a la creation du contact : 
+$('#postContact').on('click', function () {
         $.ajax({
             type: 'post',
             url: "createContact",
@@ -380,17 +209,8 @@ $('#AjaxClient').on('click', function(){
     
     });
 
-
-
-
-    
-
-
-
-
-
-     //appel ajax a la creation du contact Livraison : 
-     $('#postContactLVR').on('click', function () {
+//appel ajax a la creation du contact Livraison : 
+$('#postContactLVR').on('click', function () {
         $.ajax({
             type: 'post',
             url: "createContact",
@@ -416,13 +236,10 @@ $('#AjaxClient').on('click', function(){
             error: function (err) {
                 alert('error: ' + err);
             }
-
         })
-    
-    });
+});
 
-
-    // appel ajax choix du client : 
+// appel ajax choix du client : 
     $('#client tbody').on('click', 'tr', function () {
         $('#contactDiv').html(" Aucun contact");
         $('#contactSelect').val("");
@@ -452,9 +269,7 @@ $('#AjaxClient').on('click', function(){
             $('#toogleContact').removeAttr('disabled');
             $('#buttonLivraison').removeAttr('disabled');
             $('#buttonCrealivraison').removeAttr('disabled');
-            $('#toogleCreaContact').removeAttr('disabled');
-            
-            
+            $('#toogleCreaContact').removeAttr('disabled'); 
             },
             error: function (err) {
                 alert('error: ' + err);
@@ -462,8 +277,8 @@ $('#AjaxClient').on('click', function(){
         })
     });
 
-    //supression de l'adresse de livraison au click : 
-    $('#deleteLivraison').on('click', function(){
+//supression de l'adresse de livraison au click : 
+$('#deleteLivraison').on('click', function(){
         $('#spanLivraison').html('');
         $('#spanLivraison').addClass('d-none');
         $('#contactDivLVR').html("Aucun contact");
@@ -471,14 +286,10 @@ $('#AjaxClient').on('click', function(){
         $('#textLivraison').text("Livré à la meme adresse");
         $('#livraisonSelect').val("");
 
-    })
+})
 
-    
-
-
-
-    //appel ajax creation de client:  
-    $('#PostClient').on('click', function(){
+//appel ajax creation de client:  
+$('#PostClient').on('click', function(){
         $('#contactDiv').html(" Aucun contact");
         $('#contactSelect').val("");
         $('#spanLivraison').html('');
@@ -486,8 +297,7 @@ $('#AjaxClient').on('click', function(){
         $('#contactDivLVR').html("Aucun contact");
         $('#contact_livraison').val("");
         $('#textLivraison').text("Livré à la meme adresse");
-        $('#livraisonSelect').val("");
-        
+        $('#livraisonSelect').val(""); 
         $.ajax({
             type: 'post',
             url: "createClient",
@@ -511,164 +321,74 @@ $('#AjaxClient').on('click', function(){
             $('#buttonLivraison').removeAttr('disabled');
             $('#buttonCrealivraison').removeAttr('disabled');
             $('#toogleCreaContact').removeAttr('disabled');
-            
             },
             error: function (err) {
                 alert('error: ' + err);
             }
-
         })
+})
 
-    })
-
-
-    // check la valeur des inputs et disabled buttons a l'ouverture de la page: 
-    let checkIfModify = function(){
+// check la valeur des inputs et disabled buttons a l'ouverture de la page: 
+    let checkIfModify = function () {
         if ($('#clientSelect').val()) {
-            if ($('#clientSelect').val().length > 0 ) {
+            if ($('#clientSelect').val().length > 0) {
                 $('#toogleContact').removeAttr('disabled');
                 $('#buttonLivraison').removeAttr('disabled');
                 $('#buttonCrealivraison').removeAttr('disabled');
                 $('#toogleCreaContact').removeAttr('disabled');
             }
         }
-        
+
     }
     checkIfModify();
-
     // check la valeur des inputs de livraison a l'ouverture de la page : 
-    let checkIfLivraison = function(){
+    let checkIfLivraison = function () {
         if ($('#livraisonSelect').val()) {
-            if ($('#livraisonSelect').val().length > 0 ) {
+            if ($('#livraisonSelect').val().length > 0) {
                 $('#toogleContactLVR').removeAttr('disabled');
                 $('#toogleContactCreaLVR').removeAttr('disabled');
             }
-        }   
+        }
     }
-
     checkIfLivraison();
 
-
-
      //appel ajax creation de societe livrée:  
-     $('#PostSocieteLivraison').on('click', function(){
+    $('#PostSocieteLivraison').on('click', function () {
         $('#livraisonSelect').val("");
         $.ajax({
             type: 'post',
             url: "createClient",
-            data : 
+            data:
             {
-                "inputAddress" : $('#inputAddressLVR').val() ,
-                "inputAddress2" : $('#inputAddress2LVR').val(),
-                "societeNameCreate" :  $('#societeNameCreateLVR').val(),
-                "inputZip" : $('#inputZipLVR').val(),
-                "inputCity" : $('#inputCityLVR').val(),
-                "inlineFormCustomSelect" : $('#SelectClientCountryLVR').val(),
+                "inputAddress": $('#inputAddressLVR').val(),
+                "inputAddress2": $('#inputAddress2LVR').val(),
+                "societeNameCreate": $('#societeNameCreateLVR').val(),
+                "inputZip": $('#inputZipLVR').val(),
+                "inputCity": $('#inputCityLVR').val(),
+                "inlineFormCustomSelect": $('#SelectClientCountryLVR').val(),
             },
-            success: function(data){
-            dataSetCrea = JSON.parse(data);
-            $('#textLivraison').html(dataSetCrea.client__societe + '<br>' + dataSetCrea.client__adr1 + '<br>' + dataSetCrea.client__ville);
-            $('#livraisonSelect').val(dataSetCrea.client__id);
-            $('#modalSocieteLivraison').modal('hide');
-            $('#spanLivraison').removeClass('d-none');
-            $('#spanLivraison').text(dataSetCrea.client__societe);
-            $('#toogleContactLVR').removeAttr('disabled');
-            $('#toogleContactCreaLVR').removeAttr('disabled');
+            success: function (data) {
+                dataSetCrea = JSON.parse(data);
+                $('#textLivraison').html(dataSetCrea.client__societe + '<br>' + dataSetCrea.client__adr1 + '<br>' + dataSetCrea.client__ville);
+                $('#livraisonSelect').val(dataSetCrea.client__id);
+                $('#modalSocieteLivraison').modal('hide');
+                $('#spanLivraison').removeClass('d-none');
+                $('#spanLivraison').text(dataSetCrea.client__societe);
+                $('#toogleContactLVR').removeAttr('disabled');
+                $('#toogleContactCreaLVR').removeAttr('disabled');
             },
             error: function (err) {
                 alert('error: ' + err);
             }
-
         })
-
     })
    
-    
-
-    // fonction post du formulaire certificateNew : 
-
-    $("#certificateNew").on('click', function() {
+// fonction post du formulaire certificateNew : 
+$("#certificateNew").on('click', function() {
         $("#formCertificate").submit();
-    })
+})
  
-
-    // initi table mesDevis : 
-    let modifDevis = $('#MyDevis').DataTable({
-        "language": {
-            "decimal":        "",
-            "emptyTable":     "aucuns résultats",
-            "info":           "Voir _START_ to _END_ of _TOTAL_ résultats",
-            "infoEmpty":      "Voir 0 to 0 of 0 résultats",
-            "infoFiltered":   "(filtré dans _MAX_ total résultats)",
-            "infoPostFix":    "",
-            "thousands":      ",",
-            "lengthMenu":     "Voir _MENU_ résultats par pages",
-            "loadingRecords": "Loading...",
-            "processing":     "Processing...",
-            "search":         "Recherche:",
-            "zeroRecords":    "Aucun résultats",
-            "paginate": {
-                "first":      "Première",
-                "last":       "Dernière",
-                "next":       "Suivante",
-                "previous":   "Précédente"
-            }
-              
-                
-        },
-        "columnDefs": [
-            
-            {"className": "dt-center", "targets": 4},
-            {"targets": [ 1 ], "visible": false},
-            {"targets": [ 0 ], "visible": false},
-           
-            
-          ],
-        "order": [[ 1, "desc" ] ],
-        "paging": true,
-         "info":   false,
-         "pageLength": 10,
-        retrieve: true,
-        "deferRender": true,
-        "searching": false,  
-        
-       
-    })
-
-    // ini table commandes :
-    let validCmd = $('#MyCommande').DataTable({
-        "language": {
-            "decimal":        "",
-            "emptyTable":     "aucuns résultats",
-            "info":           "Voir _START_ to _END_ of _TOTAL_ résultats",
-            "infoEmpty":      "Voir 0 to 0 of 0 résultats",
-            "infoFiltered":   "(filtré dans _MAX_ total résultats)",
-            "infoPostFix":    "",
-            "thousands":      ",",
-            "lengthMenu":     "Voir _MENU_ résultats par pages",
-            "loadingRecords": "Loading...",
-            "processing":     "Processing...",
-            "search":         "Recherche:",
-            "zeroRecords":    "Aucun résultats",
-            "paginate": {
-                "first":      "Première",
-                "last":       "Dernière",
-                "next":       "Suivante",
-                "previous":   "Précédente"
-            }
-              
-                
-        },
-        "order": [[ 2, "asc" ] , [4 ,"desc"]],
-        "paging": true,
-         "info":   false,
-        retrieve: true,
-        "deferRender": true,
-        "searching": false,  
-       
-    })
-
-    // disable buttons multiple si pas de ligne select dans la table mes devis:  
+// disable buttons multiple si pas de ligne select dans la table mes devis:  
     let checkClassMulti = function(){
         let RowModif =  $('#MyDevis').find('tr');
          if (RowModif.hasClass('selected')) {
@@ -677,8 +397,6 @@ $('#AjaxClient').on('click', function(){
              $('.multiButton').prop("disabled", true);
          }
       }
-
-   
 
  // disable buttons multiple si pas de ligne select dans la table commandes:
     let checkClassCmd = function(){
@@ -692,7 +410,6 @@ $('#AjaxClient').on('click', function(){
       checkClassMulti();
       checkClassCmd();
 
-
 // Fontion qui selct l'input radion en fonction du devis selectionné : mes devis 
 let checkradio = function(object){
    let statusRadio = $('#selectStatus');
@@ -704,21 +421,15 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip()
   })
 
-
-
-    idUtilisateur = $('#idUtilisateur').val();
-   
-   
-
-
-    // attribut classe selected: a la table mes devis 
-    modifDevis.on('click','tr',function() {
+idUtilisateur = $('#idUtilisateur').val();  
+// attribut classe selected: a la table mes devis 
+    modifDevis.on('click', 'tr', function () {
         $('.multiButton').prop("disabled", true);
         $('#iframeDevis').hide();
-        if ( $(this).hasClass('selected') ) {
+        if ($(this).hasClass('selected')) {
             $(this).removeClass('selected');
         }
-       else  if(modifDevis.rows().count() >= 1){
+        else if (modifDevis.rows().count() >= 1) {
             modifDevis.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         }
@@ -727,38 +438,33 @@ $(function () {
         $("#VoirDevis").val(dataRow[0]);
         $("#ModifierDevis").val(dataRow[0]);
         $("#DupliquerDevis").val(dataRow[0]);
-       
+
         $('#iframeDevis').attr('src', '');
-       
+
         $('#loaderPdf').show();
         // requete Ajax sur le devis selectionné dans la page mes devis : 
         $.ajax({
             type: 'post',
             url: "AjaxVisio",
-            data : 
+            data:
             {
-                "AjaxDevis" : dataRow[0]
+                "AjaxDevis": dataRow[0]
             },
-            success: function(data){
+            success: function (data) {
                 dataSet = JSON.parse(data);
-               checkradio(dataSet);
-               $('#loaderPdf').hide();
-               $('#iframeDevis').attr('src', 'pages/ajax/' + idUtilisateur + 'devis.pdf');
-               $('#iframeDevis').show();
-               $('.multiButton').removeAttr('disabled');
-              
-
-            
-                 
+                checkradio(dataSet);
+                $('#loaderPdf').hide();
+                $('#iframeDevis').attr('src', 'pages/ajax/' + idUtilisateur + 'devis.pdf');
+                $('#iframeDevis').show();
+                $('.multiButton').removeAttr('disabled');
             },
             error: function (err) {
                 alert('error: ' + err);
             }
-
         })
-     });
+    });
     
-      // Attribue automatiquement la classe selected à la première ligne : 
+    // Attribue automatiquement la classe selected à la première ligne : 
     let selectFirst = function(){
         $('.multiButton').prop("disabled", true);
         let firstOne = $('#MyDevis').find('tr').eq(1);
@@ -795,14 +501,13 @@ $(function () {
             error: function (err) {
                 alert('error: ' + err);
             }
-
         })
     }
     if ($('#MyDevis').length > 0) {
         selectFirst();
     }
 
-    // select la prmeière ligne dans home :
+// select la prmeière ligne dans home :
     let selectFirstCMD = function(){
         $('.multiButton').prop("disabled", true);
         let firstOne = $('#MyCommande').find('tr').eq(1);
@@ -815,7 +520,8 @@ $(function () {
         $('#iframeCMD').attr('src', '');
         $('#iframeCMD').hide();
         $('#loaderCMD').show();
-        // requete Ajax sur le devis selectionné dans la page mes devis : 
+
+// requete Ajax sur le devis selectionné dans la page mes devis : 
         $.ajax({
             type: 'post',
             url: "AjaxVisio",
@@ -843,11 +549,7 @@ $(function () {
          selectFirstCMD();
     }
    
-   
-
-
-
-      // attribut classe selected: a la table Commandes 
+// attribut classe selected: a la table Commandes 
       $('#MyCommande').on('click','tr',function() {
         $('#iframeCMD').hide();
         $('#loaderCMD').show();
@@ -882,82 +584,10 @@ $(function () {
 
         })
      });
-
-   
-    
-       // initialisation table devis : 
-       let devisTable =  $('#Devis').DataTable({
-            "paging": false,
-            "info":   false,
-            "searching": false,
-            "ordering": true,
-            responsive: {
-                details: false
-            },
-            "language": {
-                "decimal":        "",
-                "emptyTable":     "aucuns résultats",
-                "info":           "Voir _START_ to _END_ of _TOTAL_ résultats",
-                "infoEmpty":      "Voir 0 to 0 of 0 résultats",
-                "infoFiltered":   "(filtré dans _MAX_ total résultats)",
-                "infoPostFix":    "",
-                "thousands":      ",",
-                "lengthMenu":     "Voir _MENU_ résultats par pages",
-                "loadingRecords": "Loading...",
-                "processing":     "Processing...",
-                "search":         "Recherche:",
-                "zeroRecords":    "Aucun résultats",
-                "paginate": {
-                    "first":      "Première",
-                    "last":       "Dernière",
-                    "next":       "Suivante",
-                    "previous":   "Précédente"
-                }
-                  
-                    
-            },
-            "columnDefs": [
-                { "width": "40%", "targets": 2 },
-                { "width": "20%", "targets": 4 },
-                
-                {"className": "dt-right", "targets": 6},
-                {"targets": [ 1 ], className: 'dt-center'},
-                {"targets": [ 2 ], className: 'dt-center'},
-                {"targets": [ 3 ], className: 'dt-center'},
-                {"targets": [ 4 ], className: 'dt-center'},
-                {"targets": [ 5 ], className: 'dt-center'},
-                {"targets": [ 6 ], className: 'dt-right'},
-                {"targets": [ 7 ], "visible": false},
-                {"targets": [ 0 ], "visible": true},
-                { responsivePriority: 1, targets: 2 },
-                { responsivePriority: 2, targets: 5 },
-                { responsivePriority: 3, targets: 6 }
-              ],
-             
-              rowReorder: {
-                update: true,
-                selector: 'td:first-child'
-            }
-           
-        });
-
-
-        devisTable.on( 'row-reorder', function ( e, diff, edit ) {
-            for ( var i=0, ien=diff.length ; i<ien ; i++ ) {
-                var rowData = devisTable.row( diff[i].node ).data();
-                rowData[7].id = parseInt(diff[i].newData);
-            }   
-
-        } );
-        
-   
-
-
-        
-        // fonction select to text : devis fonction
+     
+// fonction select to text : devis fonction
         selectToText($('#choixDesignation'),$('#referenceS'));
         selectToText($('#UPchoixDesignation'),$('#UPreferenceS'));
-
         // extension de garantie : 
         let xtendMois ; 
         let xtendPrix;
@@ -994,8 +624,8 @@ $(function () {
             }
         })
       
-        // on check l'existance de l'objet au format jSon correspondant pour savoir si le programme exécute une modification de Devis existant  : 
-        // ensuite on prérempli la datatable avec les données : 
+// on check l'existance de l'objet au format jSon correspondant pour savoir si le programme exécute une modification de Devis existant  : 
+// ensuite on prérempli la datatable avec les données : 
         counter = 1 ;
         if ($('#AncienDevis').val()) {
             jsonDataAncienDevis =  JSON.parse($('#AncienDevis').val())
@@ -1032,17 +662,11 @@ $(function () {
                    jsonDataAncienDevis[numberOfLines].id__fmm , 
                    jsonDataAncienDevis[numberOfLines].kw__lib ,
                    jsonDataAncienDevis[numberOfLines].prestaLib
-                  
-
                ) 
-
                counter =  parseInt(jsonDataAncienDevis[numberOfLines].devl__ordre) + 1 ;
-               
             };
           }
-          
           $("#referenceS").val("");
-            
         }
         checkTableRows(devisTable);
         //ajout d'une ligne de devis : function location : devisFunction.js (addOne): 
@@ -1107,22 +731,19 @@ $(function () {
             }
            
             });
-        
-        // function qui compte les lignes de la table devis et rend possible l'export :
-        devisTable.on('draw.dt', function(){
-            checkTableRows(devisTable);
-        })
 
-        // function efface le contact et vide la valeur de l'input :  
+// function qui compte les lignes de la table devis et rend possible l'export :
+    devisTable.on('draw.dt', function(){
+        checkTableRows(devisTable);
+    })
+
+// function efface le contact et vide la valeur de l'input :  
         $('#trash4Contact').on('click', function(){
             $('#contactSelect').val('');
             $('#contactDiv').text('Choisir un contact')
-        })
+})
 
-
-        
-
-        // disable buttons si pas de ligne:  
+// disable buttons si pas de ligne:  
         let checkClass = function(){
             let RowDevis =  $('#DevisBody').find('tr');
              if (RowDevis.hasClass('selected')) {
@@ -1249,12 +870,6 @@ $(function () {
            }
            checkClass();   
          }); 
-
-
-
-
-
-
 
         //extensions de garanties dans le formulaire de mofification : 
          let UpXtendMois ; 
@@ -1504,29 +1119,30 @@ $(function () {
 
 
         //init des editeur de texte mdb : 
+        if ($('#globalComClient').length) {
+            ClassicEditor
+            .create( document.querySelector( '#globalComClient' ) , {
+                toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+            } )
+            .catch( error => {
+                console.error( error );
+            } );     
+        }
+       
+       if ($('#globalComInt').length) {
+            ClassicEditor       
+            .create( document.querySelector( '#globalComInt' ) , {
+            toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+            })
+            .catch( error => {
+                console.error( error );
+            } );     
+        }
       
-       ClassicEditor
-       .create( document.querySelector( '#globalComClient' ) , {
-        toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
-       } )
-       .catch( error => {
-           console.error( error );
-       } );
-
-       ClassicEditor
-       .create( document.querySelector( '#globalComInt' ) , {
-        toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
-       })
-       .catch( error => {
-           console.error( error );
-       } );
-
-
-
-
        // commentaire client pour chaque ligne : 
        let ckComClient ;
-       ClassicEditor
+       if ($('#comClient').length) {
+        ClassicEditor
        .create( document.querySelector( '#comClient' ) , {
         toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
        })
@@ -1535,11 +1151,14 @@ $(function () {
         } )
        .catch( error => {
            console.error( error );
-       } );
+       } );    
+       }
+       
 
        // comentaire interne pour chaque ligne : 
        let ckCOMInt ;
-       ClassicEditor
+       if ($('#comInterne').length) {
+        ClassicEditor
        .create( document.querySelector( '#comInterne' ) , {
         toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
        })
@@ -1548,34 +1167,42 @@ $(function () {
         } )
        .catch( error => {
            console.error( error );
-       } );
+       } );    
+       }
+       
 
        // commentaire client mise a jour de ligne : 
        let ckUpClient ; 
-       ClassicEditor
-       .create( document.querySelector( '#UPcomClient' ) , {
-        toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
-       })
-       .then( newEditor => {
-        ckUpClient = newEditor;
-        } )
-       .catch( error => {
-           console.error( error );
-       } );
-
+       if ($('#UPcomClient').length) {
+        ClassicEditor
+        .create( document.querySelector( '#UPcomClient' ) , {
+         toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+        })
+        .then( newEditor => {
+         ckUpClient = newEditor;
+         } )
+        .catch( error => {
+            console.error( error );
+        } );
+ 
+       }
+       
 
        // commentaire interne mise à jour de ligne : 
        let ckUpInt;
-       ClassicEditor
-       .create( document.querySelector( '#UPcomInterne' ) , {
-        toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
-       })
-       .then( newEditor => {
-        ckUpInt = newEditor;
-        } )
-       .catch( error => {
-           console.error( error );
-       } );
+       if ($('#UPcomInterne').length) {
+        ClassicEditor
+        .create( document.querySelector( '#UPcomInterne' ) , {
+         toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+        })
+        .then( newEditor => {
+         ckUpInt = newEditor;
+         } )
+        .catch( error => {
+            console.error( error );
+        } );
+       }
+      
        
 
         

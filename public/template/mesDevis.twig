@@ -60,8 +60,8 @@
           <div class="card-header d-flex flex-row align-items-center justify-content-between">
             
             <div>
-              <form class="form-inline">
-                <input class="form-control mr-2" type="search" placeholder="Recherche" aria-label="Search">
+              <form class="form-inline" action="mesDevis" method="POST">
+                <input class="form-control mr-2" type="search" name="rechercheP" placeholder="Recherche" aria-label="Search">
                 <button class="btn btn-outline-primary  " type="submit"><i class="fal fa-bullseye-arrow"></i></button>
               </form>
 
@@ -107,7 +107,7 @@
           <!-- Card Body -->
           <div class="card-body">
             <div class="chart-area">
-              <table id="MyDevis" class=" display table " style="width:100%"> <thead class="thead-dark"> 
+              <table id="MyDevis" class=" display table " style="width:100%"> <thead class="thead-dark" > 
                 <tr> 
                   <th>Numéro</th> 
                   <th>Date</th>
@@ -181,7 +181,7 @@
        
             </div>
             <!-- Card Body -->
-            <div class="card-body">
+            <div class="card-body" >
 
 
               <div id="loaderPdf">
@@ -195,17 +195,9 @@
               </div>
 
 
-
-
-
-
-
-
-              <iframe id="iframeDevis" src="" width="100%" height="600px">
+              <iframe id="iframeDevis" class="border-0" src="" width="100%" height="600px">
               </iframe>
 
-          
-          
         </div>
 
 

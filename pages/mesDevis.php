@@ -120,6 +120,11 @@ else {
   $devisList = $Cmd->getUserDevis($_SESSION['user']->id_utilisateur);
 }
 
+
+if (!empty($_POST['rechercheP'])) {
+  $devisList = $Cmd->magicRequest($_POST['rechercheP']);
+}
+
 $notifValid = 0 ;
 foreach ($devisList as $devis) {
   if ($devis->kw__lib == "Valide") {
