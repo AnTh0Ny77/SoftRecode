@@ -195,6 +195,7 @@ $('#postContact').on('click', function () {
                 "mailContact" : $('#mailContact').val(),
             },
             success: function(data){
+        
             dataSetCreaContact = JSON.parse(data);
             let content = showContact(dataSetCreaContact)
             $('#contactDiv').html(content);
@@ -314,9 +315,11 @@ $('#PostClient').on('click', function(){
             dataSetCrea = JSON.parse(data);
             let content = showClient(dataSetCrea);
             $('#divClient').html(content);
+            $('#clientSelect').val(dataSetCrea.client__id);
             $('#modalClientCrea').modal('hide');
             $('#spanSociete').removeClass('d-none');
             $('#spanSociete').text(dataSetCrea.client__societe);
+            $('#addNewRow').removeAttr('disabled');
             $('#toogleContact').removeAttr('disabled');
             $('#buttonLivraison').removeAttr('disabled');
             $('#buttonCrealivraison').removeAttr('disabled');
@@ -664,6 +667,7 @@ idUtilisateur = $('#idUtilisateur').val();
                    jsonDataAncienDevis[numberOfLines].prestaLib
                ) 
                counter =  parseInt(jsonDataAncienDevis[numberOfLines].devl__ordre) + 1 ;
+               $('#jsTotaux').text( "Total: " + totauxJs(devisTable.rows().data()) + '€') ;
             };
           }
           $("#referenceS").val("");
@@ -722,6 +726,8 @@ idUtilisateur = $('#idUtilisateur').val();
                     $('.selectpicker').selectpicker('refresh'); 
                     $('#choixPn').selectpicker('val', '');
                     $('#modalPresta').modal('hide');
+
+                   $('#jsTotaux').text( "Total: " + totauxJs(devisTable.rows().data()) + '€') ;
                 
             } else {
                     $('#modalPresta').modal('show');
@@ -773,6 +779,7 @@ idUtilisateur = $('#idUtilisateur').val();
         $('#removeLine').click( function () {
           devisTable.row('.selected').remove().draw( false );  
           checkClass();  
+          $('#jsTotaux').text( "Total: " + totauxJs(devisTable.rows().data()) + ' €') ;
          }); 
 
          // declaration des variables a portée multiples. 
@@ -942,6 +949,7 @@ idUtilisateur = $('#idUtilisateur').val();
                 $("#UPxtendList").empty();
                 UpXtendArray = [];
                 $('#modalModif').modal('hide');
+                $('#jsTotaux').text( "Total: " + totauxJs(devisTable.rows().data()) + '€') ;
                 
             } else {
                 $('#modalModif').modal('show');

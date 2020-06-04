@@ -254,7 +254,19 @@ let checkTableRows = function(subject){
     
 
 
+    // function du calcul du total du devis à chaque : 
+    let totauxJs = function(arrayObject){
 
+    let arresults = [];
+        for (let index = 0; index < arrayObject.length; index++) {
+           let temp = arrayObject[index][7].prix * arrayObject[index][7].quantite;
+           arresults.push(temp);    
+        }
+    
+    const add = (a,b) => a+b ;
+    const sum = arresults.reduce(add);
+    return sum 
+    }
 
 
 
