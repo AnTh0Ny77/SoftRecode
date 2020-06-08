@@ -52,6 +52,12 @@ public function getGaranties(){
   return $data;
 }
 
+public function getModele(){
+  $request =$this->Db->Pdo->query('SELECT kw__type,  kw__lib , kw__value FROM keyword WHERE kw__type= "modvi" ORDER BY  kw__ordre  ASC ');
+  $data = $request->fetchAll(PDO::FETCH_OBJ);
+  return $data;
+}
+
 
 
 

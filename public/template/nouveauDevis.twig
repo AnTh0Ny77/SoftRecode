@@ -159,16 +159,19 @@
                       </div>
 
                        <!-- Masquer Total -->
-                       <div class="col-12 mt-2 ml-3">
-                          <div class="custom-control custom-checkbox">
-                             
-                              {% if temp.cmd__modele_devis == 'STX' %}
-                              <input type="checkbox" class="custom-control-input" id="ShowTotal" name="ShowTotal" checked>
-                              {% else %}
-                              <input type="checkbox" class="custom-control-input" id="ShowTotal" name="ShowTotal">
-                              {% endif %}
-                              <label class="custom-control-label" for="ShowTotal">Masquer le Total du devis  </label>
-                          </div>
+                       <div class="col-12 mt-2 ">
+                        <div class="custom-control col-6 my-4 custom-checkbox">
+                          <label for="ShowTotal">Modèle du devis </label>
+                          <select class="selectpicker form-control"  name="ShowTotal" >
+                            {% for modele in modeleList %}
+                              <option class=""  value={{modele.kw__value}}>{{modele.kw__lib}}</option>
+                              {% endfor %}
+                          </select>
+                          
+                        </div>
+
+
+
                        </div>
                      
                         {% if temp %}

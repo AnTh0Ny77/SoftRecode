@@ -28,6 +28,7 @@ session_start();
  $keywordList = $Keywords->get2_icon();
  $etatList = $Keywords->getEtat();
  $garantiesList = $Keywords->getGaranties();
+ $modeleList = $Keywords->getModele();
 
  //initialisation des variables a false en cas de premiere init :  
  $user =false ;
@@ -135,5 +136,6 @@ echo $twig->render('nouveauDevis.twig',[
    'sessionModif'=> $sessionModif , 
    'contactLVR' => $contactLVR , 
    'etatList' => $etatList ,
-   'garantiesList' => $garantiesList
+   'garantiesList' => $garantiesList,
+   'modeleList' => $modeleList
 ]);;

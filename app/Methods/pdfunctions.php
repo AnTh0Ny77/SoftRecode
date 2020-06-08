@@ -250,6 +250,9 @@ public static function magicLine($object){
 
 
 
+
+
+
 // fonction d'affichage de garantie dans View :
 public static function showGarantieView($object){
     if ($object->devl__mois_garantie > 0) {
@@ -318,6 +321,88 @@ public static function xTendTotalView($xtendArray){
     } 
     return $priceArray;
 }
+
+
+// fonction d'affichage du total à la con : 
+public static function totalCon($lignes , $garantieArray , $prixTotal){
+    $globalArray = array();
+    foreach ($garantieArray as  $value) {
+        // création d'un tableau multidimensionnel pour chaque valeur présente dans le tableau : 
+        $type = intval($value->kw__value);
+        $globalArray[$type]  = [$type];
+    }  
+
+        // pour sur chaque ligne de garantie 
+        foreach ($lignes as $ligne ) { 
+            // variable $xtend déclaré pour chaque tableau d'extension de garanties : 
+            $xtend =  $ligne->ordre2;
+            // si il ne s'agit pas d'un service pour sur chaque tableau d'extension du tableau des extensions de  garantie : 
+            if ($ligne->famille != 'SER') {
+                foreach ( $xtend as $array) {
+                    //  sur chaque valeur du tableau des garantie dans keyword : 
+                    foreach ($globalArray as  $value) {
+                        // si la valeur du nombre de mois dans l'extension correspond à la valeur du  tableau de la liste keyword : 
+                        if ( intval($array['devg__type']) == $value[0] ) {
+                            // la variable $results est le résultat du prix de l'extension correspondante X la quantité 
+                            $results = floatval($array['devg__prix']) * intval($ligne->devl_quantite);
+                            //  pousse dans le tableau correspondant à la valeur de la garantie :
+                            array_push( $globalArray[$value[0]] , $results );     
+                        } 
+                        else {
+                            // sinon détruit la valeur : 
+                            unset($value);
+                        }
+                    }    
+                } 
+            }
+        }
+
+        $marqueurPresta = ' <input type="checkbox"> garantie standard';
+        $marqueurType = '';
+        foreach ($lignes  as $ligne) {
+             if ($ligne->devl__type == 'REP') {
+             $marqueurPresta = 'hors garantie' ;
+             }
+         }
+         $echoArrays = "";
+         foreach ($globalArray as  $resultsArray) {
+
+            if (sizeof($resultsArray)  > 1){
+
+                // si la taille du tableau correspond au nombre de ligne +1 (index 0 )alors chaque ligne possède la garantie : 
+                    $marqueurType = "Type de garantie";
+                    //on retire l'index 0 corespondant à la valeur de la garantie :
+                    $prixTemp =  floatval(array_sum($resultsArray) - $resultsArray[0]);
+                    // on additionne au prix total  :
+                    $prix = $prixTemp + $prixTotal;
+                    // renvoi dans le template html => 
+                    $echoArrays .=  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style='text-align: center'><strong>  "
+                    . number_format($prix,2  ,',', ' ').
+                    " €</strong></td><td style='text-align: right'> " 
+                    .number_format(Pdfunctions::ttc( floatval($prix)),2 ,',', ' ').
+                    " €</td></tr>";
+                }       
+            }
+
+             echo '<table CELLSPACING=0  style=" border: 1px black solid;">
+            <tr style="background-color: #dedede;">
+            <td style="width: 210px; text-align: left"> '. $marqueurType .'</td>
+            <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
+            <td style="text-align: center">Total € TTC</td>
+            </tr>
+            <tr><td style="width: 210px; text-align: left"> '.$marqueurPresta.'</td>
+            <td style="text-align: center"><strong>  '. number_format($prixTotal,2  ,',', ' ') . '€</strong></td>
+            <td style="text-align: right"> ' .number_format(Pdfunctions::ttc(floatval($prixTotal)),2 ,',', ' ').' €</td>
+            </tr>' . $echoArrays;
+}
+
+
+
+
+
+
+
+
 
 
 // function du calcul des extension de garanties avec keyword : 

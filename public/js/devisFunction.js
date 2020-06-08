@@ -251,8 +251,6 @@ let checkTableRows = function(subject){
     }
 
 
-    
-
 
     // function du calcul du total du devis à chaque : 
     let totauxJs = function(arrayObject){

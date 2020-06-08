@@ -149,10 +149,15 @@ $garanties = $Keyword->getGaranties();
          <?php
          // on affiche le tableau de totaux en cas de modèle adéquate :
             if ($temp->cmd__modele_devis == 'STT') {
-            $totalPrice = array_sum($arrayPrice);
-            $totaux = Pdfunctions::magicXtend($arrayOfDevisLigne , $garanties , array_sum($arrayPrice));
-            echo '</table>';
-            }               
+                $totalPrice = array_sum($arrayPrice);
+                $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice));
+                echo '</table>';
+            }      
+            elseif ($temp->cmd__modele_devis == 'STL') {
+                $totalPrice = array_sum($arrayPrice);
+                $totaux = Pdfunctions::magicXtend($arrayOfDevisLigne , $garanties , array_sum($arrayPrice));
+                echo '</table>';
+            }         
          ?>
              
          </td>

@@ -50,7 +50,7 @@ if (!empty($_POST['clientSelect'])) {
 
    // traite l'affichage du total :
    if (isset($_POST['ShowTotal'])) {
-    $total = 'STX';
+    $total = $_POST['ShowTotal'];
    }else{ $total = 'STT'; }
 
 
