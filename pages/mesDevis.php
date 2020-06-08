@@ -54,7 +54,7 @@ if (!empty($_POST['clientSelect'])) {
    }else{ $total = 'STT'; }
 
 
-   // traitament du titre du devis  :  
+   // traitement du titre du devis  :  
    if (!empty($_POST['titreDevis'])) {
     $accents = array('/[áàâãªäÁÀÂÃÄ]/u'=>'a','/[ÍÌÎÏíìîï]/u'=>'i','/[éèêëÉÈÊË]/u'=>'e','/[óòôõºöÓÒÔÕÖ]/u'=>'o','/[úùûüÚÙÛÜ]/u'=>'u','/[çÇ]/u' =>'c');
     $titre = preg_replace(array_keys($accents), array_values($accents), $_POST['titreDevis']); 
@@ -104,26 +104,39 @@ if (!empty($_POST['clientSelect'])) {
    $Cmd->updateStatus('RFS',$_POST['RefuserDevis']);
 }
 
+
+
 //accès au button Voir mes devis si droit ok : 
+$_SESSION['vueDevis'] = "MINE";
 $AllDevis = "Voir tous";
 if ($_SESSION['user']->user__devis_acces >= 15 ) {
       if (!empty($_POST['MyDevis']) && $_POST['MyDevis'] == "Voir mes devis") {
-          $devisList = $Cmd->getUserDevis($_SESSION['user']->id_utilisateur);
-          $AllDevis = "Voir tous";
-      }
-      else{
-          $devisList = $Cmd->getAll();
-          $AllDevis = "Voir mes devis";
-      }
-}
-else {
-  $devisList = $Cmd->getUserDevis($_SESSION['user']->id_utilisateur);
+          $_SESSION['vueDevis'] = "ALL";}   
 }
 
 
-if (!empty($_POST['rechercheP'])) {
-  $devisList = $Cmd->magicRequest($_POST['rechercheP']);
+
+// Affichage de la liste de devis :
+if ( $_SESSION['vueDevis'] == "ALL") {
+  if (!empty($_POST['rechercheP'])) {
+    $devisList = $Cmd->magicRequest($_POST['rechercheP']);
+  }
+  else {
+    $devisList = $Cmd->getAll();
+  }
+
+  $AllDevis = "Voir mes devis";
 }
+elseif ($_SESSION['vueDevis'] == "MINE") {
+  if (!empty($_POST['rechercheP'])) {
+    $devisList = $Cmd->magicRequestUser($_POST['rechercheP'],$_SESSION['user']->id_utilisateur);
+  }
+  else {
+    $devisList = $Cmd->getUserDevis($_SESSION['user']->id_utilisateur);
+  }
+  $AllDevis = "Voir tous"; 
+}
+
 
 $notifValid = 0 ;
 foreach ($devisList as $devis) {
