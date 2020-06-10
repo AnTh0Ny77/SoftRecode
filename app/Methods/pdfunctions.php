@@ -102,25 +102,39 @@ public static function showdesignationView($object){
 
 
 
-public static function magicLine($object){
+public static function magicLine($arrayLigne){
     // presation
     $firstW = '80px';
-    $secondW = '260px';
+    $secondW = '290px';
     $thirdW ='100px';
     $fourthW = '80px';
     $fifthW = '40px';
-    $lastW= '100px';
+    $lastW= '70px';
+    $stringEtat = "Type";
+    $stringGarantie = "Garantie";
 
+    $countService = 0 ;
+    $countEtat = 0 ;
+    $countGarantie = 0 ;
 
-    $presta = strtolower($object->prestaLib);
+    
+    $table = "";
+   
+    foreach ($arrayLigne as $object) {
+       
+        $presta = strtolower($object->prestaLib);
+     
+        if ($object->famille == 'SER') {
+            $countService += 1 ;
+        }
+        
+
 
     // designation
     if (!empty($object->devl__note_client)) {
-        $designation =  $object->devl__designation . " <br> ".$object->devl__note_client;
+        $designation =  $object->devl__designation .'<span style="margin-top: -10px;">'. $object->devl__note_client .'</span>';
     }
     else { $designation = $object->devl__designation; }
-
-    
         $garantie = $object->devl__mois_garantie . " mois";
   
    
@@ -146,16 +160,18 @@ public static function magicLine($object){
 
     $firstCell = "<td valign='top' style=' width: ".$firstW.";  max-width: ".$firstW."; text-align: left; border-bottom: 1px #ccc solid'>" . $presta  . "</td>";
 
-    $secondCell = "<td valign='top' style='  width: ".$secondW.";  max-width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid ; padding-bottom:15px'>"  . $designation. "</td>";
+    $secondCell = "<td valign='top' class='NoBR' style='  width: ".$secondW.";  max-width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid ; padding-bottom:15px'>"  . $designation. "</td>";
 
     if ($object->kw__lib == 'Non Concerné') {
-        $thirdCell =  "<td valign='top' style='  width: ".$thirdW."; max-width: ".$thirdW."; color: white ; text-align: left; border-bottom: 1px #ccc solid'>" .$object->kw__lib ."</td>";
+        $thirdCell =  "<td valign='top' style='  width: ".$thirdW."; max-width: ".$thirdW."; color: white ; text-align: center; border-bottom: 1px #ccc solid'>" .$object->kw__lib ."</td>";
     }
     else {
-        $thirdCell =  "<td valign='top' style=' width: ".$thirdW."; max-width: ".$thirdW."; text-align: left; border-bottom: 1px #ccc solid'>" .$object->kw__lib ."</td>";
+        $countEtat += 1 ;
+        $thirdCell =  "<td valign='top' style=' width: ".$thirdW."; max-width: ".$thirdW."; text-align: center; border-bottom: 1px #ccc solid'>" .$object->kw__lib ."</td>";
     }
 
     if ($object->devl__mois_garantie > 0){
+        $countGarantie += 1 ;
         $fourthCell = "<td valign='top' style=' width: ".$fourthW."; max-width: ".$fourthW."; text-align: center; border-bottom: 1px #ccc solid'>" . $garantie ." </td>";
     }
     else {
@@ -177,16 +193,18 @@ public static function magicLine($object){
 
         $firstCell = "<td valign='top' style=' width: ".$firstW."; max-width: ".$firstW."; text-align: left;'>" . $presta  . "</td>";
     
-        $secondCell = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  padding-bottom:15px'>"  . $designation. "</td>";
+        $secondCell = "<td valign='top' class='NoBR' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  padding-bottom:15px'>"  . $designation. "</td>";
     
         if ($object->kw__lib == 'Non Concerné') {
-            $thirdCell =  "<td valign='top' style=' width: ".$thirdW."; max-width: ".$thirdW.";  color: white ; text-align: left; '>" .$object->kw__lib ."</td>";
+            $thirdCell =  "<td valign='top' style=' width: ".$thirdW."; max-width: ".$thirdW.";  color: white ; text-align: center; '>" .$object->kw__lib ."</td>";
         }
         else {
-            $thirdCell =  "<td valign='top' style=' width: ".$thirdW."; max-width: ".$thirdW."; text-align: left; '>" .$object->kw__lib ."</td>";
+            $countEtat += 1 ;
+            $thirdCell =  "<td valign='top' style=' width: ".$thirdW."; max-width: ".$thirdW."; text-align: center; '>" .$object->kw__lib ."</td>";
         }
 
          if ($object->devl__mois_garantie > 0){
+            $countGarantie += 1 ;
         $fourthCell = "<td valign='top' style=' width: ".$fourthW."; max-width: ".$fourthW.";  text-align: center; '>" . $garantie ." </td>";
             }
          else {
@@ -211,7 +229,13 @@ public static function magicLine($object){
                 $secondCell2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW.";  text-align: left;  '>mise sous garantie du matériel réparé optionnelle - retour atelier & renvoi sous 24h </td>";
             }
             else {
-                $secondCell2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie</td>";
+                if (is_int(intval($array['devg__type'])/12) ) {
+                    $secondCell2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12)." an(s) </td>";
+                }
+                else {
+                    $secondCell2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie</td>";
+                }
+                
             }
             
             $thirdCell2 =  "<td valign='top' style=' width: ".$thirdW."; max-width: ".$thirdW."; text-align: left; '></td>";
@@ -226,7 +250,12 @@ public static function magicLine($object){
                     $secondCell2 = "<td valign='top' style=' width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid; padding-bottom:15px '>mise sous garantie du matériel réparé optionnelle - retour atelier & renvoi sous 24h </td>";
                 }
                 else {
-                    $secondCell2 = "<td valign='top' style=' width:".$secondW."; text-align: left; border-bottom: 1px #ccc solid  ; padding-bottom:15px'> extension de garantie</td>";
+                    if (is_int(intval($array['devg__type'])/12) ) {
+                        $secondCell2 = "<td valign='top' style=' border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12)." an(s) </td>";
+                    }
+                    else {
+                        $secondCell2 = "<td valign='top' style='border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie</td>";
+                    }
                 }
                 $thirdCell2 =  "<td valign='top' style=' width: ".$thirdW."; text-align: left; border-bottom: 1px #ccc solid'></td>";
                 $fourthCell2 = "<td valign='top' style=' width: ".$fourthW."; text-align: center; border-bottom: 1px #ccc solid'>" . $array['devg__type'] ." mois </td>";
@@ -238,8 +267,28 @@ public static function magicLine($object){
             $counter = 0;
         }
     }
+    
+    $table .=  $fisrtLine . $firstCell . $secondCell . $thirdCell . $fourthCell . $fifthCell . $lastCell . $endline . $extension;
+    }
 
-    return $fisrtLine . $firstCell . $secondCell . $thirdCell . $fourthCell . $fifthCell . $lastCell . $endline . $extension;
+    if ($countEtat - $countService <= 0) {
+        $stringEtat = '';
+    }
+    if ($countGarantie - $countService <= 0) {
+        $stringGarantie = "";
+    }
+
+    $tete =  '<tr style=" margin-top : 50px; background-color: #dedede;  " >
+    <td style=" text-align: left;   padding-top: 4px; padding-bottom: 4px;">Prestation</td>
+    <td style=" text-align: left; padding-top: 4px; padding-bottom: 4px;">Designation</td>
+    <td style="text-align: center; padding-top: 4px; padding-bottom: 4px;">'.$stringEtat.'</td>
+    <td  style=" text-align: center; padding-top: 4px; padding-bottom: 4px;">'.$stringGarantie.'</td>
+    <td style="text-align: center; padding-top: 4px; padding-bottom: 4px;">Qté</td>
+    <td style="text-align: right; ; padding-top: 4px; padding-bottom: 4px;">P.u € HT</td>
+    </tr> ';
+
+    echo $tete . $table ;
+   
    
 
 
@@ -324,7 +373,7 @@ public static function xTendTotalView($xtendArray){
 
 
 // fonction d'affichage du total à la con : 
-public static function totalCon($lignes , $garantieArray , $prixTotal){
+public static function totalCon($lignes , $garantieArray , $prixTotal , $tva){
     $globalArray = array();
     foreach ($garantieArray as  $value) {
         // création d'un tableau multidimensionnel pour chaque valeur présente dans le tableau : 
@@ -376,24 +425,42 @@ public static function totalCon($lignes , $garantieArray , $prixTotal){
                     // on additionne au prix total  :
                     $prix = $prixTemp + $prixTotal;
                     // renvoi dans le template html => 
-                    $echoArrays .=  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style='text-align: center'><strong>  "
-                    . number_format($prix,2  ,',', ' ').
-                    " €</strong></td><td style='text-align: right'> " 
-                    .number_format(Pdfunctions::ttc( floatval($prix)),2 ,',', ' ').
-                    " €</td></tr>";
+                    if (!$tva) {
+                        $echoArrays .=  "<tr><td style='width: 250px; font-style: italic; text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style='text-align: center'><strong>  "
+                        . number_format($prix,2  ,',', ' ').
+                        " €</strong></td></tr>";
+                    } else {
+                        $echoArrays .=  "<tr><td style='width: 210px; font-style: italic; text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style='text-align: center'><strong>  "
+                        . number_format($prix,2  ,',', ' ').
+                        " €</strong></td><td style='text-align: right'> " 
+                        .number_format(Pdfunctions::ttc( floatval($prix)),2 ,',', ' ').
+                        " €</td></tr>";
+                    }
                 }       
             }
-
-             echo '<table CELLSPACING=0  style=" border: 1px black solid;">
-            <tr style="background-color: #dedede;">
+            $finalEcho = '<table CELLSPACING=0  style=" border: 1px black solid;">
+            <tr style="background-color: #dedede; ">
             <td style="width: 210px; text-align: left"> '. $marqueurType .'</td>
             <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
             <td style="text-align: center">Total € TTC</td>
             </tr>
-            <tr><td style="width: 210px; text-align: left"> '.$marqueurPresta.'</td>
-            <td style="text-align: center"><strong>  '. number_format($prixTotal,2  ,',', ' ') . '€</strong></td>
+            <tr><td style="width: 210px; font-style: italic; text-align: left"> '.$marqueurPresta.'</td>
+            <td style="text-align: center"><strong>  '. number_format($prixTotal,2  ,',', ' ') . ' €</strong></td>
             <td style="text-align: right"> ' .number_format(Pdfunctions::ttc(floatval($prixTotal)),2 ,',', ' ').' €</td>
             </tr>' . $echoArrays;
+
+            if (!$tva) {
+              $finalEcho = '<table CELLSPACING=0  style=" border: 1px black solid;">
+              <tr style="background-color: #dedede;">
+              <td style="width: 250px; text-align: left"> '. $marqueurType .'</td>
+              <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
+              </tr>
+              <tr><td style="width: 250px; font-style: italic; text-align: left"> '.$marqueurPresta.'</td>
+              <td style="text-align: center"><strong>  '. number_format($prixTotal,2  ,',', ' ') . '€</strong></td>
+              </tr>' . $echoArrays;'';
+            }
+
+             echo $finalEcho;
 }
 
 
@@ -406,7 +473,7 @@ public static function totalCon($lignes , $garantieArray , $prixTotal){
 
 
 // function du calcul des extension de garanties avec keyword : 
-public static function magicXtend($lignes, $garantiesArray , $prixTotal ){
+public static function magicXtend($lignes, $garantiesArray , $prixTotal , $tva ){
     // pour chaque type de garanties dans keyword push dans le tableau global array ;
     $globalArray = array();
     foreach ($garantiesArray as  $value) {
@@ -449,7 +516,7 @@ public static function magicXtend($lignes, $garantiesArray , $prixTotal ){
    $marqueurType = '';
    foreach ($lignes  as $ligne) {
         if ($ligne->devl__type == 'REP') {
-        $marqueurPresta = 'hors garantie' ;
+        $marqueurPresta = '<input type="checkbox"> hors garantie' ;
         }
     }
 
@@ -467,24 +534,42 @@ public static function magicXtend($lignes, $garantiesArray , $prixTotal ){
             // on additionne au prix total  :
             $prix = $prixTemp + $prixTotal;
             // renvoi dans le template html => 
-            $echoArrays .=  "<tr><td style='width: 210px; text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style='text-align: center'><strong>  "
-            . number_format($prix,2  ,',', ' ').
-             " €</strong></td><td style='text-align: right'> " 
-             .number_format(Pdfunctions::ttc( floatval($prix)),2 ,',', ' ').
-             " €</td></tr>";
+            if (!$tva) {
+                $echoArrays .=  "<tr><td style='width: 250px; font-style: italic; text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style='text-align: center'><strong>  "
+                . number_format($prix,2  ,',', ' ').
+                " €</strong></td></tr>";
+            } else {
+                $echoArrays .=  "<tr><td style='width: 210px; font-style: italic; text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style='text-align: center'><strong>  "
+                . number_format($prix,2  ,',', ' ').
+                " €</strong></td><td style='text-align: right'> " 
+                .number_format(Pdfunctions::ttc( floatval($prix)),2 ,',', ' ').
+                " €</td></tr>";
+            }
         }       
     }
-
-    echo '<table CELLSPACING=0  style=" border: 1px black solid;">
+    $finalEcho = '<table CELLSPACING=0  style=" border: 1px black solid;">
     <tr style="background-color: #dedede;">
     <td style="width: 210px; text-align: left"> '. $marqueurType .'</td>
     <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
     <td style="text-align: center">Total € TTC</td>
     </tr>
-    <tr><td style="width: 210px; text-align: left"> '.$marqueurPresta.'</td>
-    <td style="text-align: center"><strong>  '. number_format($prixTotal,2  ,',', ' ') . '€</strong></td>
+    <tr><td style="width: 210px; font-style: italic; text-align: left"> '.$marqueurPresta.'</td>
+    <td style="text-align: center"><strong>  '. number_format($prixTotal,2  ,',', ' ') . ' €</strong></td>
     <td style="text-align: right"> ' .number_format(Pdfunctions::ttc(floatval($prixTotal)),2 ,',', ' ').' €</td>
     </tr>' . $echoArrays;
+
+    if (!$tva) {
+      $finalEcho = '<table CELLSPACING=0  style=" border: 1px black solid;">
+      <tr style="background-color: #dedede;">
+      <td style="width: 250px; text-align: left"> '. $marqueurType .'</td>
+      <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
+      </tr>
+      <tr><td style="width: 250px; font-style: italic; text-align: left"> '.$marqueurPresta.'</td>
+      <td style="text-align: center"><strong>  '. number_format($prixTotal,2  ,',', ' ') . '€</strong></td>
+      </tr>' . $echoArrays;'';
+    }
+
+     echo $finalEcho;
 }
 
 

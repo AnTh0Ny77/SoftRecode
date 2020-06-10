@@ -162,9 +162,13 @@
                        <div class="col-12 mt-2 ">
                         <div class="custom-control col-6 my-4 custom-checkbox">
                           <label for="ShowTotal">Modèle du devis </label>
-                          <select class="selectpicker form-control"  name="ShowTotal" >
+                          <select class="selectpicker form-control"  name="ShowTotal" id="showTotal" >
                             {% for modele in modeleList %}
+                              {% if temp.cmd__modele_devis == modele.kw__value  %}
+                              <option class=""  value={{modele.kw__value}} selected>{{modele.kw__lib}}</option>
+                              {% else %}
                               <option class=""  value={{modele.kw__value}}>{{modele.kw__lib}}</option>
+                              {% endif %}
                               {% endfor %}
                           </select>
                           

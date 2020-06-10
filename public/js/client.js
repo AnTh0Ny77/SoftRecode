@@ -416,8 +416,11 @@ $("#certificateNew").on('click', function() {
 // Fontion qui selct l'input radion en fonction du devis selectionné : mes devis 
 let checkradio = function(object){
    let statusRadio = $('#selectStatus');
-              $('#selectStatus').selectpicker('val', object.devis__etat);
+              $('#selectStatus').selectpicker('val', object.cmd__modele_devis);
 }
+
+
+
 
 //init tout les tooltips 
 $(function () {

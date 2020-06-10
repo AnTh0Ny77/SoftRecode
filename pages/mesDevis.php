@@ -110,7 +110,7 @@ if (!empty($_POST['clientSelect'])) {
 $_SESSION['vueDevis'] = "MINE";
 $AllDevis = "Voir tous";
 if ($_SESSION['user']->user__devis_acces >= 15 ) {
-      if (!empty($_POST['MyDevis']) && $_POST['MyDevis'] == "Voir mes devis") {
+      if (!empty($_POST['MyDevis']) && $_POST['MyDevis'] == "Voir tous") {
           $_SESSION['vueDevis'] = "ALL";}   
 }
 

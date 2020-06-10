@@ -129,6 +129,9 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
     case '/SoftRecode/TicketVisu';
       require __DIR__ .'/pages/TicketVisu.php'; break;
 
+      case '/SoftRecode/font';
+      require __DIR__ .'/vendor/tecnickcom/tcpdf/fonts/convertfont.php'; break;
+
 
   /*88   dP"Yb    dP88  
  dP 88  dP   Yb  dP 88  

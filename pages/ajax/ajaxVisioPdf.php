@@ -41,18 +41,24 @@ $garanties = $Keyword->getGaranties();
  ?>
  
  <style type="text/css">
-      table{   font-size: 15px; font-style: normal; font-variant: normal;}
+ 
+     .page_header{
+        margin-left: 30px;
+        margin-top: 30px;
+     }
+     
+      table{   font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate; }
      
       strong{ color:#000;}
       h3{ color:#666666;}
       h2{ color:#3b3b3b;}
-      table{ 
-       border-collapse:separate; 
-      
-         }  
+     
  </style>
- <page backtop="5mm" backleft="10mm" backright="10mm">
-     <table style="width: 100%;">
+
+
+<page backtop="80mm" backleft="10mm" backright="10mm" backbottom= "30mm"> 
+<page_header >
+     <table class="page_header" style="width: 100%;">
          <tr>
              <td style="text-align: left;  width: 50%"><img  style=" width:65mm" src="public/img/recodeDevis.png"/></td>
              <td style="text-align: left; width:50%"><h3>REPARATION-LOCATION-VENTE</h3>imprimantes lecteurs codes barres<br><a style="color: green;">www.recode.fr</a><br><br></td>
@@ -113,86 +119,174 @@ $garanties = $Keyword->getGaranties();
              ?>
          </tr>
      </table>
-     <table CELLSPACING=0 style="   margin-top: 65px;   ">
-             <tr style=" margin-top : 50px; background-color: #dedede;  " >
-                <td style=" text-align: left;   padding-top: 4px; padding-bottom: 4px;">Prestation</td>
-                <td style=" text-align: left; padding-top: 4px; padding-bottom: 4px;">Designation</td>
-                <td style="text-align: center; padding-top: 4px; padding-bottom: 4px;">Etat</td>
-                <td  style=" text-align: center; padding-top: 4px; padding-bottom: 4px;">Garantie</td>
-                <td style="text-align: center; padding-top: 4px; padding-bottom: 4px;">Qté</td>
-                <td style="text-align: right; ; padding-top: 4px; padding-bottom: 4px;">P.u € HT</td>
-             </tr> 
-             <?php 
-                 $arrayPrice =[];
-                 $arrayGarantie = [];
-                 $array12 = [];
-                 $array24 = [];
-                 $array36 = [];
-                 $array48 = [];
-                 foreach($arrayOfDevisLigne as $value=>$obj){
-                        
+</page_header>
+<page_footer>
+        <table  class="page_footer" style="text-align: center; margin: auto; ">
+            <tr >
+                <td  style=" font-size: 80%; width: 100%;  "><br><br><small>New Eurocomputer-TVA FR33b 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
+                <strong>RECODE by eurocomputeur - 112 allée François Coli -06210 Mandelieu</strong></small></td>
+            </tr>
+         </table>
+</page_footer>
 
-                        echo Pdfunctions::magicLine($obj);
-                         
-                         array_push( $arrayPrice, floatval(floatval($obj->devl_puht)*intval($obj->devl_quantite)));
-                 };
-                 
-                       
-                        
-             ?>
-     </table>
-     <table style=" margin-top: 25px">
-         <tr>
-         <td style="width: 250px"></td>
-         <td>
+<table CELLSPACING=0 style="margin-top: 15px;">
+        
+        <?php 
+            $arrayPrice =[];
+            foreach($arrayOfDevisLigne as $value=>$obj){
+                    array_push( $arrayPrice, floatval(floatval($obj->devl_puht)*intval($obj->devl_quantite)));
+            };      
+            echo Pdfunctions::magicLine($arrayOfDevisLigne);     
+        ?>
+</table>
 
-         <?php
-         // on affiche le tableau de totaux en cas de modèle adéquate :
-            if ($temp->cmd__modele_devis == 'STT') {
+<div>
+<table style=" margin-top: 25px">
+    <tr>
+    <td style="width: 300px"></td>
+    <td>
+
+    <?php
+    // on affiche le tableau de totaux en cas de modèle adéquate :
+
+    if ($temp->cmd__modele_devis != 'STX') {
+        switch ($temp->cmd__modele_devis) {
+            // devis standart total classique:
+            case 'STT':
+               $totalPrice = array_sum($arrayPrice);
+               $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true);
+               echo '</table>';
+                break;
+            // devis standart total logique: 
+            case 'STL':
+               $totalPrice = array_sum($arrayPrice);
+               $totaux = Pdfunctions::magicXtend($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true );
+               echo '</table>';
+                break;
+            // devis sans TVA total classique: 
+            case 'TVT':
                 $totalPrice = array_sum($arrayPrice);
-                $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice));
+                $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , false);
                 echo '</table>';
-            }      
-            elseif ($temp->cmd__modele_devis == 'STL') {
+                break;
+            // devis sans TVA total logique: 
+            case 'TVL':
                 $totalPrice = array_sum($arrayPrice);
-                $totaux = Pdfunctions::magicXtend($arrayOfDevisLigne , $garanties , array_sum($arrayPrice));
+                $totaux = Pdfunctions::magicXtend($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , false );
                 echo '</table>';
-            }         
-         ?>
-             
-         </td>
-         </tr>
-     </table>
-     <?php
-     if ($temp->devis__note_client) {
-        echo $temp->devis__note_client;
-     }
-     ?>
+                 break;
+                break;
+            
+            default:
+                $totalPrice = array_sum($arrayPrice);
+                $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true);
+                echo '</table>';
+                break;
+        }
+       
+    }
 
-     <div style=" width: 100%; position: absolute; top:76%">
-     <table CELLSPACING=0 style=" width: 100%;  margin-bottom: 5px;">
-         <tr style="background-color: #dedede;  "><td style="text-align: left;  width: 50%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;"><strong>BON POUR COMMANDE</strong><BR>NOM DU SIGNATAIRE: <br>VOTRE N° DE CDE :<br>DATE:</td><td style="text-align: right;  width: 50%; vertical-align:top; padding-top: 7px; padding-right: 6px;">CACHET & SIGNATURE</td></tr>
-     </table>
+   
+    ?>
+        
+    </td>
+    </tr>
+</table>
+</div>
 
-     <table style=" margin-top: 5px; color: #8c8c8c; width: 100%;">
-         <tr><td style="font-size: 80%;"><small>Le client accepte la présente proposition ainsi que les condition générales de vente Recode.<br>Recode conserve la propriété du matériel jusqu'a 
-         paiement intégral du prix et des frais annexes.</small></td></tr>
-         <tr>
-             <td><small><strong>Coordonnées bancaires(Banque Populaire Méditéranée)</strong><br>
-              IBAN : FR76 1460 7003 6569 0218 9841 804- BIC: CCBPFRPPMAR</small></td>
-         </tr>
-         <tr >
-             <td  style="text-align: center; font-size: 80%; width: 100%;"><br><br><small>New Eurocomputer-TVA FR33b 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
-             <strong>RECODE by eurocomputeur - 112 allée François Coli -06210 Mandelieu</strong></small></td>
-         </tr>
-     </table>  
-     </div>  
- </page>
+<div>
+<?php
+if ($temp->devis__note_client) {
+   echo $temp->devis__note_client;
+}
+
+?>
+</div>
+
+<div>
+
+    <table CELLSPACING=0 style=" width: 100%;  margin-bottom: 5px; margin-top: 25 px;">
+    <tr style="background-color: #dedede;  "><td style="text-align: left;  width: 50%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;"><strong>BON POUR COMMANDE</strong><BR>NOM DU SIGNATAIRE: <br>VOTRE N° DE CDE :<br>DATE:</td><td style="text-align: right;  width: 50%; vertical-align:top; padding-top: 7px; padding-right: 6px;">CACHET & SIGNATURE</td></tr>
+</table>
+
+<table style="width: 100%;">
+           <table style="   margin-top: 5px; color: #8c8c8c; width: 100%;">
+               <tr><td style="font-size: 80%;"><small>Le client accepte la présente proposition ainsi que les condition générales de vente Recode.<br>Recode conserve la propriété du matériel jusqu'a 
+               paiement intégral du prix et des frais annexes.</small></td></tr>
+               <tr>
+                   <td><small><strong>Coordonnées bancaires(Banque Populaire Méditéranée)</strong><br>
+                   IBAN : FR76 1460 7003 6569 0218 9841 804- BIC: CCBPFRPPMAR</small></td>
+               </tr>
+           </table>  
+</table>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+   
+</page>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
+
+
+
+
+
+
+
  <?php
  $content = ob_get_contents();
 
  try {
      $doc = new Html2Pdf('P','A4','fr');
+     $doc->setDefaultFont('gothic');
      $doc->pdf->SetDisplayMode('fullpage');
      $doc->writeHTML($content);
      ob_clean();
