@@ -44,6 +44,8 @@ $garanties = $Keyword->getGaranties();
         margin-left: 30px;
         margin-top: 30px;
      }
+
+    
      
       table{   font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate; }
      
@@ -62,7 +64,7 @@ $garanties = $Keyword->getGaranties();
              <td style="text-align: left; width:50%"><h3>REPARATION-LOCATION-VENTE</h3>imprimantes lecteurs codes barres<br><a style="color: green;">www.recode.fr</a><br><br></td>
          </tr>
          <tr>
-             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis <?php echo $temp->devis__id ?></h2><br><?php echo date("d-m-Y") ?><br><?php echo $_SESSION['user']->email ?><p><small>Notre offre est valable une semaine à dater du : <?php echo $formated_date ?></small></p></td>
+             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>Devis <?php echo $temp->devis__id ?></h2><br><?php echo date("d-m-Y") ?><br><?php echo $temp->email ?><p><small>Notre offre est valable une semaine à dater du : <?php echo $formated_date ?></small></p></td>
              <td style="text-align: left; width:50%"><?php 
              // si une societe de livraion est présente 
              if ($societeLivraison) {
@@ -216,7 +218,9 @@ if ($temp->devis__note_client) {
                    IBAN : FR76 1460 7003 6569 0218 9841 804- BIC: CCBPFRPPMAR</small></td>
                </tr>
            </table>  
-</table> 
+</table>
+
+
 </div> 
 </page>
  <?php
