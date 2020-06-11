@@ -267,7 +267,7 @@ public static function magicLine($arrayLigne){
     if ($countEtat - $countService <= 0) {
         $stringEtat = '';
     }
-    if ($countGarantie - $countService <= 0) {
+    if ($countGarantie  < 0) {
         $stringGarantie = "";
     }
 
