@@ -186,7 +186,7 @@ public static function magicLine($arrayLigne){
     if (!empty($object->ordre2)) {
 
     $fisrtLine = "<tr style='font-size: 95%; font-style: italic;'>";
-    $firstCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$firstW."; max-width: ".$firstW."; text-align: left; border-bottom: 1px #ccc solid; '>" . $presta  . "</td>";
+    $firstCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$firstW."; max-width: ".$firstW."; text-align: left;  '>" . $presta  . "</td>";
     $secondCell = "<td valign='top' class='NoBR' style='  padding-top:".$firstPadding.";  width: ".$secondW."; max-width: ".$secondW."; text-align: left;  padding-bottom:15px'>"  . $designation. "</td>";
 
     if ($object->kw__lib == 'Non Concerné') {
