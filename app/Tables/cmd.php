@@ -35,7 +35,7 @@ class Cmd extends Table {
     c2.client__ville as client__livraison_ville,
     c2.client__cp as client__livraison_cp , 
     c2.client__adr1 as client__livraison__adr1 , 
-    u.log_nec
+    u.log_nec , u.user__email_devis as email
     FROM cmd
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
