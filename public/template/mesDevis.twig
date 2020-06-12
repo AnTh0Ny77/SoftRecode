@@ -61,7 +61,11 @@
             
             <div>
               <form class="form-inline" action="mesDevis" method="POST">
+                {% if recherche %}
+                <input class="form-control mr-2" type="search" name="rechercheP" value="{{recherche}}" placeholder="Recherche" aria-label="Search">
+                {% else %}
                 <input class="form-control mr-2" type="search" name="rechercheP" placeholder="Recherche" aria-label="Search">
+                {% endif %}
                 <button class="btn btn-outline-primary  " type="submit"><i class="fal fa-bullseye-arrow"></i></button>
               </form>
 

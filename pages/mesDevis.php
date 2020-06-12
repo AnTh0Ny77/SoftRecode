@@ -114,7 +114,11 @@ if ($_SESSION['user']->user__devis_acces >= 15 ) {
           $_SESSION['vueDevis'] = "ALL";}   
 }
 
-
+// variable du résultat de la recherche :
+$recherche = false ; 
+if (!empty($_POST['rechercheP'])) {
+  $recherche = $_POST['rechercheP'];
+}
 
 // Affichage de la liste de devis :
 if ( $_SESSION['vueDevis'] == "ALL") {
@@ -159,5 +163,6 @@ echo $twig->render('mesDevis.twig',['user'=>$user,
 'listOfStatus'=> $listOfStatus ,
 'AllDevis'=> $AllDevis , 
 'notifValid'=> $notifValid , 
-'NbDevis' => $NbDevis
+'NbDevis' => $NbDevis, 
+'recherche' => $recherche
 ]);
