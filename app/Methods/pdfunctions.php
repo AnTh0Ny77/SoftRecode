@@ -272,10 +272,10 @@ public static function magicLine($arrayLigne){
 
 	$table .=  $fisrtLine . $firstCell . $secondCell . $thirdCell . $fourthCell . $fifthCell . $lastCell . $endline . $extension;
 	}
-	if ($countEtat - $countService  <= 0 ) 
+	if ($countEtat == 0 ) 
 		$stringEtat = '';
 	
-	if ($countGarantie  <= 0) 
+	if ($countGarantie  == 0) 
 		$stringGarantie = '';
 
 
@@ -416,55 +416,85 @@ public static function totalCon($lignes , $garantieArray , $prixTotal , $tva){
 			if (sizeof($resultsArray)  > 1){
 
 				// si la taille du tableau correspond au nombre de ligne +1 (index 0 )alors chaque ligne possède la garantie : 
-					$marqueurType = "Type de garantie";
-					//on retire l'index 0 corespondant à la valeur de la garantie :
-					$prixTemp =  floatval(array_sum($resultsArray) - $resultsArray[0]);
-					// on additionne au prix total  :
-					$prix = $prixTemp + $prixTotal;
-					// renvoi dans le template html => 
-					if (!$tva) {
+				$marqueurType = "Type de garantie";
+				//on retire l'index 0 corespondant à la valeur de la garantie :
+				$prixTemp =  floatval(array_sum($resultsArray) - $resultsArray[0]);
+				// on additionne au prix total  :
+				$prix = $prixTemp + $prixTotal;
+				// renvoi dans le template html => 
+				if (!$tva) {
 						$echoArrays .=  "<tr><td style='width: 250px; font-size: 95%; font-style: italic; text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style=' font-size: 95%; font-style: italic; text-align: center'><strong>  "
 						. number_format($prix,2  ,',', ' ').
 						" €</strong></td></tr>";
-					} else {
+				} else {
 						$echoArrays .=  "<tr><td style='width: 210px; font-size: 95%; font-style: italic;  text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style='font-size: 95%; font-style: italic; text-align: center'><strong>  "
 						. number_format($prix,2  ,',', ' ').
 						" €</strong></td><td style='font-size: 95%; font-style: italic; text-align: right'> " 
 						.number_format(Pdfunctions::ttc( floatval($prix)),2 ,',', ' ').
 						" €</td></tr>";
-					}
-				}       
-			}
-			$finalEcho = '<table CELLSPACING=0  style=" border: 1px black solid;">
-			<tr style="background-color: #dedede; ">
-			<td style="width: 210px; text-align: left"> '. $marqueurType .'</td>
-			<td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
-			<td style="text-align: center">Total € TTC</td>
-			</tr>
-			<tr><td style="width: 210px; font-size: 95%; font-style: italic; text-align: left"> '.$marqueurPresta.'</td>
-			<td style="text-align: center; font-style: italic;  font-size: 95%;"><strong>  '. number_format($prixTotal,2  ,',', ' ') . ' €</strong></td>
-			<td style="text-align: right; font-style: italic; font-size: 95%;"> ' .number_format(Pdfunctions::ttc(floatval($prixTotal)),2 ,',', ' ').' €</td>
-			</tr>' . $echoArrays;
+				}
+			}       
+		}
+		
+		
+			
+
+			if (empty($echoArrays)) 
+			{
+			
+				$finalEcho = '<table CELLSPACING=0  style=" margin-left: 180px;  border: 1px black solid;">
+				<tr style="background-color: #dedede; ">
+				<td style=" margin-left: 210px; width: 0px; text-align: left"> '. $marqueurType .'</td>
+				<td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
+				<td style="text-align: center">Total € TTC</td>
+				</tr>
+				<tr><td style="width: 0px; font-size: 95%; font-style: italic; text-align: left"> </td>
+				<td style="text-align: center; font-style: italic;  font-size: 95%;"><strong>  '. number_format($prixTotal,2  ,',', ' ') . ' €</strong></td>
+				<td style="text-align: right; font-style: italic; font-size: 95%;"> ' .number_format(Pdfunctions::ttc(floatval($prixTotal)),2 ,',', ' ').' €</td>
+				</tr>' . $echoArrays;
 
 			if (!$tva) {
-			  $finalEcho = '<table CELLSPACING=0  style=" border: 1px black solid;">
+			  $finalEcho = '<table CELLSPACING=0  style=" margin-left: 200px;  border: 1px black solid;">
 			  <tr style="background-color: #dedede;">
-			  <td style="width: 250px; text-align: left"> '. $marqueurType .'</td>
+			  <td style="width: 0px; text-align: left"> '. $marqueurType .'</td>
 			  <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
 			  </tr>
-			  <tr><td style="width: 250px;font-size: 95%; font-style: italic; text-align: left"> '.$marqueurPresta.'</td>
+			  <tr><td style=" color: white; width: 0px;font-size: 95%; font-style: italic; text-align: left"></td>
 			  <td style="font-style: italic; text-align: center; font-size: 95%;"><strong>  '. number_format($prixTotal,2  ,',', ' ') . '€</strong></td>
 			  </tr>' . $echoArrays;'';
+			}  
+
+			
+			}
+			else 
+			{
+
+				$finalEcho = '<table CELLSPACING=0  style=" border: 1px black solid;">
+				<tr style="background-color: #dedede; ">
+				<td style="width: 210px; text-align: left"> '. $marqueurType .'</td>
+				<td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
+				<td style="text-align: center">Total € TTC</td>
+				</tr>
+				<tr><td style="width: 210px; font-size: 95%; font-style: italic; text-align: left"> '.$marqueurPresta.'</td>
+				<td style="text-align: center; font-style: italic;  font-size: 95%;"><strong>  '. number_format($prixTotal,2  ,',', ' ') . ' €</strong></td>
+				<td style="text-align: right; font-style: italic; font-size: 95%;"> ' .number_format(Pdfunctions::ttc(floatval($prixTotal)),2 ,',', ' ').' €</td>
+				</tr>' . $echoArrays;
+
+			if (!$tva) {
+				$finalEcho = '<table CELLSPACING=0  style=" border: 1px black solid;">
+				<tr style="background-color: #dedede;">
+				<td style="width: 250px; text-align: left"> '. $marqueurType .'</td>
+				<td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
+				</tr>
+				<tr><td style="width: 250px;font-size: 95%; font-style: italic; text-align: left"> '.$marqueurPresta.'</td>
+				<td style="font-style: italic; text-align: center; font-size: 95%;"><strong>  '. number_format($prixTotal,2  ,',', ' ') . '€</strong></td>
+				</tr>' . $echoArrays;'';
+			}
+
 			}
 
 			 echo $finalEcho;
 }
-
-
-
-
-
-
 
 
 

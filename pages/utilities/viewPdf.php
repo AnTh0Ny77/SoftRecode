@@ -78,12 +78,12 @@ $garanties = $Keyword->getGaranties();
                         if ($temp->devis__contact_livraison) {
                             //si un contact est présent dans l'adresse de livraison : 
                             $contact2 = $Contact->getOne($temp->devis__contact_livraison);
-                            echo "<br> <small>Livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
+                            echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
                             echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>"; 
                         }
                         else {
                             // si pas de contact de livraison : 
-                            echo "<br> <small>Livraison :</small><strong><br>";
+                            echo "<br> <small>livraison :</small><strong><br>";
                             echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>"; 
                         } 
                     }
@@ -93,10 +93,10 @@ $garanties = $Keyword->getGaranties();
                         echo Pdfunctions::showSociete($clientView) ." </strong>" ;
                         if ($temp->devis__contact_livraison) {
                             $contact2 = $Contact->getOne($temp->devis__contact_livraison);
-                            echo "<br> <small>Livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
+                            echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
                             echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>"; 
                         } else {
-                            echo "<br> <small>Livraison :</small><strong><br>";
+                            echo "<br> <small>livraison :</small><strong><br>";
                             echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>"; 
                         }  
                     }  
@@ -155,32 +155,32 @@ $garanties = $Keyword->getGaranties();
             case 'STT':
                $totalPrice = array_sum($arrayPrice);
                $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true);
-               echo '</table>';
+               
                 break;
             // devis standart total logique: 
             case 'STL':
                $totalPrice = array_sum($arrayPrice);
                $totaux = Pdfunctions::magicXtend($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true );
-               echo '</table>';
+               
                 break;
             // devis sans TVA total classique: 
             case 'TVT':
                 $totalPrice = array_sum($arrayPrice);
                 $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , false);
-                echo '</table>';
+               
                 break;
             // devis sans TVA total logique: 
             case 'TVL':
                 $totalPrice = array_sum($arrayPrice);
                 $totaux = Pdfunctions::magicXtend($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , false );
-                echo '</table>';
+               
                  break;
                 break;
             
             default:
                 $totalPrice = array_sum($arrayPrice);
                 $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true);
-                echo '</table>';
+               
                 break;
         }
        
@@ -188,7 +188,7 @@ $garanties = $Keyword->getGaranties();
 
    
     ?>
-        
+    </table>
     </td>
     </tr>
 </table>

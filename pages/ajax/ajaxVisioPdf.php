@@ -157,32 +157,32 @@ $garanties = $Keyword->getGaranties();
             case 'STT':
                $totalPrice = array_sum($arrayPrice);
                $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true);
-               echo '</table>';
+               
                 break;
             // devis standart total logique: 
             case 'STL':
                $totalPrice = array_sum($arrayPrice);
                $totaux = Pdfunctions::magicXtend($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true );
-               echo '</table>';
+               
                 break;
             // devis sans TVA total classique: 
             case 'TVT':
                 $totalPrice = array_sum($arrayPrice);
                 $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , false);
-                echo '</table>';
+               
                 break;
             // devis sans TVA total logique: 
             case 'TVL':
                 $totalPrice = array_sum($arrayPrice);
                 $totaux = Pdfunctions::magicXtend($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , false );
-                echo '</table>';
+                
                  break;
                 break;
             
             default:
                 $totalPrice = array_sum($arrayPrice);
                 $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true);
-                echo '</table>';
+               
                 break;
         }
        
@@ -190,7 +190,7 @@ $garanties = $Keyword->getGaranties();
 
    
     ?>
-        
+    </table>
     </td>
     </tr>
 </table>
