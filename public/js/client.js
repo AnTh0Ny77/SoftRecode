@@ -420,6 +420,17 @@ let checkradio = function(object){
 }
 
 
+// cache le loader et le frame à l'ouverture de la page : 
+if (modifDevis) 
+{
+    if (modifDevis.data().count() < 1) {
+        $('#loaderPdf').html('<h6 class="text-primary text-center">Aucuns Résultats</h6>');
+        $('#iframeDevis').hide();
+    }
+}
+
+
+
 
 
 //init tout les tooltips 
