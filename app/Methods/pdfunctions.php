@@ -224,7 +224,7 @@ public static function magicLine($arrayLigne){
 		$secondLine = "<tr style='font-size: 95%; font-style: italic;'>" ;
 		$firstCell2 = "<td valign='top' style=' width:".$firstW."; max-width: ".$firstW."; text-align: left; '>garantie</td>";
 
-		if ($presta == "reparation") {
+		if ($object->devl__type == "REP") {
 			$secondCell2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW.";  text-align: left;  '>mise sous garantie du matériel réparé optionnelle - retour atelier & renvoi sous 24h </td>";
 		}
 		else {
@@ -272,7 +272,7 @@ public static function magicLine($arrayLigne){
 
 	$table .=  $fisrtLine . $firstCell . $secondCell . $thirdCell . $fourthCell . $fifthCell . $lastCell . $endline . $extension;
 	}
-	if ($countEtat - $countService  < 1 ) 
+	if ($countEtat - $countService  <= 0 ) 
 		$stringEtat = '';
 	
 	if ($countGarantie  <= 0) 
