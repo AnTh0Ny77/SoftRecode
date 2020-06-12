@@ -194,10 +194,11 @@ public static function magicLine($arrayLigne){
 	$secondCell = "<td valign='top' class='NoBR' style='  padding-top:".$firstPadding.";  width: ".$secondW."; max-width: ".$secondW."; text-align: left;  padding-bottom:15px'>"  . $designation. "</td>";
 
 	if ($object->devl__etat == 'NC.') {
+		$countEtat += 1 ;
 		$thirdCell =  "<td valign='top' style=' padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW.";  color: white ; text-align: center; '>" .$object->kw__lib ."</td>";
 	}
 	else {
-		$countEtat += 1 ;
+		
 		$thirdCell =  "<td valign='top' style='padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW."; text-align: center; '>" .$object->kw__lib ."</td>";
 	}
 
