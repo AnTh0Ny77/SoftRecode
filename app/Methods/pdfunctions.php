@@ -167,7 +167,7 @@ public static function magicLine($arrayLigne){
 
 	$secondCell = "<td valign='top' class='NoBR' style='padding-top:".$firstPadding.";  width: ".$secondW.";  max-width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid ;  padding-bottom:15px'>"  . $designation. "</td>";
 
-	if ($object->devl__etat == 'NC') {
+	if ($object->devl__etat == 'NC.') {
 		$thirdCell =  "<td valign='top' style='padding-top:".$firstPadding.";  width: ".$thirdW."; max-width: ".$thirdW."; color: white ; text-align: center; border-bottom: 1px #ccc solid'>" .$object->kw__lib ."</td>";
 	}
 	else {
@@ -193,7 +193,7 @@ public static function magicLine($arrayLigne){
 	$firstCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$firstW."; max-width: ".$firstW."; text-align: left;  '>" . $presta  . "</td>";
 	$secondCell = "<td valign='top' class='NoBR' style='  padding-top:".$firstPadding.";  width: ".$secondW."; max-width: ".$secondW."; text-align: left;  padding-bottom:15px'>"  . $designation. "</td>";
 
-	if ($object->devl__etat == 'NC') {
+	if ($object->devl__etat == 'NC.') {
 		$thirdCell =  "<td valign='top' style=' padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW.";  color: white ; text-align: center; '>" .$object->kw__lib ."</td>";
 	}
 	else {
