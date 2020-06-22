@@ -28,8 +28,7 @@
               <div class="modal-body">
                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
 
-
-                  <select class="selectpicker " id="selectStatus" name="statusRadio" >
+                  <select class="selectpicker" id="selectStatus" name="statusRadio" >
                     {% for status in listOfStatus %}
                     {% if   status.keyword__lib != 'Commande'%}
                         <option class="optionSelect modelSelect" value={{status.kw__value}}>{{status.kw__lib }}</option>
@@ -48,7 +47,7 @@
         </div>
 
 
-
+       
         <!--carte liste de Devis -->
       <div class="col-6">
         <div class="card shadow mb-4">
@@ -194,7 +193,7 @@
               </div>
 
 
-              <iframe id="iframeDevis" class="border-0" src="" width="100%" height="600px">
+              <iframe id="iframeDevis" class="border-0" src="" width="100%" height="970px">
               </iframe>
 
         </div>

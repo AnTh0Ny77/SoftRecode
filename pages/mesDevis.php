@@ -107,7 +107,10 @@ if (!empty($_POST['clientSelect'])) {
 
 
 //accès au button Voir mes devis si droit ok : 
-$_SESSION['vueDevis'] = "MINE";
+if (empty($_SESSION['vueDevis'])) {
+  $_SESSION['vueDevis'] = "MINE";
+}
+
 $AllDevis = "Voir tous";
 if ($_SESSION['user']->user__devis_acces >= 15 ) {
       if (!empty($_POST['MyDevis']) && $_POST['MyDevis'] == "Voir tous") {
@@ -119,6 +122,8 @@ $recherche = false ;
 if (!empty($_POST['rechercheP'])) {
   $recherche = $_POST['rechercheP'];
 }
+
+
 
 // Affichage de la liste de devis :
 if ( $_SESSION['vueDevis'] == "ALL") {
@@ -133,7 +138,7 @@ if ( $_SESSION['vueDevis'] == "ALL") {
 }
 elseif ($_SESSION['vueDevis'] == "MINE") {
   if (!empty($_POST['rechercheP'])) {
-    $devisList = $Cmd->magicRequestUser($_POST['rechercheP'],$_SESSION['user']->id_utilisateur);
+    $devisList = $Cmd->magicRequestUser($_POST['rechercheP'], intval($_SESSION['user']->id_utilisateur));
   }
   else {
     $devisList = $Cmd->getUserDevis($_SESSION['user']->id_utilisateur);
@@ -157,8 +162,9 @@ $NbDevis = count($devisList);
    $devis->devis__date_crea = $date;
 }
 // Donnée transmise au template : 
-echo $twig->render('mesDevis.twig',['user'=>$user,
-'user'=> $user,
+echo $twig->render('mesDevis.twig',
+[
+'user'=>$user,
 'devisList'=> $devisList,
 'listOfStatus'=> $listOfStatus ,
 'AllDevis'=> $AllDevis , 

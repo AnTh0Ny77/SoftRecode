@@ -402,28 +402,36 @@ $("#certificateNew").on('click', function() {
       }
 
  // disable buttons multiple si pas de ligne select dans la table commandes:
-    let checkClassCmd = function(){
+    let checkClassCmd = function()
+    {
         let RowModif =  $('#MyCommande').find('tr');
-         if (RowModif.hasClass('selected')) {
+         if (RowModif.hasClass('selected'))
+          {
              $('.multiButton').removeAttr('disabled');
-         } else {
+          } 
+         else
+          {
              $('.multiButton').prop("disabled", true);
-         }
+          }
       }
       checkClassMulti();
       checkClassCmd();
 
 // Fontion qui selct l'input radion en fonction du devis selectionné : mes devis 
-let checkradio = function(object){
-   let statusRadio = $('#selectStatus');
-              $('#selectStatus').selectpicker('val', object.cmd__modele_devis);
+let checkradio = function(object)
+{
+    $('#selectStatus').selectpicker('val', object.devis__etat);
 }
+
+
+
 
 
 // cache le loader et le frame à l'ouverture de la page : 
 if (modifDevis) 
 {
-    if (modifDevis.data().count() < 1) {
+    if (modifDevis.data().count() < 1) 
+    {
         $('#loaderPdf').html('<h6 class="text-primary text-center">Aucuns Résultats</h6>');
         $('#iframeDevis').hide();
     }
@@ -849,6 +857,7 @@ idUtilisateur = $('#idUtilisateur').val();
                     }
                     
                     $('.selectpicker').selectpicker('refresh'); 
+                
                     $('#UPchoixPn').selectpicker('val', formContent.pn);
                     
                     
