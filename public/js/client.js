@@ -1118,123 +1118,136 @@ idUtilisateur = $('#idUtilisateur').val();
         $('#UPchoixDesignation').on('change', function(){
             
             var selectedOption = parseInt($(this).children("option:selected").val());
-            $.ajax({
-                type: 'post',
-                url: "AjaxPn",
-                data : 
+            $.ajax(
+                {
+                    type: 'post',
+                    url: "AjaxPn",
+                    data : 
                 {
                     "AjaxPn" : selectedOption
                 },
-                success: function(data){
-                   
+                success: function(data)
+                {
                     dataSet = JSON.parse(data);
                     $('#UPchoixPn option').remove();
                     $('#UPchoixPn').append(new Option('..', '' , false, true));
-                    for (let index = 0; index < dataSet.length; index++) {
-                       
+                    
+                    for (let index = 0; index < dataSet.length; index++) 
+                    {
                         $('#UPchoixPn').append(new Option(dataSet[index].apn__pn_long + " " + dataSet[index].apn__desc_short ,dataSet[index].apn__pn));
-                        
                     }
                     $('.selectpicker').selectpicker('refresh'); 
-    
                 },
-                error: function (err) {
+                error: function (err) 
+                {
                     alert('error: ' + err);
                 }
-    
             })
-            
-           
         });
 
-
-
         //init des editeur de texte mdb : 
-        if ($('#globalComClient').length) {
+        if ($('#globalComClient').length) 
+        {
             ClassicEditor
-            .create( document.querySelector( '#globalComClient' ) , {
+            .create( document.querySelector( '#globalComClient'),
+            {
                 toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
-            } )
-            .catch( error => {
+            })
+            .catch( error =>
+            {
                 console.error( error );
-            } );     
+            });     
         }
        
-       if ($('#globalComInt').length) {
+       if ($('#globalComInt').length) 
+       {
             ClassicEditor       
-            .create( document.querySelector( '#globalComInt' ) , {
-            toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
-            })
-            .catch( error => {
-                console.error( error );
-            } );     
+            .create( document.querySelector( '#globalComInt' ) , 
+                {
+                    toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+                })
+                .catch( error =>
+                {
+                    console.error( error );
+                });     
         }
       
        // commentaire client pour chaque ligne : 
        let ckComClient ;
-       if ($('#comClient').length) {
+       if ($('#comClient').length) 
+       {
         ClassicEditor
-       .create( document.querySelector( '#comClient' ) , {
-        toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
-       })
-       .then( newEditor => {
-        ckComClient = newEditor;
-        } )
-       .catch( error => {
-           console.error( error );
-       } );    
+        .create( document.querySelector( '#comClient' ) , 
+            {
+                toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+            })
+            .then( newEditor => 
+            {
+                ckComClient = newEditor;
+            })
+            .catch( error => 
+            {
+            console.error( error );
+            });    
        }
        
 
        // comentaire interne pour chaque ligne : 
        let ckCOMInt ;
-       if ($('#comInterne').length) {
-        ClassicEditor
-       .create( document.querySelector( '#comInterne' ) , {
-        toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
-       })
-       .then( newEditor => {
-        ckCOMInt = newEditor;
-        } )
-       .catch( error => {
-           console.error( error );
-       } );    
+       if ($('#comInterne').length)
+       {
+            ClassicEditor
+            .create( document.querySelector( '#comInterne' ) , 
+                {
+                toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+                })
+                .then( newEditor => 
+                {
+                ckCOMInt = newEditor;
+                })
+                .catch( error => 
+                {
+                console.error( error );
+                }
+            );    
        }
        
-
        // commentaire client mise a jour de ligne : 
        let ckUpClient ; 
-       if ($('#UPcomClient').length) {
-        ClassicEditor
-        .create( document.querySelector( '#UPcomClient' ) , {
-         toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
-        })
-        .then( newEditor => {
-         ckUpClient = newEditor;
-         } )
-        .catch( error => {
-            console.error( error );
-        } );
- 
+       if ($('#UPcomClient').length) 
+       {
+            ClassicEditor
+            .create( document.querySelector( '#UPcomClient' ) , 
+                {
+                toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+                })
+                .then( newEditor => 
+                {
+                ckUpClient = newEditor;
+                } )
+                .catch( error => 
+                {
+                console.error( error );
+                }
+            );
        }
        
-
        // commentaire interne mise à jour de ligne : 
        let ckUpInt;
-       if ($('#UPcomInterne').length) {
-        ClassicEditor
-        .create( document.querySelector( '#UPcomInterne' ) , {
-         toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
-        })
-        .then( newEditor => {
-         ckUpInt = newEditor;
-         } )
-        .catch( error => {
-            console.error( error );
-        } );
-       }
-      
-       
-
-        
-    } );
+       if ($('#UPcomInterne').length) 
+       {
+            ClassicEditor
+            .create( document.querySelector( '#UPcomInterne' ) , 
+                {
+                toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+                })
+                .then( newEditor => 
+                {
+                ckUpInt = newEditor;
+                })
+                .catch( error => 
+                {
+                console.error( error );
+                });
+            }
+        });
