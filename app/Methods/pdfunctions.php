@@ -237,9 +237,9 @@ public static function magicLine($arrayLigne){
 				
 		}     
 		$thirdCell2 =  "<td valign='top' style=' width: ".$thirdW."; max-width: ".$thirdW."; text-align: left; '></td>";
-		$fourthCell2 = "<td valign='top' style=' width: ".$fourthW."; max-width: ".$fourthW."; text-align: center; '>" . $array['devg__type'] ." mois </td>";
-		$fifthCell2 ="<td valign='top' style=' width:".$fifthW."; max-width: ".$fifthW."; text-align: center;  '>" .$quantité ."</td>";
-		$lastCell2 = "<td valign='top' style=' width: ".$lastW."; max-width: ".$lastW."; text-align: right;   '>" . number_format(floatVal($array['devg__prix']),2 , ',',' ') ." €</td>" ;
+		$fourthCell2 = "<td valign='top' style=' width: ".$fourthW."; max-width: ".$fourthW."; text-align: center;'>" . $array['devg__type'] ." mois </td>";
+		$fifthCell2 ="<td valign='top' style=' width:".$fifthW."; max-width: ".$fifthW."; text-align: center;'>" .$quantité ."</td>";
+		$lastCell2 = "<td valign='top' style=' width: ".$lastW."; max-width: ".$lastW."; text-align: right;'>" . number_format(floatVal($array['devg__prix']),2 , ',',' ') ." €</td>" ;
 		$endSecondLine = "</tr> ";
 
 		if ( $array === end($object->ordre2)) 

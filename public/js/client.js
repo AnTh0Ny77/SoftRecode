@@ -447,6 +447,7 @@ $(function () {
   })
 
 idUtilisateur = $('#idUtilisateur').val();  
+
 // attribut classe selected: a la table mes devis 
     modifDevis.on('click', 'tr', function () {
         $('.multiButton').prop("disabled", true);
@@ -479,7 +480,7 @@ idUtilisateur = $('#idUtilisateur').val();
                 dataSet = JSON.parse(data);
                 checkradio(dataSet);
                 $('#loaderPdf').hide();
-                $('#iframeDevis').attr('src', 'pages/ajax/' + idUtilisateur + 'devis.pdf');
+                $('#iframeDevis').attr('src', 'pages/ajax/' + idUtilisateur + 'devis.html');
                 $('#iframeDevis').show();
                 $('.multiButton').removeAttr('disabled');
             },
@@ -514,11 +515,10 @@ idUtilisateur = $('#idUtilisateur').val();
                 "AjaxDevis" : dataRow[0]
             },
             success: function(data){
-                
                 dataSet = JSON.parse(data);
                 checkradio(dataSet);
                 $('#loaderPdf').hide();
-                $('#iframeDevis').attr('src', 'pages/ajax/'+idUtilisateur+'devis.pdf');
+                $('#iframeDevis').attr('src', 'pages/ajax/'+idUtilisateur+'devis.html');
                 $('#iframeDevis').show();
                 $('.multiButton').removeAttr('disabled');
                  
@@ -617,17 +617,22 @@ idUtilisateur = $('#idUtilisateur').val();
         let xtendMois ; 
         let xtendPrix;
         let xtendArray = [];
+
         $("#xtendGr").on('click', function(){
-            if (!$("#xtendPrice").val() && !$("#xtendPrice").val()) {
+            if (!$("#xtendPrice").val() && !$("#xtendPrice").val())
+             {
                 $("#xtendPrice").addClass('alert alert-danger');
-            }else {
+             }
+            else 
+             {
                 $("#xtendPrice").removeClass('alert alert-danger');
                 $("#xtendList").empty();
                 xtendPrix = $('#xtendPrice').val();  
                 xtendMois = $('#xtendMois').val(); 
                 let  xtendCouple = [ xtendMois , xtendPrix ]; 
                 xtendArray.push(xtendCouple);
-                for (let index = 0; index < xtendArray.length; index++) {
+                for (let index = 0; index < xtendArray.length; index++) 
+                {
                     let ul = $("#xtendList");
                     let li =  $('<li></li>').text(xtendArray[index][0] + " mois " + xtendArray[index][1] + "€ H.T ")
                     .addClass('list-group-item col-4 d-flex justify-content-between align-items-center').appendTo(ul);
@@ -637,15 +642,16 @@ idUtilisateur = $('#idUtilisateur').val();
                  xtendCouple = [];
             }   
         })
-        $("#xtendList").on('click', '.deleteParent' ,function(){
+        $("#xtendList").on('click', '.deleteParent' ,function()
+        {
             xtendArray.splice(parseInt($(this).val()),1);
             $("#xtendList").empty();
-            for (let index = 0; index < xtendArray.length; index++) {
+            for (let index = 0; index < xtendArray.length; index++) 
+            {
                 let ul = $("#xtendList");
                 let li =  $('<li></li>').text(xtendArray[index][0] + " mois " + xtendArray[index][1] + "€ H.T ")
                 .addClass('list-group-item col-4 d-flex justify-content-between align-items-center').appendTo(ul);
                 let  i =  $('<i></i>').addClass('fal fa-trash-alt btn btn-link deleteParent').val(index).appendTo(li);
-                
             }
         })
       
@@ -698,6 +704,9 @@ idUtilisateur = $('#idUtilisateur').val();
         //ajout d'une ligne de devis : function location : devisFunction.js (addOne): 
 
         $('#addNewRow').on('click' , function(){
+            $( '#modalPresta' ).modal( {
+                focus: false
+            } );
             $('#alertLine').addClass('invisible');
            
         })
@@ -827,7 +836,6 @@ idUtilisateur = $('#idUtilisateur').val();
            
             $('#UPprestationChoix').selectpicker('val', 'VTE');
             $("#UPchoixDesignation").val('ZT420');
-           
             $("#UPxtendList").empty();
             ckUpClient.setData('');
             ckUpInt.setData('');
@@ -837,66 +845,58 @@ idUtilisateur = $('#idUtilisateur').val();
             UpXtendArray = [];
             dataObject =  devisTable.row('.selected').data();
             formContent = dataObject[7];
+
             // charge les pn correspondant à la famille 
             $.ajax({
-                type: 'post',
-                url: "AjaxPn",
+                type: "post",
+                url:  "AjaxPn",
                 data : 
                 {
                     "AjaxPn" : formContent.id__fmm
                 },
                 success: function(data){
-                   
                     dataSet = JSON.parse(data);
                     $('#UPchoixPn option').remove();
                     $('#UPchoixPn').append(new Option('..', '' , false, true));
-                    for (let index = 0; index < dataSet.length; index++) {
+
+                    for (let index = 0; index < dataSet.length; index++)
+                    {
                         var opt = $("<option>").val(dataSet[index].apn__pn).text(dataSet[index].apn__pn);
                         $('#UPchoixPn').append(new Option(dataSet[index].apn__pn_long + " " + dataSet[index].apn__desc_short ,dataSet[index].apn__pn));
                         
                     }
-                    
                     $('.selectpicker').selectpicker('refresh'); 
-                
                     $('#UPchoixPn').selectpicker('val', formContent.pn);
-                    
-                    
-    
                 },
-                error: function (err) {
+                error: function (err)
+                {
                     alert('error: ' + err);
                 }
-    
             })
             
            $("#UPprestationChoix").val(formContent.prestation);
            $("#UPreferenceS").val(formContent.designation);
-           
            $("#UPchoixDesignation").selectpicker('val', formContent.id__fmm);
-          
-            ckUpClient.setData(formContent.comClient);
-            ckUpInt.setData(formContent.comInterne);
-           
+           ckUpClient.setData(formContent.comClient);
+           ckUpInt.setData(formContent.comInterne);
            $("#UPquantiteRow").val(formContent.quantite);
-
-         
            $('#UPgarantieRow').selectpicker('val' ,formContent.garantie);
            $('#UPetatRow').selectpicker('val', formContent.etat);
-           
            $("#UPbarrePrice").val(formContent.prixBarre);
-           
            $("#UPprixRow").val(formContent.prix);
            $('#UPreferenceS').val(formContent.designation);
-           
            UpXtendArray = formContent.xtend;
            idUpdate = formContent.id;
-           if (UpXtendArray.length > 0) {
-            for (let index = 0; index < UpXtendArray.length; index++) {
-                let ul = $("#UPxtendList");
-                let li =  $('<li></li>').text(UpXtendArray[index][0] + " mois " + UpXtendArray[index][1] + "€ H.T ")
-                .addClass('list-group-item col-4 d-flex justify-content-between align-items-center').appendTo(ul);
-                let  i =  $('<i></i>').addClass('fal fa-trash-alt btn btn-link deleteParent').val(index).appendTo(li); 
-            }
+
+           if (UpXtendArray.length > 0) 
+           {
+                for (let index = 0; index < UpXtendArray.length; index++)
+                {
+                    let ul = $("#UPxtendList");
+                    let li =  $('<li></li>').text(UpXtendArray[index][0] + " mois " + UpXtendArray[index][1] + "€ H.T ")
+                    .addClass('list-group-item col-4 d-flex justify-content-between align-items-center').appendTo(ul);
+                    let  i =  $('<i></i>').addClass('fal fa-trash-alt btn btn-link deleteParent').val(index).appendTo(li); 
+                }
            }
            checkClass();   
          }); 
@@ -904,17 +904,23 @@ idUtilisateur = $('#idUtilisateur').val();
         //extensions de garanties dans le formulaire de mofification : 
          let UpXtendMois ; 
          let UpXtendPrix;
-         $("#UPxtendGr").on('click', function(){    
-             if (!$("#UPxtendPrice").val() && !$("#UPxtendPrice").val()) {
+         $("#UPxtendGr").on('click', function()
+            {    
+             if (!$("#UPxtendPrice").val() && !$("#UPxtendPrice").val())
+              {
                  $("#UPxtendPrice").addClass('alert alert-danger');
-             }else {
+              }
+              else 
+              {
                  $("#UPxtendPrice").removeClass('alert alert-danger');
                  $("#UPxtendList").empty();
                  UpXtendPrix = $('#UPxtendPrice').val();  
                  UpXtendMois = $('#UPxtendMois').val(); 
                  let  UpXtendCouple = [ UpXtendMois , UpXtendPrix ]; 
                  UpXtendArray.push(UpXtendCouple);
-                 for (let index = 0; index < UpXtendArray.length; index++) {
+
+                 for (let index = 0; index < UpXtendArray.length; index++)
+                 {
                      let ul = $("#UPxtendList");
                      let li =  $('<li></li>').text(UpXtendArray[index][0] + " mois " + UpXtendArray[index][1] + "€ H.T ")
                      .addClass('list-group-item col-4 d-flex justify-content-between align-items-center').appendTo(ul);
@@ -925,10 +931,14 @@ idUtilisateur = $('#idUtilisateur').val();
                  UpXtendCouple = [];
              }   
          })
-         $("#UPxtendList").on('click', '.deleteParent' ,function(){
+
+         $("#UPxtendList").on('click', '.deleteParent' ,function()
+         {
              UpXtendArray.splice(parseInt($(this).val()),1);
              $("#UPxtendList").empty();
-             for (let index = 0; index < UpXtendArray.length; index++) {
+
+             for (let index = 0; index < UpXtendArray.length; index++) 
+             {
                  let ul = $("#UPxtendList");
                  let li =  $('<li></li>').text(UpXtendArray[index][0] + " mois " + UpXtendArray[index][1] + "€ H.T ")
                  .addClass('list-group-item col-4 d-flex justify-content-between align-items-center').appendTo(ul);
@@ -938,8 +948,12 @@ idUtilisateur = $('#idUtilisateur').val();
 
          // fait disparaitre l'alerte : 
          $('#modifyLine').on('click' , function(){
+             $('#modalModif').modal({
+                 focus: false
+             })
             $('#alertLineModif').addClass('invisible');
         })
+
          // suprime la ligne selctionnee et la remplace par cette meme ligne modifie avec id identique : 
          $("#updateRow").on('click', function(){
             var selectedOption = ($("#UPetatRow").children("option:selected").text());
@@ -976,20 +990,17 @@ idUtilisateur = $('#idUtilisateur').val();
                 
             } else {
                 $('#modalModif').modal('show');
-                $('#alertLineModif').removeClass('invisible');
-                
+                $('#alertLineModif').removeClass('invisible');   
             }
-           
-
         })
 
 
 
         // envoi au module de traitement PDF : 
         $('#xPortData').click(function() {
-            let rowData =  devisTable.cells('',7).data();
-            
-            let arrayOfDevis = $.map(rowData, function(value) {
+            let rowData =  devisTable.cells('',7).data();            
+            let arrayOfDevis = $.map(rowData, function(value)
+            {
                 return [value];
             });
             let paramJSON = JSON.stringify(arrayOfDevis);
@@ -1107,16 +1118,14 @@ idUtilisateur = $('#idUtilisateur').val();
                 error: function (err) {
                     alert('error: ' + err);
                 }
-    
             })
-            
-           
         });
 
         
 
+
+
         $('#UPchoixDesignation').on('change', function(){
-            
             var selectedOption = parseInt($(this).children("option:selected").val());
             $.ajax(
                 {
@@ -1131,7 +1140,7 @@ idUtilisateur = $('#idUtilisateur').val();
                     dataSet = JSON.parse(data);
                     $('#UPchoixPn option').remove();
                     $('#UPchoixPn').append(new Option('..', '' , false, true));
-                    
+
                     for (let index = 0; index < dataSet.length; index++) 
                     {
                         $('#UPchoixPn').append(new Option(dataSet[index].apn__pn_long + " " + dataSet[index].apn__desc_short ,dataSet[index].apn__pn));
@@ -1145,13 +1154,45 @@ idUtilisateur = $('#idUtilisateur').val();
             })
         });
 
-        //init des editeur de texte mdb : 
+
+
+        //init des editeur de texte cke : 
         if ($('#globalComClient').length) 
         {
             ClassicEditor
-            .create( document.querySelector( '#globalComClient'),
-            {
-                toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+            .create(document.querySelector('#globalComClient'), 
+            { 
+                fontColor: {
+                    colors: [
+                        {
+                            color: 'black',
+                            label: 'Black'
+                        },
+                        {
+                            color: 'red',
+                            label: 'Red'
+                        },
+                        {
+                            color: 'DarkGreen',
+                            label: 'Green'
+                        },
+                        {
+                            color: 'Gold',
+                            label: 'Yellow'
+                        },
+                        {
+                            color: 'Blue',
+                            label: 'Blue',
+                        },
+        
+                        
+                    ]
+                },
+                toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , "imageUpload", 'fontColor']
+
+            })
+            .then( editor => {
+               ckEComGlobal = editor
             })
             .catch( error =>
             {
@@ -1162,14 +1203,39 @@ idUtilisateur = $('#idUtilisateur').val();
        if ($('#globalComInt').length) 
        {
             ClassicEditor       
-            .create( document.querySelector( '#globalComInt' ) , 
-                {
-                    toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
-                })
-                .catch( error =>
-                {
-                    console.error( error );
-                });     
+            .create( document.querySelector( '#globalComInt' ) ,{
+                fontColor: {
+                    colors: [
+                        {
+                            color: 'black',
+                            label: 'Black'
+                        },
+                        {
+                            color: 'red',
+                            label: 'Red'
+                        },
+                        {
+                            color: 'DarkGreen',
+                            label: 'Green'
+                        },
+                        {
+                            color: 'Gold',
+                            label: 'Yellow'
+                        },
+                        {
+                            color: 'Blue',
+                            label: 'Blue',
+                        },
+        
+                        
+                    ]
+                },
+                toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , 'fontColor']
+            })
+            .catch( error =>
+            {
+                console.error( error );
+            });     
         }
       
        // commentaire client pour chaque ligne : 
@@ -1179,7 +1245,33 @@ idUtilisateur = $('#idUtilisateur').val();
         ClassicEditor
         .create( document.querySelector( '#comClient' ) , 
             {
-                toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+                fontColor: {
+                    colors: [
+                        {
+                            color: 'black',
+                            label: 'Black'
+                        },
+                        {
+                            color: 'red',
+                            label: 'Red'
+                        },
+                        {
+                            color: 'DarkGreen',
+                            label: 'Green'
+                        },
+                        {
+                            color: 'Gold',
+                            label: 'Yellow'
+                        },
+                        {
+                            color: 'Blue',
+                            label: 'Blue',
+                        },
+        
+                        
+                    ]
+                },
+                toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , "imageUpload", 'fontColor']
             })
             .then( newEditor => 
             {
@@ -1190,6 +1282,10 @@ idUtilisateur = $('#idUtilisateur').val();
             console.error( error );
             });    
        }
+
+
+
+
        
 
        // comentaire interne pour chaque ligne : 
@@ -1199,7 +1295,33 @@ idUtilisateur = $('#idUtilisateur').val();
             ClassicEditor
             .create( document.querySelector( '#comInterne' ) , 
                 {
-                toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+                    fontColor: {
+                        colors: [
+                            {
+                                color: 'black',
+                                label: 'Black'
+                            },
+                            {
+                                color: 'red',
+                                label: 'Red'
+                            },
+                            {
+                                color: 'DarkGreen',
+                                label: 'Green'
+                            },
+                            {
+                                color: 'Gold',
+                                label: 'Yellow'
+                            },
+                            {
+                                color: 'Blue',
+                                label: 'Blue',
+                            },
+            
+                            
+                        ]
+                    },
+                    toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , 'fontColor']
                 })
                 .then( newEditor => 
                 {
@@ -1219,7 +1341,33 @@ idUtilisateur = $('#idUtilisateur').val();
             ClassicEditor
             .create( document.querySelector( '#UPcomClient' ) , 
                 {
-                toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+                    fontColor: {
+                        colors: [
+                            {
+                                color: 'black',
+                                label: 'Black'
+                            },
+                            {
+                                color: 'red',
+                                label: 'Red'
+                            },
+                            {
+                                color: 'DarkGreen',
+                                label: 'Green'
+                            },
+                            {
+                                color: 'Gold',
+                                label: 'Yellow'
+                            },
+                            {
+                                color: 'Blue',
+                                label: 'Blue',
+                            },
+            
+                            
+                        ]
+                    },
+                    toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , "imageUpload", 'fontColor']
                 })
                 .then( newEditor => 
                 {
@@ -1239,7 +1387,33 @@ idUtilisateur = $('#idUtilisateur').val();
             ClassicEditor
             .create( document.querySelector( '#UPcomInterne' ) , 
                 {
-                toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ]
+                    fontColor: {
+                        colors: [
+                            {
+                                color: 'black',
+                                label: 'Black'
+                            },
+                            {
+                                color: 'red',
+                                label: 'Red'
+                            },
+                            {
+                                color: 'DarkGreen',
+                                label: 'Green'
+                            },
+                            {
+                                color: 'Gold',
+                                label: 'Yellow'
+                            },
+                            {
+                                color: 'Blue',
+                                label: 'Blue',
+                            },
+            
+                            
+                        ]
+                    },
+                    toolbar: [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ,  'fontColor']
                 })
                 .then( newEditor => 
                 {

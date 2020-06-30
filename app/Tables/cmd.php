@@ -267,6 +267,20 @@ class Cmd extends Table {
     $date , $user, $client , $livraison, $contact, $comClient,
     $comInterne, $etat, $modele , $arrayOfObject , $contact_livraison , $titreDevis )
     {
+
+
+      if ( preg_match('/style="width:[^\"]*"/',$comClient)) 
+    {
+      
+      preg_match('/style="width:[^\"]*"/',$comClient ,$matches);
+      $matches[0] = ' ' .  $matches[0];
+      $chaine = preg_replace('/img/',  'img' .  $matches[0] . ' ' , $comClient  );
+      $comClient = $chaine;
+
+    }
+
+
+
     $request = $this->Db->Pdo->prepare(
        'INSERT INTO cmd (
         cmd__date_devis , cmd__user__id_devis, cmd__client__id_fact ,
@@ -332,6 +346,14 @@ class Cmd extends Table {
           $requestLigne->bindValue(":devl__etat", $object->etat);
           $requestLigne->bindValue(":devl__mois_garantie", intval($object->garantie));
         }
+
+        if ( preg_match('/style="width:[^\"]*"/', $object->comClient)) 
+        { 
+          preg_match('/style="width:[^\"]*"/', $object->comClient ,$matches);
+          $matches[0] = ' ' .  $matches[0];
+          $chaine = preg_replace('/img/',  'img' .  $matches[0] . ' ' , $object->comClient  );
+          $object->comClient = $chaine;
+        }
         
         $requestLigne->bindValue(":devl_quantite", $object->quantite);
         $requestLigne->bindValue(":devl__prix_barre", floatval($object->prixBarre));
@@ -364,6 +386,16 @@ public function modify(
     $delete = $this->Db->Pdo->prepare(
     'DELETE  from cmd
      WHERE cmd__id =  :cmd__id');
+
+    if ( preg_match('/style="width:[^\"]*"/',$comClient)) 
+    {
+
+      preg_match('/style="width:[^\"]*"/',$comClient ,$matches);
+      $matches[0] = ' ' .  $matches[0];
+      $chaine = preg_replace('/img/',  'img' .  $matches[0] . ' ' , $comClient  );
+      $comClient = $chaine;
+
+    }
 
 
     $request = $this->Db->Pdo->prepare(
@@ -431,6 +463,20 @@ public function modify(
           $requestLigne->bindValue(":devl__etat", $object->etat);
           $requestLigne->bindValue(":devl__mois_garantie", intval($object->garantie));
         }
+
+
+        if ( preg_match('/style="width:[^\"]*"/', $object->comClient)) 
+        {
+          
+          preg_match('/style="width:[^\"]*"/', $object->comClient ,$matches);
+          $matches[0] = ' ' .  $matches[0];
+          $chaine = preg_replace('/img/',  'img' .  $matches[0] . ' ' , $object->comClient  );
+          $object->comClient = $chaine;
+    
+        }
+
+
+
         $requestLigne->bindValue(":devl_quantite", $object->quantite);
         $requestLigne->bindValue(":devl__prix_barre", floatval($object->prixBarre));
         $requestLigne->bindValue(":devl_puht", floatval($object->prix));

@@ -1,5 +1,15 @@
 {% extends 'layoutMain.twig' %}
 
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css"> <!-- File Upload -->
+<link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css">
+{% endblock %}
+
 {% block main %}
 
    <!-- 1ere ligne -->
@@ -84,4 +94,23 @@
 
 </main>
 
+{% endblock %}
+
+
+
+{% block script %}
+<!-- Optional JavaScript -->
+<script  type="text/javascript" src="public/js/devisFunction.js"></script> 
+
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+<script  type="text/javascript" src="public/js/client.js"></script>
+<script  type="text/javascript" src="public/js/client2.js"></script>
+<script type="text/javascript" src="public/mdb/js/mdb.min.js"></script> <!-- MDB core JavaScript -->
+<script type="text/javascript" src="public/mdb/js/mdb-file-upload.min.js"></script>
+
+<script>$('.file_upload').file_upload();</script> {# pour le file_upload #}
 {% endblock %}

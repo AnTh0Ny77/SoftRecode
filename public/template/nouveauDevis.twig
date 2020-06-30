@@ -1,4 +1,15 @@
 {% extends 'layoutMain.twig' %}
+
+
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css"> <!-- File Upload -->
+<link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css">
+{% endblock %}
  
      {% block main %}
 
@@ -335,8 +346,8 @@
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Devis en cours <i class="fal fa-file-edit"></i></h6>
               <div class="dropdown no-arrow">
-                <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" id="addNewRow" data-target="#modalPresta" disabled><i class="fal fa-plus-circle"></i></button>
-                <button type="button" id="modifyLine" class="btn btn-success notActive btn-lg"  data-toggle="modal" data-target="#modalModif"><i class="fal fa-edit"></i></button>
+                <button type="button" class="btn btn-primary btn-lg"  id="addNewRow"  disabled><i class="fal fa-plus-circle"></i></button>
+                <button type="button" id="modifyLine" class="btn btn-success notActive btn-lg"><i class="fal fa-edit"></i></button>
                 <button type="button" id="removeLine" class="btn btn-danger notActive btn-lg"><i class="fal fa-trash-alt"></i></button>
               </div>
             </div>
@@ -861,7 +872,7 @@
                     <div class="col-12 mt-3 mb-2 d-flex justify-content-between">
                       <div class="col-6">
                         <label for="comClient">Commentaire Client</label>
-                      <textarea class="CKE" id="comClient" placeholder="Commentaire client...." rows="4"></textarea>
+                      <textarea class="ck-content" id="comClient" placeholder="Commentaire client...." rows="4"></textarea>
                       </div>
                       <div class="col-6">
                         <label for="comInterne">Commentaire Interne</label>
@@ -1090,48 +1101,23 @@
         ╚═╝     ╚═╝╚═╝  ╚═══╝    ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝ -->
                                                                              
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </main>
 
-
-    
      {% endblock %}
      
-    
-  
+     {% block script %}
+     <!-- Optional JavaScript -->
+<script  type="text/javascript" src="public/js/devisFunction.js"></script> 
+
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+<script  type="text/javascript" src="public/js/client.js"></script>
+<script  type="text/javascript" src="public/js/client2.js"></script>
+<script type="text/javascript" src="public/mdb/js/mdb.min.js"></script> <!-- MDB core JavaScript -->
+<script type="text/javascript" src="public/mdb/js/mdb-file-upload.min.js"></script>
+
+<script>$('.file_upload').file_upload();</script> {# pour le file_upload #}
+     {% endblock %}

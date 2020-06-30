@@ -14,15 +14,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <!-- Bootstrap CSS -->
-<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
-<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
-<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
-<link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css"> <!-- File Upload -->
-<link rel="stylesheet" href="public/css/dashboard.css">
-<link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css">
+{% block style  %}
+{% endblock %}
 
-<title>Devis</title>
+
+<title>Soft Recode</title>
 </head>
 <body >
 
@@ -50,19 +46,30 @@
           </tr>
 
 
+          <tr>
+            <td>
+              <a class="nav-link text-white" href="dashboard">
+                <span data-feather="file"></span>
+                <i class="fal fa-chart-network fa-lg fa-fw" style="color: limegreen;"></i> DashBoard 
+              </a>
+              </td>
+          </tr>
+
+
 {#88b.  888888 Yb    dP 88 .dP"Y8 
  8I  Yb 88__    Yb  dP  88 `Ybo." 
  8I  dY 88""     YbdP   88 o.`Y8b 
 8888Y"  888888    YP    88 8bod#}
+         
           <tr>
           <td>
             <a class="nav-link text-white" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
               <span data-feather="file"></span>
-              <i class="fad fa-file-edit fa-lg fa-fw" style="color: limegreen;"></i> Devis 
+              <i class="fad fa-file-edit fa-lg fa-fw" style="color: LightSalmon;"></i> Devis 
             </a>
             <div class="collapse" id="collapseExample">
               <ul class="list-group">
-                <li class="list-group-item  bg-transparent border-0" >
+                <li class="list-group-item  bg-transparent border-0 " >
                   <a class="nav-link text-white" href="mesDevis">
                     <span data-feather="file"></span>
                     <i class="fal fa-file-search fa-fw"></i> Mes devis
@@ -90,7 +97,7 @@ Yb      Yb   dP 88YbdP88 88YbdP88  dP__Yb  88 Y88  8I  dY 88""   o.`Y8b
           <td>
             <a class="nav-link text-white"data-toggle="collapse" href="#collapseCommandes" role="button" aria-expanded="false" aria-controls="collapseExample">
               <span data-feather="file"></span>
-              <i class="fad fa-shopping-cart fa-lg fa-fw" style="color: limegreen;"></i> Commandes
+              <i class="fad fa-shopping-cart fa-lg fa-fw" style="color: LightSkyBlue;"></i> Commandes
             </a>
             <div class="collapse" id="collapseCommandes">
               <ul class="list-group">
@@ -121,7 +128,7 @@ Yb      Yb   dP 88YbdP88 88YbdP88  dP__Yb  88 Y88  8I  dY 88""   o.`Y8b
             <td class="nav-item">
             <a class="nav-link text-white" href="saisie">
               <span data-feather="file"></span>
-              <i class="fad fa-truck fa-lg fa-fw" style="color: limegreen;"></i> Saisie transport
+              <i class="far fa-truck-couch fa-lg fa-fw" style="color: LightGreen;"></i> Saisie transport
             </a>
           </td>
           </tr>
@@ -134,7 +141,7 @@ Yb      Yb   dP 88YbdP88 88YbdP88  dP__Yb  88 Y88  8I  dY 88""   o.`Y8b
             <td class="nav-item">
             <a class="nav-link text-white" href="#">
               <span data-feather="file"></span>
-            <i class="fad fa-euro-sign fa-lg fa-fw" style="color: limegreen;"></i> Factures
+            <i class="fad fa-euro-sign fa-lg fa-fw" style="color: HotPink;"></i> Factures
             </a>
           </td>
           </tr>
@@ -178,6 +185,7 @@ Yb      Yb   dP 88YbdP88 88YbdP88  dP__Yb  88 Y88  8I  dY 88""   o.`Y8b
       <li class="list-group-item  bg-transparent border-0" >
         <a class="nav-link text-white" href="catalogue">
           <span data-feather="file"></span>
+          
           <i class="fad fa-clipboard-check fa-fw"></i> Catalogue
         </a>
       </li>
@@ -218,19 +226,11 @@ dP""""Yb 8888Y"  88 YY 88 88 88  #}
   </div>
 </div>
 
-<!-- Optional JavaScript -->
-<script  type="text/javascript" src="public/js/devisFunction.js"></script> 
 
-<!-- jQuery first, then Bootstrap JS -->
-<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
-<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
-<script type="text/javascript" src="public/ckeditor/ckeditor.js"></script>
-<script  type="text/javascript" src="public/js/client.js"></script>
-<script  type="text/javascript" src="public/js/client2.js"></script>
-<script type="text/javascript" src="public/mdb/js/mdb.min.js"></script> <!-- MDB core JavaScript -->
-<script type="text/javascript" src="public/mdb/js/mdb-file-upload.min.js"></script>
 
-<script>$('.file_upload').file_upload();</script> {# pour le file_upload #}
+{% block script  %}
+{% endblock %}
+
+
 </body>
 </html>

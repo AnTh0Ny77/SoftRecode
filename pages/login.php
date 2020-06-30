@@ -31,10 +31,10 @@
                             case false:
                                 $_SESSION['loginStatus'] = false;
                                 break;
-                            // sinon redirection de l'utilisateur vers "home"  : 
+                            // sinon redirection de l'utilisateur vers "page d'acceuil"  : 
                             default:
                                 $_SESSION['user'] = $login ;
-                                header('location: home');
+                                header('location: dashboard');
                                 break;
                             }
                 }

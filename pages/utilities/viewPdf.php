@@ -16,20 +16,30 @@ if (empty($_SESSION['user'])) {
  }
  if (!empty($_POST['VoirDevis'])) {
      
-   
-    
     $temp =   $Cmd->GetById($_POST['VoirDevis']);
-  
+ 
     $clientView = $Client->getOne($temp->client__id);
     $societeLivraison = false ;
-    if ($temp->devis__id_client_livraison) {
+
+    if ($temp->devis__id_client_livraison) 
+    {
         $societeLivraison = $Client->getOne($temp->devis__id_client_livraison);
     }
+
     $arrayOfDevisLigne = $Cmd->devisLigne($_POST['VoirDevis']);
-    foreach ($arrayOfDevisLigne as $ligne) {
+
+    foreach ($arrayOfDevisLigne as $ligne) 
+    {
         $xtendArray = $Cmd->xtenGarantie($ligne->devl__id);
         $ligne->ordre2 = $xtendArray;
-      } 
+    } 
+
+
+  
+
+    
+
+
 $date_time = new DateTime( $temp->devis__date_crea);
 $formated_date = $date_time->format('d/m/Y'); 
 $Keyword = new \App\Tables\Keyword($Database);
@@ -57,7 +67,7 @@ $garanties = $Keyword->getGaranties();
 
 
 <page backtop="80mm" backleft="10mm" backright="10mm" backbottom= "30mm"> 
-<page_header >
+<page_header>
      <table class="page_header" style="width: 100%;">
          <tr>
              <td style="text-align: left;  width: 50%"><img  style=" width:65mm" src="public/img/recodeDevis.png"/></td>
@@ -183,12 +193,12 @@ $garanties = $Keyword->getGaranties();
                
                 break;
         }
-       
+       echo '</table>';
     }
 
    
     ?>
-    </table>
+    
     </td>
     </tr>
 </table>
@@ -232,9 +242,10 @@ if ($temp->devis__note_client) {
  else {
     $name = $temp->devis__id;
  }
-
+ 
  try {
      $doc = new Html2Pdf('P','A4','fr');
+     $doc->setDefaultFont('gothic');
      $doc->pdf->SetDisplayMode('fullpage');
      $doc->writeHTML($content);
      ob_clean();

@@ -1,6 +1,13 @@
+
+
+
+
 body {
     font-size: .875rem;
+    --ck-z-default: 100;
+    --ck-z-modal: calc( var(--ck-z-default) + 999 );
   }
+
   
   .feather {
     width: 16px;
@@ -125,4 +132,6 @@ body {
   
   .border-top { border-top: 1px solid #e5e5e5; }
   .border-bottom { border-bottom: 1px solid #e5e5e5; }
+  
+
   

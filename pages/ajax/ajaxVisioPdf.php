@@ -16,11 +16,12 @@ $Keyword = new \App\Tables\Keyword($Database);
 // si pas connecté on ne vole rien ici :
 if (empty($_SESSION['user'])) {
     echo 'no no no .... ';
- }
+}
  else {
 
 // requete table client:
  if (!empty($_POST['AjaxDevis'])){
+     
     $temp =   $Cmd->GetById($_POST['AjaxDevis']);
     $clientView = $Client->getOne($temp->client__id);
     $societeLivraison = false ;
@@ -39,30 +40,28 @@ $garanties = $Keyword->getGaranties();
  ob_start();
 
  ?>
- 
- <style type="text/css">
+  <style type="text/css">
+
+    body {
+        font-family:Century Gothic,arial,sans-serif;
+    }
  
      .page_header{
         margin-left: 30px;
         margin-top: 30px;
      }
-
-    
-     
-      table{   font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate; }
-     
+      table{   font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate;}
       strong{ color:#000;}
       h3{ color:#666666;}
       h2{ color:#3b3b3b;}
-     
  </style>
 
 
 <page backtop="80mm" backleft="10mm" backright="10mm" backbottom= "30mm"> 
-<page_header >
+<page_header>
      <table class="page_header" style="width: 100%;">
          <tr>
-             <td style="text-align: left;  width: 50%"><img  style=" width:65mm" src="public/img/recodeDevis.png"/></td>
+             <td style="text-align: left;  width: 50%"><img  style=" width:65mm;" src="..\..\public\img\recodeDevis.png"/></td>
              <td style="text-align: left; width:50%"><h3>REPARATION-LOCATION-VENTE</h3>imprimantes-lecteurs codes-barres<br><a style="color: green;">www.recode.fr</a><br><br></td>
          </tr>
          <tr>
@@ -122,16 +121,9 @@ $garanties = $Keyword->getGaranties();
          </tr>
      </table>
 </page_header>
-<page_footer>
-        <table  class="page_footer" style="text-align: center; margin: auto; ">
-            <tr >
-                <td  style=" font-size: 80%; width: 100%;  "><br><br><small>New Eurocomputer-TVA FR33b 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
-                <strong>RECODE by eurocomputeur - 112 allée François Coli -06210 Mandelieu</strong></small></td>
-            </tr>
-         </table>
-</page_footer>
 
-<table CELLSPACING=0 style="margin-top: 15px;">
+
+<table CELLSPACING=0 style="margin-top: 45px;">
         
         <?php 
             $arrayPrice =[];
@@ -143,7 +135,7 @@ $garanties = $Keyword->getGaranties();
 </table>
 
 <div>
-<table style=" margin-top: 25px">
+<table style=" margin-top: 25px; margin-bottom: 65px;">
     <tr>
     <td style="width: 300px"></td>
     <td>
@@ -157,7 +149,7 @@ $garanties = $Keyword->getGaranties();
             case 'STT':
                $totalPrice = array_sum($arrayPrice);
                $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true);
-               
+              
                 break;
             // devis standart total logique: 
             case 'STL':
@@ -175,22 +167,22 @@ $garanties = $Keyword->getGaranties();
             case 'TVL':
                 $totalPrice = array_sum($arrayPrice);
                 $totaux = Pdfunctions::magicXtend($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , false );
-                
+               
                  break;
                 break;
             
             default:
                 $totalPrice = array_sum($arrayPrice);
                 $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true);
-               
+                
                 break;
         }
-       
+        echo '</table>';
     }
 
    
     ?>
-    </table>
+    
     </td>
     </tr>
 </table>
@@ -205,9 +197,9 @@ if ($temp->devis__note_client) {
 ?>
 </div>
 
-<div>
+<div style="margin-top: 55 px;">
 
-    <table CELLSPACING=0 style=" width: 100%;  margin-bottom: 5px; margin-top: 25 px;">
+    <table CELLSPACING=0 style=" width: 100%;   margin-top: 55 px;">
     <tr style="background-color: #dedede;  "><td style="text-align: left;  width: 50%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;"><strong>BON POUR COMMANDE</strong><BR>NOM DU SIGNATAIRE: <br>VOTRE N° DE CDE :<br>DATE:</td><td style="text-align: right;  width: 50%; vertical-align:top; padding-top: 7px; padding-right: 6px;">CACHET & SIGNATURE</td></tr>
 </table>
 
@@ -224,29 +216,32 @@ if ($temp->devis__note_client) {
 
 
 </div> 
+
 </page>
  <?php
  $content = ob_get_contents();
 
- try {
-     $doc = new Html2Pdf('P','A4','fr');
-     $doc->setDefaultFont('gothic');
-     $doc->pdf->SetDisplayMode('fullpage');
-     $doc->writeHTML($content);
+  try {
+    $myfile = fopen(__DIR__ .'/'.$_SESSION['user']->log_nec.'devis.html', "w") ;
+    $txt = $content;
+    fwrite($myfile, $txt);
+    fclose($myfile);
+
+   
      ob_clean();
-     $doc->output(__DIR__ .'/'.$_SESSION['user']->log_nec.'devis.pdf', 'F');
      unset( $_SESSION['Contact']);
      unset( $_SESSION['Client']);
      unset( $_SESSION['livraison']);
      
  } catch (Html2PdfException $e) {
-   die($e); 
+   die($e);
+   
  }
  echo  json_encode($temp);
 
  }
  else {
-    echo 'request failed';
+    echo json_encode('{"erreur" : 503 }');
  }
 
 }

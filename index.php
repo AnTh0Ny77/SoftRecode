@@ -60,6 +60,9 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
 
 
 
+    case '/SoftRecode/dashboard';
+      require __DIR__ .'/pages/dashboard.php';break;
+
     case '/SoftRecode/nouveauDevis';
       require __DIR__ .'/pages/nouveauDevis.php';break;
 
