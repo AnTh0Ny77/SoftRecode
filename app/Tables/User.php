@@ -45,6 +45,21 @@ class User extends Table
     return $data;
   }
 
+
+  public function getCommerciaux()
+  {
+    $request = $this->Db->Pdo->prepare("SELECT id_utilisateur , log_nec  
+    FROM utilisateur 
+    WHERE fonction = 'commercial' 
+    OR fonction = 'Commercial'
+    OR fonction = 'Responsable Commercial'
+    OR fonction = 'Assistante commerciale'
+    ");
+    $request->execute();
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+  }
+
   public function login($login)
   {
     $this->Request->execute(array($login));
@@ -140,6 +155,7 @@ Yb      88"Yb  88""    dP__Yb    88
     }
     return $id;
   }
+
 
 
 }

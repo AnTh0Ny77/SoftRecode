@@ -96,6 +96,9 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
     case '/SoftRecode/createNew';
       require __DIR__ .'/pages/ajax/ajaxCreate.php'; break;
 
+    case '/SoftRecode/AjaxStatDevis';
+      require __DIR__ .'/pages/ajax/ajaxChartsDevis.php'; break;
+
     case '/SoftRecode/createClient';
       require __DIR__ .'/pages/ajax/ajaxCreateClient.php'; break;
 

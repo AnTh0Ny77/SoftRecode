@@ -139,7 +139,7 @@ $garanties = $Keyword->getGaranties();
          </table>
 </page_footer>
 
-<table CELLSPACING=0 style="margin-top: 15px;">
+<table CELLSPACING=0 style="margin-top: 15px; width:100%">
         
         <?php 
             $arrayPrice =[];
@@ -151,10 +151,10 @@ $garanties = $Keyword->getGaranties();
 </table>
 
 <div>
-<table style=" margin-top: 25px">
+<table style=" margin-top: 25px;  width:100%;" >
     <tr>
-    <td style="width: 300px"></td>
-    <td>
+    <td style="width: 45%;">  </td>
+    <td align="right">
 
     <?php
     // on affiche le tableau de totaux en cas de modèle adéquate :

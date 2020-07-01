@@ -128,10 +128,9 @@ if (!empty($_POST['clientSelect']))
  }
 
 //accès au button Voir mes devis si droit ok : 
-if (empty($_SESSION['vueDevis'])) 
-{
+
   $_SESSION['vueDevis'] = "MINE";
-}
+
 
 $AllDevis = "Voir tous";
 if ($_SESSION['user']->user__devis_acces >= 15 ) 
@@ -203,5 +202,6 @@ echo $twig->render('mesDevis.twig',
 'AllDevis'=> $AllDevis , 
 'notifValid'=> $notifValid , 
 'NbDevis' => $NbDevis, 
-'recherche' => $recherche
+'recherche' => $recherche ,
+'debug'=> $_SESSION['vueDevis']
 ]);

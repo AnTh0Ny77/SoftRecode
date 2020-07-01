@@ -104,12 +104,12 @@ public static function showdesignationView($object){
 
 public static function magicLine($arrayLigne){
 	// variables des tailles de cellules afin de pouvoir regler la largeur de la table facilement :
-	$firstW = '80px';
-	$secondW = '290px';
-	$thirdW ='100px';
-	$fourthW = '80px';
-	$fifthW = '40px';
-	$lastW= '70px';
+	$firstW = '12%';
+	$secondW = '44%';
+	$thirdW ='15%';
+	$fourthW = '12%';
+	$fifthW = '6%';
+	$lastW= '11%';
 	// variable type et garantie [ en fonction de l'existence des valeurs ]
 	$stringEtat = "Type";
 	$stringGarantie = "Garantie";
