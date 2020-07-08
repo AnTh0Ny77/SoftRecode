@@ -44,6 +44,20 @@ public function devisVLD($com) {
   
 }
 
+public function devisAll($com) { 
+    $date15 =  date('ymd', strtotime('-15 day'));
+    $request =$this->Db->Pdo->query("SELECT cmd__etat
+    
+    FROM cmd
+    WHERE  cmd__user__id_devis = " . $com ."
+    AND cmd__date_devis > ". $date15 ."
+    ORDER BY  cmd__etat DESC LIMIT 200 ");
+   
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $request->rowCount();
+  
+}
+
 public function devisRFS($com) { 
    
     $request =$this->Db->Pdo->query("SELECT cmd__etat

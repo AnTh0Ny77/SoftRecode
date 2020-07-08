@@ -8,8 +8,9 @@ $.ajax({
         url: "AjaxStatDevis",
         data : {"COM" : 7},    
     success: function(data){
-        
+      console.log(data);
         dataSet = JSON.parse(data);
+        
         console.log(dataSet);
 
 
@@ -21,11 +22,11 @@ $.ajax({
         // Some raw data (not necessarily accurate)
         console.log(dataSet);
         var data = google.visualization.arrayToDataTable([
-          ['commercial',                       'Total',         'En attente',              'Commandés'],
-          [dataSet[0].nom,       dataSet[0].Total,         dataSet[0].ATN ,       dataSet[0].VLD],
-          [dataSet[1].nom,       dataSet[1].Total,         dataSet[1].ATN ,       dataSet[1].VLD],
-          [dataSet[2].nom,       dataSet[2].Total,         dataSet[2].ATN ,       dataSet[2].VLD],
-          [dataSet[3].nom,       dataSet[3].Total,         dataSet[3].ATN ,       dataSet[3].VLD],
+          ['commercial',                       'Total',         'En attente',              'Accord'],
+          [dataSet[0].nom,       dataSet[0].ALL,         dataSet[0].ATN ,       dataSet[0].VLD],
+          [dataSet[1].nom,       dataSet[1].ALL,         dataSet[1].ATN ,       dataSet[1].VLD],
+          [dataSet[2].nom,       dataSet[2].ALL,         dataSet[2].ATN ,       dataSet[2].VLD],
+          [dataSet[3].nom,       dataSet[3].ALL,         dataSet[3].ATN ,       dataSet[3].VLD],
         ]);
 
         var options = {
