@@ -18,8 +18,7 @@ dP""""Yb 8888Y"  88  Yb 888888 8bodP' 8bodP' dP""""Yb  YboodP 888888     8888Y" 
         require __DIR__ .'/pages/login.php'; break;
     case '/SoftRecode/login':
       require __DIR__ .'/pages/login.php'; break;
-    case '/SoftRecode/home':
-      require __DIR__ .'/pages/home.php'; break;
+   
     case '/SoftRecode/unlog';
       require __DIR__ .'/pages/utilities/unlog.php'; break;
     case '/SoftRecode/noAccess';
@@ -114,17 +113,12 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
     case '/SoftRecode/choixLivraison';
       require __DIR__ .'/pages/ajax/ajaxChoixLivraison.php'; break;
 
-    case '/SoftRecode/commandCours';
-      require __DIR__ .'/pages/commandCours.php'; break;
 
     case '/SoftRecode/pdfTravail';
       require __DIR__ .'/pages/utilities/pdfTravail.php'; break;
 
     case '/SoftRecode/pdfBL';
       require __DIR__ .'/pages/utilities/pdfBL.php'; break;
-
-    case '/SoftRecode/AjaxCMDcours';
-      require __DIR__ .'/pages/ajax/ajaxCMDcours.php'; break;
 
     case '/SoftRecode/AjaxSaisie';
       require __DIR__ .'/pages/ajax/ajaxSaisie.php'; break;
@@ -134,6 +128,9 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
 
     case '/SoftRecode/TicketVisu';
       require __DIR__ .'/pages/TicketVisu.php'; break;
+
+      case '/SoftRecode/ficheTravail';
+      require __DIR__ .'/pages/ficheT.php'; break;
 
       case '/SoftRecode/font';
       require __DIR__ .'/vendor/tecnickcom/tcpdf/fonts/convertfont.php'; break;

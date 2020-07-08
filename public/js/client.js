@@ -19,7 +19,7 @@ $('#AjaxClient').on('click', function(){
         },
 
     error: function (err) {
-    alert('error: ' + err);}
+    console.log('error: ' + err);}
     })
 })
 
@@ -36,7 +36,7 @@ $('#buttonLivraison').on('click', function(){
             $('#ModalLivraison').modal('show'); 
             tableLivraison=$("#Livraison").DataTable({language:{decimal:"",emptyTable:"aucuns résultats",info:"Voir _START_ to _END_ of _TOTAL_ résultats",infoEmpty:"Voir 0 to 0 of 0 résultats",infoFiltered:"(filtré dans _MAX_ total résultats)",infoPostFix:"",thousands:",",lengthMenu:"Voir _MENU_ résultats par pages",loadingRecords:"Loading...",processing:"Processing...",search:"Recherche:",zeroRecords:"Aucun résultats",paginate:{first:"Première",last:"Dernière",next:"Suivante",previous:"Précédente"}},data:dataSet,columns:[{data:"client__id"},{data:"client__societe"},{data:"client__cp"},{data:"client__ville"}],paging:!0,info:!0,retrieve:!0,deferRender:!0,searching:!0});},     
             error: function (err) {
-            alert('error: ' + err);
+            console.log('error: ' + err);
         }})   
     })
 
@@ -81,7 +81,7 @@ $('#Livraison tbody').on('click', 'tr', function () {
         $('#toogleContactCreaLVR').removeAttr('disabled');
         },
         error: function (err) {
-            alert('error: ' + err);
+            console.log('error: ' + err);
         }
     })
 });
@@ -104,7 +104,7 @@ let dataSetContact = [];
                dataSetContact = [];
             },
             error: function (err) {
-                alert('error: ' + err);
+                console.log('error: ' + err);
             }
         })
     })
@@ -127,7 +127,7 @@ $('#contactTableLVR tbody').on('click', 'tr', function () {
             $('#modalContactLVR').modal('hide');
             },
             error: function (err) {
-                alert('error: ' + err);
+                console.log('error: ' + err);
             }
         })
     });
@@ -150,7 +150,7 @@ $('#toogleContact').on('click', function(){
                dataSetContact = [];
             },
             error: function (err) {
-                alert('error: ' + err);
+                console.log('error: ' + err);
             }
         })
     })
@@ -173,7 +173,7 @@ $('#contactTable tbody').on('click', 'tr', function () {
             $('#modalContact').modal('hide');
             },
             error: function (err) {
-                alert('error: ' + err);
+                console.log('error: ' + err);
             }
         })
     });
@@ -203,7 +203,7 @@ $('#postContact').on('click', function () {
             $('#modalContactCrea').modal('hide');
             },
             error: function (err) {
-                alert('error: ' + err);
+                console.log('error: ' + err);
             }
 
         })
@@ -235,7 +235,7 @@ $('#postContactLVR').on('click', function () {
             
             },
             error: function (err) {
-                alert('error: ' + err);
+                console.log('error: ' + err);
             }
         })
 });
@@ -273,7 +273,7 @@ $('#postContactLVR').on('click', function () {
             $('#toogleCreaContact').removeAttr('disabled'); 
             },
             error: function (err) {
-                alert('error: ' + err);
+                console.log('error: ' + err);
             }
         })
     });
@@ -326,7 +326,7 @@ $('#PostClient').on('click', function(){
             $('#toogleCreaContact').removeAttr('disabled');
             },
             error: function (err) {
-                alert('error: ' + err);
+                console.log('error: ' + err);
             }
         })
 })
@@ -381,7 +381,7 @@ $('#PostClient').on('click', function(){
                 $('#toogleContactCreaLVR').removeAttr('disabled');
             },
             error: function (err) {
-                alert('error: ' + err);
+                console.log('error: ' + err);
             }
         })
     })
@@ -485,7 +485,7 @@ idUtilisateur = $('#idUtilisateur').val();
                 $('.multiButton').removeAttr('disabled');
             },
             error: function (err) {
-                alert('error: ' + err);
+                console.log('error: ' + err);
             }
         })
     });
@@ -524,7 +524,7 @@ idUtilisateur = $('#idUtilisateur').val();
                  
             },
             error: function (err) {
-                alert('error: ' + err);
+                console.log('error: ' + err);
             }
         })
     }
@@ -532,83 +532,8 @@ idUtilisateur = $('#idUtilisateur').val();
         selectFirst();
     }
 
-// select la prmeière ligne dans home :
-    let selectFirstCMD = function(){
-        $('.multiButton').prop("disabled", true);
-        let firstOne = $('#MyCommande').find('tr').eq(1);
-        firstOne.addClass('selected');
-        
-        let dataRow = validCmd.row(0).data();
-        
-        $("#ValideCmd").val(parseInt(dataRow[0]));
-        
-        $('#iframeCMD').attr('src', '');
-        $('#iframeCMD').hide();
-        $('#loaderCMD').show();
 
-// requete Ajax sur le devis selectionné dans la page mes devis : 
-        $.ajax({
-            type: 'post',
-            url: "AjaxVisio",
-            data : 
-            {
-                "AjaxDevis" : dataRow[0]
-            },
-            success: function(data){
-                
-                dataSet = JSON.parse(data);
-                checkradio(dataSet);
-                $('#loaderCMD').hide();
-                $('#iframeCMD').attr('src', 'pages/ajax/devisN.pdf');
-                $('#iframeCMD').show();
-                $('.multiButton').removeAttr('disabled');
-                 
-            },
-            error: function (err) {
-                alert('error: ' + err);
-            }
 
-        })
-    }
-    if ($('#MyCommande').length > 0) {
-         selectFirstCMD();
-    }
-   
-// attribut classe selected: a la table Commandes 
-      $('#MyCommande').on('click','tr',function() {
-        $('#iframeCMD').hide();
-        $('#loaderCMD').show();
-        console.log('hey');
-        if ( $(this).hasClass('selected') ) {
-            $(this).removeClass('selected');
-        }
-       else  if(validCmd.rows().count() >= 1){
-        validCmd.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
-        }
-        let dataRow = validCmd.row(this).data();
-        $("#ValideCmd").val(parseInt(dataRow[0]));
-        checkClassCmd();
-        $.ajax({
-            type: 'post',
-            url: "AjaxVisio",
-            data : 
-            {
-                "AjaxDevis" : dataRow[0]
-            },
-            success: function(data){
-                dataSet = JSON.parse(data);
-               checkradio(dataSet);
-               $('#loaderCMD').hide();
-               $('#iframeCMD').attr('src', 'pages/ajax/devisN.pdf');
-               $('#iframeCMD').show();    
-            },
-            error: function (err) {
-                alert('error: ' + err);
-            }
-
-        })
-     });
      
 // fonction select to text : devis fonction
         selectToText($('#choixDesignation'),$('#referenceS'));
@@ -870,7 +795,7 @@ idUtilisateur = $('#idUtilisateur').val();
                 },
                 error: function (err)
                 {
-                    alert('error: ' + err);
+                    console.log('error: ' + err);
                 }
             })
             
@@ -1038,38 +963,7 @@ idUtilisateur = $('#idUtilisateur').val();
          
 
 
-        // fonction de validation de commandes : 
-        $('#SendCmd').on('click', function(){
-            radio = $(".radioCmd");
-            radioP = $('.radioCmdP');
-            arrayOFsheet = [];
-            arrayOFcom = [];
-            
-            for (let nb = 0; nb < radio.length; nb++) {
-                if(radio[nb].checked == true){
-                    arrayTemp = [];
-                    arrayTemp.push(radio[nb].value,radioP[nb].value);
-                    arrayOFsheet.push(arrayTemp);    
-                }
-            }
-            commentaireLigne = $('.CMD-COM');
-            for (let nb2 = 0; nb2 < commentaireLigne.length; nb2++) {
-                arrayOFcom.push(commentaireLigne[nb2].value);
-            }
-
-         arrayOfItem = JSON.parse($('#arrayOfLines').val());
-          for (let index = 0; index < arrayOfItem.length; index++) {
-                
-                if (arrayOFsheet[index] === undefined) {
-                    arrayOFsheet[index] = [null,null];
-                }
-               arrayOfItem[index].devl__prix_barre = arrayOFsheet[index];
-               arrayOfItem[index].devl__note_interne = arrayOFcom[index];
-          }
-          $('#arrayLigneDeCommande').val(JSON.stringify(arrayOfItem));
-          $('#ComInterCommande').val($('#cmdInterneNote').val());
-          $('#formValideCMD').submit();
-        })
+       
 
 
 
@@ -1116,7 +1010,7 @@ idUtilisateur = $('#idUtilisateur').val();
     
                 },
                 error: function (err) {
-                    alert('error: ' + err);
+                    console.log('error: ' + err);
                 }
             })
         });
@@ -1149,7 +1043,7 @@ idUtilisateur = $('#idUtilisateur').val();
                 },
                 error: function (err) 
                 {
-                    alert('error: ' + err);
+                    console.log('error: ' + err);
                 }
             })
         });

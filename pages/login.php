@@ -5,7 +5,7 @@
  session_start();
     //si une session est ouverte :
     if (!empty($_SESSION['user'])) {
-        header('location: home');
+        header('location: dashboard');
     }
         
     // Connexion à la base de donnée et à la table Utilisateur :
@@ -38,12 +38,7 @@
                                 break;
                             }
                 }
-                else{header('location: dashboard');} 
-          
-              
-            
-           
-               
+                else{header('location: dashboard');}   
         }
 
     // Affichage du template Login :

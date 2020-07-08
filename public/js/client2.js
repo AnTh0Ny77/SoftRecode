@@ -129,7 +129,7 @@ commandTableCours.on('click','tr',function(){
     }},
             
     error: function (err) {
-    alert('error: ' + err);
+    console.log('error: ' + err);
 }})}});
 
 
@@ -185,7 +185,7 @@ saisieTable.on('click', 'tr', function(){
         }},
                 
         error: function (err) {
-        alert('error: ' + err);
+        console.log('error: ' + err);
     }})}
     
     checkButtonSaisie();
@@ -248,7 +248,6 @@ userTable.on('click', 'tr', function(){
     $(this).addClass('selected');
     $('#buttonUser').removeAttr('disabled');
     dataRow = userTable.row('.selected').data()[0];
-    console.log(dataRow);
     $("#UserModif").val(dataRow);
 }})
 

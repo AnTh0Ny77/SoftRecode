@@ -28,6 +28,7 @@ class Cmd extends Table {
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
     cmd__nom_devis, cmd__modele_devis , 
+    cmd__date_cmd,
     k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
@@ -92,7 +93,7 @@ class Cmd extends Table {
     LPAD(cmd__client__id_fact ,6,0)   as client__id,
     cmd__contact__id_fact  as  devis__contact__id,
     cmd__etat as devis__etat, 
-   
+    cmd__date_cmd,
     cmd__note_client as  devis__note_client , 
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
@@ -144,22 +145,30 @@ class Cmd extends Table {
      $update->execute([ $author , $id ]);
   }
 
-  public function updateGarantie($mois, $prix , $comInterne , $comClient ,  $id , $ordre){
-    $update = $this->Db->Pdo->prepare(
-    'UPDATE cmd_ligne
-     SET  
-     cmdl__garantie_option  = ? , 
-     cmdl__garantie_puht = ? ,
-     cmdl__note_interne = ? , 
-     cmdl__note_client = ?
-     WHERE cmdl__cmd__id  = ?  AND  cmdl__ordre = ? 
-    ');
-    $update->execute([ $mois, $prix , $comInterne , $comClient ,  $id  , $ordre ]);
+  public function updateGarantie($mois, $prix , $comInterne , $qte,  $id , $ordre){
+    $data = 
+    [
+      $mois, 
+      floatval($prix) , 
+      $comInterne , 
+      $qte,
+      $id , 
+      $ordre
+    ];
+
+    $sql = 
+   "UPDATE cmd_ligne
+    SET  
+    cmdl__garantie_option  =?,
+    cmdl__garantie_puht = ?,
+    cmdl__note_interne = ?,
+    cmdl__qte_cmd = ?
+    WHERE cmdl__cmd__id  = ?  
+    AND  cmdl__ordre = ?";
+
+    $update = $this->Db->Pdo->prepare($sql);
+    $update->execute($data);
   }
-
-
- 
-
 
   public function getFromStatus(){
     $request =$this->Db->Pdo->query("SELECT 
@@ -169,7 +178,7 @@ class Cmd extends Table {
     LPAD(cmd__client__id_fact ,6,0)   as client__id ,
     cmd__contact__id_fact  as  devis__contact__id,
     cmd__etat as devis__etat, 
-   
+    cmd__date_cmd,
     cmd__note_client as  devis__note_client , 
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
@@ -200,15 +209,15 @@ class Cmd extends Table {
     cmd__id as devis__id ,
     cmd__user__id_devis as devis__user__id ,
     cmd__date_devis as devis__date_crea, 
-    LPAD(cmd__client__id_fact ,6,0)   as client__id ,
+    LPAD(cmd__client__id_fact ,6,0)   as client__id, 
     cmd__contact__id_fact  as  devis__contact__id,
     cmd__etat as devis__etat, 
-   
     cmd__note_client as  devis__note_client , 
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
     cmd__date_cmd,
+    cmd__nom_devis, cmd__modele_devis , 
     k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
@@ -216,12 +225,12 @@ class Cmd extends Table {
     c2.client__ville as client__livraison_ville,
     c2.client__cp as client__livraison_cp , 
     c2.client__adr1 as client__livraison__adr1 , 
-    u.log_nec
+    u.log_nec , u.user__email_devis as email
     FROM cmd
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
-    LEFT JOIN keyword as k ON cmd__etat = k.kw__value and k.kw__type = 'stat'
+    LEFT JOIN keyword as k ON cmd__etat = k.kw__value AND  k.kw__type = 'stat'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     WHERE cmd__etat = 'CMD'     
     ORDER BY  cmd__date_devis DESC , c.client__societe ASC  LIMIT 200 ");
@@ -500,6 +509,7 @@ public function modify(
 
     public function devisLigne($id){
       $request =$this->Db->Pdo->query("SELECT
+      cmdl__cmd__id,
       cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
       cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
       cmdl__etat as devl__etat, LPAD(cmdl__garantie_base,2,0) as devl__mois_garantie,
@@ -507,7 +517,7 @@ public function modify(
       cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
       cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
       k.kw__lib , k.kw__value , 
-      f.afmm__famille as famille ,
+      f.afmm__famille as famille,
       k2.kw__lib as prestaLib
       FROM cmd_ligne 
       LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
@@ -553,6 +563,7 @@ public function modify(
       cmd__note_interne as devis__note_interne,
       cmd__client__id_livr as devis__id_client_livraison ,
       cmd__contact__id_livr as  devis__contact_livraison , 
+      cmd__date_cmd,
       k.kw__lib,
       t.contact__nom, t.contact__prenom, t.contact__email,
       c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
@@ -665,6 +676,84 @@ public function modify(
       }
       else {
         $request.=  "AND ( cmd__user__id_devis = '".$user."' ) ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
+      }
+      
+      $send = $this->Db->Pdo->query($request);
+      $data = $send->fetchAll(PDO::FETCH_OBJ);
+      return $data;
+    }
+
+
+
+
+
+
+
+
+    public function magicRequestCMD($string){
+
+      $filtre = str_replace("-" , ' ', $string);
+      $filtre = str_replace("'" , ' ' , $filtre);
+      $nb_mots_filtre = str_word_count($filtre , 0 , "0123456789");
+      $mots_filtre = str_word_count($filtre, 1 ,'0123456789');
+
+      if ($nb_mots_filtre > 0 ) {
+        $mode_filtre = true ;
+      }else { $mode_filtre = false ;}
+
+      $operateur = 'AND ';
+
+      $request = "SELECT DISTINCT 
+      cmd__id as devis__id ,
+      cmd__user__id_devis as devis__user__id ,
+      cmd__date_devis as devis__date_crea, 
+      LPAD(cmd__client__id_fact ,6,0)   as client__id,
+      cmd__contact__id_fact  as  devis__contact__id,
+      cmd__etat as devis__etat, 
+      cmd__note_client as  devis__note_client , 
+      cmd__note_interne as devis__note_interne,
+      cmd__client__id_livr as devis__id_client_livraison ,
+      cmd__contact__id_livr as  devis__contact_livraison , 
+      cmd__date_cmd,
+      k.kw__lib,
+      t.contact__nom, t.contact__prenom, t.contact__email,
+      c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
+      c2.client__societe as client__livraison_societe,
+      c2.client__ville as client__livraison_ville,
+      c2.client__cp as client__livraison_cp , 
+      c2.client__adr1 as client__livraison__adr1 , 
+      cmd__nom_devis,
+      u.log_nec , u.prenom, u.nom
+      FROM cmd
+      LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
+      LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
+      LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
+      LEFT JOIN keyword as k ON cmd__etat = k.kw__value and k.kw__type = 'stat'
+      LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
+      LEFT JOIN cmd_ligne as l ON l.cmdl__cmd__id = cmd__id ";
+
+      if ($mode_filtre) {
+       $request .=  "WHERE ( cmd__id = '".$mots_filtre[0]."' 
+        OR cmd__nom_devis LIKE '%".$mots_filtre[0]."%' 
+        OR u.prenom LIKE '%".$mots_filtre[0]."%' 
+        OR l.cmdl__designation LIKE '%".$mots_filtre[0]."%'
+        OR l.cmdl__pn LIKE '%".$mots_filtre[0]."%' 
+        OR c.client__societe LIKE '%".$mots_filtre[0]."%' 
+        OR c.client__id = '".$mots_filtre[0]."' ) ";
+
+       for ($i=1; $i < $nb_mots_filtre ; $i++) { 
+          $request .=  $operateur. " ( cmd__id = '".$mots_filtre[$i]."' 
+          OR cmd__nom_devis LIKE '%".$mots_filtre[$i]."%' 
+          OR u.prenom LIKE '%".$mots_filtre[$i]."%' 
+          OR l.cmdl__designation LIKE '%".$mots_filtre[$i]."%'
+          OR l.cmdl__pn LIKE '%".$mots_filtre[$i]."%' 
+          OR c.client__societe LIKE '%".$mots_filtre[$i]."%' 
+          OR c.client__id = '".$mots_filtre[$i]."' ) ";
+       }
+       $request .= "AND ( cmd__etat = 'CMD' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+      }
+      else {
+        $request.=   "AND ( cmd__etat = 'CMD' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
       }
       
       $send = $this->Db->Pdo->query($request);

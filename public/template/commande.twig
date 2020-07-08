@@ -1,12 +1,9 @@
 {% extends 'layoutMain.twig' %}
 {% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
-<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
-<link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css"> <!-- File Upload -->
 <link rel="stylesheet" href="public/css/dashboard.css">
-<link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css">
 {% endblock %}
  
  
@@ -60,7 +57,7 @@
         <div class="card shadow mb-4 h-100">
           <!-- Card Header - -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Adresse de Livraison et frais de port <i class="fal fa-truck"></i></h6>
+            <h6 class="m-0 font-weight-bold text-primary">Adresse de Livraison <i class="fal fa-truck"></i></h6>
             <div class="dropdown no-arrow">
             </div>
           </div>
@@ -74,8 +71,6 @@
                 {% else %}
                 Livré et facturé à la même adresse
                 {% endif %}
-                <br><br>
-                Frais de port: {{devis.devis__port ~ " €"}}
               </div>
               <div>
             </div>
@@ -98,14 +93,15 @@
             <div class="chart-pie pt-2 pb-2 d-flex flex-row   mb-1 justify-content-between">
               <div class=" mb-0 font-weight-bold text-muted">
                 {% if devis.devis__note_client %}
-                {{devis.devis__note_client}}
+                
+                {{devis.devis__note_client|raw}}
                 {% else %}
                 Pas de commentaire client
                 {% endif %}
                 <br><br>
-                <div >
+                <div>
                     Commentaire interne :
-                    <textarea class="form-control "  placeholder="Commentaire Interne...." rows="2" cols="40">{{devis.devis__note_interne}}</textarea>
+                    <textarea class="form-control " id="commentaireInterneValid"  placeholder="Commentaire Interne...." rows="2" cols="40">{{devis.devis__note_interne}}</textarea>
                 </div>
               </div>
               <div>
@@ -122,30 +118,45 @@
 
            <!--Adresse de livraison -->
        <div class="col-md-12  ">
-        <div class="card shadow mb-4">
-          <!-- Card Header - -->
-          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Items <i class="fas fa-list-ul"></i></h6>
-            <div class="dropdown no-arrow">
-            </div>
-          </div>
+       
+       
           <!-- Card Body -->
           <div class="card-body ">
             <div class="chart-pie pt-2 pb-2 d-flex flex-row   mb-1 ">
               <div class=" d-flex flex-row flex-wrap w-100 ">
+                  {% set count = 0 %}
                   {% for ligne in devisLigne  %}
-                  <div class=" col-3 mt-1" >
-                  <div class="card text-white bg-dark">
-                    <div class="card-header text-primary">
-                       {{ligne.devl__ordre ~ " " ~ ligne.devl__type}}
+                  {% set count = count + 1 %}
+                  
+                  <div class=" col-3 mt-1 " >
+                  <div class="card shadow">
+                    <div class="card-header">
+                      <h6 class="m-0 font-weight-bold text-primary">
+                        {% if ligne.prestaLib %}
+                       {{ligne.prestaLib}}
+                       {% else %}
+                       Prestation
+                       {% endif %}
+                      </h6>
                       </div>
                     <div class="card-body">
-                      <h6 class="card-title text-bold">{{ ligne.devl__designation}}</h6>
-                      <ul class="list-group shadow">
-                        <li class="list-group-item text-white bg-dark "> etat:    <strong>{{ ligne.devl__etat}}</strong></li>
-                        <li class="list-group-item text-white bg-dark"> garantie:  <strong>{{ ligne.devl__mois_garantie}} mois</strong> </li>
-                        <li class="list-group-item text-white bg-dark"> quantite:  <strong>{{ ligne.devl_quantite}}</strong> </li>
-                        <li class="list-group-item text-white bg-dark"> PU.HT :  <strong>{{ ligne.devl_puht}} € </strong> </li>
+                        <h6 class="card-title text-bold">
+                          <strong>
+                          {{ ligne.devl__designation}}
+                        </strong>
+                      </h6>
+                      <ul class="list-group list-group-flush ">
+                        <li class="list-group-item"><strong>{{ ligne.kw__lib}}</strong></li>
+                        <li class="list-group-item"> garantie:<strong> {{ ligne.devl__mois_garantie}} mois</strong> </li>
+                        <li class="list-group-item"> 
+                          <div class="d-flex justify-content-start">
+                            <div class=" col-5" for="You">
+                            <strong>Quantite </strong>
+                            </div> 
+                            <input type="number" class="form-control col-7 QTE-CMD" name="You" id="{{ligne.devl__id}}" value="{{ligne.devl_quantite}}">  
+                          </div>
+                        </li>
+                        <li class="list-group-item"> PU.HT :  <strong> {{ ligne.devl_puht}} € </strong> </li>
                       </ul>
                       <div class="foundBorder">
                           {% if not  ligne.devl__prix_barre %}
@@ -164,8 +175,8 @@
                               <strong> {{xtend.devg__type}} Mois.</strong>
                             </label>
                             {% if loop.last %}
-                            <input type="hidden" class="radioCmdP">
-                            <input class="form-check-input mx-1 radioCmd" name="{{loop.parent.loop.index}}" type="radio">
+                            <input type="hidden" class="radioCmdP" value="{{null}}">
+                            <input class="form-check-input mx-1 radioCmd" name="{{loop.parent.loop.index}}" type="radio" value="{{null}}">
                             <label class="form-check-label" for="{{xtend.devg__id}}">
                                <strong>Aucunes </strong>
                             </label>
@@ -173,9 +184,9 @@
                             {% endfor %}
                         </div>
                     </div>
-                        <div class="shadow">
+                        <div class="mt-3">
                         Commentaire interne :
-                        <textarea class="form-control CMD-COM" id="cmdInterneNote"  placeholder="Commentaire Interne...." rows="2" cols="40">{{ ligne.devl__note_interne}}</textarea>
+                        <textarea class="form-control CMD-COM" id="cmdInterneNote{{count}}"  placeholder="Commentaire Interne...." rows="2" cols="40">{{ ligne.devl__note_interne}}</textarea>
                     </div>
                     <!--form d'envoi de commande-->
                     <form  method="POST" action="" id="formCMD">
@@ -191,15 +202,8 @@
           </div>
         </div>
         </div>
-        </div>
-              <form method="POST" action="commandCours"  id="formValideCMD">
+              <form method="POST" action="mesDevis"  id="formValideCMD">
                 <input type="hidden" name="devisCommande" id="devisCommande" value="{{devis.devis__id}}">
-                <input type="hidden" name="clientCommande" id="clientCommande" value="{{devis.devis__client__id}}">
-                <input type="hidden" name="contactCommande" id="contactCommande" value="{{devis.devis__contact__id}}">
-                <input type="hidden" name="portCommande" id="portCommande" value="{{devis.devis__port}}">
-                <input type="hidden" name="userCommande" id="userCommande" value="{{devis.devis__user__id}}">
-                <input type="hidden" name="LivraisonCommande" id="LivraisonCommande" value="{{devis.devis__id_client_livraison}}">
-                <input type="hidden" name="ComClientCommande" id="ComClientCommande" value="{{devis.devis__note_client}}">
                 <input type="hidden" name="ComInterCommande" id="ComInterCommande" value="{{devis.devis__note_interne}}">
                 <input type="hidden" name="arrayLigneDeCommande" id="arrayLigneDeCommande" value="">
               </form>
@@ -208,8 +212,10 @@
     </main>
      {% endblock %}
 
-    {% block script %}
-    <!-- Optional JavaScript -->
+
+
+{% block script %}
+<!-- Optional JavaScript -->
 <script  type="text/javascript" src="public/js/devisFunction.js"></script> 
 
 <!-- jQuery first, then Bootstrap JS -->
@@ -218,9 +224,6 @@
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
 <script  type="text/javascript" src="public/js/client.js"></script>
+<script  type="text/javascript" src="public/js/commande.js"></script> 
 <script  type="text/javascript" src="public/js/client2.js"></script>
-<script type="text/javascript" src="public/mdb/js/mdb.min.js"></script> <!-- MDB core JavaScript -->
-<script type="text/javascript" src="public/mdb/js/mdb-file-upload.min.js"></script>
-
-<script>$('.file_upload').file_upload();</script> {# pour le file_upload #}
-    {% endblock %}
+{% endblock %}

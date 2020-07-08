@@ -6,7 +6,9 @@
     "require": {
         "twig/twig": "^3.0",
         "spipu/html2pdf": "^5.2",
-        "tecnickcom/tcpdf": "6.3.2"
+        "tecnickcom/tcpdf": "6.3.2",
+        "twig/markdown-extra": "^3.0",
+        "league/html-to-markdown": "^4.10"
     }
 
 }
