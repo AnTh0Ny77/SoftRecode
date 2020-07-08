@@ -34,7 +34,7 @@ public function devisVLD($com) {
     $request =$this->Db->Pdo->query("SELECT cmd__etat
     
     FROM cmd
-    WHERE cmd__etat = 'VLD' 
+    WHERE cmd__etat = 'CMD' 
     AND cmd__user__id_devis = " . $com ."
     AND cmd__date_devis > ". $date15 ."
     ORDER BY  cmd__etat DESC LIMIT 200 ");
