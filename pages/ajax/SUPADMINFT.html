@@ -1,0 +1,94 @@
+
+
+    <style type="text/css">
+    .global-wrapper{min-height: 900px};
+        .bodyFrame {font-family:Century Gothic,arial,sans-serif; }
+        .div{   font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate;}
+        .table{ font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate;}
+        strong{ color:#000;}
+        .head-wrapper{
+            display: flex;
+            justify-content: space-around;
+            padding-left: 5%;
+        }
+    </style>
+    
+
+    <div class="global-wrapper">
+        <div class="div bodyFrame mt-4" style="width: 100%;" >
+         <div class="head-wrapper div">
+
+
+             <div class="div" style="text-align: left;  width: 50%;" >
+             <div class="div">
+             <img  style=" width:55mm;" src="public\img\recodeDevis.png"/>
+             </div>
+             <div class="div" style=" margin-top: 15%" >
+             <p>Edité le : 09/07/2020 à : 14h 21</p>
+             Vendeur: <strong>Super User </strong> 
+              (Tél: 99)</td>
+             
+             </div>
+            </div>
+         
+            <div class="div" style="text-align: left;  width: 45% ;"><h5>Fiche de Travail N°:<strong> 3211029</strong><br></h5>
+             <small>Societe : </small><strong><br>NESTLE FRANCE (000035) <br>7 BD PIERRE CARLE<br>77183 NOISIEL</strong></td>           
+<form method="POST" action="pdfTravail" target="_blank">
+<input type="hidden" value="3211029" name="travailFiche">
+<button class="btn btn-link " href="pdfTravail"><i class='fas fa-file-pdf'></i> voir le pdf</button>
+</form>
+
+       </div>
+      
+      </div>
+    
+       
+    </div>
+
+    <div class="div" style="display: flex; justify-content: center; margin-top: 10%;">
+        <table CELLSPACING=0 style="width: 95%;" class="table">
+            
+                <tr style=" margin-top : 50px; background-color: #dedede; vertical-align: top;" >
+                    <td style="width: 5%; background-color: white; border-style: none;" ></td>
+                    <td style="width: 13%; text-align: left;">Prestation<br>Type<br>Garantie</td>
+                    <td style="width: 50%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
+                    <td style="text-align: right; width: 12%"><strong>CMD</strong><br>Livr</td>
+                </tr>
+           
+                <tr style='font-size: 95%;'>
+                            <td style='border-style: none; '> <button class='clickFT btn btn-primary mt-2 ' value='1415' data-toggle='modal' data-target='#modalFT' ' ><i class='fas fa-computer-classic'></i></button></td>
+                            <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ebffff;'>Vente <br> reconditionné <br> 12 mois </td>
+                            <td style='border-bottom: 1px #ccc solid; background-color: #ebffff;'><strong> Client léger 75D AXEL</strong> AX375DBLANCRJ <br> <p>test de commentaires internes</p> </td>
+                            <td style='border-bottom: 1px #ccc solid;  text-align: right; background-color: #ebffff; '><strong> 1 </strong> </td>
+                            </tr><tr style='font-size: 95%;'>
+                            <td style='border-style: none; '> <button class='clickFT btn btn-secondary mt-2' value='1416' data-toggle='modal' data-target='#modalFT''><i class='fas fa-clipboard-list'></i></button></td>
+                            <td style='border-bottom: 1px #ccc solid; text-align:left;'>Vente <br> reconditionné <br> 0 mois </td>
+                            <td style='border-bottom: 1px #ccc solid'><strong> Pièce détachée ECRAN REPAIR HP PDA</strong>  <br> <p><strong>test en gras</strong></p> </td>
+                            <td style='border-bottom: 1px #ccc solid;  text-align: right '><strong> 1 </strong> </td>
+                            </tr><tr style='font-size: 95%;'>
+                            <td style='border-style: none; '> <button class='clickFT btn btn-danger mt-2 ' value='1417' data-toggle='modal' data-target='#modalFT''><i class='fas fa-print'></i></button></td>
+                            <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>Vente <br> reconditionné <br> 6 mois </td>
+                            <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> Imprimante thermique ZT420 ZEBRA</strong>  <br> <ul><li>test</li><li>en</li><li>liste</li></ul> </td>
+                            <td style='border-bottom: 1px #ccc solid;  text-align: right; background-color: #ffeded; '><strong> 1 </strong> </td>
+                            </tr>        </table> 
+     </div>
+     <div class="d-flex justify-content-end mr-3">
+
+     <div></div>
+       
+     <form class="text-right d-inline">
+    
+     
+     <textarea  id="FTCOM" placeholder="Commentaire client...." ></textarea>
+     
+     <button type="submit" class="btn btn-sm btn-primary mt-1">Modifier</button>
+     </form>
+     </div>
+    
+    
+     </div>
+     
+    
+
+ 
+    

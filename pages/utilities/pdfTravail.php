@@ -7,21 +7,19 @@ use App\Methods\Pdfunctions;
 session_start();
 $Database = new App\Database('devis');
 $Database->DbConnect();
-$Command = new \App\Tables\Command($Database);
+$Command = new \App\Tables\Cmd($Database);
 $Client = new \App\Tables\Client($Database);
 $User = new App\Tables\User($Database);
-
+ 
 
 if (empty($_SESSION['user'])) {
     header('location: login');
  }
-
+  
 if(!empty($_POST['travailFiche'])) {
 $command = $Command->getById(intval($_POST['travailFiche']));
-$commandLignes = $Command->commandLigne($_POST['travailFiche']);
-$Command->updateStatus($_POST['travailFiche'],'IMP');
-$date_time = new DateTime( $command->cmd__date_crea);
-$formated_date = $date_time->format('d/m/Y'); 
+$commandLignes = $Command->devisLigne($_POST['travailFiche']);
+$formated_date = date_format($command->cmd__date_cmd,"d/m/Y");
 
 ob_start();
 ?>
@@ -29,7 +27,8 @@ ob_start();
       strong{ color:#000;}
       h3{ color:#666666;}
       h2{ color:#3b3b3b;}
-      table{ 
+      table{
+        font-size:13; font-style: normal; font-variant: normal; 
        border-collapse:separate; 
        border-spacing: 0 15px; 
          }  
@@ -41,14 +40,14 @@ ob_start();
              <td style="text-align: left;  width: 50%"><img  style=" width:60mm" src="public/img/recodeDevis.png"/></td>
              <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br>
              <a>www.recode.fr</a><br><br>
-             <br><strong>REF CLIENT :<?php echo $command->cmd__client__id ?></strong></td>
+             <br><strong>REF CLIENT :<?php echo $command->client__id ?></strong></td>
              </tr>
              <tr>
-             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h4>Fiche De travail -  <?php echo $command->cmd__id ?></h4>
-             <barcode dimension="1D" type="C128" label="none" value="<?php echo $command->cmd__id ?>" style="width:40mm; height:8mm; color: #3b3b3b; font-size: 4mm"></barcode><br>
+             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h4>Fiche De travail -  <?php echo $command->devis__id ?></h4>
+             <barcode dimension="1D" type="C128" label="none" value="<?php echo $command->devis__id ?>" style="width:40mm; height:8mm; color: #3b3b3b; font-size: 4mm"></barcode><br>
 
              <small>Edité le : <?php echo $formated_date ?></small><br>
-            Vendeur :<?php echo  $_SESSION['user']->log_nec ?> </td>
+             Vendeur :<?php echo  $_SESSION['user']->log_nec ?> </td>
              <td style="text-align: left; width:50%"><strong>
              <?php echo $command->client__societe ?><br><?php echo $command->client__adr1 ?><br><?php if (!empty($command->client__adr2)) {
                  echo $command->client__adr2; } ?>
@@ -60,29 +59,33 @@ ob_start();
      </table>
 
 
-     <table CELLSPACING=0 style="width: 100%;  margin-top: 50px; ">
+     <table CELLSPACING=0 style="width: 75%;  margin-top: 80px; ">
              <tr style=" margin-top : 50px; background-color: #dedede; " >
                 <td style="width: 22%; text-align: left;">Presta<br>Type<br>Gar.</td>
                 <td style="width: 57%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
-                <td style="text-align: right; width: 12%"><strong>CMD</strong></td>
+                <td style="text-align: right; width: 12%"><strong>CMD</strong><br>Livr</td>
              </tr> 
              <?php
              foreach ($commandLignes as $item) {
-                if($item->cmdligne__mois_garantie > $item->cmdligne__mois_extension) {
-                  $temp = $item->cmdligne__mois_garantie ;
-                } else {  $temp = $item->cmdligne__mois_extension;}
+                if($item->cmdl__garantie_option > $item->devl__mois_garantie) 
+                {
+                  $temp = $item->cmdl__garantie_option ;
+                } else {  $temp = $item->devl__mois_garantie;}
+
+               
+
                 echo "<tr  style='font-size: 85%;>
-                      <td style='border-bottom: 1px #ccc solid'> ". $item->cmdligne__type." <br> " .$item->cmdligne__type ." <br> " . $temp ." </td>
-                      <td style='border-bottom: 1px #ccc solid'> " . $item->cmdligne__model . "<br> " . $item->cmdligne__designation ." <br> " .$item->cmdligne__note_interne ." </td>
-                      <td style='border-bottom: 1px #ccc solid;  text-align: right '><strong> "  . $item->cmdligne__quantite. " </strong> </td>
+                      <td style='border-bottom: 1px #ccc solid'> ". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois</td>
+                      <td style='border-bottom: 1px #ccc solid'> " .$item->famille__lib. " " . $item->marque . " " .$item->modele. " ". $item->devl__modele . "<br> <small>désignation sur le devis:</small> " . $item->devl__designation ." <br> " .$item->devl__note_interne ." </td>
+                      <td style='border-bottom: 1px #ccc solid;  text-align: right '><strong> "  . $item->devl_quantite. " </strong> </td>
                      </tr>";
              }
              ?>
      </table> 
      <table style=" margin-top: 200px; width: 100%">
-             <tr style=" margin-top: 200px; width: 100%"><td><small>Commentaires pour fiche de travail </small></td></tr>
+             <tr style=" margin-top: 200px; width: 100%"><td><small>Commentaire:</small></td></tr>
              <tr >
-             <td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%' > <?php echo  $command->cmd__note_interne ?> </td>
+             <td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%' > <?php echo  $command->devis__note_interne ?> </td>
             </tr>
      </table>
 
@@ -109,6 +112,7 @@ $content = ob_get_contents();
 
 try {
     $doc = new Html2Pdf('P','A4','fr');
+    $doc->setDefaultFont('gothic');
     $doc->pdf->SetDisplayMode('fullpage');
     $doc->writeHTML($content);
     ob_clean();

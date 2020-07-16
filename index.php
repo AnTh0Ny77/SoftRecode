@@ -78,7 +78,10 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
       require __DIR__ .'/pages/ajax/ajaxClient.php'; break;
 
     case '/SoftRecode/AjaxVisio';
-      require __DIR__ .'/pages/ajax/AjaxVisioPdf.php'; break;
+      require __DIR__ .'/pages/ajax/AjaxVisioPDF.php'; break;
+
+    case '/SoftRecode/AjaxFT';
+      require __DIR__ .'/pages/ajax/AjaxVisionFT.php'; break;
 
     case '/SoftRecode/AjaxDevis';
       require __DIR__ .'/pages/ajax/ajaxDevis.php'; break;
@@ -131,6 +134,9 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
 
       case '/SoftRecode/ficheTravail';
       require __DIR__ .'/pages/ficheT.php'; break;
+
+      case '/SoftRecode/fichesEnCours';
+      require __DIR__ .'/pages/fichesEnCours.php'; break;
 
       case '/SoftRecode/font';
       require __DIR__ .'/vendor/tecnickcom/tcpdf/fonts/convertfont.php'; break;

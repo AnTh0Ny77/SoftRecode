@@ -1,0 +1,44 @@
+{% extends 'layoutMain.twig' %}
+
+
+  {% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/css/dashboard.css">
+{% endblock %}
+ 
+ 
+{% block main %}
+     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Numéro/Vendeur</th>
+                <th scope="col">Date d'expédition</th>
+                <th scope="col">Société/Ville</th>
+                <th scope="col">Info</th>
+              </tr>
+            </thead>
+            <tbody>     
+                    {% for devis in devisList %}
+                    <tr>
+                        <td scope="row">N° {{devis.devis__id}} <br> {{devis.log_nec}}</td>
+                        <td>{{ devis.devis__date_crea }} </td>
+                        <td> <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }} <br> {{devis.cmd__nom_devis}} </td></td>
+                        <td>@mdo</td>
+                    </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+    </main>
+{% endblock %}
+
+
+{% block script %}
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/js/ficheT.js"></script>
+{% endblock %}

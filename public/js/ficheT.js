@@ -27,17 +27,64 @@ $(function () {
         // requete Ajax sur le devis selectionné dans la page mes devis : 
         $.ajax({
             type: 'post',
-            url: "AjaxVisio",
+            url: "AjaxFT",
             data:
             {
-                "AjaxDevis": dataRow[0]
+                "AjaxFT": dataRow[0]
             },
             success: function (data) {
                 dataSet = JSON.parse(data);
                 
                 $('#loaderFiche').hide();
-                $('#iframeFiche').attr('src', 'pages/ajax/' + idUtilisateur + 'devis.html');
+                $('#iframeFiche').html(dataSet);
                 $('#iframeFiche').show();
+              
+ 
+
+
+                ClassicEditor
+                .create( document.querySelector( '#FTCOM' ) , 
+                {
+                    fontColor: 
+                    {
+                        colors: 
+                        [
+                            {
+                            color: 'black',
+                            label: 'Black'
+                            },
+                            {
+                            color: 'red',
+                            label: 'Red'
+                            },
+                            {
+                            color: 'DarkGreen',
+                            label: 'Green'
+                            },
+                            {
+                            color: 'Gold',
+                            label: 'Yellow'
+                            },
+                            {
+                            color: 'Blue',
+                            label: 'Blue',
+                            },
+                        ]
+                    },
+                    toolbar: 
+                    [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , "imageUpload", 'fontColor']
+                })
+                .then( newEditor => 
+                {
+                    ckComClient = newEditor;
+                })
+                .catch( error => 
+                {
+                console.error( error );
+                });    
+                $('.clickFT').on('click',  function(){
+                   
+                })
                 
             },
             error: function (err) {
@@ -60,21 +107,62 @@ $(function () {
         // requete Ajax sur le devis selectionné dans la page mes devis : 
         $.ajax({
             type: 'post',
-            url: "AjaxVisio",
+            url: "AjaxFT",
             data : 
             {
-                "AjaxDevis" : dataRow[0]
+                "AjaxFT" : dataRow[0]
             },
             success: function(data){
+                
                 dataSet = JSON.parse(data);
                 $('#loaderFiche').hide();
-                $('#iframeFiche').attr('src', 'pages/ajax/'+idUtilisateur+'devis.html');
+                $('#iframeFiche').html(dataSet);
                 $('#iframeFiche').show();
-               
-                 
+
+                ClassicEditor
+                .create( document.querySelector( '#FTCOM' ) , 
+                {
+                    fontColor: 
+                    {
+                        colors: 
+                        [
+                            {
+                            color: 'black',
+                            label: 'Black'
+                            },
+                            {
+                            color: 'red',
+                            label: 'Red'
+                            },
+                            {
+                            color: 'DarkGreen',
+                            label: 'Green'
+                            },
+                            {
+                            color: 'Gold',
+                            label: 'Yellow'
+                            },
+                            {
+                            color: 'Blue',
+                            label: 'Blue',
+                            },
+                        ]
+                    },
+                    toolbar: 
+                    [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , "imageUpload", 'fontColor']
+                })
+                .then( newEditor => 
+                {
+                    ckComClient = newEditor;
+                })
+                .catch( error => 
+                {
+                console.error( error );
+                });    
+        
             },
             error: function (err) {
-                console.log('error: ' + err);
+                console.log('error: ' , err);
             }
         })
     }
@@ -85,6 +173,10 @@ $(function () {
     }
 
 
+    
+
+
+   
 
 
 });
