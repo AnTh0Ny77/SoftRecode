@@ -81,7 +81,7 @@ else
                echo ' (Tél: '. $user->postefix .')';
              } 
              ?></td>
-             
+            
              </div>
             </div>
          
@@ -123,11 +123,38 @@ else
             }  
            
             ?>
+        
+        <div class="d-flex flex-column">
+            <form method="POST" action="pdfTravail" target="_blank">
+                <input type="hidden" value="<?php echo $_POST['AjaxFT'] ?>" name="travailFiche">
+                <button class="btn btn-link " href="pdfTravail"><i class='fas fa-file-pdf'></i> voir le pdf</button>
+            </form>
+            <?php 
+            if ($temp->cmd__date_envoi) 
+            {
+                $date = date_create( $temp->cmd__date_envoi);
+                $date = date_format($date ,'Y-m-d');
+                $dateForm = "<form class='mt-3 ml-2' method='POST' action='ficheTravail'>
+                    <h6>Date d'envoi prévue:</h6>
+                    <input type='hidden' value='".$temp->devis__id."' name='dateId'>
+                    <input type='date' name='estimDate' value=".$date.">
+                    <button type='submit' class='btn btn-sm btn-success'><i class='far fa-exchange'></i></button>
+                    </form>";
+            }
+            else 
+            {
+                $dateForm =  "<form class='mt-3 ml-2' method='POST' action='ficheTravail'>
+                <h6>Date d'envoi prévue:</h6>
+                <input type='hidden' value='".$temp->devis__id."' name='dateId'>
+                <input type='date' name='estimDate'>
+                <button type='submit' class='btn btn-sm btn-success' ><i class='far fa-exchange'></i></button>
+                </form>";  
+            }
+            echo $dateForm;
+            ?>
            
-<form method="POST" action="pdfTravail" target="_blank">
-<input type="hidden" value="<?php echo $_POST['AjaxFT'] ?>" name="travailFiche">
-<button class="btn btn-link " href="pdfTravail"><i class='fas fa-file-pdf'></i> voir le pdf</button>
-</form>
+            
+        </div>
 
        </div>
       
@@ -147,6 +174,7 @@ else
                 </tr>
            
                 <?php
+                $comand = $temp;
                 foreach ($arrayOfDevisLigne as $item) {
                     if(intval($item->cmdl__garantie_option) > intval($item->devl__mois_garantie)) 
                     {
@@ -160,54 +188,54 @@ else
 
                         case 'CDB':
                             echo "<tr style='font-size: 95%;'>
-                            <td style='border-style: none; '> <button class='clickFT btn btn-success mt-2' value='".$item->devl__id."' data-toggle='modal' data-target='#modalFT''><i class='fas fa-barcode'></i></button></td>
+                            <td style='border-style: none; '> <button class='clickFT btn btn-success mt-2' value='".$item->devl__id."' '><i class='fas fa-barcode'></i></button></td>
                             <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #e6ffe6;'>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois </td>
-                            <td style='border-bottom: 1px #ccc solid; background-color: #e6ffe6;'><strong> ".$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br> " .$item->devl__note_interne ." </td>
+                            <td style='border-bottom: 1px #ccc solid; background-color: #e6ffe6;'><strong> ".$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." <br>" .$item->devl__note_interne ." </td>
                             <td style='border-bottom: 1px #ccc solid;  text-align: right; background-color: #e6ffe6; '><strong> "  . $item->devl_quantite. " </strong> </td>
                             </tr>";
                             break;
                         
                         case 'CONSO':
                             echo "<tr style='font-size: 95%;'>
-                            <td style='border-style: none; '> <button class='clickFT btn btn-warning mt-2' value='".$item->devl__id."' data-toggle='modal' data-target='#modalFT''><i class='fas fa-sync-alt'></i></button></td>
+                            <td style='border-style: none; '> <button class='clickFT btn btn-warning mt-2' value='".$item->devl__id."' '><i class='fas fa-sync-alt'></i></button></td>
                             <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #fff5f0;'>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois </td>
-                            <td style='border-bottom: 1px #ccc solid; background-color: #fff5f0;'><strong> ".$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br> " .$item->devl__note_interne ." </td>
+                            <td style='border-bottom: 1px #ccc solid; background-color: #fff5f0;'><strong> ".$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." <br> " .$item->devl__note_interne ." </td>
                             <td style='border-bottom: 1px #ccc solid;  text-align: right; background-color: #fff5f0; '><strong> "  . $item->devl_quantite. " </strong> </td>
                             </tr>";
                             break;
                         
                         case 'ILM':
                             echo "<tr style='font-size: 95%;'>
-                            <td style='border-style: none; '> <button class='clickFT btn btn-info mt-2' value='".$item->devl__id."' data-toggle='modal' data-target='#modalFT''><i class='fas fa-shredder'></i></button></td>
+                            <td style='border-style: none; '> <button class='clickFT btn btn-info mt-2' value='".$item->devl__id."' '><i class='fas fa-shredder'></i></button></td>
                             <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #e8ffff;'>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois </td>
-                            <td style='border-bottom: 1px #ccc solid; background-color: #e8ffff;'><strong> ".$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br> " .$item->devl__note_interne ." </td>
+                            <td style='border-bottom: 1px #ccc solid; background-color: #e8ffff;'><strong> ".$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." <br> " .$item->devl__note_interne ." </td>
                             <td style='border-bottom: 1px #ccc solid;  text-align: right; background-color: #e8ffff; '><strong> "  . $item->devl_quantite. " </strong> </td>
                             </tr>";
                         break;
 
                         case 'IT':
                             echo "<tr style='font-size: 95%;'>
-                            <td style='border-style: none; '> <button class='clickFT btn btn-danger mt-2 ' value='".$item->devl__id."' data-toggle='modal' data-target='#modalFT''><i class='fas fa-print'></i></button></td>
+                            <td style='border-style: none; '> <button class='clickFT btn btn-danger mt-2 ' value='".$item->devl__id."''><i class='fas fa-print'></i></button></td>
                             <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois </td>
-                            <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> ".$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br> " .$item->devl__note_interne ." </td>
+                            <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> ".$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." <br> " .$item->devl__note_interne ." </td>
                             <td style='border-bottom: 1px #ccc solid;  text-align: right; background-color: #ffeded; '><strong> "  . $item->devl_quantite. " </strong> </td>
                             </tr>";
                         break;
 
                         case 'MICRO':
                             echo "<tr style='font-size: 95%;'>
-                            <td style='border-style: none; '> <button class='clickFT btn btn-primary mt-2 ' value='".$item->devl__id."' data-toggle='modal' data-target='#modalFT' ' ><i class='fas fa-computer-classic'></i></button></td>
+                            <td style='border-style: none; '> <button class='clickFT btn btn-primary mt-2 ' value='".$item->devl__id."'  ' ><i class='fas fa-computer-classic'></i></button></td>
                             <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ebffff;'>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois </td>
-                            <td style='border-bottom: 1px #ccc solid; background-color: #ebffff;'><strong> ".$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br> " .$item->devl__note_interne ." </td>
+                            <td style='border-bottom: 1px #ccc solid; background-color: #ebffff;'><strong> ".$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." <br> " .$item->devl__note_interne ." </td>
                             <td style='border-bottom: 1px #ccc solid;  text-align: right; background-color: #ebffff; '><strong> "  . $item->devl_quantite. " </strong> </td>
                             </tr>";
                         break;
                         
                         default:
                             echo "<tr style='font-size: 95%;'>
-                            <td style='border-style: none; '> <button class='clickFT btn btn-secondary mt-2' value='".$item->devl__id."' data-toggle='modal' data-target='#modalFT''><i class='fas fa-clipboard-list'></i></button></td>
+                            <td style='border-style: none; '> <button class='clickFT btn btn-secondary mt-2' value='".$item->devl__id."' '><i class='fas fa-clipboard-list'></i></button></td>
                             <td style='border-bottom: 1px #ccc solid; text-align:left;'>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois </td>
-                            <td style='border-bottom: 1px #ccc solid'><strong> ".$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br> " .$item->devl__note_interne ." </td>
+                            <td style='border-bottom: 1px #ccc solid'><strong> ".$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." <br> " .$item->devl__note_interne ." </td>
                             <td style='border-bottom: 1px #ccc solid;  text-align: right '><strong> "  . $item->devl_quantite. " </strong> </td>
                             </tr>";
                             break;
@@ -219,13 +247,11 @@ else
      </div>
      <div class="d-flex justify-content-end mr-3">
 
-     <div></div>
+     
        
-     <form class="text-right d-inline">
-    
-     
-     <textarea  id="FTCOM" placeholder="Commentaire client...." ></textarea>
-     
+     <form class="text-right d-inline" method="POST" action="ficheTravail">
+     <input type="hidden" value="<?php echo $comand->devis__id ?>" name="hiddenCommentaire">
+     <textarea  id="FTCOM" placeholder="Commentaire client...."  name="comInterne" value=""> <?php  echo $comand->devis__note_interne ?> </textarea>
      <button type="submit" class="btn btn-sm btn-primary mt-1">Modifier</button>
      </form>
      </div>
@@ -253,7 +279,8 @@ else
             fclose($myfile);
             //vide le contenu ob:       
             ob_clean();
-            //renvoi la data du devis en response JSOn:
+            
+            //renvoi la data du devis en response JSOn !!! attention renvoi d'un array [0] pour html [1] pour ckeditor
             echo  json_encode($content);
         } 
         // si une exeption est attrapée

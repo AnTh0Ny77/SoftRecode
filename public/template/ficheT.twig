@@ -73,8 +73,12 @@
                 {% for devis in devisList %}
                 <tr class="trClick">
                   <td>{{devis.devis__id}}</td>
-                  <td>{{ devis.cmd__date_cmd}}</td>
-                  <td> {{ "N°: " ~ devis.devis__id}} <br> {{ devis.devis__date_crea}}</td>
+                  <td> {{ devis.cmd__date_cmd}}</td>
+                  <td > {{ "N°: " ~ devis.devis__id}} <br>  <div data-toggle="tooltip" data-placement="top" title="Date de commande"> <i class="far fa-check-circle"></i> {{ devis.devis__date_crea}} </div>
+                    {% if devis.cmd__date_envoi  %} 
+                    <div data-toggle="tooltip" data-placement="top" title="Date d'envoi prévue"> <i class="far fa-truck"></i> {{devis.cmd__date_envoi}}   </div>
+                    {% endif %}
+                  </td>
                   {% if devis.cmd__nom_devis %}
                   <td> 
                   <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }} <br> {{devis.cmd__nom_devis}} </td>
@@ -133,14 +137,20 @@
           <div class="modal-content">
 
             <div class="modal-header">
-              <h5 class="modal-title" >Modal title</h5>
+              <h5 class="modal-title" id="titreLigne" ></h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
 
             <div class="modal-body">
-              ...
+              <form method="POST" action="ficheTravail">
+              <input type="hidden" name="ligneID" id="ligneID" value="">
+              <h6>Commentaire Interne</h6>
+              <textarea  id="ligneCom" name="ligneCom" placeholder="Commentaire interne...." ></textarea>
+              <button type="submit" class="btn btn-success mt-3 ">Modifer</button>
+              </form>
+            
             </div>
           </div>
       </div>

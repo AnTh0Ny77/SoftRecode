@@ -58,7 +58,7 @@ $NbDevis = count($devisList);
    $devisDate = date_create($devis->cmd__date_cmd);
    $date = date_format($devisDate, 'Y/m/d');
    $devis->devis__date_crea = $date;
-   $devis->devislignes();
+   
  }
 
  // Donnée transmise au template : 

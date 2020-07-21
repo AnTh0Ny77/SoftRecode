@@ -144,7 +144,12 @@ if (!empty($_POST['RefuserDevis']))
 
 //accès au button Voir mes devis si droit ok:
 //par default j'affiche uniquement mes devis: 
-$_SESSION['vueDevis'] = "MINE";
+
+
+
+
+
+
 
 //le buttons affiche:
 $AllDevis = "Voir tous";
@@ -153,8 +158,22 @@ $AllDevis = "Voir tous";
 if ($_SESSION['user']->user__devis_acces >= 15 ) 
 {
   //si le formulaire est conforme j'affiche tous les devis:
-  if (!empty($_POST['MyDevis']) && $_POST['MyDevis'] == "Voir tous") {
-  $_SESSION['vueDevis'] = "ALL";}   
+  if (!empty($_POST['MyDevis']) && $_POST['MyDevis'] == "Voir tous") 
+  {
+  $_SESSION['vueDevis'] = "ALL";
+  }
+  elseif (!empty($_POST['MyDevis']) && $_POST['MyDevis'] == "Voir mes devis") 
+  {
+    $_SESSION['vueDevis'] = "MINE";
+  }
+  elseif(empty($_POST['MyDevis']) &&  $_SESSION['vueDevis'] == 'ALL') 
+  {
+    $_SESSION['vueDevis'] = "ALL";
+  }  
+  elseif (empty($_POST['MyDevis']) &&  $_SESSION['vueDevis'] == 'MINE' ) {
+
+    $_SESSION['vueDevis'] = "MINE";
+  }
 }
 
 //variable du résultat de la recherche:
@@ -184,7 +203,7 @@ if ( $_SESSION['vueDevis'] == "ALL")
 }
 
 //si l'utilisateur consulte uniquement ses devis:
-elseif ($_SESSION['vueDevis'] == "MINE") 
+else  
 {
     if (!empty($_POST['rechercheP'])) 
     {

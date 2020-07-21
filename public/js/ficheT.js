@@ -1,6 +1,49 @@
 $(document).ready(function() {
 
 
+//instancie l'éditor dans le modal: 
+    ClassicEditor                   
+            .create( document.querySelector('#ligneCom' ) , 
+                            {
+                                fontColor: 
+                                {
+                                    colors: 
+                                    [
+                                        {
+                                        color: 'black',
+                                        label: 'Black'
+                                        },
+                                        {
+                                        color: 'red',
+                                        label: 'Red'
+                                        },
+                                        {
+                                        color: 'DarkGreen',
+                                        label: 'Green'
+                                        },
+                                        {
+                                        color: 'Gold',
+                                        label: 'Yellow'
+                                        },
+                                        {
+                                        color: 'Blue',
+                                        label: 'Blue',
+                                        },
+                                    ]
+                                },
+                                toolbar: 
+                                [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , "imageUpload", 'fontColor']
+                })
+                .then( newEditor => 
+                    {
+                        ligneDit = newEditor;
+                    } )
+                .catch( error => 
+                {
+                    console.error( error );
+                });    
+
+
 //initialization de  tout les tooltips 
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
@@ -38,9 +81,6 @@ $(function () {
                 $('#loaderFiche').hide();
                 $('#iframeFiche').html(dataSet);
                 $('#iframeFiche').show();
-              
- 
-
 
                 ClassicEditor
                 .create( document.querySelector( '#FTCOM' ) , 
@@ -77,13 +117,40 @@ $(function () {
                 .then( newEditor => 
                 {
                     ckComClient = newEditor;
+                    
+                   
                 })
                 .catch( error => 
                 {
                 console.error( error );
-                });    
+                });
+               
+                
                 $('.clickFT').on('click',  function(){
+
+                    dataFiche = this.value;
                    
+                    $.ajax({
+                        type: 'post',
+                        url: "AjaxLigneFT",
+                        data:
+                        {
+                            "AjaxLigneFT": dataFiche
+                        },
+                        success: function (data) {
+                            dataSet = JSON.parse(data);
+                            $('#titreLigne').text(dataSet.famille__lib+ " " + dataSet.modele + " "  + dataSet.marque);
+                            $('#ligneID').val(dataSet.devl__id);
+                            ligneDit.setData(dataSet.devl__note_interne);
+                            $('#modalFT').modal('show')
+                            console.log(dataSet);
+                  
+                        },
+                        error: function (err) {
+                            console.log('error: ' , err);
+                        }
+
+                    })
                 })
                 
             },
@@ -100,7 +167,8 @@ $(function () {
      let selectFirst = function(){
         let firstOne = $('#ficheTable').find('tr').eq(1);
         firstOne.addClass('selected');
-        let dataRow = ficheT.row(0).data();
+        let dataRow = ficheT.row().data();
+      
         $('#iframeFiche').attr('src', '');
         $('#iframeFiche').hide();
         $('#loaderFiche').show();
@@ -158,7 +226,35 @@ $(function () {
                 .catch( error => 
                 {
                 console.error( error );
-                });    
+                });   
+                
+                
+                $('.clickFT').on('click',  function(){
+
+                    dataFiche = this.value;
+                   
+                    $.ajax({
+                        type: 'post',
+                        url: "AjaxLigneFT",
+                        data:
+                        {
+                            "AjaxLigneFT": dataFiche
+                        },
+                        success: function (data) {
+                            dataSet = JSON.parse(data);
+                            $('#titreLigne').text(dataSet.famille__lib+ " " + dataSet.modele + " "  + dataSet.marque);
+                            $('#ligneID').val(dataSet.devl__id);
+                            ligneDit.setData(dataSet.devl__note_interne);
+                            $('#modalFT').modal('show')
+                            console.log(dataSet);
+                  
+                        },
+                        error: function (err) {
+                            console.log('error: ' , err);
+                        }
+
+                    })
+                }) 
         
             },
             error: function (err) {

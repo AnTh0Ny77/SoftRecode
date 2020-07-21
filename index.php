@@ -83,6 +83,9 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
     case '/SoftRecode/AjaxFT';
       require __DIR__ .'/pages/ajax/AjaxVisionFT.php'; break;
 
+    case '/SoftRecode/AjaxLigneFT';
+    require __DIR__ .'/pages/ajax/AjaxLigneFT.php'; break;
+
     case '/SoftRecode/AjaxDevis';
       require __DIR__ .'/pages/ajax/ajaxDevis.php'; break;
 

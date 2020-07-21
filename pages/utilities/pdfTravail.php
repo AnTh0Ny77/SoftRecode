@@ -59,8 +59,8 @@ ob_start();
      </table>
 
 
-     <table CELLSPACING=0 style="width: 75%;  margin-top: 80px; ">
-             <tr style=" margin-top : 50px; background-color: #dedede; " >
+     <table CELLSPACING=0 style="width: 700px;  margin-top: 80px; ">
+             <tr style=" margin-top : 50px; background-color: #dedede;">
                 <td style="width: 22%; text-align: left;">Presta<br>Type<br>Gar.</td>
                 <td style="width: 57%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
                 <td style="text-align: right; width: 12%"><strong>CMD</strong><br>Livr</td>
@@ -74,11 +74,14 @@ ob_start();
 
                
 
-                echo "<tr  style='font-size: 85%;>
-                      <td style='border-bottom: 1px #ccc solid'> ". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois</td>
-                      <td style='border-bottom: 1px #ccc solid'> " .$item->famille__lib. " " . $item->marque . " " .$item->modele. " ". $item->devl__modele . "<br> <small>désignation sur le devis:</small> " . $item->devl__designation ." <br> " .$item->devl__note_interne ." </td>
-                      <td style='border-bottom: 1px #ccc solid;  text-align: right '><strong> "  . $item->devl_quantite. " </strong> </td>
-                     </tr>";
+                echo "<tr style='font-size: 85%;>
+                        <td style='border-bottom: 1px #ccc solid'> ". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois</td>
+                        <td style='border-bottom: 1px #ccc solid; width: 55%;'> "
+                            .$item->famille__lib. " " . $item->marque . " " .$item->modele. " ". $item->devl__modele . 
+                            "<br> <small>désignation sur le devis:</small> " . $item->devl__designation ." <br>" .$item->devl__note_interne .
+                        "</td>
+                         <td style='border-bottom: 1px #ccc solid; text-align: right'><strong> "  . $item->devl_quantite. " </strong></td>
+                      </tr>";
              }
              ?>
      </table> 
