@@ -157,23 +157,27 @@ $AllDevis = "Voir tous";
 //si les droits d'acces de l'utilisateur sont plus gand ou égal a 15 j'affiche le button
 if ($_SESSION['user']->user__devis_acces >= 15 ) 
 {
-  //si le formulaire est conforme j'affiche tous les devis:
-  if (!empty($_POST['MyDevis']) && $_POST['MyDevis'] == "Voir tous") 
-  {
-  $_SESSION['vueDevis'] = "ALL";
-  }
-  elseif (!empty($_POST['MyDevis']) && $_POST['MyDevis'] == "Voir mes devis") 
-  {
-    $_SESSION['vueDevis'] = "MINE";
-  }
-  elseif(empty($_POST['MyDevis']) &&  $_SESSION['vueDevis'] == 'ALL') 
-  {
+  if (isset($_SESSION['vueDevis'])) {
+    //si le formulaire est conforme j'affiche tous les devis:
+    if (!empty($_POST['MyDevis']) && $_POST['MyDevis'] == "Voir tous") 
+    {
     $_SESSION['vueDevis'] = "ALL";
-  }  
-  elseif (empty($_POST['MyDevis']) &&  $_SESSION['vueDevis'] == 'MINE' ) {
+    }
+    elseif (!empty($_POST['MyDevis']) && $_POST['MyDevis'] == "Voir mes devis") 
+    {
+      $_SESSION['vueDevis'] = "MINE";
+    }
+    elseif(empty($_POST['MyDevis']) &&  $_SESSION['vueDevis'] == 'ALL') 
+    {
+      $_SESSION['vueDevis'] = "ALL";
+    }  
+    elseif (empty($_POST['MyDevis']) &&  $_SESSION['vueDevis'] == 'MINE' ) {
 
-    $_SESSION['vueDevis'] = "MINE";
+      $_SESSION['vueDevis'] = "MINE";
+    }
   }
+  else $_SESSION['vueDevis'] ='MINE';
+  
 }
 
 //variable du résultat de la recherche:

@@ -483,6 +483,12 @@ idUtilisateur = $('#idUtilisateur').val();
                 $('#iframeDevis').attr('src', 'pages/ajax/' + idUtilisateur + 'devis.html');
                 $('#iframeDevis').show();
                 $('.multiButton').removeAttr('disabled');
+               
+                //suprime la modification si le status ne le permet pas:
+                if (dataSet.devis__etat != 'ATN') 
+                {
+                   $('#formModif').hide();
+                } else $('#formModif').show();
             },
             error: function (err) {
                 console.log('error: ' + err);
@@ -521,6 +527,12 @@ idUtilisateur = $('#idUtilisateur').val();
                 $('#iframeDevis').attr('src', 'pages/ajax/'+idUtilisateur+'devis.html');
                 $('#iframeDevis').show();
                 $('.multiButton').removeAttr('disabled');
+
+                 //suprime la modification si le status ne le permet pas:
+                 if (dataSet.devis__etat != 'ATN') 
+                 {
+                    $('#formModif').hide();
+                 } else $('#formModif').show();
                  
             },
             error: function (err) {

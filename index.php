@@ -82,21 +82,21 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
 
     case '/SoftRecode/AjaxFT';
       require __DIR__ .'/pages/ajax/AjaxVisionFT.php'; break;
+    
+    case '/SoftRecode/AjaxTransport';
+    require __DIR__ .'/pages/ajax/AjaxVisionTransport.php'; break;
 
     case '/SoftRecode/AjaxLigneFT';
     require __DIR__ .'/pages/ajax/AjaxLigneFT.php'; break;
+
+    case '/SoftRecode/transport';
+    require __DIR__ .'/pages/transport.php'; break;
 
     case '/SoftRecode/AjaxDevis';
       require __DIR__ .'/pages/ajax/ajaxDevis.php'; break;
 
     case '/SoftRecode/commande';
       require __DIR__ .'/pages/commandValid.php'; break;
-
-    case '/SoftRecode/saisie';
-      require __DIR__ .'/pages/saisie.php'; break;
-
-    case '/SoftRecode/saisieLivraison';
-      require __DIR__ .'/pages/saisieValid.php'; break;
 
     case '/SoftRecode/createNew';
       require __DIR__ .'/pages/ajax/ajaxCreate.php'; break;

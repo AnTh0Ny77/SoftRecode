@@ -143,7 +143,7 @@ $(function () {
                             $('#ligneID').val(dataSet.devl__id);
                             ligneDit.setData(dataSet.devl__note_interne);
                             $('#modalFT').modal('show')
-                            console.log(dataSet);
+                            
                   
                         },
                         error: function (err) {
