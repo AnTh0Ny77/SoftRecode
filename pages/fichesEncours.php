@@ -23,31 +23,13 @@ session_start();
  $Client = new App\Tables\Client($Database);
  $Contact = new \App\Tables\Contact($Database);
  $Cmd = new App\Tables\Cmd($Database);
+ $User = new App\Tables\User($Database);
 
 
- // variable qui determine la liste des devis à afficher:
-if (!empty($_POST['recherche-fiche'])) 
+ $userList = $User->getAll();
 
-{
-    switch ($_POST['recherche-fiche']) {
-        case 'search':
-           $devisList = $Cmd->magicRequestCMD($_POST['rechercheF']);
-           $champRecherche = $_POST['rechercheF'];
-           break;
-   
-        case 'id-fiche':
-           $devisList = [];
-           $devisSeul = $Cmd->GetById(intval($_POST['rechercheF']));
-           $champRecherche = $_POST['rechercheF'];
-           array_push($devisList, $devisSeul);
-           break;
-        
-        default:
-           $devisList = $Cmd->getFromStatusCMD();
-           break;
-    }
-   
-} else $devisList = $Cmd->getFromStatusCMD();
+
+$devisList = $Cmd->getFromStatusCMD();
 
 //nombre des fiches dans la liste 
 $NbDevis = count($devisList);
@@ -67,4 +49,5 @@ echo $twig->render('fichesEnCours.twig',
 'user'=>$user,
 'devisList'=>$devisList,
 'NbDevis'=>$NbDevis,
+'userList'=>$userList
 ]);

@@ -287,7 +287,7 @@ else
         catch (Exception $e) 
         {
             //renvoi l'erreur au format JSOn:
-            echo  json_encode( $e->getMessage());
+            echo  json_encode( $e->getMessage('fuck'));
         }       
     
     //fin IF check le POST  

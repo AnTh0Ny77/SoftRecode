@@ -4,6 +4,7 @@
   {% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
 <link rel="stylesheet" href="public/css/dashboard.css">
 {% endblock %}
@@ -11,7 +12,33 @@
  
 {% block main %}
      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-        <table class="table table-hover">
+       
+          <form>
+            <div class="form-inline my-3">
+              
+                <div class="mr-5">
+                  <input type="search"  class="form-control" placeholder="filtre">
+                </div>
+
+                <h5 class="ml-5">-Les client de:</h5>  
+
+                <div> 
+                  
+                    <select class="selectpicker ml-2 mr-5" data-live-search="true">
+                      <option value="00" >Tous</option>
+                      {% for user in userList %}
+                      <option value="{{user.id_utilisateur}}" selected>{{user.prenom ~ " " ~ user.nom}}</option>
+                      {% endfor %}
+                      
+                    </select> 
+                </div>
+                
+                <button type="submit" class="btn btn-success ml-5">Recherche <i class="fas fa-search"></i></button>
+
+            </div >
+         </form>
+       
+        <table class="table table-hover mt-4">
             <thead>
               <tr>
                 <th scope="col">Numéro/Vendeur</th>
@@ -40,5 +67,5 @@
 <!-- jQuery first, then Bootstrap JS -->
 <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="public/js/ficheT.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 {% endblock %}

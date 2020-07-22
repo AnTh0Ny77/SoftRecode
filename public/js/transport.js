@@ -23,6 +23,7 @@ $(document).ready(function() {
         let dataRow =tableTransport.row(this).data();
         $('#iframeTravail').attr('src', '');
         $('#loaderTravail').show();
+        
         // requete Ajax sur le devis selectionné dans la page saisie : 
         $.ajax({
             type: 'post',
@@ -32,7 +33,6 @@ $(document).ready(function() {
                 "Ajaxtransport": dataRow[0]
             },
             success: function (data) {
-                
                 dataSet = JSON.parse(data);
                 
                 $('#loaderTravail').hide();
