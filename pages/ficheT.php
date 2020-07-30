@@ -30,12 +30,25 @@ session_start();
 // variable qui determine la liste des devis à afficher:
 if (!empty($_POST['recherche-fiche'])) 
 
+
+
 {
+  
     switch ($_POST['recherche-fiche']) {
         case 'search':
-           $devisList = $Cmd->magicRequestCMD($_POST['rechercheF']);
-           $champRecherche = $_POST['rechercheF'];
-           break;
+            if ($_POST['rechercheF'] != "") 
+            {
+               $devisList = $Cmd->magicRequestCMD($_POST['rechercheF']);
+               $champRecherche = $_POST['rechercheF'];
+               break;
+            }
+            else 
+            {
+               $devisList = $Cmd->getFromStatusCMD();
+               $champRecherche = $_POST['rechercheF'];
+               break;
+            }
+           
    
         case 'id-fiche':
            $devisList = [];

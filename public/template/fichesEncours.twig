@@ -13,21 +13,27 @@
 {% block main %}
      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
        
-          <form>
+          <form method="POST" action="fichesEnCours">
             <div class="form-inline my-3">
               
                 <div class="mr-5">
-                  <input type="search"  class="form-control" placeholder="filtre">
+
+                  {% if vueFiltre %}
+                  <input type="search"  class="form-control" placeholder="filtre" name="filtre" value="{{vueFiltre}}">
+                  {% else %}
+                  <input type="search"  class="form-control" placeholder="filtre" name="filtre">
+                  {% endif %}
+                  
                 </div>
 
                 <h5 class="ml-5">-Les client de:</h5>  
 
                 <div> 
                   
-                    <select class="selectpicker ml-2 mr-5" data-live-search="true">
-                      <option value="00" >Tous</option>
+                    <select class="selectpicker ml-2 mr-5" data-live-search="true" name="selectUser">
+                    <option value="tous" selected>Tous</option>
                       {% for user in userList %}
-                      <option value="{{user.id_utilisateur}}" selected>{{user.prenom ~ " " ~ user.nom}}</option>
+                      <option value="{{user.id_utilisateur}}" >{{user.prenom ~ " " ~ user.nom}}</option>
                       {% endfor %}
                       
                     </select> 
@@ -42,7 +48,7 @@
             <thead>
               <tr>
                 <th scope="col">Numéro/Vendeur</th>
-                <th scope="col">Date d'expédition</th>
+                <th scope="col">Date  expédition</th>
                 <th scope="col">Société/Ville</th>
                 <th scope="col">Info</th>
               </tr>
@@ -51,9 +57,26 @@
                     {% for devis in devisList %}
                     <tr>
                         <td scope="row">N° {{devis.devis__id}} <br> {{devis.log_nec}}</td>
-                        <td>{{ devis.devis__date_crea }} </td>
-                        <td> <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }} <br> {{devis.cmd__nom_devis}} </td></td>
-                        <td>@mdo</td>
+                        <td><div data-toggle="tooltip" data-placement="left" title="Date de commande"> <i class="far fa-check-circle"></i> {{ devis.devis__date_crea}} </div>
+                          {% if devis.cmd__date_envoi  %} 
+                          <div data-toggle="tooltip" data-placement="left" title="Date d'envoi prévue"> <i class="far fa-truck"></i> {{devis.cmd__date_envoi}}   </div>
+                          {% endif %}  </td>
+                        <td> <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }} <br> {{devis.cmd__nom_devis}} </td>
+
+
+                        <td >
+                         
+                          {% for item in devis.cmd__note_client %}
+                          <div class="border-bottom">
+                          {{item.devl_quantite ~ "x " ~ item.famille__lib ~ " " ~ item.modele ~ " " ~ item.marque }} <br>
+                          {{ item.devl__modele }}<br>
+                          {{item.devl__note_interne|raw}}
+                          </div>
+
+
+                          {% endfor %}
+                          
+                        </td>
                     </tr>
                     {% endfor %}
             </tbody>
@@ -68,4 +91,5 @@
 <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/js/listeFiche.js"></script>
 {% endblock %}

@@ -26,6 +26,7 @@ session_start();
  $Client = new App\Tables\Client($Database);
  $Contact = new \App\Tables\Contact($Database);
  $Cmd = new App\Tables\Cmd($Database);
+ $Global = new App\Tables\General($Database);
  $listOfStatus = $Keyword->getStat();
  $devisList = [];
 
@@ -243,6 +244,8 @@ foreach ($devisList as $devis)
   $devis->devis__date_crea = $date;
 }
 
+
+$print_request = null;
 // si une validation de devis a été effectuée : 
 if(!empty($_POST['devisCommande']))
 {
@@ -255,7 +258,6 @@ if(!empty($_POST['devisCommande']))
     $validLignes = json_decode($_POST['arrayLigneDeCommande']);
     foreach ($validLignes as $lignes) 
     {
-    
       $Cmd->updateGarantie(
         $lignes->devl__prix_barre[0],
         $lignes->devl__prix_barre[1],
@@ -265,7 +267,15 @@ if(!empty($_POST['devisCommande']))
         $lignes->devl__ordre );
     } 
   }
-  header('Location: mesDevis');
+  if (!empty($_POST['code_cmd'])) 
+  {
+    $Global->updateAll('cmd', $_POST['code_cmd'],'cmd__code_cmd_client', 'cmd__id', $_POST['devisCommande']);
+  }
+
+  //contient l'id du devis pour l'imprssion de la fiche de travail : client2.js
+  $print_request = $_POST['devisCommande'];
+
+  
 }
  
 // Donnée transmise au template : 
@@ -278,5 +288,6 @@ echo $twig->render('mesDevis.twig',
 'notifValid'=> $notifValid , 
 'NbDevis' => $NbDevis, 
 'recherche' => $recherche ,
-'debug'=> $_SESSION['vueDevis']
+'debug'=> $_SESSION['vueDevis'],
+'print_request'=> $print_request
 ]);

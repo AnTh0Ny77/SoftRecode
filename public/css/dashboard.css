@@ -111,6 +111,10 @@ body {
   .navigationClick{
     
   }
+  
+  #flexTransport{
+    height: 25%;
+  }
 
 
   #loaderPdf {

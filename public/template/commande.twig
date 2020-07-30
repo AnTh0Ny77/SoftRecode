@@ -103,6 +103,10 @@
                     Commentaire interne :
                     <textarea class="form-control " id="commentaireInterneValid"  placeholder="Commentaire Interne...." rows="2" cols="40">{{devis.devis__note_interne}}</textarea>
                 </div>
+                <div class="mt-2">
+                  <label for="codeClient">Code commande Client</label>
+                  <input type="text" id="codeClient" class="form-control" >
+                </div>
               </div>
               <div>
             </div>
@@ -205,6 +209,7 @@
               <form method="POST" action="mesDevis"  id="formValideCMD">
                 <input type="hidden" name="devisCommande" id="devisCommande" value="{{devis.devis__id}}">
                 <input type="hidden" name="ComInterCommande" id="ComInterCommande" value="{{devis.devis__note_interne}}">
+                <input type="hidden" name="code_cmd" id="code_cmd">
                 <input type="hidden" name="arrayLigneDeCommande" id="arrayLigneDeCommande" value="">
               </form>
       </div>

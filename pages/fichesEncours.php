@@ -28,10 +28,32 @@ session_start();
 
  $userList = $User->getAll();
 
+ $vueFiltre = null;
 
-$devisList = $Cmd->getFromStatusCMD();
 
 //nombre des fiches dans la liste 
+if (!empty($_POST['selectUser'])) 
+{
+  if ($_POST['selectUser'] == 'tous' && empty($_POST['filtre'])) 
+  {
+    $devisList = $Cmd->getFromStatusCMD();
+  } 
+  elseif ($_POST['selectUser'] == 'tous' && !empty($_POST['filtre'])) 
+  {
+    $devisList = $Cmd->magicRequestCMD($_POST['filtre']);
+    $vueFiltre = $_POST['filtre'];
+  }
+  elseif ($_POST['selectUser'] != 'tous' ) 
+  {
+   $devisList = $Cmd->magicRequestUserCMD( $_POST['filtre'],$_POST['selectUser']);
+  }
+}
+else $devisList = $Cmd->getFromStatusCMD();
+
+
+
+
+
 $NbDevis = count($devisList);
 
 //formatte la date pour l'utilisateur:
@@ -40,7 +62,14 @@ $NbDevis = count($devisList);
    $devisDate = date_create($devis->cmd__date_cmd);
    $date = date_format($devisDate, 'Y/m/d');
    $devis->devis__date_crea = $date;
-   
+
+   if (!empty($devis->cmd__date_envoi)) 
+   {
+    $expeDate = date_create($devis->cmd__date_envoi);
+    $expe = date_format($expeDate , 'Y/m/d');
+    $devis->cmd__date_envoi = $expe;
+   }
+   $devis->cmd__note_client = $Cmd->devisLigne($devis->devis__id);
  }
 
  // Donnée transmise au template : 
@@ -49,5 +78,6 @@ echo $twig->render('fichesEnCours.twig',
 'user'=>$user,
 'devisList'=>$devisList,
 'NbDevis'=>$NbDevis,
-'userList'=>$userList
+'userList'=>$userList,
+'vueFiltre'=>$vueFiltre
 ]);

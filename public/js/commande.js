@@ -135,6 +135,7 @@ $(document).ready(function() {
       
       $('#arrayLigneDeCommande').val(JSON.stringify(arrayOfItem));
       $('#ComInterCommande').val($('#cmdInterneNote').val());
+      $('#code_cmd').val($('#codeClient').val());
       
       $('#formValideCMD').submit();
     })

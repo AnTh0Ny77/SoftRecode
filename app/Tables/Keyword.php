@@ -59,6 +59,13 @@ public function getModele(){
 }
 
 
+public function getTransporteur(){
+  $request =$this->Db->Pdo->query('SELECT * FROM keyword WHERE kw__type= "trans" ORDER BY  kw__ordre  ASC ');
+  $data = $request->fetchAll(PDO::FETCH_OBJ);
+  return $data;
+}
+
+
 
 
 

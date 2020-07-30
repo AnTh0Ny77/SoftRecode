@@ -29,14 +29,22 @@ session_start();
  
 // variable qui determine la liste des devis à afficher:
 if (!empty($_POST['recherche-fiche'])) 
-
 {
     switch ($_POST['recherche-fiche']) {
         case 'search':
-           $devisList = $Cmd->magicRequestCMD($_POST['rechercheF']);
-           $champRecherche = $_POST['rechercheF'];
-           break;
-   
+            if ($_POST['rechercheF'] != "") 
+            {
+               $devisList = $Cmd->magicRequestCMD($_POST['rechercheF']);
+               $champRecherche = $_POST['rechercheF'];
+               break;
+            }
+            else 
+            {
+               $devisList = $Cmd->getFromStatusCMD();
+               $champRecherche = $_POST['rechercheF'];
+               break;
+            }
+           
         case 'id-fiche':
            $devisList = [];
            $devisSeul = $Cmd->GetById(intval($_POST['rechercheF']));
@@ -54,6 +62,9 @@ if (!empty($_POST['recherche-fiche']))
 //nombre des fiches dans la liste 
 $NbDevis = count($devisList);
 
+//liste des transporteur :
+$TransportListe = $Keyword->getTransporteur();
+
 //formatte la date pour l'utilisateur:
  foreach ($devisList as $devis) 
  {
@@ -66,6 +77,8 @@ $NbDevis = count($devisList);
       $envoiDate = date_format($envoiDate, 'd/m/Y');
       $devis->cmd__date_envoi = $envoiDate;
    }
+
+   $devis->DataLigne = json_encode($Cmd->devisLigne($devis->devis__id));
   
  }
   
@@ -75,6 +88,7 @@ echo $twig->render('transport.twig',
 'user'=>$user,
 'devisList'=>$devisList,
 'NbDevis'=>$NbDevis,
-'champRecherche'=>$champRecherche
+'champRecherche'=>$champRecherche,
+'transporteurs'=>$TransportListe
 
 ]);
