@@ -31,6 +31,7 @@ $(document).ready(function() {
        document.getElementById('JumboCmd').innerHTML =  'Commande N°: ' + ObjetCmd.Id;
        $('#JumboClient').html(ObjetCmd.Client);
        $('#dateTransport').html(ObjetCmd.Date);
+       $('#id_trans').val(ObjetCmd.Id);
        
        let content = '';
 
@@ -61,7 +62,7 @@ $(document).ready(function() {
        document.getElementById('JumboCmd').innerHTML =  'Commande N°: ' + ObjetCmd.Id;
        $('#JumboClient').html(ObjetCmd.Client);
        $('#dateTransport').html(ObjetCmd.Date);
-       
+       $('#id_trans').val(ObjetCmd.Id);
        let content = '';
 
        for (key in ObjetCmd.Data) 
@@ -88,5 +89,37 @@ $(document).ready(function() {
        entry =  entry.substring(0, entry.length - 1);
         $('#calc_resultat').val(entry);
     })
+
+
+    //formulaire de validation:
+    let bindData = function()
+    {
+         let poids = $('#calc_resultat').val();
+         let transporteur = $('#select-transport').val();
+         let paquet = $('#select-transporteur').val();
+         $('#poids').val(poids);
+         $('#transporteur').val(transporteur);
+         $('#paquets').val(paquet);
+    }
+
+    $('#post-saisie').on('click', function(){
+        bindData();
+       
+        var poidsNb = $('#poids').val();
+
+        if(isNaN(poidsNb)) 
+        { 
+           alert('Le poids est incorrect')
+        }
+        else
+        { 
+            $('#valid-saisie').submit();
+        
+        }
+      
+    })
+
+    
+    
 
 })

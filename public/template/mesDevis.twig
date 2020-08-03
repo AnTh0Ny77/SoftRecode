@@ -132,7 +132,7 @@
                   {% endif %}
                   <td>
                     {% if devis.kw__lib == 'En attente'  %}
-                    {{devis.kw__lib}} <i class="fas fa-hourglass" style="color:#cc9900;"></i> 
+                    Envoyé <i class="fas fa-hourglass" style="color:#cc9900;"></i> 
                     <br> {{ devis.log_nec  }} 
                     <br>
                     <div class="d-flex justify-content-around">
@@ -160,6 +160,26 @@
                             <input type="hidden" value="{{devis.devis__id}}" name="rechercheF">
                             <button type="submit" class="badge badge-primary"><i class="fas fa-tools"></i></button>                      
                         </form> 
+                      </div>
+                    </td>
+                    {% elseif devis.kw__lib == 'imprime' %}
+                   Imprime <i class="fas fa-print" style="color: Coral;"></i> 
+                    <br> {{ devis.log_nec  }}<br>
+                    <div class="d-flex justify-content-around">
+                      <div class="" data-toggle="tooltip" data-placement="top" title="Fiche de travail">
+                        <form method="POST" action="ficheTravail">
+                            <input type="hidden" value="id-fiche" name="recherche-fiche">
+                            <input type="hidden" value="{{devis.devis__id}}" name="rechercheF">
+                            <button type="submit" class="badge badge-primary"><i class="fas fa-tools"></i></button>                      
+                        </form> 
+                      </div>
+                      <div class="" data-toggle="tooltip" data-placement="top" title="Bon de livraison">
+                        <form method="POST" action="ficheTravail">
+                            <input type="hidden" value="id-fiche" name="recherche-fiche">
+                            <input type="hidden" value="{{devis.devis__id}}" name="rechercheF">
+                            <button type="submit" class="badge badge-info"><i class="fas fa-print"></i></button>                      
+                        </form> 
+                      </div>
                       </div>
                     </td>
                     {% elseif devis.kw__lib == 'Refuse' %}

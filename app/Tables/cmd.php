@@ -161,6 +161,27 @@ class Cmd extends Table {
      $update->execute([ $author , $id ]);
   }
 
+  public function updateTransport($trans , $poids , $paquet ,  $id , $imp){
+
+    $data = 
+    [
+      $trans ,
+      $poids, 
+      $paquet , 
+      $imp ,
+      $id
+
+    ];
+    $update = $this->Db->Pdo->prepare(
+      'UPDATE cmd
+       SET cmd__trans =? , cmd__trans_kg =? , cmd__trans_info =? , cmd__etat =?
+
+       WHERE cmd__id = ? ');
+    
+    $update->execute($data);
+
+  }
+
  
 
   public function updateGarantie($mois, $prix , $comInterne , $qte,  $id , $ordre){

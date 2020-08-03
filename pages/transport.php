@@ -81,6 +81,19 @@ $TransportListe = $Keyword->getTransporteur();
    $devis->DataLigne = json_encode($Cmd->devisLigne($devis->devis__id));
   
  }
+
+//si une saisie à été effectuée:
+$alert = false;
+if(!empty($_POST['poids']) && !empty($_POST['transporteur']))
+{
+   $paquet = null ;
+   if (intval($_POST['paquets']) > 1 ) 
+   {
+      $paquet = intval($_POST['paquets']);
+   }
+   $Cmd->updateTransport($_POST['transporteur'] , floatval($_POST['poids']), $paquet, $_POST['id_trans'] , 'IMP');
+   $alert = true;
+}
   
 // Donnée transmise au template : 
 echo $twig->render('transport.twig',
@@ -89,6 +102,7 @@ echo $twig->render('transport.twig',
 'devisList'=>$devisList,
 'NbDevis'=>$NbDevis,
 'champRecherche'=>$champRecherche,
-'transporteurs'=>$TransportListe
+'transporteurs'=>$TransportListe,
+'alert'=> $alert
 
 ]);
