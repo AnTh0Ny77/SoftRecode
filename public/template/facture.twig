@@ -12,7 +12,7 @@
      {% block main %}
      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">Fiches de Travail <i class="fal fa-tools"></i></h1>
+        <h1 class="h2">Factures <i class="fad fa-euro-sign"></i></h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
           </div>
@@ -35,7 +35,7 @@
           <div class="my-2 mx-4"> 
             
             <h6 class="m-0 font-weight-bold text-primary">Selection <i class="far fa-mouse-pointer"> </i> 
-                <small class="ml-3"> {{  " " ~ NbDevis }} fiches de travail</small>
+                <small class="ml-3"> {{  " " ~ NbDevis }} Commandes expédiées</small>
                 <a data-toggle="tooltip" data-placement="top" title="Afficher toutes les fiches" href="" class="btn btn-link"><i class="fas fa-search-plus"></i></a>
             </h6>
                    
@@ -43,7 +43,7 @@
           
           <div class="card-header d-flex flex-row align-items-center justify-content-between">
             <div class="d-flex flex-column">
-                <div class="d-flex flex-rom">
+                <div>
                   <form class="form-inline" action="ficheTravail" method="POST">
                     <input  type="hidden" name="recherche-fiche" value="search">
                     {% if champRecherche %}
@@ -53,42 +53,7 @@
                     {% endif %}
                    
                     <button class="btn btn-outline-primary  " type="submit"><i class="fal fa-bullseye-arrow"></i></button>
-                    {% if  sessionUser ==  'ALL' %}
-                    <div class=" ml-5 form-group" data-toggle="tooltip" data-placement="top" title="commandes en cours">
-                       
-                        <input type="checkbox" class="form-control" id="ftCheck" name="ftCheck"  value="true" checked>
-                        <label class="form-check-label mx-2" for="ftCheck"><i class="fas fa-tools"></i> </label>
-                    </div>
-
-                    <div class=" ml-2 form-group" data-toggle="tooltip" data-placement="top" title="commandes expédiées">
-                      <input type="checkbox" class="form-control" id"blCheck" name="blCheck"  value="true" checked>
-                       <label class="form-check-label mx-2" for="blCheck"><i class="fas fa-truck"></i></label>
-                  </div>
-                  {% elseif sessionUser ==  'FT' %}
-                  <div class=" ml-5 form-group" data-toggle="tooltip" data-placement="top" title="commandes en cours">
-                       
-                    <input type="checkbox" class="form-control" id="ftCheck" name="ftCheck"  value="true" checked>
-                    <label class="form-check-label mx-2" for="ftCheck"><i class="fas fa-tools"></i> </label>
-                </div>
-                  <div class=" ml-2 form-group" data-toggle="tooltip" data-placement="top" title="commandes expédiées">
-                    <input type="checkbox" class="form-control" id"blCheck" name="blCheck"  value="true" >
-                    <label class="form-check-label mx-2" for="blCheck"><i class="fas fa-truck"></i></label>
-                </div>
-                {% elseif sessionUser == 'BL' %}
-                <div class=" ml-5 form-group" data-toggle="tooltip" data-placement="top" title="commandes en cours">
-                       
-                  <input type="checkbox" class="form-control" id="ftCheck" name="ftCheck"  value="true" >
-                  <label class="form-check-label mx-2" for="ftCheck"><i class="fas fa-tools"></i> </label>
-              </div>
-                <div class=" ml-2 form-group" data-toggle="tooltip" data-placement="top" title="commandes expédiées">
-                  <input type="checkbox" class="form-control" id"blCheck" name="blCheck"  value="true" checked>
-                  <label class="form-check-label mx-2" for="blCheck"><i class="fas fa-truck"></i></label>
-              </div>
-
-                  {% endif %}
                   </form>
-
-                 
                  </div>
                </div>
             </div>
@@ -101,7 +66,6 @@
                   <th>Date</th>
                   <th>N°/Date</th>
                   <th>Client</th>
-                 
                  
               </tr>
               </thead> 
@@ -117,23 +81,10 @@
                   </td>
                   {% if devis.cmd__nom_devis %}
                   <td> 
-                  <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }} <br> {{devis.cmd__nom_devis}} 
-                  {% if devis.devis__etat == 'CMD' %}
-                  <br><strong>{{ devis.kw__lib}}</strong> <i class="fas fa-tools"></i>
-                   {% else %}
-                  <br><strong>Expédiée</strong> <i class="fas fa-truck"></i>
-                   {% endif %}</td>
+                  <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }} <br> {{devis.cmd__nom_devis}} </td>
                   {% else  %}
-                  <td> <b>{{  devis.client__societe  }} </b>{{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}} 
-                    {% if devis.devis__etat == 'CMD' %}
-                    <br><strong>{{ devis.kw__lib}}</strong> <i class="fas fa-tools"></i>
-                     {% else %}
-                    <br><strong>Expédiée</strong> <i class="fas fa-truck"></i>
-                     {% endif %}</td>
+                  <td> <b>{{  devis.client__societe  }} </b>{{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td>
                   {% endif %}
-
-                 
-                  
                   
                    
                   
@@ -169,8 +120,7 @@
               </div>
 
 
-              <div id="iframeFiche" class="border-0" src="" width="100%" >
-              </div>
+             
 
         </div>
 

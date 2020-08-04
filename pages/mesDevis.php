@@ -143,6 +143,36 @@ if (!empty($_POST['RefuserDevis']))
   $Cmd->updateStatus('RFS',$_POST['RefuserDevis']);
 }
 
+$print_request = null;
+// si une validation de devis a été effectuée : 
+if(!empty($_POST['devisCommande']))
+{
+  $date = date("Y-m-d H:i:s");
+  $Cmd->updateStatus('CMD',$_POST['devisCommande']);
+  $Cmd->updateDate('cmd__date_cmd' , $date , $_POST['devisCommande'] );
+  $Cmd->updateAuthor('cmd__user__id_cmd' , $_SESSION['user']->id_utilisateur , $_POST['devisCommande']);
+  if (!empty($_POST['arrayLigneDeCommande'])) 
+  {
+    $validLignes = json_decode($_POST['arrayLigneDeCommande']);
+    foreach ($validLignes as $lignes) 
+    {
+      $Cmd->updateGarantie(
+        $lignes->devl__prix_barre[0],
+        $lignes->devl__prix_barre[1],
+        $lignes->devl__note_interne,
+        $lignes->devl_quantite,
+        $lignes->cmdl__cmd__id,
+        $lignes->devl__ordre );
+    } 
+  }
+  if (!empty($_POST['code_cmd'])) 
+  {
+    $Global->updateAll('cmd', $_POST['code_cmd'],'cmd__code_cmd_client', 'cmd__id', $_POST['devisCommande']);
+  }
+  //contient l'id du devis pour l'imprssion de la fiche de travail : client2.js
+  $print_request = $_POST['devisCommande'];
+}
+
 //accès au button Voir mes devis si droit ok:
 //par default j'affiche uniquement mes devis: 
 
@@ -245,38 +275,8 @@ foreach ($devisList as $devis)
 }
 
 
-$print_request = null;
-// si une validation de devis a été effectuée : 
-if(!empty($_POST['devisCommande']))
-{
-  $date = date("Y-m-d H:i:s");
-  $Cmd->updateStatus('CMD',$_POST['devisCommande']);
-  $Cmd->updateDate('cmd__date_cmd' , $date , $_POST['devisCommande'] );
-  $Cmd->updateAuthor('cmd__user__id_cmd' , $_SESSION['user']->id_utilisateur , $_POST['devisCommande']);
-  if (!empty($_POST['arrayLigneDeCommande'])) 
-  {
-    $validLignes = json_decode($_POST['arrayLigneDeCommande']);
-    foreach ($validLignes as $lignes) 
-    {
-      $Cmd->updateGarantie(
-        $lignes->devl__prix_barre[0],
-        $lignes->devl__prix_barre[1],
-        $lignes->devl__note_interne,
-        $lignes->devl_quantite,
-        $lignes->cmdl__cmd__id,
-        $lignes->devl__ordre );
-    } 
-  }
-  if (!empty($_POST['code_cmd'])) 
-  {
-    $Global->updateAll('cmd', $_POST['code_cmd'],'cmd__code_cmd_client', 'cmd__id', $_POST['devisCommande']);
-  }
 
-  //contient l'id du devis pour l'imprssion de la fiche de travail : client2.js
-  $print_request = $_POST['devisCommande'];
 
-  
-}
  
 // Donnée transmise au template : 
 echo $twig->render('mesDevis.twig',

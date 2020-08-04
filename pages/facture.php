@@ -99,7 +99,7 @@ $TransportListe = $Keyword->getTransporteur();
 
   
 // Donnée transmise au template : 
-echo $twig->render('transport.twig',
+echo $twig->render('facture.twig',
 [
 'user'=>$user,
 'devisList'=>$devisList,

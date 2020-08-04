@@ -267,9 +267,8 @@ $('#TravailButton').on('click', function(){
 //envoi la requete http pour imprimer la fiche de travail: 
 let httpPrint = function() 
 {
-    if ($('#printrequest').val()) 
-    {
         $print = $('#printrequest').val();
+        console.log($print);
 
         $.ajax({
             type: 'post',
@@ -285,10 +284,6 @@ let httpPrint = function()
             error: function (err) {
             console.log('error: ' + err);
         }})
-
-        
-    }
-
 }
 
 httpPrint();

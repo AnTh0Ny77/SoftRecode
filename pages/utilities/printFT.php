@@ -20,8 +20,10 @@ if(!empty($_POST['print'])) {
 $command = $Command->getById(intval($_POST['print']));
 $commandLignes = $Command->devisLigne($_POST['print']);
 $dateTemp = new DateTime($command->cmd__date_cmd);
-$formated_date = date_format($dateTemp,"d/m/Y");
-
+ //cree une variable pour la date de commande du devis
+ $date_time = new DateTime( $command->cmd__date_cmd);
+ //formate la date pour l'utilisateur:
+ $formated_date = $date_time->format('d/m/Y');
 ob_start();
 ?>
 <style type="text/css">
@@ -47,7 +49,7 @@ ob_start();
              <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h4>Fiche De travail -  <?php echo $command->devis__id ?></h4>
              <barcode dimension="1D" type="C128" label="none" value="<?php echo $command->devis__id ?>" style="width:40mm; height:8mm; color: #3b3b3b; font-size: 4mm"></barcode><br>
 
-             <small>Edité le : <?php echo $formated_date ?></small><br>
+             <small>Commandé le : <?php echo $formated_date ?></small><br>
              Vendeur :<?php echo  $_SESSION['user']->log_nec ?> </td>
              <td style="text-align: left; width:50%"><strong>
              <?php echo $command->client__societe ?><br><?php echo $command->client__adr1 ?><br><?php if (!empty($command->client__adr2)) {

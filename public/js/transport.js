@@ -47,7 +47,8 @@ $(document).ready(function() {
 
 
      // attribut classe selected: au chargement de la page 
-    selectFirst =  function () {
+    selectFirst =  function () 
+    {
         
         let firstOne = $('#transportTable').find('tr').eq(1);
         firstOne.addClass('selected');

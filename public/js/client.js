@@ -491,7 +491,7 @@ idUtilisateur = $('#idUtilisateur').val();
                 } else $('#formModif').show();
             },
             error: function (err) {
-                console.log('error: ' + err);
+                console.log('error: ' , err);
             }
         })
     });

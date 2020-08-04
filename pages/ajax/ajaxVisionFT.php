@@ -74,13 +74,22 @@ else
              <img  style=" width:55mm;" src="public\img\recodeDevis.png"/>
              </div>
              <div class="div" style=" margin-top: 15%" >
-             <p>Edité le : <?php echo $formated_date ?> à : <?php echo $h . 'h ' . $m ?></p>
+             <p>Commandé le : <?php echo $formated_date ?> à : <?php echo $h . 'h ' . $m ?></p>
              Vendeur: <strong><?php echo  $user->nom . ' '. $user->prenom ?> </strong> 
              <?php
-             if (!empty($user->postefix)) {
+             if (!empty($user->postefix)) 
+             {
                echo ' (Tél: '. $user->postefix .')';
              } 
-             ?></td>
+
+             if (!empty($temp->cmd__code_cmd_client)) 
+             {
+                echo '<br> code cmd client: <b>'.  $temp->cmd__code_cmd_client . '</b>';
+             }
+
+             ?>
+             
+             </td>
             
              </div>
             </div>
@@ -125,10 +134,30 @@ else
             ?>
         
         <div class="d-flex flex-column">
-            <form method="POST" action="pdfTravail" target="_blank">
-                <input type="hidden" value="<?php echo $_POST['AjaxFT'] ?>" name="travailFiche">
-                <button class="btn btn-link " href="pdfTravail"><i class='fas fa-file-pdf'></i> voir le pdf</button>
-            </form>
+            <?php
+             $ajaxFT = $_POST['AjaxFT'];
+            if ($temp->devis__etat == 'CMD') 
+            {
+               
+             echo    '<form method="POST" action="pdfTravail" target="_blank">
+             <input type="hidden" value="'.$ajaxFT.'" name="travailFiche">
+             <button class="btn btn-link " href="pdfTravail"><i class="fas fa-file-pdf"></i> Fiche de travail</button>
+            </form>';
+            }
+            else 
+            {
+            echo    '<form method="POST" action="pdfTravail" target="_blank">
+            <input type="hidden" value="'.$ajaxFT.'" name="travailFiche">
+            <button class="btn btn-link " href="pdfTravail"><i class="fas fa-file-pdf"></i> Fiche de travail</button>
+            </form> <br>
+            <form method="POST" action="pdfBL" target="_blank">
+            <input type="hidden" value="'.$ajaxFT.'" name="travailFiche">
+            <button class="btn btn-link " href="pdfTravail"><i class="fas fa-file-pdf"></i> Bon de Livraison</button>
+            </form>';  
+            }
+            
+            ?>
+            
             <?php 
             if ($temp->cmd__date_envoi) 
             {
