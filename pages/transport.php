@@ -27,6 +27,9 @@ session_start();
 
  //si une saisie à été effectuée:
 $alert = false;
+//date du jour:
+$date = date("Y-m-d H:i:s");
+
 if(!empty($_POST['poids']) && !empty($_POST['transporteur']))
 {
    $paquet = null ;
@@ -34,7 +37,7 @@ if(!empty($_POST['poids']) && !empty($_POST['transporteur']))
    {
       $paquet = intval($_POST['paquets']);
    }
-   $Cmd->updateTransport($_POST['transporteur'] , floatval($_POST['poids']), $paquet, $_POST['id_trans'] , 'IMP');
+   $Cmd->updateTransport($_POST['transporteur'] , floatval($_POST['poids']), $paquet, $_POST['id_trans'] , 'IMP' , $date);
    $alert = true;
 }
  
@@ -48,13 +51,13 @@ if (!empty($_POST['recherche-fiche']))
         case 'search':
             if ($_POST['rechercheF'] != "") 
             {
-               $devisList = $Cmd->magicRequestCMD($_POST['rechercheF']);
+               $devisList = $Cmd->magicRequestStatus($_POST['rechercheF'] , 'CMD');
                $champRecherche = $_POST['rechercheF'];
                break;
             }
             else 
             {
-               $devisList = $Cmd->getFromStatusCMD();
+               $devisList = $Cmd->getFromStatusAll('CMD');
                $champRecherche = $_POST['rechercheF'];
                break;
             }
@@ -67,11 +70,11 @@ if (!empty($_POST['recherche-fiche']))
            break;
         
         default:
-           $devisList = $Cmd->getFromStatusCMD();
+           $devisList = $Cmd->getFromStatusAll('CMD');
            break;
     }
    
-} else $devisList = $Cmd->getFromStatusCMD();
+} else $devisList = $Cmd->getFromStatusAll('CMD');
 
 //nombre des fiches dans la liste 
 $NbDevis = count($devisList);

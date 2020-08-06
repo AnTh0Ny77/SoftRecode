@@ -126,11 +126,13 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
     case '/SoftRecode/pdfBL';
       require __DIR__ .'/pages/utilities/pdfBL.php'; break;
 
-      case '/SoftRecode/facture';
+    case '/SoftRecode/facture';
       require __DIR__ .'/pages/facture.php'; break;
 
+    case '/SoftRecode/factureVisio';
+      require __DIR__ .'/pages/ajax/ajaxVisioFacture.php'; break;
 
-      case '/SoftRecode/printFt';
+    case '/SoftRecode/printFt';
       require __DIR__ .'/pages/utilities/printFT.php'; break;
 
     case '/SoftRecode/AjaxSaisie';

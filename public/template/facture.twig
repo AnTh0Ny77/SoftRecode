@@ -44,7 +44,7 @@
           <div class="card-header d-flex flex-row align-items-center justify-content-between">
             <div class="d-flex flex-column">
                 <div>
-                  <form class="form-inline" action="ficheTravail" method="POST">
+                  <form class="form-inline" action="facture" method="POST">
                     <input  type="hidden" name="recherche-fiche" value="search">
                     {% if champRecherche %}
                     <input class="form-control mr-2" type="search" name="rechercheF" placeholder="Recherche" aria-label="Search" value="{{champRecherche}}">
@@ -60,7 +60,7 @@
           <!-- Card Body -->
           <div class="card-body">
             <div class="chart-area">
-              <table id="ficheTable" class=" display table " style="width:100%"> <thead class="thead-dark" > 
+              <table id="factureTable" class=" display table " style="width:100%"> <thead class="thead-dark" > 
                 <tr> 
                   <th>Numéro</th> 
                   <th>Date</th>
@@ -109,18 +109,19 @@
             <div class="card-body" >
 
 
-              <div id="loaderFiche">
+              <div id="loaderFacture">
                 <div class="  d-flex  flex-column  justify-content-center align-items-center ">
                   <div class="spinner-border text-primary "  role="status">
                   </div>
                   <div> 
-                    <h5 class="text-primary">chargement de la fiche ...</h5>
+                    <h5 class="text-primary">chargement de la commande ...</h5>
                   </div> 
                </div>  
               </div>
 
 
-             
+              <div id="iframeFacture" class="border-0" src="" width="100%" >
+              </div>
 
         </div>
 
@@ -165,8 +166,7 @@
 <!-- jQuery first, then Bootstrap JS -->
 <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
-<script type="text/javascript" src="public/js/ficheT.js"></script>
+<script type="text/javascript" src="public/js/facture.js"></script>
 
 
      {% endblock %}

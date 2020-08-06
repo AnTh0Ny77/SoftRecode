@@ -25,18 +25,7 @@ session_start();
  $Cmd = new App\Tables\Cmd($Database);
 
 
- //si une saisie à été effectuée:
-$alert = false;
-if(!empty($_POST['poids']) && !empty($_POST['transporteur']))
-{
-   $paquet = null ;
-   if (intval($_POST['paquets']) > 1 ) 
-   {
-      $paquet = intval($_POST['paquets']);
-   }
-   $Cmd->updateTransport($_POST['transporteur'] , floatval($_POST['poids']), $paquet, $_POST['id_trans'] , 'IMP');
-   $alert = true;
-}
+ 
  
 //par défault le champ de recherche est égal a null:
  $champRecherche = null;
@@ -48,13 +37,13 @@ if (!empty($_POST['recherche-fiche']))
         case 'search':
             if ($_POST['rechercheF'] != "") 
             {
-               $devisList = $Cmd->magicRequestCMD($_POST['rechercheF']);
+               $devisList = $Cmd->magicRequestStatus($_POST['rechercheF'] , 'IMP');
                $champRecherche = $_POST['rechercheF'];
                break;
             }
             else 
             {
-               $devisList = $Cmd->getFromStatusCMD();
+               $devisList = $Cmd->getFromStatusAll('IMP');
                $champRecherche = $_POST['rechercheF'];
                break;
             }
@@ -67,11 +56,11 @@ if (!empty($_POST['recherche-fiche']))
            break;
         
         default:
-           $devisList = $Cmd->getFromStatusCMD();
+           $devisList = $Cmd->getFromStatusAll('IMP');
            break;
     }
    
-} else $devisList = $Cmd->getFromStatusCMD();
+} else $devisList = $Cmd->getFromStatusAll('IMP');
 
 //nombre des fiches dans la liste 
 $NbDevis = count($devisList);
@@ -106,6 +95,6 @@ echo $twig->render('facture.twig',
 'NbDevis'=>$NbDevis,
 'champRecherche'=>$champRecherche,
 'transporteurs'=>$TransportListe,
-'alert'=> $alert
+
 
 ]);

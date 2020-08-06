@@ -161,7 +161,7 @@ class Cmd extends Table {
      $update->execute([ $author , $id ]);
   }
 
-  public function updateTransport($trans , $poids , $paquet ,  $id , $imp){
+  public function updateTransport($trans , $poids , $paquet ,  $id , $imp , $date){
 
     $data = 
     [
@@ -169,12 +169,13 @@ class Cmd extends Table {
       $poids, 
       $paquet , 
       $imp ,
-      $id
+      $date,
+      $id , 
 
     ];
     $update = $this->Db->Pdo->prepare(
       'UPDATE cmd
-       SET cmd__trans =? , cmd__trans_kg =? , cmd__trans_info =? , cmd__etat =?
+       SET cmd__trans =? , cmd__trans_kg =? , cmd__trans_info =? , cmd__etat =? , cmd__date_envoi =? 
 
        WHERE cmd__id = ? ');
     
@@ -277,7 +278,7 @@ class Cmd extends Table {
     return $data;
   }
 
-  public function getFromStatusCMDFT(){
+  public function getFromStatusAll($status){
     $request =$this->Db->Pdo->query("SELECT 
     cmd__id as devis__id ,
     cmd__user__id_devis as devis__user__id ,
@@ -305,46 +306,15 @@ class Cmd extends Table {
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
     LEFT JOIN keyword as k ON cmd__etat = k.kw__value AND  k.kw__type = 'stat'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
-    WHERE cmd__etat = 'CMD'    
+    WHERE cmd__etat = '".$status."'    
     ORDER BY  cmd__date_devis DESC , c.client__societe ASC  LIMIT 200 ");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
   }
 
-  public function getFromStatusCMDBL(){
-    $request =$this->Db->Pdo->query("SELECT 
-    cmd__id as devis__id ,
-    cmd__user__id_devis as devis__user__id ,
-    cmd__date_devis as devis__date_crea, 
-    LPAD(cmd__client__id_fact ,6,0)   as client__id, 
-    cmd__contact__id_fact  as  devis__contact__id,
-    cmd__etat as devis__etat, 
-    cmd__note_client as  devis__note_client , 
-    cmd__note_interne as devis__note_interne,
-    cmd__client__id_livr as devis__id_client_livraison ,
-    cmd__contact__id_livr as  devis__contact_livraison , 
-    cmd__date_cmd,  cmd__date_envoi,
-    cmd__nom_devis, cmd__modele_devis , 
-    k.kw__lib,
-    t.contact__nom, t.contact__prenom, t.contact__email,
-    c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
-    c2.client__societe as client__livraison_societe,
-    c2.client__ville as client__livraison_ville,
-    c2.client__cp as client__livraison_cp , 
-    c2.client__adr1 as client__livraison__adr1 , 
-    u.log_nec , u.user__email_devis as email
-    FROM cmd
-    LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
-    LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
-    LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
-    LEFT JOIN keyword as k ON cmd__etat = k.kw__value AND  k.kw__type = 'stat'
-    LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
-    WHERE cmd__etat = 'IMP'    
-    ORDER BY  cmd__date_devis DESC , c.client__societe ASC  LIMIT 200 ");
-    $data = $request->fetchAll(PDO::FETCH_OBJ);
-    return $data;
-  }
+  
 
+  
   public function getNotCMD(){
     $request =$this->Db->Pdo->query("SELECT 
     cmd__id as devis__id ,
@@ -684,6 +654,78 @@ public function modify(
       return $data;
     }
 
+    public function magicRequestStatus($string , $status){
+
+      $filtre = str_replace("-" , ' ', $string);
+      $filtre = str_replace("'" , ' ' , $filtre);
+      $nb_mots_filtre = str_word_count($filtre , 0 , "0123456789");
+      $mots_filtre = str_word_count($filtre, 1 ,'0123456789');
+
+      if ($nb_mots_filtre > 0 ) {
+        $mode_filtre = true ;
+      }else { $mode_filtre = false ;}
+
+      $operateur = 'AND ';
+
+      $request = "SELECT DISTINCT 
+      cmd__id as devis__id ,
+      cmd__user__id_devis as devis__user__id ,
+      cmd__date_devis as devis__date_crea, 
+      LPAD(cmd__client__id_fact ,6,0)   as client__id,
+      cmd__contact__id_fact  as  devis__contact__id,
+      cmd__etat as devis__etat, 
+      cmd__note_client as  devis__note_client , 
+      cmd__note_interne as devis__note_interne,
+      cmd__client__id_livr as devis__id_client_livraison ,
+      cmd__contact__id_livr as  devis__contact_livraison , 
+      cmd__date_cmd,  cmd__date_envoi,
+      k.kw__lib,
+      t.contact__nom, t.contact__prenom, t.contact__email,
+      c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
+      c2.client__societe as client__livraison_societe,
+      c2.client__ville as client__livraison_ville,
+      c2.client__cp as client__livraison_cp , 
+      c2.client__adr1 as client__livraison__adr1 , 
+      cmd__nom_devis,
+      u.log_nec , u.prenom, u.nom
+      FROM cmd
+      LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
+      LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
+      LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
+      LEFT JOIN keyword as k ON cmd__etat = k.kw__value and k.kw__type = 'stat'
+      LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
+      LEFT JOIN cmd_ligne as l ON l.cmdl__cmd__id = cmd__id ";
+
+      if ($mode_filtre) {
+       $request .=  "WHERE ( cmd__id = '".$mots_filtre[0]."' 
+        OR cmd__nom_devis LIKE '%".$mots_filtre[0]."%' 
+        OR u.prenom LIKE '%".$mots_filtre[0]."%' 
+        OR l.cmdl__designation LIKE '%".$mots_filtre[0]."%'
+        OR l.cmdl__pn LIKE '%".$mots_filtre[0]."%' 
+        OR c.client__societe LIKE '%".$mots_filtre[0]."%' 
+        OR c.client__id = '".$mots_filtre[0]."' ) ";
+
+       for ($i=1; $i < $nb_mots_filtre ; $i++) { 
+          $request .=  $operateur. " ( cmd__id = '".$mots_filtre[$i]."' 
+          OR cmd__nom_devis LIKE '%".$mots_filtre[$i]."%' 
+          OR u.prenom LIKE '%".$mots_filtre[$i]."%' 
+          OR l.cmdl__designation LIKE '%".$mots_filtre[$i]."%'
+          OR l.cmdl__pn LIKE '%".$mots_filtre[$i]."%' 
+          OR c.client__societe LIKE '%".$mots_filtre[$i]."%' 
+          OR c.client__id = '".$mots_filtre[$i]."' ) ";
+       }
+       $request .= "AND ( cmd__etat = '".$status."' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+      }
+      else {
+        $request .= "AND ( cmd__etat = '".$status."' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+      }
+      
+      $send = $this->Db->Pdo->query($request);
+      $data = $send->fetchAll(PDO::FETCH_OBJ);
+      return $data;
+    }
+
+
     public function magicRequest($string){
 
       $filtre = str_replace("-" , ' ', $string);
@@ -986,6 +1028,8 @@ public function modify(
     public function magicRequestFunnyBunny($string , $session  )
     {
 
+      if (!empty($string)) {
+        
       $filtre = str_replace("-" , ' ', $string);
       $filtre = str_replace("'" , ' ' , $filtre);
       $nb_mots_filtre = str_word_count($filtre , 0 , "0123456789");
@@ -1054,7 +1098,7 @@ public function modify(
         }
         elseif ($session == 'BL') 
         {
-          $request .= "AND ( cmd__etat = 'BL' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+          $request .= "AND ( cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
         }
       }
       else 
@@ -1069,159 +1113,70 @@ public function modify(
         }
         elseif ($session == 'BL') 
         {
-          $request .= "AND ( cmd__etat = 'BL' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+          $request .= "AND ( cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
         }
       }
       
       $send = $this->Db->Pdo->query($request);
       $data = $send->fetchAll(PDO::FETCH_OBJ);
       return $data;
-    }
-
-
-
-
-    public function magicRequestCMDFT($string){
-
-      $filtre = str_replace("-" , ' ', $string);
-      $filtre = str_replace("'" , ' ' , $filtre);
-      $nb_mots_filtre = str_word_count($filtre , 0 , "0123456789");
-      $mots_filtre = str_word_count($filtre, 1 ,'0123456789');
-
-      if ($nb_mots_filtre > 0 ) {
-        $mode_filtre = true ;
-      }else { $mode_filtre = false ;}
-
-      $operateur = 'AND ';
-
-      $request = "SELECT DISTINCT 
-      cmd__id as devis__id ,
-      cmd__user__id_devis as devis__user__id ,
-      cmd__date_devis as devis__date_crea, 
-      LPAD(cmd__client__id_fact ,6,0)   as client__id,
-      cmd__contact__id_fact  as  devis__contact__id,
-      cmd__etat as devis__etat, 
-      cmd__note_client as  devis__note_client , 
-      cmd__note_interne as devis__note_interne,
-      cmd__client__id_livr as devis__id_client_livraison ,
-      cmd__contact__id_livr as  devis__contact_livraison , 
-      cmd__date_cmd,  cmd__date_envoi,
-      k.kw__lib,
-      t.contact__nom, t.contact__prenom, t.contact__email,
-      c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
-      c2.client__societe as client__livraison_societe,
-      c2.client__ville as client__livraison_ville,
-      c2.client__cp as client__livraison_cp , 
-      c2.client__adr1 as client__livraison__adr1 , 
-      cmd__nom_devis,
-      u.log_nec , u.prenom, u.nom
-      FROM cmd
-      LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
-      LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
-      LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
-      LEFT JOIN keyword as k ON cmd__etat = k.kw__value and k.kw__type = 'stat'
-      LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
-      LEFT JOIN cmd_ligne as l ON l.cmdl__cmd__id = cmd__id ";
-
-      if ($mode_filtre) {
-       $request .=  "WHERE ( cmd__id = '".$mots_filtre[0]."' 
-        OR cmd__nom_devis LIKE '%".$mots_filtre[0]."%' 
-        OR u.prenom LIKE '%".$mots_filtre[0]."%' 
-        OR l.cmdl__designation LIKE '%".$mots_filtre[0]."%'
-        OR l.cmdl__pn LIKE '%".$mots_filtre[0]."%' 
-        OR c.client__societe LIKE '%".$mots_filtre[0]."%' 
-        OR c.client__id = '".$mots_filtre[0]."' ) ";
-
-       for ($i=1; $i < $nb_mots_filtre ; $i++) { 
-          $request .=  $operateur. " ( cmd__id = '".$mots_filtre[$i]."' 
-          OR cmd__nom_devis LIKE '%".$mots_filtre[$i]."%' 
-          OR u.prenom LIKE '%".$mots_filtre[$i]."%' 
-          OR l.cmdl__designation LIKE '%".$mots_filtre[$i]."%'
-          OR l.cmdl__pn LIKE '%".$mots_filtre[$i]."%' 
-          OR c.client__societe LIKE '%".$mots_filtre[$i]."%' 
-          OR c.client__id = '".$mots_filtre[$i]."' ) ";
-       }
-       $request .= "AND ( cmd__etat = 'CMD' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
       }
-      else {
-        $request.=   "AND ( cmd__etat = 'CMD') ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
-      }
+
+      else{
+        $request = "SELECT 
+        cmd__id as devis__id ,
+        cmd__user__id_devis as devis__user__id ,
+        cmd__date_devis as devis__date_crea, 
+        LPAD(cmd__client__id_fact ,6,0)   as client__id, 
+        cmd__contact__id_fact  as  devis__contact__id,
+        cmd__etat as devis__etat, 
+        cmd__note_client as  devis__note_client , 
+        cmd__note_interne as devis__note_interne,
+        cmd__client__id_livr as devis__id_client_livraison ,
+        cmd__contact__id_livr as  devis__contact_livraison , 
+        cmd__date_cmd,  cmd__date_envoi,
+        cmd__nom_devis, cmd__modele_devis , 
+        k.kw__lib,
+        t.contact__nom, t.contact__prenom, t.contact__email,
+        c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
+        c2.client__societe as client__livraison_societe,
+        c2.client__ville as client__livraison_ville,
+        c2.client__cp as client__livraison_cp , 
+        c2.client__adr1 as client__livraison__adr1 , 
+        u.log_nec , u.user__email_devis as email
+        FROM cmd
+        LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
+        LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
+        LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
+        LEFT JOIN keyword as k ON cmd__etat = k.kw__value AND  k.kw__type = 'stat'
+        LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur ";
+
+        if ($session == 'ALL' ) 
+        {
+          $request .= "WHERE  ( cmd__etat = 'CMD' OR cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+        }
+        elseif ($session == 'FT') 
+        {
+          $request .= "WHERE ( cmd__etat = 'CMD' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+        }
+        elseif ($session == 'BL') 
+        {
+          $request .= "WHERE ( cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+        }
+
       
-      $send = $this->Db->Pdo->query($request);
-      $data = $send->fetchAll(PDO::FETCH_OBJ);
-      return $data;
+        $send = $this->Db->Pdo->query($request);
+        $data = $send->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+
+      }
+
     }
 
-    public function magicRequestCMDBL($string){
 
-      $filtre = str_replace("-" , ' ', $string);
-      $filtre = str_replace("'" , ' ' , $filtre);
-      $nb_mots_filtre = str_word_count($filtre , 0 , "0123456789");
-      $mots_filtre = str_word_count($filtre, 1 ,'0123456789');
 
-      if ($nb_mots_filtre > 0 ) {
-        $mode_filtre = true ;
-      }else { $mode_filtre = false ;}
 
-      $operateur = 'AND ';
-
-      $request = "SELECT DISTINCT 
-      cmd__id as devis__id ,
-      cmd__user__id_devis as devis__user__id ,
-      cmd__date_devis as devis__date_crea, 
-      LPAD(cmd__client__id_fact ,6,0)   as client__id,
-      cmd__contact__id_fact  as  devis__contact__id,
-      cmd__etat as devis__etat, 
-      cmd__note_client as  devis__note_client , 
-      cmd__note_interne as devis__note_interne,
-      cmd__client__id_livr as devis__id_client_livraison ,
-      cmd__contact__id_livr as  devis__contact_livraison , 
-      cmd__date_cmd,  cmd__date_envoi,
-      k.kw__lib,
-      t.contact__nom, t.contact__prenom, t.contact__email,
-      c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
-      c2.client__societe as client__livraison_societe,
-      c2.client__ville as client__livraison_ville,
-      c2.client__cp as client__livraison_cp , 
-      c2.client__adr1 as client__livraison__adr1 , 
-      cmd__nom_devis,
-      u.log_nec , u.prenom, u.nom
-      FROM cmd
-      LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
-      LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
-      LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
-      LEFT JOIN keyword as k ON cmd__etat = k.kw__value and k.kw__type = 'stat'
-      LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
-      LEFT JOIN cmd_ligne as l ON l.cmdl__cmd__id = cmd__id ";
-
-      if ($mode_filtre) {
-       $request .=  "WHERE ( cmd__id = '".$mots_filtre[0]."' 
-        OR cmd__nom_devis LIKE '%".$mots_filtre[0]."%' 
-        OR u.prenom LIKE '%".$mots_filtre[0]."%' 
-        OR l.cmdl__designation LIKE '%".$mots_filtre[0]."%'
-        OR l.cmdl__pn LIKE '%".$mots_filtre[0]."%' 
-        OR c.client__societe LIKE '%".$mots_filtre[0]."%' 
-        OR c.client__id = '".$mots_filtre[0]."' ) ";
-
-       for ($i=1; $i < $nb_mots_filtre ; $i++) { 
-          $request .=  $operateur. " ( cmd__id = '".$mots_filtre[$i]."' 
-          OR cmd__nom_devis LIKE '%".$mots_filtre[$i]."%' 
-          OR u.prenom LIKE '%".$mots_filtre[$i]."%' 
-          OR l.cmdl__designation LIKE '%".$mots_filtre[$i]."%'
-          OR l.cmdl__pn LIKE '%".$mots_filtre[$i]."%' 
-          OR c.client__societe LIKE '%".$mots_filtre[$i]."%' 
-          OR c.client__id = '".$mots_filtre[$i]."' ) ";
-       }
-       $request .= "AND ( cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
-      }
-      else {
-        $request.=   "AND ( cmd__etat = 'IMP') ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
-      }
-      
-      $send = $this->Db->Pdo->query($request);
-      $data = $send->fetchAll(PDO::FETCH_OBJ);
-      return $data;
-    }
+    
 
 
 

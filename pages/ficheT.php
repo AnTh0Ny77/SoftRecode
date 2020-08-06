@@ -29,13 +29,13 @@ session_start();
 
 
 // determine la préférence de l'utilisateur avec les 2 checkboxs :
- $_SESSION['searchFT'] = 'ALL';
-
- if (empty($_POST['ftCheck']) && empty($_POST['blCheck']) ) 
- {
+if (empty($_SESSION['searchFT'])) 
+{
    $_SESSION['searchFT'] = 'ALL';
- }
- elseif (!empty($_POST['ftCheck']) && !empty($_POST['blCheck']) ) 
+}
+
+
+if (!empty($_POST['ftCheck']) && !empty($_POST['blCheck']) ) 
  {
    $_SESSION['searchFT'] = 'ALL';
  }
@@ -50,140 +50,41 @@ session_start();
 
 $sessionUser = $_SESSION['searchFT'];
 
-//switch case pour la variable de sessions:
-switch ($_SESSION['searchFT']) {
-   case 'ALL':
-                // variable qui determine la liste des devis à afficher:
-               if (!empty($_POST['recherche-fiche'])) 
-               {
-                  switch ($_POST['recherche-fiche']) {
-                     case 'search':
-                           if ($_POST['rechercheF'] != "") 
-                           {
-                              $devisList = $Cmd->magicRequestCMD($_POST['rechercheF']);
-                              $champRecherche = $_POST['rechercheF'];
-                              break;
-                           }
-                           else 
-                           {
-                              $devisList = $Cmd->getFromStatusCMD();
-                              $champRecherche = $_POST['rechercheF'];
-                              break;
-                           }
-                     case 'id-fiche':
-                        $devisList = [];
-                        $devisSeul = $Cmd->GetById(intval($_POST['rechercheF']));
-                        $champRecherche = $_POST['rechercheF'];
-                        array_push($devisList, $devisSeul);
-                        break;
-                     
-                     default:
-                        $devisList = $Cmd->getFromStatusCMD();
-                        break;
-                  }
-                  
-               } else $devisList = $Cmd->getFromStatusCMD();
-      break;
-   
-      case 'FT':
-               // variable qui determine la liste des devis à afficher:
-               if (!empty($_POST['recherche-fiche'])) 
-               {
-                  switch ($_POST['recherche-fiche']) {
-                     case 'search':
-                           if ($_POST['rechercheF'] != "") 
-                           {
-                              $devisList = $Cmd->magicRequestCMDFT($_POST['rechercheF']);
-                              $champRecherche = $_POST['rechercheF'];
-                              break;
-                           }
-                           else 
-                           {
-                              $devisList = $Cmd->getFromStatusCMDFT();
-                              $champRecherche = $_POST['rechercheF'];
-                              break;
-                           }
-                     case 'id-fiche':
-                        $devisList = [];
-                        $devisSeul = $Cmd->GetById(intval($_POST['rechercheF']));
-                        $champRecherche = $_POST['rechercheF'];
-                        array_push($devisList, $devisSeul);
-                        break;
-                     
-                     default:
-                        $devisList = $Cmd->getFromStatusCMDFT();
-                        break;
-                  }
-                  
-               } else $devisList = $Cmd->getFromStatusCMDFT();
-   break;
 
-   case 'BL':
-      // variable qui determine la liste des devis à afficher:
-      if (!empty($_POST['recherche-fiche'])) 
-      {
-         switch ($_POST['recherche-fiche']) {
-            case 'search':
-                  if ($_POST['rechercheF'] != "") 
-                  {
-                     $devisList = $Cmd->magicRequestCMDBL($_POST['rechercheF']);
-                     $champRecherche = $_POST['rechercheF'];
-                     break;
-                  }
-                  else 
-                  {
-                     $devisList = $Cmd->getFromStatusCMDBL();
-                     $champRecherche = $_POST['rechercheF'];
-                     break;
-                  }
-            case 'id-fiche':
+
+// variable qui determine la liste des devis à afficher:
+if (!empty($_POST['recherche-fiche'])) 
+{
+   switch ($_POST['recherche-fiche']) 
+   {
+         case 'search':
+               if ($_POST['rechercheF'] != "") 
+               {
+                  $devisList = $Cmd->magicRequestFunnyBunny($_POST['rechercheF'] , $sessionUser);
+                  $champRecherche = $_POST['rechercheF'];
+         break;
+               }
+               else 
+               {
+               $devisList = $Cmd->magicRequestFunnyBunny('' , $sessionUser);
+               $champRecherche = $_POST['rechercheF'];
+         break;
+               }
+
+         case 'id-fiche':
                $devisList = [];
                $devisSeul = $Cmd->GetById(intval($_POST['rechercheF']));
                $champRecherche = $_POST['rechercheF'];
                array_push($devisList, $devisSeul);
-               break;
-            
-            default:
-               $devisList = $Cmd->getFromStatusCMDBL();
-               break;
-         }
-         
-      } else $devisList = $Cmd->getFromStatusCMDBL();
-break;
-   
-   default:
-               // variable qui determine la liste des devis à afficher:
-               if (!empty($_POST['recherche-fiche'])) 
-               {
-                  switch ($_POST['recherche-fiche']) {
-                     case 'search':
-                           if ($_POST['rechercheF'] != "") 
-                           {
-                              $devisList = $Cmd->magicRequestCMD($_POST['rechercheF']);
-                              $champRecherche = $_POST['rechercheF'];
-                              break;
-                           }
-                           else 
-                           {
-                              $devisList = $Cmd->getFromStatusCMD();
-                              $champRecherche = $_POST['rechercheF'];
-                              break;
-                           }
-                     case 'id-fiche':
-                        $devisList = [];
-                        $devisSeul = $Cmd->GetById(intval($_POST['rechercheF']));
-                        $champRecherche = $_POST['rechercheF'];
-                        array_push($devisList, $devisSeul);
-                        break;
+         break;
                      
-                     default:
-                        $devisList = $Cmd->getFromStatusCMD();
-                        break;
-                  }
+         default:
+            $devisList = $Cmd->magicRequestFunnyBunny('' , $sessionUser);
+         break;
+   }
                   
-               } else $devisList = $Cmd->getFromStatusCMD();
-      break;
-}
+   } else $devisList = $Cmd->magicRequestFunnyBunny('' , $sessionUser);
+    
  
 
 
