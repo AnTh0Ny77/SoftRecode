@@ -108,9 +108,10 @@ else
             
              </div>
             </div>
-         
+           
             <div class="div" style="text-align: left;  width: 45% ;"><h5>Commande N°:<strong> <?php echo $temp->devis__id ?></strong><br></h5>
             <?php 
+             echo "<div><button class='btn btn-sm btn-success' id='ClientClick' value='".$temp->devis__id."' ><i class='far fa-magic'></i></i></button></div> ";
              // si une societe de livraion est présente 
              if ($societeLivraison) {
 
@@ -147,7 +148,7 @@ else
                     }  
              } 
 
-
+            
 
              else{
                 if ($temp->devis__contact__id) {
@@ -161,6 +162,7 @@ else
                 }
 
              } 
+            
              ?>
         
         <div class="d-flex flex-column">
@@ -178,16 +180,31 @@ else
        
     </div>
 
-    <div class="div" style="display: flex; justify-content: center; margin-top: 10%;">
-        <table CELLSPACING=0 style="width: 95%;" class="table">
+    <div class="div" style="display: flex; justify-content: center; margin-top: 5%;">
+        <table CELLSPACING=0 style="width: 95%;  margin-top : 30px;" class="table">
+
+
+        <?php
             
-                <tr style=" margin-top : 50px; background-color: #dedede; vertical-align: top;" >
-                    <td style="width: 13%; text-align: left;">Prestation<br>Type<br>Garantie</>
-                    <td style="width: 50%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
-                    <td style="text-align: right; width: 12%"><strong>CMD</strong><br>Livr</td>
-                </tr>
+        foreach ($arrayOfDevisLigne as $item) {
+                        if(intval($item->cmdl__garantie_option) > intval($item->devl__mois_garantie)) 
+                        {
+                        $temp = $item->cmdl__garantie_option ;
+                        } 
+                        else 
+                        { 
+                        $temp = intval($item->devl__mois_garantie);
+                        }
+                        
+                                echo "<tr style='font-size: 95%;'>
+                                <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='".$item->devl__id."'  '><i class='far fa-magic'></i></i></button></td>
+                                <td style='border-bottom: 1px #ccc solid; text-align:left; '>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois </td>
+                                <td style='border-bottom: 1px #ccc solid; '><strong> ".$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." <br>" .$item->devl__note_interne ." </td>
+                                <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> "  . $item->devl_quantite. " </strong> </td>
+                                </tr>";
+                    }
            
-               
+               ?>
         </table> 
      </div>
      <div class="d-flex justify-content-end mr-3">

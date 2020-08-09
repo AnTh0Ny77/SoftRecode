@@ -27,7 +27,7 @@ class Database {
 
         if(!isset($this->Pdo)){
             try {
-                $pdo = new PDO('mysql:dbname=devis;host=localhost', 'root', 'root' ,  array(1002 => 'SET NAMES utf8'));
+                $pdo = new PDO('mysql:dbname=devis;host=localhost', 'root', '' ,  array(1002 => 'SET NAMES utf8'));
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $this->Pdo = $pdo;
                 return $this->Pdo;

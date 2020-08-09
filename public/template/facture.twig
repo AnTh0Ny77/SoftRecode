@@ -5,6 +5,8 @@
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
 <link rel="stylesheet" href="public/css/dashboard.css">
   {% endblock %}
  
@@ -122,39 +124,166 @@
 
               <div id="iframeFacture" class="border-0" src="" width="100%" >
               </div>
+        </div>
+      </div>
+      </div>
+    </div>
 
+
+
+
+ {#███╗   ███╗ ██████╗ ██████╗  █████╗ ██╗     ███████╗
+  ████╗ ████║██╔═══██╗██╔══██╗██╔══██╗██║     ██╔════╝
+  ██╔████╔██║██║   ██║██║  ██║███████║██║     ███████╗
+  ██║╚██╔╝██║██║   ██║██║  ██║██╔══██║██║     ╚════██║
+  ██║ ╚═╝ ██║╚██████╔╝██████╔╝██║  ██║███████╗███████║
+  ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝#}
+
+
+
+
+{# MODAL changement de contact et d'adresse de livraison #}
+  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalContact">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+    {#modal header#}
+     <div class="modal-header">
+        <h5 class="modal-title" id="titreClient">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+
+    {# modal body form#}
+    <div>
+
+
+    {# partie supérieure du modal #}
+<div class="d-flex my-2 mx-2 justify-content-between">
+
+      {# contenu de la facturation deja en place#}
+  <div class='card px-2 py-2'>
+      <h4><span class="badge badge-secondary">Société Facturée:</span><h4>
+      <h5 id='clientName'></h5>
+      <p id='textClient'></p>
+      </div>
+
+
+      {#contenu du changement de contact #}
+    <div class="d-flex justify-content-start col-9 ">
+
+      <div class=' px-2 py-2 col-12'>
+        <h4><span class="badge badge-secondary">Contact:</span><h4>
+          <select class="selectpicker show-tick  form-control" id="selectContact">
+            
+          </select>
+      </div>
+        
+    </div>
+  </div>    
+
+  {# fin de partie superieure#}
+  </div>
+
+  <div class='px-2 py-2'>
+    <h4><span class="badge badge-secondary">Changer Societe:</span><h4>
+    {# table societe #}
+  </div>
+
+  <div class='mx-2'>
+
+  <table id="factureClient" class="table  display " style="width:100%"> 
+              <thead>
+              <tr><th>Id</th><th>Nom</th><th>CP</th><th>Ville</th></tr>
+              </thead>
+               
+              <tbody class="trClick">
+              </tbody>
+  </table>
+
+</div>
+
+  </div>
+</div>
+</div>
+
+{# MODAL de lignes  #}
+  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalLigne">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="titreLigne"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
         </div>
 
-       
+        <div class='d-flex justify-content-between py-3 px-3 border-bottom'>
 
-       
-      </div>
-      </div>
-
-    </div>
-    <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalFT">
-      <div class="modal-dialog modal-lg ">
-          <div class="modal-content">
-
-            <div class="modal-header">
-              <h5 class="modal-title" id="titreLigne" ></h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+            <div class="">
+              <div class="text-center">
+              <h4><span class="badge badge-secondary">Quantité commandée:</span><h4>
+              </div>
+                <div class="d-flex py-3 px-2 justify-content-around">
+                  <button class="btn btn-primary rounded-circle ">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                    <input type="text" class="form-control bg-dark text-white font-weight-bold text-center w-25" readonly/>
+                  <button class="btn btn-primary rounded-circle ">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
             </div>
 
-            <div class="modal-body">
-              <form method="POST" action="ficheTravail">
-              <input type="hidden" name="ligneID" id="ligneID" value="">
-              <h6>Commentaire Interne</h6>
-              <textarea  id="ligneCom" name="ligneCom" placeholder="Commentaire interne...." ></textarea>
-              <button type="submit" class="btn btn-success mt-3 ">Modifer</button>
-              </form>
-            
+            <div>
+             <div class="text-center">
+              <h4><span class="badge badge-secondary">Quantité livrée:</span><h4>
+              </div>
+                <div class="d-flex py-3 px-2 justify-content-around">
+                  <button class="btn btn-secondary rounded-circle">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                    <input type="text" class="form-control bg-dark text-white font-weight-bold text-center w-25" readonly/>
+                  <button class="btn btn-secondary rounded-circle">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
             </div>
+
+            <div>
+            <div class="text-center">
+              <h4><span class="badge badge-secondary">Quantité facturée:</span><h4>
+              </div>
+                <div class="d-flex py-3 px-2 justify-content-around">
+                  <button class="btn btn-success rounded-circle">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                    <input type="text" class="form-control bg-dark text-white font-weight-bold text-center w-25" readonly/>
+                  <button class="btn btn-success rounded-circle">
+                    <i class="fas fa-plus"></i>
+                  </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-around my-3 py-3 px-3">
+          <div>
+              <h4><span class="badge badge-secondary">Prix hors-taxes:</span><h4>
+              <input type="text" class="form-control bg-dark text-white font-weight-bold text-right" />
           </div>
+          <div class="mb-1 align-self-end">
+              <button class="btn btn-success btn-lg  ">Valider</button>
+          </div>
+        </div>
+
       </div>
-</div>
+    </div> 
+  </div>
+                                                      
+
+   
 
     </main>
      {% endblock %}
@@ -166,6 +295,7 @@
 <!-- jQuery first, then Bootstrap JS -->
 <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="public/js/facture.js"></script>
 
 

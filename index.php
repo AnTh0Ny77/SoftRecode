@@ -94,6 +94,9 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
 
     case '/SoftRecode/AjaxDevis';
       require __DIR__ .'/pages/ajax/ajaxDevis.php'; break;
+    
+    case '/SoftRecode/AjaxDevisFacture';
+      require __DIR__ .'/pages/ajax/ajaxDevisFacture.php'; break;
 
     case '/SoftRecode/commande';
       require __DIR__ .'/pages/commandValid.php'; break;
