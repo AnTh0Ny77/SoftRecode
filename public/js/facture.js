@@ -92,6 +92,8 @@ $(function () {
                     success: function (data) {
                         dataSet = JSON.parse(data);
                         $('#titreLigne').text(dataSet.famille__lib+ " " + dataSet.modele + " "  + dataSet.marque);
+                        $('#qteCMD').val(dataSet.devl_quantite);
+                        $('#prixLigne').val(dataSet.devl_puht);
                         $('#modalLigne').modal('show')
                         
               

@@ -227,11 +227,11 @@
               <h4><span class="badge badge-secondary">Quantité commandée:</span><h4>
               </div>
                 <div class="d-flex py-3 px-2 justify-content-around">
-                  <button class="btn btn-primary rounded-circle ">
+                  <button class="btn btn-primary rounded-circle " id="minusCMD">
                     <i class="fas fa-minus"></i>
                   </button>
-                    <input type="text" class="form-control bg-dark text-white font-weight-bold text-center w-25" readonly/>
-                  <button class="btn btn-primary rounded-circle ">
+                    <input type="text" id="qteCMD" class="form-control bg-dark text-white font-weight-bold text-center w-25" readonly/>
+                  <button class="btn btn-primary rounded-circle " id="plusCMD">
                     <i class="fas fa-plus"></i>
                   </button>
                 </div>
@@ -242,11 +242,11 @@
               <h4><span class="badge badge-secondary">Quantité livrée:</span><h4>
               </div>
                 <div class="d-flex py-3 px-2 justify-content-around">
-                  <button class="btn btn-secondary rounded-circle">
+                  <button class="btn btn-secondary rounded-circle" id="minusLVR">
                     <i class="fas fa-minus"></i>
                   </button>
-                    <input type="text" class="form-control bg-dark text-white font-weight-bold text-center w-25" readonly/>
-                  <button class="btn btn-secondary rounded-circle">
+                    <input type="text" id="qteLVR" class="form-control bg-dark text-white font-weight-bold text-center w-25" value="00" readonly/>
+                  <button class="btn btn-secondary rounded-circle" id="plusLVR">
                     <i class="fas fa-plus"></i>
                   </button>
                 </div>
@@ -257,11 +257,11 @@
               <h4><span class="badge badge-secondary">Quantité facturée:</span><h4>
               </div>
                 <div class="d-flex py-3 px-2 justify-content-around">
-                  <button class="btn btn-success rounded-circle">
+                  <button class="btn btn-success rounded-circle" id="minusFTC">
                     <i class="fas fa-minus"></i>
                   </button>
-                    <input type="text" class="form-control bg-dark text-white font-weight-bold text-center w-25" readonly/>
-                  <button class="btn btn-success rounded-circle">
+                    <input type="text" id="qteFTC" class="form-control bg-dark text-white font-weight-bold text-center w-25" value="00" readonly>
+                  <button class="btn btn-success rounded-circle" id="plusFTC">
                     <i class="fas fa-plus"></i>
                   </button>
                 </div>
@@ -271,9 +271,9 @@
         <div class="d-flex justify-content-around my-3 py-3 px-3">
           <div>
               <h4><span class="badge badge-secondary">Prix hors-taxes:</span><h4>
-              <input type="text" class="form-control bg-dark text-white font-weight-bold text-right" />
+              <input type="text" id="prixLigne" class="form-control bg-dark text-white font-weight-bold text-right" />
           </div>
-          <div class="mb-1 align-self-end">
+          <div class="mb-1 align-self-end d-flex justify-content-end">
               <button class="btn btn-success btn-lg  ">Valider</button>
           </div>
         </div>
