@@ -38,6 +38,15 @@ if(!empty($_POST['poids']) && !empty($_POST['transporteur']))
       $paquet = intval($_POST['paquets']);
    }
    $Cmd->updateTransport($_POST['transporteur'] , floatval($_POST['poids']), $paquet, $_POST['id_trans'] , 'IMP' , $date);
+
+    $arrayTrans = $Cmd->devisLigne($_POST['id_trans']);
+
+    foreach ($arrayTrans as  $ligne) 
+    {
+       
+       $Cmd->updateLigne($ligne->devl_quantite, 'cmdl__qte_livr', $ligne->devl__id );
+    }
+  
    $alert = true;
 }
  

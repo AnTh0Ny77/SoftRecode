@@ -61,7 +61,7 @@ $(function () {
     let dataRow =factureT.row(this).data();
     $('#iframeFacture').attr('src', '');
     $('#loaderFacture').show();
-    // requete Ajax sur le devis selectionné dans la page mes devis : 
+    // requete Ajax 
     $.ajax({
         type: 'post',
         url: "factureVisio",
@@ -72,7 +72,7 @@ $(function () {
         success: function (data) 
         {
             dataSet = JSON.parse(data);
-            
+
             $('#loaderFacture').hide();
             $('#iframeFacture').html(dataSet);
             $('#iframeFacture').show();
@@ -93,7 +93,13 @@ $(function () {
                         dataSet = JSON.parse(data);
                         $('#titreLigne').text(dataSet.famille__lib+ " " + dataSet.modele + " "  + dataSet.marque);
                         $('#qteCMD').val(dataSet.devl_quantite);
+                        $('#qteLVR').val(dataSet.cmdl__qte_livr);
+
+                        $('#qteFTC').val(0);
                         $('#prixLigne').val(dataSet.devl_puht);
+                        //function clicks pour les différentes quantité: 
+
+                        
                         $('#modalLigne').modal('show')
                         
               
@@ -147,6 +153,8 @@ $(function () {
 
                 })
             })
+
+            
             
         },
         error: function (err) {
@@ -194,5 +202,51 @@ $(function () {
 if ($('#factureTable').length > 0) {
     selectFirst();
 }
+
+
+//commandés:
+let minCMD = function(){
+    $('#minusCMD').on('click' , function(){
+        let qteMinus =  parseInt($('#qteCMD').val());
+        qteMinus = qteMinus -1 ;
+        $('#qteCMD').val(qteMinus); 
+    })
+}
+minCMD();
+
+
+$('#plusCMD').on('click' , function(){
+    let qtePlus =  parseInt($('#qteCMD').val());
+    qtePlus += 1 ;
+    $('#qteCMD').val(qtePlus); 
+})
+
+//Livrée:
+$('#minusLVR').on('click' , function(){
+    let qteMinus =  parseInt($('#qteLVR').val());
+    qteMinus -= 1 ;
+    $('#qteLVR').val(qteMinus); 
+})
+
+$('#plusLVR').on('click' , function(){
+    let qtePlus =  parseInt($('#qteLVR').val());
+    qtePlus += 1 ;
+    $('#qteLVR').val(qtePlus); 
+})
+
+//Facturée:
+$('#minusFTC').on('click' , function(){
+    let qteMinus =  parseInt($('#qteFTC').val());
+    qteMinus -= 1 ;
+    $('#qteFTC').val(qteMinus); 
+})
+
+
+$('#plusFTC').on('click' , function(){
+    let qtePlus =  parseInt($('#qteFTC').val());
+    qtePlus += 1 ;
+    $('#qteFTC').val(qtePlus); 
+})
+
 
 })

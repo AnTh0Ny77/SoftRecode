@@ -161,7 +161,7 @@ class Cmd extends Table {
      $update->execute([ $author , $id ]);
   }
 
-  public function updateTransport($trans , $poids , $paquet ,  $id , $imp , $date){
+  public function updateTransport($trans , $poids , $paquet ,  $id , $imp , $date ){
 
     $data = 
     [
@@ -175,10 +175,28 @@ class Cmd extends Table {
     ];
     $update = $this->Db->Pdo->prepare(
       'UPDATE cmd
-       SET cmd__trans =? , cmd__trans_kg =? , cmd__trans_info =? , cmd__etat =? , cmd__date_envoi =? 
+       SET cmd__trans =? , cmd__trans_kg =? , cmd__trans_info =? , cmd__etat =? , cmd__date_envoi =?  
 
        WHERE cmd__id = ? ');
     
+    $update->execute($data);
+
+  }
+
+  public function updateLigne($qte , $column,  $id )
+  {
+    $data = 
+    [
+      $qte,
+      $id ,
+    ];
+
+    $update = $this->Db->Pdo->prepare(
+      'UPDATE cmd_ligne 
+      SET '. $column .' = ?
+      WHERE cmdl__id = ? '
+    );
+
     $update->execute($data);
 
   }
@@ -593,7 +611,7 @@ public function modify(
       cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
       cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
       cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
-      cmdl__garantie_option,
+      cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact,
       k.kw__lib , k.kw__value , 
       f.afmm__famille as famille,
       f.afmm__modele as modele,
@@ -624,7 +642,7 @@ public function modify(
       cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
       cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
       cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
-      cmdl__garantie_option,
+      cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact,
       k.kw__lib , k.kw__value , 
       f.afmm__famille as famille,
       f.afmm__modele as modele,
