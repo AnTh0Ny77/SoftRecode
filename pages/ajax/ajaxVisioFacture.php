@@ -94,15 +94,7 @@ else
                 echo ' (Tél: '. $user->postefix .')';
                 }  ?> 
              </h6>
-             <?php
-            
-
-             if (!empty($temp->cmd__code_cmd_client)) 
-             {
-                echo 'code cmd client: <b>'.  $temp->cmd__code_cmd_client . '</b>';
-             }
-
-             ?>
+          
              
              </td>
             
@@ -111,10 +103,9 @@ else
            
             <div class="div" style="text-align: left;  width: 45% ;"><h5>Commande N°:<strong> <?php echo $temp->devis__id ?></strong><br></h5>
             <?php 
-             echo "<div><button class='btn btn-sm btn-success' id='ClientClick' value='".$temp->devis__id."' ><i class='far fa-magic'></i></i></button></div> ";
+             echo "<div><button class='btn btn-sm btn-success' id='ClientClick' value='".$temp->devis__id."' ><i class='far fa-magic'></i></button></div> ";
              // si une societe de livraion est présente 
-             if ($societeLivraison) {
-
+             if ($temp->devis__id_client_livraison != $temp->client__id) {
                     if ($temp->devis__contact__id) {
                         // si un contact est présent dans l'adresse de facturation :
                         $contact = $Contact->getOne($temp->devis__contact__id);
@@ -186,31 +177,250 @@ else
 
         <?php
             
-        foreach ($arrayOfDevisLigne as $item) {
-                        if(intval($item->cmdl__garantie_option) > intval($item->devl__mois_garantie)) 
+        foreach ($arrayOfDevisLigne as $item) 
+        {
+            // si la quantité facturée est renseignée : compare les trois quantité et affiche un background rouge si pas égales
+            // si la quantite facturé n'est pas renseigné : compare les 2 autres et attribues la livr à la place de la facturée gestion de background roouge 
+           if (!empty($item->cmdl__qte_fact)) 
+           {
+                if ($item->cmdl__qte_fact == $item->cmdl__qte_livr && $item->cmdl__qte_livr == $item->devl_quantite && $item->devl_quantite == $item->cmdl__qte_fact) 
+                {
+                    echo "<tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='".$item->devl__id."'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $item->devl__mois_garantie ." mois </td>
+                    <td style='border-bottom: 1px #ccc solid; '><strong> " . $item->devl_quantite ." x " .$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." <br>" .$item->devl__note_interne ." </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> " ;
+                    if (!empty($item->cmdl__garantie_option)) 
+                    {
+                        if (!empty($item->cmdl__qte_fact))
                         {
-                        $temp = $item->cmdl__garantie_option ;
+                            echo $item->devl_quantite. " - " .$item->cmdl__qte_livr. " - " .$item->cmdl__qte_fact. " <br> ".$item->devl_puht ." €  </strong> <br>
+                            extension : <strong>".$item->cmdl__garantie_option."</strong> mois <strong>".$item->cmdl__garantie_puht." €</strong></td></tr>";  
                         } 
-                        else 
-                        { 
-                        $temp = intval($item->devl__mois_garantie);
-                        }
-                        
-                                echo "<tr style='font-size: 95%;'>
-                                <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='".$item->devl__id."'  '><i class='far fa-magic'></i></i></button></td>
-                                <td style='border-bottom: 1px #ccc solid; text-align:left; '>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois </td>
-                                <td style='border-bottom: 1px #ccc solid; '><strong> ".$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." <br>" .$item->devl__note_interne ." </td>
-                                <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> "  . $item->devl_quantite. " </strong> </td>
-                                </tr>";
+                        else
+                        {
+                            echo $item->devl_quantite. " - " .$item->cmdl__qte_livr. " - " .$item->cmdl__qte_livr. " <br> ".$item->devl_puht . " € </strong> <br>
+                            extension : <strong>".$item->cmdl__garantie_option."</strong> mois <strong>".$item->cmdl__garantie_puht." €</strong></td></tr>";  
+                        } 
                     }
+                    else 
+                    {
+                        if (!empty($item->cmdl__qte_fact))
+                        {
+                            echo $item->devl_quantite. " - " .$item->cmdl__qte_livr. " - " .$item->cmdl__qte_fact. " <br> ".$item->devl_puht ." €  </strong> </td></tr>";                    
+                        } else echo $item->devl_quantite. " - " .$item->cmdl__qte_livr. " - " .$item->cmdl__qte_livr. " <br> ".$item->devl_puht . " € </strong> </td></tr>";
+                    }
+                }
+           
+                else 
+                {
+                    echo "<tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='".$item->devl__id."'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $item->devl__mois_garantie ." mois </td>
+                    <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> " . $item->devl_quantite ." x " .$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." <br>" .$item->devl__note_interne ." </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  background-color: #ffeded;'><strong> " ;
+                    if (!empty($item->cmdl__garantie_option)) 
+                    {
+                        if (!empty($item->cmdl__qte_fact))
+                        {
+                            echo $item->devl_quantite. " - " .$item->cmdl__qte_livr. " - " .$item->cmdl__qte_fact. " <br> ".$item->devl_puht ." €  </strong> <br>
+                            extension : <strong>".$item->cmdl__garantie_option."</strong> mois <strong>".$item->cmdl__garantie_puht." €</strong></td></tr>";  
+                        } 
+                        else
+                        {
+                            echo $item->devl_quantite. " - " .$item->cmdl__qte_livr. " - " .$item->cmdl__qte_livr. " <br> ".$item->devl_puht . " € </strong> <br>
+                            extension : <strong>".$item->cmdl__garantie_option."</strong> mois <strong>".$item->cmdl__garantie_puht." €</strong></td></tr>";  
+                        } 
+                    }
+                    else 
+                    {
+                        if (!empty($item->cmdl__qte_fact))
+                        {
+                            echo $item->devl_quantite. " - " .$item->cmdl__qte_livr. " - " .$item->cmdl__qte_fact. " <br> ".$item->devl_puht ." €  </strong> </td></tr>";                    
+                        } else echo $item->devl_quantite. " - " .$item->cmdl__qte_livr. " - " .$item->cmdl__qte_livr. " <br> ".$item->devl_puht . " € </strong> </td></tr>";
+                    }
+                } 
+           
+            }
+            else 
+            {
+                if ( $item->cmdl__qte_livr == $item->devl_quantite) 
+                {
+                    echo "<tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='".$item->devl__id."'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $item->devl__mois_garantie ." mois </td>
+                    <td style='border-bottom: 1px #ccc solid; '><strong> " . $item->devl_quantite ." x " .$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." <br>" .$item->devl__note_interne ." </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> " ;
+                    if (!empty($item->cmdl__garantie_option)) 
+                    {
+                        if (!empty($item->cmdl__qte_fact))
+                        {
+                            echo $item->devl_quantite. " - " .$item->cmdl__qte_livr. " - " .$item->cmdl__qte_fact. " <br> ".$item->devl_puht ." €  </strong> <br>
+                            extension : <strong>".$item->cmdl__garantie_option."</strong> mois <strong>".$item->cmdl__garantie_puht." €</strong></td></tr>";  
+                        } 
+                        else
+                        {
+                            echo $item->devl_quantite. " - " .$item->cmdl__qte_livr. " - " .$item->cmdl__qte_livr. " <br> ".$item->devl_puht . " € </strong> <br>
+                            extension : <strong>".$item->cmdl__garantie_option."</strong> mois <strong>".$item->cmdl__garantie_puht." €</strong></td></tr>";  
+                        } 
+                    }
+                    else 
+                    {
+                        if (!empty($item->cmdl__qte_fact))
+                        {
+                            echo $item->devl_quantite. " - " .$item->cmdl__qte_livr. " - " .$item->cmdl__qte_fact. " <br> ".$item->devl_puht ." €  </strong> </td></tr>";                    
+                        } else echo $item->devl_quantite. " - " .$item->cmdl__qte_livr. " - " .$item->cmdl__qte_livr. " <br> ".$item->devl_puht . " € </strong> </td></tr>";
+                    }
+                }
+           
+                else 
+                {
+                    echo "<tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='".$item->devl__id."'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $item->devl__mois_garantie ." mois </td>
+                    <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> " . $item->devl_quantite ." x " .$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." <br>" .$item->devl__note_interne ." </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  background-color: #ffeded;'><strong> " ;
+                    if (!empty($item->cmdl__garantie_option)) 
+                    {
+                        if (!empty($item->cmdl__qte_fact))
+                        {
+                            echo $item->devl_quantite. " - " .$item->cmdl__qte_livr. " - " .$item->cmdl__qte_fact. " <br> ".$item->devl_puht ." €  </strong> <br>
+                            extension : <strong>".$item->cmdl__garantie_option."</strong> mois <strong>".$item->cmdl__garantie_puht." €</strong></td></tr>";  
+                        } 
+                        else
+                        {
+                            echo $item->devl_quantite. " - " .$item->cmdl__qte_livr. " - " .$item->cmdl__qte_livr. " <br> ".$item->devl_puht . " € </strong> <br>
+                            extension : <strong>".$item->cmdl__garantie_option."</strong> mois <strong>".$item->cmdl__garantie_puht." €</strong></td></tr>";  
+                        } 
+                    }
+                    else 
+                    {
+                        if (!empty($item->cmdl__qte_fact))
+                        {
+                            echo $item->devl_quantite. " - " .$item->cmdl__qte_livr. " - " .$item->cmdl__qte_fact. " <br> ".$item->devl_puht ." €  </strong> </td></tr>";                    
+                        } else echo $item->devl_quantite. " - " .$item->cmdl__qte_livr. " - " .$item->cmdl__qte_livr. " <br> ".$item->devl_puht . " € </strong> </td></tr>";
+                    }
+                } 
+
+            }
+          
+        }
            
                ?>
         </table> 
      </div>
-     <div class="d-flex justify-content-end mr-3">
+
+
+        
+     <div class="d-flex mt-5 justify-content-between">
+
+     <div class=" card  px-2 mx-1 col-6">
+        <div>
+            <div class="my-4">
+               <div class="d-flex justify-content-between">
+                   <div>
+                        TVA: 
+                        <?php 
+                        echo "<b>".number_format($temp->cmd__tva,2) . " %</b>"; 
+                        ?>
+                    </div>
+                    <div>
+                        <button value="<?php echo $temp->devis__id ?>" class="btn btn-success btn-sm" id="buttonModalTVA"><i class='far fa-magic'></i></button>
+                        
+                    </div>
+               </div>
+            </div>
+            <hr class="my-4">
+            <p>
+                <?php
+
+                    if (!empty($temp->cmd__code_cmd_client)) 
+                    {
+                    echo 'code cmd client: <b>'.  $temp->cmd__code_cmd_client . '</b>';
+                    }
+                    else echo 'Pas de code commande client';
+                
+                ?>
+            </p>
+            <hr class="my-4">
+            <p>
+                <?php
+                    if (!empty($temp->devl__note_client)) 
+                    {
+                    echo   $temp->devl__note_client ;
+                    }
+                    else echo 'Pas de commentaire Client';
+                ?>
+            </p>
+        </div>
+     </div>
+
+    
+
+
+
+
+
+
+
+
+     <div class="card px-4 py-2 mx-1 col-6">
+        <div>
+            <h3>Total :</h3>
+            <hr class="mx-2">
+        </div>
+
+        <div>
+        <table class="table table-sm">
+            <thead>
+                    <tr>
+                    <th scope="col">Prix € HT</th>
+                    <th scope="col">Taux TVA</th>
+                    <th scope="col">Montant TVA</th>
+                    <th scope="col">Total TTC</th>
+                    </tr>
+            </thead>
+            <tbody> 
+                <tr>  
+            <?php
+
+                $totaux = Pdfunctions::totalFacture($temp, $arrayOfDevisLigne);
+
+                echo "<td class='text-right'><b>".number_format($totaux[0] , 2)." €</b></td>";
+                echo "<td class='text-right'>".number_format($totaux[1] , 2)." %</td>";
+                echo "<td class='text-right'>".number_format($totaux[2] , 2)." €</td>";
+                echo "<td class='text-right'><b>".number_format($totaux[3] , 2)." €</b></td>";
+               
+            
+            ?>
+            </tr>
+            </tbody>
+    </table>
+
+           
+
+        </div>
+
+     </div>
+
+
+
 
      
-       
+
+
+
+
+     </div>
+
+
+
+
+
+
+
+
+     <div class="d-flex justify-content-end mr-3"> 
      <form class="text-right d-inline" method="POST" action="ficheTravail">
      <input type="hidden" value="<?php echo $comand->devis__id ?>" name="hiddenCommentaire">
     

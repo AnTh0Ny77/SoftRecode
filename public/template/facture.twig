@@ -172,18 +172,32 @@
 
 
       {#contenu du changement de contact #}
-    <div class="d-flex justify-content-start col-9 ">
+      <form action="facture" method="POST" class="col-9">
+          <div class="d-flex justify-content-start col-12 ">
+            <div class=' px-2 py-2 col-12'>
+              <h4><span class="badge badge-secondary">Contact:</span><h4>
+                <select class="selectpicker show-tick  form-control" id="selectContact" name="selectContact"> 
+                </select>
 
-      <div class=' px-2 py-2 col-12'>
-        <h4><span class="badge badge-secondary">Contact:</span><h4>
-          <select class="selectpicker show-tick  form-control" id="selectContact">
-            
-          </select>
-      </div>
-        
-    </div>
-  </div>    
-
+                <div class="d-flex justify-content-around mt-5">
+                    <div data-toggle="tooltip" data-placement="top" title="Créer une nouvelle société">
+                      <button type="button" class="btn btn-primary" id="buttonModalSociete"><i class="fas fa-building"></i></button>
+                    </div>
+                    <div data-toggle="tooltip" data-placement="top" title="Créer un nouveau contact pour la société selectionné">
+                      <button type="button" class="btn btn-primary" id="buttonModalContact"><i class="fas fa-id-card"></i></button>
+                    </div>
+                    <div>
+                      <input type="hidden" id="postCmd" name="postCmd" value="">
+                      <input type="hidden" id="postSociety" name="postSociety" value="">
+                      <button type="submit" class="btn btn-success">Valider</button>
+                    </div> 
+                </div>
+            </div>
+          </div>  
+      </form>
+    
+</div>  
+<hr>
   {# fin de partie superieure#}
   </div>
 
@@ -209,6 +223,147 @@
 </div>
 </div>
 
+
+
+
+{# modal de creation de societe #}
+<div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalSociete">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="titreClient">Création de société</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+
+
+
+      <div class="modal-body">
+        <form  method="POST" action="facture">
+          <input type="hidden" name="nouveauClientId" id="nouveauClientId">
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label for="inputEmail4">Société*</label>
+              <input type="text" class="form-control text-uppercase"   name="societe" required >
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputAddress">Adresse</label>
+            <input type="text" class="form-control"   name="adr1" >
+          </div>
+          <div class="form-group">
+            
+            <input type="text" class="form-control"  name="adr2">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-2">
+              <label for="inputZip">CP*</label>
+              <input type="text" class="form-control"   name="cp" required >
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputCity">Ville*</label>
+              <input type="text" class="form-control"  name="ville" required >
+            </div>
+            <div class="form-group col-md-4">
+              <label for="pays">Pays*</label>
+              <select class="custom-select mr-sm-2"  name="pays">
+                <option value="france" selected>France</option>
+                <option value="autre" >autre</option>
+              </select>
+            </div>
+          </div>
+      </div>
+
+      <div class="modal-footer justify-content-end ">
+        <div>
+          <button   class="btn btn-primary">Valider</button>
+        </div>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>   
+
+
+{# modal de creation de contact #}
+
+<div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalContactCrea">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form class="px-3 py-3" action="facture" method="POST">
+        <input type="hidden" name="contactCreaPost" id="contactCreaPost">
+        <input type="hidden" name="idCmdContactCrea" id="idCmdContactCrea">
+        <div class="modal-header">
+          <h5 class="modal-title" id="titleCreaContact" >Création de contact</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div> 
+
+
+        <div class="form-row mt-4">
+          <div class="form-group col-md-6">
+            <label for="inputState">Fonction *</label>
+            <select  class="form-control" name="fonctionContact" required>
+             
+              {% for keyword in keywordList %}
+              <option value={{keyword.kw__value}}>{{keyword.kw__lib}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="inputCiv">Civilité</label>
+            <select  class="form-control" name="civiliteContact" required>
+              <option  selected>...</option>
+              <option value="M.">Mr</option>
+              <option value="Mme">Mme</option>
+            </select>
+          </div>
+          
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="inputCity">Nom</label>
+            <input type="text" class="form-control" name="nomContact" required>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="inputCity">Prenom</label>
+            <input type="text" class="form-control" name="prenomContact">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-3">
+            <label for="inputZip">Telephone</label>
+            <input type="text" class="form-control" name="telContact">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="inputZip">Fax </label>
+            <input type="text" class="form-control"name="faxContact">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="inputCity">Mail</label>
+            <input type="email" class="form-control"name="mailContact">
+          </div>
+        </div>
+
+
+        <div class="modal-footer justify-content-end ">
+          <div>
+            <button  class="btn btn-primary" id="postContact">Valider</button>
+          </div>
+        </div>
+    
+    </div>
+   
+
+    </form>
+    </div>
+  </div>
+</div>   
+
+
 {# MODAL de lignes  #}
   <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalLigne">
     <div class="modal-dialog modal-lg">
@@ -220,18 +375,20 @@
             </button>
         </div>
 
+        <form action="facture" method="POST">
+          <input type="hidden" id="idCMDL" name="idCMDL" value="">
         <div class='d-flex justify-content-between py-3 px-3 border-bottom'>
-
+           
             <div class="">
               <div class="text-center">
               <h4><span class="badge badge-secondary">Quantité commandée:</span><h4>
               </div>
                 <div class="d-flex py-3 px-2 justify-content-around">
-                  <button class="btn btn-primary rounded-circle " id="minusCMD">
+                  <button  type='button' class="btn btn-primary rounded-circle " id="minusCMD">
                     <i class="fas fa-minus"></i>
                   </button>
-                    <input type="text" id="qteCMD" class="form-control bg-dark text-white font-weight-bold text-center w-25" readonly/>
-                  <button class="btn btn-primary rounded-circle " id="plusCMD">
+                    <input type="text" id="qteCMD" name="qteCMD" class="form-control bg-dark text-white font-weight-bold text-center w-25" readonly/>
+                  <button type='button' class="btn btn-primary rounded-circle " id="plusCMD">
                     <i class="fas fa-plus"></i>
                   </button>
                 </div>
@@ -242,11 +399,11 @@
               <h4><span class="badge badge-secondary">Quantité livrée:</span><h4>
               </div>
                 <div class="d-flex py-3 px-2 justify-content-around">
-                  <button class="btn btn-secondary rounded-circle" id="minusLVR">
+                  <button type='button' class="btn btn-secondary rounded-circle" id="minusLVR">
                     <i class="fas fa-minus"></i>
                   </button>
-                    <input type="text" id="qteLVR" class="form-control bg-dark text-white font-weight-bold text-center w-25" value="0" readonly/>
-                  <button class="btn btn-secondary rounded-circle" id="plusLVR">
+                    <input type="text" id="qteLVR" name="qteLVR" class="form-control bg-dark text-white font-weight-bold text-center w-25" value="0" readonly/>
+                  <button type='button' class="btn btn-secondary rounded-circle" id="plusLVR">
                     <i class="fas fa-plus"></i>
                   </button>
                 </div>
@@ -257,32 +414,53 @@
               <h4><span class="badge badge-secondary">Quantité facturée:</span><h4>
               </div>
                 <div class="d-flex py-3 px-2 justify-content-around">
-                  <button class="btn btn-success rounded-circle" id="minusFTC">
+                  <button type='button' class="btn btn-success rounded-circle" id="minusFTC">
                     <i class="fas fa-minus"></i>
                   </button>
-                    <input type="text" id="qteFTC" class="form-control bg-dark text-white font-weight-bold text-center w-25" value="0" readonly>
-                  <button class="btn btn-success rounded-circle" id="plusFTC">
+                    <input type="text" id="qteFTC" name="qteFTC" class="form-control bg-dark text-white font-weight-bold text-center w-25" value="" readonly>
+                  <button type='button' class="btn btn-success rounded-circle" id="plusFTC">
                     <i class="fas fa-plus"></i>
                   </button>
                 </div>
             </div>
         </div>
-
         <div class="d-flex justify-content-around my-3 py-3 px-3">
           <div>
               <h4><span class="badge badge-secondary">Prix hors-taxes:</span><h4>
-              <input type="text" id="prixLigne" class="form-control bg-dark text-white font-weight-bold text-right" />
+              <input type="text" id="prixLigne" name="prixLigne" class="form-control bg-dark text-white font-weight-bold text-right" />
           </div>
           <div class="mb-1 align-self-end d-flex justify-content-end">
               <button class="btn btn-success btn-lg  ">Valider</button>
           </div>
         </div>
-
+      </form>
       </div>
     </div> 
   </div>
-                                                      
 
+
+
+
+  {# Modal TVA / commentaire / Code CMD #}
+
+  <div class="modal fade" tabindex="-1" role="dialog"  aria-hidden="true" id="modalTVA">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="titreTVA"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form>
+          <div class="d-flex">
+              <input type="hidden" name="hiddenTVA" id="hiddenTVA">
+          </div>
+       </form>
+      </div>
+    </div>
+  </div>
+  
    
 
     </main>

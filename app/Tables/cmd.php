@@ -28,7 +28,7 @@ class Cmd extends Table {
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
     cmd__nom_devis, cmd__modele_devis , 
-    cmd__date_cmd, cmd__date_envoi, cmd__code_cmd_client,
+    cmd__date_cmd, cmd__date_envoi, cmd__code_cmd_client, cmd__tva,
     k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
@@ -161,7 +161,25 @@ class Cmd extends Table {
      $update->execute([ $author , $id ]);
   }
 
+  //met a jour les info relative au transport ainsi que la date et l'etat ( saisie )
   public function updateTransport($trans , $poids , $paquet ,  $id , $imp , $date ){
+
+
+    $check = $this->Db->Pdo->query(
+    'SELECT cmd__client__id_fact , cmd__client__id_livr FROM cmd WHERE cmd__id = '.$id.' 
+    ');
+
+    $results = $check->fetch(PDO::FETCH_OBJ);
+
+    if (empty($results->cmd__client__id_livr)) 
+    {
+     $transfert =  $this->Db->Pdo->prepare(
+      'UPDATE cmd 
+       SET  cmd__client__id_livr = '.$results->cmd__client__id_fact.' 
+       WHERE cmd__id = '.$id.'
+      ');
+      $transfert->execute();
+    }
 
     $data = 
     [
@@ -183,6 +201,7 @@ class Cmd extends Table {
 
   }
 
+  //met a jour un champs dans une ligne / prend une collones en second parametre
   public function updateLigne($qte , $column,  $id )
   {
     $data = 
@@ -201,8 +220,44 @@ class Cmd extends Table {
 
   }
 
- 
+  //met a jour les quantité et le prix (facturation)
+  public function updateLigneFTC($id, $qteCMD , $qteLVR, $qteFTC , $prix )
+  {
+    $data = 
+    [
+      $qteCMD,
+      $qteLVR,
+      $qteFTC,
+      $prix,
+      $id
+    ];
 
+    $update = $this->Db->Pdo->prepare(
+      'UPDATE cmd_ligne
+       SET cmdl__qte_cmd =? ,cmdl__qte_livr=? , cmdl__qte_fact=? , cmdl__puht =? 
+       WHERE cmdl__id=? ');
+    
+    $update->execute($data);
+  }
+
+
+//retourne le devis lié à la ligne:
+public function returnDevis($idCmdl)
+{
+  $getD = $this->Db->Pdo->query("SELECT cmdl__cmd__id FROM cmd_ligne WHERE cmdl__id = ".$idCmdl."");
+  $id = $getD->fetch(PDO::FETCH_OBJ);
+
+
+  $request =$this->Db->Pdo->query("SELECT
+    cmd__id as devis__id FROM cmd
+    WHERE cmd__id = ". $id->cmdl__cmd__id ."");
+    $data = $request->fetch(PDO::FETCH_OBJ);
+    return $data;
+
+}
+
+ 
+//met a jours les extensions de garantie pour la cmd passée en parametre
   public function updateGarantie($mois, $prix , $comInterne , $qte,  $id , $ordre){
     $data = 
     [
@@ -228,6 +283,32 @@ class Cmd extends Table {
     $update->execute($data);
   }
 
+
+
+
+//met a jour l'id client et l'id contact (facture)
+  public function updateClientContact($idClient , $idContact , $id)
+  {
+    $data = 
+    [
+      $idClient ,
+      $idContact ,
+      $id
+    ];
+    $sql = 
+    "UPDATE cmd
+     SET 
+     cmd__client__id_fact =?,
+     cmd__contact__id_fact =?
+     WHERE cmd__id =? ";
+
+    $update = $this->Db->Pdo->prepare($sql);
+    $update->execute($data);
+  }
+
+ 
+
+  //recupère tous les status VLD
   public function getFromStatus(){
     $request =$this->Db->Pdo->query("SELECT 
     cmd__id as devis__id ,
@@ -262,6 +343,7 @@ class Cmd extends Table {
   }
 
 
+  //recupére tous les status cmd
   public function getFromStatusCMD(){
     $request =$this->Db->Pdo->query("SELECT 
     cmd__id as devis__id ,
@@ -296,6 +378,8 @@ class Cmd extends Table {
     return $data;
   }
 
+
+  //prend le status en CHAR de 3 en parametre et renvoi tous les devis:
   public function getFromStatusAll($status){
     $request =$this->Db->Pdo->query("SELECT 
     cmd__id as devis__id ,
@@ -332,7 +416,7 @@ class Cmd extends Table {
 
   
 
-  
+  //recupere les status autre que CMD 
   public function getNotCMD(){
     $request =$this->Db->Pdo->query("SELECT 
     cmd__id as devis__id ,
@@ -367,6 +451,7 @@ class Cmd extends Table {
   }
 
 
+  //crée un nouveau devis:
   public function insertOne(
     $date , $user, $client , $livraison, $contact, $comClient,
     $comInterne, $etat, $modele , $arrayOfObject , $contact_livraison , $titreDevis )
@@ -481,7 +566,7 @@ class Cmd extends Table {
 }
 
 
-
+//efface et remplace le devis: 
 public function modify(
     $id , $date , $user, $client , $livraison,  $contact, $comClient,
     $comInterne, $etat, $modele , $arrayOfObject , $contact_livraison , $titreDevis)
@@ -602,6 +687,7 @@ public function modify(
     return $idDevis;
     }
 
+    //recupère les lignes liées à un devis:
     public function devisLigne($id){
       $request =$this->Db->Pdo->query("SELECT
       cmdl__cmd__id,
@@ -611,7 +697,7 @@ public function modify(
       cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
       cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
       cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
-      cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact,
+      cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__garantie_puht ,
       k.kw__lib , k.kw__value , 
       f.afmm__famille as famille,
       f.afmm__modele as modele,

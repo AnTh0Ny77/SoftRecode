@@ -140,6 +140,9 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
 
     case '/SoftRecode/AjaxSaisie';
       require __DIR__ .'/pages/ajax/ajaxSaisie.php'; break;
+    
+    case '/SoftRecode/AjaxClientContact';
+      require __DIR__ .'/pages/ajax/ajaxClientContact.php'; break;
 
     case '/SoftRecode/AjaxPn';
       require __DIR__ .'/pages/ajax/ajaxPn.php'; break;

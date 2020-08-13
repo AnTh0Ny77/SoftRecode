@@ -294,13 +294,57 @@ public static function magicLine($arrayLigne){
 
 
 
+//fonction d'affichage du total dans la vision facture : retourne prix ht , tva taux , tva montant , prix ttc 
+public static function totalFacture($objectCmd, $arrayLigne )
+{
+	$tva = $objectCmd->cmd__tva;
+	$array_prix = [];
+	$response = [] ; 
+	foreach ($arrayLigne as $ligne ) 
+	{
+		if (!empty($ligne->devl_puht)) 
+		{
+			if (!empty($ligne->cmdl__qte_fact)) 
+			{
+				$quantite = intval($ligne->cmdl__qte_fact);
+			}
+			else
+			{
+				$quantite = intval($ligne->devl_quantite);
+			} 
+			
+			$prix = floatval($ligne->devl_puht);
+			$total_ligne = $quantite * $prix ;
 
+				if (!empty($ligne->cmdl__garantie_option)) 
+				{
+					$prix_extension = floatval($ligne->cmdl__garantie_puht);
+					$total_extension = $quantite * $prix_extension;
+					$total_ligne = $total_ligne + $total_extension ;
+				}
+			 
+			array_push($array_prix , $total_ligne);
+		}
+	}
+	
+	
+	$global_ht = array_sum($array_prix);
 
+	$montant_tva = floatval(($global_ht*$tva)/100);
+
+	$global_ttc = $global_ht + $montant_tva;
+
+	array_push($response , floatval($global_ht) , floatval($tva) , floatval($montant_tva) , floatval($global_ttc));
+
+	return $response;	
+}
+	
 
 
 
 // fonction d'affichage de garantie dans View :
-public static function showGarantieView($object){
+public static function showGarantieView($object)
+{
 	if ($object->devl__mois_garantie > 0) {
 		$garantie = $object->devl__mois_garantie . " mois";
 		$extension = "";

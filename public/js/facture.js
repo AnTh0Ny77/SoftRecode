@@ -35,6 +35,62 @@ $(function () {
             ],
             "lengthMenu": [ 8]
             });
+
+             //attribut de la classe selected à la table de selection client dans le modal:
+
+             tableClient.on('dblclick' , 'tr' , function()
+             {
+                //classe selected
+                if ($(this).hasClass('selected')) 
+                {
+                    $(this).removeClass('selected');
+                }
+                else if (tableClient.rows().count() >= 1) 
+                {
+                    tableClient.$('tr.selected').removeClass('selected');
+                    $(this).addClass('selected');
+                }
+
+                //requete et remplissage du select-pricker et du  form
+                let dataRow = tableClient.row(this).data();
+                dataFiche = dataRow.client__id;
+                $('#selectContact option').remove();
+                $.ajax({
+                    type: 'post',
+                    url: "AjaxClientContact",
+                    data:
+                    {
+                        "AjaxDevis": dataFiche
+                    },
+                    success: function (data) 
+                    {
+                        dataSet = JSON.parse(data);
+                        $('#clientName').text(dataSet[0].client__societe)
+                        $('#textClient').html('<b>'+ dataSet[0].client__adr1 + ' ' + dataSet[0].client__adr2  +
+                        '<br> '+ dataSet[0].client__cp+ ' '+ dataSet[0].client__ville + '</b>');
+                        let clientList = dataSet[1];
+                        $('#postSociety').val(dataSet[0].client__id);
+                        $('#selectContact').append(new Option( "Aucun Contact" ,""));
+                        for (let index = 0; index < clientList.length; index++) 
+                        {
+                            $('#selectContact').append(new Option(clientList[index].contact__nom + " " + 
+                            clientList[index].contact__prenom + ' ' +  clientList[index].contact__prenom  + " " +
+                             clientList[index].kw__lib , clientList[index].contact__id ));   
+                        }
+                        $('.selectpicker').selectpicker('refresh'); 
+                        if (dataSet[0].devis__contact__id > 1 ) 
+                        {
+                            $('#selectContact').selectpicker('val',dataSet[0].devis__contact__id);
+                        } else  $('#selectContact').selectpicker('val', "");
+                           
+                    },
+                    error: function (err) {
+                        console.log('error: ' , err);
+                    }
+
+                })
+
+            })
         
         },
 
@@ -43,7 +99,7 @@ $(function () {
     })
 
 
-    
+   
 
 
 
@@ -92,10 +148,14 @@ $(function () {
                     success: function (data) {
                         dataSet = JSON.parse(data);
                         $('#titreLigne').text(dataSet.famille__lib+ " " + dataSet.modele + " "  + dataSet.marque);
+                        $('#idCMDL').val(dataSet.devl__id);
                         $('#qteCMD').val(dataSet.devl_quantite);
                         $('#qteLVR').val(dataSet.cmdl__qte_livr);
-
-                        $('#qteFTC').val(0);
+                        if (dataSet.cmdl__qte_fact) 
+                        {
+                            $('#qteFTC').val(dataSet.cmdl__qte_fact);
+                        } else  $('#qteFTC').val(dataSet.cmdl__qte_livr);
+                       
                         $('#prixLigne').val(dataSet.devl_puht);
                         //function clicks pour les différentes quantité: 
 
@@ -125,6 +185,9 @@ $(function () {
                     },
                     success: function (data) {
                         dataSet = JSON.parse(data);
+                        $('#postCmd').val(dataSet[0].devis__id);
+                        $('#postSociety').val(dataSet[1].client__id);
+                      
                         $('#titreClient').text( " Commande N°: "+dataSet[0].devis__id);
                         $('#clientName').text(dataSet[1].client__societe)
                         $('#textClient').html('<b>'+ dataSet[1].client__adr1 + ' ' + dataSet[1].client__adr2  +
@@ -190,7 +253,119 @@ $(function () {
             $('#iframeFacture').html(dataSet);
             $('#iframeFacture').show();
 
-          
+
+            //click pour chaque ligne
+            $('.clickFact').on('click',  function(){
+
+                dataFicheLigne = this.value;
+               
+                $.ajax({
+                    type: 'post',
+                    url: "AjaxLigneFT",
+                    data:
+                    {
+                        "AjaxLigneFT": dataFicheLigne
+                    },
+                    success: function (data) {
+                        dataSet = JSON.parse(data);
+                        $('#titreLigne').text(dataSet.famille__lib+ " " + dataSet.modele + " "  + dataSet.marque);
+                        $('#idCMDL').val(dataSet.devl__id);
+                        $('#qteCMD').val(dataSet.devl_quantite);
+                        $('#qteLVR').val(dataSet.cmdl__qte_livr);
+                        if (dataSet.cmdl__qte_fact) 
+                        {
+                            $('#qteFTC').val(dataSet.cmdl__qte_fact);
+                        } else  $('#qteFTC').val(dataSet.cmdl__qte_livr);
+                       
+                        $('#prixLigne').val(dataSet.devl_puht);
+                        //function clicks pour les différentes quantité: 
+
+                        
+                        $('#modalLigne').modal('show')
+                        
+              
+                    },
+                    error: function (err) {
+                        console.log('error: ' , err);
+                    }
+
+                })
+            })
+
+            //click pour le changement de client 
+            $('#ClientClick').on('click',  function(){
+
+                dataFiche = this.value;
+                $('#selectContact option').remove();
+                $.ajax({
+                    type: 'post',
+                    url: "AjaxDevisFacture",
+                    data:
+                    {
+                        "AjaxDevis": dataFiche
+                    },
+                    success: function (data) {
+                        dataSet = JSON.parse(data);
+                        $('#postCmd').val(dataSet[0].devis__id);
+                        $('#postSociety').val(dataSet[1].client__id);
+                        $('#titreClient').text( " Commande N°: "+dataSet[0].devis__id);
+                        $('#clientName').text(dataSet[1].client__societe)
+                        $('#textClient').html('<b>'+ dataSet[1].client__adr1 + ' ' + dataSet[1].client__adr2  +
+                        '<br> '+ dataSet[1].client__cp+ ' '+ dataSet[1].client__ville + '</b>');
+                        let clientList = dataSet[2];
+                        $('#selectContact').append(new Option( "Aucun Contact" ,""));
+                        for (let index = 0; index < clientList.length; index++) 
+                        {
+                            $('#selectContact').append(new Option(clientList[index].contact__nom + " " + 
+                            clientList[index].contact__prenom + ' ' +  clientList[index].contact__prenom  + " " +
+                             clientList[index].kw__lib , clientList[index].contact__id ));   
+                        }
+                        $('.selectpicker').selectpicker('refresh'); 
+                        if (dataSet[0].devis__contact__id > 1 ) 
+                        {
+                            $('#selectContact').selectpicker('val',dataSet[0].devis__contact__id);
+                        } else  $('#selectContact').selectpicker('val', "");
+                        
+                        $('#modalContact').modal('show')
+                       
+              
+                    },
+                    error: function (err) {
+                        console.log('error: ' , err);
+                    }
+
+                })
+            })
+
+            //click pour le changement de TVA.
+            $('#buttonModalTVA').on('click' , function()
+            {
+                dataFiche = this.value;
+                
+                $.ajax({
+                    type: 'post',
+                    url: "AjaxDevisFacture",
+                    data:
+                    {
+                        "AjaxDevis": dataFiche
+                    },
+                    success: function (data) {
+                        dataSet = JSON.parse(data);
+                        $('#titreTVA').text(" Commande N°: "+dataSet[0].devis__id);
+                        $('#hiddenTVA').val(dataSet[0].devis__id);
+                    
+                        $('#modalTVA').modal('show')
+                       
+              
+                    },
+                    error: function (err) {
+                        console.log('error: ' , err);
+                    }
+                })
+            })
+
+
+
         },
         error: function (err) {
             console.log('error: ' , err);
@@ -247,6 +422,31 @@ $('#plusFTC').on('click' , function(){
     qtePlus += 1 ;
     $('#qteFTC').val(qtePlus); 
 })
+
+
+//ouverture des modaux de societe et de contact (creration)
+
+$('#buttonModalSociete').on('click', function()
+{
+    $('#modalContact').modal('hide');
+    $('#modalSociete').modal('show');
+    idPost = $('#postCmd').val();
+    $('#nouveauClientId').val(idPost);
+})
+
+$('#buttonModalContact').on('click' , function(){
+    $('#modalContact').modal('hide');
+    
+    idSociety = $('#postSociety').val();
+    $('#contactCreaPost').val(idSociety);
+    titreCrea = $('#clientName').text();
+    $('#titleCreaContact').text('Creation de Contact pour : ' + titreCrea );
+    idCmd =  $('#postCmd').val();
+    $('#idCmdContactCrea').val(idCmd);
+    $('#modalContactCrea').modal('show');
+})
+
+
 
 
 })
