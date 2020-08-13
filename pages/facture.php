@@ -27,7 +27,7 @@ session_start();
 
 
  $keywordList = $Keyword->get2_icon();
-
+ $tvaList = $Keyword->getAllFromParam('tva');
 
  //si une creation de societe à été effectué:
  if (!empty($_POST['societe']) && !empty($_POST['ville']) && !empty($_POST['nouveauClientId']))
@@ -156,7 +156,8 @@ echo $twig->render('facture.twig',
 'NbDevis'=>$NbDevis,
 'champRecherche'=>$champRecherche,
 'transporteurs'=>$TransportListe,
-'keywordList' => $keywordList
+'keywordList' => $keywordList,
+'tvaList' => $tvaList
 
 
 ]);

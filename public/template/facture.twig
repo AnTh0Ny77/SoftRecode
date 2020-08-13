@@ -453,8 +453,24 @@
           </button>
         </div>
         <form>
-          <div class="d-flex">
+          <div class="d-flex justify-content-around">
               <input type="hidden" name="hiddenTVA" id="hiddenTVA">
+              <div class="col-2 mx-3 my-3">
+                <h4><span class="badge badge-secondary">TVA:</span></h4>
+                  <select id="selectTVA" name="selectTVA" class="custom-select">
+                    {% for tva in tvaList %}
+                    <option value="{{tva.kw__value}}">{{tva.kw__info ~ " %"}}</option>
+                    {% endfor %}
+                  </select >
+              </div>
+              <div class="col-8 mx-3 my-3">
+                <h4><span class="badge badge-secondary">Code CMD client:</span></h4>
+                <input class="form-control" type="text" name="" id="">
+              </div >
+          </div>
+          <hr class="mx-3">
+          <div class=" mx-3 my-3">
+            <h4><span class="badge badge-secondary">Commentaire Client</span></h4>
           </div>
        </form>
       </div>

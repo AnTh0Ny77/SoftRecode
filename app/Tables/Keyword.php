@@ -65,6 +65,12 @@ public function getTransporteur(){
   return $data;
 }
 
+public function getAllFromParam($kw_value){
+  $request =$this->Db->Pdo->query('SELECT * FROM keyword WHERE kw__type= "'.$kw_value.'" ORDER BY  kw__ordre  ASC ');
+  $data = $request->fetchAll(PDO::FETCH_OBJ);
+  return $data;
+}
+
 
 
 
