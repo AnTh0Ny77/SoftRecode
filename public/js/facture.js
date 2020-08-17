@@ -52,7 +52,49 @@ ClassicEditor
             console.error( error );
             });   
 
+            
 
+
+            ClassicEditor
+            .create( document.querySelector( '#comClient' ) , 
+            {
+            fontColor: 
+            {
+            colors: 
+            [
+                {
+                color: 'black',
+                label: 'Black'
+                },
+                {
+                color: 'red',
+                label: 'Red'
+                },
+                {
+                color: 'DarkGreen',
+                label: 'Green'
+                },
+                {
+                color: 'Gold',
+                label: 'Yellow'
+                },
+                {
+                color: 'Blue',
+                label: 'Blue',
+                },
+                ]
+                },
+                toolbar: 
+                [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , "imageUpload", 'fontColor']
+                })
+                .then( newEditor => 
+                {
+                ckComClient = newEditor;
+                })
+                .catch( error => 
+                {
+                console.error( error );
+                });   
 
 
   // recupere la data pour alimenter la table societe:

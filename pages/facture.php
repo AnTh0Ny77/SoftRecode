@@ -24,10 +24,15 @@ session_start();
  $Contact = new \App\Tables\Contact($Database);
  $Cmd = new App\Tables\Cmd($Database);
  $General = new App\Tables\General($Database);
+ $Article = new App\Tables\Article($Database);
+ 
 
-
+ $articleTypeList = $Article->getModels();
+ $prestaList = $Keyword->getPresta();
  $keywordList = $Keyword->get2_icon();
  $tvaList = $Keyword->getAllFromParam('tva');
+ $garantiesList = $Keyword->getGaranties();
+ $etatList = $Keyword->getEtat();
 
  //si une creation de societe à été effectué:
  if (!empty($_POST['societe']) && !empty($_POST['ville']) && !empty($_POST['nouveauClientId']))
@@ -77,6 +82,9 @@ session_start();
    $updateTVA = $General->updateAll('cmd' , $_POST['selectTVA'] , 'cmd__tva' , 'cmd__id' , $_POST['hiddenTVA'] );
    $updateCodeCmd = $General->updateAll('cmd' , $_POST['codeCmdTVA'] , 'cmd__code_cmd_client' , 'cmd__id' , $_POST['hiddenTVA'] );
    $updateComClient = $General->updateAll('cmd' , $_POST['comTVA'] , 'cmd__note_interne' , 'cmd__id' , $_POST['hiddenTVA'] );
+
+   $_POST['recherche-fiche'] = 'id-fiche';
+   $_POST['rechercheF'] = $_POST['hiddenTVA'];
  }
 
 
@@ -166,7 +174,9 @@ echo $twig->render('facture.twig',
 'champRecherche'=>$champRecherche,
 'transporteurs'=>$TransportListe,
 'keywordList' => $keywordList,
-'tvaList' => $tvaList
-
-
+'tvaList' => $tvaList,
+'prestaList'=> $prestaList ,
+'articleList' => $articleTypeList,
+'garantiesList' => $garantiesList ,
+'etatList' => $etatList
 ]);

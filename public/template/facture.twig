@@ -347,14 +347,11 @@
             <input type="email" class="form-control"name="mailContact">
           </div>
         </div>
-
-
         <div class="modal-footer justify-content-end ">
           <div>
             <button  class="btn btn-primary" id="postContact">Valider</button>
           </div>
         </div>
-    
     </div>
    
 
@@ -495,6 +492,108 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
+        </div>
+
+
+
+
+
+
+        <div class="modal-body">
+          <div class="form-row border-bottom mb-3 pb-3 ">
+
+
+
+            <div class="d-flex flex-row col-12 justify-content-between mb-3">
+
+
+            <div class="col-md-3 ">
+              <label for="prestationChoix">Prestation:</label>
+              <select class="selectpicker" id="prestationChoix" >
+                {% for presta in prestaList %}
+                  <option class=""  value={{presta.kw__value}}>{{presta.kw__lib}}</option>
+                  {% endfor %}
+              </select>
+            </div>
+            <div class="col-8">
+              <label for="choixDesignation">Modèle:</label>
+              <select class="selectpicker col-12" id="choixDesignation" data-live-search="true">
+                <option class="optionSelect modelSelect" value="">..</option>
+                {% for article in articleList %} 
+                  <option class="optionSelect modelSelect" value={{article.afmm__id}}>{{article.afmm__modele   ~ " " ~ article.famille ~ " " ~ article.Marque }}</option>
+                  {% endfor %}
+              </select> 
+            </div>
+
+
+
+            </div> 
+              <div class=" col-12" id="choixRef">
+                <div class="col-12  ">
+                  <div class="col-12">
+                    <label for="referenceS">Désignation sur le devis/facture: </label>
+                  <input type="text" class="form-control mx-3"  aria-label="Username" aria-describedby="basic-addon1" id='referenceS'>
+                </div>
+                </div>
+              </div>
+            </div>
+
+
+        <div class="form-row align-items-center  d-flex justify-content-between mt-4">
+          <div class="col-4">
+            <label class="ml-3" for="etatRow">Etat</label>
+            <select class="selectpicker col-12" id="etatRow">
+              {% for etat in etatList %}
+              <option   value="{{etat.kw__value}}" >{{etat.kw__lib}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="col-4">
+            <label for="validationCustom04">Garantie/mois</label>
+            <select class="selectpicker" id="garantieRow" >
+              {% for garantie in garantiesList %}
+              <option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          
+          <div class="col-1">
+            <label for="validationCustom04">Quantité</label>
+            <input type="number" class="form-control" value="1" id="quantiteRow">
+          </div>
+          <div class="col-2">
+            <label for="validationCustom04">Prix € H.T</label>
+            <input class="form-control" type="text"  id="prixRow">
+          </div>
+        </div>
+        <hr>
+        <div class="form-row mt-2 form-row align-items-center  d-flex justify-content-start">
+            <div class=" col-12" id="commentaire" >
+              <div class="col-12 mt-3 mb-2 d-flex justify-content-between">
+                <div class="col-6">
+                  <label for="comClient">Commentaire</label>
+                <textarea class="form-control" id="comClient" placeholder="Commentaire client...." rows="4"></textarea>
+                </div> 
+                <div class="col-6 d-flex flex-row">
+                 <div>
+                  <label for="extensionGarantie">extension de garantie/mois</label>
+                  <select class="selectpicker" id="extensionGarantie" >
+                    {% for garantie in garantiesList %}
+                    <option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}} </option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-4 mt-4">
+                  <input class="form-control" type="text" name="" id="" placeholder="€ HT">
+                </div> 
+                </div>
+                
+              </div>
+              <div class="modal-footer mt-4">
+              <button class="btn btn-success"> valider</button>
+            </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
