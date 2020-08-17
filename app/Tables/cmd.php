@@ -36,12 +36,14 @@ class Cmd extends Table {
     c2.client__ville as client__livraison_ville,
     c2.client__cp as client__livraison_cp , 
     c2.client__adr1 as client__livraison__adr1 , 
-    u.log_nec , u.user__email_devis as email
+    u.log_nec , u.user__email_devis as email ,
+    k3.kw__info as tva_Taux 
     FROM cmd
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
     LEFT JOIN keyword as k ON cmd__etat = k.kw__value AND  k.kw__type = 'stat'
+    LEFT JOIN keyword as k3 ON cmd__tva = k3.kw__value AND k3.kw__type = 'tva'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     WHERE cmd__id = ". $id ."");
     $data = $request->fetch(PDO::FETCH_OBJ);

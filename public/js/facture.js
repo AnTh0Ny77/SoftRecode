@@ -10,6 +10,50 @@ $(function () {
   idUtilisateur = $('#idUtilisateur').val();
 
 
+//init de l'éditeur de text: 
+ClassicEditor
+.create( document.querySelector( '#comTVA' ) , 
+    {
+    fontColor: 
+    {
+        colors: 
+        [
+            {
+            color: 'black',
+            label: 'Black'
+            },
+            {
+            color: 'red',
+            label: 'Red'
+            },
+            {
+            color: 'DarkGreen',
+            label: 'Green'
+            },
+            {
+            color: 'Gold',
+            label: 'Yellow'
+            },
+            {
+            color: 'Blue',
+            label: 'Blue',
+            },
+            ]
+            },
+            toolbar: 
+            [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , "imageUpload", 'fontColor']
+            })
+            .then( newEditor => 
+            {
+            ckComClient = newEditor;
+            })
+            .catch( error => 
+            {
+            console.error( error );
+            });   
+
+
+
 
   // recupere la data pour alimenter la table societe:
   arrayClient = [];
@@ -215,6 +259,62 @@ $(function () {
                     }
 
                 })
+                
+            })
+
+
+             //click pour le changement de TVA.
+             $('#buttonModalTVA').on('click' , function()
+             {
+                 dataFiche = this.value;
+                 
+                 $.ajax({
+                     type: 'post',
+                     url: "AjaxDevisFacture",
+                     data:
+                     {
+                         "AjaxDevis": dataFiche
+                     },
+                     success: function (data) {
+                         dataSet = JSON.parse(data);
+                         $('#titreTVA').text(" Commande N°: "+dataSet[0].devis__id);
+                         $('#hiddenTVA').val(dataSet[0].devis__id);
+                         $('#selectTVA').val(dataSet[0].cmd__tva);
+                         $('#codeCmdTVA').val(dataSet[0].cmd__code_cmd_client);
+                         ckComClient.setData(dataSet[0].devis__note_client);
+                         $('#modalTVA').modal('show')
+                     },
+                     error: function (err) {
+                         console.log('error: ' , err);
+                     }
+                 })
+             })
+
+            //  click pour le rajout de lignes:
+            $('#addNewItem').on('click', function()
+            {
+                dataItem = this.value;
+                
+                $.ajax({
+                    type: 'post',
+                    url: "AjaxDevisFacture",
+                    data:
+                    {
+                        "AjaxDevis": dataItem
+                    },
+                    success: function (data) {
+                        
+                        dataSet = JSON.parse(data);
+                        console.log(dataSet);
+                        $('#titreItem').text('Ajout article Commande N°: ' + dataSet[0].devis__id)
+                        $('#modalItem').modal('show');
+                       
+                    },
+                    error: function (err) {
+                        console.log('error: ' , err);
+                    }
+                })
+               
             })
 
             
@@ -351,12 +451,14 @@ $(function () {
                     },
                     success: function (data) {
                         dataSet = JSON.parse(data);
+                        console.log(dataSet);
                         $('#titreTVA').text(" Commande N°: "+dataSet[0].devis__id);
                         $('#hiddenTVA').val(dataSet[0].devis__id);
+                        $('#selectTVA').val(dataSet[0].cmd__tva);
+                        $('#codeCmdTVA').val(dataSet[0].cmd__code_cmd_client);
+                        ckComClient.setData(dataSet[0].devis__note_client);
                     
                         $('#modalTVA').modal('show')
-                       
-              
                     },
                     error: function (err) {
                         console.log('error: ' , err);
@@ -446,6 +548,8 @@ $('#buttonModalContact').on('click' , function(){
     $('#modalContactCrea').modal('show');
 })
 
+
+                        
 
 
 

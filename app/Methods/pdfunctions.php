@@ -297,7 +297,7 @@ public static function magicLine($arrayLigne){
 //fonction d'affichage du total dans la vision facture : retourne prix ht , tva taux , tva montant , prix ttc 
 public static function totalFacture($objectCmd, $arrayLigne )
 {
-	$tva = $objectCmd->cmd__tva;
+	$tva = floatval($objectCmd->tva_Taux);
 	$array_prix = [];
 	$response = [] ; 
 	foreach ($arrayLigne as $ligne ) 

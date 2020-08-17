@@ -452,31 +452,53 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form>
+        <form action='facture' method='POST'>
           <div class="d-flex justify-content-around">
               <input type="hidden" name="hiddenTVA" id="hiddenTVA">
               <div class="col-2 mx-3 my-3">
                 <h4><span class="badge badge-secondary">TVA:</span></h4>
                   <select id="selectTVA" name="selectTVA" class="custom-select">
                     {% for tva in tvaList %}
+                      
                     <option value="{{tva.kw__value}}">{{tva.kw__info ~ " %"}}</option>
                     {% endfor %}
                   </select >
               </div>
               <div class="col-8 mx-3 my-3">
                 <h4><span class="badge badge-secondary">Code CMD client:</span></h4>
-                <input class="form-control" type="text" name="" id="">
+                <input class="form-control" type="text" name="codeCmdTVA" id="codeCmdTVA">
               </div >
           </div>
           <hr class="mx-3">
           <div class=" mx-3 my-3">
             <h4><span class="badge badge-secondary">Commentaire Client</span></h4>
+
+            <textarea class="form-control " name="comTVA" id="comTVA"  placeholder="Commentaire client...." rows="2" cols="40"></textarea>
+          </div>
+          <div class="d-flex justify-content-end mx-3 my-3">
+          <button class="btn btn-success">Valider</button>
           </div>
        </form>
       </div>
     </div>
   </div>
-  
+
+
+
+  {# modal d'ajout de ligne supplémentaire #}
+
+  <div class="modal fade" tabindex="-1" role="dialog"  aria-hidden="true" id="modalItem">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="titreItem"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
    
 
     </main>
@@ -490,6 +512,7 @@
 <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
 <script type="text/javascript" src="public/js/facture.js"></script>
 
 

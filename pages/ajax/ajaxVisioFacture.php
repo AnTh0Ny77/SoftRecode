@@ -307,6 +307,11 @@ else
         }
            
                ?>
+               <tr style='font-size: 95%;'>
+                <td style='border-style: none; '> <button value="<?php echo $temp->devis__id; ?>" class=' btn btn-success mt-2' id="addNewItem"><i class='far fa-plus'></i></i></button></td>
+                <td style='border-style: none; '></td>
+                <td style='border-style: none; '></td>
+                <td style='border-style: none;  '></td>
         </table> 
      </div>
 
@@ -321,7 +326,7 @@ else
                    <div>
                         TVA: 
                         <?php 
-                        echo "<b>".number_format($temp->cmd__tva,2) . " %</b>"; 
+                        echo "<b>".number_format($temp->tva_Taux,2) . " %</b>"; 
                         ?>
                     </div>
                     <div>
@@ -345,9 +350,9 @@ else
             <hr class="my-4">
             <p>
                 <?php
-                    if (!empty($temp->devl__note_client)) 
+                    if (!empty($temp->devis__note_interne)) 
                     {
-                    echo   $temp->devl__note_client ;
+                    echo   $temp->devis__note_interne ;
                     }
                     else echo 'Pas de commentaire Client';
                 ?>
@@ -422,7 +427,7 @@ else
 
      <div class="d-flex justify-content-end mr-3"> 
      <form class="text-right d-inline" method="POST" action="ficheTravail">
-     <input type="hidden" value="<?php echo $comand->devis__id ?>" name="hiddenCommentaire">
+     <input type="hidden" value="<?php echo $temp->devis__id ?>" name="hiddenCommentaire">
     
      
      </form>

@@ -71,6 +71,15 @@ session_start();
  }
 
 
+ //si une mise a jour du modal tva/commentaires/code_cmd à été effectué: 
+ if (!empty($_POST['hiddenTVA'])) 
+ {
+   $updateTVA = $General->updateAll('cmd' , $_POST['selectTVA'] , 'cmd__tva' , 'cmd__id' , $_POST['hiddenTVA'] );
+   $updateCodeCmd = $General->updateAll('cmd' , $_POST['codeCmdTVA'] , 'cmd__code_cmd_client' , 'cmd__id' , $_POST['hiddenTVA'] );
+   $updateComClient = $General->updateAll('cmd' , $_POST['comTVA'] , 'cmd__note_interne' , 'cmd__id' , $_POST['hiddenTVA'] );
+ }
+
+
  //si une mise a jour de ligne a été effectuée: 
  if (!empty($_POST['qteFTC']) && !empty($_POST['qteLVR']) && !empty($_POST['prixLigne']) && !empty($_POST['idCMDL']))
  {
