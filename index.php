@@ -126,6 +126,10 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
     case '/SoftRecode/pdfTravail';
       require __DIR__ .'/pages/utilities/pdfTravail.php'; break;
 
+    case '/SoftRecode/pdfFacture';
+      require __DIR__ .'/pages/utilities/pdfFacture.php'; break;
+
+
     case '/SoftRecode/pdfBL';
       require __DIR__ .'/pages/utilities/pdfBL.php'; break;
 

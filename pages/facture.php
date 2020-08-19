@@ -3,6 +3,7 @@ require "./vendor/autoload.php";
 require "./App/twigloader.php";
 session_start();
 
+
  //URL bloqué si pas de connexion :
  if (empty($_SESSION['user'])) 
  {
@@ -100,6 +101,36 @@ session_start();
     
  }
 
+ // si un rajout de ligne à été effectué:
+if (!empty($_POST['idDevisAddLigne']) && !empty($_POST['prestationChoix']) ) 
+{
+ $idDuPost = $_POST['idDevisAddLigne'];
+ $object = new stdClass;
+ $object->idDevis = $_POST['idDevisAddLigne'];
+ $object->prestation = $_POST['prestationChoix'];
+ $object->designation = $_POST['referenceS'];
+ $object->idfmm = $_POST['choixDesignation'];
+ $object->etat = $_POST['etatSelect'];
+ $object->garantie = $_POST['garantieSelect'];
+ $object->comClient = $_POST['comClientLigne'];
+ $object->quantite = $_POST['quantiteLigne'];
+ $object->prix = floatVal($_POST['prixLigne']);
+ $object->extension = $_POST['extensionGarantie'];
+ $object->prixGarantie = floatval($_POST['prixGarantie']);
+ $object->cmdl__ordre = '';
+ $Cmd->insertLine($object);
+ $_SESSION['rechercheFacture'] = $idDuPost;
+ header('location: facture');
+}
+
+//conserve la recherche et la transfert a $_POST malgrès le header qui suit la creation
+if (isset($_SESSION['rechercheFacture'])) 
+{
+  $tampon = $_SESSION['rechercheFacture'];
+  $_POST['recherche-fiche'] = 'id-fiche';
+  $_POST['rechercheF'] = $tampon;
+  
+}
 
 
 
@@ -163,7 +194,7 @@ $TransportListe = $Keyword->getTransporteur();
   
  }
 
-
+ 
   
 // Donnée transmise au template : 
 echo $twig->render('facture.twig',

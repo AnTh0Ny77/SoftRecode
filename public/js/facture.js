@@ -56,7 +56,7 @@ ClassicEditor
 
 
             ClassicEditor
-            .create( document.querySelector( '#comClient' ) , 
+            .create( document.querySelector( '#comClientLigne' ) , 
             {
             fontColor: 
             {
@@ -95,6 +95,50 @@ ClassicEditor
                 {
                 console.error( error );
                 });   
+
+
+                
+            ClassicEditor
+                .create( document.querySelector( '#comFacture' ) , 
+                {
+                fontColor: 
+                {
+                colors: 
+                [
+                    {
+                    color: 'black',
+                    label: 'Black'
+                    },
+                    {
+                    color: 'red',
+                    label: 'Red'
+                    },
+                    {
+                    color: 'DarkGreen',
+                    label: 'Green'
+                    },
+                    {
+                    color: 'Gold',
+                    label: 'Yellow'
+                    },
+                    {
+                    color: 'Blue',
+                    label: 'Blue',
+                    },
+                    ]
+                    },
+                    toolbar: 
+                    [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , "imageUpload", 'fontColor']
+                    })
+                    .then( newEditor => 
+                    {
+                    ckComFacture = newEditor;
+                    })
+                    .catch( error => 
+                    {
+                    console.error( error );
+                    });   
+    
 
 
   // recupere la data pour alimenter la table societe:
@@ -347,8 +391,8 @@ ClassicEditor
                     success: function (data) {
                         
                         dataSet = JSON.parse(data);
-                        console.log(dataSet);
-                        $('#titreItem').text('Ajout article Commande N°: ' + dataSet[0].devis__id)
+                        $('#titreItem').text('Ajout article Commande N°: ' + dataSet[0].devis__id);
+                        $('#idDevisAddLigne').val(dataSet[0].devis__id);
                         $('#modalItem').modal('show');
                        
                     },
@@ -493,7 +537,7 @@ ClassicEditor
                     },
                     success: function (data) {
                         dataSet = JSON.parse(data);
-                        console.log(dataSet);
+                        
                         $('#titreTVA').text(" Commande N°: "+dataSet[0].devis__id);
                         $('#hiddenTVA').val(dataSet[0].devis__id);
                         $('#selectTVA').val(dataSet[0].cmd__tva);
@@ -522,10 +566,19 @@ if ($('#factureTable').length > 0) {
     selectFirst();
 }
 
+//quand je selectionne un article dans le rajout de ligne je transmet la valeur a l'input de désignation: 
+
+$('#choixDesignation').on('change', function()
+{
+    value = $(this).children("option:selected").text();
+    $('#referenceS').val(value);
+})
+
 
 //commandés:
 let minCMD = function(){
-    $('#minusCMD').on('click' , function(){
+    $('#minusCMD').on('click' , function()
+    {
         let qteMinus =  parseInt($('#qteCMD').val());
         qteMinus = qteMinus -1 ;
         $('#qteCMD').val(qteMinus); 

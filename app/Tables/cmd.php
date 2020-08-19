@@ -426,8 +426,7 @@ public function returnDevis($idCmdl)
     cmd__date_devis as devis__date_crea, 
     LPAD(cmd__client__id_fact ,6,0)   as client__id,
     cmd__contact__id_fact  as  devis__contact__id,
-    cmd__etat as devis__etat, 
-   
+    cmd__etat as devis__etat,
     cmd__note_client as  devis__note_client , 
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
@@ -467,7 +466,6 @@ public function returnDevis($idCmdl)
       $matches[0] = ' ' .  $matches[0];
       $chaine = preg_replace('/img/',  'img' .  $matches[0] . ' ' , $comClient  );
       $comClient = $chaine;
-
     }
 
 
@@ -691,16 +689,41 @@ public function modify(
 
     //insère une ligne dans un devis :
 
-    public function insertLine(){
+    public function insertLine($object){
       $requestLigne =  $this->Db->Pdo->prepare(
         'INSERT INTO  cmd_ligne (
-         cmdl__cmd__id, cmdl__prestation, cmdl__pn , cmdl__designation ,
-         cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  , cmdl__prix_barre , 
-         cmdl__puht , cmdl__note_client  , cmdl__note_interne  , cmdl__ordre , cmdl__id__fmm)
+         cmdl__cmd__id, cmdl__prestation,  cmdl__designation ,
+         cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  ,  
+         cmdl__puht , cmdl__note_client  ,  cmdl__ordre , cmdl__id__fmm , cmdl__garantie_option , cmdl__garantie_puht , cmdl__qte_livr)
          VALUES (
-         :devl__devis__id, :devl__type, :devl__modele, :devl__designation,
-         :devl__etat, :devl__mois_garantie , :devl_quantite, :devl__prix_barre, 
-         :devl_puht , :devl__note_client , :devl__note_interne , :devl__ordre , :id__fmm)');
+         :devl__devis__id, :devl__type,  :devl__designation,
+         :devl__etat, :devl__mois_garantie , :devl_quantite,  
+         :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm , :cmdl__garantie_option , :cmdl__garantie_puht , :cmdl__qte_livr)');
+
+
+        $verifOrdre = $this->Db->Pdo->query(
+          'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne ');
+
+        $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
+        
+        
+        $ordreMax = $ordreMax->maxOrdre + 1 ;
+    
+        $requestLigne->bindValue(":devl__devis__id", $object->idDevis);
+        $requestLigne->bindValue(":devl__type", $object->prestation);
+        $requestLigne->bindValue(":devl__designation", $object->designation);
+        $requestLigne->bindValue(":devl__etat", $object->etat);
+        $requestLigne->bindValue(":devl__mois_garantie", intval($object->garantie));
+        $requestLigne->bindValue(":devl_quantite", $object->quantite);
+        $requestLigne->bindValue(":devl_puht", floatval($object->prix));
+        $requestLigne->bindValue(":devl__note_client", $object->comClient);
+        $requestLigne->bindValue(":devl__ordre", $ordreMax);
+        $requestLigne->bindValue(":id__fmm", $object->idfmm);
+        $requestLigne->bindValue(":cmdl__garantie_option", $object->extension);
+        $requestLigne->bindValue(":cmdl__garantie_puht", floatVal($object->prixGarantie));
+        $requestLigne->bindValue(":cmdl__qte_livr", intval($object->quantite));
+        $requestLigne->execute();  
+        return $requestLigne;
     }
 
     //recupère les lignes liées à un devis:

@@ -153,8 +153,14 @@ else
                 }
 
              } 
+
+             echo '<form method="POST" action="pdfFacture" target="_blank">
+             <input type="hidden" value="'.$_POST['AjaxFT'].'" name="VoirDevis">
+             <button class="btn btn-link " href="pdfFacture"><i class="fas fa-file-pdf"></i> Visualiser la facture</button>
+            </form>';
             
              ?>
+             
         
         <div class="d-flex flex-column">
           

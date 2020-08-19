@@ -416,19 +416,34 @@
                   </button>
                     <input type="text" id="qteFTC" name="qteFTC" class="form-control bg-dark text-white font-weight-bold text-center w-25" value="" readonly>
                   <button type='button' class="btn btn-success rounded-circle" id="plusFTC">
-                    <i class="fas fa-plus"></i>
+                    <i class="fas fa-plus"></i> 
                   </button>
                 </div>
             </div>
         </div>
+
+
+        <div class="d-flex justify-content-between py-3 px-3 border-bottom">
+          <h4><span class="badge badge-secondary">Commentaire Technique:</span><h4></h4>
+          <p id="ComTech"><b></b></p>
+        </div>
+
+
+
         <div class="d-flex justify-content-around my-3 py-3 px-3">
-          <div>
+          <div class="col-3">
               <h4><span class="badge badge-secondary">Prix hors-taxes:</span><h4>
               <input type="text" id="prixLigne" name="prixLigne" class="form-control bg-dark text-white font-weight-bold text-right" />
           </div>
-          <div class="mb-1 align-self-end d-flex justify-content-end">
-              <button class="btn btn-success btn-lg  ">Valider</button>
+          <div>
+            <textarea class="form-control " name="comFacture" id="comFacture"  placeholder="Commentaire Facture...." rows="2" cols="40"></textarea>
           </div>
+          
+        </div>
+        <div class="modal-footer">
+          <div class="mb-1 align-self-end d-flex justify-content-end">
+            <button class="btn btn-success btn-lg  ">Valider</button>
+        </div>
         </div>
       </form>
       </div>
@@ -500,6 +515,8 @@
 
 
         <div class="modal-body">
+          <form action="facture" method="POST">
+          <input type="hidden" name="idDevisAddLigne" id="idDevisAddLigne">
           <div class="form-row border-bottom mb-3 pb-3 ">
 
 
@@ -509,7 +526,7 @@
 
             <div class="col-md-3 ">
               <label for="prestationChoix">Prestation:</label>
-              <select class="selectpicker" id="prestationChoix" >
+              <select class="selectpicker" id="prestationChoix" name="prestationChoix">
                 {% for presta in prestaList %}
                   <option class=""  value={{presta.kw__value}}>{{presta.kw__lib}}</option>
                   {% endfor %}
@@ -517,7 +534,7 @@
             </div>
             <div class="col-8">
               <label for="choixDesignation">Modèle:</label>
-              <select class="selectpicker col-12" id="choixDesignation" data-live-search="true">
+              <select class="selectpicker col-12" id="choixDesignation" name="choixDesignation" data-live-search="true">
                 <option class="optionSelect modelSelect" value="">..</option>
                 {% for article in articleList %} 
                   <option class="optionSelect modelSelect" value={{article.afmm__id}}>{{article.afmm__modele   ~ " " ~ article.famille ~ " " ~ article.Marque }}</option>
@@ -532,7 +549,7 @@
                 <div class="col-12  ">
                   <div class="col-12">
                     <label for="referenceS">Désignation sur le devis/facture: </label>
-                  <input type="text" class="form-control mx-3"  aria-label="Username" aria-describedby="basic-addon1" id='referenceS'>
+                  <input type="text" class="form-control mx-3"  aria-label="Username" aria-describedby="basic-addon1" id='referenceS' name="referenceS" required>
                 </div>
                 </div>
               </div>
@@ -542,7 +559,7 @@
         <div class="form-row align-items-center  d-flex justify-content-between mt-4">
           <div class="col-4">
             <label class="ml-3" for="etatRow">Etat</label>
-            <select class="selectpicker col-12" id="etatRow">
+            <select class="selectpicker col-12" id="etatSelect" name="etatSelect">
               {% for etat in etatList %}
               <option   value="{{etat.kw__value}}" >{{etat.kw__lib}}</option>
               {% endfor %}
@@ -550,7 +567,7 @@
           </div>
           <div class="col-4">
             <label for="validationCustom04">Garantie/mois</label>
-            <select class="selectpicker" id="garantieRow" >
+            <select class="selectpicker" id="garantieSelect"  name="garantieSelect">
               {% for garantie in garantiesList %}
               <option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}}</option>
               {% endfor %}
@@ -559,11 +576,11 @@
           
           <div class="col-1">
             <label for="validationCustom04">Quantité</label>
-            <input type="number" class="form-control" value="1" id="quantiteRow">
+            <input type="number" class="form-control" value="1" id="quantiteLigne" name="quantiteLigne" required >
           </div>
           <div class="col-2">
             <label for="validationCustom04">Prix € H.T</label>
-            <input class="form-control" type="text"  id="prixRow">
+            <input class="form-control" type="text"  id="prixLigne" name="prixLigne" required>
           </div>
         </div>
         <hr>
@@ -572,19 +589,19 @@
               <div class="col-12 mt-3 mb-2 d-flex justify-content-between">
                 <div class="col-6">
                   <label for="comClient">Commentaire</label>
-                <textarea class="form-control" id="comClient" placeholder="Commentaire client...." rows="4"></textarea>
+                <textarea class="form-control" id="comClientLigne" name="comClientLigne" placeholder="Commentaire client...." rows="4"></textarea>
                 </div> 
                 <div class="col-6 d-flex flex-row">
                  <div>
                   <label for="extensionGarantie">extension de garantie/mois</label>
-                  <select class="selectpicker" id="extensionGarantie" >
+                  <select class="selectpicker" id="extensionGarantie" name="extensionGarantie" >
                     {% for garantie in garantiesList %}
                     <option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}} </option>
                     {% endfor %}
                   </select>
                 </div>
                 <div class="col-4 mt-4">
-                  <input class="form-control" type="text" name="" id="" placeholder="€ HT">
+                  <input class="form-control" type="text" name="prixGarantie" id="prixGarantie" placeholder="€ HT">
                 </div> 
                 </div>
                 
@@ -594,6 +611,7 @@
             </div>
             </div>
           </div>
+        </form>
         </div>
       </div>
     </div>
