@@ -287,7 +287,13 @@ ClassicEditor
                         } else  $('#qteFTC').val(dataSet.cmdl__qte_livr);
                        
                         $('#prixLigne').val(dataSet.devl_puht);
-                        //function clicks pour les différentes quantité: 
+                        
+                        if (dataSet.devl__note_interne) 
+                        {
+                            $('#ComTech').text(devl__note_interne)
+                        }
+                        else $('#ComTech').text('pas de commentaire Interne');
+                        
 
                         
                         $('#modalLigne').modal('show')
