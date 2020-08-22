@@ -277,6 +277,7 @@ ClassicEditor
                     },
                     success: function (data) {
                         dataSet = JSON.parse(data);
+                        console.log(dataSet)
                         $('#titreLigne').text(dataSet.famille__lib+ " " + dataSet.modele + " "  + dataSet.marque);
                         $('#idCMDL').val(dataSet.devl__id);
                         $('#qteCMD').val(dataSet.devl_quantite);
@@ -288,11 +289,7 @@ ClassicEditor
                        
                         $('#prixLigne').val(dataSet.devl_puht);
                         
-                        if (dataSet.devl__note_interne) 
-                        {
-                            $('#ComTech').text(devl__note_interne)
-                        }
-                        else $('#ComTech').text('pas de commentaire Interne');
+                        
                         
 
                         
@@ -459,6 +456,7 @@ ClassicEditor
                         "AjaxLigneFT": dataFicheLigne
                     },
                     success: function (data) {
+                       
                         dataSet = JSON.parse(data);
                         $('#titreLigne').text(dataSet.famille__lib+ " " + dataSet.modele + " "  + dataSet.marque);
                         $('#idCMDL').val(dataSet.devl__id);
@@ -468,6 +466,7 @@ ClassicEditor
                         {
                             $('#qteFTC').val(dataSet.cmdl__qte_fact);
                         } else  $('#qteFTC').val(dataSet.cmdl__qte_livr);
+
                        
                         $('#prixLigne').val(dataSet.devl_puht);
                         //function clicks pour les différentes quantité: 

@@ -284,7 +284,7 @@ else
                     echo "<tr style='font-size: 95%;'>
                     <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='".$item->devl__id."'  '><i class='far fa-magic'></i></i></button></td>
                     <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $item->devl__mois_garantie ." mois </td>
-                    <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> " . $item->devl_quantite ." x " .$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." <br>" .$item->devl__note_interne ." </td>
+                    <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> " . $item->devl_quantite ." x " .$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." <br>" .$item->cmdl__note_facture ." </td>
                     <td style='border-bottom: 1px #ccc solid;  text-align: right;  background-color: #ffeded;'><strong> " ;
                     if (!empty($item->cmdl__garantie_option)) 
                     {
@@ -382,7 +382,7 @@ else
         </div>
 
         <div>
-        <table class="table table-sm">
+    <table class="table table-sm">
             <thead>
                     <tr>
                     <th scope="col">Prix € HT</th>

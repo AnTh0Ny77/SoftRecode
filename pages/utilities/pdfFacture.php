@@ -35,7 +35,7 @@ if (empty($_SESSION['user']))
         $ligne->ordre2 = $xtendArray;
     } 
 
-$date_time = new DateTime( $temp->devis__date_crea);
+$date_time = new DateTime( $temp->cmd__date_cmd);
 $formated_date = $date_time->format('d/m/Y'); 
 $Keyword = new \App\Tables\Keyword($Database);
 $garanties = $Keyword->getGaranties();
@@ -69,7 +69,14 @@ $garanties = $Keyword->getGaranties();
              <td style="text-align: left; width:50%"><h3>REPARATION-LOCATION-VENTE</h3>imprimantes-lecteurs codes-barres<br><a style="color: green;">www.recode.fr</a><br><br></td>
          </tr>
          <tr>
-             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h2>facture <?php echo $temp->devis__id ?></h2><br><?php echo date("d-m-Y") ?><br><?php echo $temp->email ?><p><small></small></p></td>
+             <td  style="text-align: left;  width: 50% ; margin-left: 25%;">
+             <h3>facture : XXXXXXXX</h3><?php echo 'code client :' . $temp->client__id;  ?><br>
+             <?php echo 'TVA intracom : '. floatval($temp->cmd__tva) . ' %'; ?><br><br>
+             votre cde n° :<small> <?php echo $temp->cmd__code_cmd_client ; ?> </small><br>
+             date commande :  <?php echo $formated_date ; ?><br><br>
+             notre B.L n° : <?php echo $temp->devis__id ; ?><br>
+             Mandelieu le XX/XX/XXXX
+            </td>
              <td style="text-align: left; width:50%"><?php 
              // si une societe de livraion est présente 
              if ($societeLivraison) {
@@ -126,6 +133,10 @@ $garanties = $Keyword->getGaranties();
      </table>
 </page_header>
 <page_footer>
+<table CELLSPACING=0 style=" width: 100%;  margin-bottom: 5px; margin-top: 35 px;">
+    <tr><td style="text-align: left;  width: 50%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;">Condition et payement à réception/Condition générale de Vente XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br>
+    XXXXXXXXXXXXX X XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  X     X XXXXXX XXXXXX  XXXXXXX  XXXXXXXXXXXXXXXXXXXXX X XXXXXXXXXXXXXXX</td></tr>
+    </table>
         <table  class="page_footer" style="text-align: center; margin: auto; ">
             <tr >
                 <td  style=" font-size: 80%; width: 100%;  "><br><br><small>New Eurocomputer-TVA FR33b 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
@@ -134,65 +145,50 @@ $garanties = $Keyword->getGaranties();
          </table>
 </page_footer>
 
-<table CELLSPACING=0 style="margin-top: 15px; width:100%">
-        
-        <?php 
-            $arrayPrice =[];
-            foreach($arrayOfDevisLigne as $value=>$obj){
-                    array_push( $arrayPrice, floatval(floatval($obj->devl_puht)*intval($obj->devl_quantite)));
-            };      
-            echo Pdfunctions::magicLine($arrayOfDevisLigne);     
-        ?>
-</table>
+<div style="margin-top: 35px;">
+    <table CELLSPACING=0 style="margin-top: 35px; width:100%">
+            
+            <?php 
+                $arrayPrice =[];
+                foreach($arrayOfDevisLigne as $value=>$obj){
+                        array_push( $arrayPrice, floatval(floatval($obj->devl_puht)*intval($obj->devl_quantite)));
+                };      
+                echo Pdfunctions::magicLineFTC($arrayOfDevisLigne , $temp);     
+            ?>
+    </table>
+</div>
 
-<div>
-<table style=" margin-top: 25px;  width:100%;" >
+<div style=" margin-top: 70px;">
+<table style=" margin-top: 45px;  width:100%;" >
     <tr>
-    <td style="width: 45%;">  </td>
+    <td style="width: 60%;">  </td>
     <td align="right">
 
-    <?php
-    // on affiche le tableau de totaux en cas de modèle adéquate :
+     <table class="">
+            <thead>
+                    <tr>
+                    <th scope="col">Prix € HT</th>
+                    <th scope="col">Taux TVA</th>
+                    <th scope="col">Montant TVA</th>
+                    <th scope="col">Total TTC</th>
+                    </tr>
+            </thead>
+            <tbody> 
+                <tr>  
+            <?php
 
-    if ($temp->cmd__modele_devis != 'STX') {
-        switch ($temp->cmd__modele_devis) {
-            // devis standart total classique:
-            case 'STT':
-               $totalPrice = array_sum($arrayPrice);
-               $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true);
+                $totaux = Pdfunctions::totalFacture($temp, $arrayOfDevisLigne);
+
+                echo "<td  style='text-align: left; margin-left= 4px;'><b>".number_format($totaux[0] , 2)." €</b></td>";
+                echo "<td style='text-align: left;'>".number_format($totaux[1] , 2)." %</td>";
+                echo "<td style='text-align: left;'>".number_format($totaux[2] , 2)." €</td>";
+                echo "<td style='text-align: left;'><b>".number_format($totaux[3] , 2)." €</b></td>";
                
-                break;
-            // devis standart total logique: 
-            case 'STL':
-               $totalPrice = array_sum($arrayPrice);
-               $totaux = Pdfunctions::magicXtend($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true );
-               
-                break;
-            // devis sans TVA total classique: 
-            case 'TVT':
-                $totalPrice = array_sum($arrayPrice);
-                $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , false);
-               
-                break;
-            // devis sans TVA total logique: 
-            case 'TVL':
-                $totalPrice = array_sum($arrayPrice);
-                $totaux = Pdfunctions::magicXtend($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , false );
-               
-                 break;
-                break;
             
-            default:
-                $totalPrice = array_sum($arrayPrice);
-                $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true);
-               
-                break;
-        }
-       echo '</table>';
-    }
-
-   
-    ?>
+            ?>
+            </tr>
+            </tbody>
+    </table>
     
     </td>
     </tr>
@@ -208,25 +204,7 @@ if ($temp->devis__note_client) {
 ?>
 </div>
 
-<div>
 
-    <table CELLSPACING=0 style=" width: 100%;  margin-bottom: 5px; margin-top: 25 px;">
-    <tr style="background-color: #dedede;  "><td style="text-align: left;  width: 50%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;"><strong>BON POUR COMMANDE</strong><BR>NOM DU SIGNATAIRE: <br>VOTRE N° DE CDE :<br>DATE:</td><td style="text-align: right;  width: 50%; vertical-align:top; padding-top: 7px; padding-right: 6px;">CACHET & SIGNATURE</td></tr>
-</table>
-
-<table style="width: 100%;">
-           <table style="   margin-top: 5px; color: #8c8c8c; width: 100%;">
-               <tr><td style="font-size: 80%;"><small>Le client accepte la présente proposition ainsi que les condition générales de vente Recode.<br>Recode conserve la propriété du matériel jusqu'a 
-               paiement intégral du prix et des frais annexes.</small></td></tr>
-               <tr>
-                   <td><small><strong>Coordonnées bancaires(Banque Populaire Méditéranée)</strong><br>
-                   IBAN : FR76 1460 7003 6569 0218 9841 804- BIC: CCBPFRPPMAR</small></td>
-               </tr>
-           </table>  
-</table>
-
-
-</div> 
 </page>
  <?php
  $content = ob_get_contents();

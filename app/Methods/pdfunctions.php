@@ -658,6 +658,109 @@ public static function ttc($price){
 
 }
 
+
+public static function magicLineFTC($arrayLigne , $cmd){
+	// variables des tailles de cellules afin de pouvoir regler la largeur de la table facilement :
+	$firstW = '12%';
+	$secondW = '50%';
+	$thirdW ='10%';
+	$fourthW = '14%';
+	$fifthW = '14%';
+	
+	
+	// paddind de la premiere ligne : 
+	$firstPadding = '0px';
+	
+	$table = "";
+	$countPadding = 0;
+
+	if ($countPadding == 1 ) {
+		$firstPadding = '15px';
+	}
+	else { $firstPadding = '0px';}
+
+	$tva = floatval($cmd->tva_Taux);
+
+	//boucle sur les lignes passées en parametres
+	foreach ($arrayLigne as $ligne) 
+	{
+		// + 1 dans la valeur du padding
+		$countPadding += 1;
+
+		if ($countPadding == 1 ) {
+			$firstPadding = '15px';
+		}
+		else { $firstPadding = '0px';}
+
+		$pack = "";
+
+		$pack .= '<tr>';
+
+		$firstCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$firstW."; max-width: ".$firstW."; text-align: left;  '>"
+
+			. $ligne->prestaLib. "
+	
+		</td>";
+
+		if (!empty($ligne->cmd__note_facture)) 
+		{
+			$secondCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  '>"
+
+				. $ligne->famille__lib. " " . $ligne->modele . " ".$ligne->marque. "<br> ". $ligne->cmd__note_facture."
+		
+			</td>";
+		}
+		else 
+		{
+			$secondCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  '>"
+
+				. $ligne->famille__lib. " " . $ligne->modele . " ".$ligne->marque. "
+		
+			</td>";
+		}
+
+		$thirdCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW."; text-align: center;  '>"
+
+		. $ligne->cmdl__qte_fact . "
+
+		</td>";
+
+		$FourthCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: center;  '>"
+
+		.  number_format($ligne->devl_puht , 2) . "
+
+		</td>";
+
+		$prixTTc = floatval(($ligne->devl_puht*$tva)/100);
+		$prixTTc = floatval($ligne->devl_puht + $prixTTc);
+
+		$FifthCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
+
+		. number_format($prixTTc , 2) . "
+
+		</td>";
+
+	
+		$pack .= $firstCell . $secondCell . $thirdCell . $FourthCell . $FifthCell ;
+		$pack .= '</tr>';
+
+		$table .= $pack;
+
+	}
+
+	
+
+	$tete =  '<tr style=" margin-top : 70px;  background-color: #dedede; ">
+	<td style=" text-align: left;   padding-top: 4px; padding-bottom: 4px;">Prestation</td>
+	<td style=" text-align: left; padding-top: 4px; padding-bottom: 4px;">Désignation</td>
+	<td  style=" text-align: center; padding-top: 4px; padding-bottom: 4px;">Qté</td>
+	<td style="text-align: center; padding-top: 4px; padding-bottom: 4px;">P.u € HT</td>
+	<td style="text-align: right; ; padding-top: 4px; padding-bottom: 4px;">P.u € TTC</td>
+	</tr> ';
+
+	echo $tete . $table ;
+}
+
 	
 
 	

@@ -93,7 +93,7 @@ session_start();
  if (!empty($_POST['qteFTC']) && !empty($_POST['qteLVR']) && !empty($_POST['prixLigne']) && !empty($_POST['idCMDL']))
  {
    
-  $Cmd->updateLigneFTC(intval($_POST['idCMDL']), intval($_POST['qteCMD']) , intval($_POST['qteLVR']), intval($_POST['qteFTC']), floatval($_POST['prixLigne']));
+  $Cmd->updateLigneFTC(intval($_POST['idCMDL']), intval($_POST['qteCMD']) , intval($_POST['qteLVR']), intval($_POST['qteFTC']),  $_POST['comFacture'] ,floatval($_POST['prixLigne']));
   
    $return = $Cmd->returnDevis(intval($_POST['idCMDL']));
    $_POST['recherche-fiche'] = 'id-fiche';

@@ -223,7 +223,7 @@ class Cmd extends Table {
   }
 
   //met a jour les quantité et le prix (facturation)
-  public function updateLigneFTC($id, $qteCMD , $qteLVR, $qteFTC , $prix )
+  public function updateLigneFTC($id, $qteCMD , $qteLVR, $qteFTC , $note_facture , $prix )
   {
     $data = 
     [
@@ -231,12 +231,13 @@ class Cmd extends Table {
       $qteLVR,
       $qteFTC,
       $prix,
+      $note_facture,
       $id
     ];
 
     $update = $this->Db->Pdo->prepare(
       'UPDATE cmd_ligne
-       SET cmdl__qte_cmd =? ,cmdl__qte_livr=? , cmdl__qte_fact=? , cmdl__puht =? 
+       SET cmdl__qte_cmd =? ,cmdl__qte_livr=? , cmdl__qte_fact=? , cmdl__puht =? , cmdl__note_facture=?
        WHERE cmdl__id=? ');
     
     $update->execute($data);
@@ -736,7 +737,7 @@ public function modify(
       cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
       cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
       cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
-      cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__garantie_puht ,
+      cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__garantie_puht , cmdl__note_facture,
       k.kw__lib , k.kw__value , 
       f.afmm__famille as famille,
       f.afmm__modele as modele,
@@ -767,7 +768,7 @@ public function modify(
       cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
       cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
       cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
-      cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact,
+      cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__note_facture,
       k.kw__lib , k.kw__value , 
       f.afmm__famille as famille,
       f.afmm__modele as modele,
