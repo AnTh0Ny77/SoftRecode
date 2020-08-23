@@ -164,25 +164,33 @@ $garanties = $Keyword->getGaranties();
     <td style="width: 60%;">  </td>
     <td align="right">
 
-     <table class="">
-            <thead>
-                    <tr>
-                    <th scope="col">Prix € HT</th>
-                    <th scope="col">Taux TVA</th>
-                    <th scope="col">Montant TVA</th>
-                    <th scope="col">Total TTC</th>
-                    </tr>
-            </thead>
+     <table style="border: 1px solid black; background-color: lightgray;">
             <tbody> 
                 <tr>  
             <?php
 
                 $totaux = Pdfunctions::totalFacture($temp, $arrayOfDevisLigne);
 
-                echo "<td  style='text-align: left; margin-left= 4px;'><b>".number_format($totaux[0] , 2)." €</b></td>";
-                echo "<td style='text-align: left;'>".number_format($totaux[1] , 2)." %</td>";
-                echo "<td style='text-align: left;'>".number_format($totaux[2] , 2)." €</td>";
-                echo "<td style='text-align: left;'><b>".number_format($totaux[3] , 2)." €</b></td>";
+
+                echo "<td style='text-align: left; width: 175px;'>
+                        TOTAL HORS TAXES :<br>
+                        TAUX TVA :<br>
+                        TOTAL TVA :<br>
+                        TOTAL TOUTES TAXES:
+                     </td>
+                       
+
+
+                     <td style='text-align: right; '>
+                     <b>".number_format($totaux[0] , 2)." €</b><br>
+                     <b>".number_format($totaux[1] , 2)." %</b><br>
+                     <b>".number_format($totaux[2] , 2)." €</b><br>
+                     <b>".number_format($totaux[3] , 2)." €</b><br>
+
+                     </td>";
+
+
+               
                
             
             ?>

@@ -41,7 +41,7 @@ ClassicEditor
             ]
             },
             toolbar: 
-            [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , "imageUpload", 'fontColor']
+            [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ,  'fontColor']
             })
             .then( newEditor => 
             {
@@ -85,7 +85,7 @@ ClassicEditor
                 ]
                 },
                 toolbar: 
-                [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , "imageUpload", 'fontColor']
+                [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ,'fontColor']
                 })
                 .then( newEditor => 
                 {
@@ -128,7 +128,7 @@ ClassicEditor
                     ]
                     },
                     toolbar: 
-                    [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , "imageUpload", 'fontColor']
+                    [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , 'fontColor']
                     })
                     .then( newEditor => 
                     {
@@ -556,6 +556,34 @@ ClassicEditor
                     }
                 })
             })
+
+
+             //  click pour le rajout de lignes:
+             $('#addNewItem').on('click', function()
+             {
+                 dataItem = this.value;
+                 
+                 $.ajax({
+                     type: 'post',
+                     url: "AjaxDevisFacture",
+                     data:
+                     {
+                         "AjaxDevis": dataItem
+                     },
+                     success: function (data) {
+                         
+                         dataSet = JSON.parse(data);
+                         $('#titreItem').text('Ajout article Commande N°: ' + dataSet[0].devis__id);
+                         $('#idDevisAddLigne').val(dataSet[0].devis__id);
+                         $('#modalItem').modal('show');
+                        
+                     },
+                     error: function (err) {
+                         console.log('error: ' , err);
+                     }
+                 })
+                
+             })
 
 
 

@@ -702,11 +702,11 @@ public static function magicLineFTC($arrayLigne , $cmd){
 	
 		</td>";
 
-		if (!empty($ligne->cmd__note_facture)) 
+		if (!empty($ligne->cmdl__note_facture)) 
 		{
 			$secondCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  '>"
 
-				. $ligne->famille__lib. " " . $ligne->modele . " ".$ligne->marque. "<br> ". $ligne->cmd__note_facture."
+				. $ligne->famille__lib. " " . $ligne->modele . " ".$ligne->marque. "<br> ". $ligne->cmdl__note_facture."
 		
 			</td>";
 		}
