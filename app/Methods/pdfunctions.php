@@ -668,6 +668,7 @@ public static function magicLineFTC($arrayLigne , $cmd){
 	$fifthW = '14%';
 	
 	
+	
 	// paddind de la premiere ligne : 
 	$firstPadding = '0px';
 	
@@ -684,6 +685,7 @@ public static function magicLineFTC($arrayLigne , $cmd){
 	//boucle sur les lignes passées en parametres
 	foreach ($arrayLigne as $ligne) 
 	{
+		
 		// + 1 dans la valeur du padding
 		$countPadding += 1;
 
@@ -704,9 +706,9 @@ public static function magicLineFTC($arrayLigne , $cmd){
 
 		if (!empty($ligne->cmdl__note_facture)) 
 		{
-			$secondCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  '>"
+			$secondCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$secondW."; max-width: ".$secondW."; text-align: left; padding-bottom: 5px;  '>"
 
-				. $ligne->famille__lib. " " . $ligne->modele . " ".$ligne->marque. "<br> ". $ligne->cmdl__note_facture."
+				. $ligne->famille__lib. " " . $ligne->modele . " ".$ligne->marque.  $ligne->cmdl__note_facture."
 		
 			</td>";
 		}
@@ -739,10 +741,51 @@ public static function magicLineFTC($arrayLigne , $cmd){
 		. number_format($prixTTc , 2) . "
 
 		</td>";
-
-	
 		$pack .= $firstCell . $secondCell . $thirdCell . $FourthCell . $FifthCell ;
 		$pack .= '</tr>';
+
+		if (!empty($ligne->cmdl__garantie_option) && $ligne->cmdl__garantie_option!= '00' ) 
+		{
+
+			$firstCellXT = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$firstW."; max-width: ".$firstW."; text-align: left;  '>
+
+			Extension 
+	
+			</td>";
+
+			$secondCellXT = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  '>
+
+			Extension de Garantie à ". $ligne->cmdl__garantie_option ." mois
+		
+			</td>";
+
+			$thirdCellXT = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW."; text-align: center;  '>"
+
+			. $ligne->cmdl__qte_fact . "
+
+			</td>";
+
+			$FourthCellXT = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: center;  '>"
+
+			.  number_format($ligne->cmdl__garantie_puht , 2) . "
+
+			</td>";
+
+			$prixTTcXT = floatval(($ligne->cmdl__garantie_puht*$tva)/100);
+			$prixTTcXT = floatval($ligne->cmdl__garantie_puht + $prixTTc);
+
+			$FifthCellXT = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
+
+			. number_format($prixTTcXT , 2) . "
+
+			</td>";
+
+			$pack .= '<tr>' . $firstCellXT . $secondCellXT . $thirdCellXT . $FourthCellXT . $FifthCellXT . '</tr>';
+			
+		}
+
+
+		
 
 		$table .= $pack;
 

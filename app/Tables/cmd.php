@@ -309,6 +309,100 @@ public function returnDevis($idCmdl)
     $update->execute($data);
   }
 
+
+
+
+
+
+  //met a jour la quanbtité facturé dans une ligne de facture: 
+  public function updateQuantiteFTC($cmd)
+  {
+    $request =$this->Db->Pdo->query("SELECT
+    cmdl__id , cmdl__cmd__id, cmdl__qte_livr , cmdl__qte_fact
+    FROM cmd_ligne 
+    WHERE cmdl__cmd__id = ". $cmd ."");
+    $arrayLigne = $request->fetchAll(PDO::FETCH_OBJ);
+
+    foreach ($arrayLigne as $ligne) 
+    {
+        if (empty($ligne->cmdl__qte_fact)) 
+        {
+          $data = 
+          [
+            $ligne->cmdl__qte_livr,
+            $ligne->cmdl__id
+          ];
+
+          $updateFTC = 
+            "UPDATE cmd_ligne
+            SET cmdl__qte_fact =?
+            WHERE cmdl__id =? ";
+          
+          $update = $this->Db->Pdo->prepare($updateFTC);
+          $update->execute($data);
+        }  
+    }
+  }
+
+// si un ecart est constaté dans les quantité génère des reliquats automatiquement: 
+public function classicReliquat($cmd)
+{
+  $lignes = $this->devisLigne($cmd);
+  $NewLines = [];
+  foreach ($lignes as $ligne) 
+  {
+    if ( intval($ligne->cmdl__qte_fact) > intval($ligne->cmdl__qte_livr)) 
+    {
+      array_push($NewLines, $ligne);
+    }
+  }
+
+  if (!empty($NewLines))
+  {
+   //cree une commande en status FT 
+   //insere les lignes differentes
+  }
+}
+
+
+
+
+
+
+
+
+
+
+  // met a jour le status de la commande et le munero de facture:
+  public function commande2facture($cmd)
+  {
+    //recup le dernier numero de facture: 
+    $lastFact= $this->Db->Pdo->query('SELECT MAX(cmd__id_facture) as lastFact from cmd ');
+    $lastFTC = $lastFact->fetch(PDO::FETCH_OBJ);
+
+    if (empty(intval($lastFTC->lastFact))) 
+    {
+      $newFact = 1000;  
+    } else $newFact = $lastFTC->lastFact + 1 ;
+
+    $data = 
+    [
+      $newFact,
+      $cmd
+    ];
+
+    $sql = 
+    "UPDATE cmd
+     SET 
+     cmd__id_facture =? ,
+     cmd__etat = 'VLD'
+     WHERE cmd__id =? ";
+
+    $update = $this->Db->Pdo->prepare($sql);
+    $update->execute($data);
+
+  }
+
  
 
   //recupère tous les status VLD
@@ -695,7 +789,7 @@ public function modify(
         'INSERT INTO  cmd_ligne (
          cmdl__cmd__id, cmdl__prestation,  cmdl__designation ,
          cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  ,  
-         cmdl__puht , cmdl__note_client  ,  cmdl__ordre , cmdl__id__fmm , cmdl__garantie_option , cmdl__garantie_puht , cmdl__qte_livr)
+         cmdl__puht , cmdl__note_facture  ,  cmdl__ordre , cmdl__id__fmm , cmdl__garantie_option , cmdl__garantie_puht , cmdl__qte_livr)
          VALUES (
          :devl__devis__id, :devl__type,  :devl__designation,
          :devl__etat, :devl__mois_garantie , :devl_quantite,  

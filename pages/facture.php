@@ -90,8 +90,9 @@ session_start();
 
 
  //si une mise a jour de ligne a été effectuée: 
- if (!empty($_POST['qteFTC']) && !empty($_POST['qteLVR']) && !empty($_POST['prixLigne']) && !empty($_POST['idCMDL']))
+ if ( !empty($_POST['prixLigne']) && !empty($_POST['idCMDL']))
  {
+ 
    
   $Cmd->updateLigneFTC(intval($_POST['idCMDL']), intval($_POST['qteCMD']) , intval($_POST['qteLVR']), intval($_POST['qteFTC']),  $_POST['comFacture'] ,floatval($_POST['prixLigne']));
   
@@ -100,6 +101,23 @@ session_start();
    $_POST['rechercheF'] = $return->devis__id;
     
  }
+
+
+
+ // si une commande à été postée: 
+
+ if (!empty($_POST['hiddenCommentaire'])) 
+ {
+   $Cmd->updateQuantiteFTC($_POST['hiddenCommentaire']);
+   //  2  changer le status de la commande et attribuer un numero de facture:
+   $Cmd->commande2facture($_POST['hiddenCommentaire']);
+   //  4 activer une alert pour indiquer le bon fonctionnement du logiciel 
+
+   //  3 enregistrer la facture au format pdf dans un folder 
+   
+ }
+
+
 
  // si un rajout de ligne à été effectué:
 if (!empty($_POST['idDevisAddLigne']) && !empty($_POST['prestationChoix']) ) 

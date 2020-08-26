@@ -89,7 +89,7 @@ ClassicEditor
                 })
                 .then( newEditor => 
                 {
-                ckComClient = newEditor;
+                ckComLigne = newEditor;
                 })
                 .catch( error => 
                 {
@@ -282,6 +282,10 @@ ClassicEditor
                         $('#idCMDL').val(dataSet.devl__id);
                         $('#qteCMD').val(dataSet.devl_quantite);
                         $('#qteLVR').val(dataSet.cmdl__qte_livr);
+                        if (dataSet.cmdl__note_facture != null) 
+                        {
+                            ckComFacture.setData(dataSet.cmdl__note_facture);
+                        }
                         if (dataSet.cmdl__qte_fact) 
                         {
                             $('#qteFTC').val(dataSet.cmdl__qte_fact);
@@ -462,6 +466,12 @@ ClassicEditor
                         $('#idCMDL').val(dataSet.devl__id);
                         $('#qteCMD').val(dataSet.devl_quantite);
                         $('#qteLVR').val(dataSet.cmdl__qte_livr);
+                        
+                        if (dataSet.cmdl__note_facture != null) 
+                        {
+                            ckComFacture.setData(dataSet.cmdl__note_facture);
+                        }
+                        
                         if (dataSet.cmdl__qte_fact) 
                         {
                             $('#qteFTC').val(dataSet.cmdl__qte_fact);

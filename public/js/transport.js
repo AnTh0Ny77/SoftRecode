@@ -53,24 +53,30 @@ $(document).ready(function() {
         let firstOne = $('#transportTable').find('tr').eq(1);
         firstOne.addClass('selected');
         let dataRow = tableTransport.row().data();
-        let ObjetCmd  = 
+        if (dataRow) 
         {
-            Id: dataRow[0],
-            Client: dataRow[3],
-            Date: dataRow[2], 
-            Data: dataRow = JSON.parse(dataRow[4])
-        }
-       document.getElementById('JumboCmd').innerHTML =  'Commande N°: ' + ObjetCmd.Id;
-       $('#JumboClient').html(ObjetCmd.Client);
-       $('#dateTransport').html(ObjetCmd.Date);
-       $('#id_trans').val(ObjetCmd.Id);
-       let content = '';
 
-       for (key in ObjetCmd.Data) 
-       {
-           content += ' • ' + ObjetCmd.Data[key].devl_quantite + 'x ' + ObjetCmd.Data[key].devl__designation ;
-       }
-       $('#JumboDetails').text(content);
+            let ObjetCmd  = 
+            {
+                Id: dataRow[0],
+                Client: dataRow[3],
+                Date: dataRow[2], 
+                Data: dataRow = JSON.parse(dataRow[4])
+            }
+           document.getElementById('JumboCmd').innerHTML =  'Commande N°: ' + ObjetCmd.Id;
+           $('#JumboClient').html(ObjetCmd.Client);
+           $('#dateTransport').html(ObjetCmd.Date);
+           $('#id_trans').val(ObjetCmd.Id);
+           let content = '';
+    
+           for (key in ObjetCmd.Data) 
+           {
+               content += ' • ' + ObjetCmd.Data[key].devl_quantite + 'x ' + ObjetCmd.Data[key].devl__designation ;
+           }
+           $('#JumboDetails').text(content);
+            
+        } else { $('#JumbResponse').html('<h4>Aucunnes fiches en attente de saisie</h4>')}
+       
     };
 
 

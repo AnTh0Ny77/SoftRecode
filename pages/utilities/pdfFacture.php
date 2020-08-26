@@ -69,66 +69,52 @@ $garanties = $Keyword->getGaranties();
              <td style="text-align: left; width:50%"><h3>REPARATION-LOCATION-VENTE</h3>imprimantes-lecteurs codes-barres<br><a style="color: green;">www.recode.fr</a><br><br></td>
          </tr>
          <tr>
-             <td  style="text-align: left;  width: 50% ; margin-left: 25%;">
-             <h3>facture : XXXXXXXX</h3><?php echo 'code client :' . $temp->client__id;  ?><br>
-             <?php echo 'TVA intracom : '. floatval($temp->cmd__tva) . ' %'; ?><br><br>
+             <td  style="text-align: left;  width: 50% ; margin-left: 25%; padding-top: 20px;">
+
+             
+          
+             <?php 
+             if (!empty($clientView->client__tva_intracom)) 
+             {
+                echo 'TVA intracom : '. $clientView->client__tva_intracom . ' ';
+             } else  echo 'TVA intracom : Non renseigné';
+              
+             ?><br>
              votre cde n° :<small> <?php echo $temp->cmd__code_cmd_client ; ?> </small><br>
-             date commande :  <?php echo $formated_date ; ?><br><br>
-             notre B.L n° : <?php echo $temp->devis__id ; ?><br>
-             Mandelieu le XX/XX/XXXX
+             date commande :  <?php echo $formated_date ; ?><br>
+             notre B.L n° : <?php echo $temp->devis__id ; ?>
+            <br><br>
+            
+             <small >
+             Livraison:<br>
+             <b>
+             <?php  echo Pdfunctions::showSociete($societeLivraison) ?>
+             </b>
+             </small>
             </td>
-             <td style="text-align: left; width:50%"><?php 
+             <td style="text-align: left; width:50%">
+             <h3>facture : XXXXXXXX</h3><br>
+             <?php 
              // si une societe de livraion est présente 
-             if ($societeLivraison) {
-
-                    if ($temp->devis__contact__id) {
-                        // si un contact est présent dans l'adresse de facturation :
-                        $contact = $Contact->getOne($temp->devis__contact__id);
-                        echo "<small>facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom. "</small><strong><br>";
-                        echo Pdfunctions::showSociete($clientView) ." </strong> ";
-                    
-                        if ($temp->devis__contact_livraison) {
-                            //si un contact est présent dans l'adresse de livraison : 
-                            $contact2 = $Contact->getOne($temp->devis__contact_livraison);
-                            echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
-                            echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>"; 
-                        }
-                        else {
-                            // si pas de contact de livraison : 
-                            echo "<br> <small>livraison :</small><strong><br>";
-                            echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>"; 
-                        } 
-                    }
-
-                    else {
-                        echo "<small>facturation :</small><strong><br>";
-                        echo Pdfunctions::showSociete($clientView) ." </strong>" ;
-                        if ($temp->devis__contact_livraison) {
-                            $contact2 = $Contact->getOne($temp->devis__contact_livraison);
-                            echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
-                            echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>"; 
-                        } else {
-                            echo "<br> <small>livraison :</small><strong><br>";
-                            echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>"; 
-                        }  
-                    }  
-             } 
-
-
-
-             else{
-                if ($temp->devis__contact__id) {
+           
+            
+                if ($temp->devis__contact__id) 
+                {
                 $contact = $Contact->getOne($temp->devis__contact__id);
-                echo "<small>livraison & facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."</small><strong><br>";
+                echo "<small>facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."</small><strong><br>";
                 echo Pdfunctions::showSociete($clientView)  ."</strong></td>";
                 }
-                else{
-                    echo "<small>livraison & facturation : </small><strong><br>";
+                else
+                {
+                    echo "<small>facturation : </small><strong><br>";
                     echo Pdfunctions::showSociete($clientView)  ."</strong></td>";
                 }
 
-             } 
+             
              ?>
+              
+             <br>
+            
          </tr>
      </table>
 </page_header>
