@@ -359,8 +359,15 @@ public function classicReliquat($cmd)
 
   if (!empty($NewLines))
   {
-   //cree une commande en status FT 
-   //insere les lignes differentes
+    $reliquat = $this->GetById($cmd);
+
+    $request = 
+    ('cmd__date_cmd , cmd__client__id_fact ,
+      cmd__client__id_livr, cmd__contact__id_fact, cmd__contact__id_livr ,
+      cmd__note_client, cmd__note_interne,
+      cmd__etat ,   )
+      VALUES ()');
+  
   }
 }
 

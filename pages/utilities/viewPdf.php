@@ -221,10 +221,10 @@ if ($temp->devis__note_client) {
 
 <table style="width: 100%;">
            <table style="   margin-top: 5px; color: #8c8c8c; width: 100%;">
-               <tr><td style="font-size: 80%;"><small>Le client accepte la présente proposition ainsi que les condition générales de vente Recode.<br>Recode conserve la propriété du matériel jusqu'a 
+               <tr><td style="font-size: 80%;"><small>Le client accepte la présente proposition ainsi que les conditions générales de vente Recode.<br>Recode conserve la propriété du matériel jusqu'a 
                paiement intégral du prix et des frais annexes.</small></td></tr>
                <tr>
-                   <td><small><strong>Coordonnées bancaires(Banque Populaire Méditéranée)</strong><br>
+                   <td><small><strong>Coordonnées bancaires (Banque Populaire Méditerranée)</strong><br>
                    IBAN : FR76 1460 7003 6569 0218 9841 804- BIC: CCBPFRPPMAR</small></td>
                </tr>
            </table>  
