@@ -4,6 +4,7 @@ namespace App\Tables;
 use App\Tables\Table;
 use App\Database;
 use PDO;
+use stdClass;
 
 class Cmd extends Table {
 
@@ -28,7 +29,7 @@ class Cmd extends Table {
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
     cmd__nom_devis, cmd__modele_devis , 
-    cmd__date_cmd, cmd__date_envoi, cmd__code_cmd_client, cmd__tva,
+    cmd__date_cmd, cmd__date_envoi, cmd__code_cmd_client, cmd__tva, cmd__user__id_cmd,
     k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
@@ -361,14 +362,120 @@ public function classicReliquat($cmd)
   {
     $reliquat = $this->GetById($cmd);
 
-    $request = 
-    ('cmd__date_cmd , cmd__client__id_fact ,
-      cmd__client__id_livr, cmd__contact__id_fact, cmd__contact__id_livr ,
-      cmd__note_client, cmd__note_interne,
-      cmd__etat ,   )
-      VALUES ()');
-  
+    $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd , cmd__client__id_fact ,
+      cmd__client__id_livr, cmd__contact__id_fact,  cmd__contact__id_livr ,
+      cmd__note_client, cmd__note_interne, cmd__code_cmd_client ,
+      cmd__etat , cmd__user__id_devis , cmd__user__id_cmd)
+      VALUES (:cmd__date_cmd , :cmd__client__id_fact , 
+      :cmd__client__id_livr , :cmd__contact__id_fact , :cmd__contact__id_livr
+      :cmd__note_client , :cmd__note_interne, :cmd__code_cmd_client , :cmd__etat , :cmd__user__id_devis , :cmd__user__id_cmd)');
+
+    $request->bindValue(":cmd__date_cmd", $reliquat->cmd__date_cmd);
+    $request->bindValue(":cmd__client__id_fact", $reliquat->client__id);
+    $request->bindValue(":cmd__client__id_livr", $reliquat->devis__id_client_livraison);
+    $request->bindValue(":cmd__contact__id_fact", $reliquat->devis__contact__id);
+    $request->bindValue(":cmd__contact__id_livr", $reliquat->devis__contact_livraison);
+    $request->bindValue(":cmd__note_client", $reliquat->devis__note_client);
+    $request->bindValue(":cmd__note_interne", $reliquat->devis__note_interne);
+    $request->bindValue(":cmd__code_cmd_client", 'RELIQUAT  cmd n°' . $reliquat->devis__id . "  " .  $reliquat->cmd__code_cmd_client );
+    $request->bindValue(":cmd__etat", 'CMD');
+    $request->bindValue(":cmd__user__id_devis", $reliquat->devis__user__id );
+    $request->bindValue(":cmd__user__id_cmd", $reliquat->cmd__user__id_cmd );
+    $request->execute();
+    
+    $idReliquat = $this->Db->Pdo->lastInsertId();
+    $count = 0 ;
+
+    foreach ($NewLines as $lines ) 
+    {
+      $count += 1;
+      $insertObject = new stdClass;
+      $insertObject->idDevis = $idReliquat;
+      $insertObject->prestation = $lines->devl__type;
+      $insertObject->designation = $lines->devl__designation;
+      $insertObject->etat = 'CMD';
+      $insertObject->garantie = $lines->devl__mois_garantie;
+      $insertObject->quantite = $lines->devl_quantite;
+      $insertObject->prix = $lines->devl_puht;
+      $insertObject->comClient = $lines->devl__note_client;
+      $insertObject->idfmm = $lines->cmdl__id__fmm;
+      $insertObject->extension = $lines->cmdl__garantie_option;
+      $insertObject->prixGarantie = $lines->cmdl__garantie_puht;
+
+      $createLine = $this->insertLine($insertObject);
+     
+    }
   }
+}
+
+//insère une ligne dans un devis :
+
+public function insertLine($object){
+  $requestLigne =  $this->Db->Pdo->prepare(
+    'INSERT INTO  cmd_ligne (
+     cmdl__cmd__id, cmdl__prestation,  cmdl__designation ,
+     cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  ,  
+     cmdl__puht , cmdl__note_facture  ,  cmdl__ordre , cmdl__id__fmm , cmdl__garantie_option , cmdl__garantie_puht , cmdl__qte_livr)
+     VALUES (
+     :devl__devis__id, :devl__type,  :devl__designation,
+     :devl__etat, :devl__mois_garantie , :devl_quantite,  
+     :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm , :cmdl__garantie_option , :cmdl__garantie_puht , :cmdl__qte_livr)');
+
+
+    $verifOrdre = $this->Db->Pdo->query(
+      'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne ');
+
+    $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
+    
+    
+    $ordreMax = $ordreMax->maxOrdre + 1 ;
+
+    $requestLigne->bindValue(":devl__devis__id", $object->idDevis);
+    $requestLigne->bindValue(":devl__type", $object->prestation);
+    $requestLigne->bindValue(":devl__designation", $object->designation);
+    $requestLigne->bindValue(":devl__etat", $object->etat);
+    $requestLigne->bindValue(":devl__mois_garantie", intval($object->garantie));
+    $requestLigne->bindValue(":devl_quantite", $object->quantite);
+    $requestLigne->bindValue(":devl_puht", floatval($object->prix));
+    $requestLigne->bindValue(":devl__note_client", $object->comClient);
+    $requestLigne->bindValue(":devl__ordre", $ordreMax);
+    $requestLigne->bindValue(":id__fmm", $object->idfmm);
+    $requestLigne->bindValue(":cmdl__garantie_option", $object->extension);
+    $requestLigne->bindValue(":cmdl__garantie_puht", floatVal($object->prixGarantie));
+    $requestLigne->bindValue(":cmdl__qte_livr", intval($object->quantite));
+    $requestLigne->execute();  
+    return $requestLigne;
+}
+
+//recupère les lignes liées à un devis:
+public function devisLigne($id){
+  $request =$this->Db->Pdo->query("SELECT
+  cmdl__cmd__id,
+  cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
+  cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
+  cmdl__etat as devl__etat, LPAD(cmdl__garantie_base,2,0) as devl__mois_garantie,
+  cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
+  cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
+  cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
+  cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__garantie_puht , cmdl__note_facture,
+  k.kw__lib , k.kw__value , 
+  f.afmm__famille as famille,
+  f.afmm__modele as modele,
+  k2.kw__lib as prestaLib,
+  k3.kw__info as groupe_famille,
+  k3.kw__lib as famille__lib,
+  a.am__marque as marque
+  FROM cmd_ligne 
+  LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
+  LEFT JOIN keyword as k2 ON cmdl__prestation = k2.kw__value AND k2.kw__type = 'pres'
+  LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
+  LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
+  LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
+  WHERE cmdl__cmd__id = ". $id ."
+  ORDER BY devl__ordre ");
+ 
+  $data = $request->fetchAll(PDO::FETCH_OBJ);
+  return $data;
 }
 
 
@@ -789,75 +896,8 @@ public function modify(
     return $idDevis;
     }
 
-    //insère une ligne dans un devis :
-
-    public function insertLine($object){
-      $requestLigne =  $this->Db->Pdo->prepare(
-        'INSERT INTO  cmd_ligne (
-         cmdl__cmd__id, cmdl__prestation,  cmdl__designation ,
-         cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  ,  
-         cmdl__puht , cmdl__note_facture  ,  cmdl__ordre , cmdl__id__fmm , cmdl__garantie_option , cmdl__garantie_puht , cmdl__qte_livr)
-         VALUES (
-         :devl__devis__id, :devl__type,  :devl__designation,
-         :devl__etat, :devl__mois_garantie , :devl_quantite,  
-         :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm , :cmdl__garantie_option , :cmdl__garantie_puht , :cmdl__qte_livr)');
-
-
-        $verifOrdre = $this->Db->Pdo->query(
-          'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne ');
-
-        $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
-        
-        
-        $ordreMax = $ordreMax->maxOrdre + 1 ;
     
-        $requestLigne->bindValue(":devl__devis__id", $object->idDevis);
-        $requestLigne->bindValue(":devl__type", $object->prestation);
-        $requestLigne->bindValue(":devl__designation", $object->designation);
-        $requestLigne->bindValue(":devl__etat", $object->etat);
-        $requestLigne->bindValue(":devl__mois_garantie", intval($object->garantie));
-        $requestLigne->bindValue(":devl_quantite", $object->quantite);
-        $requestLigne->bindValue(":devl_puht", floatval($object->prix));
-        $requestLigne->bindValue(":devl__note_client", $object->comClient);
-        $requestLigne->bindValue(":devl__ordre", $ordreMax);
-        $requestLigne->bindValue(":id__fmm", $object->idfmm);
-        $requestLigne->bindValue(":cmdl__garantie_option", $object->extension);
-        $requestLigne->bindValue(":cmdl__garantie_puht", floatVal($object->prixGarantie));
-        $requestLigne->bindValue(":cmdl__qte_livr", intval($object->quantite));
-        $requestLigne->execute();  
-        return $requestLigne;
-    }
-
-    //recupère les lignes liées à un devis:
-    public function devisLigne($id){
-      $request =$this->Db->Pdo->query("SELECT
-      cmdl__cmd__id,
-      cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
-      cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
-      cmdl__etat as devl__etat, LPAD(cmdl__garantie_base,2,0) as devl__mois_garantie,
-      cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
-      cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
-      cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
-      cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__garantie_puht , cmdl__note_facture,
-      k.kw__lib , k.kw__value , 
-      f.afmm__famille as famille,
-      f.afmm__modele as modele,
-      k2.kw__lib as prestaLib,
-      k3.kw__info as groupe_famille,
-      k3.kw__lib as famille__lib,
-      a.am__marque as marque
-      FROM cmd_ligne 
-      LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
-      LEFT JOIN keyword as k2 ON cmdl__prestation = k2.kw__value AND k2.kw__type = 'pres'
-      LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
-      LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
-      LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
-      WHERE cmdl__cmd__id = ". $id ."
-      ORDER BY devl__ordre ");
-     
-      $data = $request->fetchAll(PDO::FETCH_OBJ);
-      return $data;
-    }
+    
 
 
     public function devisLigneUnit($id){
