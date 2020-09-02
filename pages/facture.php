@@ -115,11 +115,9 @@ session_start();
    $Cmd->commande2facture($_POST['hiddenCommentaire']);
    //  4 activer une alert pour indiquer le bon fonctionnement du logiciel 
    $Cmd->classicReliquat($_POST['hiddenCommentaire']);
-
    //  3 enregistrer la facture au format pdf dans un folder 
    
  }
-
 
 
  // si un rajout de ligne à été effectué:
@@ -146,12 +144,14 @@ if (!empty($_POST['idDevisAddLigne']) && !empty($_POST['prestationChoix']) )
 
 
 //conserve la recherche et la transfert a $_POST malgrès le header qui suit la creation
-if (!empty($_SESSION['rechercheFacture'])) 
+if (isset($_SESSION['rechercheFacture'])  ) 
 {
   $tampon = $_SESSION['rechercheFacture'];
   $_POST['recherche-fiche'] = 'id-fiche';
   $_POST['rechercheF'] = $tampon;
-  $_SESSION['rechercheFacture'] = "";
+  unset($_SESSION['rechercheFacture']);
+ 
+  
 }
 
 
