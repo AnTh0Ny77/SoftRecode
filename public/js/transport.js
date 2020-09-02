@@ -75,7 +75,7 @@ $(document).ready(function() {
            }
            $('#JumboDetails').text(content);
             
-        } else { $('#JumbResponse').html('<h4>Aucunnes fiches en attente de saisie</h4>')}
+        } else { $('#JumbResponse').html('<h4>Aucunnes fiches en attente de saisie</h4>'); $('#post-saisie').hide()}
        
     };
 

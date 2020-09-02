@@ -29,7 +29,7 @@ class Cmd extends Table {
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
     cmd__nom_devis, cmd__modele_devis , 
-    cmd__date_cmd, cmd__date_envoi, cmd__code_cmd_client, cmd__tva, cmd__user__id_cmd,
+    cmd__date_cmd, cmd__date_envoi, cmd__code_cmd_client, cmd__tva, cmd__user__id_cmd, cmd__id_facture,
     k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
@@ -326,14 +326,14 @@ public function returnDevis($idCmdl)
 
     foreach ($arrayLigne as $ligne) 
     {
-        if (empty($ligne->cmdl__qte_fact)) 
+        if ($ligne->cmdl__qte_fact == null) 
         {
           $data = 
           [
             $ligne->cmdl__qte_livr,
             $ligne->cmdl__id
           ];
-
+          
           $updateFTC = 
             "UPDATE cmd_ligne
             SET cmdl__qte_fact =?
@@ -349,43 +349,57 @@ public function returnDevis($idCmdl)
 public function classicReliquat($cmd)
 {
   $lignes = $this->devisLigne($cmd);
+ 
   $NewLines = [];
   foreach ($lignes as $ligne) 
   {
-    if ( intval($ligne->cmdl__qte_fact) > intval($ligne->cmdl__qte_livr)) 
+    
+    if ( intval($ligne->devl_quantite) > intval($ligne->cmdl__qte_fact)) 
     {
+      $ligne->devl_quantite = intval($ligne->devl_quantite) - intval($ligne->cmdl__qte_fact);
       array_push($NewLines, $ligne);
     }
   }
-
-  if (!empty($NewLines))
+ 
+  
+  if (!empty($NewLines)) 
   {
+   
     $reliquat = $this->GetById($cmd);
 
-    $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd , cmd__client__id_fact ,
-      cmd__client__id_livr, cmd__contact__id_fact,  cmd__contact__id_livr ,
-      cmd__note_client, cmd__note_interne, cmd__code_cmd_client ,
-      cmd__etat , cmd__user__id_devis , cmd__user__id_cmd)
-      VALUES (:cmd__date_cmd , :cmd__client__id_fact , 
-      :cmd__client__id_livr , :cmd__contact__id_fact , :cmd__contact__id_livr
-      :cmd__note_client , :cmd__note_interne, :cmd__code_cmd_client , :cmd__etat , :cmd__user__id_devis , :cmd__user__id_cmd)');
+    $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd, cmd__client__id_fact,
+      cmd__client__id_livr, cmd__contact__id_fact,  cmd__contact__id_livr,
+      cmd__note_client, cmd__note_interne, cmd__code_cmd_client,
+      cmd__etat, cmd__user__id_devis, cmd__user__id_cmd)
+      VALUES (:cmd__date_cmd, :cmd__client__id_fact, :cmd__client__id_livr, :cmd__contact__id_fact, :cmd__contact__id_livr,
+      :cmd__note_client, :cmd__note_interne, :cmd__code_cmd_client, :cmd__etat, :cmd__user__id_devis, :cmd__user__id_cmd)');
+
+      
+
+    $code_cmd = 'RELIQUAT  cmd n°' . $reliquat->devis__id . "  " .  $reliquat->cmd__code_cmd_client;
 
     $request->bindValue(":cmd__date_cmd", $reliquat->cmd__date_cmd);
     $request->bindValue(":cmd__client__id_fact", $reliquat->client__id);
     $request->bindValue(":cmd__client__id_livr", $reliquat->devis__id_client_livraison);
     $request->bindValue(":cmd__contact__id_fact", $reliquat->devis__contact__id);
     $request->bindValue(":cmd__contact__id_livr", $reliquat->devis__contact_livraison);
-    $request->bindValue(":cmd__note_client", $reliquat->devis__note_client);
+    $request->bindValue(":cmd__note_client", $reliquat->devis__note_client);   
     $request->bindValue(":cmd__note_interne", $reliquat->devis__note_interne);
-    $request->bindValue(":cmd__code_cmd_client", 'RELIQUAT  cmd n°' . $reliquat->devis__id . "  " .  $reliquat->cmd__code_cmd_client );
+    $request->bindValue(":cmd__code_cmd_client", $code_cmd );
     $request->bindValue(":cmd__etat", 'CMD');
     $request->bindValue(":cmd__user__id_devis", $reliquat->devis__user__id );
     $request->bindValue(":cmd__user__id_cmd", $reliquat->cmd__user__id_cmd );
+
+    
     $request->execute();
+
+    
     
     $idReliquat = $this->Db->Pdo->lastInsertId();
     $count = 0 ;
 
+
+    
     foreach ($NewLines as $lines ) 
     {
       $count += 1;
@@ -398,13 +412,14 @@ public function classicReliquat($cmd)
       $insertObject->quantite = $lines->devl_quantite;
       $insertObject->prix = $lines->devl_puht;
       $insertObject->comClient = $lines->devl__note_client;
-      $insertObject->idfmm = $lines->cmdl__id__fmm;
+      $insertObject->idfmm = $lines->id__fmm;
       $insertObject->extension = $lines->cmdl__garantie_option;
       $insertObject->prixGarantie = $lines->cmdl__garantie_puht;
 
       $createLine = $this->insertLine($insertObject);
      
-    }
+    
+  }
   }
 }
 

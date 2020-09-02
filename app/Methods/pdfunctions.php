@@ -341,6 +341,47 @@ public static function totalFacture($objectCmd, $arrayLigne )
 	
 
 
+//fonction d'affichage du total dans la vision facture : retourne prix ht , tva taux , tva montant , prix ttc 
+public static function totalFacturePDF($objectCmd, $arrayLigne )
+{
+	$tva = floatval($objectCmd->tva_Taux);
+	$array_prix = [];
+	$response = [] ; 
+	foreach ($arrayLigne as $ligne ) 
+	{
+		if (!empty($ligne->devl_puht)) 
+		{
+			
+			$quantite = intval($ligne->cmdl__qte_fact);
+			
+			
+			$prix = floatval($ligne->devl_puht);
+			$total_ligne = $quantite * $prix ;
+
+				if (!empty($ligne->cmdl__garantie_option)) 
+				{
+					$prix_extension = floatval($ligne->cmdl__garantie_puht);
+					$total_extension = $quantite * $prix_extension;
+					$total_ligne = $total_ligne + $total_extension ;
+				}
+			 
+			array_push($array_prix , $total_ligne);
+		}
+	}
+	
+	
+	$global_ht = array_sum($array_prix);
+
+	$montant_tva = floatval(($global_ht*$tva)/100);
+
+	$global_ttc = $global_ht + $montant_tva;
+
+	array_push($response , floatval($global_ht) , floatval($tva) , floatval($montant_tva) , floatval($global_ttc));
+
+	return $response;	
+}
+
+
 
 // fonction d'affichage de garantie dans View :
 public static function showGarantieView($object)

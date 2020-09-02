@@ -105,8 +105,11 @@ session_start();
 
  // si une commande à été postée: 
 
+ 
+
  if (!empty($_POST['hiddenCommentaire'])) 
  {
+   
    $Cmd->updateQuantiteFTC($_POST['hiddenCommentaire']);
    //  2  changer le status de la commande et attribuer un numero de facture:
    $Cmd->commande2facture($_POST['hiddenCommentaire']);
@@ -141,13 +144,14 @@ if (!empty($_POST['idDevisAddLigne']) && !empty($_POST['prestationChoix']) )
  header('location: facture');
 }
 
+
 //conserve la recherche et la transfert a $_POST malgrès le header qui suit la creation
-if (isset($_SESSION['rechercheFacture'])) 
+if (!empty($_SESSION['rechercheFacture'])) 
 {
   $tampon = $_SESSION['rechercheFacture'];
   $_POST['recherche-fiche'] = 'id-fiche';
   $_POST['rechercheF'] = $tampon;
-  
+  $_SESSION['rechercheFacture'] = "";
 }
 
 

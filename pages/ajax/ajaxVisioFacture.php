@@ -425,7 +425,7 @@ else
 
 
      <div class="d-flex justify-content-end mr-3 mt-4"> 
-     <form class="text-right d-inline" method="POST" action="facture">
+     <form class="text-right d-inline" method="POST" action="printFTC">
      <input type="hidden" value="<?php echo $temp->devis__id ?>" name="hiddenCommentaire">
 
      <button class="btn btn-success btn-lg">Valider</button>
