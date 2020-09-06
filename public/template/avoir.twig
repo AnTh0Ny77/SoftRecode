@@ -1,0 +1,146 @@
+{% extends 'layoutMain.twig' %}
+
+
+  {% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/css/dashboard.css">
+  {% endblock %}
+ 
+ 
+     {% block main %}
+     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        <h1 class="h2">Avoir <i class="fad fa-euro-sign"></i></h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+          </div>
+        </div>
+      </div>
+       <!-- 1ere ligne -->
+       <div class="d-flex flex-wrap flex-row justify-content-start">
+      
+        <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
+        
+        
+       
+
+
+       
+        <!--carte liste de Devis -->
+      <div class="col-5">
+        <div class="card shadow mb-4">
+          <!-- Card Header - -->
+          <div class="my-2 mx-4"> 
+            
+            <h6 class="m-0 font-weight-bold text-primary">Selection <i class="far fa-mouse-pointer"> </i> 
+                <small class="ml-3"> {{  " " ~ NbDevis }} Factures</small>
+                <a data-toggle="tooltip" data-placement="top" title="Afficher toutes les fiches" href="" class="btn btn-link"><i class="fas fa-search-plus"></i></a>
+            </h6>
+                   
+          </div>
+          
+          <div class="card-header d-flex flex-row align-items-center justify-content-between">
+            <div class="d-flex flex-column">
+                <div>
+                  <form class="form-inline" action="avoir" method="POST">
+                    <input  type="hidden" name="recherche-fiche" value="search">
+                    {% if champRecherche %}
+                    <input class="form-control mr-2" type="search" name="rechercheF" placeholder="Recherche" aria-label="Search" value="{{champRecherche}}">
+                    {% else %}
+                    <input class="form-control mr-2" type="search" name="rechercheF" placeholder="Recherche" aria-label="Search">
+                    {% endif %}
+                   
+                    <button class="btn btn-outline-primary  " type="submit"><i class="fal fa-bullseye-arrow"></i></button>
+                  </form>
+                 </div>
+               </div>
+            </div>
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="chart-area">
+              <table id="factureTable" class=" display table " style="width:100%"> <thead class="thead-dark" > 
+                <tr> 
+                  <th>Numéro</th> 
+                  <th>Date</th>
+                  <th>N°/Date</th>
+                  <th>Client</th>
+                 
+              </tr>
+              </thead> 
+               <tbody id="">
+                {% for devis in devisList %}
+                <tr class="trClick">
+                  <td>{{devis.devis__id}}</td>
+                  <td> {{ devis.cmd__date_fact}}</td>
+                  <td > {{ "N°: " ~ devis.cmd__id_facture}} <br>  <div data-toggle="tooltip" data-placement="top" title="Date de facturation"> {{ devis.cmd__date_fact}} </div>
+            
+                  
+                  </td>
+                  {% if devis.cmd__nom_devis %}
+                  <td> 
+                  <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }} <br> {{devis.cmd__nom_devis}} </td>
+                  {% else  %}
+                  <td> <b>{{  devis.client__societe  }} </b>{{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td>
+                  {% endif %}
+                  
+                   
+                  
+                    
+                </tr>
+                {% endfor %}
+               </tbody>
+             </table>
+           </div>
+           
+          </div>
+         
+        </div>
+      </div>
+
+        <!--carte option -->
+        <div class="col-7 cardVisio" >
+          <div class="card shadow mb-4">
+            <!-- Card Header - -->
+           
+            <!-- Card Body -->
+            <div class="card-body" >
+
+
+              <div id="loaderFacture">
+                <div class="  d-flex  flex-column  justify-content-center align-items-center ">
+                  <div class="spinner-border text-primary "  role="status">
+                  </div>
+                  <div> 
+                    <h5 class="text-primary">chargement de la commande ...</h5>
+                  </div> 
+               </div>  
+              </div>
+
+
+              <div id="iframeFacture" class="border-0" src="" width="100%" >
+              </div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    </main>
+     {% endblock %}
+     
+    
+     {% block script %}
+     <!-- Optional JavaScript -->
+
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+<script type="text/javascript" src="public/js/avoir.js"></script>
+
+
+     {% endblock %}

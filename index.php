@@ -139,6 +139,9 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
     case '/SoftRecode/factureVisio';
       require __DIR__ .'/pages/ajax/ajaxVisioFacture.php'; break;
 
+      case '/SoftRecode/AvoirVisio';
+      require __DIR__ .'/pages/ajax/ajaxVisoAvoir.php'; break;
+
     case '/SoftRecode/printFt';
       require __DIR__ .'/pages/utilities/printFT.php'; break;
 
@@ -159,6 +162,9 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
 
       case '/SoftRecode/ficheTravail';
       require __DIR__ .'/pages/ficheT.php'; break;
+
+    case '/SoftRecode/avoir';
+      require __DIR__ .'/pages/avoir.php'; break;
 
       case '/SoftRecode/fichesEnCours';
       require __DIR__ .'/pages/fichesEnCours.php'; break;

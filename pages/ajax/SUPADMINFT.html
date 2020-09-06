@@ -24,12 +24,16 @@
              <img  style=" width:55mm;" src="public\img\recodeDevis.png"/>
              </div>
              <div class="div" style=" margin-top: 15%" >
-             <h6><small>Commandé le : </small><b>02/09/2020 à : 10h 10</b></h6>
+             <h6><small>Commandé le : </small><b>04/09/2020</b></h6>
+             <h6><small>Facturé le : </small><b>04/09/2020</b></h6>
              <div class='' '>
-               <h6> <small>Expédié le :</small>  <b>02/09/2020</b></h6>    
-           </div>            <h6> 
-                <small>Vendeur:</small> <b>CASTOR Lorenne </b> 
-                 (Tél: 104) 
+               <h6> <small>Expédié le :</small>  <b>04/09/2020</b></h6>    
+           </div>
+           <div class='' '>
+           <h6> <small>TVA :</small>  <b>20.00 %</b></h6>    
+            </div>Pas de code commande client            <h6> 
+                <small>Vendeur:</small> <b>Super User </b> 
+                 
              </h6>
           
              
@@ -38,11 +42,8 @@
              </div>
             </div>
            
-            <div class="div" style="text-align: left;  width: 45% ;"><h5>Commande N°:<strong> 3211448</strong><br></h5>
-            <div><button class='btn btn-sm btn-success' id='ClientClick' value='3211448' ><i class='far fa-magic'></i></button></div> <small>livraison & facturation : M. LELEYTER Franck</small><strong><br>MONACO LOGISTIQUE S.A.M. (012898) <br>6 RUE PRINCESSE FLORESTINE<br>LE CIRIUS<br>98000 MONACO</strong></td><form method="POST" action="pdfFacture" target="_blank">
-             <input type="hidden" value="3211448" name="VoirDevis">
-             <button class="btn btn-link " href="pdfFacture"><i class="fas fa-file-pdf"></i> Visualiser la facture</button>
-            </form>             
+            <div class="div" style="text-align: left;  width: 45% ;"><h5>Facture N°:<strong> 7<br></strong>Commande N°:<strong> 3211451</strong></h5>
+            <small>facturation : M. Delgrange </small><strong><br>ND LOGISTICS NESTLE PLATEFORME (016415) <br>8 RUE DES COCHETS<br>ZI DES LOGES<br>91180 SAINT GERMAIN LES ARPAJON </strong> <br> <small>livraison :</small><strong><br>NESTLE FRANCE (000035) <br>7 BD PIERRE CARLE<br>77183 NOISIEL</strong></td>             
         
         <div class="d-flex flex-column">
           
@@ -64,14 +65,15 @@
 
 
         <tr style='font-size: 95%;'>
-                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='2677'  '><i class='far fa-magic'></i></i></button></td>
-                    <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>Vente <br> reconditionné <br> 36 mois </td>
-                    <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> 4 x Pièce détachée NC GENERIQUE</strong>  <br><small>désignation sur le devis:</small> PC HP Core i5  </td>
-                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  background-color: #ffeded;'><strong> 4 - 4 - 0 <br> 379.00 €  </strong> </td></tr>               <tr style='font-size: 95%;'>
-                <td style='border-style: none; '> <button value="3211448" class=' btn btn-success mt-2' id="addNewItem"><i class='far fa-plus'></i></i></button></td>
-                <td style='border-style: none; '></td>
-                <td style='border-style: none; '></td>
-                <td style='border-style: none;  '></td>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-warning mt-2' value='2696'  '>Avoir</button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>Vente <br> reconditionné <br> 00 mois </td>
+                    <td style='border-bottom: 1px #ccc solid; '><strong> 1 x Terminal mobile MC9300 ZEBRA</strong> MC930PGSECG4RW <br><small>désignation sur le devis:</small> MC9300 Terminal mobile ZEBRA   </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong>  645.00 €  </strong> <br>
+                            extension : <strong>24</strong> mois <strong>78.00 €</strong></td></tr><tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-warning mt-2' value='2697'  '>Avoir</button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>Vente <br> Non Concerné <br> 00 mois </td>
+                    <td style='border-bottom: 1px #ccc solid; '><strong> 1 x Service Forfait emballage et port 5Kg RECODE</strong>  <br><small>désignation sur le devis:</small> Forfait emballage et port 5Kg Service RECODE <p><strong>zarzarzarazraz</strong></p> </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong>   23.00 €  </strong> </td></tr>               
         </table> 
      </div>
 
@@ -79,27 +81,7 @@
         
      <div class="d-flex mt-5 justify-content-between">
 
-     <div class=" card  px-2 mx-1 col-6">
-        <div>
-            <div class="my-4">
-               <div class="d-flex justify-content-between">
-                   <div>
-                        TVA: 
-                        <b>20.00 %</b>                    </div>
-                    <div>
-                        <button value="3211448" class="btn btn-success btn-sm" id="buttonModalTVA"><i class='far fa-magic'></i></button>
-                        
-                    </div>
-               </div>
-            </div>
-            <hr class="my-4">
-            <p>
-                Pas de code commande client            </p>
-            <hr class="my-4">
-            <p>
-                <p>ne pas mettre de clavier Dacomex</p>            </p>
-        </div>
-     </div>
+     
 
     
 
@@ -111,10 +93,7 @@
 
 
      <div class="card px-4 py-2 mx-1 col-6">
-        <div>
-            <h3>Total :</h3>
-            <hr class="mx-2">
-        </div>
+      
 
         <div>
     <table class="table table-sm">
@@ -128,7 +107,18 @@
             </thead>
             <tbody> 
                 <tr>  
-            <td class='text-right'><b>1,516.00 €</b></td><td class='text-right'>20.00 %</td><td class='text-right'>303.20 €</td><td class='text-right'><b>1,819.20 €</b></td>            </tr>
+            <td class='text-right'><b>746.00 €</b></td><td class='text-right'>20.00 %</td><td class='text-right'>149.20 €</td><td class='text-right'><b>895.20 €</b></td>            </tr>
+            <tr style='font-size: 95%;'>
+                <td style='border-style: none; '>
+                    <form method="POST" action="avoir"> 
+                        <input type="hidden" name="makeAvoir" value="3211451">
+                        <button  class=' btn btn-warning mt-2' >Avoir </button>
+                    </form>
+                </td>
+                <td style='border-style: none; '> <button value="3211451" class=' btn btn-danger mt-2' id="addNewItem">Facture </button></td>
+                <td style='border-style: none; '></td>
+                <td style='border-style: none;  '></td>
+                <tr>
             </tbody>
     </table>
 
@@ -155,15 +145,15 @@
 
 
 
-     <div class="d-flex justify-content-end mr-3 mt-4"> 
+     <!-- <div class="d-flex justify-content-end mr-3 mt-4"> 
      <form class="text-right d-inline" method="POST" action="printFTC">
-     <input type="hidden" value="3211448" name="hiddenCommentaire">
+     <input type="hidden" value="3211451" name="hiddenCommentaire">
 
      <button class="btn btn-success btn-lg">Valider</button>
     
      
      </form>
-     </div>
+     </div> -->
     
     
      </div>

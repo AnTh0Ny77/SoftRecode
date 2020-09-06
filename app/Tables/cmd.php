@@ -30,6 +30,7 @@ class Cmd extends Table {
     cmd__contact__id_livr as  devis__contact_livraison , 
     cmd__nom_devis, cmd__modele_devis , 
     cmd__date_cmd, cmd__date_envoi, cmd__code_cmd_client, cmd__tva, cmd__user__id_cmd, cmd__id_facture,
+    cmd__modele_facture, cmd__id_facture , cmd__date_fact, 
     k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
@@ -423,6 +424,39 @@ public function classicReliquat($cmd)
   }
 }
 
+
+
+// creer un nouvel avoir: 
+
+public function makeAvoir($cmd)
+{
+  $facture = $this->GetById($cmd);
+  $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd, cmd__client__id_fact,
+  cmd__client__id_livr, cmd__contact__id_fact,  cmd__contact__id_livr,
+  cmd__note_client, cmd__note_interne, cmd__code_cmd_client,
+  cmd__etat, cmd__user__id_devis, cmd__user__id_cmd)
+  VALUES (:cmd__date_cmd, :cmd__client__id_fact, :cmd__client__id_livr, :cmd__contact__id_fact, :cmd__contact__id_livr,
+  :cmd__note_client, :cmd__note_interne, :cmd__code_cmd_client, :cmd__etat, :cmd__user__id_devis, :cmd__user__id_cmd)');
+
+
+  $request->bindValue(":cmd__date_cmd", $facture->cmd__date_cmd);
+  $request->bindValue(":cmd__client__id_fact", $facture->client__id);
+  $request->bindValue(":cmd__client__id_livr", $facture->devis__id_client_livraison);
+  $request->bindValue(":cmd__contact__id_fact", $facture->devis__contact__id);
+  $request->bindValue(":cmd__contact__id_livr", $facture->devis__contact_livraison);
+  $request->bindValue(":cmd__note_client", $facture->devis__note_client);   
+  $request->bindValue(":cmd__note_interne", $facture->devis__note_interne);
+  $request->bindValue(":cmd__code_cmd_client", $facture->cmd__code_cmd_client );
+  $request->bindValue(":cmd__etat", 'CMD');
+  $request->bindValue(":cmd__user__id_devis", $facture->devis__user__id );
+  $request->bindValue(":cmd__user__id_cmd", $facture->cmd__user__id_cmd );
+  $request->execute();
+
+  $idfacture = $this->Db->Pdo->lastInsertId();
+
+  
+
+}
 //insère une ligne dans un devis :
 
 public function insertLine($object){
@@ -509,14 +543,11 @@ public function devisLigne($id){
     $lastFact= $this->Db->Pdo->query('SELECT MAX(cmd__id_facture) as lastFact from cmd ');
     $lastFTC = $lastFact->fetch(PDO::FETCH_OBJ);
 
-    if (empty(intval($lastFTC->lastFact))) 
-    {
-      $newFact = 1000;  
-    } else $newFact = $lastFTC->lastFact + 1 ;
-
+    $newfact = $lastFTC->lastFact + 1;
     $data = 
     [
-      $newFact,
+      $newfact
+      ,
       $cmd
     ];
 
@@ -619,7 +650,7 @@ public function devisLigne($id){
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
     cmd__date_cmd,  cmd__date_envoi,
-    cmd__nom_devis, cmd__modele_devis , 
+    cmd__nom_devis, cmd__modele_devis , cmd__modele_facture, cmd__id_facture , cmd__date_fact, 
     k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
@@ -788,6 +819,8 @@ public function devisLigne($id){
     } 
    return $idDevis;
 }
+
+
 
 
 //efface et remplace le devis: 
@@ -978,7 +1011,7 @@ public function modify(
       cmd__note_interne as devis__note_interne,
       cmd__client__id_livr as devis__id_client_livraison ,
       cmd__contact__id_livr as  devis__contact_livraison , 
-      cmd__date_cmd,  cmd__date_envoi,
+      cmd__date_cmd,  cmd__date_envoi, cmd__modele_facture, cmd__id_facture , cmd__date_fact, 
       k.kw__lib,
       t.contact__nom, t.contact__prenom, t.contact__email,
       c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
