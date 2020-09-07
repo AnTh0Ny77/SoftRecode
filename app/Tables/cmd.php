@@ -428,15 +428,17 @@ public function classicReliquat($cmd)
 
 // creer un nouvel avoir: 
 
-public function makeAvoir($cmd)
+public function makeAvoir($facture)
 {
-  $facture = $this->GetById($cmd);
+  
   $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd, cmd__client__id_fact,
   cmd__client__id_livr, cmd__contact__id_fact,  cmd__contact__id_livr,
   cmd__note_client, cmd__note_interne, cmd__code_cmd_client,
   cmd__etat, cmd__user__id_devis, cmd__user__id_cmd)
   VALUES (:cmd__date_cmd, :cmd__client__id_fact, :cmd__client__id_livr, :cmd__contact__id_fact, :cmd__contact__id_livr,
   :cmd__note_client, :cmd__note_interne, :cmd__code_cmd_client, :cmd__etat, :cmd__user__id_devis, :cmd__user__id_cmd)');
+
+  $avoirId =  'Avoir Facture N°: '.$facture->cmd__id_facture . ' ' . $facture->cmd__code_cmd_client;
 
 
   $request->bindValue(":cmd__date_cmd", $facture->cmd__date_cmd);
@@ -446,7 +448,7 @@ public function makeAvoir($cmd)
   $request->bindValue(":cmd__contact__id_livr", $facture->devis__contact_livraison);
   $request->bindValue(":cmd__note_client", $facture->devis__note_client);   
   $request->bindValue(":cmd__note_interne", $facture->devis__note_interne);
-  $request->bindValue(":cmd__code_cmd_client", $facture->cmd__code_cmd_client );
+  $request->bindValue(":cmd__code_cmd_client",  $avoirId );
   $request->bindValue(":cmd__etat", 'CMD');
   $request->bindValue(":cmd__user__id_devis", $facture->devis__user__id );
   $request->bindValue(":cmd__user__id_cmd", $facture->cmd__user__id_cmd );
@@ -454,7 +456,7 @@ public function makeAvoir($cmd)
 
   $idfacture = $this->Db->Pdo->lastInsertId();
 
-  
+  return $idfacture;
 
 }
 //insère une ligne dans un devis :
@@ -528,7 +530,99 @@ public function devisLigne($id){
 }
 
 
+//recupère les lignes liées à un devis id_ligne:
+public function devisLigneId($id){
+  $request =$this->Db->Pdo->query("SELECT
+  cmdl__cmd__id,
+  cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
+  cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
+  cmdl__etat as devl__etat, LPAD(cmdl__garantie_base,2,0) as devl__mois_garantie,
+  cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
+  cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
+  cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
+  cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__garantie_puht , cmdl__note_facture,
+  k.kw__lib , k.kw__value , 
+  f.afmm__famille as famille,
+  f.afmm__modele as modele,
+  k2.kw__lib as prestaLib,
+  k3.kw__info as groupe_famille,
+  k3.kw__lib as famille__lib,
+  a.am__marque as marque
+  FROM cmd_ligne 
+  LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
+  LEFT JOIN keyword as k2 ON cmdl__prestation = k2.kw__value AND k2.kw__type = 'pres'
+  LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
+  LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
+  LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
+  WHERE cmdl__id = ". $id ."
+  ORDER BY devl__ordre ");
+ 
+  $data = $request->fetch(PDO::FETCH_OBJ);
+  return $data;
+}
 
+//attribut les lignes avoirées
+public function makeAvoirLigne($id , $avoirId , $qte)
+{
+  $requestLigne =  $this->Db->Pdo->prepare(
+    'INSERT INTO  cmd_ligne (
+     cmdl__cmd__id, cmdl__prestation, cmdl__pn, cmdl__designation,
+     cmdl__etat, cmdl__garantie_base, cmdl__qte_cmd,
+     cmdl__puht, cmdl__note_client, cmdl__note_interne, cmdl__ordre, cmdl__id__fmm,
+     cmdl__qte_fact, cmdl__prix_barre, cmdl__note_facture, cmdl__garantie_option, cmdl__garantie_puht)
+     SELECT cmdl__cmd__id, cmdl__prestation, cmdl__pn, cmdl__designation,
+     cmdl__etat, cmdl__garantie_base, cmdl__qte_cmd, 
+     cmdl__puht, cmdl__note_client, cmdl__note_interne, cmdl__ordre, cmdl__id__fmm,
+     cmdl__qte_fact, cmdl__prix_barre, cmdl__note_facture, cmdl__garantie_option, cmdl__garantie_puht
+     FROM cmd_ligne
+     WHERE cmdl__id = '.$id.'');
+   $requestLigne->execute();
+   $idLigne = $this->Db->Pdo->lastInsertId();
+
+   $data = 
+    [
+      $avoirId,
+      intval($qte),
+      $idLigne
+    ];
+          
+  $updateNewLines = 
+        "UPDATE cmd_ligne
+         SET cmdl__cmd__id =? , cmdl__qte_fact = ? 
+         WHERE cmdl__id =? ";
+          
+  $update = $this->Db->Pdo->prepare($updateNewLines);
+  $update->execute($data);
+  return $idLigne;
+}
+
+
+//inverse les prix pour chaque ligne: 
+public function reversePrice($idLigne)
+{
+  $ligne = $this->devisLigneId($idLigne);
+
+  if (!empty($ligne->cmdl__garantie_puht) && floatval($ligne->cmdl__garantie_puht) > 0 )
+  {
+    $reverse = $ligne->cmdl__garantie_puht *-1;
+    $data = [ $reverse , $idLigne];
+    $updateNewLines = 
+    "UPDATE cmd_ligne
+     SET cmdl__garantie_puht =?
+     WHERE cmdl__id =? ";
+     $update = $this->Db->Pdo->prepare($updateNewLines);
+     $update->execute($data);
+  }
+
+    $reversePrice = $ligne->devl_puht *-1;
+    $dataPrice = [ $reversePrice , $idLigne];
+    $updateNewPrice = 
+    "UPDATE cmd_ligne
+     SET cmdl__puht =?
+     WHERE cmdl__id =? ";
+     $updateReverse = $this->Db->Pdo->prepare($updateNewPrice);
+     $updateReverse->execute($dataPrice);
+}
 
 
 

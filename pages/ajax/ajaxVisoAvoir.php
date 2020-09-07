@@ -187,8 +187,9 @@ else
     
        
     </div>
-
+    <form method="POST" action="avoir">
     <div class="div" style="display: flex; justify-content: center; margin-top: 5%;">
+    
         <table CELLSPACING=0 style="width: 95%;  margin-top : 30px;" class="table">
 
 
@@ -196,35 +197,32 @@ else
             
         foreach ($arrayOfDevisLigne as $item) 
         {
-            // si la quantité facturée est renseignée : compare les trois quantité et affiche un background rouge si pas égales
-            // si la quantite facturé n'est pas renseigné : compare les 2 autres et attribues la livr à la place de la facturée gestion de background roouge 
-          
-              
-                    echo "<tr style='font-size: 95%;'>
-                    <td style='border-style: none; '> <button class='clickFact btn btn-warning mt-2' value='".$item->devl__id."'  '>Avoir</button></td>
-                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $item->devl__mois_garantie ." mois </td>
-                    <td style='border-bottom: 1px #ccc solid; '><strong> " . $item->devl_quantite ." x " .$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." " . $item->cmdl__note_facture  ." </td>
-                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> " ;
-                    if (!empty($item->cmdl__garantie_option)) 
-                    {
-                        
-                            echo  " ".$item->devl_puht ." €  </strong> <br>
-                            extension : <strong>".$item->cmdl__garantie_option."</strong> mois <strong>".$item->cmdl__garantie_puht." €</strong></td></tr>";  
-                       
-                    }
-                    else 
-                    {
-                        if (!empty($item->cmdl__qte_fact))
-                        {
-                            echo "  ".$item->devl_puht ." €  </strong> </td></tr>";                    
-                        } else echo  " <br> ".$item->devl_puht . " € </strong> </td></tr>";
-                    }
-             
-
-           
             
           
-          
+            if (!empty($item->cmdl__qte_fact) && intval($item->cmdl__qte_fact) > 0) 
+            {
+                echo "<tr style='font-size: 95%;'>
+                <td style='border-style: none; '> <input name='lines[".$item->devl__id."]' class='form-control col-6' type='number' value='0' max='1000' min='0'></td>
+                <td style='border-bottom: 1px #ccc solid; text-align:left; '>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $item->devl__mois_garantie ." mois </td>
+                <td style='border-bottom: 1px #ccc solid; '><strong> " . $item->cmdl__qte_fact ." x " .$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." " . $item->cmdl__note_facture  ." </td>
+                <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> " ;
+                if (!empty($item->cmdl__garantie_option) && intval($item->cmdl__garantie_option) > 0) 
+                {
+                    
+                        echo  " ".$item->devl_puht ." €  </strong> <br>
+                        extension : <strong>".$item->cmdl__garantie_option."</strong> mois <strong>".$item->cmdl__garantie_puht." €</strong></td></tr>";  
+                   
+                }
+                else 
+                {
+                    if (!empty($item->cmdl__qte_fact) && intval($item->cmdl__qte_fact) > 0)
+                    {
+                        echo "  ".$item->devl_puht ." €  </strong> </td></tr>";                    
+                    } else echo  " <br> ".$item->devl_puht . " € </strong> </td></tr>";
+                }
+            }
+              
+                   
         }
            
                ?>
@@ -247,7 +245,7 @@ else
 
 
 
-     <div class="card px-4 py-2 mx-1 col-6">
+     <div class="card px-4 py-2 mx-1 col-9">
       
 
         <div>
@@ -276,12 +274,12 @@ else
             </tr>
             <tr style='font-size: 95%;'>
                 <td style='border-style: none; '>
-                    <form method="POST" action="avoir"> 
+               
                         <input type="hidden" name="makeAvoir" value="<?php echo $temp->devis__id; ?>">
                         <button  class=' btn btn-warning mt-2' >Avoir </button>
-                    </form>
+               
                 </td>
-                <td style='border-style: none; '> <button value="<?php echo $temp->devis__id; ?>" class=' btn btn-danger mt-2' id="addNewItem">Facture </button></td>
+                <td style='border-style: none; '> </td>
                 <td style='border-style: none; '></td>
                 <td style='border-style: none;  '></td>
                 <tr>
@@ -294,7 +292,7 @@ else
 
      </div>
 
-
+     </form>
 
 
      

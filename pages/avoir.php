@@ -98,10 +98,23 @@ $TransportListe = $Keyword->getTransporteur();
  if (!empty($_POST['makeAvoir'])) 
  {
      $facture = $Cmd->GetById($_POST['makeAvoir']);
-     $ligneFact = $Cmd->devisLigne($_POST['makeAvoir']);
      $avoir = $Cmd->makeAvoir($facture);
-     
-     
+     $newFacture = $Cmd->commande2facture($avoir);
+     $General->updateAll('cmd' , 'AVR', 'cmd__modele_facture', 'cmd__id' , $avoir );
+     $linesHoldFact = $Cmd->devisLigne($_POST['makeAvoir']);
+
+    foreach ($_POST['lines'] as $key => $value) 
+    {
+       if (!empty($value)) 
+       {
+          $avoirLigne = $Cmd->makeAvoirLigne($key , $avoir , $value);
+          $newLines = $Cmd->devisLigneId($key);
+          $Cmd->reversePrice($avoirLigne);
+       }
+    }
+
+    header('location: avoir');
+
  }
 
  
