@@ -99,18 +99,22 @@
               </div>
             <!-- Card Body -->
             <div class="card-body" >
-                <form>
-
-                    <div>
-                        <div class="col-6 my-3">
-                            <input type="text" class="form-control" name="exportStart" value="{{ marqueur + 1 }}" >
+                <form action="export" method="POST">
+                    <div class="d-flex justify-content-around">
+                        <div>
+                            <div class="my-3">
+                                <label for="exampleInputPassword1">de: </label>
+                                <input type="text" class="form-control" name="exportStart" value="{{ marqueur + 1 }}" >
+                            </div>
+                            <div class="my-3">
+                                <label for="exampleInputPassword1">à :</label>
+                                <input type="text" class="form-control" name="exportEnd" value="{{maxFact.cmd__id_facture}}">
+                            </div>
                         </div>
-                        <div class="col-6 my-3">
-                            <input type="text" class="form-control" name="exportEnd">
+                        <div class="my-auto">
+                            <button class="btn btn-success">Exporter <i class="fas fa-cat"></i></button>
                         </div>
                     </div>
-
-
                 </form>
              </div>
       </div>

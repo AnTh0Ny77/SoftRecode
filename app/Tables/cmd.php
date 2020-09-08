@@ -729,6 +729,39 @@ public function reversePrice($idLigne)
     return $data;
   }
 
+  //prend l'id facture le plus élevé:
+  public function getMaxFacture()
+  {
+    $request = $this->Db->Pdo->query('SELECT MAX(cmd__id_facture) as cmd__id_facture
+    FROM cmd');
+    $data = $request->fetch(PDO::FETCH_OBJ);
+    return $data;
+  }
+
+  //recupere toute les lignes de cmd entre 2 id cmd 
+  public function ligneXport($start, $end)
+  {
+    $request =$this->Db->Pdo->query("SELECT
+      cmd__id
+      FROM cmd 
+      WHERE cmd__id_facture BETWEEN ".$start." AND ".$end."
+      ORDER BY cmd__id_facture DESC ");
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+  }
+
+  //recupere toutes les lignes du tableau d'id passé en parametre:
+  public function exportFinal($array)
+  {
+    $response = [];
+    foreach ($array as  $value)
+    {
+      $temp = $this->devisLigne($value->cmd__id);
+      array_push($response , $temp);
+    }
+    return $response;
+  }
+
 
   //prend le status en CHAR de 3 en parametre et renvoi tous les devis:
   public function getFromStatusAll($status){

@@ -35,7 +35,7 @@ session_start();
  $marqueur = $Keyword->getExport();
 
  $marqueur = intval($marqueur->kw__lib);
- 
+ $maxFact = $Cmd->getMaxFacture();
 
  
  
@@ -48,6 +48,29 @@ session_start();
       $devis->cmd__date_fact = $date;
     }
 
+
+//si un export à été envoyé :
+
+if (!empty($_POST['exportStart']) && !empty($_POST['exportEnd'])) 
+{
+    $exportArray = $Cmd->ligneXport($_POST['exportStart'],$_POST['exportEnd']);
+    $getAllLines = $Cmd->exportFinal($exportArray);
+    
+    $txt = '';
+    foreach ($getAllLines as $key => $value) 
+    {
+        foreach ($value as $test) 
+        {
+            $txt.= $test->devl__type . ';' . $test->devl_puht .'
+            ' ;
+        }
+        
+    }
+    $file = fopen("export_".$_POST['exportStart']."_".$_POST['exportEnd'].".txt", "w");
+    fwrite($file , $txt);
+    fclose($file);
+    header('location: export');
+}
  
   
 // Donnée transmise au template : 
@@ -57,4 +80,5 @@ echo $twig->render('export.twig',
 'devisList'=>$devisList,
 'marqueur'=>$marqueur,
 'tvaList' => $tvaList,
+'maxFact'=> $maxFact
 ]);
