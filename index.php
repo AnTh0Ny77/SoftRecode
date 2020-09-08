@@ -136,6 +136,9 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
     case '/SoftRecode/facture';
       require __DIR__ .'/pages/facture.php'; break;
 
+    case '/SoftRecode/export';
+      require __DIR__ .'/pages/export.php'; break;
+
     case '/SoftRecode/factureVisio';
       require __DIR__ .'/pages/ajax/ajaxVisioFacture.php'; break;
 

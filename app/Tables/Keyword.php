@@ -71,6 +71,12 @@ public function getAllFromParam($kw_value){
   return $data;
 }
 
+public function getExport(){
+  $request =$this->Db->Pdo->query('SELECT * FROM keyword WHERE kw__type= "expor" ORDER BY  kw__ordre  ASC ');
+  $data = $request->fetch(PDO::FETCH_OBJ);
+  return $data;
+}
+
 
 
 

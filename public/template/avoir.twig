@@ -73,12 +73,12 @@
               </thead> 
                <tbody id="">
                 {% for devis in devisList %}
+
+                {% if devis.cmd__modele_facture != 'AVR'%}
                 <tr class="trClick">
                   <td>{{devis.devis__id}}</td>
                   <td> {{ devis.cmd__date_fact}}</td>
                   <td > {{ "N°: " ~ devis.cmd__id_facture}} <br>  <div data-toggle="tooltip" data-placement="top" title="Date de facturation"> {{ devis.cmd__date_fact}} </div>
-            
-                  
                   </td>
                   {% if devis.cmd__nom_devis %}
                   <td> 
@@ -87,7 +87,7 @@
                   <td> <b>{{  devis.client__societe  }} </b>{{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td>
                   {% endif %}
                   
-                   
+                  {% endif %}
                   
                     
                 </tr>

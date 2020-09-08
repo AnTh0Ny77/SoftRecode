@@ -1,0 +1,134 @@
+{% extends 'layoutMain.twig' %}
+
+
+  {% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/css/dashboard.css">
+  {% endblock %}
+ 
+ 
+     {% block main %}
+     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        <h1 class="h2">Export Compatabilité <i class="fas fa-cloud-download-alt"></i></h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+          </div>
+        </div>
+      </div>
+       <!-- 1ere ligne -->
+       <div class="d-flex flex-wrap flex-row justify-content-start">
+      
+        <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
+        
+        
+       
+
+
+       
+        <!--carte liste de Devis -->
+      <div class="col-6">
+        <div class="card shadow mb-4">
+          <!-- Card Header - -->
+          <div class="my-2 mx-4"> 
+            <h6 class="m-0 font-weight-bold text-primary">Liste Export <i class="fas fa-cloud-download-alt"></i> 
+            </h6>
+            
+          </div>
+          
+         
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="chart-area">
+
+                <ul class="list-group">
+                {% for facture in devisList %}
+
+                   {% if facture.cmd__id_facture >  marqueur %}
+                  
+                    <li class="list-group-item list-group-item-warning"> 
+                        {% if facture.cmd__modele_facture =='AVR'%}
+                        <i class="fas fa-font"></i> 
+                        {% else %}
+                        <i class="far fa-file"></i>
+                        {% endif %}
+                        {{facture.cmd__id_facture}} - {{facture.cmd__date_fact}} - {{facture.client__societe ~ '(' ~ facture.client__id ~ ')' }} - commande N° : {{ facture.devis__id}}
+                        
+
+                    </li>
+                    {% else %}
+                    <li class="list-group-item list-group-item-success">
+                        {% if facture.cmd__modele_facture =='AVR'%}
+                        <i class="fas fa-font"></i> 
+                        {% else %}
+                        <i class="far fa-file"></i>
+                        {% endif %}
+                        {{facture.cmd__id_facture}} - {{facture.cmd__date_fact}} - {{facture.client__societe ~ '(' ~ facture.client__id ~ ')' }} - commande N° : {{ facture.devis__id}} - <i class="fas fa-check"></i>
+
+
+                    </li>
+                    {% endif %}
+        
+                {% endfor %}
+                </ul>
+                
+               
+
+
+
+
+
+
+            </div>  
+          </div>
+        </div>
+      </div>
+
+        <!--carte option -->
+        <div class="col-5 cardVisio" >
+          <div class="card shadow mb-4">
+            <!-- Card Header - -->
+            <div class="my-2 mx-4"> 
+                <h6 class="m-0 font-weight-bold text-primary"> Export <i class="fas fa-file-export"></i>
+                </h6>
+                
+              </div>
+            <!-- Card Body -->
+            <div class="card-body" >
+                <form>
+
+                    <div>
+                        <div class="col-6 my-3">
+                            <input type="text" class="form-control" name="exportStart" value="{{ marqueur + 1 }}" >
+                        </div>
+                        <div class="col-6 my-3">
+                            <input type="text" class="form-control" name="exportEnd">
+                        </div>
+                    </div>
+
+
+                </form>
+             </div>
+      </div>
+      </div>
+    </div>
+
+    </main>
+     {% endblock %}
+     
+    
+     {% block script %}
+     <!-- Optional JavaScript -->
+
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+
+
+
+     {% endblock %}

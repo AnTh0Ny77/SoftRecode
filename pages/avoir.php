@@ -109,7 +109,7 @@ $TransportListe = $Keyword->getTransporteur();
        {
           $avoirLigne = $Cmd->makeAvoirLigne($key , $avoir , $value);
           $newLines = $Cmd->devisLigneId($key);
-          $Cmd->reversePrice($avoirLigne);
+          $Cmd->reversePrice($key);
        }
     }
 

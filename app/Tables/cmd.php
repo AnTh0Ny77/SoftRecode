@@ -760,7 +760,7 @@ public function reversePrice($idLigne)
     LEFT JOIN keyword as k ON cmd__etat = k.kw__value AND  k.kw__type = 'stat'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     WHERE cmd__etat = '".$status."'    
-    ORDER BY  cmd__date_devis DESC , c.client__societe ASC  LIMIT 200 ");
+    ORDER BY  cmd__id_facture DESC , c.client__societe ASC  LIMIT 200 ");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
   }
