@@ -1,6 +1,7 @@
 <?php
 require "./vendor/autoload.php";
 require "./App/twigloader.php";
+use App\Methods\Pdfunctions;
 session_start();
 
 
@@ -59,10 +60,46 @@ if (!empty($_POST['exportStart']) && !empty($_POST['exportEnd']))
     $txt = '';
     foreach ($getAllLines as $key => $value) 
     {
+        $commande = $Cmd->GetById($value[0]->cmdl__cmd__id);
+        $devisDate = date_create($commande->cmd__date_fact);
+        $interval = new DateInterval('P30D');
+        $date = date_format($devisDate, 'd/m/Y');
+        $commande->cmd__date_fact = $date;
+        $echeance = $devisDate->add($interval);
+        $echeance = date_format($echeance, 'd/m/Y');
+        
+        $lignes = $Cmd->devisLigne($value[0]->cmdl__cmd__id);
+        $total = Pdfunctions::totalFacture($commande,$value);
+        
+        //determine les première ligne par rapport au taux de tva: 
+        if (intval($commande->tva_value)  == 10 ) 
+        {
+            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'.number_format($total[3] , 2).'; ;
+VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571200; ;'.number_format($total[2] , 2).'
+' ;
+        }
+        elseif (intval($commande->tva_value)  == 20) 
+        {
+            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'.number_format($total[3] , 2).'; ;
+VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571101; ;'.number_format($total[2] , 2).'
+' ;
+        }
+        else 
+        {
+            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'.number_format($total[3] , 2).'; ;
+';
+        }
+       
         foreach ($value as $test) 
         {
-            $txt.= $test->devl__type . ';' . $test->devl_puht .'
-            ' ;
+            $compta = $Cmd->getCompta($test , $commande);
+            
+
+            foreach ($compta as $results) 
+            {    
+                // $txt.= $results->cpt__pres_kw . ';' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->client__id.$commande->devis__id.';'.$results->cpt__compte_quadra.'
+// ';
+            }
         }
         
     }

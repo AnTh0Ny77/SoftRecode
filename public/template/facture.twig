@@ -474,7 +474,7 @@
                   <select id="selectTVA" name="selectTVA" class="custom-select">
                     {% for tva in tvaList %}
                       
-                    <option value="{{tva.kw__value}}">{{tva.kw__info ~ " %"}}</option>
+                    <option value="{{tva.kw__value}}">{{tva.kw__info ~ " % " ~ tva.kw__lib}}</option>
                     {% endfor %}
                   </select >
               </div>

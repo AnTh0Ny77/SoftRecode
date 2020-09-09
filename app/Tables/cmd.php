@@ -39,7 +39,7 @@ class Cmd extends Table {
     c2.client__cp as client__livraison_cp , 
     c2.client__adr1 as client__livraison__adr1 , 
     u.log_nec , u.user__email_devis as email ,
-    k3.kw__info as tva_Taux 
+    k3.kw__info as tva_Taux , k3.kw__value as tva_value
     FROM cmd
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
@@ -529,6 +529,27 @@ public function devisLigne($id){
   return $data;
 }
 
+//recupere le numero de compte du plan comptable pour chaque ligne passée en parametre:
+public function getCompta($ligne , $cmd)
+{
+  $arrayResponse = [];
+  $request = $this->Db->Pdo->query("SELECT * FROM compta
+  WHERE cpt__tva_kw = ".$cmd->tva_value." AND cpt__pres_kw = '".$ligne->devl__type."' ");
+  
+  $data = $request->fetch(PDO::FETCH_OBJ);
+  
+  array_push($arrayResponse , $data);
+
+  if (!empty($ligne->cmdl__garantie_puht) && intval($ligne->cmdl__garantie_puht) > 0 ) 
+  {
+    $request = $this->Db->Pdo->query('SELECT * FROM compta
+    WHERE cpt__tva_kw = '.$cmd->tva_value.'AND cpt__pres__kw = EXG ');
+    $data = $request->fetch(PDO::FETCH_OBJ);
+    array_push($arrayResponse , $data);
+  }
+  return $arrayResponse;
+}
+
 
 //recupère les lignes liées à un devis id_ligne:
 public function devisLigneId($id){
@@ -623,12 +644,6 @@ public function reversePrice($idLigne)
      $updateReverse = $this->Db->Pdo->prepare($updateNewPrice);
      $updateReverse->execute($dataPrice);
 }
-
-
-
-
-
-
 
   // met a jour le status de la commande et le munero de facture:
   public function commande2facture($cmd)
