@@ -50,7 +50,6 @@ session_start();
 
 
 //si un export à été envoyé :
-
 if (!empty($_POST['exportStart']) && !empty($_POST['exportEnd'])) 
 {
     $exportArray = $Cmd->ligneXport($_POST['exportStart'],$_POST['exportEnd']);
