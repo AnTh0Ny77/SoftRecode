@@ -529,25 +529,60 @@ public function devisLigne($id){
   return $data;
 }
 
+
+//recupère les lignes liées à un devis:
+public function devisLigneFacturee($id){
+  $request =$this->Db->Pdo->query("SELECT
+  cmdl__cmd__id,
+  cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
+  cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
+  cmdl__etat as devl__etat, LPAD(cmdl__garantie_base,2,0) as devl__mois_garantie,
+  cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
+  cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
+  cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
+  cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__garantie_puht , cmdl__note_facture,
+  k.kw__lib , k.kw__value , 
+  f.afmm__famille as famille,
+  f.afmm__modele as modele,
+  k2.kw__lib as prestaLib,
+  k3.kw__info as groupe_famille,
+  k3.kw__lib as famille__lib,
+  a.am__marque as marque
+  FROM cmd_ligne 
+  LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
+  LEFT JOIN keyword as k2 ON cmdl__prestation = k2.kw__value AND k2.kw__type = 'pres'
+  LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
+  LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
+  LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
+  WHERE cmdl__cmd__id = ". $id ." AND cmdl__qte_fact > 0 
+  ORDER BY devl__ordre ");
+ 
+  $data = $request->fetchAll(PDO::FETCH_OBJ);
+  return $data;
+}
+
 //recupere le numero de compte du plan comptable pour chaque ligne passée en parametre:
 public function getCompta($ligne , $cmd)
 {
-  $arrayResponse = [];
-  $request = $this->Db->Pdo->query("SELECT * FROM compta
-  WHERE cpt__tva_kw = ".$cmd->tva_value." AND cpt__pres_kw = '".$ligne->devl__type."' ");
-  
-  $data = $request->fetch(PDO::FETCH_OBJ);
-  
-  array_push($arrayResponse , $data);
-
-  if (!empty($ligne->cmdl__garantie_puht) && intval($ligne->cmdl__garantie_puht) > 0 ) 
-  {
-    $request = $this->Db->Pdo->query('SELECT * FROM compta
-    WHERE cpt__tva_kw = '.$cmd->tva_value.'AND cpt__pres__kw = EXG ');
+ 
+    $arrayResponse = [];
+    $request = $this->Db->Pdo->query("SELECT * FROM compta
+    WHERE cpt__tva_kw = ".$cmd->tva_value." AND cpt__pres_kw = '".$ligne->devl__type."' ");
+    
     $data = $request->fetch(PDO::FETCH_OBJ);
+    
     array_push($arrayResponse , $data);
-  }
-  return $arrayResponse;
+
+    if (!empty($ligne->cmdl__garantie_puht) && intval($ligne->cmdl__garantie_puht) > 0 ) 
+    {
+      $request = $this->Db->Pdo->query('SELECT * FROM compta
+      WHERE cpt__tva_kw = '.$cmd->tva_value.'AND cpt__pres__kw = EXG ');
+      $data = $request->fetch(PDO::FETCH_OBJ);
+      array_push($arrayResponse , $data);
+    }
+    return $arrayResponse;
+  
+  
 }
 
 
@@ -753,6 +788,15 @@ public function reversePrice($idLigne)
     return $data;
   }
 
+  //prend l'id facture le plus élevé:
+  public function getMinFacture()
+  {
+    $request = $this->Db->Pdo->query('SELECT MIN(cmd__id_facture) as cmd__id_facture
+    FROM cmd');
+    $data = $request->fetch(PDO::FETCH_OBJ);
+    return $data;
+  }
+
   //recupere toute les lignes de cmd entre 2 id cmd 
   public function ligneXport($start, $end)
   {
@@ -771,7 +815,7 @@ public function reversePrice($idLigne)
     $response = [];
     foreach ($array as  $value)
     {
-      $temp = $this->devisLigne($value->cmd__id);
+      $temp = $this->devisLigneFacturee($value->cmd__id);
       array_push($response , $temp);
     }
     return $response;

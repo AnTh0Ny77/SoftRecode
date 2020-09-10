@@ -24,7 +24,7 @@
        <div class="d-flex flex-wrap flex-row justify-content-start">
       
         <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
-        
+        <input type="hidden" id="minFact" value="{{minFact.cmd__id_facture}}">
         
        
 
@@ -100,19 +100,22 @@
             <!-- Card Body -->
             <div class="card-body" >
                 <form action="export" method="POST">
+                  <div class="alert alert-danger d-none" role="alert" id="alertExport">
+                    Un problème est survenu ! merci de vérifier les N° de facture
+                  </div>
                     <div class="d-flex justify-content-around">
                         <div>
                             <div class="my-3">
                                 <label for="exampleInputPassword1">de: </label>
-                                <input type="text" class="form-control" name="exportStart" value="{{ marqueur + 1 }}" >
+                                <input type="text" class="form-control" name="exportStart" value="{{ marqueur + 1 }}" id="exportStart" >
                             </div>
                             <div class="my-3">
                                 <label for="exampleInputPassword1">à :</label>
-                                <input type="text" class="form-control" name="exportEnd" value="{{maxFact.cmd__id_facture}}">
+                                <input type="text" class="form-control" name="exportEnd" value="{{maxFact.cmd__id_facture}}" id="exportEnd">
                             </div>
                         </div>
                         <div class="my-auto">
-                            <button class="btn btn-success">Exporter <i class="fas fa-rabbit-fast"></i></button>
+                            <button class="btn btn-success" id="exportButton">Exporter <i class="fas fa-rabbit-fast"></i></button>
                         </div>
                     </div>
                 </form>
@@ -132,6 +135,7 @@
 <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script  type="text/javascript" src="public/js/export.js"></script>
 
 
 

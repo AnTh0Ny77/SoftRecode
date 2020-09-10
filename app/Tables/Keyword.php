@@ -77,6 +77,15 @@ public function getExport(){
   return $data;
 }
 
+public function majMarqueur($marqueur)
+{
+  $request = 'UPDATE keyword
+  SET  kw__lib = '.$marqueur.'
+  WHERE kw__type = "expor" AND kw__lib < '.$marqueur.' ';
+  $update = $this->Db->Pdo->prepare($request);
+  $update->execute();
+}
+
 
 
 

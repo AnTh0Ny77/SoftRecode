@@ -15,8 +15,6 @@ session_start();
    header('location: noAccess');
  }
 
- 
-
  //déclaration des instances nécéssaires :
  $user= $_SESSION['user'];
  $Database = new App\Database('devis');
@@ -37,6 +35,7 @@ session_start();
 
  $marqueur = intval($marqueur->kw__lib);
  $maxFact = $Cmd->getMaxFacture();
+ $minFact = $Cmd->getMinFacture();
 
  
  
@@ -56,6 +55,7 @@ if (!empty($_POST['exportStart']) && !empty($_POST['exportEnd']))
 {
     $exportArray = $Cmd->ligneXport($_POST['exportStart'],$_POST['exportEnd']);
     $getAllLines = $Cmd->exportFinal($exportArray);
+    $Keyword->majMarqueur($_POST['exportEnd']);
     
     $txt = '';
     foreach ($getAllLines as $key => $value) 
@@ -70,36 +70,44 @@ if (!empty($_POST['exportStart']) && !empty($_POST['exportEnd']))
         
         $lignes = $Cmd->devisLigne($value[0]->cmdl__cmd__id);
         $total = Pdfunctions::totalFacture($commande,$value);
-        
+        $libelle = '';
+        if ($commande->cmd__modele_facture == 'AVR') 
+        {
+            $libelle = 'A';
+        }
         //determine les première ligne par rapport au taux de tva: 
         if (intval($commande->tva_value)  == 10 ) 
         {
-            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'.number_format($total[3] , 2).'; ;
+            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'.number_format($total[3] , 2).'; ;'. $libelle.'
 VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571200; ;'.number_format($total[2] , 2).'
 ' ;
         }
         elseif (intval($commande->tva_value)  == 20) 
         {
-            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'.number_format($total[3] , 2).'; ;
+            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'.number_format($total[3] , 2).'; ;'. $libelle.'
 VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571101; ;'.number_format($total[2] , 2).'
 ' ;
         }
         else 
         {
-            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'.number_format($total[3] , 2).'; ;
+            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'.number_format($total[3] , 2).'; ;'. $libelle.'
 ';
         }
        
         foreach ($value as $test) 
         {
+            $ttc = Pdfunctions::ttc($test->devl_puht);
             $compta = $Cmd->getCompta($test , $commande);
             
-
-            foreach ($compta as $results) 
-            {    
-                // $txt.= $results->cpt__pres_kw . ';' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->client__id.$commande->devis__id.';'.$results->cpt__compte_quadra.'
-// ';
+            $txt.= 'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.'; ;'.$test->devl__type .' '.$test->cmdl__qte_fact.' '.$test->famille.' '.$test->modele.';'.$compta[0]->cpt__compte_quadra.'; ;'.number_format($ttc, 2).'
+';
+            if (!empty($compta[1])) 
+            {
+                $ttc = Pdfunctions::ttc($test->cmdl__garantie_puht);
+                $txt.= 'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.'; ;EXT'.$test->cmdl__qte_fact.' '.$test->famille.' '.$test->modele.';'.$compta[1]->cpt__compte_quadra.'; ;'.number_format($ttc, 2).'
+';
             }
+            
         }
         
     }
@@ -117,5 +125,6 @@ echo $twig->render('export.twig',
 'devisList'=>$devisList,
 'marqueur'=>$marqueur,
 'tvaList' => $tvaList,
-'maxFact'=> $maxFact
+'maxFact'=> $maxFact,
+'minFact' => $minFact
 ]);
