@@ -1,0 +1,107 @@
+{% extends 'layoutMain.twig' %}
+
+
+  {% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/css/dashboard.css">
+  {% endblock %}
+ 
+ 
+     {% block main %}
+     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        <h1 class="h2">Abonnement <i class="far fa-calendar-alt"></i></h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+          </div>
+        </div>
+      </div>
+       <!-- 1ere ligne -->
+       <div class="d-flex flex-wrap flex-row justify-content-start">
+        <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
+        <input type="hidden" id="minFact" value="{{minFact.cmd__id_facture}}">
+    <!--carte liste de Devis -->
+      <div class="col-6">
+        <div class="card shadow mb-4">
+          <!-- Card Header - -->
+          <div class="my-2 mx-4"> 
+            <h6 class="m-0 font-weight-bold text-primary">Devis de maintenance <i class="fas fa-tools"></i> 
+            </h6>
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="chart-area">
+                <ul class="list-group">
+                {% for facture in devisList %}
+                    <li class="list-group-item "> 
+                        <i class="far fa-file"></i>
+                     {{facture.cmd__date_fact}} - {{facture.client__societe ~ '(' ~ facture.client__id ~ ')' }} - commande N° : {{ facture.devis__id}}
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>  
+          </div>
+        </div>
+      </div>
+        <!--carte option -->
+        <div class="col-4 cardVisio" >
+          <div class="card shadow mb-4">
+            <!-- Card Header - -->
+            <div class="my-2 mx-4"> 
+                <h6 class="m-0 font-weight-bold text-primary"> Lancer la facturation <i class="fas fa-file-export"></i>
+                </h6>    
+            </div>
+            <!-- Card Body -->
+            <div class="card-body" >
+                <form action="export" method="POST">
+                    <h3>Commande N°: </h3>
+                    <input type="hidden" id="" name="">
+                    <div class="d-flex flex-column">
+                        <div>
+                            <label for="departAbo">A partir du : </label>
+                            <input class="form-control col-4 my-2" type="date" name="" id="departAbo">
+                        </div>
+                        <div>
+                            <label for="finAbo">J'usqu'au </label>
+                            <input class="form-control col-4  my-2" type="date" name="" id="finAbo">
+                        </div>
+                        <div>
+                            <label for="SelectAbo">Paiements : </label>
+                            <select  class="form-control col-5" id="SelectAbo">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                              </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer mt-5">
+                        <button class="btn btn-success">Valider</button>
+                    </div >
+                </form>
+             </div>
+      </div>
+      </div>
+    </div>
+
+    </main>
+     {% endblock %}
+     
+    
+     {% block script %}
+     <!-- Optional JavaScript -->
+
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+
+
+
+
+     {% endblock %}

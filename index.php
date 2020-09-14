@@ -170,6 +170,9 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
       case '/SoftRecode/ficheTravail';
       require __DIR__ .'/pages/ficheT.php'; break;
 
+    case '/SoftRecode/abonnement';
+      require __DIR__ .'/pages/abonnement.php'; break;
+
     case '/SoftRecode/avoir';
       require __DIR__ .'/pages/avoir.php'; break;
 

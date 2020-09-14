@@ -471,12 +471,13 @@
               <input type="hidden" name="hiddenTVA" id="hiddenTVA">
               <div class="col-2 mx-3 my-3">
                 <h4><span class="badge badge-secondary">TVA:</span></h4>
+
                   <select id="selectTVA" name="selectTVA" class="custom-select">
-                    {% for tva in tvaList %}
-                      
+                    {% for tva in tvaList %}  
                     <option value="{{tva.kw__value}}">{{tva.kw__info ~ " % " ~ tva.kw__lib}}</option>
                     {% endfor %}
                   </select >
+                  
               </div>
               <div class="col-8 mx-3 my-3">
                 <h4><span class="badge badge-secondary">Code CMD client:</span></h4>
