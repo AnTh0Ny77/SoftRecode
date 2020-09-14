@@ -9,6 +9,7 @@ $Database = new App\Database('devis');
 $Database->DbConnect();
 $Command = new \App\Tables\Cmd($Database);
 $Client = new \App\Tables\Client($Database);
+$Contact = new \App\Tables\Contact($Database);
 $User = new App\Tables\User($Database);
  
 
@@ -80,8 +81,9 @@ ob_start();
             else 
             {
                 //si un contact est present:
-                if ($command->devis__contact__id) 
+                if (!empty($command->devis__contact__id)) 
                 {
+                   
                     $contact = $Contact->getOne($command->devis__contact__id);
                     echo "<small>Societe : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."</small><strong><br>";
                     echo Pdfunctions::showSociete($clientView)  ."</strong></td>";

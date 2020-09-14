@@ -264,29 +264,7 @@ $('#TravailButton').on('click', function(){
  
 
 
-//envoi la requete http pour imprimer la fiche de travail: 
-let httpPrint = function() 
-{
-        $print = $('#printrequest').val();
-        console.log($print);
 
-        $.ajax({
-            type: 'post',
-            url: "printFt",
-            data : 
-            {"print" : $print},
-
-            success: function(data)
-            {
-                console.log(data);
-            },
-                    
-            error: function (err) {
-            console.log('error: ' + err);
-        }})
-}
-
-httpPrint();
 
 
 

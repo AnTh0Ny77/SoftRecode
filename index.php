@@ -148,6 +148,10 @@ dP""""Yb 88  Yb   88   88  YboodP 88ood8 88888*/
     case '/SoftRecode/printFt';
       require __DIR__ .'/pages/utilities/printFT.php'; break;
 
+    case '/SoftRecode/printBl';
+      require __DIR__ .'/pages/utilities/printBL.php'; break;
+
+
     case '/SoftRecode/printFTC';
       require __DIR__ .'/pages/utilities/printFTC.php'; break;
 

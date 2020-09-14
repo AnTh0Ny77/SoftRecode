@@ -29,6 +29,7 @@ class General extends Table
       WHERE '.$condition.' = ?');
         
     $update->execute([$data, $clause]);
+
   }
 
   //gere l'export a tnt expedio param : commande (objet), poids (post) , Nb de paquets (post) 
@@ -40,11 +41,8 @@ class General extends Table
     $recodeTel = '0493472500';
     $recodeCP = '06210';
     $recodeCommune = 'Mandelieu la Napoule';
-
-
-    $responseText = ';'.$commande->devis__id.';'.$commande->cmd__date_envoi.';;test;;'.$poids.';'.$paquets.';'.$poids.';E;'.$commande->client__livraison_societe.';'.$commande->client__livraison__adr1.';'.$commande->client__livraison__adr2.';'.$commande->client__livraison_cp.';'.$commande->client__livraison_ville.';;;;'.$commande->nom__livraison.';'.$commande->nom__livraison.';;'.$commande->fixe__livraison.';'.$commande->gsm__livraison.';'.$commande->mail__livraison.';'.$recodeRaison.';'.$recodeAdresse1.';'.$recodeAdresse2.';'.$recodeCP.';'.$recodeCommune.';'.$recodeTel.';;'.$recodeRaison.';'.$recodeAdresse1.';'.$recodeAdresse2.';'.$recodeCP.';'.$recodeCommune.';'.$recodeTel.';;;;;;;;;;;';
-
-
+    $responseText = ';02008066;'.$commande->cmd__date_envoi.';;Référence Colis;Numero du Colis;'.$poids.';'.$paquets.';POIDS TOTAL;E;'.$commande->client__livraison_societe.';'.$commande->client__livraison__adr1.';'.$commande->client__livraison__adr2.';'.$commande->client__livraison_cp.';'.$commande->client__livraison_ville.';;;;'.$commande->nom__livraison.';'.$commande->nom__livraison.';;'.$commande->fixe__livraison.';'.$commande->gsm__livraison.';'.$commande->mail__livraison.';'.$recodeRaison.';'.$recodeAdresse1.';'.$recodeAdresse2.';'.$recodeCP.';'.$recodeCommune.';'.$recodeTel.';;'.$recodeRaison.';'.$recodeAdresse1.';'.$recodeAdresse2.';'.$recodeCP.';'.$recodeCommune.';'.$recodeTel.';J;;02052015;;;O;;;;;';
+    
     return $responseText;
   }
   

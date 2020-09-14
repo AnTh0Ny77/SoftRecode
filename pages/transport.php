@@ -26,34 +26,7 @@ session_start();
  $Cmd = new App\Tables\Cmd($Database);
 
 
- //si une saisie à été effectuée:
-$alert = false;
-//date du jour:
-$date = date("Y-m-d H:i:s");
 
-if(!empty($_POST['poids']) && !empty($_POST['transporteur']))
-{
-   $paquet = null ;
-   if (intval($_POST['paquets']) > 1 ) 
-   {
-      $paquet = intval($_POST['paquets']);
-   }
-   $Cmd->updateTransport($_POST['transporteur'] , floatval($_POST['poids']), $paquet, $_POST['id_trans'] , 'IMP' , $date);
-
-    $arrayTrans = $Cmd->devisLigne($_POST['id_trans']);
-
-    foreach ($arrayTrans as  $ligne) 
-    {
-       
-       $Cmd->updateLigne($ligne->devl_quantite, 'cmdl__qte_livr', $ligne->devl__id );
-    }
-   $commande = $Cmd->GetById($_POST['id_trans']);
-   $export = $General->exportTNT($commande , $_POST['poids'],$_POST['paquets']);
-   $file = fopen("tnt.txt", "w");
-    fwrite($file , $export);
-    fclose($file);
-   $alert = true;
-}
  
 //par défault le champ de recherche est égal a null:
  $champRecherche = null;
@@ -113,8 +86,6 @@ $TransportListe = $Keyword->getTransporteur();
   
  }
 
-
-  
 // Donnée transmise au template : 
 echo $twig->render('transport.twig',
 [
@@ -123,6 +94,4 @@ echo $twig->render('transport.twig',
 'NbDevis'=>$NbDevis,
 'champRecherche'=>$champRecherche,
 'transporteurs'=>$TransportListe,
-'alert'=> $alert
-
 ]);

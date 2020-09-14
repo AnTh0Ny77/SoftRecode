@@ -144,6 +144,8 @@ if (!empty($_POST['RefuserDevis']))
 }
 
 $print_request = null;
+
+
 // si une validation de devis a été effectuée : 
 if(!empty($_POST['devisCommande']))
 {

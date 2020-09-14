@@ -10,15 +10,46 @@ $Database->DbConnect();
 $Command = new \App\Tables\Cmd($Database);
 $Client = new \App\Tables\Client($Database);
 $User = new App\Tables\User($Database);
+$Global = new App\Tables\General($Database);
  
 
 if (empty($_SESSION['user'])) {
     header('location: login');
  }
+
+
+ // si une validation de devis a été effectuée : 
+if(!empty($_POST['devisCommande']))
+{
+  $date = date("Y-m-d H:i:s");
+  $Command->updateStatus('CMD',$_POST['devisCommande']);
+  $Command->updateDate('cmd__date_cmd' , $date , $_POST['devisCommande'] );
+  $Command->updateAuthor('cmd__user__id_cmd' , $_SESSION['user']->id_utilisateur , $_POST['devisCommande']);
+  if (!empty($_POST['arrayLigneDeCommande'])) 
+  {
+    $validLignes = json_decode($_POST['arrayLigneDeCommande']);
+    foreach ($validLignes as $lignes) 
+    {
+      $Command->updateGarantie(
+        $lignes->devl__prix_barre[0],
+        $lignes->devl__prix_barre[1],
+        $lignes->devl__note_interne,
+        $lignes->devl_quantite,
+        $lignes->cmdl__cmd__id,
+        $lignes->devl__ordre );
+    } 
+  }
+  if (!empty($_POST['code_cmd'])) 
+  {
+    $Global->updateAll('cmd', $_POST['code_cmd'],'cmd__code_cmd_client', 'cmd__id', $_POST['devisCommande']);
+  }
+  //contient l'id du devis pour l'imprssion de la fiche de travail : client2.js
+  $print_request = $_POST['devisCommande'];
+}
   
-if(!empty($_POST['print'])) {
-$command = $Command->getById(intval($_POST['print']));
-$commandLignes = $Command->devisLigne($_POST['print']);
+
+$command = $Command->getById(intval($_POST['devisCommande']));
+$commandLignes = $Command->devisLigne($_POST['devisCommande']);
 $dateTemp = new DateTime($command->cmd__date_cmd);
  //cree une variable pour la date de commande du devis
  $date_time = new DateTime( $command->cmd__date_cmd);
@@ -116,23 +147,21 @@ ob_start();
 <?php
 $content = ob_get_contents();
 
-try {
-
+try 
+{
     $doc = new Html2Pdf('P','A4','fr');
     $doc->setDefaultFont('gothic');
     $doc->pdf->SetDisplayMode('fullpage');
     $doc->writeHTML($content);
     ob_clean();
-    $doc->output('C:\laragon\www\fiches_travail/Ft_'.$command->devis__id.'.pdf' , 'F');
-     
-    echo 'success';
-   
+    $doc->output('C:\laragon\www\fichesTravail\Ft_'.$command->devis__id.'.pdf' , 'F'); 
+    header('location: mesDevis');
 } 
 catch (Html2PdfException $e) 
 {
   die($e); 
 }
     
-}
+
 
  
