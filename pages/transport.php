@@ -20,6 +20,7 @@ session_start();
  $Database = new App\Database('devis');
  $Database->DbConnect();
  $Keyword = new App\Tables\Keyword($Database);
+ $General = new App\Tables\General($Database);
  $Client = new App\Tables\Client($Database);
  $Contact = new \App\Tables\Contact($Database);
  $Cmd = new App\Tables\Cmd($Database);
@@ -46,7 +47,11 @@ if(!empty($_POST['poids']) && !empty($_POST['transporteur']))
        
        $Cmd->updateLigne($ligne->devl_quantite, 'cmdl__qte_livr', $ligne->devl__id );
     }
-  
+   $commande = $Cmd->GetById($_POST['id_trans']);
+   $export = $General->exportTNT($commande , $_POST['poids'],$_POST['paquets']);
+   $file = fopen("tnt.txt", "w");
+    fwrite($file , $export);
+    fclose($file);
    $alert = true;
 }
  

@@ -24,7 +24,7 @@ class Cmd extends Table {
     LPAD(cmd__client__id_fact ,6,0)   as client__id, 
     cmd__contact__id_fact  as  devis__contact__id,
     cmd__etat as devis__etat, 
-    cmd__note_client as  devis__note_client , 
+    cmd__note_client as  devis__note_client ,
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
@@ -33,15 +33,19 @@ class Cmd extends Table {
     cmd__modele_facture, cmd__id_facture , cmd__date_fact, 
     k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
+    t2.contact__nom as nom__livraison , t2.contact__prenom as prenom__livraison ,
+    t2.contact__email as mail__livraison , t2.contact__gsm as gsm__livraison , t2.contact__telephone as fixe__livraison, 
     c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
     c2.client__societe as client__livraison_societe,
     c2.client__ville as client__livraison_ville,
     c2.client__cp as client__livraison_cp , 
     c2.client__adr1 as client__livraison__adr1 , 
+    c2.client__adr2 as client__livraison__adr2 , 
     u.log_nec , u.user__email_devis as email ,
     k3.kw__info as tva_Taux , k3.kw__value as tva_value
     FROM cmd
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
+    LEFT JOIN contact as t2  ON  cmd__contact__id_livr = t2.contact__id
     LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
     LEFT JOIN keyword as k ON cmd__etat = k.kw__value AND  k.kw__type = 'stat'

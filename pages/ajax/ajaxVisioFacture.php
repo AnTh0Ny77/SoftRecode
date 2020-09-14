@@ -22,6 +22,8 @@ else
 {
     if (!empty($_POST['AjaxFT']))
     {
+        //met a jour les quatités facturées en se calcquant sur les livrées:
+        $Cmd->updateQuantiteFTC($_POST['AjaxFT']);
 
         //recupere le devis:
         $temp =   $Cmd->GetById($_POST['AjaxFT']);
@@ -388,7 +390,7 @@ else
                 <tr>  
             <?php
 
-                $totaux = Pdfunctions::totalFacture($temp, $arrayOfDevisLigne);
+                $totaux = Pdfunctions::totalFacturePDF($temp, $arrayOfDevisLigne);
 
                 echo "<td class='text-right'><b>".number_format($totaux[0] , 2)." €</b></td>";
                 echo "<td class='text-right'>".number_format($totaux[1] , 2)." %</td>";

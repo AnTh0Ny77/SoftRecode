@@ -35,6 +35,8 @@ session_start();
  $garantiesList = $Keyword->getGaranties();
  $etatList = $Keyword->getEtat();
 
+ 
+
  //si une creation de societe à été effectué:
  if (!empty($_POST['societe']) && !empty($_POST['ville']) && !empty($_POST['nouveauClientId']))
  {
@@ -110,7 +112,7 @@ session_start();
  if (!empty($_POST['hiddenCommentaire'])) 
  {
    
-   $Cmd->updateQuantiteFTC($_POST['hiddenCommentaire']);
+   
    //  2  changer le status de la commande et attribuer un numero de facture:
    $Cmd->commande2facture($_POST['hiddenCommentaire']);
    //  4 activer une alert pour indiquer le bon fonctionnement du logiciel 
@@ -119,6 +121,8 @@ session_start();
    
  }
 
+
+ 
 
  // si un rajout de ligne à été effectué:
 if (!empty($_POST['idDevisAddLigne']) && !empty($_POST['prestationChoix']) ) 
@@ -138,21 +142,13 @@ if (!empty($_POST['idDevisAddLigne']) && !empty($_POST['prestationChoix']) )
  $object->prixGarantie = floatval($_POST['prixGarantie']);
  $object->cmdl__ordre = '';
  $Cmd->insertLine($object);
- $_SESSION['rechercheFacture'] = $idDuPost;
- header('location: facture');
-}
-
-
-//conserve la recherche et la transfert a $_POST malgrès le header qui suit la creation
-if (isset($_SESSION['rechercheFacture'])  ) 
-{
-  $tampon = $_SESSION['rechercheFacture'];
-  $_POST['recherche-fiche'] = 'id-fiche';
-  $_POST['rechercheF'] = $tampon;
-  unset($_SESSION['rechercheFacture']);
+ $_POST['recherche-fiche'] = 'id-fiche';
+ $_POST['rechercheF'] = $idDuPost;
  
-  
 }
+
+
+
 
 
 

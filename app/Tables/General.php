@@ -31,6 +31,22 @@ class General extends Table
     $update->execute([$data, $clause]);
   }
 
+  //gere l'export a tnt expedio param : commande (objet), poids (post) , Nb de paquets (post) 
+  public function exportTNT($commande, $poids, $paquets)
+  {
+    $recodeRaison = 'Recode By Eurocomputeur';
+    $recodeAdresse1 = 'PA de la Siagne, 112 Allée François Coli';
+    $recodeAdresse2 = '';
+    $recodeTel = '0493472500';
+    $recodeCP = '06210';
+    $recodeCommune = 'Mandelieu la Napoule';
+
+
+    $responseText = ';'.$commande->devis__id.';'.$commande->cmd__date_envoi.';;test;;'.$poids.';'.$paquets.';'.$poids.';E;'.$commande->client__livraison_societe.';'.$commande->client__livraison__adr1.';'.$commande->client__livraison__adr2.';'.$commande->client__livraison_cp.';'.$commande->client__livraison_ville.';;;;'.$commande->nom__livraison.';'.$commande->nom__livraison.';;'.$commande->fixe__livraison.';'.$commande->gsm__livraison.';'.$commande->mail__livraison.';'.$recodeRaison.';'.$recodeAdresse1.';'.$recodeAdresse2.';'.$recodeCP.';'.$recodeCommune.';'.$recodeTel.';;'.$recodeRaison.';'.$recodeAdresse1.';'.$recodeAdresse2.';'.$recodeCP.';'.$recodeCommune.';'.$recodeTel.';;;;;;;;;;;';
+
+
+    return $responseText;
+  }
   
 
 }
