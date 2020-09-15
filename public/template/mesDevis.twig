@@ -120,6 +120,8 @@
               </thead> 
                <tbody id="DevisBody">
                 {% for devis in devisList %}
+                {% if devis.devis__etat != 'VLD' %}
+                
                 <tr class="trClick">
                   <td>{{devis.devis__id}}</td>
                   <td>{{ devis.devis__date_crea}}</td>
@@ -197,6 +199,7 @@
                     {{ devis.kw__lib}} <i class="fas fa-check-square" style="color: limegreen;"></i> <br> {{ devis.log_nec  }}</td>
                     {% endif %}
                 </tr>
+                {% endif %}
                 {% endfor %}
                </tbody>
              </table>

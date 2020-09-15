@@ -1,0 +1,127 @@
+{% extends 'layoutMain.twig' %}
+
+
+  {% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/css/dashboard.css">
+  {% endblock %}
+ 
+ 
+     {% block main %}
+     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        <h1 class="h2">Fiche de garantie <i class="far fa-tools"></i></h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+          </div>
+        </div>
+      </div>
+       <!-- 1ere ligne -->
+       <div class="d-flex flex-wrap flex-row justify-content-start">
+        <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
+        <input type="hidden" id="minFact" value="{{minFact.cmd__id_facture}}">
+    <!--carte liste de Devis -->
+      <div class="col-3">
+        <div class="card shadow mb-4">
+          <!-- Card Header - -->
+          <div class="my-2 mx-4"> 
+            <h6 class="m-0 font-weight-bold text-primary">Garantie/Transport <i class="far fa-ballot-check"></i>
+            </h6>
+
+          </div>
+          <!-- Card Body -->
+          <div class="card-body">
+           
+          </div>
+        </div>
+      </div>
+        <!--carte option -->
+        <div class="col-5 cardVisio" >
+          <div class="card shadow mb-4">
+            <!-- Card Header - -->
+            <div class="my-2 mx-4"> 
+                <h6 class="m-0 font-weight-bold text-primary"> Détails Client/Contact <i class="fas fa-file-export"></i>
+                </h6>    
+            </div>
+            <!-- Card Body -->
+            <div class="card-body" >
+
+            </div>
+      </div>
+      </div>
+    </div>
+    <!--2 eme Ligne-->
+
+    <div class="col-10 cardVisio" >
+      <div class="card shadow mb-4">
+        <!-- Card Header - -->
+        <div class="my-2 mx-4"> 
+            <h6 class="m-0 font-weight-bold text-primary">Articles  <i class="fal fa-list-ol"></i>
+            </h6>    
+        </div>
+        <!-- Card Body -->
+        <div class="card-body" >
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Etat/Prestation</th>
+                <th scope="col">Désignation</th>
+                <th scope="col">Commentaire</th>
+                <th scope="col">Quantité</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for ligne in lignes %}
+                {% if  ligne.devl__type !=  'PRT'%}
+              <tr class="text-secondary">
+                <th scope="col">{{ligne.prestaLib}}<br>{{ligne.kw__lib}}</th>
+                <th scope="col">{{ ligne.famille__lib ~ " " ~ ligne.modele ~  " " ~ ligne.marque ~  " "  ~  ligne.devl__modele }}</th>
+                <th scope="col">
+                  {% if  ligne.devl__note_interne %}
+                  {{ ligne.devl__note_interne }}
+                  <button class="btn btn-success btn-sm clickTech mx-4" value="{{ligne.devl__id}}"><i class="far fa-money-check-edit"></i></button>
+                  {% else %}
+                  Pas de Commentaire
+                  <button class="btn btn-success btn-sm clickTech mx-4" value="{{ligne.devl__id}}"><i class="far fa-money-check-edit"></i></button>
+                  {% endif %}
+
+                </th>
+                <th scope="col">
+                  <div class="form-group">
+                  <input class="form-control-input col-3" type="number" value="{{ligne.devl_quantite}}" id="defaultCheck1">
+                </div></th>
+              </tr>
+              {% endif %}
+              {% endfor %}
+             
+            </tbody>
+          </table>
+
+          <div class="modal-footer mt-2">
+            <button class="btn btn-success mt-2">Valider <i class="far fa-share-square"></i></button>
+
+          </div>  
+         </div>
+  </div>
+  </div>
+
+    </main>
+     {% endblock %}
+     
+    
+     {% block script %}
+     <!-- Optional JavaScript -->
+
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+
+
+
+
+     {% endblock %}

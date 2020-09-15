@@ -15,7 +15,6 @@ class Cmd extends Table {
   }
 
 
-
   public function GetById($id){
     $request =$this->Db->Pdo->query("SELECT
     cmd__id as devis__id ,

@@ -89,6 +89,10 @@ else
 
              ?>
              
+             <form class="my-2" action="garantiesFiches" method="POST">
+                 <input type="hidden" name="POSTGarantie" value="<?php echo $temp->devis__id ?>">
+                 <button class="btn btn-warning btn-sm">Fiche de garantie</button>
+             </form>
              </td>
             
              </div>
