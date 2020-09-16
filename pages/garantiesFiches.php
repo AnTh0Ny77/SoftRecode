@@ -27,23 +27,29 @@ session_start();
 if (!empty($_POST['POSTGarantie'])) 
 {
     $cmd = $Cmd->GetById($_POST['POSTGarantie']);
-    $lignes = $Cmd->devisLigne($_POST['POSTGarantie']);
-
-
-   // Donnée transmise au template : 
-    echo $twig->render('garantiesFiches.twig',
-    [
-    'user'=>$user,
-    'cmd'=> $Cmd,
-    'lignes'=> $lignes
-    ]);
+    $lignes = $Cmd->devisLigne($_POST['POSTGarantie']); 
 }
-else 
+
+if (!empty($_POST['hiddenLigne']) && !empty($_POST['ComInt'])) 
 {
-    header('location: fichesTravail');
+    $Cmd->updateComInterneLigne($_POST['ComInt'], intval($_POST['hiddenLigne']));
+    $idDevis = $Cmd->returnDevis($_POST['hiddenLigne']);
+
+    
+
+    $cmd = $Cmd->GetById($idDevis->devis__id);
+    $lignes = $Cmd->devisLigne($idDevis->devis__id);
 }
  
- 
+
+
+ // Donnée transmise au template : 
+ echo $twig->render('garantiesFiches.twig',
+ [
+ 'user'=>$user,
+ 'cmd'=> $cmd,
+ 'lignes'=> $lignes
+ ]);
  
  
   

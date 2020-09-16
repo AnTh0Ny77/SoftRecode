@@ -57,10 +57,12 @@ $(function () {
     ficheT.on('click', 'tr', function () {
         
         $('#iframeFiche').hide();
-        if ($(this).hasClass('selected')) {
+        if ($(this).hasClass('selected')) 
+        {
             $(this).removeClass('selected');
         }
-        else if (ficheT.rows().count() >= 1) {
+        else if (ficheT.rows().count() >= 1) 
+        {
             ficheT.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
         }
@@ -137,22 +139,19 @@ $(function () {
                         {
                             "AjaxLigneFT": dataFiche
                         },
-                        success: function (data) {
+                        success: function (data) 
+                        {
                             dataSet = JSON.parse(data);
                             $('#titreLigne').text(dataSet.famille__lib+ " " + dataSet.modele + " "  + dataSet.marque);
                             $('#ligneID').val(dataSet.devl__id);
                             ligneDit.setData(dataSet.devl__note_interne);
                             $('#modalFT').modal('show')
-                            
-                  
                         },
                         error: function (err) {
                             console.log('error: ' , err);
                         }
-
                     })
                 })
-                
             },
             error: function (err) {
                 console.log('error: ' + err);
@@ -246,7 +245,7 @@ $(function () {
                             $('#ligneID').val(dataSet.devl__id);
                             ligneDit.setData(dataSet.devl__note_interne);
                             $('#modalFT').modal('show')
-                            console.log(dataSet);
+                          
                   
                         },
                         error: function (err) {

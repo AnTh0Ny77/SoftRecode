@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="1f39c7f0-f133-4fe4-80ab-a6cb9f65ec9d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/pages/ajax/SUPADMINFT.html" beforeDir="false" afterPath="$PROJECT_DIR$/pages/ajax/SUPADMINFT.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/garantiesFiches.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/garantiesFiches.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/utilities/viewPdf.php" beforeDir="false" afterPath="$PROJECT_DIR$/pages/utilities/viewPdf.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/template/garantiesFiches.twig" beforeDir="false" afterPath="$PROJECT_DIR$/public/template/garantiesFiches.twig" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="composer.json" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="hiddenUrls">
+      <set>
+        <option value="https://github.com/Anthnoybs/DevisRecode" />
+      </set>
+    </option>
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration">
+    <include_path>
+      <path value="$PROJECT_DIR$/vendor/league/html-to-markdown" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/vendor/fontawesome/webfonts" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" />
+      <path value="$PROJECT_DIR$/vendor/fontawesome/metadata" />
+      <path value="$PROJECT_DIR$/vendor/fontawesome/css" />
+      <path value="$PROJECT_DIR$/vendor/tecnickcom/tcpdf" />
+      <path value="$PROJECT_DIR$/vendor/composer" />
+      <path value="$PROJECT_DIR$/vendor/spipu/html2pdf" />
+      <path value="$PROJECT_DIR$/vendor/twig/twig" />
+      <path value="$PROJECT_DIR$/vendor/twig/markdown-extra" />
+    </include_path>
+  </component>
+  <component name="ProjectId" id="1haD5Tcmiq2iUosshczP8IdApFu" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="database.main" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1f39c7f0-f133-4fe4-80ab-a6cb9f65ec9d" name="Default Changelist" comment="" />
+      <created>1600240127293</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1600240127293</updated>
+      <workItem from="1600240128784" duration="418000" />
+      <workItem from="1600240575679" duration="680000" />
+      <workItem from="1600241271907" duration="4639000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="490" y="255" key="DBNavigator.ProjectSettingsDialog" timestamp="1600242083762">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="490" y="255" key="DBNavigator.ProjectSettingsDialog/0.0.1920.1160/1920.0.1920.1160@0.0.1920.1160" timestamp="1600242083762" />
+    <state x="461" y="244" key="SettingsEditor" timestamp="1600242560116">
+      <screen x="0" y="0" width="1920" height="1160" />
+    </state>
+    <state x="461" y="244" key="SettingsEditor/0.0.1920.1160/1920.0.1920.1160@0.0.1920.1160" timestamp="1600242560116" />
+  </component>
+</project>

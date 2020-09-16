@@ -22,41 +22,34 @@
       </div>
        <!-- 1ere ligne -->
        <div class="d-flex flex-wrap flex-row justify-content-start">
-        <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
-        <input type="hidden" id="minFact" value="{{minFact.cmd__id_facture}}">
-    <!--carte liste de Devis -->
-      <div class="col-3">
-        <div class="card shadow mb-4">
-          <!-- Card Header - -->
-          <div class="my-2 mx-4"> 
-            <h6 class="m-0 font-weight-bold text-primary">Garantie/Transport <i class="far fa-ballot-check"></i>
-            </h6>
-
-          </div>
-          <!-- Card Body -->
-          <div class="card-body">
-           
-          </div>
-        </div>
-      </div>
+        
+  
         <!--carte option -->
-        <div class="col-5 cardVisio" >
+        <div class="col-9 cardVisio" >
           <div class="card shadow mb-4">
             <!-- Card Header - -->
             <div class="my-2 mx-4"> 
-                <h6 class="m-0 font-weight-bold text-primary"> Détails Client/Contact <i class="fas fa-file-export"></i>
+                <h6 class="m-0 font-weight-bold text-primary"> Détails Commande <i class="fas fa-file-export"></i>
                 </h6>    
             </div>
             <!-- Card Body -->
             <div class="card-body" >
 
+              <div class="card-body">
+
+                <h4> commande N°: {{cmd.devis__id}}</h4>
+                <h5 class="card-title"> Facturation : {{cmd.client__societe ~ '(' ~ cmd.client__id ~ ')'}}</h5>
+                <p class="card-text">{{ cmd.client__adr1 ~ " " ~ cmd.client__cp ~ ' ' ~  cmd.client__ville }}</p> 
+
+              </div>
+              
             </div>
       </div>
       </div>
     </div>
     <!--2 eme Ligne-->
 
-    <div class="col-10 cardVisio" >
+    <div class="col-9 cardVisio" >
       <div class="card shadow mb-4">
         <!-- Card Header - -->
         <div class="my-2 mx-4"> 
@@ -71,7 +64,7 @@
                 <th scope="col">Etat/Prestation</th>
                 <th scope="col">Désignation</th>
                 <th scope="col">Commentaire</th>
-                <th scope="col">Quantité</th>
+                <th scope="col">Quantité/Type</th>
               </tr>
             </thead>
             <tbody>
@@ -79,21 +72,33 @@
                 {% if  ligne.devl__type !=  'PRT'%}
               <tr class="text-secondary">
                 <th scope="col">{{ligne.prestaLib}}<br>{{ligne.kw__lib}}</th>
-                <th scope="col">{{ ligne.famille__lib ~ " " ~ ligne.modele ~  " " ~ ligne.marque ~  " "  ~  ligne.devl__modele }}</th>
+                <th scope="col">{{  ligne.devl_quantite ~ " X " ~ ligne.famille__lib ~ " " ~ ligne.modele ~  " " ~ ligne.marque ~  " "  ~  ligne.devl__modele }}</th>
                 <th scope="col">
                   {% if  ligne.devl__note_interne %}
-                  {{ ligne.devl__note_interne }}
-                  <button class="btn btn-success btn-sm clickTech mx-4" value="{{ligne.devl__id}}"><i class="far fa-money-check-edit"></i></button>
+                  <div class="d-flex">
+                    <div>
+                      {{ ligne.devl__note_interne|raw }}
+                    </div>
+                    <div>
+                      <button class="btn btn-success btn-sm clickTech mx-4" value="{{ligne.devl__id}}"><i class="far fa-money-check-edit"></i></button>
+                    </div>
+                    
+                  </div>
                   {% else %}
                   Pas de Commentaire
                   <button class="btn btn-success btn-sm clickTech mx-4" value="{{ligne.devl__id}}"><i class="far fa-money-check-edit"></i></button>
                   {% endif %}
-
                 </th>
-                <th scope="col">
-                  <div class="form-group">
-                  <input class="form-control-input col-3" type="number" value="{{ligne.devl_quantite}}" id="defaultCheck1">
-                </div></th>
+               
+                <th>
+                  <div class="form-group" style="width:100px;"> 
+                    <input type="number" value="00" max="{{ligne.devl_quantite}}" min="00" class="form-control" id="number"> 
+                    </div> 
+                  <select class="custom-select" name="" id="">
+                    <option>Echange</option>
+                    <option>Retour</option>
+                  </select>
+                </th>
               </tr>
               {% endif %}
               {% endfor %}
@@ -102,11 +107,42 @@
           </table>
 
           <div class="modal-footer mt-2">
+            <div class="card-body col-3">
+              <select class="custom-select">
+                <option>Garantie</option>
+                <option>Maintenance</option>
+              </select >
+             
+            </div>
             <button class="btn btn-success mt-2">Valider <i class="far fa-share-square"></i></button>
 
           </div>  
          </div>
   </div>
+  </div>
+
+
+
+  <div class="modal fade" id="ModalEditor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form action="garantiesFiches" method="POST">
+        <div class="modal-header">
+          <h6 class="modal-title" id="titreComLigne">Commentaire Interne</h6>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="hiddenLigne" id="hiddenLigne" >
+          <textarea  id="ComInt" name="ComInt" placeholder="Commentaire interne...." ></textarea>
+        </div>
+        <div class="modal-footer">
+          <button  class="btn btn-success">Modifier</button>
+        </div>
+      </form>
+      </div>
+    </div>
   </div>
 
     </main>
@@ -120,6 +156,8 @@
 <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+<script type="text/javascript" src="public/js/fichesGarantie.js"></script>
 
 
 
