@@ -30,6 +30,7 @@ if (!empty($_POST['POSTGarantie']))
     $lignes = $Cmd->devisLigne($_POST['POSTGarantie']); 
 }
 
+//si une mise a jour de commentaire a ete effectuée
 if (!empty($_POST['hiddenLigne']) && !empty($_POST['ComInt'])) 
 {
     $Cmd->updateComInterneLigne($_POST['ComInt'], intval($_POST['hiddenLigne']));
@@ -39,6 +40,20 @@ if (!empty($_POST['hiddenLigne']) && !empty($_POST['ComInt']))
 
     $cmd = $Cmd->GetById($idDevis->devis__id);
     $lignes = $Cmd->devisLigne($idDevis->devis__id);
+}
+
+//si une fiche de garantie a été crée : 
+
+if (!empty($_POST['qteArray'])) 
+{
+  foreach ($_POST['qteArray'] as $key => $value) 
+  {
+    if (intval($value) > 0) 
+    {
+       var_dump($_POST['typeArray'][$key]);
+    }
+  }
+  die();
 }
  
 

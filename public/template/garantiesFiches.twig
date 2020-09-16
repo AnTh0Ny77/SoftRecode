@@ -22,8 +22,6 @@
       </div>
        <!-- 1ere ligne -->
        <div class="d-flex flex-wrap flex-row justify-content-start">
-        
-  
         <!--carte option -->
         <div class="col-9 cardVisio" >
           <div class="card shadow mb-4">
@@ -34,15 +32,11 @@
             </div>
             <!-- Card Body -->
             <div class="card-body" >
-
               <div class="card-body">
-
                 <h4> commande N°: {{cmd.devis__id}}</h4>
                 <h5 class="card-title"> Facturation : {{cmd.client__societe ~ '(' ~ cmd.client__id ~ ')'}}</h5>
                 <p class="card-text">{{ cmd.client__adr1 ~ " " ~ cmd.client__cp ~ ' ' ~  cmd.client__ville }}</p> 
-
               </div>
-              
             </div>
       </div>
       </div>
@@ -58,6 +52,7 @@
         </div>
         <!-- Card Body -->
         <div class="card-body" >
+          <form action="garantiesFiches" method="POST">
           <table class="table">
             <thead>
               <tr>
@@ -92,9 +87,9 @@
                
                 <th>
                   <div class="form-group" style="width:100px;"> 
-                    <input type="number" value="00" max="{{ligne.devl_quantite}}" min="00" class="form-control" id="number"> 
+                    <input type="number" value="00" max="{{ligne.devl_quantite}}" min="00" class="form-control" id="number" name="qteArray[]"> 
                     </div> 
-                  <select class="custom-select" name="" id="">
+                  <select class="custom-select" name="typeArray[]" id="">
                     <option>Echange</option>
                     <option>Retour</option>
                   </select>
@@ -116,7 +111,8 @@
             </div>
             <button class="btn btn-success mt-2">Valider <i class="far fa-share-square"></i></button>
 
-          </div>  
+          </div>
+        </form>  
          </div>
   </div>
   </div>
