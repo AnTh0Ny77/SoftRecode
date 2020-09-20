@@ -35,9 +35,6 @@ if (!empty($_POST['hiddenLigne']) && !empty($_POST['ComInt']))
 {
     $Cmd->updateComInterneLigne($_POST['ComInt'], intval($_POST['hiddenLigne']));
     $idDevis = $Cmd->returnDevis($_POST['hiddenLigne']);
-
-    
-
     $cmd = $Cmd->GetById($idDevis->devis__id);
     $lignes = $Cmd->devisLigne($idDevis->devis__id);
 }
@@ -46,14 +43,26 @@ if (!empty($_POST['hiddenLigne']) && !empty($_POST['ComInt']))
 
 if (!empty($_POST['qteArray'])) 
 {
+  if($_POST['typeRetour'] == 'Garantie')
+  {
+    $idClient = 000002;
+  } else  $idClient = 000003;
+
+ 
+  $sujet = $Cmd->GetById($_POST['idRetour']);
+  $retour = $Cmd->makeRetour($sujet , $_POST['typeRetour'] , $idClient , $_SESSION['user']->id_utilisateur );
   foreach ($_POST['qteArray'] as $key => $value) 
   {
     if (intval($value) > 0) 
-    {
-       var_dump($_POST['typeArray'][$key]);
+    { 
+      $transfert = $Cmd->makeAvoirLigne($_POST['idArray'][$key],$retour ,$value);
     }
+
+   
   }
-  die();
+  
+  header('location: ficheTravail');
+ 
 }
  
 

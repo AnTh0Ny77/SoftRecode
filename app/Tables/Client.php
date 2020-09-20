@@ -39,5 +39,14 @@ public function insertOne($name , $adresse, $adresse2 , $cp, $ville){
     return $this->Db->Pdo->lastInsertId();
 }
 
+public function getSpecials()
+{
+  $request =$this->Db->Pdo->query("SELECT LPAD(client__id,6,0) as client__id,  
+  client__societe , client__adr1 , client__adr2, client__cp , client__ville , client__tel , client__tva_intracom  
+  FROM " .$this->Table. " WHERE client__id  < 10 ");
+  $data = $request->fetchALL(PDO::FETCH_OBJ);
+  return $data;
+}
+
  
 }

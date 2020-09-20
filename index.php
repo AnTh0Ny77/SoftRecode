@@ -100,6 +100,10 @@
     case '/SoftRecode/abonnement';
       require __DIR__ .'/pages/abonnement.php'; break;
 
+    case '/SoftRecode/abonnementNouveau';
+      require __DIR__ .'/pages/abonnementNouveau.php'; break;
+
+
     case '/SoftRecode/avoir';
       require __DIR__ .'/pages/avoir.php'; break;
 

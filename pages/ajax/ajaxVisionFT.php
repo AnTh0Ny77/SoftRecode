@@ -86,13 +86,17 @@ else
              {
                 echo '<br> code cmd client: <b>'.  $temp->cmd__code_cmd_client . '</b>';
              }
-
+            
+             if ($temp->client__id > 10 ) 
+             {
+                echo "<form class='my-2' action='garantiesFiches' method='POST'>
+                <input type='hidden' name='POSTGarantie' value=". $temp->devis__id.">
+                <button class='btn btn-warning btn-sm'>Fiche de garantie</button>
+                </form>";
+             }
              ?>
              
-             <form class="my-2" action="garantiesFiches" method="POST">
-                 <input type="hidden" name="POSTGarantie" value="<?php echo $temp->devis__id ?>">
-                 <button class="btn btn-warning btn-sm">Fiche de garantie</button>
-             </form>
+             
              </td>
             
              </div>

@@ -35,14 +35,7 @@
           <!-- Card Body -->
           <div class="card-body">
             <div class="chart-area">
-                <ul class="list-group">
-                {% for facture in devisList %}
-                    <li class="list-group-item "> 
-                        <i class="far fa-file"></i>
-                     {{facture.cmd__date_fact}} - {{facture.client__societe ~ '(' ~ facture.client__id ~ ')' }} - commande N° : {{ facture.devis__id}}
-                    </li>
-                {% endfor %}
-                </ul>
+               
             </div>  
           </div>
         </div>
@@ -52,7 +45,7 @@
           <div class="card shadow mb-4">
             <!-- Card Header - -->
             <div class="my-2 mx-4"> 
-                <h6 class="m-0 font-weight-bold text-primary"> Lancer la facturation <i class="fas fa-file-export"></i>
+                <h6 class="m-0 font-weight-bold text-primary"> Administrer <i class="fas fa-file-export"></i>
                 </h6>    
             </div>
             <!-- Card Body -->
@@ -60,26 +53,7 @@
                 <form action="export" method="POST">
                     <h3>Commande N°: </h3>
                     <input type="hidden" id="" name="">
-                    <div class="d-flex flex-column">
-                        <div>
-                            <label for="departAbo">A partir du : </label>
-                            <input class="form-control col-4 my-2" type="date" name="" id="departAbo">
-                        </div>
-                        <div>
-                            <label for="finAbo">J'usqu'au </label>
-                            <input class="form-control col-4  my-2" type="date" name="" id="finAbo">
-                        </div>
-                        <div>
-                            <label for="SelectAbo">Paiements : </label>
-                            <select  class="form-control col-5" id="SelectAbo">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                              </select>
-                        </div>
-                    </div>
+                   
                     <div class="modal-footer mt-5">
                         <button class="btn btn-success">Valider</button>
                     </div >

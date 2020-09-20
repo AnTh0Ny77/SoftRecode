@@ -1,0 +1,111 @@
+{% extends 'layoutMain.twig' %}
+
+
+  {% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/css/dashboard.css">
+  {% endblock %}
+ 
+ 
+     {% block main %}
+     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        <h1 class="h2">Creation Abonnement <i class="fas fa-tools"></i></h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+          </div>
+        </div>
+      </div>
+       <!-- 1ere ligne -->
+       <div class="d-flex flex-wrap flex-row justify-content-start">
+        <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
+    <!--carte liste de Devis -->
+      <div class="col-12">
+        <div class="card shadow mb-4">
+         
+          <!-- Card Body -->
+          <div class="card-body">
+
+  <form action="abonnementNouveau" method='post'>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Numero de commande</label>
+      <input type="text" name="numCmd" class="form-control" id="inputEmail4" placeholder="N° commande" required>
+    </div>
+     <div class="form-group col-md-4">
+      <label for="inputEmail4">Id client Facturé</label>
+      <input type="text" name="idClient" class="form-control" id="inputEmail4" placeholder="Id Client">
+    </div>
+   
+  </div>
+    
+ 
+  <div class="form-row">
+   <div class="form-group col-md-4">
+      <label for="inputState">Facturation Auto</label>
+      <select id="inputState" class="form-control" name="facturationAuto">
+        <option value="1" selected>Oui</option>
+        <option value='0'>Non</option>
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputState">Prestation</label>
+      <select id="inputState" class="form-control" name="prestation">
+        {% for presta in prestaList %}
+        <option value="{{presta.kw__value}}">{{ presta.kw__lib}}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputState">Engagement en mois</label>
+      <select id="inputState" class="form-control" name="mois">
+        <option value="00">Non-défini</option>
+        {% for mois in moisList %}
+        {% if mois.kw__value > 06  %}
+        <option value="{{mois.kw__value}}">{{ mois.kw__lib}}</option>
+        {% endif %}
+        
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-6 mt-4">
+      <textarea  id="comAbn" name="comAbn" placeholder="Commentaire abonnement...." ></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+  <button type="submit" class="btn btn-success">Valider</button>
+  </div>
+  
+</form>
+            
+          </div>
+        </div>
+      </div>
+        
+       
+    </div>
+
+    </main>
+     {% endblock %}
+     
+    
+     {% block script %}
+     <!-- Optional JavaScript -->
+
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+<script type="text/javascript" src="public/js/abonnementNouveau.js"></script>
+
+
+
+
+     {% endblock %}

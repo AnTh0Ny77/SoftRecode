@@ -23,16 +23,11 @@ session_start();
  $Client = new App\Tables\Client($Database);
  $Contact = new \App\Tables\Contact($Database);
  $Cmd = new App\Tables\Cmd($Database);
- $General = new App\Tables\General($Database);
- $Article = new App\Tables\Article($Database);
+ $Abonnement = new App\Tables\Abonnement($Database);
  
-
  
- $prestaList = $Keyword->getPresta();
  
- $tvaList = $Keyword->getAllFromParam('tva');
- 
- $devisList = $Cmd->getFromStatusAll('VLD');
+ $ABNList = $Abonnement->getAll();
  
  
   
@@ -40,8 +35,5 @@ session_start();
 echo $twig->render('abonnement.twig',
 [
 'user'=>$user,
-'devisList'=>$devisList,
-
-'tvaList' => $tvaList,
-
+'ABNList'=>$ABNList,
 ]);

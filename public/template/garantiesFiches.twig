@@ -53,6 +53,7 @@
         <!-- Card Body -->
         <div class="card-body" >
           <form action="garantiesFiches" method="POST">
+          <input type='hidden' name='idRetour' value='{{cmd.devis__id}}'>
           <table class="table">
             <thead>
               <tr>
@@ -88,10 +89,11 @@
                 <th>
                   <div class="form-group" style="width:100px;"> 
                     <input type="number" value="00" max="{{ligne.devl_quantite}}" min="00" class="form-control" id="number" name="qteArray[]"> 
+                    <input type='hidden' value='{{ligne.devl__id}}' name='idArray[]'>
                     </div> 
                   <select class="custom-select" name="typeArray[]" id="">
-                    <option>Echange</option>
-                    <option>Retour</option>
+                    <option value="ECH">Echange</option>
+                    <option value="RTE">Retour</option>
                   </select>
                 </th>
               </tr>
@@ -103,9 +105,9 @@
 
           <div class="modal-footer mt-2">
             <div class="card-body col-3">
-              <select class="custom-select">
-                <option>Garantie</option>
-                <option>Maintenance</option>
+              <select class="custom-select" name='typeRetour'>
+                <option value="Garantie">Garantie</option>
+                <option value='Maintenance'>Maintenance</option>
               </select >
              
             </div>

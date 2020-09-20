@@ -430,7 +430,6 @@ public function classicReliquat($cmd)
 
 
 // creer un nouvel avoir: 
-
 public function makeAvoir($facture)
 {
   
@@ -460,10 +459,39 @@ public function makeAvoir($facture)
   $idfacture = $this->Db->Pdo->lastInsertId();
 
   return $idfacture;
-
 }
-//insère une ligne dans un devis :
 
+
+// creer un nouvel avoir: 2 eme param = garantie ou retour , 3eme = client : echange reliquat et co (id) , id du tech qui edite la fiche :
+public function makeRetour($facture ,$type , $client , $user)
+{
+  $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd, cmd__client__id_fact,
+  cmd__client__id_livr, cmd__contact__id_fact,  cmd__contact__id_livr,
+  cmd__note_client, cmd__note_interne, cmd__code_cmd_client,
+  cmd__etat, cmd__user__id_devis, cmd__user__id_cmd)
+  VALUES (:cmd__date_cmd, :cmd__client__id_fact, :cmd__client__id_livr, :cmd__contact__id_fact, :cmd__contact__id_livr,
+  :cmd__note_client, :cmd__note_interne, :cmd__code_cmd_client, :cmd__etat, :cmd__user__id_devis, :cmd__user__id_cmd)');
+
+  $avoirId =  $type . ' commande :  ' . $facture->devis__id;
+
+
+  $request->bindValue(":cmd__date_cmd", $facture->cmd__date_cmd);
+  $request->bindValue(":cmd__client__id_fact", $client);
+  $request->bindValue(":cmd__client__id_livr", $facture->devis__id_client_livraison);
+  $request->bindValue(":cmd__contact__id_fact", null);
+  $request->bindValue(":cmd__contact__id_livr", $facture->devis__contact_livraison);
+  $request->bindValue(":cmd__note_client", $facture->devis__note_client);   
+  $request->bindValue(":cmd__note_interne", $facture->devis__note_interne);
+  $request->bindValue(":cmd__code_cmd_client",  $avoirId );
+  $request->bindValue(":cmd__etat", 'CMD');
+  $request->bindValue(":cmd__user__id_devis", $facture->devis__user__id );
+  $request->bindValue(":cmd__user__id_cmd", $user );
+  $request->execute();
+  $idfacture = $this->Db->Pdo->lastInsertId();
+  return $idfacture;
+}
+
+//insère une ligne dans un devis :
 public function insertLine($object){
   $requestLigne =  $this->Db->Pdo->prepare(
     'INSERT INTO  cmd_ligne (
