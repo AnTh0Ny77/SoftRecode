@@ -39,12 +39,35 @@ class Abonnement extends Table
         return $idABN;
     }
 
+    public function getById($id)
+    {
+        $request =$this->Db->Pdo->query("SELECT  ab__cmd__id, ab__client__id_fact,
+        ab__actif, ab__fact_auto,  ab__presta
+        FROM abonnement
+        WHERE ab__cmd__id = ".$id."
+        ORDER BY  ab__cmd__id DESC LIMIT 200 ");
+        $data = $request->fetch(PDO::FETCH_OBJ);
+        return $data;
+    }
+
     public function getAll()
     {
         $request =$this->Db->Pdo->query("SELECT  ab__cmd__id, ab__client__id_fact,
-        ab__actif, ab__fact_auto,  ab__presta,
+        ab__actif, ab__fact_auto,  ab__presta
         FROM abonnement
-        ORDER BY  ab__cmd__id DESC  LIMIT 200 ");
+        ORDER BY  ab__cmd__id DESC LIMIT 200 ");
+        $data = $request->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+
+    public function getLigne($id)
+    {
+        $request =$this->Db->Pdo->query("SELECT 
+        abl__cmd__id , abl__ligne , abl__dt_debut , abl__actif, abl__id__fmm, 
+        abl__designation, abl__sn, abl__type_repair, abl__prix_mois, abl__note_interne
+        FROM abonnement_ligne
+        WHERE abl__cmd__id = ".$id."
+        ORDER BY  abl__ligne DESC LIMIT 200 ");
         $data = $request->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }

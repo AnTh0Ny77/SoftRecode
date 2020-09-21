@@ -39,8 +39,11 @@ if (!empty($_POST['hiddenLigne']) && !empty($_POST['ComInt']))
     $lignes = $Cmd->devisLigne($idDevis->devis__id);
 }
 
-//si une fiche de garantie a été crée : 
 
+$alert = false;
+
+
+//si une fiche de garantie a été crée : 
 if (!empty($_POST['qteArray'])) 
 {
   if($_POST['typeRetour'] == 'Garantie')
@@ -48,7 +51,17 @@ if (!empty($_POST['qteArray']))
     $idClient = 000002;
   } else  $idClient = 000003;
 
- 
+  $count = 0 ;
+  foreach ($_POST['qteArray'] as $key => $value) 
+  {
+    if (intval($value) > 0) 
+    { 
+      $count += 1 ;
+    } 
+  }
+
+ if ($count > 0 ) 
+ {
   $sujet = $Cmd->GetById($_POST['idRetour']);
   $retour = $Cmd->makeRetour($sujet , $_POST['typeRetour'] , $idClient , $_SESSION['user']->id_utilisateur );
   foreach ($_POST['qteArray'] as $key => $value) 
@@ -56,12 +69,18 @@ if (!empty($_POST['qteArray']))
     if (intval($value) > 0) 
     { 
       $transfert = $Cmd->makeAvoirLigne($_POST['idArray'][$key],$retour ,$value);
-    }
-
-   
+    } 
   }
-  
   header('location: ficheTravail');
+ }
+ else 
+ {
+  $cmd = $Cmd->GetById($_POST['idRetour']);
+  $lignes = $Cmd->devisLigne($_POST['idRetour']);
+  $alert = true;
+
+ }
+ 
  
 }
  
@@ -72,7 +91,8 @@ if (!empty($_POST['qteArray']))
  [
  'user'=>$user,
  'cmd'=> $cmd,
- 'lignes'=> $lignes
+ 'lignes'=> $lignes,
+ 'alert'=> $alert
  ]);
  
  

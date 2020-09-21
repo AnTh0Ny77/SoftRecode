@@ -103,6 +103,11 @@
     case '/SoftRecode/abonnementNouveau';
       require __DIR__ .'/pages/abonnementNouveau.php'; break;
 
+    case '/SoftRecode/abonnementAdmin';
+      require __DIR__ .'/pages/abonnementAdmin.php'; break;
+
+    case '/SoftRecode/ajoutMachine';
+      require __DIR__ .'/pages/ajoutMachine.php'; break;
 
     case '/SoftRecode/avoir';
       require __DIR__ .'/pages/avoir.php'; break;

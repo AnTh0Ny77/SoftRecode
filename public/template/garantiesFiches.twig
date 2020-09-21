@@ -50,6 +50,11 @@
             <h6 class="m-0 font-weight-bold text-primary">Articles  <i class="fal fa-list-ol"></i>
             </h6>    
         </div>
+        {% if alert %}
+        <div class="alert alert-danger" role="alert">
+         Les quantités sont incorrectes
+        </div>
+        {% endif %}
         <!-- Card Body -->
         <div class="card-body" >
           <form action="garantiesFiches" method="POST">
@@ -76,13 +81,13 @@
                       {{ ligne.devl__note_interne|raw }}
                     </div>
                     <div>
-                      <button class="btn btn-success btn-sm clickTech mx-4" value="{{ligne.devl__id}}"><i class="far fa-money-check-edit"></i></button>
+                      <button type="button" class="btn btn-success btn-sm clickTech mx-4" value="{{ligne.devl__id}}"><i class="far fa-money-check-edit"></i></button>
                     </div>
                     
                   </div>
                   {% else %}
                   Pas de Commentaire
-                  <button class="btn btn-success btn-sm clickTech mx-4" value="{{ligne.devl__id}}"><i class="far fa-money-check-edit"></i></button>
+                  <button type="button" class="btn btn-success btn-sm clickTech mx-4" value="{{ligne.devl__id}}"><i class="far fa-money-check-edit"></i></button>
                   {% endif %}
                 </th>
                

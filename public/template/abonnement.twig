@@ -29,12 +29,52 @@
         <div class="card shadow mb-4">
           <!-- Card Header - -->
           <div class="my-2 mx-4"> 
-            <h6 class="m-0 font-weight-bold text-primary">Devis de maintenance <i class="fas fa-tools"></i> 
+            <h6 class="m-0 font-weight-bold text-primary">Selection Abonnement <i class="fas fa-tools"></i> 
             </h6>
           </div>
           <!-- Card Body -->
           <div class="card-body">
             <div class="chart-area">
+              <table id="ficheTable" class=" display table " style="width:100%"> <thead class="thead-dark" > 
+                <tr> 
+                  <th>Numéro</th> 
+                  <th>Date</th>
+                  <th>N°/Date</th>
+                  <th>Client</th>
+                 
+                 
+              </tr>
+              </thead> 
+               <tbody id="">
+                {% for devis in devisList %}
+                <tr class="trClick">
+                  <td>{{devis.devis__id}}</td>
+                  <td> {{ devis.cmd__date_cmd}}</td>
+                  <td > {{ "N°: " ~ devis.devis__id}} <br>  <div data-toggle="tooltip" data-placement="top" title="Date de commande"> <i class="far fa-check-circle"></i> {{ devis.devis__date_crea}} </div>
+                  </td>
+                  {% if devis.cmd__nom_devis %}
+                  <td> 
+                  <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }} <br> {{devis.cmd__nom_devis}} 
+                 </td>
+                  {% else  %}
+                  <td> <b>{{  devis.client__societe  }} </b>{{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}} 
+                    {% if devis.devis__etat == 'CMD' %}
+                    <br><strong>{{ devis.kw__lib}}</strong> <i class="fas fa-tools"></i>
+                     {% else %}
+                    <br><strong>Expédiée</strong> <i class="fas fa-truck"></i>
+                     {% endif %}</td>
+                  {% endif %}
+
+                 
+                  
+                  
+                   
+                  
+                    
+                </tr>
+                {% endfor %}
+               </tbody>
+             </table>
                
             </div>  
           </div>
@@ -50,12 +90,12 @@
             </div>
             <!-- Card Body -->
             <div class="card-body" >
-                <form action="export" method="POST">
-                    <h3>Commande N°: </h3>
-                    <input type="hidden" id="" name="">
+                <form action="abonnementAdmin" method="POST">
+                    <h5 id="titreAdmin"> Abonnement commande N°:  </h5>
+                    <input type="hidden" id="hiddenId" name="hiddenId">
                    
                     <div class="modal-footer mt-5">
-                        <button class="btn btn-success">Valider</button>
+                        <button class="btn btn-success">Administer</button>
                     </div >
                 </form>
              </div>
@@ -74,7 +114,7 @@
 <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
-
+<script  type="text/javascript" src="public/js/abonnement.js"></script>
 
 
 

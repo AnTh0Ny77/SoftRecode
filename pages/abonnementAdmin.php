@@ -23,32 +23,39 @@ session_start();
  $Client = new App\Tables\Client($Database);
  $Contact = new \App\Tables\Contact($Database);
  $Cmd = new App\Tables\Cmd($Database);
+ $General = new App\Tables\General($Database);
  $Abonnement = new App\Tables\Abonnement($Database);
  
- 
- 
- $ABNList = $Abonnement->getAll();
- $arrayList = [];
- 
- foreach ($ABNList as $abn) 
- {
-    $item = $Cmd->GetById($abn->ab__cmd__id);
+ $prestaList = $Keyword->getPrestaABN();
+ $moisList = $Keyword->getGaranties();
 
-    array_push($arrayList, $item);
- }
+ $alert = false;
 
- foreach ($arrayList as $devis) 
- {
-   $devisDate = date_create($devis->cmd__date_cmd);
-   $date = date_format($devisDate, 'd/m/Y');
-   $devis->devis__date_crea = $date;
- }
+//traite le post avec l'id abonnement: 
+
+if (!empty($_POST['hiddenId'])) 
+{
+
+    $abn = $Abonnement->getById($_POST['hiddenId']);
+    $cmd = $Cmd->GetById($abn->ab__cmd__id);
+    $lignes = $Abonnement->getLigne($abn->ab__cmd__id);
+
+   // Donnée transmise au template : 
+    echo $twig->render('abonnementAdmin.twig',
+    [
+    'user'=>$user,
+    'prestaList'=> $prestaList,
+    'moisList' => $moisList,
+    'cmd'=> $cmd, 
+    'abn'=> $abn,
+    'lignes' => $lignes
+]);
+}
+else 
+{
+    header('location: abonnement');
+}
+
+ 
  
   
-// Donnée transmise au template : 
-echo $twig->render('abonnement.twig',
-[
-'user'=>$user,
-'devisList'=>$arrayList
-
-]);

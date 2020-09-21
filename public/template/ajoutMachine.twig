@@ -14,7 +14,7 @@
      {% block main %}
      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">Creation Abonnement <i class="fas fa-tools"></i></h1>
+        <h1 class="h2">Ajout de machine pour l'abonnement N°: {{cmd.devis__id}} <i class="fas fa-plus"></i></h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
           </div>
@@ -38,25 +38,27 @@
   <form action="abonnementNouveau" method='post'>
   <div class="form-row">
     <div class="form-group col-md-4">
-      <label for="inputEmail4">Numero de commande</label>
+        <label for="inputState">Famille-marque-modèle</label>
+        <select id="inputState" class="form-control" name="facturationAuto">
+          <option value="1" selected>Oui</option>
+          <option value='0'>Non</option>
+        </select>
+      </div>
+
+    <div class="form-group col-md-4">
+      <label for="inputEmail4">Désignation</label>
       <input type="text" name="numCmd" class="form-control" id="inputEmail4" placeholder="N° commande" required>
     </div>
-     <div class="form-group col-md-4">
-      <label for="inputEmail4">Id client Facturé</label>
-      <input type="text" name="idClient" class="form-control" id="inputEmail4" placeholder="Id Client">
-    </div>
-   
+
+    <div class="form-group col-md-4">
+        <label for="inputEmail4">Numéro de série</label>
+        <input type="text" name="numCmd" class="form-control" id="inputEmail4" placeholder="N° commande" required>
+      </div>
+    
   </div>
     
  
   <div class="form-row">
-   <div class="form-group col-md-4">
-      <label for="inputState">Facturation Auto</label>
-      <select id="inputState" class="form-control" name="facturationAuto">
-        <option value="1" selected>Oui</option>
-        <option value='0'>Non</option>
-      </select>
-    </div>
     <div class="form-group col-md-4">
       <label for="inputState">Prestation</label>
       <select id="inputState" class="form-control" name="prestation">
@@ -65,18 +67,10 @@
         {% endfor %}
       </select>
     </div>
-    <div class="form-group col-md-4">
-      <label for="inputState">Engagement en mois</label>
-      <select id="inputState" class="form-control" name="mois">
-        <option value="00">Non-défini</option>
-        {% for mois in moisList %}
-        {% if mois.kw__value > 06  %}
-        <option value="{{mois.kw__value}}">{{ mois.kw__lib}}</option>
-        {% endif %}
-        
-        {% endfor %}
-      </select>
-    </div>
+    <div class="form-group col-md-2">
+        <label for="inputEmail4">Prix au mois H.T</label>
+        <input type="text" name="numCmd" class="form-control" id="inputEmail4" placeholder="Prix" required>
+      </div>
   </div>
   <div class="form-group">
     <div class="col-6 mt-4">

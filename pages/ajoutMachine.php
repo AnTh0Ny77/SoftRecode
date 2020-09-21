@@ -32,35 +32,15 @@ session_start();
  $alert = false;
 
 //si un abonnement a été crée:
-if (!empty($_POST['numCmd']))
+if (!empty($_POST['idCmd']))
 {
-  $valid = $Cmd->getById($_POST['numCmd']);
+  $valid = $Cmd->getById($_POST['idCmd']);
   
   if (!empty($valid)) 
   {
 
-    if (!empty($_POST['idClient'])) 
-    {
-      $client = $Client->getOne($_POST['idClient']);
-      if (!empty($client)) 
-      {
-       $id = $_POST['idClient'];
-      }
-      else 
-      {
-        $id = null;
-      }
-    }
-    $verif = $Abonnement->getById($_POST['numCmd']);
-    if (empty($verif)) 
-    {
-      $abn = $Abonnement->createOne($_POST['numCmd'] , $id , 1, $_POST['facturationAuto'], $_POST['prestation'] , $_POST['comAbn'] , $_POST['mois']);
-      header('location: abonnement');
-    }
-    else 
-    {
-      $alert = true;
-    }
+    
+    $verif = $Abonnement->getById($_POST['idCmd']);  
    
   }
   else
@@ -73,13 +53,11 @@ if (!empty($_POST['numCmd']))
  
   
 // Donnée transmise au template : 
-echo $twig->render('abonnementNouveau.twig',
+echo $twig->render('ajoutMachine.twig',
 [
 'user'=>$user,
 'prestaList'=> $prestaList,
 'moisList' => $moisList,
-'alert' => $alert
-
-
-
+'alert' => $alert ,
+'cmd' => $valid
 ]);
