@@ -71,4 +71,38 @@ class Abonnement extends Table
         $data = $request->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }
+
+    public function returnMax($cmd)
+    {
+        $verifOrdre = $this->Db->Pdo->query(
+            'SELECT MAX(abl__ligne) as ligne from abonnement_ligne');
+        $response  = $verifOrdre->fetch(PDO::FETCH_OBJ);
+        return $response;
+    }
+
+    public function insertRobot($idCmd , $numeroLigne , $datedeDebut , $idFmm , $designation , $sn , $type , $prix , $note)
+    {
+        $request = $this->Db->Pdo->prepare('INSERT INTO abonnement_ligne ( abl__cmd__id , abl__ligne,
+        abl__dt_debut, abl__actif,  abl__id__fmm,
+        abl__designation, abl__sn , abl__type_repair , abl__prix_mois , abl__note_interne)
+        VALUES (:abl__cmd__id, :abl__ligne, :abl__dt_debut, :abl__actif, :abl__id__fmm,
+        :abl__designation, :abl__sn , abl__type_repair , abl__prix_mois , abl__note_interne)');
+
+        $request->bindValue(":abl__cmd__id", $idCmd);
+        $request->bindValue(":abl__ligne", $numeroLigne);
+        $request->bindValue(":abl__dt_debut", $datedeDebut);
+        $request->bindValue(":abl__actif", $idFmm);
+        $request->bindValue(":abl__id__fmm",$designation);
+        $request->bindValue(":abl__designation", $note);   
+        $request->bindValue(":abl__sn", $sn);
+        $request->bindValue(":abl__type_repair", $type);
+        $request->bindValue(":abl__prix_mois", $prix);
+        $request->bindValue(":abl__note_interne",  $note);
+
+        $request->execute();
+
+        $idABN = $this->Db->Pdo->lastInsertId();
+
+        return $idABN;
+    }
 }

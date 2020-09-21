@@ -25,39 +25,44 @@ session_start();
  $Cmd = new App\Tables\Cmd($Database);
  $General = new App\Tables\General($Database);
  $Abonnement = new App\Tables\Abonnement($Database);
+ $Article = new App\Tables\Article($Database);
  
  $prestaList = $Keyword->getPrestaABN();
  $moisList = $Keyword->getGaranties();
-
+ $modeleList = $Article->getModels();
  $alert = false;
 
 //si un abonnement a été crée:
 if (!empty($_POST['idCmd']))
 {
   $valid = $Cmd->getById($_POST['idCmd']);
-  
-  if (!empty($valid)) 
-  {
+  $verif = $Abonnement->getById($_POST['idCmd']);  
+  $ligneMax = $Abonnement->returnMax($_POST['idCmd']);
 
-    
-    $verif = $Abonnement->getById($_POST['idCmd']);  
-   
-  }
-  else
-  {
-    $alert = true;
-  }
+    if (!empty($ligneMax)) 
+    {
+     $count = $ligneMax->ligne + 1 ;
+    }
+    else 
+    {
+      $count = 1 ;
+    }
 
-}
- 
+
+    // Donnée transmise au template : 
+  echo $twig->render('ajoutMachine.twig',
+  [
+  'user'=>$user,
+  'prestaList'=> $prestaList,
+  'moisList' => $moisList,
+  'alert' => $alert ,
+  'cmd' => $valid, 
+  'modeleList' => $modeleList
+  ]);
+  }
+  else 
+  {
+    header('location: abonnement');
+  }
  
   
-// Donnée transmise au template : 
-echo $twig->render('ajoutMachine.twig',
-[
-'user'=>$user,
-'prestaList'=> $prestaList,
-'moisList' => $moisList,
-'alert' => $alert ,
-'cmd' => $valid
-]);

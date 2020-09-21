@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
 <link rel="stylesheet" href="public/css/dashboard.css">
   {% endblock %}
@@ -37,24 +38,26 @@
 
   <form action="abonnementNouveau" method='post'>
   <div class="form-row">
+    
     <div class="form-group col-md-4">
-        <label for="inputState">Famille-marque-modèle</label>
-        <select id="inputState" class="form-control" name="facturationAuto">
-          <option value="1" selected>Oui</option>
-          <option value='0'>Non</option>
+        <p >Famille-marque-modèle</p>
+        <select id="inputStateFF" class="selectpicker" name="facturationAuto" data-width="85%" data-live-search="true" required>
+         {% for model in modeleList %}
+         <option value="{{model.afmm__id}}">{{model.famille ~ " " ~ model.afmm__modele ~ " " ~ model.Marque}}</option>
+         {% endfor %}
         </select>
+       
       </div>
 
     <div class="form-group col-md-4">
       <label for="inputEmail4">Désignation</label>
-      <input type="text" name="numCmd" class="form-control" id="inputEmail4" placeholder="N° commande" required>
+      <input type="text" name="numCmd" class="form-control" id="inputEmail4" placeholder="désignation" required>
     </div>
 
     <div class="form-group col-md-4">
         <label for="inputEmail4">Numéro de série</label>
-        <input type="text" name="numCmd" class="form-control" id="inputEmail4" placeholder="N° commande" required>
+        <input type="text" name="numCmd" class="form-control" id="inputEmail4" placeholder="N° de série" required>
       </div>
-    
   </div>
     
  
@@ -102,7 +105,7 @@
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
-<script type="text/javascript" src="public/js/abonnementNouveau.js"></script>
+<script type="text/javascript" src="public/js/ajoutMachine.js"></script>
 
 
 
