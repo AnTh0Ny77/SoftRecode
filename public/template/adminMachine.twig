@@ -15,27 +15,20 @@
      {% block main %}
      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">Ajout de machine pour l'abonnement N°: {{cmd.devis__id}} <i class="fas fa-plus"></i></h1>
+        <h1 class="h2">Mise à jour de la machine : {{ ligne.famille ~ " " ~ ligne.modele }} <i class="fad fa-screwdriver"></i></h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
           </div>
         </div>
-        {% if alert %}
-        <div class="alert alert-success" role="alert">
-          la machine à été ajouté avec succès !  
-          <form action="abonnementAdmin" method="POST">
-            <input type="hidden" name="hiddenId" value="{{cmd.devis__id}}">
-            <button class="btn btn-link">Retourner à l'administration</button>
-          </form>
-        </div>
-        {% endif %}
+       
       </div>
        <!-- 1ere ligne -->
        <div class="d-flex flex-wrap flex-row justify-content-start">
         <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
     <!--carte liste de Devis -->
-    <form class="col-10" action="ajoutMachine" method='POST'>
-    <input type="hidden" name="idCmdM" value="{{cmd.devis__id}}">
+    <form class="col-10" action="abonnementAdmin" method='POST'>
+    <input type="hidden" name="idCmd" value="{{ligne.abl__cmd__id}}">
+    <input type="hidden" name="numL" value="{{ligne.abl__ligne}}">
       <div class="col-12">
         <div class="card shadow mb-4">
          
@@ -49,7 +42,11 @@
         <p >Famille-marque-modèle</p>
         <select id="inputStateFF" class="selectpicker" name="fmm" data-width="85%" data-live-search="true" required>
          {% for model in modeleList %}
+         {% if ligne.abl__id__fmm == model.afmm__id  %}
+         <option value="{{model.afmm__id}}" selected>{{model.famille ~ " " ~ model.afmm__modele ~ " " ~ model.Marque}}</option>
+         {% else %}
          <option value="{{model.afmm__id}}">{{model.famille ~ " " ~ model.afmm__modele ~ " " ~ model.Marque}}</option>
+         {% endif %}
          {% endfor %}
         </select>
        
@@ -57,12 +54,12 @@
 
     <div class="form-group col-md-4">
       <label for="inputEmail4">Désignation</label>
-      <input type="text" name="designation" class="form-control" id="inputEmail4" placeholder="désignation" required>
+      <input type="text" name="designation" class="form-control" id="inputEmail4" placeholder="désignation" value="{{ligne.abl__designation}}" required>
     </div>
 
     <div class="form-group col-md-4">
         <label for="inputEmail4">Numéro de série</label>
-        <input type="text" name="sn" class="form-control" id="inputEmail4" placeholder="N° de série" required>
+        <input type="text" name="sn" class="form-control" id="inputEmail4" placeholder="N° de série" value="{{ligne.abl__sn}}" required>
       </div>
   </div>
     
@@ -72,31 +69,54 @@
       <label for="inputState">Prestation</label>
       <select id="inputState" class="form-control" name="prestation">
         {% for presta in prestaList %}
+        {% if ligne.abl__type_repair == presta.kw__value  %}
+        <option value="{{presta.kw__value}}" selected>{{ presta.kw__lib}}</option>
+        {% else %}
         <option value="{{presta.kw__value}}">{{ presta.kw__lib}}</option>
+        {% endif %}
+        
         {% endfor %}
       </select>
     </div>
     <div class="form-group col-md-2">
         <label for="inputEmail4">Prix au mois H.T</label>
-        <input type="text" name="prix" class="form-control" id="inputEmail4" placeholder="Prix" required>
+        <input type="text" name="prix" class="form-control" id="inputEmail4" placeholder="Prix" value="{{ligne.abl__prix_mois}}" required>
       </div>
       <div class="form-group col-md-2">
         <label for="inputEmail4">Date de début</label>
-        <input class="form-control" type='date' name='date'>
+        <input class="form-control" type='date' name='date' value="{{ligne.abl__dt_debut}}" required>
+      </div>
+
+
+      <div class="form-group col-md-4">
+        <label for="inputState">Actif/Inactif</label>
+        <select id="inputState" class="form-control" name="actif" required>
+         
+          {% if ligne.abl__actif == 1  %}
+          <option value="{{ligne.abl__actif}}" selected>Actif</option>
+          <option value="00" >Inactif</option>
+          {% else %}
+          <option value="01">Actif</option>
+          <option value="00" selected>Inactif</option>
+          {% endif %}
+          
+         
+        </select>
       </div>
   </div>
+ 
   
 </div>
 
   
 
   <div class="form-group">
-    <div class="col-6 mt-4">
-      <textarea  id="comAbn" name="comAbn" placeholder="Commentaire abonnement...." ></textarea>
+    <div class="col-6 mt-2">
+      <textarea  id="comAbn" name="comAbn" placeholder="Commentaire abonnement...." >{{ligne.abl__note_interne}}</textarea>
     </div>
   </div>
   <div class="modal-footer">
-  <button type="submit" class="btn btn-success">Valider</button>
+  <button type="submit" class="btn btn-success">Mettre à jour</button>
   </div>
   
 

@@ -33,7 +33,11 @@ session_start();
  foreach ($ABNList as $abn) 
  {
     $item = $Cmd->GetById($abn->ab__cmd__id);
-
+    $item->devis__note_client = $abn;
+    $ligne = $Abonnement->getLigneActives($abn->ab__cmd__id);
+    $nbL = count($ligne);
+    $item->devis__note_interne = $nbL;
+    
     array_push($arrayList, $item);
  }
 

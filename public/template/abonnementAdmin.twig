@@ -31,11 +31,16 @@
           <!-- Card Body -->
           <div class="card-body">
 
-  <form action="abonnementNouveau" method='post'>
-
+  <form action="abonnementAdmin" method='POST'>
+    <input type="hidden" name="idAbnUpdate" value='{{abn.ab__cmd__id}}'>
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
+          {% if abn.ab__actif == 0 %}
+          <h5 class="">Abonnement N°: {{cmd.devis__id}} <small class="text-danger"> inactif <i class="fas fa-times"></i></small></h5>
+          {% else %}
           <h5 class="">Abonnement N°: {{cmd.devis__id}}</h5>
+          {% endif %}
+         
           <p class="lead">{{cmd.client__societe ~ " (" ~ cmd.client__id ~ ")"}}
               <hr>
             {{cmd.client__adr1 ~ " " ~ cmd.client__adr2 ~ " " ~ cmd.client__cp ~ " " ~  cmd.client__ville}}
@@ -48,34 +53,57 @@
    <div class="form-group col-md-10">
       <label for="inputState">Facturation Auto</label>
       <select id="inputState" class="form-control" name="facturationAuto">
+        {% if abn.ab__fact_auto == 0  %}
+        <option value="1">Oui</option>
+        <option value='0' selected>Non</option>
+        {% else %}
         <option value="1" selected>Oui</option>
         <option value='0'>Non</option>
+        {% endif %}
+        
       </select>
     </div>
     <div class="form-group col-md-10">
       <label for="inputState">Prestation</label>
-      <select id="inputState" class="form-control" name="prestation">
+      <select id="inputState" class="form-control" name="prestationAbn">
         {% for presta in prestaList %}
+
+        {% if abn.ab__presta == presta.kw__value  %}
+        <option value="{{presta.kw__value}}" selected>{{ presta.kw__lib}}</option>
+        {% else %}
         <option value="{{presta.kw__value}}">{{ presta.kw__lib}}</option>
+        {% endif %}
+       
         {% endfor %}
       </select>
     </div>
     <div class="form-group col-md-10">
         <label for="inputState">Actif/Inactif</label>
-        <select id="inputState" class="form-control" name="prestation">
-          
-          <option value="1">Actif</option>
-          <option value="2">Inactif</option>
+        <select id="inputState" class="form-control" name="actifAbn">
+          {% if abn.ab__actif == 0  %}
+          <option value='0' selected>Non</option>
+        <option value="1">Oui</option>
+       
+        {% else %}
+        <option value="1" selected>Oui</option>
+        <option value='0'>Non</option>
+        {% endif %}
          
         </select>
       </div>
     <div class="form-group col-md-10">
       <label for="inputState">Engagement en mois</label>
-      <select id="inputState" class="form-control" name="mois">
+      <select id="inputState" class="form-control" name="moisAbn">
         <option value="00">Non-défini</option>
         {% for mois in moisList %}
         {% if mois.kw__value > 06  %}
-        <option value="{{mois.kw__value}}">{{ mois.kw__lib}}</option>
+            {% if abn.ab__mois_engagement == mois.kw__value %}
+            <option value="{{mois.kw__value}}" selected>{{ mois.kw__lib}}</option>
+            {% else %}
+            <option value="{{mois.kw__value}}" >{{ mois.kw__lib}}</option>
+            {% endif %}
+
+            
         {% endif %}
         
         {% endfor %}
@@ -84,7 +112,7 @@
   </div>
   <div class="form-group">
     <div class="col-12 mt-4">
-      <textarea  id="comAbn" name="comAbn" placeholder="Commentaire abonnement...." ></textarea>
+      <textarea  id="comAbn" name="comAbnG" placeholder="Commentaire abonnement...." >{{abn.ab__note}}</textarea>
     </div>
   </div>
   <div class="modal-footer">
@@ -104,7 +132,7 @@
     <div class="card shadow mb-4">       
         <!-- Card Body -->
         <div class="card-body">
-            <form action="abonnementNouveau" method='post'>
+           
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -116,20 +144,53 @@
                     </tr>
                   </thead>
                   <tbody>
-
-                    
                    
+                    {% for ligne in lignes %}
+                   
+                      {% if ligne.abl__actif  == 0  %}
+                      <tr class="text-muted">
+                        <th scope="col">{{ligne.abl__ligne}}</th>
+                        <th scope="col">{{ligne.famille ~ " " ~ ligne.modele }}<br>{{ligne.abl__designation}}</th>
+                        <th scope="col">{{ligne.abl__dt_debut}}</th>
+                        <th scope="col">{{ligne.abl__sn}} <i class="text-danger fas fa-times"></i></th>
+                        <th scope="col">
+                          <form action="adminMachine" method="POST">
+                            <input type="hidden" value="{{ligne.abl__cmd__id}}" name="idCMD">
+                            <input type="hidden" value="{{ligne.abl__ligne}}" name="numLigne">
+                            <button class="btn btn-link"><i class="fad fa-screwdriver"></i></button>
+                          </form>
+                        </th>
+                      </tr>
+                      {% else %}
+                      <tr>
+                        <th scope="col">{{ligne.abl__ligne}}</th>
+                        <th scope="col">{{ligne.famille ~ " " ~ ligne.modele ~ " " ~ ligne.marque }}<br>{{ligne.abl__designation}}</th>
+                        <th scope="col">{{ligne.abl__dt_debut}}</th>
+                        <th scope="col">{{ligne.abl__sn}} <i class=" text-success fas fa-check"></i></th>
+                        <th scope="col">
+                          <form action="adminMachine" method="POST">
+                            <input type="hidden" value="{{ligne.abl__cmd__id}}" name="idCMD">
+                            <input type="hidden" value="{{ligne.abl__ligne}}" name="numLigne">
+                            <button class="btn btn-link"><i class="fad fa-screwdriver"></i></button>
+                          </form>
+                        </th>
+                      </tr>
+                      
+                      {% endif %}
+                     
+                    {% endfor %}
+                 
                   </tbody>
 
             </table>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-success">Mettre à jour</button>
+           
         </form>
 
         <form action="ajoutMachine" method="POST">
             <input type="hidden" name="idCmd" value='{{cmd.devis__id}}'>
-            <button type="" class="btn btn-primary">Ajouter une machine</button>
+            <button type="" class="btn btn-success">Ajouter une machine</button>
         </form>
                
                

@@ -108,6 +108,9 @@
 
     case '/SoftRecode/ajoutMachine';
       require __DIR__ .'/pages/ajoutMachine.php'; break;
+    
+    case '/SoftRecode/adminMachine';
+      require __DIR__ .'/pages/adminMachine.php'; break;
 
     case '/SoftRecode/avoir';
       require __DIR__ .'/pages/avoir.php'; break;

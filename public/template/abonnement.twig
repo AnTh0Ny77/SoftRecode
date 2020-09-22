@@ -50,54 +50,60 @@
                 <tr class="trClick">
                   <td>{{devis.devis__id}}</td>
                   <td> {{ devis.cmd__date_cmd}}</td>
-                  <td > {{ "N°: " ~ devis.devis__id}} <br>  <div data-toggle="tooltip" data-placement="top" title="Date de commande"> <i class="far fa-check-circle"></i> {{ devis.devis__date_crea}} </div>
-                  </td>
-                  {% if devis.cmd__nom_devis %}
-                  <td> 
-                  <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }} <br> {{devis.cmd__nom_devis}} 
-                 </td>
-                  {% else  %}
-                  <td> <b>{{  devis.client__societe  }} </b>{{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}} 
-                    {% if devis.devis__etat == 'CMD' %}
-                    <br><strong>{{ devis.kw__lib}}</strong> <i class="fas fa-tools"></i>
-                     {% else %}
-                    <br><strong>Expédiée</strong> <i class="fas fa-truck"></i>
-                     {% endif %}</td>
+                  <td > {{ "N°: " ~ devis.devis__id}} <br>  <div data-toggle="tooltip" data-placement="top" title="Date de commande">{{ devis.devis__date_crea}} </div>
+                  {% if devis.devis__note_client.ab__actif == 0 %}
+                  Inactif <i class=" text-danger fas fa-times"></i>
+                  {% else %}
+                  Actif <i class="text-success fas fa-check"></i>
                   {% endif %}
-
                  
-                  
-                  
+                  </td>
+                  <td> <b>{{  devis.client__societe  }} </b>{{"(" ~ devis.client__id ~ ")" }} 
+                    {% if devis.devis__note_client.ab__actif == 1 %}
+
+                    <span class="text-primary">{{devis.devis__note_interne}} Machines actives</span>
+                    {% endif %}
+                    <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}  
                    
-                  
-                    
+                    <br>
+                    {{devis.log_nec}}
+                  </td>              
                 </tr>
                 {% endfor %}
                </tbody>
              </table>
                
             </div>  
+            <div class="card-body" >
+              <form action="abonnementAdmin" method="POST">
+                  <input type="hidden" id="hiddenId" name="hiddenId"> 
+                  <div class="">
+                      <button class="btn btn-success">Administer</button>
+                  </div >
+              </form>
+           </div>
           </div>
         </div>
       </div>
         <!--carte option -->
-        <div class="col-4 cardVisio" >
+        <div class="col-6 cardVisio" >
           <div class="card shadow mb-4">
             <!-- Card Header - -->
             <div class="my-2 mx-4"> 
-                <h6 class="m-0 font-weight-bold text-primary"> Administrer <i class="fas fa-file-export"></i>
+                <h6 class="m-0 font-weight-bold text-primary"> Facturation Automatique <i class="fas fa-file-export"></i>
                 </h6>    
             </div>
             <!-- Card Body -->
             <div class="card-body" >
-                <form action="abonnementAdmin" method="POST">
-                    <h5 id="titreAdmin"> Abonnement commande N°:  </h5>
-                    <input type="hidden" id="hiddenId" name="hiddenId">
-                   
+              <form action="">
+                    
+
+
+
                     <div class="modal-footer mt-5">
-                        <button class="btn btn-success">Administer</button>
+                        <button class="btn btn-success">Visualiser <i class="far fa-eye"></i></button>
                     </div >
-                </form>
+              </form>
              </div>
       </div>
       </div>

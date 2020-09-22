@@ -32,30 +32,67 @@ session_start();
  $alert = false;
 
 //traite le post avec l'id abonnement: 
-
 if (!empty($_POST['hiddenId'])) 
 {
 
     $abn = $Abonnement->getById($_POST['hiddenId']);
     $cmd = $Cmd->GetById($abn->ab__cmd__id);
     $lignes = $Abonnement->getLigne($abn->ab__cmd__id);
+    foreach ($lignes as $ligne) 
+    {
+      $devisDate = date_create($ligne->abl__dt_debut);
+      $date = date_format($devisDate, 'd/m/Y');
+      $ligne->abl__dt_debut = $date; 
+    }
+  
+}
 
-   // Donnée transmise au template : 
-    echo $twig->render('abonnementAdmin.twig',
-    [
-    'user'=>$user,
-    'prestaList'=> $prestaList,
-    'moisList' => $moisList,
-    'cmd'=> $cmd, 
-    'abn'=> $abn,
-    'lignes' => $lignes
-]);
-}
-else 
+//si une mise a jour d'abonnement a été effectué : 
+if (!empty($_POST['idAbnUpdate'])) 
 {
-    header('location: abonnement');
-}
 
  
+  $update = $Abonnement->UpdateAbn($_POST['idAbnUpdate'] , $_POST['actifAbn'] ,  $_POST['facturationAuto'] ,  $_POST['prestationAbn'] ,  $_POST['comAbnG'] ,  $_POST['moisAbn'] );
+  $abn = $Abonnement->getById($_POST['idAbnUpdate']);
+  $cmd = $Cmd->GetById($abn->ab__cmd__id);
+  $lignes = $Abonnement->getLigne($abn->ab__cmd__id);
+  foreach ($lignes as $ligne) 
+  {
+    $devisDate = date_create($ligne->abl__dt_debut);
+    $date = date_format($devisDate, 'd/m/Y');
+    $ligne->abl__dt_debut = $date; 
+  }
+  
+}
+
+//si une mise à jour de ligne à été effectuée : 
+if (!empty($_POST['idCmd']))
+{
+  $update = $Abonnement->UpdateMachine(
+  $_POST['idCmd'],  $_POST['numL'], $_POST['date'], $_POST['actif'], $_POST['fmm'], $_POST['designation'], intval($_POST['sn']), $_POST['prestation'], floatval($_POST['prix']), $_POST['comAbn']);
+
+ 
+  $abn = $Abonnement->getById($_POST['idCmd']);
+  $cmd = $Cmd->GetById($abn->ab__cmd__id);
+  $lignes = $Abonnement->getLigne($abn->ab__cmd__id);
+  foreach ($lignes as $ligne) 
+  {
+    $devisDate = date_create($ligne->abl__dt_debut);
+    $date = date_format($devisDate, 'd/m/Y');
+    $ligne->abl__dt_debut = $date; 
+  } 
+}
+
+
+  // Donnée transmise au template : 
+  echo $twig->render('abonnementAdmin.twig',
+  [
+  'user'=>$user,
+  'prestaList'=> $prestaList,
+  'moisList' => $moisList,
+  'cmd'=> $cmd, 
+  'abn'=> $abn,
+  'lignes' => $lignes
+]);
  
   
