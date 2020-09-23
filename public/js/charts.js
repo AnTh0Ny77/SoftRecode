@@ -46,35 +46,8 @@ $(document).ready(function() {
           var chart = new google.visualization.ComboChart(document.getElementById('charts-Devis'));
           chart.draw(data, options);
         }
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-          },
+
+        },
   
       error: function (err) {
       alert('error: ' + err);}
@@ -92,3 +65,29 @@ $(document).ready(function() {
   
   
   })
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

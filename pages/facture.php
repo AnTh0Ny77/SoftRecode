@@ -106,9 +106,6 @@ session_start();
 
 
  // si une commande à été postée: 
-
- 
-
  if (!empty($_POST['hiddenCommentaire'])) 
  {
    

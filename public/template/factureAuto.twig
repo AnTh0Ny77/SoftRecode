@@ -1,0 +1,63 @@
+{% extends 'layoutMain.twig' %}
+
+
+  {% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/css/dashboard.css">
+  {% endblock %}
+ 
+ 
+     {% block main %}
+     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        <h1 class="h2">Facturation Automatique des abonnemennts <i class="fas fa-scroll"></i></h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+          </div>
+        </div>
+      </div>
+       <!-- 1ere ligne -->
+       <div class="d-flex flex-wrap flex-row justify-content-start">
+        <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
+        <input type="hidden" id="minFact" value="{{minFact.cmd__id_facture}}">
+    <!--carte liste de Devis -->
+      <div class="col-12">
+        <div class="card shadow mb-4">
+          <!-- Card Header - -->
+         
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="chart-area">
+
+                
+             
+               
+            </div>  
+            
+          </div>
+        </div>
+      </div>
+      
+      
+    </div>
+
+    </main>
+     {% endblock %}
+     
+    
+     {% block script %}
+     <!-- Optional JavaScript -->
+
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+
+
+
+
+     {% endblock %}

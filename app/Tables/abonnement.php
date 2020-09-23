@@ -71,7 +71,7 @@ class Abonnement extends Table
     public function getAll()
     {
         $request =$this->Db->Pdo->query("SELECT  ab__cmd__id, ab__client__id_fact,
-        ab__actif, ab__fact_auto,  ab__presta
+        ab__actif, ab__fact_auto,  ab__presta , ab__mois_engagement
         FROM abonnement
         ORDER BY  ab__cmd__id DESC LIMIT 200 ");
         $data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -115,6 +115,8 @@ class Abonnement extends Table
         $data = $request->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }
+
+    
 
     public function getOneLigne($id , $num)
     {
@@ -190,6 +192,18 @@ class Abonnement extends Table
         $request->execute($arrayRequest);
         $idABN = $this->Db->Pdo->lastInsertId();
         return $idABN;
+    }
+
+
+    public function getActifAndFacturable()
+    {
+        $request =$this->Db->Pdo->query("SELECT  ab__cmd__id, ab__client__id_fact,
+        ab__actif, ab__fact_auto,  ab__presta , ab__mois_engagement
+        FROM abonnement
+        WHERE ab__actif = 1 AND ab__fact_auto = 1 
+        ORDER BY  ab__cmd__id DESC LIMIT 200 ");
+        $data = $request->fetchAll(PDO::FETCH_OBJ);
+        return $data;
     }
 
    

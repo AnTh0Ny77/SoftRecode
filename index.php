@@ -111,6 +111,9 @@
     
     case '/SoftRecode/adminMachine';
       require __DIR__ .'/pages/adminMachine.php'; break;
+    
+    case '/SoftRecode/factureAuto';
+      require __DIR__ .'/pages/factureAuto.php'; break;
 
     case '/SoftRecode/avoir';
       require __DIR__ .'/pages/avoir.php'; break;

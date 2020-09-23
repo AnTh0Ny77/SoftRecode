@@ -95,9 +95,27 @@
             </div>
             <!-- Card Body -->
             <div class="card-body" >
-              <form action="">
-                    
+              <form action="factureAuto" method="POST">
+                <div class="d-flex justify-content-around">
+                      <div class="col-4">
+                        <label for="exampleFormControlSelect1">Trimestre</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="trimestre">
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                        </select>
+                      </div>
 
+                      <div class="col-4">
+                        <label for="exampleFormControlSelect1">Année</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="anneAuto">
+                          {% for i in 2020..2030 %}
+                          <option value="{{i}}">{{i}}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                </div>
 
 
                     <div class="modal-footer mt-5">

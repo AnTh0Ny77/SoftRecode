@@ -24,28 +24,31 @@
              <img  style=" width:55mm;" src="public\img\recodeDevis.png"/>
              </div>
              <div class="div" style=" margin-top: 15%" >
-             <p>Commandé le : 08/09/2020 à : 09h 12</p>
-             Vendeur: <strong>Super User </strong> 
-             <br> code cmd client: <b>Garantie commande :  3211482</b>             
+             <h6><small>Commandé le : </small><b>23/09/2020 à : 16h 14</b></h6>
+             <div class='' '>
+               <h6> <small>Expédié le :</small>  <b>23/09/2020</b></h6>    
+           </div>            <h6> 
+                <small>Vendeur:</small> <b>CASTOR Lorenne </b> 
+                 (Tél: 104) 
+             </h6>
+          
              
              </td>
             
              </div>
             </div>
-         
-            <div class="div" style="text-align: left;  width: 45% ;"><h5>Fiche de Travail N°:<strong> 3211542</strong><br></h5>
-             <br> <small>Societe :</small><strong><br>GROUPE JACQUES PARISOT S.A. (000064) <br>FABRIQUE DE MEUBLES<br>RUE DE BAINS<br>70800 SAINT LOUP SUR-SEMOUSE</strong></td>        
+           
+            <div class="div" style="text-align: left;  width: 45% ;"><h5>Commande N°:<strong> 3211193</strong><br></h5>
+            <div><button class='btn btn-sm btn-success' id='ClientClick' value='3211193' ><i class='far fa-magic'></i></button></div> <small>livraison & facturation : M. LIMOUSIN Philippe</small><strong><br>SODEBO (019363) <br>ZI DU DISTRICT<br>SAINT-GEORGES DE MONTAIGU<br>85607 ST GEORGES DE MONTAIGU</strong></td><form method="POST" action="pdfFacture" target="_blank">
+             <input type="hidden" value="3211193" name="VoirDevis">
+             <button class="btn btn-link " href="pdfFacture"><i class="fas fa-file-pdf"></i> Visualiser la facture</button>
+            </form>             
+        
         <div class="d-flex flex-column">
-            <form method="POST" action="pdfTravail" target="_blank">
-             <input type="hidden" value="3211542" name="travailFiche">
-             <button class="btn btn-link " href="pdfTravail"><i class="fas fa-file-pdf"></i> Fiche de travail</button>
-            </form>            
-            <form class='mt-3 ml-2' method='POST' action='ficheTravail'>
-                <h6>Date d'envoi prévue:</h6>
-                <input type='hidden' value='3211542' name='dateId'>
-                <input type='date' name='estimDate'>
-                <button type='submit' class='btn btn-sm btn-success' ><i class='far fa-exchange'></i></button>
-                </form>           
+          
+            
+          
+           
             
         </div>
 
@@ -56,30 +59,113 @@
        
     </div>
 
-    <div class="div" style="display: flex; justify-content: center; margin-top: 10%;">
-        <table CELLSPACING=0 style="width: 95%;" class="table">
-            
-                <tr style=" margin-top : 50px; background-color: #dedede; vertical-align: top;" >
-                    <td style="width: 5%; background-color: white; border-style: none;" ></td>
-                    <td style="width: 13%; text-align: left;">Prestation<br>Type<br>Garantie</td>
-                    <td style="width: 50%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
-                    <td style="text-align: right; width: 12%"><strong>CMD</strong><br>Livr</td>
-                </tr>
-           
-                <tr style='font-size: 95%;'>
-                                <td style='border-style: none; '> <button class='clickFT btn btn-danger mt-2 ' value='2869''><i class='fas fa-print'></i></button></td>
-                                <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>Vente <br> reconditionné <br> 0 mois </td>
-                                <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> Imprimante thermique 110PAX4 ZEBRA</strong>  <br><small>désignation sur le devis:</small> 110PAX4 Imprimante thermique ZEBRA <br> <p>sdgsezgseg</p> </td>
-                                <td style='border-bottom: 1px #ccc solid;  text-align: right; background-color: #ffeded; '><strong> 1 </strong> </td>
-                                </tr>        </table> 
+    <div class="div" style="display: flex; justify-content: center; margin-top: 5%;">
+        <table CELLSPACING=0 style="width: 95%;  margin-top : 30px;" class="table">
+
+
+        <tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='1805'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>Vente <br> Non Concerné <br> 00 mois </td>
+                    <td style='border-bottom: 1px #ccc solid; '><strong> 1 x Imprimante thermique A4 CAB</strong>  <br><small>désignation sur le devis:</small> réparation A4 Imprimante thermique CAB  </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> 1 - 1 - 1 <br> 1166.30 €  </strong> </td></tr><tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='1806'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>Reparation <br> Non Concerné <br> 00 mois </td>
+                    <td style='border-bottom: 1px #ccc solid; '><strong> 2 x Imprimante thermique A4 CAB</strong>  <br><small>désignation sur le devis:</small> tarif horaire de main d'oeuvre en atelier  </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> 2 - 2 - 2 <br> 159.00 €  </strong> </td></tr>               <tr style='font-size: 95%;'>
+                <td style='border-style: none; '> <button value="3211193" class=' btn btn-success mt-2' id="addNewItem"><i class='far fa-plus'></i></i></button></td>
+                <td style='border-style: none; '></td>
+                <td style='border-style: none; '></td>
+                <td style='border-style: none;  '></td>
+        </table> 
      </div>
-     <div class="d-flex justify-content-end mr-3">
+
+
+        
+     <div class="d-flex mt-5 justify-content-between">
+
+     <div class=" card  px-2 mx-1 col-6">
+        <div>
+            <div class="my-4">
+               <div class="d-flex justify-content-between">
+                   <div>
+                        TVA: 
+                        <b>20.00 %</b>                    </div>
+                    <div>
+                        <button value="3211193" class="btn btn-success btn-sm" id="buttonModalTVA"><i class='far fa-magic'></i></button>
+                        
+                    </div>
+               </div>
+            </div>
+            <hr class="my-4">
+            <p>
+                Pas de code commande client            </p>
+            <hr class="my-4">
+            <p>
+                <p>Devis :<br><span style="background-color:rgb(255,255,204);color:rgb(102,102,102);">- 1 tete 5954085.001 pas en stk</span><br><span style="background-color:rgb(255,255,204);color:rgb(102,102,102);">- 1 platen 5954180-001 pas en stk</span><br><span style="background-color:rgb(255,255,204);color:rgb(102,102,102);">- 1 poignée fermeture tete 5954059.001 en stk rmkt</span><br><span style="background-color:rgb(255,255,204);color:rgb(102,102,102);">- 1 Levier blocage mandrin 5943091.001 pas en stk</span><br><span style="background-color:rgb(255,255,204);color:rgb(102,102,102);">- 1 side plate 5959742.001 en stk rmkt</span><br><span style="background-color:rgb(255,255,204);color:rgb(102,102,102);">- Capot transparent 5948656.001 pas en stk</span><br><span style="background-color:rgb(255,255,204);color:rgb(102,102,102);">MO : 2h</span></p>            </p>
+        </div>
+     </div>
+
+    
+
+
+
+
+
+
+
+
+     <div class="card px-4 py-2 mx-1 col-6">
+        <div>
+            <h3>Total :</h3>
+            <hr class="mx-2">
+        </div>
+
+        <div>
+    <table class="table table-sm">
+            <thead>
+                    <tr>
+                    <th scope="col">Prix € HT</th>
+                    <th scope="col">Taux TVA</th>
+                    <th scope="col">Montant TVA</th>
+                    <th scope="col">Total TTC</th>
+                    </tr>
+            </thead>
+            <tbody> 
+                <tr>  
+            <td class='text-right'><b>1,484.30 €</b></td><td class='text-right'>20.00 %</td><td class='text-right'>296.86 €</td><td class='text-right'><b>1,781.16 €</b></td>            </tr>
+            </tbody>
+    </table>
+
+           
+
+        </div>
+
+     </div>
+
+
+
 
      
-       
-     <form class="text-right d-inline" method="POST" action="ficheTravail">
-     <input type="hidden" value="3211542" name="hiddenCommentaire">
-     <textarea  id="FTCOM" placeholder="Commentaire client...."  name="comInterne" value=""></textarea><button type="submit" class="btn btn-sm btn-primary mt-1">Modifier</button>     
+
+
+
+
+     </div>
+
+
+
+
+
+
+
+
+     <div class="d-flex justify-content-end mr-3 mt-4"> 
+     <form class="text-right d-inline" method="POST" action="printFTC">
+     <input type="hidden" value="3211193" name="hiddenCommentaire">
+
+     <button class="btn btn-success btn-lg">Valider</button>
+    
+     
      </form>
      </div>
     

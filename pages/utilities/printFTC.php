@@ -103,7 +103,7 @@ $garanties = $Keyword->getGaranties();
              </small>
             </td>
              <td style="text-align: left; width:50%">
-             <h3>facture : XXXXXXXX</h3><br>
+             <h3>Facture : <?php echo $temp->cmd__id_facture ; ?></h3><br>
              <?php 
              // si une societe de livraion est présente 
            
@@ -129,33 +129,8 @@ $garanties = $Keyword->getGaranties();
      </table>
 </page_header>
 <page_footer>
-<table CELLSPACING=0 style=" width: 100%;  margin-bottom: 5px; margin-top: 35 px;">
-    <tr><td style="text-align: left;  width: 50%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;">Condition et payement à réception/Condition générale de Vente XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX<br>
-    XXXXXXXXXXXXX X XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  X     X XXXXXX XXXXXX  XXXXXXX  XXXXXXXXXXXXXXXXXXXXX X XXXXXXXXXXXXXXX</td></tr>
-    </table>
-        <table  class="page_footer" style="text-align: center; margin: auto; ">
-            <tr >
-                <td  style=" font-size: 80%; width: 100%;  "><br><br><small>New Eurocomputer-TVA FR33b 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
-                <strong>RECODE by eurocomputeur - 112 allée François Coli -06210 Mandelieu</strong></small></td>
-            </tr>
-         </table>
-</page_footer>
-
-<div style="margin-top: 35px;">
-    <table CELLSPACING=0 style="margin-top: 35px; width:100%">
-            
-            <?php 
-                $arrayPrice =[];
-                foreach($arrayOfDevisLigne as $value=>$obj){
-                        array_push( $arrayPrice, floatval(floatval($obj->devl_puht)*intval($obj->devl_quantite)));
-                };      
-                echo Pdfunctions::magicLineFTC($arrayOfDevisLigne , $temp);     
-            ?>
-    </table>
-</div>
-
-<div style=" margin-top: 70px;">
-<table style=" margin-top: 45px;  width:100%;" >
+<div >
+<table style=" margin-bottom: 30px;  width:100%;" >
     <tr>
     <td style="width: 60%;">  </td>
     <td align="right">
@@ -192,6 +167,33 @@ $garanties = $Keyword->getGaranties();
     </tr>
 </table>
 </div>
+<table CELLSPACING=0 style=" width: 100%;  margin-bottom: 5px; margin-top: 35 px;">
+    <tr><td style="text-align: center;  width: 100%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;">Condition et payement à réception/Condition générale de Vente.
+     Des pénalités de retard au taux légal seront appliquées en cas de paiement aprés la date d'échéance. Conformément à la loi du 12.05.80, EUROCOMPUTEUR conserve la propriété du matériel jusqu'au paiement intégral du prix et des frais annexes
+    </td></tr>
+    </table>
+        <table  class="page_footer" style="text-align: center; margin: auto; ">
+            <tr >
+                <td  style=" font-size: 80%; width: 100%;  "><br><br><small>New Eurocomputer-TVA FR33b 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
+                <strong>RECODE by eurocomputeur - 112 allée François Coli -06210 Mandelieu</strong></small></td>
+            </tr>
+         </table>
+</page_footer>
+
+<div style="margin-top: 35px;">
+    <table CELLSPACING=0 style="margin-top: 35px; width:100%">
+            
+            <?php 
+                $arrayPrice =[];
+                foreach($arrayOfDevisLigne as $value=>$obj){
+                        array_push( $arrayPrice, floatval(floatval($obj->devl_puht)*intval($obj->devl_quantite)));
+                };      
+                echo Pdfunctions::magicLineFTC($arrayOfDevisLigne , $temp);     
+            ?>
+    </table>
+</div>
+
+
 
 <div>
 <?php

@@ -53,6 +53,13 @@ if(!empty($_POST['poids']) && !empty($_POST['transporteur']))
 
 
 $command = $Command->getById(intval($_POST['id_trans']));
+
+
+//si il s'agit d'une fiche de garantie ou d'un reliquat facturé à l'avance  elle ne passera pas par la facturation:
+if (intval($command->client__id) < 10) 
+{
+   $Command->updateGarantieToArchive($command->devis__id);
+}
 $commandLignes = $Command->devisLigne($_POST['id_trans']);
 $dateTemp = new DateTime($command->cmd__date_envoi);
  //cree une variable pour la date de commande du devis

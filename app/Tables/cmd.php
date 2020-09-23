@@ -56,6 +56,9 @@ class Cmd extends Table {
   }
 
 
+  
+
+
 
 
   public function getUserDevis($id){
@@ -166,6 +169,17 @@ class Cmd extends Table {
      WHERE cmd__id = ? 
     ');
      $update->execute([ $author , $id ]);
+  }
+
+
+  public function updateGarantieToArchive($cmdId)
+  {
+    $update = $this->Db->Pdo->prepare(
+      'UPDATE cmd 
+       SET cmd__etat = "ARH"
+       WHERE cmd__id = ? 
+      ');
+       $update->execute([$cmdId]);
   }
 
   //met a jour les info relative au transport ainsi que la date et l'etat ( saisie )
