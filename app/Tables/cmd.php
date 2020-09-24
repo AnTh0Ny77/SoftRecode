@@ -184,6 +184,17 @@ class Cmd extends Table {
        $update->execute([$cmdId]);
   }
 
+
+  //met a jour la date de livraison a j+1 de la date de facturation: 
+  public function updateDatePlusOne($cmdId)
+  {
+    $check = $this->Db->Pdo->query(
+      'SELECT cmd__date_cmd + INTERVAL 1 DAY  as dateLivraison FROM cmd WHERE cmd__id = '.$cmdId.' ');
+    
+    $results = $check->fetch(PDO::FETCH_OBJ);
+    
+  }
+
   //met a jour les info relative au transport ainsi que la date et l'etat ( saisie )
   public function updateTransport($trans , $poids , $paquet ,  $id , $imp , $date ){
 
@@ -364,6 +375,9 @@ public function returnDevis($idCmdl)
         }  
     }
   }
+
+
+  
 
 // si un ecart est constaté dans les quantité génère des reliquats automatiquement: 
 public function classicReliquat($cmd)

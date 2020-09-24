@@ -282,6 +282,7 @@ ClassicEditor
                         $('#idCMDL').val(dataSet.devl__id);
                         $('#qteCMD').val(dataSet.devl_quantite);
                         $('#qteLVR').val(dataSet.cmdl__qte_livr);
+                        $('#ComTech').html(dataSet.devl__note_interne);
                         if (dataSet.cmdl__note_facture != null) 
                         {
                             ckComFacture.setData(dataSet.cmdl__note_facture);
@@ -466,7 +467,7 @@ ClassicEditor
                         $('#idCMDL').val(dataSet.devl__id);
                         $('#qteCMD').val(dataSet.devl_quantite);
                         $('#qteLVR').val(dataSet.cmdl__qte_livr);
-                        
+                        $('#ComTech').html(dataSet.devl__note_interne);
                         if (dataSet.cmdl__note_facture != null) 
                         {
                             ckComFacture.setData(dataSet.cmdl__note_facture);
@@ -481,7 +482,6 @@ ClassicEditor
                         $('#prixLigne').val(dataSet.devl_puht);
                         //function clicks pour les différentes quantité: 
 
-                        
                         $('#modalLigne').modal('show')
                         
               

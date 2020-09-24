@@ -24,31 +24,32 @@
              <img  style=" width:55mm;" src="public\img\recodeDevis.png"/>
              </div>
              <div class="div" style=" margin-top: 15%" >
-             <p>Commandé le : 24/09/2020 à : 12h 16</p>
-             Vendeur: <strong>RIVARD Franck </strong> 
-              (Tél: 48)<br> code cmd client: <b>RELIQUAT  cmd n°3211264  hello</b><form class='my-2' action='garantiesFiches' method='POST'>
-                <input type='hidden' name='POSTGarantie' value=3211565>
-                <button class='btn btn-warning btn-sm'>Fiche de garantie</button>
-                </form>             
+             <h6><small>Commandé le : </small><b>24/09/2020</b></h6>
+             <h6><small>Facturé le : </small><b>24/09/2020</b></h6>
+             <div class='' '>
+               <h6> <small>Expédié le :</small>  <b>24/09/2020</b></h6>    
+           </div>
+           <div class='' '>
+           <h6> <small>TVA :</small>  <b>20.00 %</b></h6>    
+            </div>code cmd client: <b>RELIQUAT  cmd n°3211319  </b>            <h6> 
+                <small>Vendeur:</small> <b>RIVARD Franck </b> 
+                 (Tél: 48) 
+             </h6>
+          
              
              </td>
             
              </div>
             </div>
-         
-            <div class="div" style="text-align: left;  width: 45% ;"><h5>Fiche de Travail N°:<strong> 3211565</strong><br></h5>
-             <br> <small>Societe :</small><strong><br>V MANE FILS SA (019884) <br>USINE NOTRE DAME<br>620 ROUTE DE GRASSE<br>06620 BAR SUR LOUP</strong></td>        
+           
+            <div class="div" style="text-align: left;  width: 45% ;"><h5>Facture N°:<strong> 1140<br></strong>Commande N°:<strong> 3211559</strong></h5>
+            <small>livraison & facturation : </small><strong><br>TERRE DES LYS (027027) <br>HAMEAU ST MARTIN<br>62120 AIRE SUR LA LYS</strong></td>             
+        
         <div class="d-flex flex-column">
-            <form method="POST" action="pdfTravail" target="_blank">
-             <input type="hidden" value="3211565" name="travailFiche">
-             <button class="btn btn-link " href="pdfTravail"><i class="fas fa-file-pdf"></i> Fiche de travail</button>
-            </form>            
-            <form class='mt-3 ml-2' method='POST' action='ficheTravail'>
-                <h6>Date d'envoi prévue:</h6>
-                <input type='hidden' value='3211565' name='dateId'>
-                <input type='date' name='estimDate'>
-                <button type='submit' class='btn btn-sm btn-success' ><i class='far fa-exchange'></i></button>
-                </form>           
+          
+            
+          
+           
             
         </div>
 
@@ -58,33 +59,101 @@
     
        
     </div>
+    <form method="POST" action="avoir">
+    <div class="div" style="display: flex; justify-content: center; margin-top: 5%;">
+    
+        <table CELLSPACING=0 style="width: 95%;  margin-top : 30px;" class="table">
 
-    <div class="div" style="display: flex; justify-content: center; margin-top: 10%;">
-        <table CELLSPACING=0 style="width: 95%;" class="table">
-            
-                <tr style=" margin-top : 50px; background-color: #dedede; vertical-align: top;" >
-                    <td style="width: 5%; background-color: white; border-style: none;" ></td>
-                    <td style="width: 13%; text-align: left;">Prestation<br>Type<br>Garantie</td>
-                    <td style="width: 50%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
-                    <td style="text-align: right; width: 12%"><strong>CMD</strong><br>Livr</td>
-                </tr>
-           
-                <tr style='font-size: 95%;'>
-                                <td style='border-style: none; '> <button class='clickFT btn btn-secondary mt-2' value='2900' '><i class='fas fa-clipboard-list'></i></button></td>
-                                <td style='border-bottom: 1px #ccc solid; text-align:left;'>Vente <br> neuf <br> 12 mois </td>
-                                <td style='border-bottom: 1px #ccc solid'><strong> Pièce détachée NC GENERIQUE</strong>  <br><small>désignation sur le devis:</small> TEc Toshiba B-A410T  <br>  </td>
-                                <td style='border-bottom: 1px #ccc solid;  text-align: right '><strong> 1 </strong> </td>
-                                </tr>        </table> 
+
+        <tr style='font-size: 95%;'>
+                <td style='border-style: none; '> <input name='lines[2889]' class='form-control col-6' type='number' value='0' max='1000' min='0'></td>
+                <td style='border-bottom: 1px #ccc solid; text-align:left; '>Vente <br>  <br> 00 mois </td>
+                <td style='border-bottom: 1px #ccc solid; '><strong> 1 x Imprimante thermique PM43C INTERMEC</strong>  <br><small>désignation sur le devis:</small> tête d'impression 203dpi PM43C Intermec  </td>
+                <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong>   271.00 €  </strong> </td></tr><tr style='font-size: 95%;'>
+                <td style='border-style: none; '> <input name='lines[2890]' class='form-control col-6' type='number' value='0' max='1000' min='0'></td>
+                <td style='border-bottom: 1px #ccc solid; text-align:left; '>Vente <br>  <br> 00 mois </td>
+                <td style='border-bottom: 1px #ccc solid; '><strong> 1 x Imprimante thermique BSX4 TOSHIBA</strong>  <br><small>désignation sur le devis:</small> tête d'impression 203dpi BSX4 TEC  </td>
+                <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong>   264.00 €  </strong> </td></tr>               
+        </table> 
      </div>
-     <div class="d-flex justify-content-end mr-3">
+
+
+        
+     <div class="d-flex mt-5 justify-content-between">
 
      
-       
-     <form class="text-right d-inline" method="POST" action="ficheTravail">
-     <input type="hidden" value="3211565" name="hiddenCommentaire">
-     <textarea  id="FTCOM" placeholder="Commentaire client...."  name="comInterne" value=""></textarea><button type="submit" class="btn btn-sm btn-primary mt-1">Modifier</button>     
-     </form>
+
+    
+
+
+
+
+
+
+
+
+     <div class="card px-4 py-2 mx-1 col-9">
+      
+
+        <div>
+    <table class="table table-sm">
+            <thead>
+                    <tr>
+                    <th scope="col">Prix € HT</th>
+                    <th scope="col">Taux TVA</th>
+                    <th scope="col">Montant TVA</th>
+                    <th scope="col">Total TTC</th>
+                    </tr>
+            </thead>
+            <tbody> 
+                <tr>  
+            <td class='text-right'><b>535.00 €</b></td><td class='text-right'>20.00 %</td><td class='text-right'>107.00 €</td><td class='text-right'><b>642.00 €</b></td>            </tr>
+            <tr style='font-size: 95%;'>
+                <td style='border-style: none; '>
+               
+                        <input type="hidden" name="makeAvoir" value="3211559">
+                        <button  class=' btn btn-warning mt-2' >Avoir </button>
+               
+                </td>
+                <td style='border-style: none; '> </td>
+                <td style='border-style: none; '></td>
+                <td style='border-style: none;  '></td>
+                <tr>
+            </tbody>
+    </table>
+
+           
+
+        </div>
+
      </div>
+
+     </form>
+
+
+     
+
+
+
+
+     </div>
+
+
+
+
+
+
+
+
+     <!-- <div class="d-flex justify-content-end mr-3 mt-4"> 
+     <form class="text-right d-inline" method="POST" action="printFTC">
+     <input type="hidden" value="3211559" name="hiddenCommentaire">
+
+     <button class="btn btn-success btn-lg">Valider</button>
+    
+     
+     </form>
+     </div> -->
     
     
      </div>
