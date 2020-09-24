@@ -727,6 +727,8 @@ public static function magicLineFTC($arrayLigne , $cmd){
 	foreach ($arrayLigne as $ligne) 
 	{
 		
+			
+		
 		// + 1 dans la valeur du padding
 		$countPadding += 1;
 
@@ -826,10 +828,10 @@ public static function magicLineFTC($arrayLigne , $cmd){
 		}
 
 
-		
-
+		if ($ligne->cmdl__qte_fact > 0) 
+		{
 		$table .= $pack;
-
+		}
 	}
 
 	

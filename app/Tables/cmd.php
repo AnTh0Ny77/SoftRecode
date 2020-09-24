@@ -5,7 +5,9 @@ use App\Tables\Table;
 use App\Database;
 use PDO;
 use stdClass;
-
+use DateTime;
+use Spipu\Html2Pdf\Exception\Html2PdfException;
+use Spipu\Html2Pdf\Html2Pdf;
 class Cmd extends Table {
 
   public Database $Db;
@@ -394,7 +396,7 @@ public function classicReliquat($cmd)
 
       
 
-    $code_cmd = 'RELIQUAT  cmd n°' . $reliquat->devis__id . "  " .  $reliquat->cmd__code_cmd_client;
+    $code_cmd = 'RELIQUAT n°' . $reliquat->devis__id . "  " .  $reliquat->cmd__code_cmd_client;
 
     $request->bindValue(":cmd__date_cmd", $reliquat->cmd__date_cmd);
     $request->bindValue(":cmd__client__id_fact", $reliquat->client__id);
@@ -425,7 +427,7 @@ public function classicReliquat($cmd)
       $insertObject->idDevis = $idReliquat;
       $insertObject->prestation = $lines->devl__type;
       $insertObject->designation = $lines->devl__designation;
-      $insertObject->etat = 'CMD';
+      $insertObject->etat = $lines->devl__etat;
       $insertObject->garantie = $lines->devl__mois_garantie;
       $insertObject->quantite = $lines->devl_quantite;
       $insertObject->prix = $lines->devl_puht;
@@ -438,6 +440,326 @@ public function classicReliquat($cmd)
      
     
   }
+$command = $this->getById(intval($idReliquat));
+$commandLignes = $this->devisLigne($idReliquat);
+$dateTemp = new DateTime($command->cmd__date_cmd);
+ //cree une variable pour la date de commande du devis
+ $date_time = new DateTime( $command->cmd__date_cmd);
+ //formate la date pour l'utilisateur:
+ $formated_date = $date_time->format('d/m/Y');
+ob_start();
+?>
+<style type="text/css">
+      strong{ color:#000;}
+      h3{ color:#666666;}
+      h2{ color:#3b3b3b;}
+      table{
+        font-size:13; font-style: normal; font-variant: normal; 
+       border-collapse:separate; 
+       border-spacing: 0 15px; 
+         }  
+ </style>
+
+<page backtop="10mm" backleft="15mm" backright="15mm">
+     <table style="width: 100%;">
+         <tr>
+             <td style="text-align: left;  width: 50%"><img  style=" width:60mm" src="public/img/recodeDevis.png"/></td>
+             <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br>
+             <a>www.recode.fr</a><br><br>
+             <br><strong>REF CLIENT :<?php echo $command->client__id ?></strong></td>
+             </tr>
+             <tr>
+             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h4>Fiche De travail -  <?php echo $command->devis__id ?></h4>
+             <barcode dimension="1D" type="C128" label="none" value="<?php echo $command->devis__id ?>" style="width:40mm; height:8mm; color: #3b3b3b; font-size: 4mm"></barcode><br>
+
+             <small>Commandé le : <?php echo $formated_date ?></small><br>
+             Vendeur :<?php echo  $_SESSION['user']->log_nec ?> </td>
+             <td style="text-align: left; width:50%"><strong>
+             <?php echo $command->client__societe ?><br><?php echo $command->client__adr1 ?><br><?php if (!empty($command->client__adr2)) {
+                 echo $command->client__adr2; } ?>
+             <br>
+             <?php echo $command->client__cp ." ". $command->client__ville ?></strong><br>
+             <?php echo $command->contact__nom . " " . $command->contact__prenom   ?> <br>
+             <strong>
+             <?php
+             if (!empty($command->cmd__code_cmd_client)) 
+             {
+              echo $command->cmd__code_cmd_client;
+             } 
+             ?>
+             </strong>
+            </td>
+         </tr>
+     </table>
+
+
+     <table CELLSPACING=0 style="width: 700px;  margin-top: 80px; ">
+             <tr style=" margin-top : 50px; background-color: #dedede;">
+                <td style="width: 22%; text-align: left;">Presta<br>Type<br>Gar.</td>
+                <td style="width: 57%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
+                <td style="text-align: right; width: 12%"><strong>CMD</strong><br>Livr</td>
+             </tr> 
+             <?php
+             foreach ($commandLignes as $item) {
+                if($item->cmdl__garantie_option > $item->devl__mois_garantie) 
+                {
+                  $temp = $item->cmdl__garantie_option ;
+                } else {  $temp = $item->devl__mois_garantie;}
+
+               
+
+                echo "<tr style='font-size: 85%;>
+                        <td style='border-bottom: 1px #ccc solid'> ". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois</td>
+                        <td style='border-bottom: 1px #ccc solid; width: 55%;'> "
+                            .$item->famille__lib. " " . $item->marque . " " .$item->modele. " ". $item->devl__modele . 
+                            "<br> <small>désignation sur le devis:</small> " . $item->devl__designation ." <br>" .$item->devl__note_interne .
+                        "</td>
+                         <td style='border-bottom: 1px #ccc solid; text-align: right'><strong> "  . $item->devl_quantite. " </strong></td>
+                      </tr>";
+             }
+             ?>
+     </table> 
+     <table style=" margin-top: 200px; width: 100%">
+             <tr style=" margin-top: 200px; width: 100%"><td><small>Commentaire:</small></td></tr>
+             <tr >
+             <td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%' > <?php echo  $command->devis__note_interne ?> </td>
+            </tr>
+     </table>
+
+
+     <div style=" width: 100%; position: absolute; bottom:5%">
+    
+   
+    <table CELLSPACING=0 style=" width: 100%; margin-top: 5px; margin-bottom: 15px;">
+      
+    </table>
+
+    <table style=" margin-top: 10px; color: #8c8c8c; width: 100%;">
+        <tr >
+            <td  style="text-align: center; font-size: 80%; width: 100%;"><br><small>New Eurocomputer-TVA FR33b 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
+            <strong>RECODE by eurocomputeur - 112 allée François Coli -06210 Mandelieu</strong></small></td>
+        </tr>
+    </table>  
+    </div>  
+
+</page>
+
+<?php
+$content = ob_get_contents();
+
+try 
+{
+    $doc = new Html2Pdf('P','A4','fr');
+    $doc->setDefaultFont('gothic');
+    $doc->pdf->SetDisplayMode('fullpage');
+    $doc->writeHTML($content);
+    ob_clean();
+    $doc->output('C:\laragon\www\fichesTravail\Ft_'.$command->devis__id.'.pdf' , 'F'); 
+} 
+catch (Html2PdfException $e) 
+{
+  die($e); 
+}
+  }
+}
+
+
+
+// si un ecart est constaté dans les quantité génère des reliquats automatiquement: 
+public function FactureReliquat($cmd)
+{
+  $lignes = $this->devisLigne($cmd);
+ 
+  $NewLines = [];
+  foreach ($lignes as $ligne) 
+  {
+    
+    if ( intval($ligne->cmdl__qte_livr) < intval($ligne->cmdl__qte_fact)) 
+    {
+      $ligne->devl_quantite = intval($ligne->cmdl__qte_fact) - intval($ligne->cmdl__qte_livr);
+      array_push($NewLines, $ligne);
+    }
+  }
+ 
+  
+  if (!empty($NewLines)) 
+  {
+   
+    $reliquat = $this->GetById($cmd);
+
+    $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd, cmd__client__id_fact,
+      cmd__client__id_livr, cmd__contact__id_fact,  cmd__contact__id_livr,
+      cmd__note_client, cmd__note_interne, cmd__code_cmd_client,
+      cmd__etat, cmd__user__id_devis, cmd__user__id_cmd)
+      VALUES (:cmd__date_cmd, :cmd__client__id_fact, :cmd__client__id_livr, :cmd__contact__id_fact, :cmd__contact__id_livr,
+      :cmd__note_client, :cmd__note_interne, :cmd__code_cmd_client, :cmd__etat, :cmd__user__id_devis, :cmd__user__id_cmd)');
+
+      
+
+    $code_cmd = 'RELIQUAT déja facturé:  n°' . $reliquat->devis__id . "  " .  $reliquat->cmd__code_cmd_client;
+
+    $request->bindValue(":cmd__date_cmd", $reliquat->cmd__date_cmd);
+    $request->bindValue(":cmd__client__id_fact", 5 );
+    $request->bindValue(":cmd__client__id_livr", $reliquat->devis__id_client_livraison);
+    $request->bindValue(":cmd__contact__id_fact", $reliquat->devis__contact__id);
+    $request->bindValue(":cmd__contact__id_livr", $reliquat->devis__contact_livraison);
+    $request->bindValue(":cmd__note_client", $reliquat->devis__note_client);   
+    $request->bindValue(":cmd__note_interne", $reliquat->devis__note_interne);
+    $request->bindValue(":cmd__code_cmd_client", $code_cmd );
+    $request->bindValue(":cmd__etat", 'CMD');
+    $request->bindValue(":cmd__user__id_devis", $reliquat->devis__user__id );
+    $request->bindValue(":cmd__user__id_cmd", $reliquat->cmd__user__id_cmd );
+
+    
+    $request->execute();
+
+    
+    
+    $idReliquat = $this->Db->Pdo->lastInsertId();
+    $count = 0 ;
+
+
+    
+    foreach ($NewLines as $lines ) 
+    {
+      $count += 1;
+      $insertObject = new stdClass;
+      $insertObject->idDevis = $idReliquat;
+      $insertObject->prestation = $lines->devl__type;
+      $insertObject->designation = $lines->devl__designation;
+      $insertObject->etat = $lines->devl__etat;
+      $insertObject->garantie = $lines->devl__mois_garantie;
+      $insertObject->quantite = $lines->devl_quantite;
+      $insertObject->prix = $lines->devl_puht;
+      $insertObject->comClient = $lines->devl__note_client;
+      $insertObject->idfmm = $lines->id__fmm;
+      $insertObject->extension = $lines->cmdl__garantie_option;
+      $insertObject->prixGarantie = $lines->cmdl__garantie_puht;
+
+      $createLine = $this->insertLine($insertObject);
+     
+    
+  }
+$command = $this->getById(intval($idReliquat));
+$commandLignes = $this->devisLigne($idReliquat);
+$dateTemp = new DateTime($command->cmd__date_cmd);
+ //cree une variable pour la date de commande du devis
+ $date_time = new DateTime( $command->cmd__date_cmd);
+ //formate la date pour l'utilisateur:
+ $formated_date = $date_time->format('d/m/Y');
+ob_start();
+?>
+<style type="text/css">
+      strong{ color:#000;}
+      h3{ color:#666666;}
+      h2{ color:#3b3b3b;}
+      table{
+        font-size:13; font-style: normal; font-variant: normal; 
+       border-collapse:separate; 
+       border-spacing: 0 15px; 
+         }  
+ </style>
+
+<page backtop="10mm" backleft="15mm" backright="15mm">
+     <table style="width: 100%;">
+         <tr>
+             <td style="text-align: left;  width: 50%"><img  style=" width:60mm" src="public/img/recodeDevis.png"/></td>
+             <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br>
+             <a>www.recode.fr</a><br><br>
+             <br><strong>REF CLIENT :<?php echo $command->client__id ?></strong></td>
+             </tr>
+             <tr>
+             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h4>Fiche De travail -  <?php echo $command->devis__id ?></h4>
+             <barcode dimension="1D" type="C128" label="none" value="<?php echo $command->devis__id ?>" style="width:40mm; height:8mm; color: #3b3b3b; font-size: 4mm"></barcode><br>
+
+             <small>Commandé le : <?php echo $formated_date ?></small><br>
+             Vendeur :<?php echo  $_SESSION['user']->log_nec ?> </td>
+             <td style="text-align: left; width:50%"><strong>
+             <?php echo $command->client__societe ?><br><?php echo $command->client__adr1 ?><br><?php if (!empty($command->client__adr2)) {
+                 echo $command->client__adr2; } ?>
+             <br>
+             <?php echo $command->client__cp ." ". $command->client__ville ?></strong><br>
+             <?php echo $command->contact__nom . " " . $command->contact__prenom   ?> <br>
+             <strong>
+             <?php
+             if (!empty($command->cmd__code_cmd_client)) 
+             {
+              echo $command->cmd__code_cmd_client;
+             } 
+             ?>
+             </strong>
+            </td>
+         </tr>
+     </table>
+
+
+     <table CELLSPACING=0 style="width: 700px;  margin-top: 80px; ">
+             <tr style=" margin-top : 50px; background-color: #dedede;">
+                <td style="width: 22%; text-align: left;">Presta<br>Type<br>Gar.</td>
+                <td style="width: 57%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
+                <td style="text-align: right; width: 12%"><strong>CMD</strong><br>Livr</td>
+             </tr> 
+             <?php
+             foreach ($commandLignes as $item) {
+                if($item->cmdl__garantie_option > $item->devl__mois_garantie) 
+                {
+                  $temp = $item->cmdl__garantie_option ;
+                } else {  $temp = $item->devl__mois_garantie;}
+
+               
+
+                echo "<tr style='font-size: 85%;>
+                        <td style='border-bottom: 1px #ccc solid'> ". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois</td>
+                        <td style='border-bottom: 1px #ccc solid; width: 55%;'> "
+                            .$item->famille__lib. " " . $item->marque . " " .$item->modele. " ". $item->devl__modele . 
+                            "<br> <small>désignation sur le devis:</small> " . $item->devl__designation ." <br>" .$item->devl__note_interne .
+                        "</td>
+                         <td style='border-bottom: 1px #ccc solid; text-align: right'><strong> "  . $item->devl_quantite. " </strong></td>
+                      </tr>";
+             }
+             ?>
+     </table> 
+     <table style=" margin-top: 200px; width: 100%">
+             <tr style=" margin-top: 200px; width: 100%"><td><small>Commentaire:</small></td></tr>
+             <tr >
+             <td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%' > <?php echo  $command->devis__note_interne ?> </td>
+            </tr>
+     </table>
+
+
+     <div style=" width: 100%; position: absolute; bottom:5%">
+    
+   
+    <table CELLSPACING=0 style=" width: 100%; margin-top: 5px; margin-bottom: 15px;">
+      
+    </table>
+
+    <table style=" margin-top: 10px; color: #8c8c8c; width: 100%;">
+        <tr >
+            <td  style="text-align: center; font-size: 80%; width: 100%;"><br><small>New Eurocomputer-TVA FR33b 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
+            <strong>RECODE by eurocomputeur - 112 allée François Coli -06210 Mandelieu</strong></small></td>
+        </tr>
+    </table>  
+    </div>  
+
+</page>
+
+<?php
+$content = ob_get_contents();
+
+try 
+{
+    $doc = new Html2Pdf('P','A4','fr');
+    $doc->setDefaultFont('gothic');
+    $doc->pdf->SetDisplayMode('fullpage');
+    $doc->writeHTML($content);
+    ob_clean();
+    $doc->output('C:\laragon\www\fichesTravail\Ft_'.$command->devis__id.'.pdf' , 'F'); 
+} 
+catch (Html2PdfException $e) 
+{
+  die($e); 
+}
   }
 }
 
@@ -621,7 +943,7 @@ public function getCompta($ligne , $cmd)
     if (!empty($ligne->cmdl__garantie_puht) && intval($ligne->cmdl__garantie_puht) > 0 ) 
     {
       $request = $this->Db->Pdo->query('SELECT * FROM compta
-      WHERE cpt__tva_kw = '.$cmd->tva_value.'AND cpt__pres__kw = EXG ');
+      WHERE cpt__tva_kw = '.$cmd->tva_value.'AND cpt__pres__kw = EXG');
       $data = $request->fetch(PDO::FETCH_OBJ);
       array_push($arrayResponse , $data);
     }

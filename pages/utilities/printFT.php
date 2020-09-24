@@ -88,6 +88,14 @@ ob_start();
              <br>
              <?php echo $command->client__cp ." ". $command->client__ville ?></strong><br>
              <?php echo $command->contact__nom . " " . $command->contact__prenom   ?> 
+             <strong>
+             <?php
+             if (!empty($command->cmd__code_cmd_client)) 
+             {
+              echo $command->cmd__code_cmd_client;
+             } 
+             ?>
+             </strong>
             </td>
          </tr>
      </table>
