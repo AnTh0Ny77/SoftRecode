@@ -192,6 +192,12 @@ class Cmd extends Table {
       'SELECT cmd__date_cmd + INTERVAL 1 DAY  as dateLivraison FROM cmd WHERE cmd__id = '.$cmdId.' ');
     
     $results = $check->fetch(PDO::FETCH_OBJ);
+    $update = $this->Db->Pdo->prepare(
+      'UPDATE cmd 
+       SET cmd__date_envoi =?
+       WHERE cmd__id = ? 
+      ');
+       $update->execute([$results->dateLivraison ,$cmdId]);
     
   }
 
@@ -214,6 +220,22 @@ class Cmd extends Table {
       ');
       $transfert->execute();
     }
+
+    $check2 = $this->Db->Pdo->query(
+      'SELECT cmd__contact__id_fact , cmd__client__id_fact FROM cmd WHERE cmd__id = '.$id.' 
+      ');
+  
+      $results2 = $check2->fetch(PDO::FETCH_OBJ);
+  
+      if (!empty($results2->cmd__contact__id_fact)) 
+      {
+       $transfert2 =  $this->Db->Pdo->prepare(
+        'UPDATE cmd 
+         SET  cmd__contact__id_livr = '.$results2->cmd__contact__id_fact.' 
+         WHERE cmd__id = '.$id.'
+        ');
+        $transfert2->execute();
+      }
 
     $data = 
     [

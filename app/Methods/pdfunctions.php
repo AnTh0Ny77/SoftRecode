@@ -25,6 +25,9 @@ public static function showSociete($object){
    
 }
 
+
+
+
 // fontion d'affichage du prix dans View : 
 public static function showPriceView($object){
 	$barre = '';

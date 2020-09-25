@@ -9,28 +9,62 @@ $Database = new App\Database('devis');
 $Database->DbConnect();
 $Command = new \App\Tables\Cmd($Database);
 $Client = new \App\Tables\Client($Database);
-$Contact = new \App\Tables\Contact($Database);
 $User = new App\Tables\User($Database);
- 
+$Global = new App\Tables\General($Database);
+$Contact = new App\Tables\Contact($Database);
 
 if (empty($_SESSION['user'])) {
     header('location: login');
  }
+
+
+ // si une validation de devis a été effectuée : 
+if(!empty($_POST['devisCommande']))
+{
+  $date = date("Y-m-d H:i:s");
+  $Command->updateStatus('CMD',$_POST['devisCommande']);
+  $Command->updateDate('cmd__date_cmd' , $date , $_POST['devisCommande'] );
+  $Command->updateAuthor('cmd__user__id_cmd' , $_SESSION['user']->id_utilisateur , $_POST['devisCommande']);
+  if (!empty($_POST['arrayLigneDeCommande'])) 
+  {
+    $validLignes = json_decode($_POST['arrayLigneDeCommande']);
+    foreach ($validLignes as $lignes) 
+    {
+      $Command->updateGarantie(
+        $lignes->devl__prix_barre[0],
+        $lignes->devl__prix_barre[1],
+        $lignes->devl__note_interne,
+        $lignes->devl_quantite,
+        $lignes->cmdl__cmd__id,
+        $lignes->devl__ordre );
+    } 
+  }
+  if (!empty($_POST['code_cmd'])) 
+  {
+    $Global->updateAll('cmd', $_POST['code_cmd'],'cmd__code_cmd_client', 'cmd__id', $_POST['devisCommande']);
+  }
+  //contient l'id du devis pour l'imprssion de la fiche de travail : client2.js
+  $print_request = $_POST['devisCommande'];
+}
   
-if(!empty($_POST['travailFiche'])) {
-$command = $Command->getById(intval($_POST['travailFiche']));
-$commandLignes = $Command->devisLigne($_POST['travailFiche']);
+
+$command = $Command->getById(intval($_POST['devisCommande']));
+$commandLignes = $Command->devisLigne($_POST['devisCommande']);
+$clientView = $Client->getOne($command->client__id);
+    $societeLivraison = false ;
+
+    if ($command->devis__id_client_livraison) 
+    {
+        $societeLivraison = $Client->getOne($command->devis__id_client_livraison);
+    }
+
+
+    
+$dateTemp = new DateTime($command->cmd__date_cmd);
  //cree une variable pour la date de commande du devis
  $date_time = new DateTime( $command->cmd__date_cmd);
  //formate la date pour l'utilisateur:
  $formated_date = $date_time->format('d/m/Y');
- $societeLivraison = false ;
- if ($command->devis__id_client_livraison) 
- {
-     $societeLivraison = $Client->getOne($command->devis__id_client_livraison);
- }
-//recupere le client: 
-$clientView = $Client->getOne($command->client__id);
 ob_start();
 ?>
 <style type="text/css">
@@ -50,7 +84,7 @@ ob_start();
              <td style="text-align: left;  width: 50%"><img  style=" width:60mm" src="public/img/recodeDevis.png"/></td>
              <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br>
              <a>www.recode.fr</a><br><br>
-             <br><strong>REF CLIENT :<?php echo $command->client__id ?></strong></td>
+             <br></td>
              </tr>
              <tr>
              <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h4>Fiche De travail -  <?php echo $command->devis__id ?></h4>
@@ -58,43 +92,59 @@ ob_start();
 
              <small>Commandé le : <?php echo $formated_date ?></small><br>
              Vendeur :<?php echo  $_SESSION['user']->log_nec ?> </td>
-            <td>
-             <?php  // si une societe de livraion est présente 
-             if ($societeLivraison) 
-             {
-                //si un contact est présent dans l'adresse de livraison :    
-                if ($command->devis__contact_livraison) 
-                {            
-                    $contact2 = $Contact->getOne($command->devis__contact_livraison);
-                        echo "<br> <small>Societe : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
-                        echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>"; 
-                }
-                // si pas de contact de livraison :
-                else 
-                {          
-                    echo "<br> <small>Societe :</small><strong><br>";
-                    echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>"; 
-                }
-             }
+             <td style="text-align: left; width:50%"><strong><?php 
+              if ($societeLivraison) 
+              {
 
-            //Si pas de societe de livraison presente:
-            else 
-            {
-                //si un contact est present:
-                if (!empty($command->devis__contact__id)) 
-                {
-                   
+                if ($command->devis__contact__id) {
+                    // si un contact est présent dans l'adresse de facturation :
                     $contact = $Contact->getOne($command->devis__contact__id);
-                    echo "<small>Societe : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."</small><strong><br>";
-                    echo Pdfunctions::showSociete($clientView)  ."</strong></td>";
+                    echo "<small>facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom. "</small><strong><br>";
+                    echo Pdfunctions::showSociete($clientView) ." </strong> ";
+                
+                    if ($command->devis__contact_livraison) {
+                        //si un contact est présent dans l'adresse de livraison : 
+                        $contact2 = $Contact->getOne($command->devis__contact_livraison);
+                        echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
+                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>"; 
+                    }
+                    else {
+                        // si pas de contact de livraison : 
+                        echo "<br> <small>livraison :</small><strong><br>";
+                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>"; 
+                    } 
                 }
-                else
-                {
-                    echo "<small>Societe : </small><strong><br>";
-                    echo Pdfunctions::showSociete($clientView)  ."</strong></td>";
-                }
-            }     ?> 
-          
+
+                else {
+                    echo "<small>facturation :</small><strong><br>";
+                    echo Pdfunctions::showSociete($clientView) ." </strong>" ;
+                    if ($command->devis__contact_livraison) {
+                        $contact2 = $Contact->getOne($command->devis__contact_livraison);
+                        echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
+                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>"; 
+                    } else {
+                        echo "<br> <small>livraison :</small><strong><br>";
+                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>"; 
+                    }  
+                }  
+         } 
+
+
+
+         else{
+            if ($command->devis__contact__id) {
+            $contact = $Contact->getOne($command->devis__contact__id);
+            echo "<small>livraison & facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."</small><strong><br>";
+            echo Pdfunctions::showSociete($clientView)  ."</strong>";
+            }
+            else{
+                echo "<small>livraison & facturation : </small><strong><br>";
+                echo Pdfunctions::showSociete($clientView)  ."</strong>";
+            }
+
+         } ?>
+         </strong>
+            </td>
          </tr>
      </table>
 
@@ -153,6 +203,8 @@ ob_start();
 <?php
 $content = ob_get_contents();
 
+
+
 try {
     $doc = new Html2Pdf('P','A4','fr');
     $doc->setDefaultFont('gothic');
@@ -168,6 +220,6 @@ try {
   die($e); 
 }
     
-}
+
 
  

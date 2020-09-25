@@ -34,12 +34,7 @@ $(document).ready(function() {
        $('#id_trans').val(ObjetCmd.Id);
        
        let content = '';
-
-       for (key in ObjetCmd.Data) 
-       {
-           content += ' • ' + ObjetCmd.Data[key].devl_quantite + 'x ' + ObjetCmd.Data[key].devl__designation ;
-       }
-       $('#JumboDetails').text(content);
+       
     });
 
 
@@ -69,11 +64,8 @@ $(document).ready(function() {
            $('#id_trans').val(ObjetCmd.Id);
            let content = '';
     
-           for (key in ObjetCmd.Data) 
-           {
-               content += ' • ' + ObjetCmd.Data[key].devl_quantite + 'x ' + ObjetCmd.Data[key].devl__designation ;
-           }
-           $('#JumboDetails').text(content);
+          
+           
             
         } else { $('#JumbResponse').html('<h4>Aucunnes fiches en attente de saisie</h4>'); $('#post-saisie').hide()}
        

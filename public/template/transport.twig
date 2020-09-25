@@ -120,25 +120,41 @@
 
 
 
-              <div class="jumbotron" id="JumbResponse">
+              <div class="card-header" id="JumbResponse">
                 <h4 class="" id="JumboCmd">Commande N°:</h4>
-                <div class="d-flex flex-row justify-content-between">
-                  <div>
-                    <p class="lead" id="JumboClient">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-                  </div>
-
-                  <div id="dateTransport">
-                  </div>
-               
-                </div>
-                <hr class="my-4">
-                <p id="JumboDetails">It uses utility classes for typography and spacing to space content out within the larger container.</p>
-                <p class="lead">
-                  
-                </p>
+                
+            
               </div>
 
-                <div id="loaderTravail" class="d-flex flex-row justify-content-around">
+                <div id="loaderTravail" class="">
+
+                 <form method='POST' action="printBl" id="valid-saisie" class="d-flex flex-row justify-content-around">
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     <div class="  d-flex  flex-column  justify-content-start align-items-center ">
                       <h5>Poids <i class="fas fa-weight-hanging"></i></h5>
                       <div class="shadow my-2 py-2 px-2" id="calc">
@@ -246,16 +262,18 @@
 
                    </div>
 
-                </div>
-
-
-              
-              <form method='POST' action="printBl" id="valid-saisie">
+               
                 <input type='hidden' name='id_trans' value='' id='id_trans'>
                 <input type="hidden" name="poids" id='poids' value="">
                 <input type="hidden" name="transporteur" id="transporteur" value="">
                 <input type="hidden" name="paquets" id='paquets' value="">
-              </form>
+                </form>
+
+                </div>
+
+
+              
+             
                
 
 

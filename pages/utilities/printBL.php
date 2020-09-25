@@ -11,6 +11,7 @@ $Command = new \App\Tables\Cmd($Database);
 $Client = new \App\Tables\Client($Database);
 $User = new App\Tables\User($Database);
 $Global = new App\Tables\General($Database);
+$Contact = new App\Tables\Contact($Database);
  
 
 if (empty($_SESSION['user'])) 
@@ -52,7 +53,9 @@ if(!empty($_POST['poids']) && !empty($_POST['transporteur']))
 
 
 
+
 $command = $Command->getById(intval($_POST['id_trans']));
+$societe = $Client->getOne($command->devis__id_client_livraison);
 
 
 //si il s'agit d'une fiche de garantie ou d'un reliquat facturé à l'avance  elle ne passera pas par la facturation:
@@ -83,7 +86,7 @@ ob_start();
              <td style="text-align: left;  width: 50%"><img  style=" width:60mm" src="public/img/recodeDevis.png"/></td>
              <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br>
              <a>www.recode.fr</a><br><br>
-             <br><strong>REF CLIENT :<?php echo $command->devis__id_client_livraison ?></strong></td>
+             <br></td>
              </tr>
              <tr>
              <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h4>Bon de Livraison -  <?php echo $command->devis__id ?></h4>
@@ -91,12 +94,18 @@ ob_start();
 
              <small>Envoyé  le : <?php echo $formated_date ?></small><br>
              Vendeur :<?php echo  $_SESSION['user']->log_nec ?> </td>
-             <td style="text-align: left; width:50%"><strong>
-             <?php echo $command->client__livraison_societe ?><br><?php echo $command->client__livraison__adr1 ?><br><?php if (!empty($command->client__livraison__adr2)) {
-                 echo $command->client__livraison__adr2; } ?>
-             <br>
-             <?php echo $command->client__livraison_cp ." ". $command->client__livraison_ville ?></strong><br>
-             <?php echo $command->contact__nom . " ";?> 
+             <td style="text-align: left; width:50%"><strong><?php 
+             if ($command->devis__contact_livraison) {
+                            //si un contact est présent dans l'adresse de livraison : 
+                            $contact2 = $Contact->getOne($command->devis__contact_livraison);
+                            echo "<br><small>".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
+                            echo Pdfunctions::showSociete($societe) . "</strong>"; 
+                        }
+                        else {
+                            // si pas de contact de livraison : 
+                            echo "<br><small></small><strong><br>";
+                            echo Pdfunctions::showSociete($societe) . "</strong>"; 
+                        } ?></strong>
             </td>
          </tr>
      </table>
@@ -105,25 +114,30 @@ ob_start();
      <table CELLSPACING=0 style="width: 700px;  margin-top: 80px; ">
              <tr style=" margin-top : 50px; background-color: #dedede;">
                 <td style="width: 22%; text-align: left;">Presta<br>Type</td>
-                <td style="width: 57%; text-align: left">Ref Tech<br>Désignation Client</td>
-                <td style="text-align: right; width: 12%"><br>Quantité</td>
+                <td style="width: 57%; text-align: left">Désignation</td>
+                <td style="text-align: right; width: 12%">Quantité</td>
              </tr> 
              <?php
-             foreach ($commandLignes as $item) {
-                if($item->cmdl__garantie_option > $item->devl__mois_garantie) 
+             foreach ($commandLignes as $item) 
+             {
+
+                if ($item->prestaLib != 'Port') 
                 {
-                  $temp = $item->cmdl__garantie_option ;
-                } else {  $temp = $item->devl__mois_garantie;}
-
-               
-
-                echo "<tr style='font-size: 85%;>
-                        <td style='border-bottom: 1px #ccc solid'> ". $item->prestaLib." <br> " .$item->kw__lib ."</td>
-                        <td style='border-bottom: 1px #ccc solid; width: 55%;'> "
-                            .$item->famille__lib. " " . $item->marque . " " .$item->modele. " ". $item->devl__modele . 
-                            "<br> <small>désignation sur le devis:</small> " . $item->devl__designation ."</td>
-                         <td style='border-bottom: 1px #ccc solid; text-align: right'><strong> "  . $item->cmdl__qte_livr. " </strong></td>
-                      </tr>";
+                    if ($item->kw__lib == 'Non Concerné') 
+                    {
+                        $item->kw__lib = '';
+                    }
+                   
+    
+                    echo "<tr style='font-size: 85%;>
+                            <td style='border-bottom: 1px #ccc solid'> ". $item->prestaLib." <br> " .$item->kw__lib ."</td>
+                            <td style='border-bottom: 1px #ccc solid; width: 55%;'> "
+                                . $item->devl__designation ."</td>
+                             <td style='border-bottom: 1px #ccc solid; text-align: right'><strong> "  . $item->cmdl__qte_livr. " </strong></td>
+                          </tr>";
+                }
+              
+                
              }
              ?>
      </table> 

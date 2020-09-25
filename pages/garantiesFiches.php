@@ -76,6 +76,7 @@ if (!empty($_POST['qteArray']))
 
 $command = $Cmd->getById(intval($retour));
 $commandLignes = $Cmd->devisLigne($retour);
+
 $dateTemp = new DateTime($command->cmd__date_cmd);
  //cree une variable pour la date de commande du devis
  $date_time = new DateTime( $command->cmd__date_cmd);

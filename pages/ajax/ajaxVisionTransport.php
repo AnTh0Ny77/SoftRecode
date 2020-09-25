@@ -170,6 +170,7 @@ else
                     { 
                     $temp = intval($item->devl__mois_garantie);
                     }
+                    
                     switch ($item->groupe_famille) {
 
                         case 'CDB':
