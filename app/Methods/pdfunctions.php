@@ -754,7 +754,7 @@ public static function magicLineFTC($arrayLigne , $cmd){
 		{
 			$secondCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$secondW."; max-width: ".$secondW."; text-align: left; padding-bottom: 5px;  '>"
 
-				. $ligne->famille__lib. " " . $ligne->modele . " ".$ligne->marque.  $ligne->cmdl__note_facture."
+				. $ligne->devl__designation.  $ligne->cmdl__note_facture."
 		
 			</td>";
 		}
@@ -762,7 +762,7 @@ public static function magicLineFTC($arrayLigne , $cmd){
 		{
 			$secondCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  '>"
 
-				. $ligne->famille__lib. " " . $ligne->modele . " ".$ligne->marque. "
+				. $ligne->devl__designation. "
 		
 			</td>";
 		}

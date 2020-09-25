@@ -155,6 +155,9 @@
     case '/SoftRecode/AjaxPn';
       require __DIR__ .'/pages/ajax/ajaxPn.php'; break;
 
+    case '/SoftRecode/ajaxLigneTransport';
+      require __DIR__ .'/pages/ajax/ajaxLigneTransport.php'; break;
+
     case '/SoftRecode/createNew';
       require __DIR__ .'/pages/ajax/ajaxCreate.php'; break;
 

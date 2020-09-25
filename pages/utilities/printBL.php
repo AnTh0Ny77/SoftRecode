@@ -35,11 +35,23 @@ if(!empty($_POST['poids']) && !empty($_POST['transporteur']))
 
     $arrayTrans = $Command->devisLigne($_POST['id_trans']);
 
+    var_dump($_POST['linesTransport']);
+   
+  
+   
+    //met a jour les différentes lignes en fonction de la quantité validé par le client : 
     foreach ($arrayTrans as  $ligne) 
     {
-       
-       $Command->updateLigne($ligne->devl_quantite, 'cmdl__qte_livr', $ligne->devl__id );
+        foreach ($_POST['linesTransport'] as $key => $value) 
+        {
+           if ($key == $ligne->devl__id) 
+           {
+            $Command->updateLigne($value, 'cmdl__qte_livr', $ligne->devl__id );
+            $Command->updateLigne($value, 'cmdl__qte_fact', $ligne->devl__id );
+           }
+        }  
     }
+
    $command = $Command->GetById($_POST['id_trans']);
    $date_time = new DateTime( $command->cmd__date_envoi);
     //formate la date pour l'utilisateur:
@@ -177,5 +189,8 @@ catch (Html2PdfException $e)
 }
     
 }
-
+else 
+{
+    header('location: transport');
+}
  

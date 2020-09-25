@@ -28,12 +28,33 @@ $(document).ready(function() {
             Date: dataRow[2], 
             Data: dataRow = JSON.parse(dataRow[4])
         }
-       document.getElementById('JumboCmd').innerHTML =  'Commande N°: ' + ObjetCmd.Id;
-       $('#JumboClient').html(ObjetCmd.Client);
-       $('#dateTransport').html(ObjetCmd.Date);
-       $('#id_trans').val(ObjetCmd.Id);
+        $.ajax({
+            type: 'post',
+            url: "ajaxLigneTransport",
+            data:
+            {
+                "AjaxLignetransport": ObjetCmd.Id
+            },
+            success: function (data) 
+            {
+                
+                dataSet = JSON.parse(data);
+               
+                $('#containerLines').html(dataSet[0]);
+                document.getElementById('JumboCmd').innerHTML =  'Commande N°: ' + ObjetCmd.Id;
+                $('#JumboClient').html(ObjetCmd.Client);
+                $('#dateTransport').html(ObjetCmd.Date);
+                $('#id_trans').val(ObjetCmd.Id);
+               
+            },
+            error: function (err) {
+                console.log('error: ' , err);
+            }
+        })
+        
+     
        
-       let content = '';
+      
        
     });
 
@@ -58,11 +79,29 @@ $(document).ready(function() {
                 Date: dataRow[2], 
                 Data: dataRow = JSON.parse(dataRow[4])
             }
-           document.getElementById('JumboCmd').innerHTML =  'Commande N°: ' + ObjetCmd.Id;
-           $('#JumboClient').html(ObjetCmd.Client);
-           $('#dateTransport').html(ObjetCmd.Date);
-           $('#id_trans').val(ObjetCmd.Id);
-           let content = '';
+            $.ajax({
+                type: 'post',
+                url: "ajaxLigneTransport",
+                data:
+                {
+                    "AjaxLignetransport": ObjetCmd.Id
+                },
+                success: function (data) 
+                {
+                    
+                    dataSet = JSON.parse(data);
+                   
+                    $('#containerLines').html(dataSet[0]);
+                    document.getElementById('JumboCmd').innerHTML =  'Commande N°: ' + ObjetCmd.Id;
+                    $('#JumboClient').html(ObjetCmd.Client);
+                    $('#dateTransport').html(ObjetCmd.Date);
+                    $('#id_trans').val(ObjetCmd.Id);
+                   
+                },
+                error: function (err) {
+                    console.log('error: ' , err);
+                }
+            })
     
           
            

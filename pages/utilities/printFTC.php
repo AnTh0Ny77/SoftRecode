@@ -19,7 +19,7 @@ if (empty($_SESSION['user']))
  // si une commande à été postée: 
  if (!empty($_POST['hiddenCommentaire'])) 
  {
-   $Cmd->updateQuantiteFTC($_POST['hiddenCommentaire']);
+   //$Cmd->updateQuantiteFTC($_POST['hiddenCommentaire']);
    //  2  changer le status de la commande et attribuer un numero de facture:
    $Cmd->commande2facture($_POST['hiddenCommentaire']);
    //  4 activer une alert pour indiquer le bon fonctionnement du logiciel 
