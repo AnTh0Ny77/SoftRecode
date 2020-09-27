@@ -94,7 +94,7 @@ session_start();
  if ( !empty($_POST['prixLigne']) && !empty($_POST['idCMDL']))
  {
  
-   
+  
   $Cmd->updateLigneFTC(intval($_POST['idCMDL']), intval($_POST['qteCMD']) , intval($_POST['qteLVR']), intval($_POST['qteFTC']),  $_POST['comFacture'] ,floatval($_POST['prixLigne']));
   
    $return = $Cmd->returnDevis(intval($_POST['idCMDL']));
