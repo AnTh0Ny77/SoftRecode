@@ -84,7 +84,7 @@ session_start();
  {
    $updateTVA = $General->updateAll('cmd' , $_POST['selectTVA'] , 'cmd__tva' , 'cmd__id' , $_POST['hiddenTVA'] );
    $updateCodeCmd = $General->updateAll('cmd' , $_POST['codeCmdTVA'] , 'cmd__code_cmd_client' , 'cmd__id' , $_POST['hiddenTVA'] );
-   $updateComClient = $General->updateAll('cmd' , $_POST['comTVA'] , 'cmd__note_interne' , 'cmd__id' , $_POST['hiddenTVA'] );
+   $updateComClient = $General->updateAll('cmd' , $_POST['comTVA'] , 'cmd__note_client' , 'cmd__id' , $_POST['hiddenTVA'] );
    $_POST['recherche-fiche'] = 'id-fiche';
    $_POST['rechercheF'] = $_POST['hiddenTVA'];
  }

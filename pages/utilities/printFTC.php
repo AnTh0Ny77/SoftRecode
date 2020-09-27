@@ -155,10 +155,10 @@ $garanties = $Keyword->getGaranties();
 
 
                      <td style='text-align: right; '>
-                     <b>".number_format($totaux[0] , 2)." €</b><br>
-                     <b>".number_format($totaux[1] , 2)." %</b><br>
-                     <b>".number_format($totaux[2] , 2)." €</b><br>
-                     <b>".number_format($totaux[3] , 2)." €</b><br>
+                     <b>".number_format($totaux[0] , 2,',', ' ')." €</b><br>
+                     <b>".number_format($totaux[1] , 2,',', ' ')." %</b><br>
+                     <b>".number_format($totaux[2] , 2,',', ' ')." €</b><br>
+                     <b>".number_format($totaux[3] , 2,',', ' ')." €</b><br>
                      </td>";
             ?>
             </tr>

@@ -187,11 +187,7 @@ else
             
         foreach ($arrayOfDevisLigne as $item) 
         {
-            if ($item->prestaLib == 'Port' && $item->cmdl__qte_livr == null) 
-            {
-                $Cmd->updateLigne($item->devl_quantite, 'cmdl__qte_livr', $item->devl__id );
-                $Cmd->updateLigne($item->devl_quantite, 'cmdl__qte_fact', $item->devl__id );
-            }
+            
             // si la quantité facturée est renseignée : compare les trois quantité et affiche un background rouge si pas égales
             // si la quantite facturé n'est pas renseigné : compare les 2 autres et attribues la livr à la place de la facturée gestion de background roouge 
            if (!empty($item->cmdl__qte_fact) || $item->cmdl__qte_fact == '00') 
@@ -356,9 +352,9 @@ else
             <hr class="my-4">
             <p>
                 <?php
-                    if (!empty($temp->devis__note_interne)) 
+                    if (!empty($temp->devis__note_client)) 
                     {
-                    echo   $temp->devis__note_interne ;
+                    echo   $temp->devis__note_client ;
                     }
                     else echo 'Pas de commentaire Client';
                 ?>
@@ -397,10 +393,10 @@ else
 
                 $totaux = Pdfunctions::totalFacturePDF($temp, $arrayOfDevisLigne);
 
-                echo "<td class='text-right'><b>".number_format($totaux[0] , 2)." €</b></td>";
-                echo "<td class='text-right'>".number_format($totaux[1] , 2)." %</td>";
-                echo "<td class='text-right'>".number_format($totaux[2] , 2)." €</td>";
-                echo "<td class='text-right'><b>".number_format($totaux[3] , 2)." €</b></td>";
+                echo "<td class='text-right'><b>".number_format($totaux[0] , 2,',', ' ')." €</b></td>";
+                echo "<td class='text-right'>".number_format($totaux[1] , 2,',', ' ')." %</td>";
+                echo "<td class='text-right'>".number_format($totaux[2] , 2,',', ' ')." €</td>";
+                echo "<td class='text-right'><b>".number_format($totaux[3] , 2,',', ' ')." €</b></td>";
                
             
             ?>

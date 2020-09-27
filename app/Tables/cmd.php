@@ -978,8 +978,8 @@ public function getCompta($ligne , $cmd)
 
     if (!empty($ligne->cmdl__garantie_puht) && intval($ligne->cmdl__garantie_puht) > 0 ) 
     {
-      $request = $this->Db->Pdo->query('SELECT * FROM compta
-      WHERE cpt__tva_kw = '.$cmd->tva_value.'AND cpt__pres__kw = EXG');
+      $request = $this->Db->Pdo->query("SELECT * FROM compta
+      WHERE cpt__tva_kw = ".$cmd->tva_value." AND cpt__pres__kw = 'EXG'");
       $data = $request->fetch(PDO::FETCH_OBJ);
       array_push($arrayResponse , $data);
     }

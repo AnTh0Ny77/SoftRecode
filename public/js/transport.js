@@ -133,6 +133,11 @@ $(document).ready(function() {
     let bindData = function()
     {
          let poids = $('#calc_resultat').val();
+        if (poids.length == 0 ) 
+        {
+            poids = 00 ;
+        }
+        
          let transporteur = $('#select-transport').val();
          let paquet = $('#select-transporteur').val();
          $('#poids').val(poids);
@@ -145,8 +150,10 @@ $(document).ready(function() {
        
         var poidsNb = $('#poids').val();
 
-        if(isNaN(poidsNb)) 
+      
+        if(isNaN(poidsNb) || parseInt(poidsNb) == 0 ) 
         { 
+           
            alert('Le poids est incorrect')
         }
         else
