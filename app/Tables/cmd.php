@@ -30,7 +30,7 @@ class Cmd extends Table {
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
     cmd__nom_devis, cmd__modele_devis , 
-    cmd__date_cmd, cmd__date_envoi, cmd__code_cmd_client, cmd__tva, cmd__user__id_cmd, cmd__id_facture,
+    cmd__date_cmd, cmd__date_envoi, cmd__code_cmd_client, cmd__tva, cmd__user__id_cmd, LPAD(cmd__id_facture ,7,0) as cmd__id_facture ,
     cmd__modele_facture, cmd__id_facture , cmd__date_fact, 
     k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,

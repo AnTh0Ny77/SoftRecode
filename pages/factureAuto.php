@@ -25,25 +25,69 @@ session_start();
  
  
  
- $ABNList = $Abonnement->getActifAndFacturable();
- $arrayList = [];
  
- foreach ($ABNList as $abn) 
+
+
+ if (!empty($_POST['trimestre']) && !empty($_POST['anneAuto'])) 
  {
-    $item = $Cmd->GetById($abn->ab__cmd__id);
-    $item->devis__note_client = $abn;
-    $ligne = $Abonnement->getLigneActives($abn->ab__cmd__id);
-    
-    
-    array_push($arrayList, $item);
+
+   $ABNList = $Abonnement->getActifAndFacturable();
+   $arrayList = [];
+
+   switch ($_POST['trimestre']) 
+   {
+      case '1':
+         $start = 1 ; 
+         $end = 3;
+         break;
+
+      case '2':
+         $start = 4; 
+         $end = 6;
+         break;
+
+      case '3':
+         $start = 7; 
+         $end = 9;
+         break;
+
+      case '4':
+         $start = 10; 
+         $end = 12;
+         break;
+   }
+
+   $dateStart = new DateTime();
+   $dateFin = new DateTime();
+   
+   $dateStart->setDate(intval($_POST['anneAuto']) , $start , 1);
+   $dateFin ->setDate(intval($_POST['anneAuto']) , $end , 30);
+   var_dump($dateStart);
+   $arrayMachine = [];
+
+   foreach ($ABNList as $abn) 
+   {
+    $ligne = $Abonnement->getLigneFacturableAuto($abn->ab__cmd__id ,$dateStart->date);
+    $ligneProRata = $Abonnement->getLigneFacturableAutoBetween2Dates($abn->ab__cmd__id ,$dateStart->date , $dateFin->date);
+    die();
+    //défini le prorata : 
+      foreach ($ligneProRata as $item) 
+      {
+         $test = $Abonnement->DiffDate($item->abl__dt_debut , $dateFin->date);
+         var_dump($test);
+      }
+    array_push($arrayMachine, $ligne);
+   }
+   
  }
 
- foreach ($arrayList as $devis) 
- {
-   $devisDate = date_create($devis->cmd__date_cmd);
-   $date = date_format($devisDate, 'd/m/Y');
-   $devis->devis__date_crea = $date;
- }
+ 
+ 
+ 
+
+
+ 
+
  
   
 // Donnée transmise au template : 

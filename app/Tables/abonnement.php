@@ -206,5 +206,37 @@ class Abonnement extends Table
         return $data;
     }
 
+
+    public function getLigneFacturableAuto($idAbn , $dateDebut)
+    {
+        $request =$this->Db->Pdo->query("SELECT  *
+        FROM abonnement_ligne
+        WHERE abl__actif = 1 
+        AND abl__dt_debut < '".$dateDebut."'
+        AND abl__cmd__id = '".$idAbn."'
+        ORDER BY  abl__ligne DESC LIMIT 500");
+        $data = $request->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+
+    public function getLigneFacturableAutoBetween2Dates($idAbn , $dateDebut, $dateFin)
+    {
+        $request =$this->Db->Pdo->query("SELECT  *
+        FROM abonnement_ligne
+        WHERE abl__actif = 1 
+        AND abl__dt_debut > '".$dateDebut."' AND abl__dt_debut < '".$dateFin."'
+        AND abl__cmd__id = '".$idAbn."'
+        ORDER BY  abl__ligne DESC LIMIT 500");
+        $data = $request->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+
+    public function DiffDate($dateDebut, $dateFin)
+    {
+        $request =$this->Db->Pdo->query("SELECT DATEDIFF('".$dateDebut."', '".$dateFin."') as JourDiff");
+        $data = $request->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+
    
 }
