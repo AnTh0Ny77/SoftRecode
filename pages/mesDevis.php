@@ -233,7 +233,7 @@ if ( $_SESSION['vueDevis'] == "ALL")
     else 
     {
       //sinon je recupere tous les devis:
-      $devisList = $Cmd->getAll();
+      $devisList = $Cmd->getAllDevis();
     }
     //le button contient:
     $AllDevis = "Voir mes devis";

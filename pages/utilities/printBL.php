@@ -39,7 +39,7 @@ if(!empty($_POST['poids']) && !empty($_POST['transporteur']))
    
   
    
-    //met a jour les différentes lignes en fonction de la quantité validé par le client : 
+//met a jour les différentes lignes en fonction de la quantité validé par le client : 
     foreach ($arrayTrans as  $ligne) 
     {
         if ($ligne->prestaLib == 'Port') 
@@ -55,25 +55,19 @@ if(!empty($_POST['poids']) && !empty($_POST['transporteur']))
             $Command->updateLigne($value, 'cmdl__qte_fact', $ligne->devl__id );
            }
         }  
-
     }
 
     
-
-
-   $command = $Command->GetById($_POST['id_trans']);
-   $date_time = new DateTime( $command->cmd__date_envoi);
-    //formate la date pour l'utilisateur:
-    $formated_date = $date_time->format('d/m/Y');
-    $command->cmd__date_envoi = $formated_date;
-   $export = $Global->exportTNT($command , $_POST['poids'],$_POST['paquets']);
-   $file = fopen("tnt.txt", "w");
-    fwrite($file , $export);
-    fclose($file);
+$command = $Command->GetById($_POST['id_trans']);
+$date_time = new DateTime( $command->cmd__date_envoi);
+//formate la date pour l'utilisateur:
+$formated_date = $date_time->format('d/m/Y');
+$command->cmd__date_envoi = $formated_date;
+$export = $Global->exportTNT($command , $_POST['poids'],$_POST['paquets']);
+$file = fopen("O:\intranet\Port\TNT\TNT.txt", "a");
+fwrite($file , $export);
+fclose($file);
   
-
-
-
 
 $command = $Command->getById(intval($_POST['id_trans']));
 $societe = $Client->getOne($command->devis__id_client_livraison);

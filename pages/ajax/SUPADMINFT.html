@@ -24,31 +24,31 @@
              <img  style=" width:55mm;" src="public\img\recodeDevis.png"/>
              </div>
              <div class="div" style=" margin-top: 15%" >
-             <h6><small>Commandé le : </small><b>24/09/2020 à : 16h 02</b></h6>
-             <div class='' '>
-               <h6> <small>Expédié le :</small>  <b>24/09/2020</b></h6>    
-           </div>            <h6> 
-                <small>Vendeur:</small> <b>PAYSANT Cindy </b> 
-                 
-             </h6>
-          
+             <p>Commandé le : 29/09/2020 à : 16h 26</p>
+             Vendeur: <strong>CASTOR Lorenne </strong> 
+              (Tél: 104)<form class='my-2' action='garantiesFiches' method='POST'>
+                <input type='hidden' name='POSTGarantie' value=3211328>
+                <button class='btn btn-warning btn-sm'>Fiche de garantie</button>
+                </form>             
              
              </td>
             
              </div>
             </div>
-           
-            <div class="div" style="text-align: left;  width: 45% ;"><h5>Commande N°:<strong> 3211558</strong><br></h5>
-            <div><button class='btn btn-sm btn-success' id='ClientClick' value='3211558' ><i class='far fa-magic'></i></button></div> <small>livraison & facturation : M. MAGNEZ Fréderic</small><strong><br>FANDI EMBALLAGES (087851) <br>ZI DU CHATEAU<br>70 RUE ELIE CARTAN<br>62220 CARVIN</strong></td><form method="POST" action="pdfFacture" target="_blank">
-             <input type="hidden" value="3211558" name="VoirDevis">
-             <button class="btn btn-link " href="pdfFacture"><i class="fas fa-file-pdf"></i> Visualiser la facture</button>
-            </form>             
-        
+         
+            <div class="div" style="text-align: left;  width: 45% ;"><h5>Fiche de Travail N°:<strong> 3211328</strong><br></h5>
+             <br> <small>Societe : M. LAURENT Patrick</small><strong><br>PRYSMIAN CABLES ET SYSTEMES (013456) <br>ZI LE PLEIN DE XOULCES<br>88310 CORNIMONT</strong></td>        
         <div class="d-flex flex-column">
-          
-            
-          
-           
+            <form method="POST" action="pdfTravail" target="_blank">
+             <input type="hidden" value="3211328" name="devisCommande">
+             <button class="btn btn-link " href="pdfTravail"><i class="fas fa-file-pdf"></i> Fiche de travail</button>
+            </form>            
+            <form class='mt-3 ml-2' method='POST' action='ficheTravail'>
+                    <h6>Date d'envoi prévue:</h6>
+                    <input type='hidden' value='3211328' name='dateId'>
+                    <input type='date' name='estimDate' value=2020-09-29>
+                    <button type='submit' class='btn btn-sm btn-success'><i class='far fa-exchange'></i></button>
+                    </form>           
             
         </div>
 
@@ -59,116 +59,36 @@
        
     </div>
 
-    <div class="div" style="display: flex; justify-content: center; margin-top: 5%;">
-        <table CELLSPACING=0 style="width: 95%;  margin-top : 30px;" class="table">
-
-
-        <tr style='font-size: 95%;'>
-                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='2887'  '><i class='far fa-magic'></i></i></button></td>
-                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>Vente <br>  <br> 12 mois </td>
-                    <td style='border-bottom: 1px #ccc solid; '><strong> 2 x Pièce détachée NC GENERIQUE</strong>  <br><small>désignation sur le devis:</small> Scanner Honeywell Granit 1911i - Bluetooth - 2D  <p>kit complet socle + câble + alimentation</p> </td>
-                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> 2 - 2 - 2 <br> 405.00 €  </strong> </td></tr><tr style='font-size: 95%;'>
-                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='2888'  '><i class='far fa-magic'></i></i></button></td>
-                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>Vente <br>  <br> 12 mois </td>
-                    <td style='border-bottom: 1px #ccc solid; '><strong> 2 x Accessoire / Option CHARGEUR ZEBRA</strong>  <br><small>désignation sur le devis:</small> Scanner Honeywell Granit 1911i - Bluetooth - 2D <p>kit complet socle + câble + alimentation</p> </td>
-                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> 2 - 2 - 2 <br> 560.00 €  </strong> </td></tr>               <tr style='font-size: 95%;'>
-                <td style='border-style: none; '> <button value="3211558" class=' btn btn-success mt-2' id="addNewItem"><i class='far fa-plus'></i></i></button></td>
-                <td style='border-style: none; '></td>
-                <td style='border-style: none; '></td>
-                <td style='border-style: none;  '></td>
-        </table> 
-     </div>
-
-
-        
-     <div class="d-flex mt-5 justify-content-between">
-
-     <div class=" card  px-2 mx-1 col-6">
-        <div>
-            <div class="my-4">
-               <div class="d-flex justify-content-between">
-                   <div>
-                        TVA: 
-                        <b>20.00 %</b>                    </div>
-                    <div>
-                        <button value="3211558" class="btn btn-success btn-sm" id="buttonModalTVA"><i class='far fa-magic'></i></button>
-                        
-                    </div>
-               </div>
-            </div>
-            <hr class="my-4">
-            <p>
-                code cmd client: <b>RELIQUAT  cmd n°3211377  </b>            </p>
-            <hr class="my-4">
-            <p>
-                Pas de commentaire Client            </p>
-        </div>
-     </div>
-
-    
-
-
-
-
-
-
-
-
-     <div class="card px-4 py-2 mx-1 col-6">
-        <div>
-            <h3>Total :</h3>
-            <hr class="mx-2">
-        </div>
-
-        <div>
-    <table class="table table-sm">
-            <thead>
-                    <tr>
-                    <th scope="col">Prix € HT</th>
-                    <th scope="col">Taux TVA</th>
-                    <th scope="col">Montant TVA</th>
-                    <th scope="col">Total TTC</th>
-                    </tr>
-            </thead>
-            <tbody> 
-                <tr>  
-            <td class='text-right'><b>1 930,00 €</b></td><td class='text-right'>20,00 %</td><td class='text-right'>386,00 €</td><td class='text-right'><b>2 316,00 €</b></td>            </tr>
-            </tbody>
-    </table>
-
+    <div class="div" style="display: flex; justify-content: center; margin-top: 10%;">
+        <table CELLSPACING=0 style="width: 95%;" class="table">
+            
+                <tr style=" margin-top : 50px; background-color: #dedede; vertical-align: top;" >
+                    <td style="width: 5%; background-color: white; border-style: none;" ></td>
+                    <td style="width: 13%; text-align: left;">Prestation<br>Type<br>Garantie</td>
+                    <td style="width: 50%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
+                    <td style="text-align: right; width: 12%"><strong>CMD</strong><br>Livr</td>
+                </tr>
            
-
-        </div>
-
+                <tr style='font-size: 95%;'>
+                                <td style='border-style: none; '> <button class='clickFT btn btn-danger mt-2 ' value='2134'' disabled><i class='fas fa-print'></i></button></td>
+                                <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>Vente <br> neuf <br> 36 mois  </td>
+                                <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> Imprimante thermique ZT230 ZEBRA</strong>  <br><small>désignation sur le devis:</small> imprimante thermique Zebra ZT230 <br>  </td>
+                                <td style='border-bottom: 1px #ccc solid;  text-align: right; background-color: #ffeded; '><strong> 1 </strong> </td>
+                                </tr><tr style='font-size: 95%;'>
+                                <td style='border-style: none; '> <button class='clickFT btn btn-secondary mt-2' value='2135' ' disabled><i class='fas fa-clipboard-list'></i></button></td>
+                                <td style='border-bottom: 1px #ccc solid; text-align:left;'>Vente <br> Non Concerné <br>   </td>
+                                <td style='border-bottom: 1px #ccc solid'><strong> Service Forfait emballage et port 5Kg RECODE</strong>  <br><small>désignation sur le devis:</small> forfait emballage et port <br>  </td>
+                                <td style='border-bottom: 1px #ccc solid;  text-align: right '><strong> 1 </strong> </td>
+                                </tr>        </table> 
      </div>
-
-
-
+     <div class="d-flex justify-content-end mr-3">
 
      
-
-
-
-
-     </div>
-
-
-
-
-
-
-
-
-     <div class="d-flex justify-content-end mr-3 mt-4"> 
-     <form class="text-right d-inline mx-2" method="POST" action="archiveFacture">
-     <input type="hidden" value="3211558" name="archiveID">
-     <button class="btn btn-secondary btn-lg">Archiver</button>
+       
+     <form class="text-right d-inline" method="POST" action="ficheTravail">
+     <input type="hidden" value="3211328" name="hiddenCommentaire">
+     <p>ZT23042T0E100FZ</p>     
      </form>
-     <form class="text-right d-inline mx-2" method="POST" action="printFTC">
-     <input type="hidden" value="3211558" name="hiddenCommentaire">
-     <button class="btn btn-success btn-lg">Facturer</button>
-     </form>
-     
      </div>
     
     

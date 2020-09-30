@@ -120,7 +120,7 @@
               </thead> 
                <tbody id="DevisBody">
                 {% for devis in devisList %}
-                {% if devis.devis__etat != 'VLD' %}
+                
                 
                 <tr class="trClick">
                   <td>{{devis.devis__id}}</td>
@@ -155,7 +155,7 @@
                     </td>
                     {% elseif devis.kw__lib == 'Commande' %}
                    Valide <i class="fas fa-shopping-basket" style="color:DodgerBlue;"></i> 
-                    <br> {{ devis.log_nec  }}<br>
+                    <br> En cours de préparation<br>
                       <div class="" data-toggle="tooltip" data-placement="top" title="Fiche de travail">
                         <form method="POST" action="ficheTravail">
                             <input type="hidden" value="id-fiche" name="recherche-fiche">
@@ -165,8 +165,8 @@
                       </div>
                     </td>
                     {% elseif devis.kw__lib == 'imprime' %}
-                   Imprime <i class="fas fa-print" style="color: Coral;"></i> 
-                    <br> {{ devis.log_nec  }}<br>
+                   Expédié <i class="fas fa-print" style="color: Coral;"></i> 
+                    <br>
                     <div class="d-flex justify-content-around">
                       <div class="" data-toggle="tooltip" data-placement="top" title="Fiche de travail">
                         <form method="POST" action="ficheTravail">
@@ -196,10 +196,10 @@
                     </div>
                     </td>
                     {% elseif devis.kw__lib == 'Valide' %}
-                    {{ devis.kw__lib}} <i class="fas fa-check-square" style="color: limegreen;"></i> <br> {{ devis.log_nec  }}</td>
+                    Facturé <i class="fas fa-check-square" style="color: limegreen;"></i> <br> {{ devis.log_nec  }}</td>
                     {% endif %}
                 </tr>
-                {% endif %}
+                
                 {% endfor %}
                </tbody>
              </table>

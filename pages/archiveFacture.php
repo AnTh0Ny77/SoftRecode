@@ -10,7 +10,10 @@ session_start();
  {
     header('location: login');
  }
-
+ if ($_SESSION['user']->user__facture_acces  < 10 ) 
+ {
+   header('location: noAccess');
+ }
  //déclaration des instances nécéssaires :
  $user= $_SESSION['user'];
  $Database = new App\Database('devis');

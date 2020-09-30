@@ -423,10 +423,6 @@ let checkradio = function(object)
     $('#selectStatus').selectpicker('val', object.devis__etat);
 }
 
-
-
-
-
 // cache le loader et le frame à l'ouverture de la page : 
 if (modifDevis) 
 {

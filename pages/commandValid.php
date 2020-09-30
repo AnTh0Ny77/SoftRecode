@@ -3,7 +3,7 @@ require "./vendor/autoload.php";
 require "./App/twigloader.php";
 session_start();
 
-if ($_SESSION['user']->user__cmd_acces < 10 ) {
+if ($_SESSION['user']->user__devis_acces < 10 ) {
   header('location: noAccess');
 }
  //URL bloqué si pas de connexion :
