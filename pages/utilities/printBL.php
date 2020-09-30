@@ -183,7 +183,7 @@ try
     $doc->pdf->SetDisplayMode('fullpage');
     $doc->writeHTML($content);
     ob_clean();
-    $doc->output('C:\laragon\www\BonLivraison\BL_'.$command->devis__id.'.pdf' , 'F'); 
+    $doc->output('O:\intranet\Auto_Print\BL\BL_'.$command->devis__id.'.pdf' , 'F'); 
     header('location: transport');
 } 
 catch (Html2PdfException $e) 

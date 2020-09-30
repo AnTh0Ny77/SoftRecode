@@ -32,16 +32,32 @@ session_start();
 if (!empty($_POST['POSTGarantie'])) 
 {
     $cmd = $Cmd->GetById($_POST['POSTGarantie']);
-    $lignes = $Cmd->devisLigne($_POST['POSTGarantie']); 
+
+    if ($cmd->devis__id_client_livraison) 
+    {
+      $livraisonRetour = $cmd->devis__id_client_livraison;
+    }
+    else 
+    {
+      $livraisonRetour = $cmd->client__id;
+    }
+    
+   
+    $retour = $Cmd->makeRetour( $cmd , 'Garantie',  000002 , $_SESSION['user']->id_utilisateur);
+    $retour = $Cmd->GetById($retour);
+    $update = $General->updateAll('cmd' , $livraisonRetour , 'cmd__client__id_livr' , 'cmd__id' , $retour->devis__id );
+    $lignes = $Cmd->devisLigne($retour->devis__id); 
 }
 
-//si une mise a jour de commentaire a ete effectuée
-if (!empty($_POST['hiddenLigne']) && !empty($_POST['ComInt'])) 
+
+
+//si une mise a jour de societe de livraison a été effectuée: 
+if ( !empty($_POST['idRetourLivraison'])) 
 {
-    $Cmd->updateComInterneLigne($_POST['ComInt'], intval($_POST['hiddenLigne']));
-    $idDevis = $Cmd->returnDevis($_POST['hiddenLigne']);
-    $cmd = $Cmd->GetById($idDevis->devis__id);
-    $lignes = $Cmd->devisLigne($idDevis->devis__id);
+  $cmd = $Cmd->GetById($_POST['idCmd']);
+  $update = $General->updateAll('cmd' , $_POST['changeLivraisonRetour'] , 'cmd__client__id_livr' , 'cmd__id' , $_POST['idRetourLivraison'] );
+  $retour = $Cmd->GetById($_POST['idRetourLivraison']);
+  $lignes = $Cmd->devisLigne($retour->devis__id);
 }
 
 
@@ -201,13 +217,7 @@ catch (Html2PdfException $e)
 }
   
  }
- else 
- {
-  $cmd = $Cmd->GetById($_POST['idRetour']);
-  $lignes = $Cmd->devisLigne($_POST['idRetour']);
-  $alert = true;
-
- }
+ 
  
  
 }
@@ -220,7 +230,8 @@ catch (Html2PdfException $e)
  'user'=>$user,
  'cmd'=> $cmd,
  'lignes'=> $lignes,
- 'alert'=> $alert
+ 'alert'=> $alert, 
+ 'retour'=> $retour
  ]);
  
  
