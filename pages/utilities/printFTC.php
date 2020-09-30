@@ -224,8 +224,10 @@ if ($temp->devis__note_client) {
      $doc->pdf->SetDisplayMode('fullpage');
      $doc->writeHTML($content);
      ob_clean();
-     $doc->output('C:\laragon\www\factures/Facture'.$temp->cmd__id_facture.'.pdf' , 'F');
-     
+     $numFact = '0000000' . $temp->cmd__id_facture ;
+     $numFact = substr($numFact , -7 );
+     $doc->output('F:\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
+    
      header('location: facture');
     
  } catch (Html2PdfException $e) {

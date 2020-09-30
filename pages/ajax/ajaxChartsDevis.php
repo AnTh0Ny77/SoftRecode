@@ -14,10 +14,11 @@ if (empty($_SESSION['user'])) {
  else {
 
 
-    if (!empty($_POST['COM'])) {
+    if (!empty($_POST['COM'])) 
+    {
     $users = $Users->getCommerciaux();
     $response = [];
-
+    
     foreach ($users as $user) {
        $devisATN = $Cmd->devisATN($user->id_utilisateur);
        $devisVLD = $Cmd->devisVLD($user->id_utilisateur);
@@ -32,8 +33,10 @@ if (empty($_SESSION['user'])) {
            $res->Total = intval($devisVLD + intval($devisATN));
            array_push($response , $res);
        }
-    }
+    
     echo json_encode($response);
+    }
+    
       
     }
 

@@ -1125,6 +1125,7 @@ public function reversePrice($idLigne)
     $lastFTC = $lastFact->fetch(PDO::FETCH_OBJ);
 
     $newfact = $lastFTC->lastFact + 1;
+
     $data = 
     [
       $newfact

@@ -17,7 +17,6 @@ public function devisATN($com) {
         $date15 =  date('ymd', strtotime('-15 day'));
    
         $request =$this->Db->Pdo->query("SELECT cmd__etat
-        
         FROM cmd
         WHERE cmd__etat = 'ATN' 
         AND cmd__user__id_devis = " . $com ."

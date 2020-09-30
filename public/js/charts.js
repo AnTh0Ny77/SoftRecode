@@ -27,6 +27,7 @@ $(document).ready(function() {
             [dataSet[1].nom,       dataSet[1].ALL,         dataSet[1].ATN ,       dataSet[1].VLD],
             [dataSet[2].nom,       dataSet[2].ALL,         dataSet[2].ATN ,       dataSet[2].VLD],
             [dataSet[3].nom,       dataSet[3].ALL,         dataSet[3].ATN ,       dataSet[3].VLD],
+            [dataSet[4].nom,       dataSet[4].ALL,         dataSet[4].ATN ,       dataSet[4].VLD],
           ]);
   
           var options = {
@@ -46,8 +47,35 @@ $(document).ready(function() {
           var chart = new google.visualization.ComboChart(document.getElementById('charts-Devis'));
           chart.draw(data, options);
         }
-
-        },
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+          },
   
       error: function (err) {
       alert('error: ' + err);}
@@ -65,29 +93,3 @@ $(document).ready(function() {
   
   
   })
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
