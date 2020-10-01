@@ -254,7 +254,7 @@ try
     $doc->pdf->SetDisplayMode('fullpage');
     $doc->writeHTML($content);
     ob_clean();
-    $doc->output('C:\laragon\www\fichesTravail\Ft_'.$command->devis__id.'.pdf' , 'F'); 
+    $doc->output('O:\intranet\Auto_Print\FT\Ft_'.$command->devis__id.'.pdf' , 'F'); 
     header('location: ficheTravail');
 } 
 catch (Html2PdfException $e) 
