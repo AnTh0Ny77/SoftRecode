@@ -38,19 +38,23 @@ if (!empty($_POST['POSTGarantie']))
 {
     $cmd = $Cmd->GetById($_POST['POSTGarantie']);
 
-    if ($cmd->devis__id_client_livraison) 
+    if (!empty($cmd->devis__id_client_livraison)) 
     {
       $livraisonRetour = $cmd->devis__id_client_livraison;
     }
     else 
     {
-      $livraisonRetour = $cmd->client__id;
+     
+      $livraisonRetour = intval($cmd->client__id);
     }
-    
+
    
     $retour = $Cmd->makeRetour( $cmd , 'Garantie',  000002 , $_SESSION['user']->id_utilisateur);
     $retour = $Cmd->GetById($retour);
     $update = $General->updateAll('cmd' , $livraisonRetour , 'cmd__client__id_livr' , 'cmd__id' , $retour->devis__id );
+    
+    $update = $General->updateAll('cmd' , 'PBL' , 'cmd__etat' , 'cmd__id' , $retour->devis__id );
+    $retour = $Cmd->GetById($retour->devis__id);
     $lignes = $Cmd->devisLigne($retour->devis__id); 
 }
 
@@ -69,42 +73,74 @@ if ( !empty($_POST['idRetourLivraison']))
 //si une machine à été ajouté sur  le retour fraichement créer : 
 //Attention !! recup les info d'origine et mettre en MAJ le devis : 
 
+if (!empty($_POST['hiddenAddLines']) && !empty($_POST['hiddenAddLinesCmd']) && !empty($_POST['designationArticle'])) 
+{
+  
+  $cmd = $Cmd->GetById($_POST['hiddenAddLinesCmd']);
+  $retour = $Cmd->GetById($_POST['hiddenAddLines']);
+  
+  $objectInsert = new stdClass;
+  $objectInsert->idDevis = $retour->devis__id;
+  $objectInsert->prestation = $_POST['typeLigne'];
+  $objectInsert->designation = $_POST['designationArticle'];
+  $objectInsert->etat = 'NC';
+  $objectInsert->garantie = '';
+  $objectInsert->comClient = '';
+  $objectInsert->quantite = $_POST['quantiteLigne'];
+  $objectInsert->prix = '';
+  $objectInsert->idfmm = $_POST['choixDesignation'];
+  $objectInsert->extension = '';
+  $objectInsert->prixGarantie = '';
+
+  $insert = $Cmd->insertLine($objectInsert);
+  $lignes = $Cmd->devisLigne($retour->devis__id);
+  $update = $General->updateAll('cmd' , 'PLL' , 'cmd__etat' , 'cmd__id' , $retour->devis__id );
+  $retour = $Cmd->GetById($_POST['hiddenAddLines']);
+}
+
+//si une suppression de ligne a été envoyée
+if (!empty($_POST['deleteLine']) && !empty($_POST['deleteLineRetour']) && !empty($_POST['deleteLineCmd'])) 
+{
+  $delete = $Cmd->deleteLine($_POST['deleteLine'] , $_POST['deleteLineRetour'] );
+  $cmd = $Cmd->GetById($_POST['deleteLineCmd']);
+  $retour = $Cmd->GetById($_POST['deleteLineRetour']);
+  $lignes = $Cmd->devisLigne($retour->devis__id);
+  if (empty($lignes)) 
+  {
+    $update = $General->updateAll('cmd' , 'PBL' , 'cmd__etat' , 'cmd__id' , $retour->devis__id );
+    $retour = $Cmd->GetById($_POST['deleteLineRetour']);
+  }
+ 
+}
+
+//si un mise à jour du status de la fiche : Maintenance / Retour : 
+if (!empty($_POST['typeRetour']) && !empty($_POST['StatusRetour']) && !empty($_POST['StatusCmd'])) 
+{
+  $cmd = $Cmd->GetById($_POST['StatusCmd']);
+  $update = $General->updateAll('cmd' , $_POST['typeRetour'] , 'cmd__client__id_fact' , 'cmd__id' , $_POST['StatusRetour']);
+
+  
+  $retour = $Cmd->GetById($_POST['StatusRetour']);
+  $lignes = $Cmd->devisLigne($retour->devis__id);
+  if (!empty($_POST['codeComdInput'])) 
+  {
+     $sujet = $retour->cmd__code_cmd_client . ' Ticket n° : '. $_POST['codeComdInput'];
+    $update = $General->updateAll('cmd' , $sujet , 'cmd__code_cmd_client' , 'cmd__id' , $_POST['StatusRetour']);
+  }
+  
+}
 
 
 $alert = false;
 
 
 //si une fiche de garantie a été crée : 
-if (!empty($_POST['qteArray'])) 
+if (!empty($_POST['rechercheF'])) 
 {
-  if($_POST['typeRetour'] == 'Garantie')
-  {
-    $idClient = 000002;
-  } else  $idClient = 000003;
-
-  $count = 0 ;
-  foreach ($_POST['qteArray'] as $key => $value) 
-  {
-    if (intval($value) > 0) 
-    { 
-      $count += 1 ;
-    } 
-  }
-
- if ($count > 0 ) 
- {
-  $sujet = $Cmd->GetById($_POST['idRetour']);
-  $retour = $Cmd->makeRetour($sujet , $_POST['typeRetour'] , $idClient , $_SESSION['user']->id_utilisateur );
-  foreach ($_POST['qteArray'] as $key => $value) 
-  {
-    if (intval($value) > 0) 
-    { 
-      $transfert = $Cmd->makeAvoirLigne($_POST['idArray'][$key],$retour ,$value);
-    } 
-  }
-
-$command = $Cmd->getById(intval($retour));
-$commandLignes = $Cmd->devisLigne($retour);
+ 
+$command = $Cmd->getById($_POST['rechercheF']);
+$commandLignes = $Cmd->devisLigne($_POST['rechercheF']);
+$update = $General->updateAll('cmd' , 'CMD' , 'cmd__etat' , 'cmd__id' , $command->devis__id );
 
 $dateTemp = new DateTime($command->cmd__date_cmd);
  //cree une variable pour la date de commande du devis
@@ -226,7 +262,7 @@ catch (Html2PdfException $e)
   die($e); 
 }
   
- }
+ 
  
  
  

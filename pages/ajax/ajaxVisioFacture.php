@@ -352,9 +352,9 @@ else
             <hr class="my-4">
             <p>
                 <?php
-                    if (!empty($temp->devis__note_client)) 
+                    if (!empty($temp->devis__note_interne)) 
                     {
-                    echo   $temp->devis__note_client ;
+                    echo   $temp->devis__note_interne ;
                     }
                     else echo 'Pas de commentaire Client';
                 ?>

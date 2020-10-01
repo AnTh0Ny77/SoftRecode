@@ -162,10 +162,10 @@ else
              $ajaxFT = $_POST['AjaxFT'];
           
                
-             echo    '<form method="POST" action="pdfTravail" target="_blank">
-             <input type="hidden" value="'.$ajaxFT.'" name="devisCommande">
-             <button class="btn btn-link " href="pdfTravail"><i class="fas fa-file-pdf"></i> Fiche de travail</button>
-            </form>';
+            //  echo    '<form method="POST" action="pdfTravail" target="_blank">
+            //  <input type="hidden" value="'.$ajaxFT.'" name="devisCommande">
+            //  <button class="btn btn-link " href="pdfTravail"><i class="fas fa-file-pdf"></i> Fiche de travail</button>
+            // </form>';
            
             
             ?>

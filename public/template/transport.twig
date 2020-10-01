@@ -81,12 +81,16 @@
                     <div data-toggle="tooltip" data-placement="top" title="Date d'envoi prévue"> <i class="far fa-truck"></i> {{devis.cmd__date_envoi}}   </div>
                     {% endif %}
                   </td>
-                  {% if devis.cmd__nom_devis %}
+                  
                   <td> 
-                  <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }} <br> {{devis.cmd__nom_devis}} </td>
-                  {% else  %}
-                  <td> <b>{{  devis.client__societe  }} </b>{{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td>
-                  {% endif %}
+                 
+                    {% if devis.devis__id_client_livraison %}
+                    <b>{{  devis.client__livraison_societe  }} </b> {{"(" ~ devis.devis__id_client_livraison ~ ")" }} <br>{{ devis.client__livraison_cp ~ " " ~ " " ~  devis.client__livraison_ville }}  </td>
+                    {% else %}
+                    <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }}  </td>
+                    {% endif %}
+                  
+                  
                   
                    <td>{{devis.DataLigne}}</td>
                   

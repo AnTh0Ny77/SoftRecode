@@ -21,7 +21,7 @@
         </div>
       </div>
        <!-- 1ere ligne -->
-       <div class="d-flex flex-wrap flex-row justify-content-start">
+       <div class="d-flex flex-wrap flex-row justify-content-between">
         <!--carte option -->
         <div class="col-9 cardVisio" >
           <div class="card shadow mb-4">
@@ -50,7 +50,12 @@
                   <h6 class="m-0 font-weight-bold text-primary"> Fiche de Garantie <i class="fal fa-layer-plus"></i>
                   </h6>    
               </div>
-                <h4> Garantie : {{retour.devis__id}} </h4>
+                <h4> {% if retour.client__id == 02 %}
+                      Garantie : {{retour.devis__id}} 
+                      {% else %}
+                      Maintenance : {{retour.devis__id}} 
+                      {% endif %}
+                    </h4>
                 <h5 class="card-title"> Expédition : {{retour.client__livraison_societe ~ '(' ~ retour.devis__id_client_livraison ~ ')'}}</h5>
                 <p class="card-text">{{ retour.client__livraison__adr1 ~ " " ~ retour.client__livraison_cp ~ ' ' ~  retour.client__livraison_ville }}</p> 
               </div>
@@ -69,8 +74,11 @@
     </div>
     <!--2 eme Ligne-->
 
-    <div class="col-9 cardVisio" >
-      <div class="card shadow mb-4">
+    <div class="col-9 cardVisio d-flex justify-content-between" >
+
+
+
+      <div class="card shadow mb-4 col-6">
         <!-- Card Header - -->
         <div class="my-2 mx-4"> 
             <h6 class="m-0 font-weight-bold text-primary">Articles  <i class="fal fa-list-ol"></i>
@@ -89,10 +97,9 @@
           <table class="table">
             <thead>
               <tr>
-                <th scope="col">Etat/Prestation</th>
+                <th scope="col">Prestation</th>
                 <th scope="col">Désignation</th>
-                <th scope="col">Commentaire</th>
-                <th scope="col">Quantité/Type</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -101,32 +108,13 @@
               <tr class="text-secondary">
                 <th scope="col">{{ligne.prestaLib}}<br>{{ligne.kw__lib}}</th>
                 <th scope="col">{{  ligne.devl_quantite ~ " X " ~ ligne.famille__lib ~ " " ~ ligne.modele ~  " " ~ ligne.marque ~  " "  ~  ligne.devl__modele }}</th>
-                <th scope="col">
-                  {% if  ligne.devl__note_interne %}
-                  <div class="d-flex">
-                    <div>
-                      {{ ligne.devl__note_interne|raw }}
-                    </div>
-                    <div>
-                      <button type="button" class="btn btn-success btn-sm clickTech mx-4" value="{{ligne.devl__id}}"><i class="far fa-money-check-edit"></i></button>
-                    </div>
-                    
-                  </div>
-                  {% else %}
-                  Pas de Commentaire
-                  <button type="button" class="btn btn-success btn-sm clickTech mx-4" value="{{ligne.devl__id}}"><i class="far fa-money-check-edit"></i></button>
-                  {% endif %}
-                </th>
-               
                 <th>
-                  <div class="form-group" style="width:100px;"> 
-                    <input type="number" value="00" max="{{ligne.devl_quantite}}" min="00" class="form-control" id="number" name="qteArray[]"> 
-                    <input type='hidden' value='{{ligne.devl__id}}' name='idArray[]'>
-                    </div> 
-                  <select class="custom-select" name="typeArray[]" id="">
-                    <option value="ECH">Echange</option>
-                    <option value="RTE">Retour</option>
-                  </select>
+                  <form action="garantiesFiches" method="POST">
+                    <input type="hidden" value="{{retour.devis__id}}" name="deleteLineRetour">
+                    <input type="hidden" value="{{cmd.devis__id}}" name="deleteLineCmd">
+                    <input type="hidden" value="{{ligne.devl__id}}" name="deleteLine">
+                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
+                  </form>
                 </th>
               </tr>
               {% endif %}
@@ -135,26 +123,92 @@
             </tbody>
           </table>
 
-          <div class="modal-footer mt-2">
-            <div class="card-body col-3">
-              <select class="custom-select" name='typeRetour'>
-                <option value="Garantie">Garantie</option>
-                <option value='Maintenance'>Maintenance</option>
-              </select >
-
-
-              
-              <input type="hidden" name="changeLivraison" id="changeLivraison">
-              <input type="hidden" name="IdCmdLivraison" id="IdCmdLivraison">
-
-            </div>
-            <button class="btn btn-success mt-2">Valider <i class="far fa-share-square"></i></button>
-
-          </div>
+          
         </form>  
          </div>
   </div>
+
+
+
+
+
+
+
+  <div class="card shadow mb-4 col-5">
+    <!-- Card Header - -->
+    <div class="my-2 mx-4"> 
+        <h6 class="m-0 font-weight-bold text-primary">Fiches Info <i class="fal fa-list-ol"></i>
+        </h6>    
+    </div>
+    <!-- Card Body -->
+    <form action="garantiesFiches" method="POST">
+    <div class="card-body" >
+      <div class="modal-footer mt-2">
+        <div class="card-body ">
+          <select class="custom-select" name='typeRetour'>
+            {% if retour.client__id == 02 %}
+            <option value="02" selected>Garantie</option>
+            <option value='03'>Maintenance</option>
+            {% else %}
+            <option value="02">Garantie</option>
+            <option value='03' selected>Maintenance</option>
+            {% endif %}
+          </select >
+
+      
+          <input type='text' placeholder="Numero de Ticket/Incident" class="form-control mt-3" name="codeComdInput">
+        
+          
+          
+          <input type="hidden" name="StatusRetour" id="changeLivraison" value="{{retour.devis__id}}">
+          <input type="hidden" name="StatusCmd" id="IdCmdLivraison" value="{{cmd.devis__id}}">
+
+        </div>
+        <button class="btn btn-success mt-2">Mettre à jour <i class="far fa-share-square"></i></button>
+
+      </div>
+      <div>
+
+        
+        <hr>
+        <div class="text-success my-2">
+        <i class="far fa-truck"></i></i> : Mettre à jour l'adresse de livraison 
+        </div>
+        <div class="text-success my-2">
+          <i class="fas fa-plus"></i> : Ajouter un element à la fiche de garantie
+        </div>
+        <div class="text-danger my-2">
+          <i class="far fa-user"></i> : Mettre à jour le contact (en cours de développement)
+        </div>
+
+
+        
+      </div>
+     </div>
+    </form>
+    <div class="modal-footer mt-4">
+      {% if retour.devis__etat != 'PBL' %}
+     
+      <form action="garantiesFiches" method="POST">
+        <input type="hidden" name="rechercheF" value="{{retour.devis__id}}">
+        <div class="d-flex">
+        <div class="text-danger mx-2">
+          <i class="fas fa-engine-warning"></i> Vérifier avant d' imprimer !
+        </div>
+        <button class="btn btn-success">Imprimer <i class="fas fa-print"></i></button>
+      </div>
+      </form>
+      {% endif %}
+      
+    </div>
   </div>
+
+
+
+  
+ </div>
+
+  
 
 
 
@@ -239,7 +293,7 @@
 
       <form action="garantiesFiches" method="POST">
         <input type="hidden" name="hiddenAddLines" value="{{ retour.devis__id}}">
-        <input type='hidden' id="hiddenAddLinesCmd" name='idCmd' value='{{cmd.devis__id}}'>
+        <input type='hidden' id="hiddenAddLinesCmd" name='hiddenAddLinesCmd' value='{{cmd.devis__id}}'>
         <div class="d-flex flex-row form-group m-3 justify-content-around">
           <div class="col-6 form-group">
             <label for="validationCustom04">Article</label>
@@ -261,7 +315,7 @@
             </div>
             <div class="col-md-3 ">
               <label for="prestationChoix">Type de retour</label>
-              <select class="form-control" name="typeLigne">
+              <select class="form-control" name="typeLigne" required>
                   <option class="" value="ECH">Echange</option>
                   <option class="" value="RTE" >Retour</option>
               </select>

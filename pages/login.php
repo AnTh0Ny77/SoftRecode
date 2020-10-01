@@ -18,27 +18,34 @@
     }  
     
     //si le formulaire a ete soumis : 
-        if (isset($_POST['login'])){
+        if (isset($_POST['login']))
+        {
 
             // verification des concordances en base de donnée : 
                 $login  = $Users->login($_POST['login']);
+              
                 $hash = $_POST['pass'];
                 $verif = password_verify($hash, $login->password_user);
-                if ($login) {
-                   
-                        switch ($verif) {
+                if ($login == true ) 
+                {
+                        switch ($verif) 
+                        {
                             // si erreur envoi info au template : 
                             case false:
                                 $_SESSION['loginStatus'] = false;
-                                break;
-                            // sinon redirection de l'utilisateur vers "page d'acceuil"  : 
+                            break;
+
+
                             default:
                                 $_SESSION['user'] = $login ;
                                 header('location: dashboard');
-                                break;
-                            }
+                            break;
+                        }
                 }
-                else{header('location: dashboard');}   
+                else
+                {
+                    header('location: login');
+                }   
         }
 
     // Affichage du template Login :

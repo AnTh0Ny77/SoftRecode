@@ -31,7 +31,7 @@ class Cmd extends Table {
     cmd__contact__id_livr as  devis__contact_livraison , 
     cmd__nom_devis, cmd__modele_devis , 
     cmd__date_cmd, cmd__date_envoi, cmd__code_cmd_client, cmd__tva, cmd__user__id_cmd, LPAD(cmd__id_facture ,7,0) as cmd__id_facture ,
-    cmd__modele_facture, cmd__id_facture , cmd__date_fact, 
+    cmd__modele_facture, cmd__id_facture , cmd__date_fact, cmd__trans, 
     k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     t2.contact__nom as nom__livraison , t2.contact__prenom as prenom__livraison ,
@@ -916,6 +916,7 @@ public function insertLine($object){
     $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
     
     
+    
     $ordreMax = $ordreMax->maxOrdre + 1 ;
 
     $requestLigne->bindValue(":devl__devis__id", $object->idDevis);
@@ -1088,6 +1089,7 @@ public function makeAvoirLigne($id , $avoirId , $qte)
   $update->execute($data);
   return $idLigne;
 }
+
 
 
 //inverse les prix pour chaque ligne: 
@@ -1445,7 +1447,15 @@ public function reversePrice($idLigne)
 }
 
 
-
+//efface une ligne : 
+public function deleteLine($id , $cmdid)
+{
+  $request = "DELETE FROM cmd_ligne WHERE cmdl__id ='".$id."' AND cmdl__cmd__id = '".$cmdid."'";
+  $update = $this->Db->Pdo->prepare($request);
+  $update->execute();
+  return true;
+  
+}
 
 //efface et remplace le devis: 
 public function modify(

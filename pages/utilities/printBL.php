@@ -63,10 +63,14 @@ $date_time = new DateTime( $command->cmd__date_envoi);
 //formate la date pour l'utilisateur:
 $formated_date = $date_time->format('d/m/Y');
 $command->cmd__date_envoi = $formated_date;
-$export = $Global->exportTNT($command , $_POST['poids'],$_POST['paquets']);
-$file = fopen("O:\intranet\Port\TNT\TNT.txt", "a");
-fwrite($file , $export);
-fclose($file);
+if ($command->cmd__trans == 'TNT') 
+{
+    $export = $Global->exportTNT($command , $_POST['poids'],$_POST['paquets']);
+    $file = fopen("O:\intranet\Port\TNT\TNT.txt", "a");
+    fwrite($file , $export);
+    fclose($file);
+}
+
   
 
 $command = $Command->getById(intval($_POST['id_trans']));
