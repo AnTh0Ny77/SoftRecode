@@ -174,12 +174,13 @@ ob_start();
 
              <small>Commandé le : <?php echo $formated_date ?></small><br>
              Vendeur :<?php echo  $_SESSION['user']->log_nec ?> </td>
-             <td style="text-align: left; width:50%"><strong>
-             <?php echo $command->client__societe ?><br><?php echo $command->client__adr1 ?><br><?php if (!empty($command->client__adr2)) {
-                 echo $command->client__adr2; } ?>
+             <td style="text-align: left; width:50%">
+             <?php
+              $livraison = $Client->getOne($command->devis__id_client_livraison);
+              echo Pdfunctions::showSociete($livraison);
+             ?>
              <br>
-             <?php echo $command->client__cp ." ". $command->client__ville ?></strong><br>
-             <?php echo $command->contact__nom . " " . $command->contact__prenom   ?> <br>
+             
              <strong>
              <?php
              if (!empty($command->cmd__code_cmd_client)) 

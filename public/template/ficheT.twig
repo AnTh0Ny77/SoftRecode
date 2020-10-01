@@ -107,22 +107,23 @@
                     <div data-toggle="tooltip" data-placement="top" title="Date d'envoi prévue"> <i class="far fa-truck"></i> {{devis.cmd__date_envoi}}   </div>
                     {% endif %}
                   </td>
-                  {% if devis.cmd__nom_devis %}
+
+                
+                
                   <td> 
-                  <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }} <br> {{devis.cmd__nom_devis}} 
-                  {% if devis.devis__etat == 'CMD' %}
-                  <br><strong>{{ devis.kw__lib}}</strong> <i class="fas fa-tools"></i>
-                   {% else %}
-                  <br><strong>Expédiée</strong> <i class="fas fa-truck"></i>
-                   {% endif %}</td>
-                  {% else  %}
-                  <td> <b>{{  devis.client__societe  }} </b>{{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}} 
+                    {% if devis.devis__id_client_livraison %}
+                    <b>{{  devis.client__livraison_societe  }} </b> {{"(" ~ devis.devis__id_client_livraison ~ ")" }} <br>{{ devis.client__livraison_cp ~ " " ~ " " ~  devis.client__livraison_ville }}  
+                    {% else %}
+                    <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }}  
+                    {% endif %}
                     {% if devis.devis__etat == 'CMD' %}
                     <br><strong>{{ devis.kw__lib}}</strong> <i class="fas fa-tools"></i>
                      {% else %}
                     <br><strong>Expédiée</strong> <i class="fas fa-truck"></i>
-                     {% endif %}</td>
-                  {% endif %}
+                     {% endif %}
+                    
+                </td>
+              
 
                  
                   
