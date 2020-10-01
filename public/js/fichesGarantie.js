@@ -141,6 +141,21 @@ $(document).ready(function()
     })
 
 
+  $('#targetAddLines').on('click' , function()
+  {
+      $('#modalAddLines').modal('show');
+  })
+
+ 
+$('#choixDesignation').on('change' ,function () 
+{
+    
+    var test = $( "#choixDesignation option:selected" ).text();
+    console.log(test);
+    $('#designationArticle').val(test);
+
+  });
+
   
   
     

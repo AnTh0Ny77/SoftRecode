@@ -88,7 +88,7 @@
       require __DIR__ .'/pages/fichesEnCours.php'; break;
     
     case '/SoftRecode/garantiesFiches';
-      require __DIR__ .'/pages/ficheT.php'; break;
+      require __DIR__ .'/pages/fichesEnCours.php'; break;
 
     //facture/compta->
     case '/SoftRecode/facture';

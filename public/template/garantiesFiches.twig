@@ -58,7 +58,7 @@
               
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" ><i class="fas fa-plus"></i></button>
+              <button type="button" class="btn btn-primary"  id="targetAddLines"><i class="fas fa-plus"></i></button>
               <button type="button" class="btn btn-primary" ><i class="far fa-user"></i></button>
               <button type="button" class="btn btn-success" id="targetModal"><i class="far fa-truck"></i></i></button>
             </div>
@@ -221,6 +221,63 @@
          </form>
       </div>
     
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade bd-example-modal-lg" id="modalAddLines" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Ajout Ligne</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form action="garantiesFiches" method="POST">
+        <input type="hidden" name="hiddenAddLines" value="{{ retour.devis__id}}">
+        <input type='hidden' id="hiddenAddLinesCmd" name='idCmd' value='{{cmd.devis__id}}'>
+        <div class="d-flex flex-row form-group m-3 justify-content-around">
+          <div class="col-6 form-group">
+            <label for="validationCustom04">Article</label>
+              <select class="selectpicker col-12" id="choixDesignation" name="choixDesignation" data-live-search="true">
+                {% for article in articleList %} 
+                  <option class="optionSelect modelSelect " value={{article.afmm__id}}>{{article.afmm__modele   ~ " " ~ article.famille ~ " " ~ article.Marque }}</option>
+                  {% endfor %}
+              </select> 
+            </div>
+            <div class="form-group col-3">
+              <label for="validationCustom04">Quantité</label>
+              <input type="number" class="form-control" value="1" min="1" id="quantiteLigne" name="quantiteLigne" required >
+            </div>
+          </div>
+          <div class="d-flex flex-row form-group m-2 justify-content-around">
+            <div class="form-group col-7">
+              <label for="validationCustom04">Désignation</label>
+              <input type="text" class="form-control" id="designationArticle" name="designationArticle" required >
+            </div>
+            <div class="col-md-3 ">
+              <label for="prestationChoix">Type de retour</label>
+              <select class="form-control" name="typeLigne">
+                  <option class="" value="ECH">Echange</option>
+                  <option class="" value="RTE" >Retour</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-success">Valider</button>
+          </div>
+        </form>
+        </div>
+
+      
+
+
+
+      
     </div>
   </div>
 </div>

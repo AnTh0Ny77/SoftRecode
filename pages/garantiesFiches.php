@@ -29,6 +29,11 @@ session_start();
  $Article = new App\Tables\Article($Database);
  
 
+ $articleTypeList = $Article->getModels();
+
+
+ //si ouverture venant de la liste des fiche de travail : creation d' un retour + recup des info de la commande d'origine 
+ // attention devis doit passer en status spécial pour passer en poubelle si rien n'est validé : 
 if (!empty($_POST['POSTGarantie'])) 
 {
     $cmd = $Cmd->GetById($_POST['POSTGarantie']);
@@ -52,6 +57,7 @@ if (!empty($_POST['POSTGarantie']))
 
 
 //si une mise a jour de societe de livraison a été effectuée: 
+// Attention on doit recup les bonne info cmd d'origine et compagnie :
 if ( !empty($_POST['idRetourLivraison'])) 
 {
   $cmd = $Cmd->GetById($_POST['idCmd']);
@@ -59,6 +65,10 @@ if ( !empty($_POST['idRetourLivraison']))
   $retour = $Cmd->GetById($_POST['idRetourLivraison']);
   $lignes = $Cmd->devisLigne($retour->devis__id);
 }
+
+//si une machine à été ajouté sur  le retour fraichement créer : 
+//Attention !! recup les info d'origine et mettre en MAJ le devis : 
+
 
 
 $alert = false;
@@ -231,7 +241,8 @@ catch (Html2PdfException $e)
  'cmd'=> $cmd,
  'lignes'=> $lignes,
  'alert'=> $alert, 
- 'retour'=> $retour
+ 'retour'=> $retour,
+ 'articleList' => $articleTypeList
  ]);
  
  
