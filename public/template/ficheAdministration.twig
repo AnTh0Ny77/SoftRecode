@@ -1,0 +1,242 @@
+{% extends 'layoutMain.twig' %}
+
+
+  {% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/css/dashboard.css">
+  {% endblock %}
+ 
+ 
+     {% block main %}
+     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        <h1 class="h2">Administration Fiche de Travail N° {{cmd.devis__id}}</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+          </div>
+        </div>
+      </div>
+       <!-- 1ere ligne -->
+       <div class="d-flex flex-wrap flex-row justify-content-start">
+      
+        <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
+        
+        
+       
+
+
+       
+        <!--carte liste de Devis -->
+      <div class="col-5">
+        <div class="card shadow mb-4">
+          <!-- Card Header - -->
+         
+          
+          
+          <!-- Card Body -->
+          <div class="card-body">
+
+            <form action="adminFiche" method="POST">
+                <div class="form-group">
+                <input type='hidden' name='idAdminFiche' value='{{cmd.devis__id}}'>
+                    <label for="exampleInputEmail1">Code Commande Client</label>
+                    <input type="text" class="form-control" name="codeCommandeClient" value='{{cmd.cmd__code_cmd_client}}'>
+                    <small id="emailHelp" class="form-text text-muted">Maximum 100 caractères.</small>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Commentaire Interne</label>
+                    <textarea class="form-control " name='comInterne' id="comInterne"  rows="5" cols="40">{{cmd.devis__note_interne}}</textarea>
+                </div>
+               <div class='modal-footer'>
+               <a class="btn btn-secondary" href="ficheTravail" role="button">retour à recherche</a>
+                <button type="button" class="btn btn-success" id="clickLivraison">Livraison</button>
+               <button class="btn btn-primary">Mettre à Jour</button>
+               </div>
+                
+            </form>
+           
+           
+          </div>
+         
+        </div>
+      </div>
+
+        <!--carte option -->
+        <div class="col-7 cardVisio" >
+          <div class="card shadow mb-4">
+            <!-- Card Header - -->
+           
+            <!-- Card Body -->
+            <div class="card-body" >
+              {% if cmd.devis__id_client_livraison and cmd.devis__id_client_livraison !=  cmd.client__id  %}
+              <div class='d-flex  justify-content-around'>
+
+              <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title"> facturé :<br> {{ cmd.client__societe }}</h5>
+                     <p class="card-text">{{ cmd.client__adr1 ~  " " ~ cmd.client__ville ~ " " ~ cmd.client__cp }}</p>
+                </div>
+              </div>
+
+              <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title"> Livré :<br> {{ cmd.client__livraison_societe }}</h5>
+                     <p class="card-text">{{ cmd.client__livraison__adr1 ~  " " ~ cmd.client__livraison_ville ~ " " ~ cmd.client__livraison_cp }}</p>
+                </div>
+              </div>
+
+            </div>
+            {% else %}
+             <div class="card" style="width: 18rem;">
+                <div class="card-body">
+                    <h5 class="card-title"> Livré et facturé :<br><strong>{{ cmd.client__societe }}</strong></h5>
+                    <p class="card-text">{{ cmd.client__adr1 ~  " " ~ cmd.client__ville ~ " " ~  cmd.client__cp }}</p>
+                    
+                </div>
+              </div>
+
+            {% endif %}
+
+            <div class="d-flex flex-column mt-3">
+
+                <div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                        Code Commande Client: 
+                        <strong>
+                        {% if cmd.cmd__code_cmd_client %}
+                        {{ cmd.cmd__code_cmd_client }}
+                        
+                        {% else %}
+                        Non renseigné
+                        {% endif %}</strong>
+                        </li>
+                        <li class="list-group-item">
+                        Date du devis: <strong>{{cmd.devis__date_crea}}</strong>
+                        </li>
+                        <li class="list-group-item">
+                        Date de validation: <strong>{{cmd.cmd__date_cmd}}</strong>
+                        </li>
+                        <li class="list-group-item">
+                        Vendeur: <strong>{{cmd.log_nec}}</strong>
+                        </li>
+                        <li class="list-group-item">
+                        Commentaire Interne: <br>
+                        {% if cmd.devis__note_interne %}
+                        {{ cmd.devis__note_interne|raw }}
+                        {% else %}
+                        <strong>Non renseigné</strong>
+                        {% endif %}
+                        <hr>
+                        </li>
+                       
+                    </ul>
+                </div>
+
+                
+              <div class="card mt-5" >
+                <div class="card-body">
+                    <h5 class="card-title">Articles </h5>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                            <th scope="col">Prestation</th>
+                            <th scope="col">Quantité/Désignation</th>
+                            <th scope="col">Commentaire Interne</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for ligne in lignes %}
+                            <tr>
+                            <th scope="row">{{ ligne.prestaLib}}</th>
+                            <td><strong>{{ ligne.devl_quantite }}</strong> {{" X " ~ ligne.devl__designation}}</td>
+                            <td>{{ ligne.devl__note_interne}}</td>
+                            
+                            </tr>
+                            {% endfor %}
+                            
+                            
+                        </tbody>
+                    </table>
+                     
+                </div>
+              </div>
+
+            </div>
+             
+
+
+              
+        </div>
+      </div>
+      </div>
+    </div>
+
+
+
+
+
+<!-- Modal  Livraison-->
+<div class="modal fade" id="modalLivraison" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Changer l'adresse de livraison</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class='mx-2'>
+
+          <table id="ClientTable" class="table  display " style="width:100%"> 
+                      <thead>
+                      <tr><th>Id</th><th>Nom</th><th>CP</th><th>Ville</th></tr>
+                      </thead>
+                       
+                      <tbody class="trClick">
+                      </tbody>
+          </table>
+        
+        </div>
+      
+      </div>
+      
+      <div class="modal-footer">
+      <form action="adminFiche" method="POST">
+        <input type='hidden' name='majIdFiche' value='{{cmd.devis__id}}'>
+        <input type="hidden" id="MajLivraison" name="MajLivraison">
+        <button  class="btn btn-success" id="buttonPost" disabled>valider</button>
+      </form>
+        
+        
+        
+      </div>
+    
+    </div>
+  </div>
+</div>
+
+
+    </main>
+     {% endblock %}
+     
+    
+     {% block script %}
+     <!-- Optional JavaScript -->
+
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+<script type="text/javascript" src="public/js/administrationFiche.js"></script>
+
+
+
+     {% endblock %}

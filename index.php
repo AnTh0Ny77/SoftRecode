@@ -83,6 +83,9 @@
     
     case '/SoftRecode/ficheTravail';
       require __DIR__ .'/pages/ficheT.php'; break;
+   
+    case '/SoftRecode/adminFiche';
+      require __DIR__ .'/pages/ficheAdministration.php'; break;
     
     case '/SoftRecode/fichesEnCours';
       require __DIR__ .'/pages/fichesEnCours.php'; break;
