@@ -29,46 +29,96 @@
            
             <!-- Card Body -->
             <div class="card-body" >
-              <div  class="d-flex justify-content-around">
+              <div  class="d-flex justify-content-between">
                 <div>
-                  <div class="my-2 mx-4"> 
-                    <h6 class="m-0 font-weight-bold text-primary"> Commande d'origine <i class="fas fa-file-export"></i>
-                    </h6>    
-                </div>
-                {% if cmd.devis__id_client_livraison %}
-                <h4> commande : {{cmd.devis__id}}</h4>
-                <h5 class="card-title"> Expédition : {{cmd.client__livraison_societe ~ '(' ~ cmd.devis__id_client_livraison ~ ')'}}</h5>
-                <p class="card-text">{{ cmd.client__livraison__adr1 ~ " " ~ cmd.client__livraison_cp ~ ' ' ~  cmd.client__livraison_ville }}</p> 
-                {% else %}
-                <h4> commande : {{cmd.devis__id}}</h4>
-                <h5 class="card-title"> Expédition : {{cmd.client__societe ~ '(' ~ cmd.client__id ~ ')'}}</h5>
-                <p class="card-text">{{ cmd.client__adr1 ~ " " ~ cmd.client__cp ~ ' ' ~  cmd.client__ville }}</p> 
-                {% endif %} 
+                     {% if retour.client__id %}
+                      <div class="my-2 mx-4"> 
+                            <h6 class="m-0 font-weight-bold text-primary"> Commande d'origine <i class="fas fa-file-export"></i>
+                            </h6>  
+                        </div>
+                        <h4>{{retour.cmd__code_cmd_client}}</h4>
+                       {% else %}
+                    
+                    <form action='garantieCreation' method='POST'>
+                    <div class="card-body ">
+                    <div class="my-2">
+                        <input class="form-control" type="text" name='creaNumCommande' placeholder="N° commande origine" required>
+                    </div> 
+                    <div class="my-2">
+                     <select class="custom-select" name='typeRetour'>
+                            <option value="02" selected>Garantie</option>
+                            <option value='03'>Maintenance</option>
+                        </select >
+                    <div class='mt-2'>
+                    <h6 class="m-0 font-weight-bold text-secondary" id="PreSelected"> </h6>
+                    </div>
+                    </div>
+                       
+
+                    </div>
+                    <div class="modal-footer">
+                    <input type='hidden' name='creaLivraison' id='creaLivraison' required></input>
+                   
+                     
+                      <button type="button" class="btn btn-success mt-2" id="targetModal"><i class="far fa-truck"></i></input></button>
+                   
+                    
+                    <button class="btn btn-success mt-2" id="validCrea" disabled>Pousuivre <i class="far fa-share-square"></i></button>
+                        
+                    </div>
+                    </form>
+                       
+                      
+                  
+                    
+                   
+                       
+                     {% endif %}
+              
               </div>
-              <div>
+                   
+
+        
+        <div>
                 <div class="my-2 mx-4"> 
                   <h6 class="m-0 font-weight-bold text-primary"> Fiche de Garantie <i class="fal fa-layer-plus"></i>
                   </h6>    
               </div>
-                <h4> {% if retour.client__id == 02 %}
+               {% if retour.client__id %}
+                      <h4> 
+                    {% if retour.client__id == 02 %}
                       Garantie : {{retour.devis__id}} 
                       {% else %}
                       Maintenance : {{retour.devis__id}} 
                       {% endif %}
-                    </h4>
-                <h5 class="card-title"> Expédition : {{retour.client__livraison_societe ~ '(' ~ retour.devis__id_client_livraison ~ ')'}}</h5>
-                <p class="card-text">{{ retour.client__livraison__adr1 ~ " " ~ retour.client__livraison_cp ~ ' ' ~  retour.client__livraison_ville }}</p> 
-                {% if retour.devis__contact_livraison %}
-                <p class="card-text"> Contact:  <strong>{{  retour.prenom__livraison ~ " " ~ retour.nom__livraison  }}</strong></p> 
+                      </h4>
+                      <h5 class="card-title"> Expédition : {{retour.client__livraison_societe ~ '(' ~ retour.devis__id_client_livraison ~ ')'}}</h5>
+                        <p class="card-text">{{ retour.client__livraison__adr1 ~ " " ~ retour.client__livraison_cp ~ ' ' ~  retour.client__livraison_ville }}</p> 
+                        {% if retour.devis__contact_livraison %}
+                        <p class="card-text"> Contact:  <strong>{{  retour.prenom__livraison ~ " " ~ retour.nom__livraison  }}</strong></p> 
+                        {% endif %}
+                {% else %}
+                        <div class="alert alert-warning" role="alert">
+                            <p>1-Renseigner le Numero de commande d'origine</p>
+                            <p>2-Renseigner le type Garantie/Maintenance</p>
+                            <p>3-Choisir une adresse de Livraison <i class="far fa-truck"></i></input></p>
+                            <p>4-Poursuivre</p>
+                        </div>
                 {% endif %}
+              
+                    
               </div>
               </div>
               
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary"  id="targetAddLines"><i class="fas fa-plus"></i></button>
-              <button type="button" class="btn btn-primary" id="targetContact" value="{{retour.devis__id_client_livraison}}"><i class="far fa-user"></i></button>
-              <button type="button" class="btn btn-success" id="targetModal"><i class="far fa-truck"></i></i></button>
+                {% if retour.client__id %}
+                 <button type="button" class="btn btn-primary"  id="targetAddLines" ><i class="fas fa-plus"></i></button>
+                 <button type="button" class="btn btn-primary" id="targetContact" value="{{retour.devis__id_client_livraison}}" ><i class="far fa-user"></i></button>
+                {% else %}
+                {% endif %}
+             
+
             </div>
            
       </div>
@@ -94,7 +144,7 @@
         {% endif %}
         <!-- Card Body -->
         <div class="card-body" >
-          <form action="garantiesFiches" method="POST">
+         
           <input type='hidden' id="idRetour" name='idRetour' value='{{retour.devis__id}}'>
          
           <table class="table">
@@ -112,9 +162,8 @@
                 <th scope="col">{{ligne.prestaLib}}<br>{{ligne.kw__lib}}</th>
                 <th scope="col">{{  ligne.devl_quantite ~ " X " ~ ligne.famille__lib ~ " " ~ ligne.modele ~  " " ~ ligne.marque ~  " "  ~  ligne.devl__modele }}</th>
                 <th>
-                  <form action="garantiesFiches" method="POST">
+                  <form action="garantieCreation" method="POST">
                     <input type="hidden" value="{{retour.devis__id}}" name="deleteLineRetour">
-                    <input type="hidden" value="{{cmd.devis__id}}" name="deleteLineCmd">
                     <input type="hidden" value="{{ligne.devl__id}}" name="deleteLine">
                     <button class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i></button>
                   </form>
@@ -127,7 +176,7 @@
           </table>
 
           
-        </form>  
+       
          </div>
   </div>
 
@@ -147,27 +196,7 @@
     <form action="garantiesFiches" method="POST">
     <div class="card-body" >
       <div class="modal-footer mt-2">
-        <div class="card-body ">
-          <select class="custom-select" name='typeRetour'>
-            {% if retour.client__id == 02 %}
-            <option value="02" selected>Garantie</option>
-            <option value='03'>Maintenance</option>
-            {% else %}
-            <option value="02">Garantie</option>
-            <option value='03' selected>Maintenance</option>
-            {% endif %}
-          </select >
-
-      
-          <input type='text' placeholder="Numero de Ticket/Incident" class="form-control mt-3" name="codeComdInput">
         
-          
-          
-          <input type="hidden" name="StatusRetour" id="changeLivraison" value="{{retour.devis__id}}">
-          <input type="hidden" name="StatusCmd" id="IdCmdLivraison" value="{{cmd.devis__id}}">
-
-        </div>
-        <button class="btn btn-success mt-2">Mettre à jour <i class="far fa-share-square"></i></button>
 
       </div>
       <div>
@@ -270,12 +299,9 @@
       </div>
       
       <div class="modal-footer">
-        <form action="garantiesFiches" method="POST">
-          <input type="hidden" id="changeLivraisonRetour" name="changeLivraisonRetour">
-          <input type='hidden' id="idCmd" name='idCmd' value='{{cmd.devis__id}}'>
-          <input type='hidden' id="idRetourLivraison" name='idRetourLivraison' value='{{retour.devis__id}}'>
-        <button type="" class="btn btn-success" id="buttonPost" disabled>valider</button>
-         </form>
+        
+        <button type="button" class="btn btn-success" id="buttonPost" disabled>valider</button>
+        
       </div>
     
     </div>
@@ -312,10 +338,13 @@
       </div>
       
       <div class="modal-footer">
-        <form action="garantiesFiches" method="POST">
+        <form action="garantieCreation" method="POST">
           <input type="hidden" id="ChangeContact" name="ChangeContact">
-          <input type='hidden' id="contactIdCmd" name='contactIdCmd' value='{{cmd.devis__id}}'>
-          <input type='hidden' id="contactIdRetour" name='contactIdRetour' value='{{retour.devis__id}}'>
+          {% if retour.devis__id %}
+          <input type='hidden'  name='idRetourChangeContact' value='{{retour.devis__id}}'>
+          {% else %}
+          <input type='hidden' id="contactIdRetour" name='idRetourChangeContact' value=''>
+          {% endif %}
         <button type="" class="btn btn-success" id="btnContact" disabled>valider</button>
          </form>
       </div>
@@ -336,9 +365,14 @@
         </button>
       </div>
 
-      <form action="garantiesFiches" method="POST">
-        <input type="hidden" name="hiddenAddLines" value="{{ retour.devis__id}}">
-        <input type='hidden' id="hiddenAddLinesCmd" name='hiddenAddLinesCmd' value='{{cmd.devis__id}}'>
+      <form action="garantieCreation" method="POST">
+      {% if  retour.devis__id %}
+       <input type="hidden" name="hiddenAddLines" value="{{ retour.devis__id}}">
+      {% else %}
+       <input type="hidden" name="hiddenAddLines" value="">
+      {% endif %}
+       
+       
         <div class="d-flex flex-row form-group m-3 justify-content-around">
           <div class="col-6 form-group">
             <label for="validationCustom04">Article</label>
@@ -393,7 +427,8 @@
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
-<script type="text/javascript" src="public/js/fichesGarantie.js"></script>
+<script type="text/javascript" src="public/js/garantieCreation.js"></script>
+
 
 
 

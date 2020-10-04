@@ -66,13 +66,22 @@ if ( !empty($_POST['idRetourLivraison']))
 {
   $cmd = $Cmd->GetById($_POST['idCmd']);
   $update = $General->updateAll('cmd' , $_POST['changeLivraisonRetour'] , 'cmd__client__id_livr' , 'cmd__id' , $_POST['idRetourLivraison'] );
+  $update = $General->updateAll('cmd' , null , 'cmd__contact__id_livr' , 'cmd__id' , $_POST['idRetourLivraison'] );
   $retour = $Cmd->GetById($_POST['idRetourLivraison']);
+  $lignes = $Cmd->devisLigne($retour->devis__id);
+}
+
+//si une mise à jour de contact de societe livraison a ete effectuée :
+if (!empty($_POST['ChangeContact']) && !empty($_POST['contactIdCmd']) && !empty($_POST['contactIdRetour'])) 
+{
+  $cmd = $Cmd->GetById($_POST['contactIdCmd']);
+  $update = $General->updateAll('cmd' , $_POST['ChangeContact'] , 'cmd__contact__id_livr' , 'cmd__id' , $_POST['contactIdRetour'] );
+  $retour = $Cmd->GetById($_POST['contactIdRetour']);
   $lignes = $Cmd->devisLigne($retour->devis__id);
 }
 
 //si une machine à été ajouté sur  le retour fraichement créer : 
 //Attention !! recup les info d'origine et mettre en MAJ le devis : 
-
 if (!empty($_POST['hiddenAddLines']) && !empty($_POST['hiddenAddLinesCmd']) && !empty($_POST['designationArticle'])) 
 {
   
