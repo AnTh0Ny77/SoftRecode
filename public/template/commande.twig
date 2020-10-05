@@ -35,7 +35,7 @@
               <div class=" mb-0 font-weight-bold text-muted">
                 {{devis.client__societe}}<br>
                   {{devis.client__ville ~ " " ~  devis.client__cp}}<br>
-                  {% if devis.contact__prenom %}
+                  {% if devis.devis__contact__id %}
                   <br>
                   Contact:<br>
                   {{devis.contact__nom ~ " " ~ devis.contact__prenom}}<br>

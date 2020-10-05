@@ -92,19 +92,16 @@ $garanties = $Keyword->getGaranties();
              } else  echo 'TVA intracom : Non renseigné';
               
              ?><br>
-             votre cde n° :<small> <?php echo $temp->cmd__code_cmd_client ; ?> </small><br>
-             date commande :  <?php echo $formated_date ; ?><br>
-             notre B.L n° : <?php echo $temp->devis__id ; ?>
-            <br><br>
-            <small>
-            Livraison:<br>
-            <b>
-            <?php  echo Pdfunctions::showSociete($societeLivraison) ?>
-             </b>
-             </small>
+            Votre cde n° :<small> <?php echo $temp->cmd__code_cmd_client ; ?> </small><br>
+            Date commande :  <?php echo $formated_date ; ?><br>
+            Notre B.L n° : <?php echo $temp->devis__id ; ?>
+            <br><br><small>Livraison:<br><b>
+            <?php  echo Pdfunctions::showSociete($societeLivraison) ?></b>
+            </small>
             </td>
              <td style="text-align: left; width:50%">
              <h3>Facture : <?php echo $temp->cmd__id_facture ; ?></h3><br>
+             
              <?php 
              // si une societe de livraion est présente 
            
@@ -117,8 +114,8 @@ $garanties = $Keyword->getGaranties();
                 }
                 else
                 {
-                    echo "<small>facturation : </small><strong><br>";
-                    echo Pdfunctions::showSociete($clientView)  ."</strong></td>";
+                echo "<small>facturation :</small><strong><br>";
+                echo Pdfunctions::showSociete($clientView)  ."</strong></td>";
                 }
 
              
@@ -145,10 +142,10 @@ $garanties = $Keyword->getGaranties();
 
 
                 echo "<td style='text-align: left; width: 175px;'>
-                        TOTAL HORS TAXES :<br>
-                        TAUX TVA :<br>
-                        TOTAL TVA :<br>
-                        TOTAL TOUTES TAXES:
+                        Total Hors Taxes :<br>
+                        Taux Tva :<br>
+                        Total Tva :<br>
+                        Total Toutes Taxes:
                      </td>
                        
                      <td style='text-align: right; '>
@@ -167,14 +164,14 @@ $garanties = $Keyword->getGaranties();
 </table>
 </div>
 <table CELLSPACING=0 style=" width: 100%;  margin-bottom: 5px; margin-top: 35 px;">
-    <tr><td style="text-align: center;  width: 100%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;">Condition et payement à réception/Condition générale de Vente.
-     Des pénalités de retard au taux légal seront appliquées en cas de paiement aprés la date d'échéance. Conformément à la loi du 12.05.80, EUROCOMPUTEUR conserve la propriété du matériel jusqu'au paiement intégral du prix et des frais annexes
+    <tr><td style="text-align: center;  width: 100%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;">Condition de paiement à réception/Conditions générales de Vente.
+     Des pénalités de retard au taux légal seront appliquées en cas de paiement aprés la date d'échéance. Conformément à la loi du 12.05.80, EUROCOMPUTER conserve la propriété du matériel jusqu'au paiement intégral du prix et des frais annexes
     </td></tr>
     </table>
         <table  class="page_footer" style="text-align: center; margin: auto; ">
             <tr >
-                <td  style=" font-size: 80%; width: 100%;  "><br><br><small>New Eurocomputer-TVA FR33b 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
-                <strong>RECODE by eurocomputeur - 112 allée François Coli -06210 Mandelieu</strong></small></td>
+                <td  style=" font-size: 80%; width: 100%;  "><br><br><small>New Eurocomputer-TVA FR33 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
+                <strong>RECODE by eurocomputer - 112 allée François Coli -06210 Mandelieu</strong></small></td>
             </tr>
          </table>
 </page_footer>
@@ -226,9 +223,9 @@ if ($temp->devis__note_client) {
      if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
     {
         $doc->output('F:\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
-        $doc->output('O:\intranet\Auto_Print\FC\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
+     
     }
-    
+    $doc->output('O:\intranet\Auto_Print\FC\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
     
      header('location: facture');
     

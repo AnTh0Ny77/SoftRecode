@@ -67,15 +67,15 @@ else
     
 
     <div class="global-wrapper">
-        <div class="div bodyFrame mt-4" style="width: 100%;" >
+        <div class="div bodyFrame mt-2" style="width: 100%;" >
          <div class="head-wrapper div">
 
 
              <div class="div" style="text-align: left;  width: 50%;" >
              <div class="div">
-             <img  style=" width:55mm;" src="public\img\recodeDevis.png"/>
+            
              </div>
-             <div class="div" style=" margin-top: 15%" >
+             <div class="div" style=" margin-top: 2%" >
              <h6><small>Commandé le : </small><b><?php echo $formated_date ?> à : <?php echo $h . 'h ' . $m ?></b></h6>
              <?php 
            

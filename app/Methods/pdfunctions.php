@@ -13,13 +13,13 @@ namespace App\Methods;
 
 public static function showSociete($object){
 	if ($object->client__adr2) {
-		$text = $object->client__societe . " (" . $object->client__id . ") <br>" .
-		$object->client__adr1 . "<br>" . $object->client__adr2 . "<br>" . $object->client__cp . " " . $object->client__ville ;
+		$text = $object->client__societe . " (" . $object->client__id . ")<br>".
+		$object->client__adr1 . "<br>". $object->client__adr2 . "<br>" . $object->client__cp . " " . $object->client__ville ;
 		return $text ;
 	}
 	else {
-		$text = $object->client__societe . " (" . $object->client__id . ") <br>" .
-		$object->client__adr1 . "<br>"  . $object->client__cp . " " . $object->client__ville ;
+		$text = $object->client__societe . " (" . $object->client__id . ")<br>".
+		$object->client__adr1 . "<br>". $object->client__cp . " " . $object->client__ville ;
 		return $text ;
 	}
    
@@ -840,11 +840,11 @@ public static function magicLineFTC($arrayLigne , $cmd){
 	
 
 	$tete =  '<tr style=" margin-top : 70px;  background-color: #dedede; ">
-	<td style=" text-align: left;   padding-top: 4px; padding-bottom: 4px;">Prestation</td>
-	<td style=" text-align: left; padding-top: 4px; padding-bottom: 4px;">Désignation</td>
-	<td  style=" text-align: center; padding-top: 4px; padding-bottom: 4px;">Qté</td>
-	<td style="text-align: center; padding-top: 4px; padding-bottom: 4px;">P.u € HT</td>
-	<td style="text-align: right; ; padding-top: 4px; padding-bottom: 4px;">P.u € TTC</td>
+	<td style=" text-align: left;   padding-top: 4px; padding-bottom: 4px;"><b>Prestation</b></td>
+	<td style=" text-align: left; padding-top: 4px; padding-bottom: 4px;"><b>Désignation</b></td>
+	<td  style=" text-align: center; padding-top: 4px; padding-bottom: 4px;"><b>Qté</b></td>
+	<td style="text-align: center; padding-top: 4px; padding-bottom: 4px;"><b>P.u € HT</b></td>
+	<td style="text-align: right; ; padding-top: 4px; padding-bottom: 4px;"><b>P.u € TTC</b></td>
 	</tr> ';
 
 	echo $tete . $table ;
