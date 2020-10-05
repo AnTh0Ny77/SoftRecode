@@ -96,11 +96,10 @@ $garanties = $Keyword->getGaranties();
              date commande :  <?php echo $formated_date ; ?><br>
              notre B.L n° : <?php echo $temp->devis__id ; ?>
             <br><br>
-            
-             <small >
-             Livraison:<br>
-             <b>
-             <?php  echo Pdfunctions::showSociete($societeLivraison) ?>
+            <small>
+            Livraison:<br>
+            <b>
+            <?php  echo Pdfunctions::showSociete($societeLivraison) ?>
              </b>
              </small>
             </td>
@@ -152,8 +151,6 @@ $garanties = $Keyword->getGaranties();
                         TOTAL TOUTES TAXES:
                      </td>
                        
-
-
                      <td style='text-align: right; '>
                      <b>".number_format($totaux[0] , 2,',', ' ')." €</b><br>
                      <b>".number_format($totaux[1] , 2,',', ' ')." %</b><br>
@@ -229,6 +226,7 @@ if ($temp->devis__note_client) {
      if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
     {
         $doc->output('F:\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
+        $doc->output('O:\intranet\Auto_Print\FC\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
     }
     
     

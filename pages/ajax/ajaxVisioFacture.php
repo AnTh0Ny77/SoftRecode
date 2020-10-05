@@ -156,10 +156,10 @@ else
 
              } 
 
-             echo '<form method="POST" action="pdfFacture" target="_blank">
-             <input type="hidden" value="'.$_POST['AjaxFT'].'" name="VoirDevis">
-             <button class="btn btn-link " href="pdfFacture"><i class="fas fa-file-pdf"></i> Visualiser la facture</button>
-            </form>';
+            //  echo '<form method="POST" action="pdfFacture" target="_blank">
+            //  <input type="hidden" value="'.$_POST['AjaxFT'].'" name="VoirDevis">
+            //  <button class="btn btn-link " href="pdfFacture"><i class="fas fa-file-pdf"></i> Visualiser la facture</button>
+            // </form>';
             
              ?>
              
@@ -194,9 +194,18 @@ else
            {
                 if ($item->cmdl__qte_fact == $item->cmdl__qte_livr && $item->cmdl__qte_livr == $item->devl_quantite && $item->devl_quantite == $item->cmdl__qte_fact) 
                 {
+                    if (empty($item->devl__mois_garantie) || intval($item->devl__mois_garantie) == 0 ) 
+                    {
+                        $garantieBase = "";
+                    }
+                    else 
+                    {
+                        $garantieBase = $item->devl__mois_garantie ." mois";
+                    }
+                    
                     echo "<tr style='font-size: 95%;'>
                     <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='".$item->devl__id."'  '><i class='far fa-magic'></i></i></button></td>
-                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $item->devl__mois_garantie ." mois </td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $garantieBase ." </td>
                     <td style='border-bottom: 1px #ccc solid; '><strong> " . $item->devl_quantite ." x " .$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." " . $item->cmdl__note_facture  ." </td>
                     <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> " ;
                     if (!empty($item->cmdl__garantie_option)) 
@@ -223,9 +232,17 @@ else
            
                 else 
                 {
+                    if (empty($item->devl__mois_garantie) || intval($item->devl__mois_garantie) == 0 ) 
+                    {
+                        $garantieBase = "";
+                    }
+                    else 
+                    {
+                        $garantieBase = $item->devl__mois_garantie ." mois";
+                    }
                     echo "<tr style='font-size: 95%;'>
                     <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='".$item->devl__id."'  '><i class='far fa-magic'></i></i></button></td>
-                    <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $item->devl__mois_garantie . " mois </td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $garantieBase . "  </td>
                     <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> " . $item->devl_quantite ." x " .$item->famille__lib. " " . $item->modele . " ".$item->marque."</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." " . $item->cmdl__note_facture ." </td>
                     <td style='border-bottom: 1px #ccc solid;  text-align: right;  background-color: #ffeded;'><strong> " ;
                     if (!empty($item->cmdl__garantie_option)) 
@@ -248,9 +265,17 @@ else
             {
                 if ( $item->cmdl__qte_livr == $item->devl_quantite) 
                 {
+                    if (empty($item->devl__mois_garantie) || intval($item->devl__mois_garantie) == 0 ) 
+                    {
+                        $garantieBase = "";
+                    }
+                    else 
+                    {
+                        $garantieBase = $item->devl__mois_garantie ." mois";
+                    }
                     echo "<tr style='font-size: 95%;'>
                     <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='".$item->devl__id."'  '><i class='far fa-magic'></i></i></button></td>
-                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $item->devl__mois_garantie ." mois </td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $garantieBase ." </td>
                     <td style='border-bottom: 1px #ccc solid; '><strong> " . $item->devl_quantite ." x " .$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." <br>" .$item->cmdl__note_facture ." </td>
                     <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> " ;
                     if (!empty($item->cmdl__garantie_option)) 
@@ -277,9 +302,17 @@ else
            
                 else 
                 {
+                    if (empty($item->devl__mois_garantie) || intval($item->devl__mois_garantie) == 0 ) 
+                    {
+                        $garantieBase = "";
+                    }
+                    else 
+                    {
+                        $garantieBase = $item->devl__mois_garantie ." mois";
+                    }
                     echo "<tr style='font-size: 95%;'>
                     <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='".$item->devl__id."'  '><i class='far fa-magic'></i></i></button></td>
-                    <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $item->devl__mois_garantie ." mois </td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $garantieBase ."  </td>
                     <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> " . $item->devl_quantite ." x " .$item->famille__lib. " " . $item->modele . " ".$item->marque. "</strong> "   . $item->devl__modele . " <br><small>désignation sur le devis:</small> ".$item->devl__designation." <br>" .$item->cmdl__note_facture ." </td>
                     <td style='border-bottom: 1px #ccc solid;  text-align: right;  background-color: #ffeded;'><strong> " ;
                     if (!empty($item->cmdl__garantie_option)) 
@@ -352,9 +385,9 @@ else
             <hr class="my-4">
             <p>
                 <?php
-                    if (!empty($temp->devis__note_interne)) 
+                    if (!empty($temp->devis__note_client)) 
                     {
-                    echo   $temp->devis__note_interne ;
+                    echo   $temp->devis__note_client ;
                     }
                     else echo 'Pas de commentaire Client';
                 ?>

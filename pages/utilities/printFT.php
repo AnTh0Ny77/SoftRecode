@@ -160,7 +160,19 @@ ob_start();
                 if($item->cmdl__garantie_option > $item->devl__mois_garantie) 
                 {
                   $temp = $item->cmdl__garantie_option ;
-                } else {  $temp = $item->devl__mois_garantie;}
+                }
+                 else 
+                 { 
+                     if (!empty($item->devl__mois_garantie)) 
+                     {
+                        $temp = $item->devl__mois_garantie;
+                     }
+                     else
+                     {
+                        $temp = "";
+                     }
+                   
+                 }
 
                
 
@@ -210,7 +222,13 @@ try
     $doc->pdf->SetDisplayMode('fullpage');
     $doc->writeHTML($content);
     ob_clean();
-    $doc->output('O:\intranet\Auto_Print\FT\Ft_'.$command->devis__id.'.pdf' , 'F'); 
+
+    if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
+    {
+        $doc->output('O:\intranet\Auto_Print\FT\Ft_'.$command->devis__id.'.pdf' , 'F'); 
+    }
+    
+
     header('location: mesDevis');
 } 
 catch (Html2PdfException $e) 
