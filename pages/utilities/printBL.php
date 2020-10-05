@@ -116,7 +116,7 @@ ob_start();
              <barcode dimension="1D" type="C128" label="none" value="<?php echo $command->devis__id ?>" style="width:40mm; height:8mm; color: #3b3b3b; font-size: 4mm"></barcode><br>
 
              <small>Envoyé  le : <?php echo $formated_date ?></small><br>
-             Vendeur :<?php echo  $_SESSION['user']->log_nec ?> </td>
+             Vendeur :<?php echo  $command->nomDevis . " " .$command->prenomDevis  ?> </td>
              <td style="text-align: left; width:50%"><strong><?php 
              if ($command->devis__contact_livraison) {
                             //si un contact est présent dans l'adresse de livraison : 

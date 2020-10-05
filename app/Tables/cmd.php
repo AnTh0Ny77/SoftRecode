@@ -42,7 +42,7 @@ class Cmd extends Table {
     c2.client__cp as client__livraison_cp , 
     c2.client__adr1 as client__livraison__adr1 , 
     c2.client__adr2 as client__livraison__adr2 , 
-    u.log_nec , u.user__email_devis as email ,
+    u.log_nec , u.user__email_devis as email , u.nom as nomDevis ; u.prenom as prenomDevis ,
     k3.kw__info as tva_Taux , k3.kw__value as tva_value
     FROM cmd
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
