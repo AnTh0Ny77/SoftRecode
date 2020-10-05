@@ -179,13 +179,12 @@ if(!empty($_POST['devisCommande']))
 //par default j'affiche uniquement mes devis: 
 
 
-
-
-
-
-
 //le buttons affiche:
 $AllDevis = "Voir tous";
+if (!isset($_SESSION['vueDevis'] )) 
+{
+  $_SESSION['vueDevis']  = 'all';
+}
 
 //si les droits d'acces de l'utilisateur sont plus gand ou égal a 15 j'affiche le button
 if ($_SESSION['user']->user__devis_acces >= 15 ) 
@@ -251,6 +250,7 @@ else
     {
       $devisList = $Cmd->getUserDevis($_SESSION['user']->id_utilisateur);
     }
+
   //le button affiche:
   $AllDevis = "Voir tous"; 
 }

@@ -102,11 +102,8 @@ $(document).ready(function() {
                     console.log('error: ' , err);
                 }
             })
-    
-          
-           
-            
-        } else { $('#JumbResponse').html('<h4>Aucunnes fiches en attente de saisie</h4>'); $('#post-saisie').hide()}
+              
+        } else { $('#JumbResponse').html('<h4>Aucune fiche à saisir</h4>'); $('#post-saisie').hide()}
        
     };
 
