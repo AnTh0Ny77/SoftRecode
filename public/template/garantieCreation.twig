@@ -222,7 +222,7 @@
       {% if retour.devis__etat != 'PBL' %}
      
       <form action="garantiesFiches" method="POST">
-        <input type="hidden" name="rechercheF" value="{{retour.devis__id}}">
+        <input type="hidden" name="PrintFicheCreation" value="{{retour.devis__id}}">
         <div class="d-flex">
         <div class="text-danger mx-2">
           <i class="fas fa-engine-warning"></i> Vérifier avant d' imprimer !

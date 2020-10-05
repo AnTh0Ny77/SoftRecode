@@ -154,7 +154,7 @@
                             <tr>
                             <th scope="row">{{ ligne.prestaLib}}</th>
                             <td><strong>{{ ligne.devl_quantite }}</strong> {{" X " ~ ligne.devl__designation}}</td>
-                            <td>{{ ligne.devl__note_interne}}</td>
+                            <td>{{ ligne.devis__note_interne|raw }}</td>
                             
                             </tr>
                             {% endfor %}

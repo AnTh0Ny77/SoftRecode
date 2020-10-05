@@ -264,7 +264,11 @@ try
     $doc->pdf->SetDisplayMode('fullpage');
     $doc->writeHTML($content);
     ob_clean();
-    $doc->output('O:\intranet\Auto_Print\FT\Ft_'.$command->devis__id.'.pdf' , 'F'); 
+    if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
+    {
+      $doc->output('O:\intranet\Auto_Print\FT\Ft_'.$command->devis__id.'.pdf' , 'F'); 
+    }
+   
     header('location: ficheTravail');
 } 
 catch (Html2PdfException $e) 

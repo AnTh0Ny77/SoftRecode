@@ -226,7 +226,11 @@ if ($temp->devis__note_client) {
      ob_clean();
      $numFact = '0000000' . $temp->cmd__id_facture ;
      $numFact = substr($numFact , -7 );
-     $doc->output('F:\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
+     if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
+    {
+        $doc->output('F:\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
+    }
+    
     
      header('location: facture');
     
