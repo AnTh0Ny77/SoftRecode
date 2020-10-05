@@ -66,7 +66,11 @@ $command->cmd__date_envoi = $formated_date;
 if ($command->cmd__trans == 'TNT') 
 {
     $export = $Global->exportTNT($command , $_POST['poids'],$_POST['paquets']);
-    $file = fopen("O:\intranet\Port\TNT\TNT.txt", "a");
+    if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
+    {
+        $file = fopen("O:\intranet\Port\TNT\TNT.txt", "a");
+    }
+   
     fwrite($file , $export);
     fclose($file);
 }

@@ -221,7 +221,7 @@
     <div class="modal-footer mt-4">
       {% if retour.devis__etat != 'PBL' %}
      
-      <form action="garantiesFiches" method="POST">
+      <form action="garantieCreation" method="POST">
         <input type="hidden" name="PrintFicheCreation" value="{{retour.devis__id}}">
         <div class="d-flex">
         <div class="text-danger mx-2">

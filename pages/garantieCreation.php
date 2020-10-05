@@ -120,8 +120,8 @@ if (!empty($_POST['deleteLine']) && !empty($_POST['deleteLineRetour']))
 //si une demande d'impression a été faite : 
 if (!empty($_POST['PrintFicheCreation'])) 
 {
-$command = $Cmd->getById($_POST['rechercheF']);
-$commandLignes = $Cmd->devisLigne($_POST['rechercheF']);
+$command = $Cmd->getById($_POST['PrintFicheCreation']);
+$commandLignes = $Cmd->devisLigne($_POST['PrintFicheCreation']);
 $update = $General->updateAll('cmd' , 'CMD' , 'cmd__etat' , 'cmd__id' , $command->devis__id );
 
 $dateTemp = new DateTime($command->cmd__date_cmd);
