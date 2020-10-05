@@ -36,13 +36,13 @@ class Cmd extends Table {
     t.contact__nom, t.contact__prenom, t.contact__email,
     t2.contact__nom as nom__livraison , t2.contact__prenom as prenom__livraison ,
     t2.contact__email as mail__livraison , t2.contact__gsm as gsm__livraison , t2.contact__telephone as fixe__livraison, 
-    c.client__societe, c.client__adr1 , c.client__ville, c.client__cp, c.client__tel,
+    c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
     c2.client__societe as client__livraison_societe,
     c2.client__ville as client__livraison_ville,
     c2.client__cp as client__livraison_cp , 
     c2.client__adr1 as client__livraison__adr1 , 
     c2.client__adr2 as client__livraison__adr2 , 
-    u.log_nec , u.user__email_devis as email , u.nom as nomDevis ; u.prenom as prenomDevis ,
+    u.log_nec , u.user__email_devis as email , u.nom as nomDevis , u.prenom as prenomDevis , 
     k3.kw__info as tva_Taux , k3.kw__value as tva_value
     FROM cmd
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
@@ -1953,7 +1953,7 @@ public function modify(
       c2.client__cp as client__livraison_cp , 
       c2.client__adr1 as client__livraison__adr1 , 
       cmd__nom_devis,
-      u.log_nec , u.prenom, u.nom
+      u.log_nec , u.prenom, u.nom , 
       FROM cmd
       LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
       LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
