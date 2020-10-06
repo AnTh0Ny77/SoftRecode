@@ -192,8 +192,9 @@ $garanties = $Keyword->getGaranties();
             
             <tr>
 
-                <td  style=" font-size: 80%; width: 100%; text-align: left; " colspan=2><br><br><small>
-                <strong>RECODE by eurocomputer - 112 allée François Coli -06210 Mandelieu - Ateliers en France - 25 ans d'expertise - Matériels neufs & reconditionnés </strong></small>
+                <td  style=" font-size: 100%; width: 100%; text-align: center; " colspan=2><br><br>
+                <strong>RECODE by eurocomputer - 112 allée François Coli - 06210 Mandelieu - +33 4 93 47 25 00 - contact@recode.fr<br>
+                Ateliers en France - 25 ans d'expertise - Matériels neufs & reconditionnés </strong>
             </td>
             </tr>
          </table>

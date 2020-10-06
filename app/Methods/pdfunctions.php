@@ -779,8 +779,8 @@ public static function magicLineFTC($arrayLigne , $cmd){
 
 		</td>";
 
-		$prixTTc = floatval(($ligne->devl_puht*$tva)/100);
-		$prixTTc = floatval($ligne->devl_puht + $prixTTc);
+		$prixTTc = floatval($ligne->devl_puht * $ligne->devl_quantite);
+	
 
 		$FifthCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
 
@@ -817,8 +817,9 @@ public static function magicLineFTC($arrayLigne , $cmd){
 
 			</td>";
 
-			$prixTTcXT = floatval(($ligne->cmdl__garantie_puht*$tva)/100);
-			$prixTTcXT = floatval($ligne->cmdl__garantie_puht + $prixTTc);
+			$prixTTcXT = floatval($ligne->cmdl__garantie_puht* $ligne->devl_quantite);
+			
+			
 
 			$FifthCellXT = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
 
@@ -844,7 +845,7 @@ public static function magicLineFTC($arrayLigne , $cmd){
 	<td style=" text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Désignation</b></td>
 	<td  style=" text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Qté</b></td>
 	<td style="text-align: center;  border: 1px solid black;  padding-top: 4px; padding-bottom: 4px;"><b>P.U € HT</b></td>
-	<td style="text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>P.U € TTC</b></td>
+	<td style="text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>P.TOT € HT</b></td>
 	</tr> ';
 
 	echo $tete . $table ;
