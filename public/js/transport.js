@@ -103,7 +103,12 @@ $(document).ready(function() {
                 }
             })
               
-        } else { $('#JumbResponse').html('<h4>Aucune fiche à saisir</h4>'); $('#post-saisie').hide()}
+        } else
+         { 
+            $('#JumbResponse').html('<h4>Aucune fiche à saisir</h4>');
+             $('#post-saisie').hide();
+             $('#loaderTravail').html('');
+        }
        
     };
 
