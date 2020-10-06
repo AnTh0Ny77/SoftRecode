@@ -47,6 +47,9 @@ if (empty($_SESSION['user']))
         $ligne->ordre2 = $xtendArray;
     } 
 
+$dateFact = new DateTime( $temp->cmd__date_fact);
+$formate = $dateFact->format('d/m/Y'); 
+
 $date_time = new DateTime( $temp->cmd__date_cmd);
 $formated_date = $date_time->format('d/m/Y'); 
 $Keyword = new \App\Tables\Keyword($Database);
@@ -95,32 +98,31 @@ $garanties = $Keyword->getGaranties();
             Votre cde n° :<small> <?php echo $temp->cmd__code_cmd_client ; ?> </small><br>
             Date commande :  <?php echo $formated_date ; ?><br>
             Notre B.L n° : <?php echo $temp->devis__id ; ?>
-            <br><br><small>Livraison:<br><b>
-            <?php  echo Pdfunctions::showSociete($societeLivraison) ?></b>
-            </small>
+            <br><br>
+            <small>Livraison:<br>
+            <b><?php  echo Pdfunctions::showSociete($societeLivraison) ?></b></small>
             </td>
              <td style="text-align: left; width:50%">
-             <h3>Facture : <?php echo $temp->cmd__id_facture ; ?></h3><br>
+             <h3>Facture : <?php echo $temp->cmd__id_facture .' le '. $formate ; ?></h3><br>
              
+             
+
              <?php 
              // si une societe de livraion est présente 
-           
-            
                 if ($temp->devis__contact__id) 
                 {
                 $contact = $Contact->getOne($temp->devis__contact__id);
-                echo "<small>facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."</small><strong><br>";
-                echo Pdfunctions::showSociete($clientView)  ."</strong></td>";
+                echo "<div style='background-color: #dedede;  padding: 15px 15px 15px 15px; border: 1px solid black;  width: auto; '>facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."<strong><br>";
+                echo Pdfunctions::showSociete($clientView)  ." </strong></div></td>";
                 }
                 else
                 {
-                echo "<small>facturation :</small><strong><br>";
-                echo Pdfunctions::showSociete($clientView)  ."</strong></td>";
+                echo "<div style='background-color: #dedede; padding: 15px 15px 15px 15px; border: 1px solid black;  width: auto;'>facturation :<strong><br>";
+                echo Pdfunctions::showSociete($clientView)  ." </strong></div></td>";
                 }
 
-             
              ?>
-              
+             
              <br>
             
          </tr>
@@ -130,10 +132,10 @@ $garanties = $Keyword->getGaranties();
 <div >
 <table style=" margin-bottom: 30px;  width:100%;" >
     <tr>
-    <td style="width: 60%;">  </td>
+    <td style="width: 55%;">  </td>
     <td align="right">
 
-     <table style="border: 1px solid black; background-color: lightgray;">
+     <table style="border: 1px solid black; background-color: #dedede; padding: 10px 10px 10px 10px; font-size: 120%;">
             <tbody> 
                 <tr>  
             <?php
@@ -141,7 +143,7 @@ $garanties = $Keyword->getGaranties();
                 $totaux = Pdfunctions::totalFacturePDF($temp, $arrayOfDevisLigne);
 
 
-                echo "<td style='text-align: left; width: 175px;'>
+                echo "<td style='text-align: left; width: 200px;'>
                         Total Hors Taxes :<br>
                         Taux Tva :<br>
                         Total Tva :<br>
@@ -163,14 +165,32 @@ $garanties = $Keyword->getGaranties();
     </tr>
 </table>
 </div>
-<table CELLSPACING=0 style=" width: 100%;  margin-bottom: 5px; margin-top: 35 px;">
-    <tr><td style="text-align: center;  width: 100%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;">Condition de paiement à réception/Conditions générales de Vente.
+<table  style=" width:100%  margin-bottom: 5px; margin-top: 35 px;">
+    <tr>
+    <td style="text-align: left;  width: 100%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;">Condition de paiement à réception/Conditions générales de Vente.
      Des pénalités de retard au taux légal seront appliquées en cas de paiement aprés la date d'échéance. Conformément à la loi du 12.05.80, EUROCOMPUTER conserve la propriété du matériel jusqu'au paiement intégral du prix et des frais annexes
-    </td></tr>
-    </table>
+    <hr>
+    </td>
+    </tr>
+    
+</table>
         <table  class="page_footer" style="text-align: center; margin: auto; ">
-            <tr >
-                <td  style=" font-size: 80%; width: 100%;  "><br><br><small>New Eurocomputer-TVA FR33 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
+        <tr>
+            <td style="text-align: left; ">
+                TVA: FR33 397 934 068<br>
+                Siret 397 937 068 00016 - APE 9511Z<br>
+                SAS au capital 38112.25 € 
+            </td>
+
+
+            <td style="text-align: right; ">
+            BPMED NICE ENTREPRISE<br>
+            <strong>IBAN : </strong>FR76 1460 7003 6569 0218 9841 804<br>
+            <strong>BIC : </strong>CCBPFRPPMAR
+            </td>
+    </tr>
+            <tr>
+                <td  style=" font-size: 80%; width: 100%; text-align: left; "><br><br><small>New Eurocomputer-TVA FR33 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
                 <strong>RECODE by eurocomputer - 112 allée François Coli -06210 Mandelieu</strong></small></td>
             </tr>
          </table>

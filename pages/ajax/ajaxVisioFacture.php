@@ -465,11 +465,11 @@ else
      <input type="hidden" value="<?php echo $temp->devis__id ?>" name="archiveID">
      <button class="btn btn-secondary btn-lg">Archiver</button>
      </form>
-     <form class="text-right d-inline mx-2" method="POST" action="printFTC">
-     <input type="hidden" value="<?php echo $temp->devis__id ?>" name="hiddenCommentaire">
+     <form class="text-right d-inline mx-2" method="POST" action="printFTC" id="PostForms">
+     <input type="hidden" value="<?php echo $temp->devis__id ?>" name="hiddenCommentaire" id="hiddenCommentaire" >
      <button class="btn btn-success btn-lg">Facturer</button>
      </form>
-     
+     <p id="keystroke"></p>
      </div>
     
     
