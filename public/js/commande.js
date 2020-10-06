@@ -1,7 +1,4 @@
 $(document).ready(function() {
-
-
-
            // commentaire interne resaisie par le client: 
            ClassicEditor
            .create(document.querySelector('#commentaireInterneValid'),
@@ -134,10 +131,13 @@ $(document).ready(function() {
       }
       
       $('#arrayLigneDeCommande').val(JSON.stringify(arrayOfItem));
-      $('#ComInterCommande').val($('#cmdInterneNote').val());
+      let dataCom = ckUpInt.getData();
+      
+      $('#ComInterCommande').val(dataCom);
+     
       $('#code_cmd').val($('#codeClient').val());
       
-      $('#formValideCMD').submit();
+     $('#formValideCMD').submit();
     })
            
 

@@ -43,11 +43,16 @@ if(!empty($_POST['devisCommande']))
   {
     $Global->updateAll('cmd', $_POST['code_cmd'],'cmd__code_cmd_client', 'cmd__id', $_POST['devisCommande']);
   }
+ 
+  if (!empty($_POST['ComInterCommande'])) 
+  {
+    $Global->updateAll('cmd', $_POST['ComInterCommande'],'cmd__note_interne', 'cmd__id', $_POST['devisCommande']);
+  }
+
   //contient l'id du devis pour l'imprssion de la fiche de travail : client2.js
   $print_request = $_POST['devisCommande'];
 }
   
-
 $command = $Command->getById(intval($_POST['devisCommande']));
 $commandLignes = $Command->devisLigne($_POST['devisCommande']);
 $clientView = $Client->getOne($command->client__id);

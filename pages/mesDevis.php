@@ -153,6 +153,7 @@ if(!empty($_POST['devisCommande']))
   $Cmd->updateStatus('CMD',$_POST['devisCommande']);
   $Cmd->updateDate('cmd__date_cmd' , $date , $_POST['devisCommande'] );
   $Cmd->updateAuthor('cmd__user__id_cmd' , $_SESSION['user']->id_utilisateur , $_POST['devisCommande']);
+  
   if (!empty($_POST['arrayLigneDeCommande'])) 
   {
     $validLignes = json_decode($_POST['arrayLigneDeCommande']);
@@ -170,6 +171,11 @@ if(!empty($_POST['devisCommande']))
   if (!empty($_POST['code_cmd'])) 
   {
     $Global->updateAll('cmd', $_POST['code_cmd'],'cmd__code_cmd_client', 'cmd__id', $_POST['devisCommande']);
+  }
+ 
+  if (!empty($_POST['ComInterCommande'])) 
+  {
+    $Global->updateAll('cmd', $_POST['cmd__note_interne'],'cmd__code_cmd_client', 'cmd__id', $_POST['devisCommande']);
   }
   //contient l'id du devis pour l'imprssion de la fiche de travail : client2.js
   $print_request = $_POST['devisCommande'];

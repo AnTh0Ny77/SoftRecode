@@ -375,28 +375,13 @@ else
         </table> 
      </div>
      <div class="d-flex justify-content-end mr-3">
-
-     
-       
-     <form class="text-right d-inline" method="POST" action="ficheTravail">
-     <input type="hidden" value="<?php echo $comand->devis__id ?>" name="hiddenCommentaire">
      <?php
-        if ($comand->devis__etat == "CMD") 
-        {
-          $textArea = '<textarea  id="FTCOM" placeholder="Commentaire client...."  name="comInterne" value="">' . $comand->devis__note_interne . '</textarea>';
-          echo $textArea;
-          echo '<button type="submit" class="btn btn-sm btn-primary mt-1">Modifier</button>';
-        } 
-        else 
-        {
+    
             if (!empty($comand->devis__note_interne)) 
             {
                 echo $comand->devis__note_interne;
-            } else echo '<p><b>pas de commentaire interne</b></p>';
-        }
+            } else echo '<p><b>pas de commentaire interne</b></p>';    
      ?>
-     
-     </form>
      </div>
     
     
