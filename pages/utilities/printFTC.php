@@ -247,6 +247,7 @@ if ($temp->devis__note_client) {
     }
     $doc->output('O:\intranet\Auto_Print\FC\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
     
+    $_SESSION["facture"] =  ' BL N°: '. $temp->devis__id . ' Facturé n°: '. $numFact ;
      header('location: facture');
     
  } catch (Html2PdfException $e) {

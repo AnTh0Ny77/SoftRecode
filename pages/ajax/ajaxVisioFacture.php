@@ -396,14 +396,6 @@ else
      </div>
 
     
-
-
-
-
-
-
-
-
      <div class="card px-4 py-2 mx-1 col-6">
         <div>
             <h3>Total :</h3>

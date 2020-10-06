@@ -20,18 +20,25 @@
           </div>
         </div>
       </div>
+      
+      
        <!-- 1ere ligne -->
        <div class="d-flex flex-wrap flex-row justify-content-start">
       
         <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
         
-        
+        <div class="col-5">
+          {% if alertFacture %}
+          <div class="alert alert-success" role="alert">
+           <h5>{{alertFacture}}</h5>
+          </div>
+          {% endif  %}
+          
        
-
 
        
         <!--carte liste de Devis -->
-      <div class="col-5">
+      
         <div class="card shadow mb-4">
           <!-- Card Header - -->
           <div class="my-2 mx-4"> 

@@ -36,6 +36,14 @@ session_start();
  $etatList = $Keyword->getEtat();
 
  
+ if (!empty($_SESSION['facture'])) 
+ {
+  $alertFacture = $_SESSION['facture'];
+ }
+ else 
+ {
+  $alertFacture = null ;
+ }
 
  //si une creation de societe à été effectué:
  if (!empty($_POST['societe']) && !empty($_POST['ville']) && !empty($_POST['nouveauClientId']))
@@ -224,5 +232,6 @@ echo $twig->render('facture.twig',
 'prestaList'=> $prestaList ,
 'articleList' => $articleTypeList,
 'garantiesList' => $garantiesList ,
-'etatList' => $etatList
+'etatList' => $etatList , 
+'alertFacture' => $alertFacture
 ]);
