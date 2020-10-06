@@ -95,7 +95,7 @@ $garanties = $Keyword->getGaranties();
              } else  echo 'TVA intracom : Non renseigné';
               
              ?><br>
-            Votre cde n° :<small> <?php echo $temp->cmd__code_cmd_client ; ?> </small><br>
+            Votre cde n° :<?php echo $temp->cmd__code_cmd_client ; ?> <br>
             Date commande :  <?php echo $formated_date ; ?><br>
             Notre B.L n° : <?php echo $temp->devis__id ; ?>
             <br><br>
@@ -112,12 +112,12 @@ $garanties = $Keyword->getGaranties();
                 if ($temp->devis__contact__id) 
                 {
                 $contact = $Contact->getOne($temp->devis__contact__id);
-                echo "<div style='background-color: #dedede;  padding: 15px 15px 15px 15px; border: 1px solid black;  width: auto; '>facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."<strong><br>";
+                echo "<div style='background-color: #dedede;  padding: 15px 15px 15px 15px; border: 1px solid black;  width: 280px; '>Facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."<strong><br>";
                 echo Pdfunctions::showSociete($clientView)  ." </strong></div></td>";
                 }
                 else
                 {
-                echo "<div style='background-color: #dedede; padding: 15px 15px 15px 15px; border: 1px solid black;  width: auto;'>facturation :<strong><br>";
+                echo "<div style='background-color: #dedede; padding: 15px 15px 15px 15px; border: 1px solid black;  width: 280px;'>Facturation :<strong><br>";
                 echo Pdfunctions::showSociete($clientView)  ." </strong></div></td>";
                 }
 
@@ -167,8 +167,8 @@ $garanties = $Keyword->getGaranties();
 </div>
 <table  style=" width:100%  margin-bottom: 5px; margin-top: 35 px;">
     <tr>
-    <td style="text-align: left;  width: 100%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;">Condition de paiement à réception/Conditions générales de Vente.
-     Des pénalités de retard au taux légal seront appliquées en cas de paiement aprés la date d'échéance. Conformément à la loi du 12.05.80, EUROCOMPUTER conserve la propriété du matériel jusqu'au paiement intégral du prix et des frais annexes
+    <td style="text-align: left;  width: 100%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;">Conditions de paiement à réception/Conditions générales de Vente.
+     Des pénalités de retard au taux légal seront appliquées en cas de paiement après la date d'échéance. Conformément à la loi du 12.05.80, EUROCOMPUTER conserve la propriété du matériel jusqu'au paiement intégral du prix et des frais annexes.
     <hr>
     </td>
     </tr>
@@ -183,15 +183,18 @@ $garanties = $Keyword->getGaranties();
             </td>
 
 
-            <td style="text-align: right; ">
-            BPMED NICE ENTREPRISE<br>
-            <strong>IBAN : </strong>FR76 1460 7003 6569 0218 9841 804<br>
-            <strong>BIC : </strong>CCBPFRPPMAR
-            </td>
-    </tr>
+                <td style="text-align: right; ">
+                BPMED NICE ENTREPRISE<br>
+                <strong>IBAN : </strong>FR76 1460 7003 6569 0218 9841 804<br>
+                <strong>BIC : </strong>CCBPFRPPMAR
+                </td>
+            </tr>
+            
             <tr>
-                <td  style=" font-size: 80%; width: 100%; text-align: left; "><br><br><small>New Eurocomputer-TVA FR33 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
-                <strong>RECODE by eurocomputer - 112 allée François Coli -06210 Mandelieu</strong></small></td>
+
+                <td  style=" font-size: 80%; width: 100%; text-align: left; " colspan=2><br><br><small>
+                <strong>RECODE by eurocomputer - 112 allée François Coli -06210 Mandelieu - Ateliers en France - 25 ans d'expertise - Matériels neufs & reconditionnés </strong></small>
+            </td>
             </tr>
          </table>
 </page_footer>
@@ -232,7 +235,8 @@ if ($temp->devis__note_client) {
     $name = $temp->devis__id;
  }
  
- try {
+ try 
+ {
      $doc = new Html2Pdf('P','A4','fr');
      $doc->setDefaultFont('gothic');
      $doc->pdf->SetDisplayMode('fullpage');
@@ -250,7 +254,8 @@ if ($temp->devis__note_client) {
     $_SESSION["facture"] =  ' BL n°: '. $temp->devis__id . ' Facturé n°: '. $numFact ;
      header('location: facture');
     
- } catch (Html2PdfException $e) {
+ } catch (Html2PdfException $e) 
+ {
    die($e); 
  }
 }

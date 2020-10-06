@@ -840,11 +840,11 @@ public static function magicLineFTC($arrayLigne , $cmd){
 	
 
 	$tete =  '<tr style=" margin-top : 70px;  background-color: #dedede; ">
-	<td style=" text-align: left;   padding-top: 4px; padding-bottom: 4px;"><b>Prestation</b></td>
-	<td style=" text-align: left; padding-top: 4px; padding-bottom: 4px;"><b>Désignation</b></td>
-	<td  style=" text-align: center; padding-top: 4px; padding-bottom: 4px;"><b>Qté</b></td>
-	<td style="text-align: center; padding-top: 4px; padding-bottom: 4px;"><b>P.u € HT</b></td>
-	<td style="text-align: right; ; padding-top: 4px; padding-bottom: 4px;"><b>P.u € TTC</b></td>
+	<td style=" text-align: center;  border: 1px solid black;  padding-top: 4px; padding-bottom: 4px;"><b>Prestation</b></td>
+	<td style=" text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Désignation</b></td>
+	<td  style=" text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Qté</b></td>
+	<td style="text-align: center;  border: 1px solid black;  padding-top: 4px; padding-bottom: 4px;"><b>P.U € HT</b></td>
+	<td style="text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>P.U € TTC</b></td>
 	</tr> ';
 
 	echo $tete . $table ;
