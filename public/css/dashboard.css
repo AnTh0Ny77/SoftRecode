@@ -27,6 +27,9 @@ body {
     z-index: 2000; /* Behind the navbar */
     padding: 0;
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
   }
   
   .sidebar-sticky {
@@ -131,8 +134,6 @@ body {
     padding-top: 255px;
     padding-bottom: 590px;
   }
-
-
 
   #charts-Devis{
     height: 600px;
