@@ -18,7 +18,10 @@ body {
   /*
    * Sidebar
    */
-  
+  .hideSide
+  {
+    width: 0%;
+  }
   
     
   .sidebar

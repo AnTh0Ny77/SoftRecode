@@ -24,7 +24,11 @@
 
 <!--NavBar--> 
 <nav class="navbar navbar-light  sticky-top bg-white flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-sm-3 col-md-2 ml-4 " href="#">  {{ user.prenom ~  " " ~  user.nom ~ " " }}<i class="fas fa-user"></i></a> 
+  <div class="d-flex">
+    <button class=" navbar-brand btn btn-link ml-3 pr-2" id="clickSideBar">  <i class="fad fa-arrow-alt-from-right"></i></button> 
+  <a class="navbar-brand  ml-4 pr-2" href="#">  {{ user.prenom ~  " " ~  user.nom ~ " " }}<i class="fas fa-user"></i></a> 
+ 
+  </div>
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
       <a class="nav-link" href="unlog">Se deconnecter <i class="fad fa-sign-out"></i></a>
@@ -271,6 +275,25 @@ dP""""Yb 8888Y"  88 YY 88 88 88  #}
 
 {% block script  %}
 {% endblock %}
+<script>
+  //script de toogle de la navbar : 
+  $(document).ready(function() 
+  {
+    $('#clickSideBar').on('click' , function()
+    {
+      if($('#sideBare').hasClass( "hideSide" ))
+      {
+        $('#sideBare').removeClass("hideSide");
+      }
+      else 
+      {
+        $('#sideBare').addClass("hideSide");
+      }
+     
+    })
+
+  })
+</script>
 
 
 </body>
