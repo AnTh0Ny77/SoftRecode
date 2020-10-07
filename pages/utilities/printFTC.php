@@ -145,14 +145,11 @@ $garanties = $Keyword->getGaranties();
 
                 echo "<td style='text-align: left; width: 200px;'>
                         Total Hors Taxes :<br>
-                        Taux Tva :<br>
-                        Total Tva :<br>
-                        Total Toutes Taxes:
+                        Total Tva ".number_format($totaux[1] , 2,',', ' ')." %:<br>
+                        Total Toutes Taxes:<br>
                      </td>
-                       
                      <td style='text-align: right; '>
                      <b>".number_format($totaux[0] , 2,',', ' ')." €</b><br>
-                     <b>".number_format($totaux[1] , 2,',', ' ')." %</b><br>
                      <b>".number_format($totaux[2] , 2,',', ' ')." €</b><br>
                      <b>".number_format($totaux[3] , 2,',', ' ')." €</b><br>
                      </td>";
