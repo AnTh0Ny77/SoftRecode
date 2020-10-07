@@ -767,13 +767,13 @@ public static function magicLineFTC($arrayLigne , $cmd){
 			</td>";
 		}
 
-		$thirdCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW."; text-align: center;  '>"
+		$thirdCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW."; text-align: right;  '>"
 
 		. $ligne->cmdl__qte_fact . "
 
 		</td>";
 
-		$FourthCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: center;  '>"
+		$FourthCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
 
 		.  number_format($ligne->devl_puht , 2) . "
 
@@ -793,25 +793,25 @@ public static function magicLineFTC($arrayLigne , $cmd){
 		if (!empty($ligne->cmdl__garantie_option) && $ligne->cmdl__garantie_option!= '00' ) 
 		{
 
-			$firstCellXT = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$firstW."; max-width: ".$firstW."; text-align: left;  '>
+			$firstCellXT = "<td valign='top' style='  width: ".$firstW."; max-width: ".$firstW."; text-align: left;  '>
 
 			Extension 
 	
 			</td>";
 
-			$secondCellXT = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  '>
+			$secondCellXT = "<td valign='top' style='   width: ".$secondW."; max-width: ".$secondW."; text-align: left;  '>
 
 			Extension de Garantie à ". $ligne->cmdl__garantie_option ." mois
 		
 			</td>";
 
-			$thirdCellXT = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW."; text-align: center;  '>"
+			$thirdCellXT = "<td valign='top' style='   width: ".$thirdW."; max-width: ".$thirdW."; text-align: right;  '>"
 
 			. $ligne->cmdl__qte_fact . "
 
 			</td>";
 
-			$FourthCellXT = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: center;  '>"
+			$FourthCellXT = "<td valign='top' style='   width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
 
 			.  number_format($ligne->cmdl__garantie_puht , 2) . "
 
@@ -821,7 +821,7 @@ public static function magicLineFTC($arrayLigne , $cmd){
 			
 			
 
-			$FifthCellXT = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
+			$FifthCellXT = "<td valign='top' style='   width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
 
 			. number_format($prixTTcXT , 2) . "
 

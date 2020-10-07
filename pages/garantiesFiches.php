@@ -175,7 +175,7 @@ ob_start();
              <td style="text-align: left;  width: 50%"><img  style=" width:60mm" src="public/img/recodeDevis.png"/></td>
              <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br>
              <a>www.recode.fr</a><br><br>
-             <br><strong>REF CLIENT :<?php echo $command->client__id ?></strong></td>
+             <br><strong><?php echo $command->client__societe ?></strong></td>
              </tr>
              <tr>
              <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h4>Fiche De travail -  <?php echo $command->devis__id ?></h4>
@@ -275,10 +275,6 @@ catch (Html2PdfException $e)
 {
   die($e); 
 }
-  
- 
- 
- 
  
 }
  

@@ -282,7 +282,7 @@ ClassicEditor
                         $('#idCMDL').val(dataSet.devl__id);
                         $('#qteCMD').val(dataSet.devl_quantite);
                         $('#qteLVR').val(dataSet.cmdl__qte_livr);
-                        $('#ComTech').html(dataSet.devl__note_interne);
+                        $('#designationLigne').val(dataSet.devl__designation);
                         if (dataSet.cmdl__note_facture != null) 
                         {
                             ckComFacture.setData(dataSet.cmdl__note_facture);
@@ -294,10 +294,7 @@ ClassicEditor
                        
                         $('#prixLigne').val(dataSet.devl_puht);
                         
-                        
-                        
-
-                        
+                    
                         $('#modalLigne').modal('show')
                         
               
@@ -400,6 +397,7 @@ ClassicEditor
                         
                         dataSet = JSON.parse(data);
                         $('#titreItem').text('Ajout article Commande N°: ' + dataSet[0].devis__id);
+                        
                         $('#idDevisAddLigne').val(dataSet[0].devis__id);
                         $('#modalItem').modal('show');
                        

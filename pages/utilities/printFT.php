@@ -83,7 +83,7 @@ ob_start();
          }  
  </style>
 
-<page backtop="10mm" backleft="15mm" backright="15mm">
+<page backtop="10mm" backleft="5mm" backright="5mm">
      <table style="width: 100%;">
          <tr>
              <td style="text-align: left;  width: 50%"><img  style=" width:60mm" src="public/img/recodeDevis.png"/></td>
@@ -147,18 +147,24 @@ ob_start();
                 echo Pdfunctions::showSociete($clientView)  ."</strong>";
             }
 
-         } ?>
+         } 
+         if ($command->cmd__code_cmd_client) 
+         {
+            echo "<br> Code cmd: " . $command->cmd__code_cmd_client ;
+         }
+         ?>
          </strong>
             </td>
          </tr>
      </table>
 
 
-     <table CELLSPACING=0 style="width: 700px;  margin-top: 80px; ">
+     <table CELLSPACING=0 style="width: 100%;  margin-top: 80px; ">
              <tr style=" margin-top : 50px; background-color: #dedede;">
                 <td style="width: 22%; text-align: left;">Presta<br>Type<br>Gar.</td>
-                <td style="width: 57%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
-                <td style="text-align: right; width: 12%"><strong>CMD</strong><br>Livr</td>
+                <td style="width: 50%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
+                <td style="text-align: center; width: 8%"><strong>CMD</strong></td>
+                <td style="text-align: center; width: 9%"><strong>Livré</strong></td>
              </tr> 
              <?php
              foreach ($commandLignes as $item) {
@@ -181,18 +187,20 @@ ob_start();
 
                
 
-                echo "<tr style='font-size: 85%;>
+                echo "<tr style='font-size: 100%;>
                         <td style='border-bottom: 1px #ccc solid'> ". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois</td>
-                        <td style='border-bottom: 1px #ccc solid; width: 55%;'> "
-                            .$item->famille__lib. " " . $item->marque . " " .$item->modele. " ". $item->devl__modele . 
-                            "<br> <small>désignation sur le devis:</small> " . $item->devl__designation ." <br>" .$item->devl__note_interne .
+                        <td style='border-bottom: 1px #ccc solid; width: 55%;'> 
+                            <br> <small>désignation :</small> <b>" . $item->devl__designation ."</b><br>"
+                            .$item->famille__lib. " " . $item->marque . " " .$item->modele. " ". $item->devl__modele  ." " .$item->devl__note_interne . 
                         "</td>
-                         <td style='border-bottom: 1px #ccc solid; text-align: right'><strong> "  . $item->devl_quantite. " </strong></td>
+                         <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite. " </strong></td>
+                         <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
                       </tr>";
              }
              ?>
      </table> 
-     <table style=" margin-top: 200px; width: 100%">
+     
+     <table style=" margin-top: 50px; width: 100%">
              <tr style=" margin-top: 200px; width: 100%"><td><small>Commentaire:</small></td></tr>
              <tr >
              <td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%' > <?php echo  $command->devis__note_interne ?> </td>
@@ -200,19 +208,28 @@ ob_start();
      </table>
 
 
-     <div style=" width: 100%; position: absolute; bottom:5%">
+     <div style=" width: 100%; position: absolute; bottom:1px">
     
    
-    <table CELLSPACING=0 style=" width: 100%; margin-top: 5px; margin-bottom: 15px;">
-      
-    </table>
-
-    <table style=" margin-top: 10px; color: #8c8c8c; width: 100%;">
-        <tr >
-            <td  style="text-align: center; font-size: 80%; width: 100%;"><br><small>New Eurocomputer-TVA FR33b 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
-            <strong>RECODE by eurocomputeur - 112 allée François Coli -06210 Mandelieu</strong></small></td>
+     <table CELLSPACING=0 style=" width: 100%;  ">
+        <tr style="background-color: #dedede;">
+                    <td style="text-align: center; width: 30%"><strong>Traitement en atelier </strong></td>
+                    <td style="text-align: center; width: 40%"><strong>Réceptionné par : </strong></td>
+                    <td style="text-align: center; width: 30%"><strong>POIDS</strong></td>
+        </tr> 
+        <tr>
+            <td style="border: 1px #ccc solid; height: 150px;">
+                
+            </td>
+            <td style="border: 1px #ccc solid; ">
+                <small><i>Nom/signature/tampon</i></small>
+            </td>
+            <td style="border: 1px #ccc solid; ">
+                
+            </td>
         </tr>
     </table>  
+    
     </div>  
 
 </page>
@@ -228,10 +245,10 @@ try
     $doc->writeHTML($content);
     ob_clean();
 
-    if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
-    {
+    // if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
+    // {
         $doc->output('O:\intranet\Auto_Print\FT\Ft_'.$command->devis__id.'.pdf' , 'F'); 
-    }
+    // }
     
 
     header('location: mesDevis');

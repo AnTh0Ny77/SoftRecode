@@ -36,13 +36,25 @@ session_start();
  $etatList = $Keyword->getEtat();
 
  
+ //variables de sessions  pour alert : 
  if (!empty($_SESSION['facture'])) 
  {
   $alertFacture = $_SESSION['facture'];
+  $_SESSION['facture'] = "";
  }
  else 
  {
   $alertFacture = null ;
+ }
+
+ if (!empty($_SESSION['archive'])) 
+ {
+ $alertArchive = $_SESSION['archive'];
+ $_SESSION['archive'] = "";
+ }
+ else 
+ {
+  $alertArchive = null ;
  }
 
  //si une creation de societe à été effectué:
@@ -104,6 +116,11 @@ session_start();
  
   
   $Cmd->updateLigneFTC(intval($_POST['idCMDL']), intval($_POST['qteCMD']) , intval($_POST['qteLVR']), intval($_POST['qteFTC']),  $_POST['comFacture'] ,floatval($_POST['prixLigne']));
+
+    if (!empty($_POST['designationLigne'])) 
+    {
+      $update = $General->updateAll('cmd_ligne' , $_POST['designationLigne'] , 'cmdl__designation' , 'cmdl__id' , $_POST['idCMDL']);
+    }
   
    $return = $Cmd->returnDevis(intval($_POST['idCMDL']));
    $_POST['recherche-fiche'] = 'id-fiche';
@@ -116,7 +133,6 @@ session_start();
  // si une commande à été postée: 
  if (!empty($_POST['hiddenCommentaire'])) 
  {
-   
    
    //  2  changer le status de la commande et attribuer un numero de facture:
    $Cmd->commande2facture($_POST['hiddenCommentaire']);
@@ -180,19 +196,45 @@ if (!empty($_POST['recherche-fiche']))
                break;
             }
            
-        case 'id-fiche':
-           $devisList = [];
-           $devisSeul = $Cmd->GetById(intval($_POST['rechercheF']));
-           $champRecherche = $_POST['rechercheF'];
-           array_push($devisList, $devisSeul);
-           break;
-        
         default:
            $devisList = $Cmd->getFromStatusAll('IMP');
            break;
+
     }
    
 } else $devisList = $Cmd->getFromStatusAll('IMP');
+
+$visuelFiche = null;
+if (empty($devisList) && strlen($_POST['rechercheF']) == 7 ) 
+{
+  $alertFiche = $Cmd->GetById($_POST['rechercheF']);
+  if (!empty($alertFiche)) 
+  {
+    switch ($alertFiche->devis__etat) 
+    {
+      case 'VLD':
+        $visuelFiche = ' déja facturée';
+        break;
+
+      case 'ARH':
+          $visuelFiche = ' une Garantie ou un reliquat';
+          break;
+
+      case 'NFT':
+            $visuelFiche = 'archivée';
+            break;
+
+      case 'PBL':
+            $visuelFiche = 'a supprimer ( le signaler à François ) ';
+            break;
+            
+      case 'PLL':
+            $visuelFiche = 'a supprimer ( le signaler à François ) ';
+              break;
+    }
+  
+  }
+}
 
 //nombre des fiches dans la liste 
 $NbDevis = count($devisList);
@@ -233,5 +275,7 @@ echo $twig->render('facture.twig',
 'articleList' => $articleTypeList,
 'garantiesList' => $garantiesList ,
 'etatList' => $etatList , 
-'alertFacture' => $alertFacture
+'alertFacture' => $alertFacture , 
+'alertArchive' => $alertArchive , 
+'visuelFiche' => $visuelFiche
 ]);

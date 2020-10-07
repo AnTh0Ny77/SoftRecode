@@ -113,12 +113,13 @@ else
                 <button class='btn btn-warning btn-sm'>Fiche de garantie</button>
                 </form>";
 
-                echo "<form class='my-2 mx-2' action='adminFiche' method='POST'>
-                <input type='hidden' name='AdminGarantie' value=". $temp->devis__id.">
-                <button class='btn btn-primary btn-sm'>Administration</button>
-                </form>";
+              
 
              }
+             echo "<form class='my-2 mx-2' action='adminFiche' method='POST'>
+             <input type='hidden' name='AdminGarantie' value=". $temp->devis__id.">
+             <button class='btn btn-primary btn-sm'>Administration</button>
+             </form>";
              ?>
              </div>
              
