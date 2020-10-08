@@ -72,7 +72,8 @@ if(!empty($_POST['devisCommande']))
 $command = $Command->getById(intval($_POST['devisCommande']));
 $commandLignes = $Command->devisLigne($_POST['devisCommande']);
 $clientView = $Client->getOne($command->client__id);
-
+$user = $User->getByID($clientView->client__id_vendeur);
+$userCMD = $User->getByID($command->cmd__user__id_cmd);
 
     $societeLivraison = false ;
 
@@ -113,8 +114,44 @@ ob_start();
              <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h4>Fiche De travail -  <?php echo $command->devis__id ?></h4>
              <barcode dimension="1D" type="C128" label="none" value="<?php echo $command->devis__id ?>" style="width:40mm; height:8mm; color: #3b3b3b; font-size: 4mm"></barcode><br>
 
-             <small>Commandé le : <?php echo $formated_date ?></small><br>
-             Vendeur :<?php echo  $_SESSION['user']->log_nec ?> </td>
+            Commandé le : <strong><?php echo $formated_date ?></strong><br>
+            Commercial : <strong><?php
+                        if (!empty($user)) 
+                        {
+                            echo  $user->nom . ' '. $user->prenom ;
+                        } 
+                        else 
+                        {
+                            echo 'Non renseigné';
+                        }
+                    ?>
+                </strong> 
+                    <?php
+                        if (!empty($user->postefix)) 
+                        {
+                        echo ' (Tél: '. $user->postefix .')';
+                        } 
+
+                        
+                    ?>
+                     
+                
+                    <?php
+                        if (!empty($userCMD)) 
+                        {
+                            echo  '<br>Commandé par : <strong>'.$userCMD->nom . ' '. $userCMD->prenom .'</strong> ';
+                        } 
+                    ?>
+                
+                    <?php
+                        if (!empty($userCMD->postefix)) 
+                        {
+                        echo ' (Tél: '. $userCMD->postefix .')';
+                        } 
+
+                       
+                    ?> 
+                    </td>
              <td style="text-align: left; width:50%"><strong><?php 
               if ($societeLivraison) 
               {
@@ -124,17 +161,29 @@ ob_start();
                     $contact = $Contact->getOne($command->devis__contact__id);
                     echo "<small>facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom. "</small><strong><br>";
                     echo Pdfunctions::showSociete($clientView) ." </strong> ";
+                    if (!empty($clientView->client__tel)) 
+                        {
+                           echo '<br> TEL : '.$clientView->client__tel.'';
+                        }  
                 
                     if ($command->devis__contact_livraison) {
                         //si un contact est présent dans l'adresse de livraison : 
                         $contact2 = $Contact->getOne($command->devis__contact_livraison);
                         echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
-                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>"; 
+                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                        if (!empty($societeLivraison->client__tel)) 
+                        {
+                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
+                        }      
                     }
                     else {
                         // si pas de contact de livraison : 
                         echo "<br> <small>livraison :</small><strong><br>";
-                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>"; 
+                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                        if (!empty($societeLivraison->client__tel)) 
+                        {
+                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
+                        }  
                     } 
                 }
 
@@ -144,10 +193,18 @@ ob_start();
                     if ($command->devis__contact_livraison) {
                         $contact2 = $Contact->getOne($command->devis__contact_livraison);
                         echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
-                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>"; 
+                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                        if (!empty($societeLivraison->client__tel)) 
+                        {
+                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
+                        }  
                     } else {
                         echo "<br> <small>livraison :</small><strong><br>";
-                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>"; 
+                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                        if (!empty($societeLivraison->client__tel)) 
+                        {
+                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
+                        } 
                     }  
                 }  
          } 
@@ -159,13 +216,24 @@ ob_start();
             $contact = $Contact->getOne($command->devis__contact__id);
             echo "<small>livraison & facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."</small><strong><br>";
             echo Pdfunctions::showSociete($clientView)  ."</strong>";
+            if (!empty($clientView->client__tel)) 
+            {
+               echo '<br> TEL : '.$clientView->client__tel.'';
+            }  
             }
             else{
                 echo "<small>livraison & facturation : </small><strong><br>";
                 echo Pdfunctions::showSociete($clientView)  ."</strong>";
+            if (!empty($clientView->client__tel)) 
+                {
+                   echo '<br>TEL : '.$clientView->client__tel.'';
+                }  
             }
 
          } 
+          
+         
+         
          if ($command->cmd__code_cmd_client) 
          {
             echo "<br> Code cmd: " . $command->cmd__code_cmd_client ;

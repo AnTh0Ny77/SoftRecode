@@ -195,7 +195,13 @@ if (!empty($_POST['recherche-fiche']))
                $champRecherche = $_POST['rechercheF'];
                break;
             }
-           
+        
+          case 'id-fiche';
+          $devisList = [];
+               $devisSeul = $Cmd->GetById(intval($_POST['rechercheF']));
+               $champRecherche = $_POST['rechercheF'];
+               array_push($devisList, $devisSeul);
+          break;
         default:
            $devisList = $Cmd->getFromStatusAll('IMP');
            break;

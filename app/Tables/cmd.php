@@ -14,6 +14,7 @@ use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Tables\Client;
 use App\Tables\Contact;
+use App\Tables\User;
 class Cmd extends Table {
   
   public Database $Db;
@@ -521,8 +522,10 @@ $command = $this->getById(intval($idReliquat));
 $commandLignes = $this->devisLigne($idReliquat);
 $Client = new Client($this->Db);
 $Contact = new Contact($this->Db);
+$User = new User($this->Db);
 $clientView = $Client->getOne($command->client__id);
-
+$user = $User->getByID($clientView->client__id_vendeur);
+$userCMD = $User->getByID($command->cmd__user__id_cmd);
 
     $societeLivraison = false ;
 
@@ -537,171 +540,238 @@ $dateTemp = new DateTime($command->cmd__date_cmd);
  $formated_date = $date_time->format('d/m/Y');
  
  ob_start();
- ?>
- <style type="text/css">
-       strong{ color:#000;}
-       h3{ color:#666666;}
-       h2{ color:#3b3b3b;}
-       table{
-         font-size:13; font-style: normal; font-variant: normal; 
-        border-collapse:separate; 
-        border-spacing: 0 15px; 
-          }  
-  </style>
- 
- <page backtop="10mm" backleft="5mm" backright="5mm">
-      <table style="width: 100%;">
-          <tr>
-              <td style="text-align: left;  width: 50%"><img  style=" width:60mm" src="public/img/recodeDevis.png"/></td>
-              <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br>
-              <a>www.recode.fr</a><br><br>
-              <br></td>
-              </tr>
-              <tr>
-              <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h4>Fiche De travail -  <?php echo $command->devis__id ?></h4>
-              <barcode dimension="1D" type="C128" label="none" value="<?php echo $command->devis__id ?>" style="width:40mm; height:8mm; color: #3b3b3b; font-size: 4mm"></barcode><br>
- 
-              <small>Commandé le : <?php echo $formated_date ?></small><br>
-              Vendeur :<?php echo  $_SESSION['user']->log_nec ?> </td>
-              <td style="text-align: left; width:50%"><strong><?php 
-               if ($societeLivraison) 
-               {
- 
-                 if ($command->devis__contact__id) {
-                     // si un contact est présent dans l'adresse de facturation :
-                     $contact = $Contact->getOne($command->devis__contact__id);
-                     echo "<small>facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom. "</small><strong><br>";
-                     echo Pdfunctions::showSociete($clientView) ." </strong> ";
-                 
-                     if ($command->devis__contact_livraison) {
-                         //si un contact est présent dans l'adresse de livraison : 
-                         $contact2 = $Contact->getOne($command->devis__contact_livraison);
-                         echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
-                         echo Pdfunctions::showSociete($societeLivraison) . "</strong>"; 
-                     }
-                     else {
-                         // si pas de contact de livraison : 
-                         echo "<br> <small>livraison :</small><strong><br>";
-                         echo Pdfunctions::showSociete($societeLivraison) . "</strong>"; 
-                     } 
-                 }
- 
-                 else {
-                     echo "<small>facturation :</small><strong><br>";
-                     echo Pdfunctions::showSociete($clientView) ." </strong>" ;
-                     if ($command->devis__contact_livraison) {
-                         $contact2 = $Contact->getOne($command->devis__contact_livraison);
-                         echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
-                         echo Pdfunctions::showSociete($societeLivraison) . "</strong>"; 
-                     } else {
-                         echo "<br> <small>livraison :</small><strong><br>";
-                         echo Pdfunctions::showSociete($societeLivraison) . "</strong>"; 
-                     }  
-                 }  
-          } 
- 
- 
- 
-          else{
-             if ($command->devis__contact__id) {
-             $contact = $Contact->getOne($command->devis__contact__id);
-             echo "<small>livraison & facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."</small><strong><br>";
-             echo Pdfunctions::showSociete($clientView)  ."</strong>";
-             }
-             else{
-                 echo "<small>livraison & facturation : </small><strong><br>";
-                 echo Pdfunctions::showSociete($clientView)  ."</strong>";
-             }
- 
-          } 
-          if ($command->cmd__code_cmd_client) 
-          {
-             echo "<br> Code cmd: " . $command->cmd__code_cmd_client ;
-          }
-          ?>
-          </strong>
-             </td>
-          </tr>
-      </table>
- 
- 
-      <table CELLSPACING=0 style="width: 100%;  margin-top: 80px; ">
-              <tr style=" margin-top : 50px; background-color: #dedede;">
-                 <td style="width: 22%; text-align: left;">Presta<br>Type<br>Gar.</td>
-                 <td style="width: 60%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
-                 <td style="text-align: center; width: 9%"><strong>CMD</strong></td>
-                 <td style="text-align: center; width: 9%"><strong>Livré</strong></td>
-              </tr> 
-              <?php
-              foreach ($commandLignes as $item) {
-                 if($item->cmdl__garantie_option > $item->devl__mois_garantie) 
-                 {
-                   $temp = $item->cmdl__garantie_option ;
-                 }
-                  else 
-                  { 
-                      if (!empty($item->devl__mois_garantie)) 
-                      {
-                         $temp = $item->devl__mois_garantie;
-                      }
-                      else
-                      {
-                         $temp = "";
-                      }
-                    
-                  }
- 
-                
- 
-                 echo "<tr style='font-size: 100%;>
-                         <td style='border-bottom: 1px #ccc solid'> ". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois</td>
-                         <td style='border-bottom: 1px #ccc solid; width: 55%;'> 
-                             <br> <small>désignation :</small> <b>" . $item->devl__designation ."</b><br>"
-                             .$item->famille__lib. " " . $item->marque . " " .$item->modele. " ". $item->devl__modele  ." " .$item->devl__note_interne . 
-                         "</td>
-                          <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite. " </strong></td>
-                          <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
-                       </tr>";
-              }
-              ?>
-      </table> 
-      
-      <table style=" margin-top: 50px; width: 100%">
-              <tr style=" margin-top: 200px; width: 100%"><td><small>Commentaire:</small></td></tr>
-              <tr >
-              <td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%' > <?php echo  $command->devis__note_interne ?> </td>
-             </tr>
-      </table>
- 
- 
-      <div style=" width: 100%; position: absolute; bottom:1px">
-     
-    
-      <table CELLSPACING=0 style=" width: 100%;  ">
-         <tr style="background-color: #dedede;">
-                     <td style="text-align: center; width: 30%"><strong>Traitement en atelier </strong></td>
-                     <td style="text-align: center; width: 40%"><strong>Réceptionné par : </strong></td>
-                     <td style="text-align: center; width: 30%"><strong>POIDS</strong></td>
-         </tr> 
+?>
+<style type="text/css">
+      strong{ color:#000;}
+      h3{ color:#666666;}
+      h2{ color:#3b3b3b;}
+      table{
+        font-size:13; font-style: normal; font-variant: normal; 
+       border-collapse:separate; 
+       border-spacing: 0 15px; 
+         }  
+ </style>
+
+<page backtop="10mm" backleft="5mm" backright="5mm">
+     <table style="width: 100%;">
          <tr>
-             <td style="border: 1px #ccc solid; height: 150px;">
-                 
-             </td>
-             <td style="border: 1px #ccc solid; ">
-                 <small><i>Nom/signature/tampon</i></small>
-             </td>
-             <td style="border: 1px #ccc solid; ">
-                 
-             </td>
+             <td style="text-align: left;  width: 50%"><img  style=" width:60mm" src="public/img/recodeDevis.png"/></td>
+             <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br>
+             <a>www.recode.fr</a><br><br>
+             <br></td>
+             </tr>
+             <tr>
+             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h4>Fiche De travail -  <?php echo $command->devis__id ?></h4>
+             <barcode dimension="1D" type="C128" label="none" value="<?php echo $command->devis__id ?>" style="width:40mm; height:8mm; color: #3b3b3b; font-size: 4mm"></barcode><br>
+
+            Commandé le : <strong><?php echo $formated_date ?></strong><br>
+            Commercial : <strong><?php
+                        if (!empty($user)) 
+                        {
+                            echo  $user->nom . ' '. $user->prenom ;
+                        } 
+                        else 
+                        {
+                            echo 'Non renseigné';
+                        }
+                    ?>
+                </strong> 
+                    <?php
+                        if (!empty($user->postefix)) 
+                        {
+                        echo ' (Tél: '. $user->postefix .')';
+                        } 
+
+                        
+                    ?>
+                     
+                
+                    <?php
+                        if (!empty($userCMD)) 
+                        {
+                            echo  '<br>Commandé par : <strong>'.$userCMD->nom . ' '. $userCMD->prenom .'</strong> ';
+                        } 
+                    ?>
+                
+                    <?php
+                        if (!empty($userCMD->postefix)) 
+                        {
+                        echo ' (Tél: '. $userCMD->postefix .')';
+                        } 
+
+                       
+                    ?> 
+                    </td>
+             <td style="text-align: left; width:50%"><strong><?php 
+              if ($societeLivraison) 
+              {
+
+                if ($command->devis__contact__id) {
+                    // si un contact est présent dans l'adresse de facturation :
+                    $contact = $Contact->getOne($command->devis__contact__id);
+                    echo "<small>facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom. "</small><strong><br>";
+                    echo Pdfunctions::showSociete($clientView) ." </strong> ";
+                    if (!empty($clientView->client__tel)) 
+                        {
+                           echo '<br> TEL : '.$clientView->client__tel.'';
+                        }  
+                
+                    if ($command->devis__contact_livraison) {
+                        //si un contact est présent dans l'adresse de livraison : 
+                        $contact2 = $Contact->getOne($command->devis__contact_livraison);
+                        echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
+                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                        if (!empty($societeLivraison->client__tel)) 
+                        {
+                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
+                        }      
+                    }
+                    else {
+                        // si pas de contact de livraison : 
+                        echo "<br> <small>livraison :</small><strong><br>";
+                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                        if (!empty($societeLivraison->client__tel)) 
+                        {
+                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
+                        }  
+                    } 
+                }
+
+                else {
+                    echo "<small>facturation :</small><strong><br>";
+                    echo Pdfunctions::showSociete($clientView) ." </strong>" ;
+                    if ($command->devis__contact_livraison) {
+                        $contact2 = $Contact->getOne($command->devis__contact_livraison);
+                        echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
+                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                        if (!empty($societeLivraison->client__tel)) 
+                        {
+                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
+                        }  
+                    } else {
+                        echo "<br> <small>livraison :</small><strong><br>";
+                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                        if (!empty($societeLivraison->client__tel)) 
+                        {
+                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
+                        } 
+                    }  
+                }  
+         } 
+
+
+
+         else{
+            if ($command->devis__contact__id) {
+            $contact = $Contact->getOne($command->devis__contact__id);
+            echo "<small>livraison & facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."</small><strong><br>";
+            echo Pdfunctions::showSociete($clientView)  ."</strong>";
+            if (!empty($clientView->client__tel)) 
+            {
+               echo '<br> TEL : '.$clientView->client__tel.'';
+            }  
+            }
+            else{
+                echo "<small>livraison & facturation : </small><strong><br>";
+                echo Pdfunctions::showSociete($clientView)  ."</strong>";
+            if (!empty($clientView->client__tel)) 
+                {
+                   echo '<br>TEL : '.$clientView->client__tel.'';
+                }  
+            }
+
+         } 
+          
+         
+         
+         if ($command->cmd__code_cmd_client) 
+         {
+            echo "<br> Code cmd: " . $command->cmd__code_cmd_client ;
+         }
+         ?>
+         </strong>
+            </td>
          </tr>
-     </table>  
+     </table>
+
+
+     <table CELLSPACING=0 style="width: 100%;  margin-top: 80px; ">
+             <tr style=" margin-top : 50px; background-color: #dedede;">
+                <td style="width: 22%; text-align: left;">Presta<br>Type<br>Gar.</td>
+                <td style="width: 60%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
+                <td style="text-align: center; width: 9%"><strong>CMD</strong></td>
+                <td style="text-align: center; width: 9%"><strong>Livré</strong></td>
+             </tr> 
+             <?php
+             foreach ($commandLignes as $item) {
+                if($item->cmdl__garantie_option > $item->devl__mois_garantie) 
+                {
+                  $temp = $item->cmdl__garantie_option ;
+                }
+                 else 
+                 { 
+                     if (!empty($item->devl__mois_garantie)) 
+                     {
+                        $temp = $item->devl__mois_garantie;
+                     }
+                     else
+                     {
+                        $temp = "";
+                     }
+                   
+                 }
+
+               
+
+                echo "<tr style='font-size: 100%;>
+                        <td style='border-bottom: 1px #ccc solid'> ". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois</td>
+                        <td style='border-bottom: 1px #ccc solid; width: 55%;'> 
+                            <br> <small>désignation :</small> <b>" . $item->devl__designation ."</b><br>"
+                            .$item->famille__lib. " " . $item->marque . " " .$item->modele. " ". $item->devl__modele  ." " .$item->devl__note_interne . 
+                        "</td>
+                         <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite. " </strong></td>
+                         <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
+                      </tr>";
+             }
+             ?>
+     </table> 
      
-     </div>  
- 
- </page>
- 
- <?php
- $content = ob_get_contents();
+     <table style=" margin-top: 50px; width: 100%">
+             <tr style=" margin-top: 200px; width: 100%"><td><small>Commentaire:</small></td></tr>
+             <tr >
+             <td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%' > <?php echo  $command->devis__note_interne ?> </td>
+            </tr>
+     </table>
+
+
+     <div style=" width: 100%; position: absolute; bottom:1px">
+    
+   
+     <table CELLSPACING=0 style=" width: 100%;  ">
+        <tr style="background-color: #dedede;">
+                    <td style="text-align: center; width: 30%"><strong>Traitement en atelier </strong></td>
+                    <td style="text-align: center; width: 40%"><strong>Réceptionné par : </strong></td>
+                    <td style="text-align: center; width: 30%"><strong>POIDS</strong></td>
+        </tr> 
+        <tr>
+            <td style="border: 1px #ccc solid; height: 150px;">
+                
+            </td>
+            <td style="border: 1px #ccc solid; ">
+                <small><i>Nom/signature/tampon</i></small>
+            </td>
+            <td style="border: 1px #ccc solid; ">
+                
+            </td>
+        </tr>
+    </table>  
+    
+    </div>  
+
+</page>
+
+<?php
+$content = ob_get_contents();
 
 try 
 {
@@ -804,7 +874,9 @@ $commandLignes = $this->devisLigne($idReliquat);
 $Client = new Client($this->Db);
 $Contact = new Contact($this->Db);
 $clientView = $Client->getOne($command->client__id);
-
+$User = new User($this->Db);
+$user = $User->getByID($clientView->client__id_vendeur);
+$userCMD = $User->getByID($command->cmd__user__id_cmd);
 
     $societeLivraison = false ;
 
@@ -818,171 +890,238 @@ $dateTemp = new DateTime($command->cmd__date_cmd);
  //formate la date pour l'utilisateur:
  $formated_date = $date_time->format('d/m/Y');
  ob_start();
- ?>
- <style type="text/css">
-       strong{ color:#000;}
-       h3{ color:#666666;}
-       h2{ color:#3b3b3b;}
-       table{
-         font-size:13; font-style: normal; font-variant: normal; 
-        border-collapse:separate; 
-        border-spacing: 0 15px; 
-          }  
-  </style>
- 
- <page backtop="10mm" backleft="5mm" backright="5mm">
-      <table style="width: 100%;">
-          <tr>
-              <td style="text-align: left;  width: 50%"><img  style=" width:60mm" src="public/img/recodeDevis.png"/></td>
-              <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br>
-              <a>www.recode.fr</a><br><br>
-              <br></td>
-              </tr>
-              <tr>
-              <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h4>Fiche De travail -  <?php echo $command->devis__id ?></h4>
-              <barcode dimension="1D" type="C128" label="none" value="<?php echo $command->devis__id ?>" style="width:40mm; height:8mm; color: #3b3b3b; font-size: 4mm"></barcode><br>
- 
-              <small>Commandé le : <?php echo $formated_date ?></small><br>
-              Vendeur :<?php echo  $_SESSION['user']->log_nec ?> </td>
-              <td style="text-align: left; width:50%"><strong><?php 
-               if ($societeLivraison) 
-               {
- 
-                 if ($command->devis__contact__id) {
-                     // si un contact est présent dans l'adresse de facturation :
-                     $contact = $Contact->getOne($command->devis__contact__id);
-                     echo "<small>facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom. "</small><strong><br>";
-                     echo Pdfunctions::showSociete($clientView) ." </strong> ";
-                 
-                     if ($command->devis__contact_livraison) {
-                         //si un contact est présent dans l'adresse de livraison : 
-                         $contact2 = $Contact->getOne($command->devis__contact_livraison);
-                         echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
-                         echo Pdfunctions::showSociete($societeLivraison) . "</strong>"; 
-                     }
-                     else {
-                         // si pas de contact de livraison : 
-                         echo "<br> <small>livraison :</small><strong><br>";
-                         echo Pdfunctions::showSociete($societeLivraison) . "</strong>"; 
-                     } 
-                 }
- 
-                 else {
-                     echo "<small>facturation :</small><strong><br>";
-                     echo Pdfunctions::showSociete($clientView) ." </strong>" ;
-                     if ($command->devis__contact_livraison) {
-                         $contact2 = $Contact->getOne($command->devis__contact_livraison);
-                         echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
-                         echo Pdfunctions::showSociete($societeLivraison) . "</strong>"; 
-                     } else {
-                         echo "<br> <small>livraison :</small><strong><br>";
-                         echo Pdfunctions::showSociete($societeLivraison) . "</strong>"; 
-                     }  
-                 }  
-          } 
- 
- 
- 
-          else{
-             if ($command->devis__contact__id) {
-             $contact = $Contact->getOne($command->devis__contact__id);
-             echo "<small>livraison & facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."</small><strong><br>";
-             echo Pdfunctions::showSociete($clientView)  ."</strong>";
-             }
-             else{
-                 echo "<small>livraison & facturation : </small><strong><br>";
-                 echo Pdfunctions::showSociete($clientView)  ."</strong>";
-             }
- 
-          } 
-          if ($command->cmd__code_cmd_client) 
-          {
-             echo "<br> Code cmd: " . $command->cmd__code_cmd_client ;
-          }
-          ?>
-          </strong>
-             </td>
-          </tr>
-      </table>
- 
- 
-      <table CELLSPACING=0 style="width: 100%;  margin-top: 80px; ">
-              <tr style=" margin-top : 50px; background-color: #dedede;">
-                 <td style="width: 22%; text-align: left;">Presta<br>Type<br>Gar.</td>
-                 <td style="width: 60%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
-                 <td style="text-align: center; width: 9%"><strong>CMD</strong></td>
-                 <td style="text-align: center; width: 9%"><strong>Livré</strong></td>
-              </tr> 
-              <?php
-              foreach ($commandLignes as $item) {
-                 if($item->cmdl__garantie_option > $item->devl__mois_garantie) 
-                 {
-                   $temp = $item->cmdl__garantie_option ;
-                 }
-                  else 
-                  { 
-                      if (!empty($item->devl__mois_garantie)) 
-                      {
-                         $temp = $item->devl__mois_garantie;
-                      }
-                      else
-                      {
-                         $temp = "";
-                      }
-                    
-                  }
- 
-                
- 
-                 echo "<tr style='font-size: 100%;>
-                         <td style='border-bottom: 1px #ccc solid'> ". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois</td>
-                         <td style='border-bottom: 1px #ccc solid; width: 55%;'> 
-                             <br> <small>désignation :</small> <b>" . $item->devl__designation ."</b><br>"
-                             .$item->famille__lib. " " . $item->marque . " " .$item->modele. " ". $item->devl__modele  ." " .$item->devl__note_interne . 
-                         "</td>
-                          <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite. " </strong></td>
-                          <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
-                       </tr>";
-              }
-              ?>
-      </table> 
-      
-      <table style=" margin-top: 50px; width: 100%">
-              <tr style=" margin-top: 200px; width: 100%"><td><small>Commentaire:</small></td></tr>
-              <tr >
-              <td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%' > <?php echo  $command->devis__note_interne ?> </td>
-             </tr>
-      </table>
- 
- 
-      <div style=" width: 100%; position: absolute; bottom:1px">
-     
-    
-      <table CELLSPACING=0 style=" width: 100%;  ">
-         <tr style="background-color: #dedede;">
-                     <td style="text-align: center; width: 30%"><strong>Traitement en atelier </strong></td>
-                     <td style="text-align: center; width: 40%"><strong>Réceptionné par : </strong></td>
-                     <td style="text-align: center; width: 30%"><strong>POIDS</strong></td>
-         </tr> 
+?>
+<style type="text/css">
+      strong{ color:#000;}
+      h3{ color:#666666;}
+      h2{ color:#3b3b3b;}
+      table{
+        font-size:13; font-style: normal; font-variant: normal; 
+       border-collapse:separate; 
+       border-spacing: 0 15px; 
+         }  
+ </style>
+
+<page backtop="10mm" backleft="5mm" backright="5mm">
+     <table style="width: 100%;">
          <tr>
-             <td style="border: 1px #ccc solid; height: 150px;">
-                 
-             </td>
-             <td style="border: 1px #ccc solid; ">
-                 <small><i>Nom/signature/tampon</i></small>
-             </td>
-             <td style="border: 1px #ccc solid; ">
-                 
-             </td>
+             <td style="text-align: left;  width: 50%"><img  style=" width:60mm" src="public/img/recodeDevis.png"/></td>
+             <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br>
+             <a>www.recode.fr</a><br><br>
+             <br></td>
+             </tr>
+             <tr>
+             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h4>Fiche De travail -  <?php echo $command->devis__id ?></h4>
+             <barcode dimension="1D" type="C128" label="none" value="<?php echo $command->devis__id ?>" style="width:40mm; height:8mm; color: #3b3b3b; font-size: 4mm"></barcode><br>
+
+            Commandé le : <strong><?php echo $formated_date ?></strong><br>
+            Commercial : <strong><?php
+                        if (!empty($user)) 
+                        {
+                            echo  $user->nom . ' '. $user->prenom ;
+                        } 
+                        else 
+                        {
+                            echo 'Non renseigné';
+                        }
+                    ?>
+                </strong> 
+                    <?php
+                        if (!empty($user->postefix)) 
+                        {
+                        echo ' (Tél: '. $user->postefix .')';
+                        } 
+
+                        
+                    ?>
+                     
+                
+                    <?php
+                        if (!empty($userCMD)) 
+                        {
+                            echo  '<br>Commandé par : <strong>'.$userCMD->nom . ' '. $userCMD->prenom .'</strong> ';
+                        } 
+                    ?>
+                
+                    <?php
+                        if (!empty($userCMD->postefix)) 
+                        {
+                        echo ' (Tél: '. $userCMD->postefix .')';
+                        } 
+
+                       
+                    ?> 
+                    </td>
+             <td style="text-align: left; width:50%"><strong><?php 
+              if ($societeLivraison) 
+              {
+
+                if ($command->devis__contact__id) {
+                    // si un contact est présent dans l'adresse de facturation :
+                    $contact = $Contact->getOne($command->devis__contact__id);
+                    echo "<small>facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom. "</small><strong><br>";
+                    echo Pdfunctions::showSociete($clientView) ." </strong> ";
+                    if (!empty($clientView->client__tel)) 
+                        {
+                           echo '<br> TEL : '.$clientView->client__tel.'';
+                        }  
+                
+                    if ($command->devis__contact_livraison) {
+                        //si un contact est présent dans l'adresse de livraison : 
+                        $contact2 = $Contact->getOne($command->devis__contact_livraison);
+                        echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
+                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                        if (!empty($societeLivraison->client__tel)) 
+                        {
+                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
+                        }      
+                    }
+                    else {
+                        // si pas de contact de livraison : 
+                        echo "<br> <small>livraison :</small><strong><br>";
+                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                        if (!empty($societeLivraison->client__tel)) 
+                        {
+                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
+                        }  
+                    } 
+                }
+
+                else {
+                    echo "<small>facturation :</small><strong><br>";
+                    echo Pdfunctions::showSociete($clientView) ." </strong>" ;
+                    if ($command->devis__contact_livraison) {
+                        $contact2 = $Contact->getOne($command->devis__contact_livraison);
+                        echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
+                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                        if (!empty($societeLivraison->client__tel)) 
+                        {
+                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
+                        }  
+                    } else {
+                        echo "<br> <small>livraison :</small><strong><br>";
+                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                        if (!empty($societeLivraison->client__tel)) 
+                        {
+                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
+                        } 
+                    }  
+                }  
+         } 
+
+
+
+         else{
+            if ($command->devis__contact__id) {
+            $contact = $Contact->getOne($command->devis__contact__id);
+            echo "<small>livraison & facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."</small><strong><br>";
+            echo Pdfunctions::showSociete($clientView)  ."</strong>";
+            if (!empty($clientView->client__tel)) 
+            {
+               echo '<br> TEL : '.$clientView->client__tel.'';
+            }  
+            }
+            else{
+                echo "<small>livraison & facturation : </small><strong><br>";
+                echo Pdfunctions::showSociete($clientView)  ."</strong>";
+            if (!empty($clientView->client__tel)) 
+                {
+                   echo '<br>TEL : '.$clientView->client__tel.'';
+                }  
+            }
+
+         } 
+          
+         
+         
+         if ($command->cmd__code_cmd_client) 
+         {
+            echo "<br> Code cmd: " . $command->cmd__code_cmd_client ;
+         }
+         ?>
+         </strong>
+            </td>
          </tr>
-     </table>  
+     </table>
+
+
+     <table CELLSPACING=0 style="width: 100%;  margin-top: 80px; ">
+             <tr style=" margin-top : 50px; background-color: #dedede;">
+                <td style="width: 22%; text-align: left;">Presta<br>Type<br>Gar.</td>
+                <td style="width: 60%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
+                <td style="text-align: center; width: 9%"><strong>CMD</strong></td>
+                <td style="text-align: center; width: 9%"><strong>Livré</strong></td>
+             </tr> 
+             <?php
+             foreach ($commandLignes as $item) {
+                if($item->cmdl__garantie_option > $item->devl__mois_garantie) 
+                {
+                  $temp = $item->cmdl__garantie_option ;
+                }
+                 else 
+                 { 
+                     if (!empty($item->devl__mois_garantie)) 
+                     {
+                        $temp = $item->devl__mois_garantie;
+                     }
+                     else
+                     {
+                        $temp = "";
+                     }
+                   
+                 }
+
+               
+
+                echo "<tr style='font-size: 100%;>
+                        <td style='border-bottom: 1px #ccc solid'> ". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois</td>
+                        <td style='border-bottom: 1px #ccc solid; width: 55%;'> 
+                            <br> <small>désignation :</small> <b>" . $item->devl__designation ."</b><br>"
+                            .$item->famille__lib. " " . $item->marque . " " .$item->modele. " ". $item->devl__modele  ." " .$item->devl__note_interne . 
+                        "</td>
+                         <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite. " </strong></td>
+                         <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
+                      </tr>";
+             }
+             ?>
+     </table> 
      
-     </div>  
- 
- </page>
- 
- <?php
- $content = ob_get_contents();
+     <table style=" margin-top: 50px; width: 100%">
+             <tr style=" margin-top: 200px; width: 100%"><td><small>Commentaire:</small></td></tr>
+             <tr >
+             <td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%' > <?php echo  $command->devis__note_interne ?> </td>
+            </tr>
+     </table>
+
+
+     <div style=" width: 100%; position: absolute; bottom:1px">
+    
+   
+     <table CELLSPACING=0 style=" width: 100%;  ">
+        <tr style="background-color: #dedede;">
+                    <td style="text-align: center; width: 30%"><strong>Traitement en atelier </strong></td>
+                    <td style="text-align: center; width: 40%"><strong>Réceptionné par : </strong></td>
+                    <td style="text-align: center; width: 30%"><strong>POIDS</strong></td>
+        </tr> 
+        <tr>
+            <td style="border: 1px #ccc solid; height: 150px;">
+                
+            </td>
+            <td style="border: 1px #ccc solid; ">
+                <small><i>Nom/signature/tampon</i></small>
+            </td>
+            <td style="border: 1px #ccc solid; ">
+                
+            </td>
+        </tr>
+    </table>  
+    
+    </div>  
+
+</page>
+
+<?php
+$content = ob_get_contents();
 
 try 
 {
