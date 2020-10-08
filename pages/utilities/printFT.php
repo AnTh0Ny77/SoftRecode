@@ -180,8 +180,8 @@ ob_start();
      <table CELLSPACING=0 style="width: 100%;  margin-top: 80px; ">
              <tr style=" margin-top : 50px; background-color: #dedede;">
                 <td style="width: 22%; text-align: left;">Presta<br>Type<br>Gar.</td>
-                <td style="width: 50%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
-                <td style="text-align: center; width: 8%"><strong>CMD</strong></td>
+                <td style="width: 60%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
+                <td style="text-align: center; width: 9%"><strong>CMD</strong></td>
                 <td style="text-align: center; width: 9%"><strong>Livré</strong></td>
              </tr> 
              <?php
