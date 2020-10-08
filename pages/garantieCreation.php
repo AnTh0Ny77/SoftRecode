@@ -121,6 +121,10 @@ if (!empty($_POST['deleteLine']) && !empty($_POST['deleteLineRetour']))
 if (!empty($_POST['PrintFicheCreation'])) 
 {
 $command = $Cmd->getById($_POST['PrintFicheCreation']);
+if (!empty($_POST['comInterne'])) 
+  {
+    $updateCom = $General->updateAll('cmd' , $_POST['comInterne'] , 'cmd__note_interne' , 'cmd__id' , $command->devis__id );
+  }
 $commandLignes = $Cmd->devisLigne($_POST['PrintFicheCreation']);
 $update = $General->updateAll('cmd' , 'CMD' , 'cmd__etat' , 'cmd__id' , $command->devis__id );
 

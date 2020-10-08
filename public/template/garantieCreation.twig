@@ -23,7 +23,7 @@
        <!-- 1ere ligne -->
        <div class="d-flex flex-wrap flex-row justify-content-between">
         <!--carte option -->
-        <div class="col-9 cardVisio" >
+        <div class="col-10 cardVisio" >
           <div class="card shadow mb-4">
             <!-- Card Header - -->
            
@@ -105,6 +105,8 @@
                             <p>4-Poursuivre</p>
                         </div>
                 {% endif %}
+
+              
               
                     
               </div>
@@ -127,7 +129,7 @@
     </div>
     <!--2 eme Ligne-->
 
-    <div class="col-9 cardVisio d-flex justify-content-between" >
+    <div class="col-10 cardVisio d-flex justify-content-between" >
 
 
 
@@ -195,13 +197,9 @@
     <!-- Card Body -->
     <div >
     <div class="card-body" >
-      <div class="modal-footer mt-2">
-        
-
+      <div class=" mt-2">
       </div>
       <div>
-
-        
         <hr>
         <div class="text-success my-2">
         <i class="far fa-truck"></i></i> : Mettre à jour l'adresse de livraison 
@@ -209,27 +207,28 @@
         <div class="text-success my-2">
           <i class="fas fa-plus"></i> : Ajouter un element à la fiche de garantie
         </div>
-        <div class="text-success my-2">
-          <i class="far fa-user"></i> : Mettre à jour le contact 
-        </div>
-
-
-        
       </div>
      </div>
     <div/>
-    <div class="modal-footer mt-4">
-      {% if retour.devis__etat != 'PBL' %}
-     
+    <div class="modal-footer mt-2">
+      {% if lignes %}
+
       <form action="garantieCreation" method="POST">
+       
+        <div class="my-4">
+          <label for="inputEmail4">Commentaire</label>
+          <textarea class="form-control" id="comInterne" name="comInterne" rows="2" cols="40"></textarea>
+        </div>
+    
+        
         <input type="hidden" name="PrintFicheCreation" value="{{retour.devis__id}}">
         <div class="d-flex">
         <div class="text-danger mx-2">
           <i class="fas fa-engine-warning"></i> Vérifier avant d' imprimer !
         </div>
-        {% if lignes %}
+       
         <button class="btn btn-success">Imprimer <i class="fas fa-print"></i></button>
-        {% endif %}
+        
         
       </div>
       </form>

@@ -1,6 +1,47 @@
 $(document).ready(function()
 {
 
+    ClassicEditor
+    .create(document.querySelector('#comInterne'), 
+    {
+    fontColor: 
+    {
+        colors: 
+        [
+            {
+            color: 'black',
+            label: 'Black'
+            },
+            {
+            color: 'red',
+            label: 'Red'
+            },
+            {
+            color: 'DarkGreen',
+            label: 'Green'
+            },
+            {
+            color: 'Gold',
+            label: 'Yellow'
+            },
+            {
+            color: 'Blue',
+            label: 'Blue',
+            },
+            ]
+            },
+            toolbar: 
+            [ 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' ,  'fontColor']
+    })
+    .then( newEditor => 
+        {
+            ckComInterne = newEditor;
+        })
+    .catch( error => 
+        {
+            console.error( error );
+     });   
+
    
 
     // choix du client lors de la creation de fiche 

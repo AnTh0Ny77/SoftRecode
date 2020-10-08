@@ -140,13 +140,13 @@ else
              <div class="d-flex">
 
              <?php
-             if ($temp->client__id > 10 ) 
-             {
-                echo "<form class='my-2 mx-2' action='garantiesFiches' method='POST'>
-                <input type='hidden' name='POSTGarantie' value=". $temp->devis__id.">
-                <button class='btn btn-warning btn-sm'>Fiche de garantie</button>
-                </form>";
-             }
+            //  if ($temp->client__id > 10 ) 
+            //  {
+            //     echo "<form class='my-2 mx-2' action='garantiesFiches' method='POST'>
+            //     <input type='hidden' name='POSTGarantie' value=". $temp->devis__id.">
+            //     <button class='btn btn-warning btn-sm'>Fiche de garantie</button>
+            //     </form>";
+            //  }
                 echo "<form class='my-2 mx-2' action='adminFiche' method='POST'>
                 <input type='hidden' name='AdminGarantie' value=". $temp->devis__id.">
                 <button class='btn btn-primary btn-sm'>Administration</button>

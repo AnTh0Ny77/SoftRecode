@@ -336,8 +336,16 @@ try
         $doc->output('O:\intranet\Auto_Print\FT\Ft_'.$command->devis__id.'.pdf' , 'F'); 
     // }
     
+    if ($_SESSION['user']->user__devis_acces < 10 ) 
+        {
+            header('location: fichestravail');
+        }
+    else
+        {
+            header('location: mesDevis');
+        }
 
-    header('location: mesDevis');
+   
 } 
 catch (Html2PdfException $e) 
 {
