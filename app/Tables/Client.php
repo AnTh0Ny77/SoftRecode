@@ -22,7 +22,7 @@ class Client extends Table {
 }
 
 public function getOne($id){
-    $request =$this->Db->Pdo->query("SELECT LPAD(client__id,6,0) as client__id,  client__societe , client__adr1 , client__adr2, client__cp , client__ville , client__tel , client__tva_intracom  FROM " .$this->Table. " WHERE client__id = " . $id ."");
+    $request =$this->Db->Pdo->query("SELECT LPAD(client__id,6,0) as client__id,  client__societe , client__adr1 , client__adr2, client__cp , client__ville , client__tel , client__tva_intracom , client__id_vendeur  FROM " .$this->Table. " WHERE client__id = " . $id ."");
     $data = $request->fetch(PDO::FETCH_OBJ);
     return $data;
 }

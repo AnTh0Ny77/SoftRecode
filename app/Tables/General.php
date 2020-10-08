@@ -105,12 +105,14 @@ class General extends Table
     $recodeTel = '0493472500';
     $recodeCP = '06210';
     $recodeCommune = 'Mandelieu la Napoule';
+
+    $nomContact = $commande->civ__Livraison . ' ' . $commande->nom__livraison . ' ' . $commande->prenom__livraison ;
     
     $commande->client__livraison_societe = $this->replaceSpecialChar($commande->client__livraison_societe);
     $commande->client__livraison__adr1 = $this->replaceSpecialChar($commande->client__livraison__adr1);
     $commande->client__livraison__adr2 = $this->replaceSpecialChar($commande->client__livraison__adr2);
 
-    $responseText = ';02008066;'.$commande->cmd__date_envoi.';;;'.$paquets.';'.$poids.';'.$paquets.';'.$poids.';E;;'.$commande->client__livraison_societe.';'.$commande->client__livraison__adr1.';'.$commande->client__livraison__adr2.';'.$commande->client__livraison_cp.';'.$commande->client__livraison_ville.';;;'.$commande->nom__livraison.';'.$commande->nom__livraison.';;'.$commande->client__tel.';'.$commande->client__tel.';'.$commande->mail__livraison.';'.$recodeRaison.';'.$recodeAdresse1.';'.$recodeAdresse2.';'.$recodeCP.';'.$recodeCommune.';'.$recodeTel.';;'.$recodeRaison.';'.$recodeAdresse1.';'.$recodeAdresse2.';'.$recodeCP.';'.$recodeCommune.';'.$recodeTel.';J;;;;;;;;;;
+    $responseText = ';02008066;'.$commande->cmd__date_envoi.';;'.$commande->devis__id .';'.$paquets.';'.$poids.';'.$paquets.';'.$poids.';E;;'.$commande->client__livraison_societe.';'.$commande->client__livraison__adr1.';'.$commande->client__livraison__adr2.';'.$commande->client__livraison_cp.';'.$commande->client__livraison_ville.';;;'.$nomContact.';;;'.$commande->telLivraion.';;'.$commande->mail__livraison.';'.$recodeRaison.';'.$recodeAdresse1.';'.$recodeAdresse2.';'.$recodeCP.';'.$recodeCommune.';'.$recodeTel.';;'.$recodeRaison.';'.$recodeAdresse1.';'.$recodeAdresse2.';'.$recodeCP.';'.$recodeCommune.';'.$recodeTel.';J;;;;;;;;;;
 ';
     
     return $responseText;

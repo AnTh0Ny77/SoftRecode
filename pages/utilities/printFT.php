@@ -18,6 +18,21 @@ if (empty($_SESSION['user'])) {
  }
 
 
+ if (!empty($_SESSION['creaFiche'])) 
+{
+    $command = $Command->getById(intval($_SESSION['creaFiche']));
+    $_POST['devisCommande'] = $command->devis__id ;
+    $_SESSION['creaFiche'] = '';
+}
+
+if (!empty($_SESSION['garanFiche'])) 
+{
+    $command = $Command->getById(intval($_SESSION['garanFiche']));
+    $_POST['devisCommande'] = $command->devis__id ;
+    $_SESSION['garanFiche'] = '';
+}
+
+
  // si une validation de devis a été effectuée : 
 if(!empty($_POST['devisCommande']))
 {
@@ -52,10 +67,13 @@ if(!empty($_POST['devisCommande']))
   //contient l'id du devis pour l'imprssion de la fiche de travail : client2.js
   $print_request = $_POST['devisCommande'];
 }
+
   
 $command = $Command->getById(intval($_POST['devisCommande']));
 $commandLignes = $Command->devisLigne($_POST['devisCommande']);
 $clientView = $Client->getOne($command->client__id);
+
+
     $societeLivraison = false ;
 
     if ($command->devis__id_client_livraison) 

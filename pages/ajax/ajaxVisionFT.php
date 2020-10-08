@@ -25,10 +25,14 @@ else
 
         //recupere le devis:
         $temp =   $Cmd->GetById($_POST['AjaxFT']);
-        //recupere le createur du devis 
-        $user = $User->getByID($temp->devis__user__id);
+        
         //recupere le client: 
         $clientView = $Client->getOne($temp->client__id);
+        //recupere le createur du devis 
+        $user = $User->getByID($clientView->client__id_vendeur);
+
+        $userCMD = $User->getByID($temp->cmd__user__id_cmd);
+
         //si societe de livraison, recupere la societe de livraison:
         $societeLivraison = false ;
         if ($temp->devis__id_client_livraison) 
@@ -78,48 +82,75 @@ else
             padding-left: 5%;
         }
     </style>
-    
+    <?php
+   
+    ?>
 
     <div class="global-wrapper">
         <div class="div bodyFrame mt-4" style="width: 100%;" >
          <div class="head-wrapper div">
-
-
              <div class="div" style="text-align: left;  width: 50%;" >
-             <div class="div">
-             <img  style=" width:55mm;" src="public\img\recodeDevis.png"/>
-             </div>
-             <div class="div" style=" margin-top: 15%" >
-             <p>Commandé le : <?php echo $formated_date ?> à : <?php echo $h . 'h ' . $m ?></p>
-             Vendeur: <strong><?php echo  $user->nom . ' '. $user->prenom ?> </strong> 
-             <?php
-             if (!empty($user->postefix)) 
-             {
-               echo ' (Tél: '. $user->postefix .')';
-             } 
+                <div class="div">
+                    <img  style=" width:55mm;" src="public\img\recodeDevis.png"/>
+                </div>
+                <div class="div" style=" margin-top: 15%" >
+                <p>Commandé le : 
+                <?php echo $formated_date ?> à : <?php echo $h . 'h ' . $m ?></p>
+                Commercial : 
+                <strong>
+                    <?php
+                        if (!empty($user)) 
+                        {
+                            echo  $user->nom . ' '. $user->prenom ;
+                        } 
+                        else 
+                        {
+                            echo 'Non renseigné';
+                        }
+                    ?>
+                </strong> 
+                    <?php
+                        if (!empty($user->postefix)) 
+                        {
+                        echo ' (Tél: '. $user->postefix .')';
+                        } 
 
-             if (!empty($temp->cmd__code_cmd_client)) 
-             {
-                echo '<br> code cmd client: <b>'.  $temp->cmd__code_cmd_client . '</b>';
-             }
-             ?>
+                        
+                    ?>
+                     
+                
+                    <?php
+                        if (!empty($userCMD)) 
+                        {
+                            echo  '<br>Commandé par : <strong>'.$userCMD->nom . ' '. $userCMD->prenom ;
+                        } 
+                    ?>
+                </strong> 
+                    <?php
+                        if (!empty($userCMD->postefix)) 
+                        {
+                        echo ' (Tél: '. $userCMD->postefix .')';
+                        } 
+
+                        if (!empty($temp->cmd__code_cmd_client)) 
+                        {
+                            echo '<br> code cmd client: <b>'.  $temp->cmd__code_cmd_client . '</b>';
+                        }
+                    ?>
              <div class="d-flex">
+
              <?php
-            
              if ($temp->client__id > 10 ) 
              {
                 echo "<form class='my-2 mx-2' action='garantiesFiches' method='POST'>
                 <input type='hidden' name='POSTGarantie' value=". $temp->devis__id.">
                 <button class='btn btn-warning btn-sm'>Fiche de garantie</button>
                 </form>";
-
-              
-
              }
-             echo "<form class='my-2 mx-2' action='adminFiche' method='POST'>
-             <input type='hidden' name='AdminGarantie' value=". $temp->devis__id.">
-             <button class='btn btn-primary btn-sm'>Administration</button>
-             </form>";
+                echo "<form class='my-2 mx-2' action='adminFiche' method='POST'>
+                <input type='hidden' name='AdminGarantie' value=". $temp->devis__id.">
+                <button class='btn btn-primary btn-sm'>Administration</button>
+                </form>";
              ?>
              </div>
              
