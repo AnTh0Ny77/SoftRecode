@@ -20,7 +20,7 @@
            <!-- 1ere ligne -->
            <div class="d-flex flex-wrap flex-row justify-content-center my-4">
        <!-- Societe -->
-       <div class="col-md-4  ">
+       <div class="col-md-6">
         <div class="card shadow mb-4 h-100">
           <!-- Card Header - -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between ">
@@ -31,55 +31,61 @@
           <!-- Card Body -->
           <div class="card-body  ">
             <div class="chart-pie pt-2 pb-2 d-flex flex-row   mb-1 justify-content-between">
-              <div class=" mb-0 font-weight-bold text-muted">
-                {{devis.client__societe}}<br>
-                  {{devis.client__ville ~ " " ~  devis.client__cp}}<br>
+              <div class=" col-6 ">
+                <div class="card-header">
+                    <h5> Facturation  <i class="fas fa-euro-sign"></i></h5>
+                </div>
+                <div class="my-3">
+                <b>
+                {{devis.client__societe ~ " (" ~ devis.client__id ~ ')'}}<br>
+                {{devis.client__adr1}}<br>
+                {{devis.client__ville ~ " " ~  devis.client__cp }}</b><br>
+                Contact : <br>
                   {% if devis.devis__contact__id %}
-                  <br>
-                  Contact:<br>
-                  {{devis.contact__nom ~ " " ~ devis.contact__prenom}}<br>
-                 
+                  <b>{{ devis.contact__civ ~ " " ~ devis.contact__nom ~ " " ~ devis.contact__prenom}}</b><br>
                   {% else %}
-                  <br>
-                  Pas de contact pour ce devis
+                  <b>Non Renseigné</b>
                   {% endif %}
+                </div>
               </div>
-              <div>
+              <div class=" col-6 ">
+                <div class="card-header">
+                  <h5> Livraison  <i class="fas fa-truck"></i></h5>
+              </div>
+              <div class="my-3">
+              <b>
+              {% if devis.devis__id_client_livraison %}
+              {{devis.client__livraison_societe ~ " (" ~ devis.devis__id_client_livraison ~ ')'}}<br>
+              {{devis.client__livraison__adr1}}<br>
+              {{devis.client__livraison_ville ~ " " ~  devis.client__livraison_cp }}</b><br>
+              Contact : <br>
+                {% if devis.devis__contact_livraison %}
+                <b>{{ devis.civ__Livraison ~ " " ~ devis.nom__livraison ~ " " ~ devis.prenom__livraison}}</b><br>
+                {% else %}
+                <b>Non Renseigné</b>
+                {% endif %}
+              {% else %}
+              {{devis.client__societe ~ " (" ~ devis.client__id ~ ')'}}<br>
+              {{devis.client__adr1}}<br>
+              {{devis.client__ville ~ " " ~  devis.client__cp }}</b><br>
+              Contact : <br>
+                {% if devis.devis__contact__id %}
+                <b>{{ devis.contact__civ ~ " " ~ devis.contact__nom ~ " " ~ devis.contact__prenom}}</b><br>
+                {% else %}
+                <b>Non Renseigné</b>
+                {% endif %}
+              {% endif %}
+              </div>
             </div>
           </div>
         </div>
         </div>
         </div>
 
-         <!--Adresse de livraison -->
-       <div class="col-md-4">
-        <div class="card shadow mb-4 h-100">
-          <!-- Card Header - -->
-          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Adresse de Livraison <i class="fal fa-truck"></i></h6>
-            <div class="dropdown no-arrow">
-            </div>
-          </div>
-          <!-- Card Body -->
-          <div class="card-body ">
-            <div class="chart-pie pt-2 pb-2 d-flex flex-row   mb-1 justify-content-between">
-              <div class=" mb-0 font-weight-bold text-muted ">
-                {% if devis.devis__id_client_livraison %}
-                {{devis.client__livraison_societe}}<br>
-                {{devis.client__livraison_ville ~ " " ~ client__livraison_cp}}
-                {% else %}
-                Livré et facturé à la même adresse
-                {% endif %}
-              </div>
-              <div>
-            </div>
-          </div>
-        </div>
-        </div>
-        </div>
+      
 
           <!--commentaiire-->
-       <div class="col-md-4">
+       <div class="col-md-6">
         <div class="card shadow mb-4 h-100">
           <!-- Card Header - -->
           <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -90,7 +96,7 @@
           <!-- Card Body -->
           <div class="card-body">
             <div class="chart-pie pt-2 pb-2 d-flex flex-row   mb-1 justify-content-between">
-              <div class=" mb-0 font-weight-bold text-muted">
+              <div class=" mb-0 font-weight-bold text-muted col-10">
                 {% if devis.devis__note_client %}
                 
                 {{devis.devis__note_client|raw}}
