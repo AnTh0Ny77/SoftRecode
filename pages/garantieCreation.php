@@ -55,7 +55,11 @@ session_start();
   {
     $text = 'Garantie';
   }
-  else
+  elseif($type == 06)
+  {
+    $text = 'RMA Fournisseur';
+  }
+  else 
   {
     $text = 'Maintenance';
   }
