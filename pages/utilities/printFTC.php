@@ -113,12 +113,12 @@ $garanties = $Keyword->getGaranties();
                 if ($temp->devis__contact__id) 
                 {
                 $contact = $Contact->getOne($temp->devis__contact__id);
-                echo "<div style='background-color: #dedede;  padding: 15px 15px 15px 15px; border: 1px solid black;  width: 280px; '>Facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."<strong><br>";
-                echo Pdfunctions::showSociete($clientView)  ." </strong></div></td>";
+                echo "<div style='background-color: #dedede;  padding: 15px 15px 15px 15px; border: 1px solid black;  width: 280px; '><strong>";
+                echo Pdfunctions::showSocieteFacture($clientView,$contact) ." </strong></div></td>";
                 }
                 else
                 {
-                echo "<div style='background-color: #dedede; padding: 15px 15px 15px 15px; border: 1px solid black;  width: 280px;'>Facturation :<strong><br>";
+                echo "<div style='background-color: #dedede; padding: 15px 15px 15px 15px; border: 1px solid black;  width: 280px;'><strong>";
                 echo Pdfunctions::showSociete($clientView)  ." </strong></div></td>";
                 }
 
@@ -163,7 +163,7 @@ $garanties = $Keyword->getGaranties();
     </tr>
 </table>
 </div>
-<table  style=" width:100%  margin-bottom: 5px; margin-top: 35 px;">
+<table  style="width:100%;  margin-bottom: 5px; margin-top: 35 px;">
     <tr>
     <td style="text-align: left;  width: 100%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;">Conditions de paiement à réception/Conditions générales de Vente.
      Des pénalités de retard au taux légal seront appliquées en cas de paiement après la date d'échéance. Conformément à la loi du 12.05.80, EUROCOMPUTER conserve la propriété du matériel jusqu'au paiement intégral du prix et des frais annexes.

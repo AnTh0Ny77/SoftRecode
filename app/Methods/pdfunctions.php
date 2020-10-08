@@ -11,7 +11,8 @@ namespace App\Methods;
 
 // fonction d'affichage de la societe : nom (id) adr1 adr2 cp ville : 
 
-public static function showSociete($object){
+public static function showSociete($object)
+{
 	if ($object->client__adr2) {
 		$text = $object->client__societe . " (" . $object->client__id . ")<br>".
 		$object->client__adr1 . "<br>". $object->client__adr2 . "<br>" . $object->client__cp . " " . $object->client__ville ;
@@ -24,6 +25,43 @@ public static function showSociete($object){
 	}
    
 }
+
+public static function showSocieteFacture($object , $contact)
+{
+	if (!empty( $contact)) 
+	{
+		if ($object->client__adr2) 
+		{
+			$text = $object->client__societe . " (" . $object->client__id . ")<br>".  $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom . '<br>' . 
+			$object->client__adr1 . "<br>". $object->client__adr2 . "<br>" . $object->client__cp . " " . $object->client__ville ;
+			return $text ;
+		}
+		else 
+		{
+			$text = $object->client__societe . " (" . $object->client__id . ")<br>".  $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom . '<br>' .
+			$object->client__adr1 . "<br>". $object->client__cp . " " . $object->client__ville ;
+			return $text ;
+		}
+	}
+	else 
+	{
+		if ($object->client__adr2) 
+		{
+			$text = $object->client__societe . " (" . $object->client__id . ")<br>" .
+			$object->client__adr1 . "<br>". $object->client__adr2 . "<br>" . $object->client__cp . " " . $object->client__ville ;
+			return $text ;
+		}
+		else 
+		{
+			$text = $object->client__societe . " (" . $object->client__id . ")<br>".  
+			$object->client__adr1 . "<br>". $object->client__cp . " " . $object->client__ville ;
+			return $text ;
+		}
+	}
+	
+   
+}
+
 
 
 
@@ -845,7 +883,7 @@ public static function magicLineFTC($arrayLigne , $cmd){
 	<td style=" text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Désignation</b></td>
 	<td  style=" text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Qté</b></td>
 	<td style="text-align: center;  border: 1px solid black;  padding-top: 4px; padding-bottom: 4px;"><b>P.U € HT</b></td>
-	<td style="text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>P.TOT € HT</b></td>
+	<td style="text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>TOTAL € HT</b></td>
 	</tr> ';
 
 	echo $tete . $table ;
