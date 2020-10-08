@@ -227,7 +227,10 @@
         <div class="text-danger mx-2">
           <i class="fas fa-engine-warning"></i> Vérifier avant d' imprimer !
         </div>
+        {% if lignes %}
         <button class="btn btn-success">Imprimer <i class="fas fa-print"></i></button>
+        {% endif %}
+        
       </div>
       </form>
       {% endif %}
