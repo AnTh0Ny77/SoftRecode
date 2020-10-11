@@ -60,34 +60,36 @@ session_start();
          break;
    }
 
-   $dateStart = new DateTime();
-   $dateFin = new DateTime();
-   
-   $dateStart->setDate(intval($_POST['anneAuto']) , $start , 1);
-   $dateFin ->setDate(intval($_POST['anneAuto']) , $end , 30);
-   var_dump($dateStart);
-   $arrayMachine = [];
+   $text = $_POST['anneAuto'] . '-' . $start .'-' . '1' ;
+   $textEnd  = $_POST['anneAuto'] . '-' . $end .'-' . '30' ;
+   $dateStart = new DateTime($text);
+   $dateFin = new DateTime($textEnd);
+   $dateStart = $dateStart->format('Y-m-d H:i:s');
+   $dateFin = $dateFin->format('Y-m-d H:i:s');
 
+   
+  
    foreach ($ABNList as $abn) 
    {
-    $ligne = $Abonnement->getLigneFacturableAuto($abn->ab__cmd__id ,$dateStart->date);
-    $ligneProRata = $Abonnement->getLigneFacturableAutoBetween2Dates($abn->ab__cmd__id ,$dateStart->date , $dateFin->date);
-    die();
-    //défini le prorata : 
-      foreach ($ligneProRata as $item) 
+    $abn->client = $Client->getOne($abn->ab__client__id_fact);
+    $ligne = $Abonnement->getLigneFacturableAuto($abn->ab__cmd__id ,$dateStart);
+    $abn->total = 00.00;
+      foreach($ligne as $machine)
       {
-         $test = $Abonnement->DiffDate($item->abl__dt_debut , $dateFin->date);
-         var_dump($test);
+         $machine->totalTrim =  number_format($machine->abl__prix_mois * 3 , 2 , ',', ' ') ;
+         $abn->total += $machine->abl__prix_mois * 3  ;
       }
-    array_push($arrayMachine, $ligne);
+      $abn->total = number_format($abn->total , 2 , ',', ' ') ;
+      $abn->array = $ligne;
+      
    }
-   
+  
  }
 
  
  
  
-
+//degager du tableau si array vide :
 
  
 
@@ -97,6 +99,6 @@ session_start();
 echo $twig->render('factureAuto.twig',
 [
 'user'=>$user,
-'devisList'=>$arrayList
+'ABNList'=>$ABNList
 
 ]);

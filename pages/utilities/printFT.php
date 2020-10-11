@@ -338,7 +338,7 @@ try
     
     if ($_SESSION['user']->user__devis_acces < 10 ) 
         {
-            header('location: fichestravail');
+            header('location: ficheTravail');
         }
     else
         {
