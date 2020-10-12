@@ -88,8 +88,6 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
     rowObject.prix = prix;
     rowObject.prixBarre = prixBarre;
     rowObject.id__fmm = id__fmm;
-   
-
     row.push(rowObject);
     table.row.add(row).draw( false );
     row = [];

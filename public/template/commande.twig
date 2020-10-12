@@ -13,6 +13,12 @@
             <h1 class="h2">Devis N°: {{devis.devis__id}}</h1>
             <div class="btn-toolbar mb-2 mb-md-0">
               <div class="btn-group mr-2">
+                {% if user.user__facture_acces > 10 %}
+                <form class="mx-2" action="PRINTADMIN" method="POST">
+                  <input type="hidden" name="PRINTADMINID" value="{{devis.devis__id}}">
+                <button id="FTCADMIN" type="submit" class="btn btn-danger  btn-lg" >Facturation Directe</button>
+                </form>
+                {% endif %}
                 <button id="SendCmd" type="button" class="btn btn-success  btn-lg" disabled>Valider le devis</button>
               </div>
             </div>

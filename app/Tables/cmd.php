@@ -1556,7 +1556,7 @@ public function reversePrice($idLigne)
       cmd__id
       FROM cmd 
       WHERE cmd__id_facture BETWEEN ".$start." AND ".$end."
-      ORDER BY cmd__id_facture DESC ");
+      ORDER BY cmd__id_facture ASC ");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
   }

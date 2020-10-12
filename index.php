@@ -209,7 +209,9 @@
 
     case '/SoftRecode/printABN';
       require __DIR__ .'/pages/utilities/printABN.php'; break;
-
+      
+    case '/SoftRecode/PRINTADMIN';
+      require __DIR__ .'/pages/utilities/PRINTADMIN.php'; break;
     case '/SoftRecode/font';
       require __DIR__ .'/vendor/tecnickcom/tcpdf/fonts/convertfont.php'; break;
 

@@ -102,7 +102,33 @@ ob_start();
          }  
  </style>
 
-<page backtop="10mm" backleft="5mm" backright="5mm">
+<page backtop="10mm" backleft="5mm" backright="5mm" backbottom='15%' footer="page">
+    <page_footer >
+         
+     <div style=" width: 100%; position: absolute; bottom:1px">
+    
+   
+        <table CELLSPACING=0 style=" width: 100%;  ">
+            <tr style="background-color: #dedede;">
+                        <td style="text-align: center; width: 30%"><strong>Traitement en atelier </strong></td>
+                        <td style="text-align: center; width: 40%"><strong>Réceptionné par : </strong></td>
+                        <td style="text-align: center; width: 30%"><strong>POIDS</strong></td>
+            </tr> 
+            <tr>
+                <td style="border: 1px #ccc solid; height: 150px;">
+                    
+                </td>
+                <td style="border: 1px #ccc solid; ">
+                    <small><i>Nom/signature/tampon</i></small>
+                </td>
+                <td style="border: 1px #ccc solid; ">
+                    
+                </td>
+            </tr>
+        </table>  
+   
+   </div>  
+    </page_footer>
      <table style="width: 100%;">
          <tr>
              <td style="text-align: left;  width: 50%"><img  style=" width:60mm" src="public/img/recodeDevis.png"/></td>
@@ -294,29 +320,6 @@ ob_start();
      </table>
 
 
-     <div style=" width: 100%; position: absolute; bottom:1px">
-    
-   
-     <table CELLSPACING=0 style=" width: 100%;  ">
-        <tr style="background-color: #dedede;">
-                    <td style="text-align: center; width: 30%"><strong>Traitement en atelier </strong></td>
-                    <td style="text-align: center; width: 40%"><strong>Réceptionné par : </strong></td>
-                    <td style="text-align: center; width: 30%"><strong>POIDS</strong></td>
-        </tr> 
-        <tr>
-            <td style="border: 1px #ccc solid; height: 150px;">
-                
-            </td>
-            <td style="border: 1px #ccc solid; ">
-                <small><i>Nom/signature/tampon</i></small>
-            </td>
-            <td style="border: 1px #ccc solid; ">
-                
-            </td>
-        </tr>
-    </table>  
-    
-    </div>  
 
 </page>
 
