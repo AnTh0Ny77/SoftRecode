@@ -163,7 +163,7 @@
                 {% if  ligne.devl__type !=  'PRT'%}
               <tr class="text-secondary">
                 <th scope="col">{{ligne.prestaLib}}<br>{{ligne.kw__lib}}</th>
-                <th scope="col">{{  ligne.devl_quantite ~ " X " ~ ligne.famille__lib ~ " " ~ ligne.modele ~  " " ~ ligne.marque ~  " "  ~  ligne.devl__modele }}</th>
+                <th scope="col">{{  ligne.devl_quantite ~ " X " ~ ligne.devl__designation }}<br>{{ligne.famille__lib ~ " " ~ ligne.modele ~  " " ~ ligne.marque ~  " "  ~  ligne.devl__modele }}</th>
                 <th>
                   <form action="garantieCreation" method="POST">
                     <input type="hidden" value="{{retour.devis__id}}" name="deleteLineRetour">

@@ -110,7 +110,7 @@ VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571101
         }
         
     }
-    $file = fopen("export_".$_POST['exportStart']."_".$_POST['exportEnd'].".txt", "w");
+    $file = fopen("O:\intranet\Compta\export_".$_POST['exportStart']."_".$_POST['exportEnd'].".txt", "w");
     fwrite($file , $txt);
     fclose($file);
     header('location: export');

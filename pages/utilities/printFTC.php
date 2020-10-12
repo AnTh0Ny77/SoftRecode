@@ -24,14 +24,11 @@ if (empty($_SESSION['user']))
    $Cmd->commande2facture($_POST['hiddenCommentaire']);
    //  4 activer une alert pour indiquer le bon fonctionnement du logiciel 
    $Cmd->classicReliquat($_POST['hiddenCommentaire']);
-   
    // 5 reliquat si article deja facturé mais pas livré : 
    $Cmd->FactureReliquat($_POST['hiddenCommentaire']);
-
    //  3 enregistrer la facture au format pdf dans un folder 
-     
     $temp =   $Cmd->GetById($_POST['hiddenCommentaire']);
- 
+
     $clientView = $Client->getOne($temp->client__id);
     $societeLivraison = false ;
 

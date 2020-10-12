@@ -333,8 +333,6 @@ public static function magicLine($arrayLigne){
 }
 
 
-
-
 //fonction d'affichage du total dans la vision facture : retourne prix ht , tva taux , tva montant , prix ttc 
 public static function totalFacture($objectCmd, $arrayLigne )
 {
@@ -887,6 +885,157 @@ public static function magicLineFTC($arrayLigne , $cmd){
 	</tr> ';
 
 	echo $tete . $table ;
+}
+
+
+
+
+
+
+
+
+
+
+
+public static function magicLineABN($arrayLigne , $cmd){
+	// variables des tailles de cellules afin de pouvoir regler la largeur de la table facilement :
+	$firstW = '17%';
+	$secondW = '45%';
+	$thirdW ='10%';
+	$fourthW = '14%';
+	$fifthW = '14%';
+	
+	
+	
+	// paddind de la premiere ligne : 
+	$firstPadding = '0px';
+	
+	$table = "";
+	$countPadding = 0;
+
+	if ($countPadding == 1 ) {
+		$firstPadding = '15px';
+	}
+	else { $firstPadding = '0px';}
+
+	$tva = floatval($cmd->tva_Taux);
+
+	//boucle sur les lignes passées en parametres
+	foreach ($arrayLigne as $ligne) 
+	{
+		
+			
+		
+		// + 1 dans la valeur du padding
+		$countPadding += 1;
+
+		if ($countPadding == 1 ) {
+			$firstPadding = '15px';
+		}
+		else { $firstPadding = '0px';}
+
+		$pack = "";
+
+		$pack .= '<tr>';
+
+		$firstCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$firstW."; max-width: ".$firstW."; text-align: left;  '>"
+
+			. $ligne->prestaLib. "
+	
+		</td>";
+
+		if (!empty($ligne->cmdl__note_facture)) 
+		{
+			$secondCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$secondW."; max-width: ".$secondW."; text-align: left; padding-bottom: 5px;  '>"
+
+				. $ligne->devl__designation.  $ligne->cmdl__note_facture."
+		
+			</td>";
+		}
+		else 
+		{
+			$secondCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  '>"
+
+				. $ligne->devl__designation. "
+		
+			</td>";
+		}
+
+		$thirdCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW."; text-align: right;  '>"
+
+		. $ligne->cmdl__qte_fact . "
+
+		</td>";
+
+		$FourthCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
+
+		.  number_format($ligne->devl_puht , 2) . "
+
+		</td>";
+
+		$prixTTc = floatval($ligne->devl_puht * $ligne->devl_quantite);
+	
+
+		$FifthCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
+
+		. number_format($prixTTc , 2) . "
+
+		</td>";
+		$pack .= $firstCell . $secondCell . $thirdCell . $FourthCell . $FifthCell ;
+		$pack .= '</tr>';
+
+
+	}
+
+	
+
+	$tete =  '<tr style=" margin-top : 70px;  background-color: #dedede; ">
+	<td style=" text-align: center;  border: 1px solid black;  padding-top: 4px; padding-bottom: 4px;"><b>Prestation</b></td>
+	<td style=" text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Désignation</b></td>
+	<td  style=" text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Qté</b></td>
+	<td style="text-align: center;  border: 1px solid black;  padding-top: 4px; padding-bottom: 4px;"><b>P.U € HT</b></td>
+	<td style="text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>TOTAL € HT</b></td>
+	</tr> ';
+
+	echo $tete . $pack ;
+}
+
+
+public static function totalABN($objectCmd, $arrayLigne )
+{
+	$tva = floatval($objectCmd->tva_Taux);
+	$array_prix = [];
+	$response = [] ; 
+	foreach ($arrayLigne as $ligne ) 
+	{
+		if (!empty($ligne->devl_puht)) 
+		{
+			if (!empty($ligne->cmdl__qte_fact)) 
+			{
+				$quantite = intval($ligne->cmdl__qte_fact);
+			}
+			else
+			{
+				$quantite = intval($ligne->devl_quantite);
+			} 
+			
+			$prix = floatval($ligne->devl_puht);
+			$total_ligne = $quantite * $prix ;
+			 
+			array_push($array_prix , $total_ligne);
+		}
+	}
+	
+	
+	$global_ht = array_sum($array_prix);
+
+	$montant_tva = floatval(($global_ht*$tva)/100);
+
+	$global_ttc = $global_ht + $montant_tva;
+
+	array_push($response , floatval($global_ht) , floatval($tva) , floatval($montant_tva) , floatval($global_ttc));
+
+	return $response;	
 }
 
 	

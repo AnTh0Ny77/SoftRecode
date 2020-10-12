@@ -1206,6 +1206,9 @@ public function makeRetour($facture ,$type , $client , $user)
   return $idfacture;
 }
 
+
+
+
 //insère une ligne dans un devis :
 public function insertLine($object){
   $requestLigne =  $this->Db->Pdo->prepare(

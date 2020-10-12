@@ -73,6 +73,7 @@ session_start();
    {
     $abn->client = $Client->getOne($abn->ab__client__id_fact);
     $ligne = $Abonnement->getLigneFacturableAuto($abn->ab__cmd__id ,$dateStart);
+    $abn->nbMachine =  sizeof($ligne);
     $abn->total = 00.00;
       foreach($ligne as $machine)
       {
@@ -86,19 +87,19 @@ session_start();
   
  }
 
- 
- 
- 
-//degager du tableau si array vide :
+$arrayFacturable = json_encode($ABNList);
 
+$dateDebut = new DateTime($text);
+$dateEnd = new DateTime($textEnd);
+$dateDebut = $dateDebut->format('Y/m/d');
+$dateEnd = $dateEnd->format('Y/m/d');
  
-
- 
-  
 // Donnée transmise au template : 
 echo $twig->render('factureAuto.twig',
 [
 'user'=>$user,
-'ABNList'=>$ABNList
-
+'ABNList'=>$ABNList, 
+'arrayfacturable'=> $arrayFacturable, 
+'dateDebut' => $dateDebut, 
+'dateFin' => $dateEnd
 ]);

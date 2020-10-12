@@ -41,7 +41,7 @@
                           <th scope="col" style="width: 25%;">Client</th>
                           <th scope="col" style="width: 15%;">Commande/Prestation</th>
                           <th scope="col"style="width: 15%;">Commentaire</th>
-                          <th scope="col" style="width: 65%;">Machine</th>
+                          <th scope="col" style="width: 65%;">Machine(s)</th>
                          
                         </tr>
                       </thead>
@@ -49,7 +49,8 @@
                        <tr>
                           <td scope="col"><b>{{abn.client.client__societe ~ '(' ~ abn.client.client__id  ~ ')'}}<br>
                           {{ abn.client.client__adr1 }}<br>
-                          {{ abn.client.client__cp  ~ " " ~ abn.client.client__ville}}</b>
+                          {{ abn.client.client__cp  ~ " " ~ abn.client.client__ville}}</b><br>
+                          <p class="text-primary">{{abn.nbMachine}} machine(s) actives</p>
                           </td>
                           <td scope="col">N° : <b>{{ abn.ab__cmd__id}}</b><br>{{abn.prestaLib}}</td>
                           <td scope="col">
@@ -101,7 +102,9 @@
           </div>
           <div class="modal-footer">
             <form action="printABN" method="POST">
-              <input type="hidden" value='' name="hiddenABN">
+              <input type="hidden" name="dateDebut" value="{{dateDebut}}">
+              <input type="hidden" name="dateFin" value="{{dateFin}}">
+              <input type="hidden" value='{{arrayfacturable}}' name="hiddenABN">
               <button class="btn btn-success">Facturer</button>
             </form>
           </div>
