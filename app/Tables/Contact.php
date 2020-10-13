@@ -53,5 +53,28 @@ public function insertOne($fonction , $civilite, $nom , $prenom, $tel, $fax, $ma
     $requestLiaison->execute();
     return $idContact;
 }
+
+public function insertTotoro( $id , $fonction , $civilite, $nom , $prenom, $tel, $fax, $mail, $idClient)
+{
+    $request = $this->Db->Pdo->prepare('INSERT INTO ' .$this->Table."(contact__id, contact__fonction , contact__civ , contact__nom, contact__prenom , contact__telephone, contact__fax, contact__email )
+     VALUES (:contact__id, :fonction, :civilite, :nom, :prenom, :tel, :fax, :mail)");
+     $requestLiaison = $this->Db->Pdo->prepare('INSERT INTO liaison_client_contact(liaison__client__id, liaison__contact__id) VALUES (:idClient, :idContact)');
+    
+    $request->bindValue(":contact__id", $id);
+    $request->bindValue(":fonction", $fonction);
+    $request->bindValue(":civilite", $civilite);
+    $request->bindValue(":nom", $nom);
+    $request->bindValue(":prenom", $prenom);
+    $request->bindValue(":tel", $tel);
+    $request->bindValue(":fax", $fax);
+    $request->bindValue(":mail", $mail);
+    $request->execute();
+    $idContact = $this->Db->Pdo->lastInsertId();
+    $requestLiaison = $this->Db->Pdo->prepare('INSERT INTO liaison_client_contact(liaison__client__id, liaison__contact__id) VALUES (:idClient, :idContact)');
+    $requestLiaison->bindValue(':idClient', $idClient);
+    $requestLiaison->bindValue(':idContact', $idContact);
+    $requestLiaison->execute();
+    return $idContact;
+}
 }
 	

@@ -73,6 +73,9 @@
 
     case '/SoftRecode/voirDevis';
       require __DIR__ .'/pages/utilities/viewPdf.php'; break;
+    
+    case '/SoftRecode/contactCrea';
+      require __DIR__ .'/pages/contactCrea.php'; break;
 
     //transport / fiches de travail->
     case '/SoftRecode/transport';
@@ -212,6 +215,10 @@
       
     case '/SoftRecode/PRINTADMIN';
       require __DIR__ .'/pages/utilities/PRINTADMIN.php'; break;
+
+    case '/SoftRecode/PrintAvoir';
+      require __DIR__ .'/pages/utilities/printAvoir.php'; break;
+
     case '/SoftRecode/font';
       require __DIR__ .'/vendor/tecnickcom/tcpdf/fonts/convertfont.php'; break;
 

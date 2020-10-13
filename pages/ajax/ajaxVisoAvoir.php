@@ -187,7 +187,7 @@ else
     
        
     </div>
-    <form method="POST" action="avoir">
+    <form method="POST" action="PrintAvoir">
     <div class="div" style="display: flex; justify-content: center; margin-top: 5%;">
     
         <table CELLSPACING=0 style="width: 95%;  margin-top : 30px;" class="table">

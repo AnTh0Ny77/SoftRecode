@@ -16,11 +16,16 @@ class Abonnement extends Table
     }
 
 
-    public function createOne($cmd , $client , $actif , $auto , $presta , $note , $mois )
+    public function createOne($cmd , $client , $actif , $auto , $presta , $note , $mois  )
     {
+        $BigAbn= $this->Db->Pdo->query('SELECT MAX(ab__contrat) as lastFact from ab__contrat');
+        $BigAbn = $BigAbn->fetch(PDO::FETCH_OBJ);
+
+        $newAbn = $BigAbn->lastFact + 1;
+
         $request = $this->Db->Pdo->prepare('INSERT INTO abonnement ( ab__cmd__id, ab__client__id_fact,
         ab__actif, ab__fact_auto,  ab__presta,
-        ab__note, ab__mois_engagement)
+        ab__note, ab__mois_engagement )
         VALUES (:ab__cmd__id, :ab__client__id_fact, :ab__actif, :ab__fact_auto, :ab__presta,
         :ab__note, :ab__mois_engagement)');
 
@@ -31,6 +36,7 @@ class Abonnement extends Table
         $request->bindValue(":ab__presta",$presta);
         $request->bindValue(":ab__note", $note);   
         $request->bindValue(":ab__mois_engagement", $mois);
+       
 
         $request->execute();
 
@@ -202,6 +208,19 @@ class Abonnement extends Table
         FROM abonnement
         LEFT JOIN keyword as k ON ab__presta = k.kw__value AND k.kw__type = 'pres'
         WHERE ab__actif = 1 AND ab__fact_auto = 1 
+        ORDER BY  ab__cmd__id DESC LIMIT 200 ");
+        $data = $request->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+
+
+    public function getActif()
+    {
+        $request =$this->Db->Pdo->query("SELECT  ab__cmd__id, ab__client__id_fact,
+        ab__actif, ab__fact_auto,  ab__presta , ab__mois_engagement , k.kw__lib as prestaLib
+        FROM abonnement
+        LEFT JOIN keyword as k ON ab__presta = k.kw__value AND k.kw__type = 'pres'
+        WHERE ab__actif = 1 
         ORDER BY  ab__cmd__id DESC LIMIT 200 ");
         $data = $request->fetchAll(PDO::FETCH_OBJ);
         return $data;

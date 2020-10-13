@@ -67,8 +67,6 @@ session_start();
    $dateStart = $dateStart->format('Y-m-d H:i:s');
    $dateFin = $dateFin->format('Y-m-d H:i:s');
 
-   
-  
    foreach ($ABNList as $abn) 
    {
     $abn->client = $Client->getOne($abn->ab__client__id_fact);
@@ -82,9 +80,7 @@ session_start();
       }
       $abn->total = number_format($abn->total , 2 , ',', ' ') ;
       $abn->array = $ligne;
-      
    }
-  
  }
 
 $arrayFacturable = json_encode($ABNList);
