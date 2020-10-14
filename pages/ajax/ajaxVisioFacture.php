@@ -53,7 +53,7 @@ else
 
 
     <style type="text/css">
-    .global-wrapper{min-height: 900px};
+    .global-wrapper{min-height: 700px};
         .bodyFrame {font-family:Century Gothic,arial,sans-serif; }
         .div{   font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate;}
         .table{ font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate;}
@@ -178,9 +178,10 @@ else
     
        
     </div>
-
-    <div class="div" style="display: flex; justify-content: center; margin-top: 5%;">
-        <table CELLSPACING=0 style="width: 95%;  margin-top : 30px;" class="table">
+    <button value="<?php echo $temp->devis__id; ?>" class=' btn btn-success mt-2' id="addNewItem"><i class='far fa-plus'></i></i></button>
+    <div class="div" style="display: flex; justify-content: center; margin-top: 1%;">
+    
+        <table CELLSPACING=0 style="width: 95%;  margin-top : 10px;" class="table">
 
 
         <?php
@@ -342,17 +343,13 @@ else
         }
            
                ?>
-               <tr style='font-size: 95%;'>
-                <td style='border-style: none; '> <button value="<?php echo $temp->devis__id; ?>" class=' btn btn-success mt-2' id="addNewItem"><i class='far fa-plus'></i></i></button></td>
-                <td style='border-style: none; '></td>
-                <td style='border-style: none; '></td>
-                <td style='border-style: none;  '></td>
+              
         </table> 
      </div>
 
 
         
-     <div class="d-flex mt-5 justify-content-between">
+     <div class="d-flex mt-1 justify-content-between">
 
      <div class=" card  px-2 mx-1 col-6">
         <div>
