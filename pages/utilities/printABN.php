@@ -22,12 +22,17 @@ if (empty($_SESSION['user']))
  if (!empty($_POST['hiddenABN'])) 
  {
 
+    
     $arrayABN = json_decode($_POST['hiddenABN']);
-
+    $export = "";
+    
     foreach($arrayABN as $ABN)
     {
+      
        if (!empty($ABN->array)) 
        {
+       
+        $export .= $ABN->prestaLib .';';
           //date du jour:
         $date = date("Y-m-d H:i:s");
         //creation de l'objet retour
@@ -49,7 +54,7 @@ if (empty($_SESSION['user']))
         {
             $total += $key->abl__prix_mois * 3  ;
         }
-        $total = number_format($total , 2 , ',', ' ') ;
+       
         
 
         $objectInsert = new stdClass;
@@ -60,7 +65,7 @@ if (empty($_SESSION['user']))
             $objectInsert->garantie = '';
             $objectInsert->comClient = '';
             $objectInsert->quantite = 1;
-            $objectInsert->prix = $total;
+            $objectInsert->prix = floatval($total);
             $objectInsert->idfmm = '409';
             $objectInsert->extension = '';
             $objectInsert->prixGarantie = '';
@@ -68,10 +73,11 @@ if (empty($_SESSION['user']))
         $insert = $Cmd->insertLine($objectInsert);
         $Cmd->commande2facture($temp);
         $temp = $Cmd->GetById($temp);
-
+       
         $clientView = $Client->getOne($temp->client__id);
         $societeLivraison = false ;
-    
+        
+        
         if ($temp->devis__id_client_livraison) 
         {
             $societeLivraison = $Client->getOne($temp->devis__id_client_livraison);
@@ -242,11 +248,16 @@ if (empty($_SESSION['user']))
                 
                 <?php 
                     $arrayPrice =[];
+                   
+                    $export .= $temp->devis__id . ';' . $temp->client__id . ';' ;
                     foreach($arrayOfDevisLigne as $value=>$obj)
                     {
-                        array_push( $arrayPrice, floatval(floatval($obj->devl_puht)*intval($obj->devl_quantite)));
+                        array_push( $arrayPrice, floatval($obj->devl_puht)*intval($obj->devl_quantite));
+                    $export .= $obj->devl_puht .';
+';
+                        
                     };
-                    echo Pdfunctions::magicLineABN($arrayOfDevisLigne , $temp);
+                    echo Pdfunctions::magicLineABN($arrayOfDevisLigne , $temp , $ABN->prestaLib);
                 ?>
         </table>
     </div>
@@ -283,13 +294,15 @@ if (empty($_SESSION['user']))
          ob_clean();
          $numFact = '0000000' . $temp->cmd__id_facture ;
          $numFact = substr($numFact , -7 );
-         if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
-        {
-            $doc->output('F:\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
-        }
-        $doc->output('O:\intranet\Auto_Print\FC\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
+        //  if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
+        // {
+        //     $doc->output('F:\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
+        // }
+        // $doc->output('O:\intranet\Auto_Print\FC\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
+       
+     
         
-        $_SESSION["facture"] =  ' BL n°: '. $temp->devis__id . ' Facturé n°: '. $numFact ;
+     
         
         
      } catch (Html2PdfException $e) 
@@ -299,11 +312,14 @@ if (empty($_SESSION['user']))
 
 
        }
-        
-       header('location: abonnement');
+       
+      
+      
        
     }
-    
-    
+    $file = fopen("auto.csv", "w");
+    fwrite($file , $export);
+    fclose($file);
+    header('location: abonnement');
    
 }

@@ -466,6 +466,7 @@ ClassicEditor
                         $('#qteCMD').val(dataSet.devl_quantite);
                         $('#qteLVR').val(dataSet.cmdl__qte_livr);
                         $('#ComTech').html(dataSet.devl__note_interne);
+                        $('#designationLigne').val(dataSet.devl__designation);
                         if (dataSet.cmdl__note_facture != null) 
                         {
                             ckComFacture.setData(dataSet.cmdl__note_facture);

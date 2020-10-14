@@ -897,7 +897,7 @@ public static function magicLineFTC($arrayLigne , $cmd){
 
 
 
-public static function magicLineABN($arrayLigne , $cmd){
+public static function magicLineABN($arrayLigne , $cmd , $prestaLib){
 	// variables des tailles de cellules afin de pouvoir regler la largeur de la table facilement :
 	$firstW = '17%';
 	$secondW = '45%';
@@ -940,7 +940,7 @@ public static function magicLineABN($arrayLigne , $cmd){
 
 		$firstCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$firstW."; max-width: ".$firstW."; text-align: left;  '>"
 
-			. $ligne->prestaLib. "
+			. $prestaLib. "
 	
 		</td>";
 

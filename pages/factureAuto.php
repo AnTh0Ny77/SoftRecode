@@ -67,6 +67,8 @@ session_start();
    $dateStart = $dateStart->format('Y-m-d H:i:s');
    $dateFin = $dateFin->format('Y-m-d H:i:s');
 
+   $arrayTemp = [];
+
    foreach ($ABNList as $abn) 
    {
     $abn->client = $Client->getOne($abn->ab__client__id_fact);
@@ -79,11 +81,21 @@ session_start();
          $abn->total += $machine->abl__prix_mois * 3  ;
       }
       $abn->total = number_format($abn->total , 2 , ',', ' ') ;
+     
       $abn->array = $ligne;
+      if (!empty($ligne)) 
+      {
+         array_push($arrayTemp, $abn);
+      }
    }
+  
+  
  }
 
-$arrayFacturable = json_encode($ABNList);
+ 
+
+
+$arrayFacturable = json_encode($arrayTemp);
 
 $dateDebut = new DateTime($text);
 $dateEnd = new DateTime($textEnd);
