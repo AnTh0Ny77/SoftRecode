@@ -25,30 +25,19 @@ session_start();
  $Cmd = new App\Tables\Cmd($Database);
  $User = new App\Tables\User($Database);
 
-
- $userList = $User->getAll();
-
- $vueFiltre = null;
+$vueFiltre = null;
 
 
 //nombre des fiches dans la liste 
-if (!empty($_POST['selectUser'])) 
-{
-  if ($_POST['selectUser'] == 'tous' && empty($_POST['filtre'])) 
+
+  if (!empty($_POST['filtre'])) 
   {
-    $devisList = $Cmd->getFromStatusCMD();
-  } 
-  elseif ($_POST['selectUser'] == 'tous' && !empty($_POST['filtre'])) 
-  {
-    $devisList = $Cmd->magicRequestCMD($_POST['filtre']);
-    $vueFiltre = $_POST['filtre'];
+   
+  $devisList = $Cmd->magicRequestFunnyBunny($_POST['filtre'], 'FT');
   }
-  elseif ($_POST['selectUser'] != 'tous' ) 
-  {
-   $devisList = $Cmd->magicRequestUserCMD( $_POST['filtre'],$_POST['selectUser']);
-  }
-}
-else $devisList = $Cmd->getFromStatusCMD();
+ 
+else $devisList =  $Cmd->getCMD();
+
 
 
 
@@ -78,6 +67,5 @@ echo $twig->render('fichesEnCours.twig',
 'user'=>$user,
 'devisList'=>$devisList,
 'NbDevis'=>$NbDevis,
-'userList'=>$userList,
 'vueFiltre'=>$vueFiltre
 ]);

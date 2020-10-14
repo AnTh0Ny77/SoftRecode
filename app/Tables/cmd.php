@@ -1496,6 +1496,45 @@ public function reversePrice($idLigne)
   }
 
 
+  public function getCMD()
+  {
+    $request =$this->Db->Pdo->query("SELECT DISTINCT 
+      cmd__id as devis__id ,
+      cmd__user__id_devis as devis__user__id ,
+      cmd__date_devis as devis__date_crea, 
+      LPAD(cmd__client__id_fact ,6,0)   as client__id,
+      cmd__contact__id_fact  as  devis__contact__id,
+      cmd__etat as devis__etat, 
+      cmd__note_client as  devis__note_client , 
+      cmd__note_interne as devis__note_interne,
+      cmd__client__id_livr as devis__id_client_livraison ,
+      cmd__contact__id_livr as  devis__contact_livraison , 
+      cmd__date_cmd,  cmd__date_envoi,
+      k.kw__lib,
+      t.contact__nom, t.contact__prenom, t.contact__email,
+      c.client__societe, c.client__adr1 , c.client__ville, c.client__cp, c.client__id_vendeur ,
+      c2.client__societe as client__livraison_societe,
+      c2.client__ville as client__livraison_ville,
+      c2.client__cp as client__livraison_cp , 
+      c2.client__adr1 as client__livraison__adr1 , 
+      cmd__nom_devis,
+      u.log_nec , u.user__email_devis , u.nom as nomDevis , u.prenom as prenomDevis , 
+      u2.nom as nomCMD , u2.prenom as prenomCMD 
+      FROM cmd
+      LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
+      LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
+      LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
+      LEFT JOIN keyword as k ON cmd__etat = k.kw__value and k.kw__type = 'stat'
+      LEFT JOIN utilisateur as u ON c.client__id_vendeur = u.id_utilisateur
+      LEFT JOIN utilisateur as u2 ON cmd__user__id_cmd = u2.id_utilisateur
+      LEFT JOIN cmd_ligne as l ON l.cmdl__cmd__id = cmd__id 
+      WHERE cmd__etat = 'CMD'  
+      ORDER BY  cmd__date_devis DESC , c.client__societe ASC  LIMIT 200 ");
+      $data = $request->fetchAll(PDO::FETCH_OBJ);
+      return $data;
+  }
+
+
   //recupére tous les status cmd
   public function getFromStatusCMD(){
     $request =$this->Db->Pdo->query("SELECT 
@@ -2334,24 +2373,25 @@ public function modify(
       cmd__date_cmd,  cmd__date_envoi,
       k.kw__lib,
       t.contact__nom, t.contact__prenom, t.contact__email,
-      c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
+      c.client__societe, c.client__adr1 , c.client__ville, c.client__cp, c.client__id_vendeur ,
       c2.client__societe as client__livraison_societe,
       c2.client__ville as client__livraison_ville,
       c2.client__cp as client__livraison_cp , 
       c2.client__adr1 as client__livraison__adr1 , 
       cmd__nom_devis,
-      u.log_nec , u.prenom, u.nom
+      u.log_nec , u.user__email_devis , u.nom as nomDevis , u.prenom as prenomDevis , 
+      u2.nom as nomCMD , u2.prenom as prenomCMD 
       FROM cmd
       LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
       LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
       LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
       LEFT JOIN keyword as k ON cmd__etat = k.kw__value and k.kw__type = 'stat'
-      LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
+      LEFT JOIN utilisateur as u ON c.client__id_vendeur = u.id_utilisateur
+      LEFT JOIN utilisateur as u2 ON cmd__user__id_cmd = u2.id_utilisateur
       LEFT JOIN cmd_ligne as l ON l.cmdl__cmd__id = cmd__id ";
 
       if ($mode_filtre) {
        $request .=  "WHERE ( cmd__id = '".$mots_filtre[0]."' 
-        OR cmd__nom_devis LIKE '%".$mots_filtre[0]."%' 
         OR u.prenom LIKE '%".$mots_filtre[0]."%' 
         OR u.nom LIKE '%".$mots_filtre[0]."%' 
         OR l.cmdl__designation LIKE '%".$mots_filtre[0]."%'
@@ -2361,9 +2401,8 @@ public function modify(
 
        for ($i=1; $i < $nb_mots_filtre ; $i++) { 
           $request .=  $operateur. " ( cmd__id = '".$mots_filtre[$i]."' 
-          OR cmd__nom_devis LIKE '%".$mots_filtre[$i]."%' 
-          OR u.prenom LIKE '%".$mots_filtre[$i]."%' 
-          OR u.nom LIKE '%".$mots_filtre[$i]."%'
+          OR u.prenom LIKE '%".$mots_filtre[0]."%' 
+          OR u.nom LIKE '%".$mots_filtre[0]."%' 
           OR l.cmdl__designation LIKE '%".$mots_filtre[$i]."%'
           OR l.cmdl__pn LIKE '%".$mots_filtre[$i]."%' 
           OR c.client__societe LIKE '%".$mots_filtre[$i]."%' 

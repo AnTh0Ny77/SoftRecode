@@ -177,6 +177,28 @@ if (!empty($_POST['idDevisAddLigne']) && !empty($_POST['prestationChoix']) )
  
 //par défault le champ de recherche est égal a null:
  $champRecherche = null;
+
+
+
+//si 8 numero commence par une * ou - 
+if (!empty($_POST['rechercheF']) && strlen($_POST['rechercheF'])  == 8 )
+{
+  $rest = substr($_POST['rechercheF'] , 0 , 1);
+  $idFacturable = substr($_POST['rechercheF'] , 1 , 7);
+  $verif = $Cmd->GetById($idFacturable);
+
+    if (!empty($verif) && $rest == '*') 
+    {
+      $_SESSION['factureEtoile'] = $idFacturable;
+      header('location: printFTC');
+    }
+    elseif (!empty($verif) && $rest == '-') 
+    {
+      $_SESSION['factureMoins'] = $idFacturable;
+      header('location: archiveFacture');
+    }
+ 
+}
  
 // variable qui determine la liste des devis à afficher:
 if (!empty($_POST['recherche-fiche'])) 
@@ -211,7 +233,8 @@ if (!empty($_POST['recherche-fiche']))
 } else $devisList = $Cmd->getFromStatusAll('IMP');
 
 $visuelFiche = null;
-if (empty($devisList) && strlen($_POST['rechercheF']) == 7 ) 
+
+if (empty($devisList) && isset($_POST['rechercheF'])  && strlen($_POST['rechercheF']) == 7) 
 {
   $alertFiche = $Cmd->GetById($_POST['rechercheF']);
   if (!empty($alertFiche)) 

@@ -21,6 +21,11 @@ session_start();
  $Cmd = new App\Tables\Cmd($Database);
  $General = new App\Tables\General($Database);
 
+ if (!empty($_SESSION['factureMoins'])) 
+ {
+  $_POST['archiveID'] = $_SESSION['factureMoins'] ;
+  $_SESSION['factureMoins'] = '';
+ }
 
 //appel de la page: 
 if (!empty($_POST['archiveID']))

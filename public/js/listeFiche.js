@@ -5,6 +5,11 @@ $(document).ready(function() {
         $('[data-toggle="tooltip"]').tooltip()
     })
 
+
+    $('#printButton').on('click' , function()
+    {
+        window.print();
+    })
     
 
 })

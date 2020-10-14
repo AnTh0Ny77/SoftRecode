@@ -69,7 +69,7 @@ if (!empty($_POST['idAbnUpdate']))
 if (!empty($_POST['idCmd']))
 {
   $update = $Abonnement->UpdateMachine(
-  $_POST['idCmd'],  $_POST['numL'], $_POST['date'], $_POST['actif'], $_POST['fmm'], $_POST['designation'], intval($_POST['sn']), $_POST['prestation'], floatval($_POST['prix']), $_POST['comAbn']);
+  $_POST['idCmd'],  $_POST['numL'], $_POST['date'], $_POST['actif'], $_POST['fmm'], $_POST['designation'], $_POST['sn'], $_POST['prestation'], floatval($_POST['prix']), $_POST['comAbn']);
 
  
   $abn = $Abonnement->getById($_POST['idCmd']);

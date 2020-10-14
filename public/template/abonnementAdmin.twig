@@ -40,11 +40,12 @@
           {% else %}
           <h5 class="">Abonnement N°: {{cmd.devis__id}}</h5>
           {% endif %}
-         
+         <hr>
           <p class="lead">{{cmd.client__societe ~ " (" ~ cmd.client__id ~ ")"}}
-              <hr>
-            {{cmd.client__adr1 ~ " " ~ cmd.client__adr2 ~ " " ~ cmd.client__cp ~ " " ~  cmd.client__ville}}
-        </p>
+          </p>
+            {{cmd.client__adr1}}<br>
+            {{cmd.client__cp ~ " " ~  cmd.client__ville }}
+        
         </div>
       </div>
     
@@ -150,7 +151,7 @@
                       {% if ligne.abl__actif  == 0  %}
                       <tr class="text-muted">
                         <th scope="col">{{ligne.abl__ligne}}</th>
-                        <th scope="col">{{ligne.famille ~ " " ~ ligne.modele }}<br>{{ligne.abl__designation}}</th>
+                        <th scope="col">{{ligne.abl__designation}}<br><small>{{ligne.famille ~ " " ~ ligne.modele }}</small></th>
                         <th scope="col">{{ligne.abl__dt_debut}}</th>
                         <th scope="col">{{ligne.abl__sn}} <i class="text-danger fas fa-times"></i></th>
                         <th scope="col">
@@ -164,7 +165,7 @@
                       {% else %}
                       <tr>
                         <th scope="col">{{ligne.abl__ligne}}</th>
-                        <th scope="col">{{ligne.famille ~ " " ~ ligne.modele ~ " " ~ ligne.marque }}<br>{{ligne.abl__designation}}</th>
+                        <th scope="col">{{ligne.abl__designation}}<br><small>{{ligne.famille ~ " " ~ ligne.modele ~ " " ~ ligne.marque }}</small></th>
                         <th scope="col">{{ligne.abl__dt_debut}}</th>
                         <th scope="col">{{ligne.abl__sn}} <i class=" text-success fas fa-check"></i></th>
                         <th scope="col">

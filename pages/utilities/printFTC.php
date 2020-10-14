@@ -16,6 +16,12 @@ if (empty($_SESSION['user']))
     header('location: login');
  }
 
+ if (!empty($_SESSION['factureEtoile'])) 
+ {
+    $_POST['hiddenCommentaire'] = $_SESSION['factureEtoile'];
+    $_SESSION['factureEtoile'] = "";
+ }
+
  // si une commande à été postée: 
  if (!empty($_POST['hiddenCommentaire'])) 
  {
