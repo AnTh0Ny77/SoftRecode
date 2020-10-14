@@ -204,7 +204,7 @@ class Abonnement extends Table
     public function getActifAndFacturable()
     {
         $request =$this->Db->Pdo->query("SELECT  ab__cmd__id, ab__client__id_fact,
-        ab__actif, ab__fact_auto,  ab__presta , ab__mois_engagement , k.kw__info as prestaLib
+        ab__actif, ab__fact_auto,  ab__presta , ab__mois_engagement , k.kw__info  as prestaLib , ab__note
         FROM abonnement
         LEFT JOIN keyword as k ON ab__presta = k.kw__value AND k.kw__type = 'abt'
         WHERE ab__actif = 1 AND ab__fact_auto = 1 

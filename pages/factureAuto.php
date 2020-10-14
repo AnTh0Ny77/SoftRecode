@@ -35,6 +35,8 @@ session_start();
  {
 
    $ABNList = $Abonnement->getActifAndFacturable();
+
+
    $arrayList = [];
 
    switch ($_POST['trimestre']) 
