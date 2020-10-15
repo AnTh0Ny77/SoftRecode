@@ -16,7 +16,13 @@
                 {% if user.user__facture_acces > 10 %}
                 <form class="mx-2" action="PRINTADMIN" method="POST">
                   <input type="hidden" name="PRINTADMINID" value="{{devis.devis__id}}">
-                <button id="FTCADMIN" type="submit" class="btn btn-danger  btn-lg" >Facturation Directe</button>
+                <button id="FTCADMIN" type="submit" class="btn btn-danger  btn-lg" >Facturation Direct</button>
+                </form>
+                {% endif %}
+                {% if user.user__facture_acces > 10 %}
+                <form class="mx-2" action="PRINTADMINAVOIR" method="POST">
+                  <input type="hidden" name="PRINTADMINAVOIR" value="{{devis.devis__id}}">
+                <button id="FTCADMIN" type="submit" class="btn btn-primary  btn-lg" >Avoir Direct</button>
                 </form>
                 {% endif %}
                 <button id="SendCmd" type="button" class="btn btn-success  btn-lg" disabled>Valider le devis</button>

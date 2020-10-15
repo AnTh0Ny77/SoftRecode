@@ -380,6 +380,9 @@ public static function totalFacture($objectCmd, $arrayLigne )
 	
 
 
+
+
+
 //fonction d'affichage du total dans la vision facture : retourne prix ht , tva taux , tva montant , prix ttc 
 public static function totalFacturePDF($objectCmd, $arrayLigne )
 {
