@@ -49,9 +49,12 @@ if (empty($_SESSION['user']))
     
 
     //  3 enregistrer la facture au format pdf dans un folder 
-    $temp =   $Cmd->GetById($_POST['PRINTADMINAVOIR']);
+    
 
     $clientView = $Client->getOne($temp->client__id);
+    $temp =   $Cmd->GetById($_POST['PRINTADMINAVOIR']);
+    $General->updateAll('cmd' , $clientView->client__tva , 'cmd__tva', 'cmd__id' , $_POST['PRINTADMINAVOIR'] );
+    $temp =   $Cmd->GetById($_POST['PRINTADMINAVOIR']);
     $societeLivraison = false ;
     
     if (!empty($temp->devis__id_client_livraison)) 

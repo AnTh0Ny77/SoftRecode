@@ -78,19 +78,19 @@ if (!empty($_POST['exportStart']) && !empty($_POST['exportEnd']))
         //determine les première ligne par rapport au taux de tva: 
         if (intval($commande->tva_value)  == 10 ) 
         {
-            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'. number_format(abs($total[0]) , 2 , ',', ' ').'; ;'. $libelle.'
-VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571200; ;'.number_format(abs($total[2]) , 2 ,',', ' ').'
+            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'. number_format($total[3] , 2 , ',', ' ').'; ;'. $libelle.'
+VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571200; ;'.number_format($total[2] , 2 ,',', ' ').'
 ' ;
         }
         elseif (intval($commande->tva_value)  == 20) 
         {
-            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'.number_format(abs($total[0]) , 2 ,  ',' ,  ' ').'; ;'. $libelle.'
-VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571101; ;'.number_format(abs($total[2]) , 2 ,',', ' ').'
+            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'.number_format($total[3] , 2 ,  ',' ,  ' ').'; ;'. $libelle.'
+VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571101; ;'.number_format($total[2] , 2 ,',', ' ').'
 ' ;
         }
         else 
         {
-            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'.number_format(abs($total[0]) , 2 , ',' , ' ').'; ;'. $libelle.'
+            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'.number_format($total[3] , 2 , ',' , ' ').'; ;'. $libelle.'
 ';
         }
        
@@ -99,12 +99,12 @@ VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571101
            
             $compta = $Cmd->getCompta($test , $commande);
             
-            $txt.= 'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.'; ;'.$test->devl__type .' '.$test->cmdl__qte_fact.' '.$test->famille.';'.$compta[0]->cpt__compte_quadra.'; ;'.number_format(abs($test->devl_puht), 2 , ',' ,' ').'
+            $txt.= 'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.'; ;'.$test->devl__type .' '.$test->cmdl__qte_fact.' '.$test->famille.';'.$compta[0]->cpt__compte_quadra.'; ;'.number_format($test->devl_puht * $test->devl_quantite , 2 , ',' ,' ').'
 ';
             if (!empty($compta[1])) 
             {
                
-                $txt.= 'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.'; ;EXT'.$test->cmdl__qte_fact.' '.$test->famille.';'.$compta[1]->cpt__compte_quadra.'; ;'.number_format(abs($test->cmdl__garantie_puht), 2, ',' , ' ').'
+                $txt.= 'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.'; ;EXT'.$test->cmdl__qte_fact.' '.$test->famille.';'.$compta[1]->cpt__compte_quadra.'; ;'.number_format($test->cmdl__garantie_puht * $test->devl_quantite, 2, ',' , ' ').'
 ';
             }
             
