@@ -193,7 +193,7 @@ ob_start();
     <table style=" margin-top: 10px; color: #8c8c8c; width: 100%;">
         <tr >
             <td  style="text-align: center; font-size: 80%; width: 100%;"><br><small>New Eurocomputer-TVA FR33b 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
-            <strong>RECODE by eurocomputeur - 112 allée François Coli -06210 Mandelieu</strong></small></td>
+            <strong>RECODE by eurocomputer - 112 allée François Coli - 06210 Mandelieu</strong></small></td>
         </tr>
     </table>  
     </div>  

@@ -99,7 +99,7 @@ class General extends Table
   //gere l'export a tnt expedio param : commande (objet), poids (post) , Nb de paquets (post) 
   public function exportTNT($commande, $poids, $paquets)
   {
-    $recodeRaison = 'Recode By Eurocomputeur';
+    $recodeRaison = 'Recode By Eurocomputer';
     $recodeAdresse1 = 'PA de la Siagne, 112 Allee Francois Coli';
     $recodeAdresse2 = '';
     $recodeTel = '0493472500';
