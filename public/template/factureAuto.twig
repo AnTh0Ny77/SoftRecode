@@ -39,8 +39,7 @@
                       <thead>
                         <tr>
                           <th scope="col" style="width: 25%;">Client</th>
-                          <th scope="col" style="width: 25%;">Commande/Prestation</th>
-                          <th scope="col"style="width: 25%;">Commentaire</th>
+                          <th scope="col" style="width: 25%;">Commande/Prestation/Commentaires</th>
                           <th scope="col" style="width: 25%;">Prix TRIM.HT</th>
                          
                         </tr>
@@ -52,17 +51,16 @@
                           {{ abn.client.client__cp  ~ " " ~ abn.client.client__ville}}</b><br>
                           <p class="text-primary">{{abn.nbMachine}} machine(s) actives</p>
                           </td>
-                          <td scope="col">N° : <b>{{ abn.ab__cmd__id}}</b><br>{{abn.prestaLib}}</td>
-                          <td scope="col">
-                          {% if abn.ab__note  %}
+                          <td scope="col">N° : <b>{{ abn.ab__cmd__id}}</b><br>{{abn.prestaLib}}<br>
+                           {% if abn.ab__note  %}
                           {{ abn.ab__note|raw}}
                           {% else %}
                           pas de commentaire
-                          {% endif %}
-                          </td>
-                            <td>
+                          {% endif %}</td>
+                         
+                            <td class="py-auto" >
                                 <p class="text-right">
-                                Prix Total Trimestre : <b>{{abn.total}} € H.T</b>
+                                <b>{{abn.total}} € H.T</b>
                                 </p>
                             </td>
                          

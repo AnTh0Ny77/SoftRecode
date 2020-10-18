@@ -9,6 +9,7 @@ $Database->DbConnect();
 $Cmd = new App\Tables\Cmd($Database);
 $Contact = new \App\Tables\Contact($Database);
 $Client = new \App\Tables\Client($Database);
+$General = new \App\Tables\General($Database);
 
 if (empty($_SESSION['user']))
  {
@@ -30,7 +31,7 @@ if (empty($_SESSION['user']))
         $Cmd->updateLigne($ligne->devl_quantite, 'cmdl__qte_fact', $ligne->devl__id );
     }
 
-$Cmd->commande2facture($_POST['PRINTADMINID']);
+    $Cmd->commande2facture($_POST['PRINTADMINID']);
 
    
    //  3 enregistrer la facture au format pdf dans un folder 
@@ -38,11 +39,13 @@ $Cmd->commande2facture($_POST['PRINTADMINID']);
 
     $clientView = $Client->getOne($temp->client__id);
     $societeLivraison = false ;
+    $General->updateAll('cmd' , $clientView->client__tva , 'cmd__tva', 'cmd__id' , $_POST['PRINTADMINID'] );
+    $General->updateAll('cmd' ,$temp->client__id, 'cmd__client__id_livr', 'cmd__id' , $_POST['PRINTADMINID'] );
+    $temp =   $Cmd->GetById($_POST['PRINTADMINID']);
 
-    if ($temp->devis__id_client_livraison) 
-    {
-        $societeLivraison = $Client->getOne($temp->devis__id_client_livraison);
-    }
+        
+    $societeLivraison = $Client->getOne($temp->devis__id_client_livraison);
+  
 
     $arrayOfDevisLigne = $Cmd->devisLigne($_POST['PRINTADMINID']);
 
