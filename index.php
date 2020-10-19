@@ -221,8 +221,10 @@
 
     case '/SoftRecode/PRINTADMINAVOIR';
       require __DIR__ .'/pages/utilities/printAvoirAdmin.php'; break;
-      
-
+    
+    case '/SoftRecode/printContrat';
+      require __DIR__ .'/pages/utilities/printContrat.php'; break;
+    
     case '/SoftRecode/font';
       require __DIR__ .'/vendor/tecnickcom/tcpdf/fonts/convertfont.php'; break;
 

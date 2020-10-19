@@ -27,6 +27,11 @@ session_start();
  $Cmd = new App\Tables\Cmd($Database);
  $General = new App\Tables\General($Database);
  $Article = new App\Tables\Article($Database);
+ $Pisteur = new App\Tables\Pistage($Database);
+
+
+ //date du jour:
+ $datePist = date("Y-m-d H:i:s");
  
 
  //Recupere les données transmises : 
@@ -44,6 +49,8 @@ session_start();
     $cmdDate = date_create($cmd->cmd__date_cmd);
     $date = date_format($cmdDate, 'd/m/Y');
     $cmd->cmd__date_cmd = $date;
+
+    $Pisteur->addPiste($_SESSION['user']->id_utilisateur , $datePist , $_POST['AdminGarantie'] ,' a cliqué sur administration de fiche de travail');
  }
  
 
@@ -65,6 +72,8 @@ session_start();
     $date = date_format($cmdDate, 'd/m/Y');
     $cmd->cmd__date_cmd = $date;
 
+    $Pisteur->addPiste($_SESSION['user']->id_utilisateur , $datePist , $_POST['idAdminFiche'] ,'a mis a jour le code commande ou le commentaire de la Fiche de Travail ');
+
  }
 
  //si une mise a jour de livraison a été effectuée: 
@@ -83,6 +92,8 @@ session_start();
     $cmdDate = date_create($cmd->cmd__date_cmd);
     $date = date_format($cmdDate, 'd/m/Y');
     $cmd->cmd__date_cmd = $date;
+
+    $Pisteur->addPiste($_SESSION['user']->id_utilisateur , $datePist , $_POST['majIdFiche'] ,'a changé l adresse de livraison de la Fiche de Travail');
     
  }
 

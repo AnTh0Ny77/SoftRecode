@@ -334,10 +334,10 @@ try
     $doc->writeHTML($content);
     ob_clean();
 
-    // if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
-    // {
+    if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
+     {
         $doc->output('O:\intranet\Auto_Print\FT\Ft_'.$command->devis__id.'.pdf' , 'F'); 
-    // }
+     }
     
     if ($_SESSION['user']->user__devis_acces < 10 ) 
         {

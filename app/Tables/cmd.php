@@ -1223,7 +1223,7 @@ public function insertLine($object){
 
 
     $verifOrdre = $this->Db->Pdo->query(
-      'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne ');
+      'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne WHERE cmdl__cmd__id = '.$object->idDevis.' ');
 
     $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
     

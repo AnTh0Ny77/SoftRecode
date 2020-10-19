@@ -27,6 +27,7 @@ session_start();
  $Cmd = new App\Tables\Cmd($Database);
  $General = new App\Tables\General($Database);
  $Article = new App\Tables\Article($Database);
+ $Pisteur = new App\Tables\Pistage($Database);
  
 
  $articleTypeList = $Article->getModels();
@@ -48,7 +49,7 @@ session_start();
   $objectInsert->devis__note_client = null;
   $objectInsert->devis__note_interne = null;
   $objectInsert->devis__user__id = $_SESSION['user']->id_utilisateur;
-
+  $Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date , $_POST['creaLivraison'] , ' à entammé la creation d une fiche de garantie de type : '.$_POST['typeRetour'].' ' );
   //type de retour maintenance ou garantie 
   $type = intval($_POST['typeRetour']);
   if ($type == 02 )
@@ -77,6 +78,7 @@ if (!empty($_POST['ChangeContact'])  && !empty($_POST['idRetourChangeContact']))
   $update = $General->updateAll('cmd' , $_POST['ChangeContact'] , 'cmd__contact__id_livr' , 'cmd__id' , $_POST['idRetourChangeContact'] );
   $retour = $Cmd->GetById($_POST['idRetourChangeContact']);
   $lignes = $Cmd->devisLigne($retour->devis__id);
+  
 }
 
 
@@ -133,7 +135,9 @@ $commandLignes = $Cmd->devisLigne($_POST['PrintFicheCreation']);
 $update = $General->updateAll('cmd' , 'CMD' , 'cmd__etat' , 'cmd__id' , $command->devis__id );
 
 $_SESSION['garanFiche'] = $command->devis__id;
-
+//date du jour:
+$date = date("Y-m-d H:i:s");
+$Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date , $_POST['PrintFicheCreation'] , 'a imprimé sa fiche de garantie ' );
 header('location: printFt');
 
 

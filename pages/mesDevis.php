@@ -27,8 +27,14 @@ session_start();
  $Contact = new \App\Tables\Contact($Database);
  $Cmd = new App\Tables\Cmd($Database);
  $Global = new App\Tables\General($Database);
+ $Pisteur = new App\Tables\Pistage($Database);
  $listOfStatus = $Keyword->getStat();
  $devisList = [];
+
+  //date du jour:
+  $date = date("Y-m-d H:i:s");
+
+ $Pisteur->addPiste($_SESSION['user']->id_utilisateur , $date , 1 , ' à accédé à la page: mes devis' );
 
  // Si un devis a été validé: 
 if (!empty($_POST['clientSelect'])) 

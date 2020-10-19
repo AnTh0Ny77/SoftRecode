@@ -12,6 +12,7 @@ $Client = new \App\Tables\Client($Database);
 $User = new App\Tables\User($Database);
 $Global = new App\Tables\General($Database);
 $Contact = new App\Tables\Contact($Database);
+$Pisteur = new App\Tables\Pistage($Database);
  
 
 if (empty($_SESSION['user'])) 
@@ -32,10 +33,11 @@ if(!empty($_POST['poids']) && !empty($_POST['transporteur']))
       $paquet = intval($_POST['paquets']);
    }
    $Command->updateTransport($_POST['transporteur'] , floatval($_POST['poids']), $paquet, $_POST['id_trans'] , 'IMP' , $date);
+   $Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date , $_POST['id_trans'] , 'Saisie Transport effectuée' );
 
     $arrayTrans = $Command->devisLigne($_POST['id_trans']);
 
-    var_dump($_POST['linesTransport']);
+   
    
   
    
@@ -66,6 +68,7 @@ $command->cmd__date_envoi = $formated_date;
 if ($command->cmd__trans == 'TNT') 
 {
     $export = $Global->exportTNT($command , $_POST['poids'],$_POST['paquets']);
+    $Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date , $_POST['id_trans'] , 'Saisie Tnt' );
     if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
     {
         $file = fopen("O:\intranet\Port\TNT\TNT.txt", "a");
