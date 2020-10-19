@@ -14,15 +14,15 @@
             <div class="btn-toolbar mb-2 mb-md-0">
               <div class="btn-group mr-2">
                 {% if user.user__facture_acces > 10 %}
-                <form class="mx-2" action="PRINTADMIN" method="POST">
+                <form class="mx-2" action="PRINTADMIN" method="POST" id="formPRINTADMIN">
                   <input type="hidden" name="PRINTADMINID" value="{{devis.devis__id}}">
-                <button id="FTCADMIN" type="submit" class="btn btn-danger  btn-lg" >Facturation Direct</button>
+                <button id="FTCADMIN" type="button"  class="btn btn-danger  btn-lg" >Facturation Direct</button>
                 </form>
                 {% endif %}
                 {% if user.user__facture_acces > 10 %}
-                <form class="mx-2" action="PRINTADMINAVOIR" method="POST">
+                <form class="mx-2" action="PRINTADMINAVOIR" method="POST" id="formPRINTAVOIR">
                   <input type="hidden" name="PRINTADMINAVOIR" value="{{devis.devis__id}}">
-                <button id="FTCADMIN" type="submit" class="btn btn-primary  btn-lg" >Avoir Direct</button>
+                <button id="AVRADMIN" type="button" class="btn btn-primary  btn-lg" >Avoir Direct</button>
                 </form>
                 {% endif %}
                 <button id="SendCmd" type="button" class="btn btn-success  btn-lg" disabled>Valider le devis</button>
@@ -229,6 +229,56 @@
                 <input type="hidden" name="code_cmd" id="code_cmd">
                 <input type="hidden" name="arrayLigneDeCommande" id="arrayLigneDeCommande" value="">
               </form>
+      </div>
+
+
+
+      <!-- Modal -->
+      <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Attention <i class="far fa-exclamation-triangle"></i></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-danger" role="alert">
+                  Vous vous appretez à générer une facture directement !! <br>
+                  Etes vous certain de vouloir poursuivre cette opération ? 
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+              <button type="button" id="postADMINButton" class="btn btn-danger">Poursuivre</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="alertModalAvoir" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Attention <i class="far fa-exclamation-triangle"></i></h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-danger" role="alert">
+                  Vous vous appretez à générer un avoir directement !! <br>
+                  Etes vous certain de vouloir poursuivre cette opération ? 
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+              <button type="button" id="postADMINButtonAvoir" class="btn btn-danger">Poursuivre</button>
+            </div>
+          </div>
+        </div>
       </div>
         
     </main>

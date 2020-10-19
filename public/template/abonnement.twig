@@ -28,10 +28,19 @@
       <div class="col-6">
         <div class="card shadow mb-4">
           <!-- Card Header - -->
-          <div class="my-2 mx-4"> 
+          <div class="my-2 mx-4 d-flex justify-content-between"> 
+            <div>
             <h6 class="m-0 font-weight-bold text-primary">Selection Abonnement <i class="fas fa-tools"></i> 
             </h6>
           </div>
+            <form action="abonnementAdmin" method="POST">
+              <input type="hidden" id="hiddenId" name="hiddenId"> 
+              <div class="">
+                  <button class="btn btn-success mt-2">Administer</button>
+              </div >
+          </form>
+          </div>
+          
           <!-- Card Body -->
           <div class="card-body">
             <div class="chart-area">
@@ -75,12 +84,7 @@
                
             </div>  
             <div class="card-body" >
-              <form action="abonnementAdmin" method="POST">
-                  <input type="hidden" id="hiddenId" name="hiddenId"> 
-                  <div class="">
-                      <button class="btn btn-success">Administer</button>
-                  </div >
-              </form>
+              
            </div>
           </div>
         </div>

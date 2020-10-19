@@ -25,52 +25,58 @@
         <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
         <input type="hidden" id="minFact" value="{{minFact.cmd__id_facture}}">
     <!--carte liste de Devis -->
-      <div class="col-12">
+      <div class="col-8">
         <div class="card shadow mb-4">
           <!-- Card Header - -->
          
           <!-- Card Body -->
           <div class="card-body">
             <div class="chart-area">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col" style="width: 15%;">Client</th>
+                    <th scope="col" style="width: 35%;">Commande/Prestation/Commentaires</th>
+                    
+                   
+                  </tr>
+                </thead>
                 {% for abn in ABNList %}
+
                     {% if abn.array != null  %}
                    
-                    <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th scope="col" style="width: 25%;">Client</th>
-                          <th scope="col" style="width: 25%;">Commande/Prestation/Commentaires</th>
-                          <th scope="col" style="width: 25%;">Prix TRIM.HT</th>
-                         
-                        </tr>
-                      </thead>
+                   
                       <tbody>
                        <tr>
                           <td scope="col"><b>{{abn.client.client__societe ~ '(' ~ abn.client.client__id  ~ ')'}}<br>
                           {{ abn.client.client__adr1 }}<br>
                           {{ abn.client.client__cp  ~ " " ~ abn.client.client__ville}}</b><br>
-                          <p class="text-primary">{{abn.nbMachine}} machine(s) actives</p>
+                          <p class="text-primary">{{abn.nbMachine}} machine(s) actives</p> <b>{{abn.total}} € H.T</b><br>
+                          <form method="POST" action="abonnementAdmin">
+                            <input type="hidden" name="hiddenId" value="{{abn.ab__cmd__id}}">
+                            <button class="btn btn-link btn-sm">modifier</button>
+                          </form>
                           </td>
                           <td scope="col">N° : <b>{{ abn.ab__cmd__id}}</b><br>{{abn.prestaLib}}<br>
                            {% if abn.ab__note  %}
                           {{ abn.ab__note|raw}}
                           {% else %}
                           pas de commentaire
-                          {% endif %}</td>
+                          {% endif %}
+                          <br>
                          
-                            <td class="py-auto" >
-                                <p class="text-right">
-                                <b>{{abn.total}} € H.T</b>
-                                </p>
-                            </td>
+                        </td>
+                         
+                           
                          
                         </tr>
                        
                       </tbody>
-                  </table>
-
+                
               {% endif %}
                 {% endfor %}
+              </table>
+
             </div>  
             
           </div>

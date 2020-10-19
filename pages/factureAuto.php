@@ -27,9 +27,6 @@ session_start();
  $Abonnement = new App\Tables\Abonnement($Database);
  
  
- 
- 
-
 
  if (!empty($_POST['trimestre']) && !empty($_POST['anneAuto'])) 
  {

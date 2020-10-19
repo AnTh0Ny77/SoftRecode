@@ -139,6 +139,28 @@ $(document).ready(function() {
       
      $('#formValideCMD').submit();
     })
-           
+
+
+    $('#FTCADMIN').on('click', function()
+    {
+        $('#alertModal').modal('show');
+    })
+
+    $('#postADMINButtonAvoir').on('click' , function()
+    {
+        $('#formPRINTAVOIR').submit();
+
+    })
+    
+    $('#AVRADMIN').on('click', function()
+    {
+        $('#alertModalAvoir').modal('show');
+    }) 
+    
+    $('#postADMINButton').on('click' , function()
+    {
+        $('#formPRINTADMIN').submit();
+
+    })
 
 })
