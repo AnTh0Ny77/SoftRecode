@@ -68,7 +68,7 @@ $command->cmd__date_envoi = $formated_date;
 if ($command->cmd__trans == 'TNT') 
 {
     $export = $Global->exportTNT($command , $_POST['poids'],$_POST['paquets']);
-    $Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date , $_POST['id_trans'] , 'Saisie Tnt' );
+   
     if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
     {
         $file = fopen("O:\intranet\Port\TNT\TNT.txt", "a");

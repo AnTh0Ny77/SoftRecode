@@ -34,7 +34,7 @@ session_start();
   //date du jour:
   $date = date("Y-m-d H:i:s");
 
- $Pisteur->addPiste($_SESSION['user']->id_utilisateur , $date , 1 , ' à accédé à la page: mes devis' );
+ 
 
  // Si un devis a été validé: 
 if (!empty($_POST['clientSelect'])) 
