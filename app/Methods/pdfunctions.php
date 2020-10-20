@@ -2,7 +2,9 @@
 
 namespace App\Methods;
 
- class Pdfunctions {
+use DateTime;
+
+class Pdfunctions {
 
 
 
@@ -1037,6 +1039,84 @@ public static function totalABN($objectCmd, $arrayLigne )
 	$global_ttc = $global_ht + $montant_tva;
 
 	array_push($response , floatval($global_ht) , floatval($tva) , floatval($montant_tva) , floatval($global_ttc));
+
+	return $response;	
+}
+
+
+
+
+public static function magicLineContrat($arrayLigne)
+{
+
+
+	// variables des tailles de cellules afin de pouvoir regler la largeur de la table facilement :
+	$firstW = '5%';
+	$thirdW ='35%';
+	$fifthW = '30%';
+	$sixthW = '15%';
+	$sevenhW = '15%';
+
+	$pack = '';
+	//boucle sur les lignes passées en parametres
+	foreach ($arrayLigne as $ligne) 
+
+	{
+
+	$date = new DateTime($ligne->abl__dt_debut);
+	$date = $date->format('d/m/Y'); 
+
+	$code = 'M';
+
+	$pack .= '<tr>';
+
+	$cell1 = "<td valign='top' style='  padding-top:5px ; width: ".$firstW."; max-width: ".$firstW."; text-align: center;  '>" .$code. "</td>";
+
+	$cell5 = "<td valign='top' style='  padding-top:5px ; width: ".$fifthW."; max-width: ".$fifthW."; text-align: center;  '>" . $ligne->abl__designation . "</td>";
+
+	$cell3 = "<td valign='top' style='  padding-top:5px ; width: ".$thirdW."; max-width: ".$thirdW."; text-align: center;  '>" . $ligne->abl__sn . "</td>";
+
+	$cell6 = "<td valign='top' style='  padding-top:5px ; width: ".$sixthW."; max-width: ".$sixthW."; text-align: center;  '>" . $date . "</td>";
+
+	$cell7 = "<td valign='top' style='  padding-top:5px ; width: ".$sevenhW."; max-width: ".$sevenhW."; text-align: right;  '>" . $ligne->abl__prix_mois . "</td>";
+	
+	$pack .= $cell1  . $cell3  . $cell5 . $cell6 . $cell7 ;
+
+	$pack .= '</tr>';
+
+	}
+
+	$tete =  '<tr style=" margin-top : 30px;  background-color: #dedede; ">
+	<td style=" text-align: center;  border: 1px solid black;  padding-top: 4px; padding-bottom: 4px;"><b>Code</b></td>
+	<td style="text-align: center;  border: 1px solid black;  padding-top: 4px; padding-bottom: 4px;"><b>Désignation</b></td>
+	<td  style=" text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Numéro de série</b></td>
+	
+	<td style="text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Début</b></td>
+	<td style="text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Prix/Mois EUR</b></td>
+	</tr> ';
+
+	echo $tete . $pack ;
+}
+
+
+
+//fonction d'affichage du total dans la vision facture : retourne prix ht , tva taux , tva montant , prix ttc 
+public static function totalContract($arrayLigne)
+{
+	$array_prix = [];
+	$response = [] ; 
+
+	foreach ($arrayLigne as $ligne ) 
+	{
+		if (!empty($ligne->abl__prix_mois)) 
+		{	
+			$prix = floatval($ligne->abl__prix_mois);
+			$total_ligne =  $prix ;	 
+			array_push($array_prix , $total_ligne);
+		}
+	}
+	$global_ht = array_sum($array_prix);
+	array_push($response , floatval($global_ht) );
 
 	return $response;	
 }

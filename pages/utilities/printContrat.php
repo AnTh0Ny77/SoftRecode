@@ -4,14 +4,17 @@ require "./vendor/autoload.php";
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Methods\Pdfunctions;
+
+
 session_start();
 $Database = new App\Database('devis');
 $Database->DbConnect();
-$Command = new \App\Tables\Cmd($Database);
+$Cmd = new \App\Tables\Cmd($Database);
 $Client = new \App\Tables\Client($Database);
 $User = new App\Tables\User($Database);
 $Global = new App\Tables\General($Database);
 $Contact = new App\Tables\Contact($Database);
+$Abonnement = new App\Tables\Abonnement($Database);
 
 if (empty($_SESSION['user'])) 
 {
@@ -27,6 +30,9 @@ else
 }
 
 
+$abn = $Abonnement->getById($print_request);
+
+$abnLignes = $Abonnement->getLigneActives($print_request);
   
 $temp =   $Cmd->GetById($print_request);
 
@@ -38,16 +44,9 @@ if ($temp->devis__id_client_livraison)
         $societeLivraison = $Client->getOne($temp->devis__id_client_livraison);
     }
 
-$arrayOfDevisLigne = $Cmd->devisLigne($_POST['hiddenCommentaire']);
 
-foreach ($arrayOfDevisLigne as $ligne) 
-    {
-        $xtendArray = $Cmd->xtenGarantie($ligne->devl__id);
-        $ligne->ordre2 = $xtendArray;
-    } 
-
-$dateFact = new DateTime($temp->cmd__date_fact);
-$formate = $dateFact->format('d/m/Y'); 
+//date du jour:
+$formate = date("d/m/Y"); 
 $date_time = new DateTime( $temp->cmd__date_cmd);
 $formated_date = $date_time->format('d/m/Y'); 
 $Keyword = new \App\Tables\Keyword($Database);
@@ -86,6 +85,7 @@ ob_start();
 
 
 <page backtop="80mm" backleft="10mm" backright="10mm" backbottom= "30mm"> 
+
 <page_header>
      <table class="page_header" style="width: 100%;">
          <tr>
@@ -94,30 +94,11 @@ ob_start();
          </tr>
          <tr>
             <td  style="text-align: left;  width: 50% ; margin-left: 25%; padding-top: 20px;">
-            <?php 
-                if (!empty($clientView->client__tva_intracom)) 
-                {
-                    echo 'TVA intracom : '. $clientView->client__tva_intracom . ' ';
-                } else  echo 'TVA intracom : Non renseigné';  
-            ?>
-            <br>
-
-            Votre cde n° :<?php echo $temp->cmd__code_cmd_client ; ?><br>
-            Date commande :  <?php echo $formated_date ; ?><br>
-            Notre B.L n° : <?php echo $temp->devis__id ; ?>
-            <br>
-            <br>
-
-            <small>Livraison:<br>
-            <b>
-                <?php  echo Pdfunctions::showSociete($societeLivraison) ?>
-            </b>
-            </small>
 
             </td>
 
              <td style="text-align: left; width:50%">
-             <h3>Facture : <?php echo $temp->cmd__id_facture .' le '. $formate ; ?></h3>
+             <h3>Contrat de Location : <?php echo $temp->devis__id  ; ?></h3>
              <br>
              
              <?php 
@@ -126,16 +107,18 @@ ob_start();
                 {
                 $contact = $Contact->getOne($temp->devis__contact__id);
                 echo "<div style='background-color: #dedede;  padding: 15px 15px 15px 15px; border: 1px solid black;  width: 280px; '><strong>";
-                echo Pdfunctions::showSocieteFacture($clientView,$contact) ." </strong></div></td>";
+                echo Pdfunctions::showSocieteFacture($clientView,$contact) ." </strong></div>";
                 }
                 else
                 {
                 echo "<div style='background-color: #dedede; padding: 15px 15px 15px 15px; border: 1px solid black;  width: 280px;'><strong>";
-                echo Pdfunctions::showSociete($clientView)  ." </strong></div></td>";
+                echo Pdfunctions::showSociete($clientView)  ." </strong></div>";
                 }
 
              ?>
-             <br>   
+             <br>  
+            
+            </td>
          </tr>
      </table>
 </page_header>
@@ -150,18 +133,14 @@ ob_start();
             <tbody> 
                 <tr>  
             <?php
-                $totaux = Pdfunctions::totalFacturePDF($temp, $arrayOfDevisLigne);
+                $totaux = Pdfunctions::totalContract($abnLignes);
 
-                echo "<td style='text-align: left; width: 200px;'>
-                        Total Hors Taxes :<br>
-                        Total Tva ".number_format($totaux[1] , 2,',', ' ')." %:<br>
-                        Total Toutes Taxes:<br>
-                     </td>
-                     <td style='text-align: right; '>
-                     <b>".number_format($totaux[0] , 2,',', ' ')." €</b><br>
-                     <b>".number_format($totaux[2] , 2,',', ' ')." €</b><br>
-                     <b>".number_format($totaux[3] , 2,',', ' ')." €</b><br>
-                     </td>";
+                echo "  <td style='text-align: left; width: 200px;'>
+                            Total général mensuel : 
+                        </td>
+                        <td style='text-align: right; '>
+                        <b>".number_format($totaux[0] , 2,',', ' ')." €</b>
+                        </td>";
             ?>
             </tr>
             </tbody>
@@ -171,14 +150,28 @@ ob_start();
     </tr>
 </table>
 </div>
+
 <table  style="width:100%;  margin-bottom: 5px; margin-top: 35 px;">
     <tr>
-    <td style="text-align: left;  width: 100%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;">Conditions de paiement à réception/Conditions générales de Vente.
-     Des pénalités de retard au taux légal seront appliquées en cas de paiement après la date d'échéance. Conformément à la loi du 12.05.80, EUROCOMPUTER conserve la propriété du matériel jusqu'au paiement intégral du prix et des frais annexes.
+    <td style="text-align: center;  width: 50%; padding-top: 7px; padding-bottom: 5px; padding-left:6px;">
+     NEW EUROCOMPUTER : 
+     <br>
+    Date et signature : 
+    <br>
+    <br>
+    <br>
     <hr>
     </td>
-    </tr>
-    
+    <td style="text-align: center;  width: 50%; padding-top: 7px; padding-bottom: 5px; padding-left:6px;">
+    CLIENT :
+    <br>
+    Cachet de l'entreprise avec mention "Lu et approuvé"
+    <br>
+    <br>
+    <br>
+    <hr>
+    </td>
+    </tr> 
 </table>
         <table  class="page_footer" style="text-align: center; margin: auto; ">
         <tr>
@@ -204,45 +197,23 @@ ob_start();
             </td>
             </tr>
          </table>
+           
 </page_footer>
-
-<div style="margin-top: 35px;">
-    <table CELLSPACING=0 style="margin-top: 35px; width:100%">
-            
-            <?php 
-                $arrayPrice =[];
-                foreach($arrayOfDevisLigne as $value=>$obj){
-                        array_push( $arrayPrice, floatval(floatval($obj->devl_puht)*intval($obj->devl_quantite)));
-                };      
-                echo Pdfunctions::magicLineFTC($arrayOfDevisLigne , $temp);     
-            ?>
-    </table>
-</div>
-
-
-
-<div>
-<?php
-if ($temp->devis__note_client) {
-   echo $temp->devis__note_client;
-}
-
-?>
-</div>
-
-
+    <div style="margin-top: 35px;">
+            <table CELLSPACING=0 style="margin-top: 35px; width:100%">        
+                    <?php         
+                        echo Pdfunctions::magicLineContrat($abnLignes);     
+                    ?>
+            </table>
+    </div>
 </page>
+
+
  <?php
  $content = ob_get_contents();
 
- if ($temp->cmd__nom_devis) {
-  $name  = $temp->cmd__nom_devis;
- }
- else {
-    $name = $temp->devis__id;
- }
  
- try 
+ try
  {
      $doc = new Html2Pdf('P','A4','fr');
      $doc->setDefaultFont('gothic');
@@ -250,10 +221,12 @@ if ($temp->devis__note_client) {
      $doc->writeHTML($content);
      ob_clean();
 
-     //declarer la session pour s'en servir à l'impression:
-     header('location: abonnementAdmin');
-    
- } catch (Html2PdfException $e) 
+    $doc->output('O:\intranet\Auto_Print\CT\CT'.$temp->devis__id.'.pdf', 'F');
+    //declarer la session pour s'en servir à l'impression:
+    header('location: abonnementAdmin');
+
+ } 
+ catch (Html2PdfException $e) 
  {
    die($e); 
  }

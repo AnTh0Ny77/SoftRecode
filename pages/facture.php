@@ -183,20 +183,27 @@ if (!empty($_POST['idDevisAddLigne']) && !empty($_POST['prestationChoix']) )
 //si 8 numero commence par une * ou - 
 if (!empty($_POST['rechercheF']) && strlen($_POST['rechercheF'])  == 8 )
 {
+ 
   $rest = substr($_POST['rechercheF'] , 0 , 1);
+  
   $idFacturable = substr($_POST['rechercheF'] , 1 , 7);
-  $verif = $Cmd->GetById($idFacturable);
-
+ 
+ 
+ 
     if (!empty($verif) && $rest == '*') 
     {
+      $verif = $Cmd->GetById($idFacturable);
       $_SESSION['factureEtoile'] = $idFacturable;
       header('location: printFTC');
     }
     elseif (!empty($verif) && $rest == '-') 
     {
+      $verif = $Cmd->GetById($idFacturable);
       $_SESSION['factureMoins'] = $idFacturable;
       header('location: archiveFacture');
     }
+    
+  
  
 }
  

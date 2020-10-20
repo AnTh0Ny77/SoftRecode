@@ -27,7 +27,7 @@ session_start();
  $Abonnement = new App\Tables\Abonnement($Database);
  $Article = new App\Tables\Article($Database);
  
- $prestaList = $Keyword->getPrestaABN();
+ 
  $moisList = $Keyword->getGaranties();
  $modeleList = $Article->getModels();
  $alert = false;
@@ -41,6 +41,15 @@ if (!empty($_POST['idCMD'])  )
   $valid = $Cmd->getById($_POST['idCMD']);
   $verif = $Abonnement->getById($_POST['idCMD']); 
   $ligne = $Abonnement->getOneLigne($_POST['idCMD'] ,$_POST['numLigne']);
+
+  if ($verif->ab__presta == 'LOC') 
+  {
+    $prestaList = $Keyword->getPrestaABL();
+  }
+  else
+  {
+    $prestaList = $Keyword->getPrestaABM();
+  }
 
 
   // Donnée transmise au template : 
