@@ -2477,11 +2477,11 @@ public function modify(
         }
         elseif ($session == 'FT') 
         {
-          $request .= "WHERE ( cmd__etat = 'CMD' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+          $request .= "WHERE ( cmd__etat = 'CMD' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 400  ";
         }
         elseif ($session == 'BL') 
         {
-          $request .= "WHERE ( cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+          $request .= "WHERE ( cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 400  ";
         }
 
       
