@@ -300,7 +300,7 @@ if (empty($_SESSION['user']))
         {
             $doc->output('F:\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
         }
-        $doc->output('O:\intranet\Auto_Print\Test\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
+        $doc->output('O:\intranet\Auto_Print\FC\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
        
      
         

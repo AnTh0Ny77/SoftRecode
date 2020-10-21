@@ -2093,7 +2093,6 @@ public function modify(
         OR l.cmdl__designation LIKE '%".$mots_filtre[0]."%'
         OR l.cmdl__pn LIKE '%".$mots_filtre[0]."%' 
         OR c.client__societe LIKE '%".$mots_filtre[0]."%' 
-        OR c2.client__livraison_societe LIKE '%".$mots_filtre[0]."%' 
         OR c.client__id = '".$mots_filtre[0]."' ) ";
 
        for ($i=1; $i < $nb_mots_filtre ; $i++) { 
@@ -2103,7 +2102,6 @@ public function modify(
           OR l.cmdl__designation LIKE '%".$mots_filtre[$i]."%'
           OR l.cmdl__pn LIKE '%".$mots_filtre[$i]."%' 
           OR c.client__societe LIKE '%".$mots_filtre[$i]."%' 
-          OR c2.client__livraison_societe LIKE '%".$mots_filtre[0]."%'
           OR c.client__id = '".$mots_filtre[$i]."' ) ";
        }
         $request .= "ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
@@ -2168,7 +2166,6 @@ public function modify(
         OR l.cmdl__designation LIKE '%".$mots_filtre[0]."%'
         OR l.cmdl__pn LIKE '%".$mots_filtre[0]."%' 
         OR c.client__societe LIKE '%".$mots_filtre[0]."%' 
-        OR c2.client__livraison_societe LIKE '%".$mots_filtre[0]."%'
         OR c.client__id = '".$mots_filtre[0]."' ) ";
 
        for ($i=1; $i < $nb_mots_filtre ; $i++) { 
@@ -2178,7 +2175,6 @@ public function modify(
           OR l.cmdl__designation LIKE '%".$mots_filtre[$i]."%'
           OR l.cmdl__pn LIKE '%".$mots_filtre[$i]."%' 
           OR c.client__societe LIKE '%".$mots_filtre[$i]."%' 
-          OR c2.client__livraison_societe LIKE '%".$mots_filtre[0]."%'
           OR c.client__id = '".$mots_filtre[$i]."' ) ";
        }
         $request .= " AND  ( cmd__etat = 'CMD' )  AND cmd__user__id_devis = '". $user. "'  ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
@@ -2245,7 +2241,6 @@ public function modify(
         OR l.cmdl__designation LIKE '%".$mots_filtre[0]."%'
         OR l.cmdl__pn LIKE '%".$mots_filtre[0]."%' 
         OR c.client__societe LIKE '%".$mots_filtre[0]."%' 
-        OR c2.client__livraison_societe LIKE '%".$mots_filtre[0]."%'
         OR c.client__id = '".$mots_filtre[0]."' ) ";
 
        for ($i=1; $i < $nb_mots_filtre ; $i++) { 
@@ -2255,7 +2250,6 @@ public function modify(
           OR l.cmdl__designation LIKE '%".$mots_filtre[$i]."%'
           OR l.cmdl__pn LIKE '%".$mots_filtre[$i]."%' 
           OR c.client__societe LIKE '%".$mots_filtre[$i]."%' 
-          OR c2.client__livraison_societe LIKE '%".$mots_filtre[0]."%'
           OR c.client__id = '".$mots_filtre[$i]."' ) ";
        }
         $request .= "AND ( cmd__user__id_devis = '".$user."' ) ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
@@ -2326,7 +2320,6 @@ public function modify(
         OR l.cmdl__designation LIKE '%".$mots_filtre[0]."%'
         OR l.cmdl__pn LIKE '%".$mots_filtre[0]."%' 
         OR c.client__societe LIKE '%".$mots_filtre[0]."%' 
-        OR c2.client__livraison_societe LIKE '%".$mots_filtre[0]."%'
         OR c.client__id = '".$mots_filtre[0]."' ) ";
 
        for ($i=1; $i < $nb_mots_filtre ; $i++) { 
@@ -2336,7 +2329,6 @@ public function modify(
           OR l.cmdl__designation LIKE '%".$mots_filtre[$i]."%'
           OR l.cmdl__pn LIKE '%".$mots_filtre[$i]."%' 
           OR c.client__societe LIKE '%".$mots_filtre[$i]."%' 
-          OR c2.client__livraison_societe LIKE '%".$mots_filtre[0]."%'
           OR c.client__id = '".$mots_filtre[$i]."' ) ";
        }
        $request .= "AND ( cmd__etat = 'CMD' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
@@ -2405,7 +2397,6 @@ public function modify(
         OR l.cmdl__designation LIKE '%".$mots_filtre[0]."%'
         OR l.cmdl__pn LIKE '%".$mots_filtre[0]."%' 
         OR c.client__societe LIKE '%".$mots_filtre[0]."%' 
-        OR c2.client__livraison_societe LIKE '%".$mots_filtre[0]."%'
         OR c.client__id = '".$mots_filtre[0]."' ) ";
 
        for ($i=1; $i < $nb_mots_filtre ; $i++) { 
@@ -2415,7 +2406,6 @@ public function modify(
           OR l.cmdl__designation LIKE '%".$mots_filtre[$i]."%'
           OR l.cmdl__pn LIKE '%".$mots_filtre[$i]."%' 
           OR c.client__societe LIKE '%".$mots_filtre[$i]."%'
-          OR c2.client__livraison_societe LIKE '%".$mots_filtre[0]."%' 
           OR c.client__id = '".$mots_filtre[$i]."' ) ";
        }
         if ($session == 'ALL' ) 
