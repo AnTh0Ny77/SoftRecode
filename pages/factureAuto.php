@@ -60,7 +60,7 @@ session_start();
    }
 
    $text = $_POST['anneAuto'] . '-' . $start .'-' . '1' ;
-   $textEnd  = $_POST['anneAuto'] . '-' . $end .'-' . '30' ;
+   $textEnd  = $_POST['anneAuto'] . '-' . $end .'-' . '1' ;
    $dateStart = new DateTime($text);
    $dateFin = new DateTime($textEnd);
    $dateStart = $dateStart->format('Y-m-d H:i:s');
@@ -91,15 +91,14 @@ session_start();
   
  }
 
- 
 
 
 $arrayFacturable = json_encode($arrayTemp);
 
 $dateDebut = new DateTime($text);
 $dateEnd = new DateTime($textEnd);
-$dateDebut = $dateDebut->format('Y/m/d');
-$dateEnd = $dateEnd->format('Y/m/d');
+$dateDebut = $dateDebut->format('d/m/Y');
+$dateEnd = $dateEnd->format('t/m/Y');
  
 // Donnée transmise au template : 
 echo $twig->render('factureAuto.twig',

@@ -98,7 +98,7 @@ ob_start();
             </td>
 
              <td style="text-align: left; width:50%">
-             <h3>Contrat de Location : <?php echo $temp->devis__id  ; ?></h3>
+             <h3><?php echo $abn->prestaionAbn . " " .  $temp->devis__id  ; ?></h3>
              <br>
              
              <?php 
@@ -154,18 +154,22 @@ ob_start();
 <table  style="width:100%;  margin-bottom: 5px; margin-top: 35 px;">
     <tr>
     <td style="text-align: center;  width: 50%; padding-top: 7px; padding-bottom: 5px; padding-left:6px;">
-     NEW EUROCOMPUTER : 
+    <b> NEW EUROCOMPUTER : </b>
      <br>
     Date et signature : 
+    <br>
+    <br>
     <br>
     <br>
     <br>
     <hr>
     </td>
     <td style="text-align: center;  width: 50%; padding-top: 7px; padding-bottom: 5px; padding-left:6px;">
-    CLIENT :
+    <b>CLIENT : </b>
     <br>
     Cachet de l'entreprise avec mention "Lu et approuvé"
+    <br>
+    <br>
     <br>
     <br>
     <br>

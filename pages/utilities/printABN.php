@@ -23,12 +23,14 @@ if (empty($_SESSION['user']))
  {
 
     
+    
     $arrayABN = json_decode($_POST['hiddenABN']);
     $export = "";
     
     foreach($arrayABN as $ABN)
     {
-      
+
+
        if (!empty($ABN->array)) 
        {
        
@@ -45,6 +47,7 @@ if (empty($_SESSION['user']))
         $objectInsert->devis__note_interne = null;
         $objectInsert->devis__user__id = $_SESSION['user']->id_utilisateur;
 
+      
         $temp = $Cmd->makeRetour($objectInsert , '' , $ABN->ab__client__id_fact , $_SESSION['user']->id_utilisateur );
         $update = $General->updateAll('cmd','ABF','cmd__etat','cmd__id',$temp);
         
@@ -55,12 +58,11 @@ if (empty($_SESSION['user']))
             $total += $key->abl__prix_mois * 3  ;
         }
        
-        
 
         $objectInsert = new stdClass;
             $objectInsert->idDevis = $temp;
             $objectInsert->prestation = $ABN->ab__presta;
-            $objectInsert->designation = $ABN->prestaLib . ' Période du ' . $_POST['dateDebut'] . ' au ' . $_POST['dateFin'] ;
+            $objectInsert->designation =  ' Période du ' . $_POST['dateDebut'] . ' au ' . $_POST['dateFin'] ;
             $objectInsert->etat = 'NC';
             $objectInsert->garantie = '';
             $objectInsert->comClient = '';
@@ -141,7 +143,7 @@ if (empty($_SESSION['user']))
                  } else  echo 'TVA intracom : Non renseigné';
                   
                  ?><br>
-                Votre cde n° :<?php echo $temp->cmd__code_cmd_client ; ?> <br>
+                Numero de contrat : <?php echo $ABN->ab__cmd__id ?><br>
                 Date commande :  <?php echo $formated_date ; ?><br>
                 Notre B.L n° : <?php echo $temp->devis__id ; ?>
                 <br><br>
@@ -294,11 +296,11 @@ if (empty($_SESSION['user']))
          ob_clean();
          $numFact = '0000000' . $temp->cmd__id_facture ;
          $numFact = substr($numFact , -7 );
-        //  if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
-        // {
-        //     $doc->output('F:\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
-        // }
-        // $doc->output('O:\intranet\Auto_Print\FC\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
+         if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
+        {
+            $doc->output('F:\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
+        }
+        $doc->output('O:\intranet\Auto_Print\Test\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
        
      
         

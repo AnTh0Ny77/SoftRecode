@@ -966,15 +966,15 @@ public static function magicLineABN($arrayLigne , $cmd , $prestaLib){
 			</td>";
 		}
 
-		$thirdCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW."; text-align: right;  '>"
+		$thirdCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW."; text-align: right;  '>
 
-		. $ligne->cmdl__qte_fact . "
+		1
 
 		</td>";
 
 		$FourthCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
 
-		.  number_format($ligne->devl_puht , 2) . "
+		.  number_format($ligne->devl_puht , 2 ,',', ' ') . "
 
 		</td>";
 
@@ -983,7 +983,7 @@ public static function magicLineABN($arrayLigne , $cmd , $prestaLib){
 
 		$FifthCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
 
-		. number_format($prixTTc , 2) . "
+		. number_format($prixTTc , 2 ,',', ' ') . "
 
 		</td>";
 		$pack .= $firstCell . $secondCell . $thirdCell . $FourthCell . $FifthCell ;
@@ -1070,7 +1070,7 @@ public static function magicLineContrat($arrayLigne)
 
 	$pack .= '<tr>';
 
-	$cell1 = "<td valign='top' style='  padding-top:5px ; width: ".$firstW."; max-width: ".$firstW."; text-align: center;  '>" .$code. "</td>";
+	$cell1 = "<td valign='top' style='  padding-top:5px ; width: ".$firstW."; max-width: ".$firstW."; text-align: center;  '>" . $ligne->abl__type_repair . "</td>";
 
 	$cell5 = "<td valign='top' style='  padding-top:5px ; width: ".$fifthW."; max-width: ".$fifthW."; text-align: center;  '>" . $ligne->abl__designation . "</td>";
 
