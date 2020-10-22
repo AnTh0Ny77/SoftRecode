@@ -48,7 +48,7 @@ class User extends Table
 
   public function getCommerciaux()
   {
-    $request = $this->Db->Pdo->prepare("SELECT id_utilisateur , log_nec  
+    $request = $this->Db->Pdo->prepare("SELECT id_utilisateur , log_nec  , prenom , nom
     FROM utilisateur 
     WHERE fonction = 'commercial' 
     OR fonction = 'Commercial'

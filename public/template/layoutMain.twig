@@ -24,11 +24,10 @@
 
 <!--NavBar--> 
 <nav class="navbar navbar-light  sticky-top bg-white flex-md-nowrap p-0 shadow">
-  <div class="d-flex">
-    <button class=" navbar-brand btn btn-link ml-3 pr-2" id="clickSideBar">  <i class="fad fa-arrow-alt-from-right"></i></button> 
-  <a class="navbar-brand  ml-4 pr-2" href="#">  {{ user.prenom ~  " " ~  user.nom ~ " " }}<i class="fas fa-user"></i></a> 
+  
+  <a class="navbar-brand  ml-5 pr-2" href="#">  {{ user.prenom ~  " " ~  user.nom ~ " " }}<i class="fas fa-user"></i></a> 
  
-  </div>
+ 
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
       <a class="nav-link" href="unlog">Se deconnecter <i class="fad fa-sign-out"></i></a>
@@ -191,6 +190,14 @@
                     <a class="nav-link text-white" href="abonnementNouveau">
                       <span data-feather="file"></span>
                       <i class="far fa-calendar-alt"></i> Creer abonnement
+                    </a>
+                  </li>
+                </ul>
+                <ul class="list-group">
+                  <li class="list-group-item  bg-transparent border-0 certificate" >
+                    <a class="nav-link text-white" href="stat">
+                      <span data-feather="file"></span>
+                      <i class="fas fa-chart-pie"></i> Statistiques
                     </a>
                   </li>
                 </ul>

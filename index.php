@@ -225,6 +225,9 @@
     case '/SoftRecode/printContrat';
       require __DIR__ .'/pages/utilities/printContrat.php'; break;
     
+    case '/SoftRecode/stat';
+      require __DIR__ .'/pages/statistiques.php'; break;
+    
     case '/SoftRecode/font';
       require __DIR__ .'/vendor/tecnickcom/tcpdf/fonts/convertfont.php'; break;
 

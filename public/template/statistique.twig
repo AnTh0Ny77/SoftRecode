@@ -1,0 +1,107 @@
+{% extends 'layoutMain.twig' %}
+
+
+  {% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/css/dashboard.css">
+  {% endblock %}
+ 
+ 
+     {% block main %}
+     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+            <h1 class="h2">Statistiques <i class="fas fa-chart-pie"></i></h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
+            </div>
+            </div>
+        </div>
+
+       <!--  ligne -->
+    <div class="d-flex flex-wrap flex-row justify-content-start">
+
+        <!--prtemière carte-->
+        <div class="col-5 cardVisio" >
+            <div class="card shadow mb-4">
+              <!-- Card Header - -->
+             
+              <!-- Card Body -->
+              <div class="card-body" >
+                <form>
+                    <h5>Période </h5>
+                    <div class="d-flex justify-content-between my-3 col-12">
+                        
+                        <div class="col-6">
+                        <label for="exampleInputEmail1">Du</label>
+                        <input type="date" class="form-control">
+                        </div>
+                        <div class="col-6">
+                            <label for="exampleInputEmail1">Au</label>
+                            <input type="date" class="form-control">
+                        </div>
+                    </div>
+                    <h5>Filtres</h5> 
+                    <div class="d-flex flex-column my-4 col-12">
+
+
+
+                        <div class="col-6 mt-3 pt-2 ">
+                            <label for="exampleInputEmail1">Client : </label>   
+                        </div>
+                        <select class="selectpicker show-tick"  data-live-search="true" data-width="100%">
+                            <option value="Tous" selected>Tous</option>
+                            {% for client in clientList %}
+                            <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') '}}</option>
+                            {% endfor %}
+                        </select>
+                     
+
+
+                        <div class="col-6 border-top pt-2  mt-3">
+                            <label for="exampleInputEmail1">Vendeur : </label>   
+                        </div>
+                        <select class="selectpicker show-tick"  data-live-search="true" data-width="100%">
+                            <option value="Tous" selected>Tous</option>
+                            {% for vendeur in vendeurList %}
+                            <option value="{{vendeur.id_utilisateur}}">{{ vendeur.nom ~ ' ' ~ vendeur.prenom }}</option>
+                            {% endfor %}
+                          </select>
+                       
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success btn-sm">Valider</button>
+                    </div>
+                    
+                   
+                  </form>
+              </div>  
+            </div>
+        </div>
+    </div> 
+        
+       
+    
+
+    </main>
+     {% endblock %}
+     
+    
+     {% block script %}
+     <!-- Optional JavaScript -->
+
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+<script type="text/javascript" src="public/js/statistique.js"></script>
+
+
+
+
+     {% endblock %}
