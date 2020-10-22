@@ -5,63 +5,102 @@ use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Methods\Pdfunctions;
 session_start();
+
+//declaration de objets nécéssaires : 
 $Database = new App\Database('devis');
 $Database->DbConnect();
 $Cmd = new App\Tables\Cmd($Database);
 $Contact = new \App\Tables\Contact($Database);
 $Client = new \App\Tables\Client($Database);
+$General = new App\Tables\General($Database);
 
-if (empty($_SESSION['user']))
- {
+if(empty($_SESSION['user']))
+{
     header('location: login');
- }
+}
 
- if (!empty($_SESSION['factureEtoile'])) 
- {
+//si une facture a été faite = variable pour l'alerte: 
+if(!empty($_SESSION['factureEtoile'])) 
+{
     $_POST['hiddenCommentaire'] = $_SESSION['factureEtoile'];
     $_SESSION['factureEtoile'] = "";
- }
+}
 
- // si une commande à été postée: 
- if (!empty($_POST['hiddenCommentaire'])) 
- {
-   //$Cmd->updateQuantiteFTC($_POST['hiddenCommentaire']);
-   //  2  changer le status de la commande et attribuer un numero de facture:
-   $Cmd->commande2facture($_POST['hiddenCommentaire']);
-   //  4 activer une alert pour indiquer le bon fonctionnement du logiciel 
-   $Cmd->classicReliquat($_POST['hiddenCommentaire']);
-   // 5 reliquat si article deja facturé mais pas livré : 
-   $Cmd->FactureReliquat($_POST['hiddenCommentaire']);
-   //  3 enregistrer la facture au format pdf dans un folder 
-    $temp =   $Cmd->GetById($_POST['hiddenCommentaire']);
 
-    $clientView = $Client->getOne($temp->client__id);
-    $societeLivraison = false ;
 
-    if ($temp->devis__id_client_livraison) 
-    {
-        $societeLivraison = $Client->getOne($temp->devis__id_client_livraison);
-    }
+// si une commande à été postée: 
+if (!empty($_POST['hiddenCommentaire'])) 
+{
 
-    $arrayOfDevisLigne = $Cmd->devisLigne($_POST['hiddenCommentaire']);
+//  2  changer le status de la commande et attribuer un numero de facture:
+$Cmd->commande2facture($_POST['hiddenCommentaire']);
+$date = date("Y-m-d H:i:s");
+$General->updateAll('cmd', $date , 'cmd__date_fact' , 'cmd__id', $_POST['hiddenCommentaire'] );
+$General->updateAll('cmd', $_SESSION['user']->id_utilisateur , 'cmd__user__id_fact' , 'cmd__id', $_POST['hiddenCommentaire'] );
 
-    foreach ($arrayOfDevisLigne as $ligne) 
-    {
-        $xtendArray = $Cmd->xtenGarantie($ligne->devl__id);
-        $ligne->ordre2 = $xtendArray;
-    } 
+//  4 activer une alert pour indiquer le bon fonctionnement du logiciel 
+$relique = $Cmd->classicReliquat($_POST['hiddenCommentaire']);
 
+// alerte si un reliquat à été facturé : 
+$alertReliquat = $Cmd->alertReliquat($_POST['hiddenCommentaire']);
+
+// gère l'arlerte en fonction du reliquat : 
+if (!empty($alertReliquat)) 
+{
+    $_SESSION['alertRelique'] = $relique;
+}
+
+// 5 reliquat si article deja facturé mais pas livré : 
+$Cmd->FactureReliquat($_POST['hiddenCommentaire']);
+
+// 3 enregistrer la facture au format pdf dans un folder 
+$temp = $Cmd->GetById($_POST['hiddenCommentaire']);
+
+//client livré et facturé : 
+$clientView = $Client->getOne($temp->client__id);
+$societeLivraison = false ;
+
+if($temp->devis__id_client_livraison) 
+{
+    $societeLivraison = $Client->getOne($temp->devis__id_client_livraison);
+}
+
+//ligne de devis : 
+$arrayOfDevisLigne = $Cmd->devisLigne($_POST['hiddenCommentaire']);
+foreach($arrayOfDevisLigne as $ligne) 
+{
+    $xtendArray = $Cmd->xtenGarantie($ligne->devl__id);
+    $ligne->ordre2 = $xtendArray;
+} 
+
+//gestion des dates : 
 $dateFact = new DateTime( $temp->cmd__date_fact);
 $formate = $dateFact->format('d/m/Y'); 
-
 $date_time = new DateTime( $temp->cmd__date_cmd);
 $formated_date = $date_time->format('d/m/Y'); 
 $Keyword = new \App\Tables\Keyword($Database);
 $garanties = $Keyword->getGaranties();
+
+//Debut de l'enregistrement: 
  ob_start();
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  ?>
- 
  <style type="text/css">
  
      .page_header{
@@ -254,7 +293,7 @@ if ($temp->devis__note_client) {
     $doc->output('O:\intranet\Auto_Print\FC\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
     
     $_SESSION["facture"] =  ' BL n°: '. $temp->devis__id . ' Facturé n°: '. $numFact ;
-     header('location: facture');
+    header('location: facture');
     
  } catch (Html2PdfException $e) 
  {

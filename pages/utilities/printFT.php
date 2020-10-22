@@ -70,19 +70,27 @@ if(!empty($_POST['devisCommande']))
 
   
 $command = $Command->getById(intval($_POST['devisCommande']));
+
+//si la date de divis est vide ( reliquat ou garantie)
+if (empty($command->devis__date_crea)) 
+{
+    $date = date("Y-m-d H:i:s");
+    $Global->updateAll('cmd', $date,'cmd__date_devis', 'cmd__id', $command->devis__id);
+}
+
 $commandLignes = $Command->devisLigne($_POST['devisCommande']);
 $clientView = $Client->getOne($command->client__id);
 $user = $User->getByID($clientView->client__id_vendeur);
 $userCMD = $User->getByID($command->cmd__user__id_cmd);
+$societeLivraison = false ;
 
-    $societeLivraison = false ;
+//si une societe de livraison existe: 
+if($command->devis__id_client_livraison) 
+{
+    $societeLivraison = $Client->getOne($command->devis__id_client_livraison);
+}
 
-    if ($command->devis__id_client_livraison) 
-    {
-        $societeLivraison = $Client->getOne($command->devis__id_client_livraison);
-    }
-
-
+$command = $Command->getById(intval($_POST['devisCommande']));
     
 $dateTemp = new DateTime($command->cmd__date_cmd);
  //cree une variable pour la date de commande du devis
@@ -90,6 +98,7 @@ $dateTemp = new DateTime($command->cmd__date_cmd);
  //formate la date pour l'utilisateur:
  $formated_date = $date_time->format('d/m/Y');
 ob_start();
+
 ?>
 <style type="text/css">
       strong{ color:#000;}

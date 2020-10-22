@@ -196,7 +196,7 @@ class Cmd extends Table {
     $update->execute([$com,$id]);
   }
 
-  public function updateDate( $column , $date,  $id){
+  public function updateDate($column , $date,  $id){
     $update = $this->Db->Pdo->prepare(
     'UPDATE cmd 
      SET ' . $column. ' = ? 
@@ -784,6 +784,8 @@ try
     {
       $doc->output('O:\intranet\Auto_Print\FT\Ft_'.$command->devis__id.'.pdf' , 'F'); 
       }
+
+    return $command->devis__id;
 } 
 catch (Html2PdfException $e) 
 {
@@ -2461,7 +2463,6 @@ public function modify(
         c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,
         c2.client__societe as client__livraison_societe,
         c2.client__ville as client__livraison_ville,
-        
         c2.client__cp as client__livraison_cp , 
         c2.client__adr1 as client__livraison__adr1 , 
         u.log_nec , u.user__email_devis as email
@@ -2496,7 +2497,27 @@ public function modify(
 
 
 
+    public function alertReliquat($Cmd)
+    {
+      $lignes = $this->devisLigne($Cmd);
 
+      $results = [];
+
+        foreach ($lignes as $ligne) 
+        {
+          if ( intval($ligne->devl_quantite) > intval($ligne->cmdl__qte_fact) ) 
+          {
+            $ligne->devl_quantite = intval($ligne->devl_quantite) - intval($ligne->cmdl__qte_fact);
+            array_push($results, $ligne);
+          }
+        }
+
+        if (!empty($results)) 
+        {
+          return true;
+        }
+        else return false; 
+    }
     
 
 

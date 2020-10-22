@@ -31,6 +31,9 @@
           {% if alertFacture %}
           <div class="alert alert-success" role="alert">
            <h5>{{alertFacture}}</h5>
+           {% if alertRelique %}
+           <p>le reliquat N° : {{alertRelique}} a été généré </p>
+           {% endif %}
           </div>
           {% endif  %}
           {% if alertArchive %}

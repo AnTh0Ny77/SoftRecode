@@ -78,7 +78,6 @@ if (!empty($_POST['ChangeContact'])  && !empty($_POST['idRetourChangeContact']))
   $update = $General->updateAll('cmd' , $_POST['ChangeContact'] , 'cmd__contact__id_livr' , 'cmd__id' , $_POST['idRetourChangeContact'] );
   $retour = $Cmd->GetById($_POST['idRetourChangeContact']);
   $lignes = $Cmd->devisLigne($retour->devis__id);
-  
 }
 
 
@@ -86,7 +85,6 @@ if (!empty($_POST['ChangeContact'])  && !empty($_POST['idRetourChangeContact']))
 //Attention !! recup les info d'origine et mettre en MAJ le devis : 
 if (!empty($_POST['hiddenAddLines']) &&   !empty($_POST['designationArticle'])) 
 {
-  
   $retour = $Cmd->GetById($_POST['hiddenAddLines']);
   $objectInsert = new stdClass;
   $objectInsert->idDevis = $retour->devis__id;
@@ -137,7 +135,10 @@ $update = $General->updateAll('cmd' , 'CMD' , 'cmd__etat' , 'cmd__id' , $command
 $_SESSION['garanFiche'] = $command->devis__id;
 //date du jour:
 $date = date("Y-m-d H:i:s");
+
 $Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date , $_POST['PrintFicheCreation'] , 'a imprimé sa fiche de garantie ' );
+
+$General->updateAll('cmd' , $date  , 'cmd__date_devis ' , 'cmd__id' , $command->devis__id );
 header('location: printFt');
 
 

@@ -21,22 +21,22 @@ if (empty($_SESSION['user']))
  // si une commande à été postée: 
  if (!empty($_POST['hiddenABN'])) 
  {
-
-    
-    
+    //decode  le json
     $arrayABN = json_decode($_POST['hiddenABN']);
+    //texte de l'export: 
     $export = "";
     
+    //boucle sur les abonnements de la liste: 
     foreach($arrayABN as $ABN)
     {
-
-
        if (!empty($ABN->array)) 
        {
-       
+
         $export .= $ABN->prestaLib .';';
-          //date du jour:
+
+        //date du jour:
         $date = date("Y-m-d H:i:s");
+
         //creation de l'objet retour
         $objectInsert = new stdClass;
         $objectInsert->devis__id = '';
@@ -47,10 +47,14 @@ if (empty($_SESSION['user']))
         $objectInsert->devis__note_interne = null;
         $objectInsert->devis__user__id = $_SESSION['user']->id_utilisateur;
 
-      
+        //crée le retour et met a jour la commande : 
+        $date = date("Y-m-d H:i:s");
         $temp = $Cmd->makeRetour($objectInsert , '' , $ABN->ab__client__id_fact , $_SESSION['user']->id_utilisateur );
         $update = $General->updateAll('cmd','ABF','cmd__etat','cmd__id',$temp);
-        
+        $update = $General->updateAll('cmd',' ','cmd__code_cmd_client','cmd__id',$temp);
+        $General->updateAll('cmd', $date , 'cmd__date_fact' , 'cmd__id', $temp );
+        $General->updateAll('cmd', $_SESSION['user']->id_utilisateur , 'cmd__user__id_fact' , 'cmd__id', $temp );
+
         //calcule le total la prestation et les lignes : 
         $total = 00 ; 
         foreach($ABN->array as $key )
@@ -58,56 +62,79 @@ if (empty($_SESSION['user']))
             $total += $key->abl__prix_mois * 3  ;
         }
        
-
         $objectInsert = new stdClass;
-            $objectInsert->idDevis = $temp;
-            $objectInsert->prestation = $ABN->ab__presta;
-            $objectInsert->designation =  ' Période du ' . $_POST['dateDebut'] . ' au ' . $_POST['dateFin'] ;
-            $objectInsert->etat = 'NC';
-            $objectInsert->garantie = '';
-            $objectInsert->comClient = '';
-            $objectInsert->quantite = 1;
-            $objectInsert->prix = floatval($total);
-            $objectInsert->idfmm = '409';
-            $objectInsert->extension = '';
-            $objectInsert->prixGarantie = '';
+        $objectInsert->idDevis = $temp;
+        $objectInsert->prestation = $ABN->ab__presta;
+        $objectInsert->designation =  ' Période du ' . $_POST['dateDebut'] . ' au ' . $_POST['dateFin'] ;
+        $objectInsert->etat = 'NC';
+        $objectInsert->garantie = '';
+        $objectInsert->comClient = '';
+        $objectInsert->quantite = 1;
+        $objectInsert->prix = floatval($total);
+        $objectInsert->idfmm = '409';
+        $objectInsert->extension = '';
+        $objectInsert->prixGarantie = '';
 
+        //insere la ligne
         $insert = $Cmd->insertLine($objectInsert);
         $Cmd->commande2facture($temp);
+
+        //recupere les variable: 
         $temp = $Cmd->GetById($temp);
-       
         $clientView = $Client->getOne($temp->client__id);
         $societeLivraison = false ;
-        
-        
+        //si une societe de livraison existe : 
+
         if ($temp->devis__id_client_livraison) 
         {
             $societeLivraison = $Client->getOne($temp->devis__id_client_livraison);
         }
-    
+        //recupère les lignes liées: 
+
         $arrayOfDevisLigne = $Cmd->devisLigne($temp->devis__id);
-        
-        
+        //met a jour la quantite facturée 
+
         foreach ($arrayOfDevisLigne as $ligne) 
         {
-            $update = $General->updateAll('cmd_ligne', $ligne->devl_quantite,'cmdl__qte_fact','cmdl__cmd__id',$temp->devis__id);
-            $xtendArray = $Cmd->xtenGarantie($ligne->devl__id);
-            $ligne->ordre2 = $xtendArray;
+           $update = $General->updateAll('cmd_ligne', $ligne->devl_quantite,'cmdl__qte_fact','cmdl__cmd__id',$temp->devis__id);
         } 
-    
-    $dateFact = new DateTime( $temp->cmd__date_fact);
-    $formate = $dateFact->format('d/m/Y'); 
-    
-    $date_time = new DateTime( $temp->cmd__date_cmd);
-    $formated_date = $date_time->format('d/m/Y'); 
-    $Keyword = new \App\Tables\Keyword($Database);
-    $garanties = $Keyword->getGaranties();
-     ob_start();
-    
+
+        //recupere les dates et les formattes pour l'affichage
+        $dateFact = new DateTime( $temp->cmd__date_fact);
+        $formate = $dateFact->format('d/m/Y'); 
+        $date_time = new DateTime( $temp->cmd__date_cmd);
+        $formated_date = $date_time->format('d/m/Y'); 
+        $Keyword = new \App\Tables\Keyword($Database);
+        $garanties = $Keyword->getGaranties();
+
+        //update en vla la facture: 
+        $General->updateAll('cmd', 'VLA', 'cmd__etat' , 'cmd__id', $temp->devis__id );
+
+        //commence l'enregistrement pour le rendu pdf :  
+        ob_start();
      ?>
-     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
      <style type="text/css">
-     
          .page_header{
             margin-left: 30px;
             margin-top: 30px;
