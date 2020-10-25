@@ -820,7 +820,7 @@ public static function magicLineFTC($arrayLigne , $cmd){
 
 		</td>";
 
-		$prixTTc = floatval($ligne->devl_puht * $ligne->devl_quantite);
+		$prixTTc = floatval($ligne->devl_puht * $ligne->cmdl__qte_fact);
 	
 
 		$FifthCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
@@ -858,7 +858,7 @@ public static function magicLineFTC($arrayLigne , $cmd){
 
 			</td>";
 
-			$prixTTcXT = floatval($ligne->cmdl__garantie_puht* $ligne->devl_quantite);
+			$prixTTcXT = floatval($ligne->cmdl__garantie_puht* $ligne->cmdl__qte_fact);
 			
 			
 
