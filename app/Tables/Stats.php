@@ -84,12 +84,21 @@ public function WLstatsGlobal($cmd)
 }
 
 
-public function returnCmdBetween2Dates($debut , $fin)
+public function returnCmdBetween2Dates($debut , $fin , $abn)
 {
+    if (!empty($abn)) 
+    {
+      $stat = "AND cmd__etat = 'VLD' OR cmd__etat = 'VLA' ";
+    }
+    else 
+    {
+    $stat = "AND cmd__etat = 'VLD' ";
+    }
     $request =$this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur 
     FROM cmd 
     LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
     WHERE  cmd__date_fact > '".$debut."' AND cmd__date_fact < '".$fin."'
+    ".$stat."
     ORDER BY cmd__date_fact DESC 
     ");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -97,8 +106,16 @@ public function returnCmdBetween2Dates($debut , $fin)
 }
 
 
-public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $vendeur)
+public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $vendeur ,$abn)
 {
+    if (!empty($abn)) 
+    {
+      $stat = "AND cmd__etat = 'VLD' OR cmd__etat = 'VLA' ";
+    }
+    else 
+    {
+    $stat = "AND cmd__etat = 'VLD' ";
+    }
     if ($client != 'Tous' && $vendeur != 'Tous') 
     {
         $request =$this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
@@ -107,6 +124,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
         WHERE  cmd__date_fact > '".$debut."' AND cmd__date_fact < '".$fin."'
         AND cmd__client__id_fact = '".$client."'
         AND c.client__id_vendeur = '".$vendeur."'
+        ".$stat."
         ORDER BY cmd__date_fact DESC 
         ");
         $data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -120,6 +138,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
         LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
         WHERE  cmd__date_fact > '".$debut."' AND cmd__date_fact < '".$fin."'
         AND cmd__client__id_fact = ".$client."
+        ".$stat."
         ORDER BY cmd__date_fact DESC 
         ");
         $data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -133,6 +152,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
         LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
         WHERE  cmd__date_fact > '".$debut."' AND cmd__date_fact < '".$fin."'
         AND c.client__id_vendeur = '".$vendeur."'
+        ".$stat."
         ORDER BY cmd__date_fact DESC 
         ");
         $data = $request->fetchAll(PDO::FETCH_OBJ);

@@ -139,6 +139,7 @@ $date = date("Y-m-d H:i:s");
 $Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date , $_POST['PrintFicheCreation'] , 'a imprimé sa fiche de garantie ' );
 
 $General->updateAll('cmd' , $date  , 'cmd__date_devis ' , 'cmd__id' , $command->devis__id );
+$General->updateAll('cmd' ,$date, 'cmd__date_cmd', 'cmd__id' , $command->devis__id);
 header('location: printFt');
 
 

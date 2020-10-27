@@ -92,6 +92,15 @@
                     </div>
 
                     <div class="modal-footer">
+                        <div class="form-group form-check">
+                            {% if abnSearch %}
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" name="checkAbn" checked>
+                            {% else %}
+                            <input type="checkbox" class="form-check-input" id="exampleCheck1" name="checkAbn" >
+                            {% endif %}
+                       
+                            <label class="form-check-label" for="exampleCheck1">Inclure les abonnements</label>
+                          </div>
                         <button type="submit" class="btn btn-success ">Valider</button>
                     </div>
                     
@@ -197,10 +206,6 @@
             </div>
         </div>
     </div> 
-        
-       
-    
-
     </main>
      {% endblock %}
      

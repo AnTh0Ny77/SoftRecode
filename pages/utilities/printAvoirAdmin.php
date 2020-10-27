@@ -40,12 +40,18 @@ if (empty($_SESSION['user']))
      }
 
     
-     //transforme l'avoir en statut facturable : 
-     $newFacture = $Cmd->commande2facture($_POST['PRINTADMINAVOIR']);
-     // met a jour le modele de facture : 
-     $General->updateAll('cmd' , 'AVR', 'cmd__modele_facture', 'cmd__id' , $_POST['PRINTADMINAVOIR'] );
+    //transforme l'avoir en statut facturable : 
+    $newFacture = $Cmd->commande2facture($_POST['PRINTADMINAVOIR']);
+    // met a jour le modele de facture : 
+    $General->updateAll('cmd' , 'AVR', 'cmd__modele_facture', 'cmd__id' , $_POST['PRINTADMINAVOIR'] );
      
-
+    //date du jour:
+    $date = date("Y-m-d H:i:s");
+    //update les dates : 
+    $General->updateAll('cmd' ,$date, 'cmd__date_fact', 'cmd__id' , $_POST['PRINTADMINAVOIR']);
+    $General->updateAll('cmd' ,$date, 'cmd__date_cmd', 'cmd__id' , $_POST['PRINTADMINAVOIR']);
+    $General->updateAll('cmd' ,$_SESSION['user']->id_utilisateur, 'cmd__user__id_fact', 'cmd__id' , $_POST['PRINTADMINAVOIR']);
+    $General->updateAll('cmd' ,$_SESSION['user']->id_utilisateur, 'cmd__user__id_cmd', 'cmd__id' , $_POST['PRINTADMINAVOIR']);
     
 
     //  3 enregistrer la facture au format pdf dans un folder 

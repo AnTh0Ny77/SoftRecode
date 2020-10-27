@@ -48,7 +48,6 @@ $client= 'Tous';
 $vendeur= 'Tous';
 
 //traitement requetes: 
-
 if (empty($_POST['dateDebut']) && empty($_POST['dateFin'])) 
 {
     $date = new DateTime();
@@ -61,9 +60,22 @@ if (empty($_POST['dateDebut']) && empty($_POST['dateFin']))
     $_POST['vendeur'] = 'Tous';
 }
 
+//traitement d'abonnement: 
+if (empty($_POST['checkAbn'])) 
+{
+  $abnSearch = false;
+}
+else
+{
+  $abnSearch = true;
+}
+
+
+
 if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin'])) 
 {
 
+ 
  
   $dateDebut = date($_POST['dateDebut'].' H:i:s');
   $dateFin = date($_POST['dateFin'].' H:i:s');
@@ -71,6 +83,7 @@ if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin']))
   if ($_POST['client'] != 'Tous' || $_POST['vendeur'] != 'Tous') 
   {
 
+    
         //recupere les infos pour affichage des client et vendeurs 
         if ($_POST['client'] != 'Tous') 
         {
@@ -91,22 +104,19 @@ if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin']))
           $vendeur = 'Tous';
         }
 
-    $cmdList = $Stat->returnCmdBetween2DatesClientVendeur($dateDebut, $dateFin, $_POST['client'] , $_POST['vendeur']);
+    $cmdList = $Stat->returnCmdBetween2DatesClientVendeur($dateDebut, $dateFin, $_POST['client'] , $_POST['vendeur'] , $abnSearch);
     
   }
   else 
   {
-    $cmdList = $Stat->returnCmdBetween2Dates($dateDebut, $dateFin);
+    $cmdList = $Stat->returnCmdBetween2Dates($dateDebut, $dateFin ,$abnSearch);
     
   }
 
-  
   $arrayResults = [];
-
   //si les dates corespondent et que le résultats n'est pas vide : 
   if (!empty($cmdList)) 
-  {
-    
+  { 
     foreach ($cmdList as $cmd ) 
     {
       $results= $Stat->WLstatsGlobal($cmd->cmd__id);
@@ -170,12 +180,8 @@ foreach($prestaList as $presta)
     if ($arrayTemp[1] > 0) 
     {
       array_push($arrayPresta , $arrayTemp);
-    }
-    
-   
+    } 
 }
-
-
 $arrayPresta = json_encode($arrayPresta);
 // fin du camenbert prestation 
  
@@ -186,8 +192,6 @@ $arrayPresta = json_encode($arrayPresta);
   $arrayGlobal = [];
   $arrayheader = [['Vendeur'],['Chiffre']];
   array_push($arrayGlobal ,$arrayheader);
-
-   
      foreach ($vendeurList as $vendeurN) 
      {
       $array[$vendeurN->id_utilisateur][0] = [$vendeurN->nom];
@@ -219,9 +223,7 @@ $arrayPresta = json_encode($arrayPresta);
                       array_push($tempCmd , $total);
                   }
                   $tempCmd =  array_sum($tempCmd);
-                  array_push($totalParVendeur, $tempCmd);
-                 
-                 
+                  array_push($totalParVendeur, $tempCmd);    
             }
           }
           $totalParVendeur = array_sum($totalParVendeur);
@@ -239,15 +241,14 @@ $arrayPresta = json_encode($arrayPresta);
   // fin du camembert : 
 
 
+
   $dateFormatdebut = new DateTime($_POST['dateDebut']);
   $dateFormatdebut = $dateFormatdebut->format('d/m/Y');
   $dateFormatFin = new DateTime($_POST['dateFin']);
   $dateFormatFin = $dateFormatFin->format('d/m/Y');
-  
   array_push($arrayJson , $resultHt );
   array_push($arrayJson , $dateFormatFin);
   $chartsResponses = json_encode($arrayJson);
-
   }
   else 
   {
@@ -294,7 +295,8 @@ echo $twig->render('statistique.twig',
 'vendeurSelect' => $vendeur,
 'chartsResponse' => $chartsResponses ,
 'chartsVendeur' => $chartsVendeur , 
-'arrayPresta' => $arrayPresta
+'arrayPresta' => $arrayPresta , 
+'abnSearch' =>$abnSearch
 ]);
  
  

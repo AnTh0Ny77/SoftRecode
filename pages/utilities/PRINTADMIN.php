@@ -41,6 +41,14 @@ if (empty($_SESSION['user']))
     $societeLivraison = false ;
     $General->updateAll('cmd' , $clientView->client__tva , 'cmd__tva', 'cmd__id' , $_POST['PRINTADMINID'] );
     $General->updateAll('cmd' ,$temp->client__id, 'cmd__client__id_livr', 'cmd__id' , $_POST['PRINTADMINID'] );
+    //date du jour:
+    $date = date("Y-m-d H:i:s");
+    //update les dates : 
+    $General->updateAll('cmd' ,$date, 'cmd__date_fact', 'cmd__id' , $_POST['PRINTADMINID']);
+    $General->updateAll('cmd' ,$date, 'cmd__date_cmd', 'cmd__id' , $_POST['PRINTADMINID']);
+    $General->updateAll('cmd' ,$_SESSION['user']->id_utilisateur, 'cmd__user__id_fact', 'cmd__id' , $_POST['PRINTADMINID']);
+    $General->updateAll('cmd' ,$_SESSION['user']->id_utilisateur, 'cmd__user__id_cmd', 'cmd__id' , $_POST['PRINTADMINID']);
+
     $temp =   $Cmd->GetById($_POST['PRINTADMINID']);
 
         
