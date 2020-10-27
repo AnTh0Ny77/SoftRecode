@@ -13,7 +13,7 @@ session_start();
  {
     header('location: login');
  }
- if ($_SESSION['user']->user__cmd_acces < 10 ) 
+ if ($_SESSION['user']->user__facture_acces < 10 ) 
  {
    header('location: noAccess');
  }
