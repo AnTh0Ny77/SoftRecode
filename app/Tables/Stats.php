@@ -110,11 +110,11 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
 {
     if (!empty($abn)) 
     {
-      $stat = "AND cmd__etat = 'VLD' OR cmd__etat = 'VLA' ";
+      $stat = "AND (cmd__etat = 'VLD' OR cmd__etat = 'VLA')";
     }
     else 
     {
-    $stat = "AND cmd__etat = 'VLD' ";
+    $stat = "AND (cmd__etat = 'VLD')";
     }
     if ($client != 'Tous' && $vendeur != 'Tous') 
     {
@@ -155,8 +155,11 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
         ".$stat."
         ORDER BY cmd__date_fact DESC 
         ");
+        
         $data = $request->fetchAll(PDO::FETCH_OBJ);
+        
         return $data;
+        
     }
 
 

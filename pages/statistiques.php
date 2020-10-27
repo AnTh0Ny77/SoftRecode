@@ -198,11 +198,8 @@ $arrayPresta = json_encode($arrayPresta);
       $totalParVendeur = [] ;
           foreach ($cmdList as $cmd) 
           {
-            
-        
             if ($vendeurN->id_utilisateur == $cmd->client__id_vendeur) 
             {
-           
                   $tempCmd = [];
                   $results= $Stat->WLstatsGlobal($cmd->cmd__id);
                   $temp = [];
