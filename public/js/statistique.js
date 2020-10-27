@@ -11,7 +11,7 @@ $(document).ready(function()
         var data = google.visualization.arrayToDataTable(data);
 
         var options = {
-            title: 'Chiffre par prestation pour les filtres selectionnés'
+            title: 'Chiffre par prestation'
           };
   
         var chart = new google.visualization.PieChart(document.getElementById('chartsDiv1'));
@@ -29,7 +29,7 @@ $(document).ready(function()
         var data = google.visualization.arrayToDataTable( $dataVendeur);
 
         var options = {
-          title: 'Chiffre par vendeur dates selectionnées'
+          title: 'Chiffre par vendeur'
         };
 
         var chart = new google.visualization.PieChart(document.getElementById('CamVendeur'));
