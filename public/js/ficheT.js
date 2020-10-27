@@ -152,6 +152,7 @@ $(function () {
                         }
                     })
                 })
+                $("html, body").animate({ scrollTop: 0 }, "slow");
             },
             error: function (err) {
                 console.log('error: ' + err);

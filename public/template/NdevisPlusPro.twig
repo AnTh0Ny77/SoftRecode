@@ -1,0 +1,159 @@
+{% extends 'layoutMain.twig' %}
+
+
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+{% endblock %}
+ 
+
+     {% block main %}
+     <main  role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">                                                                                  
+      <div class="d-flex justify-content-start flex-column mb-5 border-bottom">
+        <h1 class="h2">Nouveau devis  <i class="fal fa-file-edit"></i></h1>
+        <nav class="nav mt-1">
+         
+        </nav>
+      </div>
+     
+        <!-- 1ere ligne -->
+       <div class="d-flex flex-wrap flex-row justify-content-center">
+
+        <!--Menu-->
+        <div class="col-11 " id="navSociete">
+
+        <form action="ligneDevisV2" method="POST">
+        <div class="col-12 d-flex justify-content-center">
+
+
+        <!--Carte Facturation Livraison Contact-->  
+        <div class="col-7 " >
+          <div class="card  shadow mb-2 h-100" >
+            <!-- Card Header - -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Société et Contact <i class="fal fa-building"></i></h6>
+
+              <div class="dropdown no-arrow">
+              </div>
+
+            </div>
+            <!-- Card Body -->
+            <div class="card-body d-flex flex-column">
+            
+                <div class="my-3">
+                <h5><span class="badge badge-info badge-pill">Facturation</span></h5>
+                    <div>
+                        <div class="mt-2 pt-2 ">
+                            <label for="exampleInputEmail1">Client : </label>   
+                        </div>
+                        <select class="selectpicker show-tick"  data-live-search="true" data-width="100%" id="clientSelect" name="clientSelect" required> 
+                            {% for client in clientList %}
+                                <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <div class="mt-2 pt-2 ">
+                            <label for="exampleInputEmail1">Contact : </label>   
+                        </div>
+                        <select class="selectpicker show-tick"  data-live-search="true" data-width="100%" name="contactSelect" id="contactSelect" required> 
+                            <option value="Tous" selected>Aucun</option>  
+                        </select>
+                    </div>
+                    <hr>
+                </div>
+               
+                <div class="my-3">
+                    <h5><span class="badge badge-secondary badge-pill">Livraison</span></h5>
+                        <div>
+                            <div class="mt-1 pt-2 ">
+                                <label for="exampleInputEmail1">Client : <b>indentique si non specifiée</b></label>   
+                            </div>
+                            <select class="selectpicker show-tick"  data-live-search="true" data-width="100%" name="clientLivraison" required> 
+                                <option value="Tous" selected>Indentique</option>
+                                {% for client in clientList %}
+                                    <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <div class="mt-2 pt-2 ">
+                                <label for="exampleInputEmail1">Contact : </label>   
+                            </div>
+                            <select class="selectpicker show-tick"  data-live-search="true" data-width="100%" name="contactLivraion" required> 
+                                <option value="Tous" selected>Identique</option>  
+                            </select>
+                        </div>
+                    </div>
+               
+            </div>
+          </div>
+        </div>
+
+        <!--Carte Options-->  
+        <div class="col-6 " >
+          <div class="card   shadow mb-2 h-100"  >
+            <!-- Card Header - -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Titre et commentaires <i class="fal fa-building"></i></h6>
+              <div class="dropdown no-arrow">
+              </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body col-12 d-flex flex-column justify-content-between " >
+               <div class="  d-flex flex-row justify-content-between">
+                <div class="col-12">
+                      <div class=" col-12  my-3 ">
+                        <h5><span class="badge badge-warning badge-pill">Titre</span></h5>
+                          <input class="form-control " type="text"  id="titreDevis" name="titreDevis" value="">
+                          
+                      </div>
+                       <!-- Masquer Total -->
+                       <div class="col-12 my-3 ">
+                        <h5><span class="badge badge-dark badge-pill">Modèle</span></h5>
+                        
+                          <select class="selectpicker show-tick" data-width="100%"  name="modele"  required>
+                            {% for modele in modeleList %}
+                              <option class=""  value={{modele.kw__value}}>{{modele.kw__lib}}</option>
+                              {% endfor %}
+                          </select>
+                       
+                       </div>
+                        <div class="col-12 my-2 d-flex flex-column">
+                            <h5><span class="badge badge-success badge-pill">Commentaires</span></h5>
+                          <div class="col-12 my-2  show multi-col">
+                            <label for="globalComClient">Client</label>
+                          <textarea class="CKE" id="globalComClient" name="globalComClient" placeholder="Commentaire client...."></textarea>
+                          </div>
+                          <div class="col-12 my-2  multi-col">
+                            <label for="globalComInt">Interne</label>
+                            <textarea class="CKE" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." ></textarea>
+                            </div>    
+                        </div>
+                    
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary">Valider</button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    </div>
+</div>
+</main>
+{% endblock %}
+     
+{% block script %}
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+<script  type="text/javascript" src="public/js/NdevisPlusPro.js"></script>
+{% endblock %}

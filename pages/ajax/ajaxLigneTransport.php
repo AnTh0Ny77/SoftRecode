@@ -42,7 +42,7 @@ if (!empty($_POST['AjaxLignetransport']))
               
             }
             $html .= "<tr style='font-size: 95%;'>
-            <td style='border-style: none; '> 
+            <td style='border-style: none; width: 22%;'  > 
             <select name='linesTransport[".$item->devl__id."]' class='form-control col-8'>
             ".$select."
             </select>

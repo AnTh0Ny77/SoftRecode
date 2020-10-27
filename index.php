@@ -76,6 +76,14 @@
     
     case '/SoftRecode/contactCrea';
       require __DIR__ .'/pages/contactCrea.php'; break;
+    
+    case '/SoftRecode/DevisV2';
+      require __DIR__ .'/pages/NdevisPlusPro.php'; break;
+
+    case '/SoftRecode/ligneDevisV2';
+      require __DIR__ .'/pages/NligneDevisV2.php'; break;
+
+      
 
     //transport / fiches de travail->
     case '/SoftRecode/transport';
