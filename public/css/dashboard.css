@@ -154,6 +154,16 @@ body {
   #loaderTravail{
     height: 900px;
   }
+
+  #CamVendeur{
+    width: 100%;
+    height: 300px;
+  }
+
+  #chartsDiv1{
+    width: 100%;
+    height: 300px;
+  }
  
   
   

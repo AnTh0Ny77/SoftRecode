@@ -74,10 +74,9 @@ public function devisRFS($com) {
 
 public function WLstatsGlobal($cmd)
 {
-    $request =$this->Db->Pdo->query("SELECT cmdl__puht as ht , cmdl__qte_fact as qte , cmdl__garantie_puht as htg
+    $request =$this->Db->Pdo->query("SELECT cmdl__puht as ht , cmdl__qte_fact as qte , cmdl__garantie_puht as htg , cmdl__prestation as presta
     FROM cmd_ligne 
     WHERE cmdl__cmd__id = '".$cmd."'
-    AND cmdl__puht > 0 
     ORDER BY cmdl__puht ASC
     ");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -87,8 +86,9 @@ public function WLstatsGlobal($cmd)
 
 public function returnCmdBetween2Dates($debut , $fin)
 {
-    $request =$this->Db->Pdo->query("SELECT cmd__id 
+    $request =$this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur 
     FROM cmd 
+    LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
     WHERE  cmd__date_fact > '".$debut."' AND cmd__date_fact < '".$fin."'
     ORDER BY cmd__date_fact DESC 
     ");
@@ -115,8 +115,9 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
 
     if ($client != 'Tous' && $vendeur = 'Tous') 
     {
-        $request =$this->Db->Pdo->query("SELECT cmd__id
+        $request =$this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
         FROM cmd 
+        LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
         WHERE  cmd__date_fact > '".$debut."' AND cmd__date_fact < '".$fin."'
         AND cmd__client__id_fact = ".$client."
         ORDER BY cmd__date_fact DESC 
@@ -143,6 +144,18 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
 }
 
 
+public function camVendeur($debut, $fin , $user)
+{
+
+    $request =$this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
+        FROM cmd 
+        LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
+        WHERE  cmd__date_fact > '".$debut."' AND cmd__date_fact < '".$fin."' AND c.client__id_vendeur = '".$user."'
+        ORDER BY cmd__date_fact DESC 
+        ");
+        $data = $request->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+}
 
 
 

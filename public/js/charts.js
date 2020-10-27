@@ -8,20 +8,15 @@ $(document).ready(function() {
           url: "AjaxStatDevis",
           data : {"COM" : 7},    
       success: function(data){
-        console.log(data);
-          dataSet = JSON.parse(data);
-          
-          console.log(dataSet);
+
+      dataSet = JSON.parse(data);
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawVisualization);
   
-  
-  
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawVisualization);
-  
-        function drawVisualization() {
-          // Some raw data (not necessarily accurate)
-          console.log(dataSet);
-          var data = google.visualization.arrayToDataTable([
+      function drawVisualization() 
+      {
+      // Some raw data (not necessarily accurate)
+      var data = google.visualization.arrayToDataTable([
             ['commercial',                       'Total',         'En attente',              'Accord'],
             [dataSet[0].nom,       dataSet[0].ALL,         dataSet[0].ATN ,       dataSet[0].VLD],
             [dataSet[1].nom,       dataSet[1].ALL,         dataSet[1].ATN ,       dataSet[1].VLD],
@@ -30,10 +25,10 @@ $(document).ready(function() {
             [dataSet[4].nom,       dataSet[4].ALL,         dataSet[4].ATN ,       dataSet[4].VLD],
           ]);
   
-          var options = {
+      var options = {
             title : 'Devis envoyés 15 derniers jours',
-            vAxis: {title: 'Devis'},
-            hAxis: {title: 'commerciaux'},
+            vAxis: {title: 'Total H.T'},
+            hAxis: {title: 'Mois'},
             seriesType: 'bars',
             series: {5: {type: 'line'}},
             colors: 

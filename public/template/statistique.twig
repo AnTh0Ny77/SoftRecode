@@ -22,10 +22,10 @@
         </div>
 
        <!--  ligne -->
-    <div class="d-flex flex-wrap flex-row justify-content-start">
+    <div class="d-flex flex-wrap flex-row justify-content-start ">
 
         <!--prtemière carte-->
-        <div class="col-5 cardVisio" >
+        <div class="col-4 cardVisio" >
             <div class="card shadow mb-4">
               <!-- Card Header - -->
              
@@ -92,7 +92,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-success btn-sm">Valider</button>
+                        <button type="submit" class="btn btn-success ">Valider</button>
                     </div>
                     
                    
@@ -101,10 +101,10 @@
             </div>
         </div>
 
-        <div class="col-7 cardVisio" >
-            <div class="card shadow mb-4">
-                <div>
-                    <div class="col-5 my-4 mx-4">
+        <div class="col-8 cardVisio ">
+            <div class="card shadow mb-4 d-flex flex-row justify-content-between flex-wrap ">
+                
+                    <div class="col-3 my-4 mx-4">
                         <h5 class="card-title">Résultats :</h5>
                         {% if  alertDate %}
                         <div class="alert alert-danger" role="alert">
@@ -131,7 +131,7 @@
                               <b> Vendeurs : </b>
                              <h4>
                              {% if vendeurSelect.nom %}
-                             {{vendeurSelect.nom ~ " " ~ vendeurSelect.prenom }}
+                             {{vendeurSelect.nom }}
                              {% else %}
                              Tous
                              {% endif %}
@@ -139,47 +139,60 @@
                         
                         </div>
                         {% else %}
-                        <ul class="list-group">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                           <b> Période du : </b>
-                             <h4> <span class="badge badge-secondary badge-pill">{{formatDebut}}</span></h4>
-                        </li>
-                          <li class="list-group-item d-flex justify-content-between align-items-center">
-                           <b> Au : </b>
-                             <h4> <span class="badge badge-secondary badge-pill">{{formatFin}}</span></h4>
-                        </li>
-                         <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <ul class="list-group list-group-flush">
+                        <p>
+                            Période du : 
+                             <b>{{formatDebut}}</b><br>
+                            Au : 
+                            <b>{{formatFin}}</b>
+                        </p>
+                        <p>
                            <b> Clients : </b>
-                             <h4> <span class="badge badge-secondary badge-pill">
                              {% if clientSelect.client__id %}
                              {{clientSelect.client__societe}}
                              {% else %}
                              Tous
                              {% endif %}
-                             </span></h4>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                             <br>
+                       
                            <b> Vendeur : </b>
-                             <h4> <span class="badge badge-secondary badge-pill">
+                             
                                {% if vendeurSelect.nom %}
-                             {{vendeurSelect.nom ~ " " ~ vendeurSelect.prenom }}
+                             {{vendeurSelect.nom }}
                              {% else %}
                              Tous
                              {% endif %}
-                             </span></h4>
-                        </li>
+                            </p>
+                      
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <b>Total Hors Taxes : </b>
+                            <b>T.HT : </b>
                            <h4> <span class="badge badge-success badge-pill">{{resultHt ~ " ‎€"}}</span></h4>
                         </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <b>Nombres de Factures : </b>
-                            <h4><span class="badge badge-success badge-pill">{{NombreCmd}}</span></h4>
-                        </li>
+                            <p>
+                            <b>{{NombreCmd}}</b> factures
+                            
+                            </p>
                         </ul>
                         {% endif %}
                         
                     </div>
+                    
+               
+                <div class="col-7 my-4 mx-4 d-flex flex column">
+                    <div>
+                      
+                        <input type="hidden" id="chartsResponse" value="{{arrayPresta}}">
+                    </div>
+
+                    <div id="chartsDiv1">
+                       
+                    </div>
+                </div>
+
+                <input type="hidden" id="chartsVendeur" value="{{chartsVendeur}}">
+                <div class=" "  id="CamVendeur">
+                   
+                     
                 </div>
             </div>
         </div>
@@ -200,6 +213,7 @@
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript" src="public/js/statistique.js"></script>
 
 

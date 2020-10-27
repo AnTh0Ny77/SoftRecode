@@ -41,6 +41,9 @@ $vendeurList = $UserClass->getCommerciaux();
 $alertDate = false;
 $resultHt = false ;
 $NombreCmd = false;
+$chartsResponses = false ; 
+$chartsVendeur = false ;
+$arrayPresta = false ;
 $client= 'Tous';
 $vendeur= 'Tous';
 
@@ -123,11 +126,135 @@ if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin']))
   $resultHt = array_sum($arrayResults);
   $resultHt  = number_format($resultHt , 2,',', ' ');
   $NombreCmd = count($cmdList);
+  $arrayJson = [];
 
+
+
+
+
+//traite la liste de commande commandes pour le camenbert des prestation:
+$prestaList = $Keyword->getPresta();
+$arrayPresta = []; 
+$headerPresta = [['Presation'] , ['Chiffre']];
+array_push($arrayPresta , $headerPresta);
+
+
+foreach($prestaList as $presta) 
+{
+  $arrayTemp = [];
+  $arrayTemp[0] = $presta->kw__lib;
+  $totalParPresta = [];
+    foreach ($cmdList as $cmd ) 
+    {
+        $temp = [];
+        $results= $Stat->WLstatsGlobal($cmd->cmd__id);
+        foreach ($results as $ligne) 
+        {
+          $total = floatval($ligne->ht) * intval($ligne->qte);
+          if (!empty($ligne->htg)) 
+          {
+            $htg = floatval($ligne->htg) * intval($ligne->qte);
+            $total = $total + $htg;
+          }
+
+          if ($ligne->presta == $presta->kw__value) 
+          {
+            array_push($temp, $total);
+          }
+        }
+        $temp = array_sum($temp);
+        array_push($totalParPresta , $temp);
+    }
+    $totalParPresta = array_sum($totalParPresta) ;
+    $arrayTemp[1] = $totalParPresta;
+    if ($arrayTemp[1] > 0) 
+    {
+      array_push($arrayPresta , $arrayTemp);
+    }
+    
+   
+}
+
+
+$arrayPresta = json_encode($arrayPresta);
+// fin du camenbert prestation 
+ 
+
+
+//traite la liste de commande pour le commanbert commercial:
+  $vendeurList = $UserClass->getAll();
+  $arrayGlobal = [];
+  $arrayheader = [['Vendeur'],['Chiffre']];
+  array_push($arrayGlobal ,$arrayheader);
+
+   
+     foreach ($vendeurList as $vendeurN) 
+     {
+      $array[$vendeurN->id_utilisateur][0] = [$vendeurN->nom];
+      $totalParVendeur = [] ;
+          foreach ($cmdList as $cmd) 
+          {
+            
+        
+            if ($vendeurN->id_utilisateur == $cmd->client__id_vendeur) 
+            {
+           
+                  $tempCmd = [];
+                  $results= $Stat->WLstatsGlobal($cmd->cmd__id);
+                  $temp = [];
+
+                  foreach ($results as $ligne) 
+                  {
+                    
+                      $total = floatval($ligne->ht) * intval($ligne->qte);
+
+                      if (!empty($ligne->htg)) 
+                      {
+                        $htg = floatval($ligne->htg) * intval($ligne->qte);
+                        $total = $total + $htg;
+                      }
+
+                      array_push($temp, $total);
+                      $total = array_sum($temp);
+                      array_push($tempCmd , $total);
+                  }
+                  $tempCmd =  array_sum($tempCmd);
+                  array_push($totalParVendeur, $tempCmd);
+                 
+                 
+            }
+          }
+          $totalParVendeur = array_sum($totalParVendeur);
+          
+          if (!empty($totalParVendeur)) 
+          {
+            $tempsarrayVendeur = [];
+            $tempsarrayVendeur[0] = $vendeurN->nom;
+            $tempsarrayVendeur[1] = $totalParVendeur;
+            array_push($arrayGlobal ,$tempsarrayVendeur );
+          }    
+     }
+
+  $chartsVendeur = json_encode($arrayGlobal);
+  // fin du camembert : 
+
+
+  $dateFormatdebut = new DateTime($_POST['dateDebut']);
+  $dateFormatdebut = $dateFormatdebut->format('d/m/Y');
+  $dateFormatFin = new DateTime($_POST['dateFin']);
+  $dateFormatFin = $dateFormatFin->format('d/m/Y');
+  
+  array_push($arrayJson , $resultHt );
+  array_push($arrayJson , $dateFormatFin);
+  $chartsResponses = json_encode($arrayJson);
 
   }
   else 
   {
+    $dateFormatdebut = new DateTime($_POST['dateDebut']);
+    $dateFormatdebut = $dateFormatdebut->format('d/m/Y');
+    $dateFormatFin = new DateTime($_POST['dateFin']);
+    $dateFormatFin = $dateFormatFin->format('d/m/Y');
     $alertDate = true;
   }
 
@@ -137,13 +264,18 @@ if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin']))
 
 }
 
-$dateFormatdebut = new DateTime($_POST['dateDebut']);
-$dateFormatdebut = $dateFormatdebut->format('d/m/Y');
-$dateFormatFin = new DateTime($_POST['dateFin']);
-$dateFormatFin = $dateFormatFin->format('d/m/Y');
+
+
+
+
+  
+
+
 
  
 
+
+ 
 // Donnée transmise au template : 
 echo $twig->render('statistique.twig',
 [
@@ -159,7 +291,10 @@ echo $twig->render('statistique.twig',
 'formatDebut' => $dateFormatdebut,
 'formatFin' => $dateFormatFin , 
 'clientSelect' =>  $client,
-'vendeurSelect' => $vendeur
+'vendeurSelect' => $vendeur,
+'chartsResponse' => $chartsResponses ,
+'chartsVendeur' => $chartsVendeur , 
+'arrayPresta' => $arrayPresta
 ]);
  
  
