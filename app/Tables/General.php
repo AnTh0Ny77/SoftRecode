@@ -112,8 +112,24 @@ class General extends Table
     $commande->client__livraison__adr1 = $this->replaceSpecialChar($commande->client__livraison__adr1);
     $commande->client__livraison__adr2 = $this->replaceSpecialChar($commande->client__livraison__adr2);
 
-    $responseText = ';02008066;'.$commande->cmd__date_envoi.';;'.$commande->devis__id .';'.$paquets.';'.$poids.';'.$paquets.';'.$poids.';E;;'.$commande->client__livraison_societe.';'.$commande->client__livraison__adr1.';'.$commande->client__livraison__adr2.';'.$commande->client__livraison_cp.';'.$commande->client__livraison_ville.';;;'.$nomContact.';;;'.$commande->telLivraion.';;'.$commande->mail__livraison.';'.$recodeRaison.';'.$recodeAdresse1.';'.$recodeAdresse2.';'.$recodeCP.';'.$recodeCommune.';'.$recodeTel.';;'.$recodeRaison.';'.$recodeAdresse1.';'.$recodeAdresse2.';'.$recodeCP.';'.$recodeCommune.';'.$recodeTel.';J;;;;;;;;;;
+    if (intval($paquets) > 1) 
+    {
+      $pounds = $poids/$paquets;
+      $responseText = "";
+      for ($i=0; $i <= $paquets; $i++) 
+      { 
+       $responseText .= ';02008066;'.$commande->cmd__date_envoi.';;'.$commande->devis__id .';'.$i.';'.$pounds.';'.$paquets.';'.$poids.';E;;'.$commande->client__livraison_societe.';'.$commande->client__livraison__adr1.';'.$commande->client__livraison__adr2.';'.$commande->client__livraison_cp.';'.$commande->client__livraison_ville.';;;'.$nomContact.';;;'.$commande->telLivraion.';;'.$commande->mail__livraison.';'.$recodeRaison.';'.$recodeAdresse1.';'.$recodeAdresse2.';'.$recodeCP.';'.$recodeCommune.';'.$recodeTel.';;'.$recodeRaison.';'.$recodeAdresse1.';'.$recodeAdresse2.';'.$recodeCP.';'.$recodeCommune.';'.$recodeTel.';J;;;;;;;;;;
 ';
+      }
+     
+    }
+    else
+    {
+      $responseText = ';02008066;'.$commande->cmd__date_envoi.';;'.$commande->devis__id .';'.$paquets.';'.$poids.';'.$paquets.';'.$poids.';E;;'.$commande->client__livraison_societe.';'.$commande->client__livraison__adr1.';'.$commande->client__livraison__adr2.';'.$commande->client__livraison_cp.';'.$commande->client__livraison_ville.';;;'.$nomContact.';;;'.$commande->telLivraion.';;'.$commande->mail__livraison.';'.$recodeRaison.';'.$recodeAdresse1.';'.$recodeAdresse2.';'.$recodeCP.';'.$recodeCommune.';'.$recodeTel.';;'.$recodeRaison.';'.$recodeAdresse1.';'.$recodeAdresse2.';'.$recodeCP.';'.$recodeCommune.';'.$recodeTel.';J;;;;;;;;;;
+';
+    }
+
+    
     
     return $responseText;
   }
