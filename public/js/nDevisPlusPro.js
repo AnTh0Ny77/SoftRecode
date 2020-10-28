@@ -90,11 +90,70 @@ if ($('#globalComClient').length)
 
 
 //fonction de remplissage des select contact en fonction de leur client : 
-
-$('#clientSelect').on('click' , function()
+//facturation : 
+$('#clientSelect').on('change', function()
 {
-    console.log('hey');
+    var selectedOption = parseInt($(this).children("option:selected").val());
+   
+    $.ajax({
+        type: 'post',
+        url: "tableContact",
+        data : 
+            {
+                "AjaxContactTable" : selectedOption
+            },
+            success: function(data)
+            {
+               dataSet = JSON.parse(data);
+               $('#contactSelect option').remove();
+               $('#contactSelect').append(new Option('Aucun', 'Aucun' , false, true));
+
+                    for (let index = 0; index < dataSet.length; index++)
+                    {
+                        
+                        $('#contactSelect').append(new Option(dataSet[index].contact__nom + " " + dataSet[index].contact__prenom + " - "  + dataSet[index].kw__lib ,dataSet[index].contact__id));  
+                    }
+                    $('.selectpicker').selectpicker('refresh'); 
+                    $('#contactSelect').selectpicker('val', 'Aucun');
+            },
+            error: function (err) 
+            {
+                console.log('error: ' , err);
+            }
+        })
 })
+
+//livraison : 
+$('#clientLivraison').on('change', function()
+{
+    var selectedOption = parseInt($(this).children("option:selected").val());
+    $.ajax({
+        type: 'post',
+        url: "tableContact",
+        data : 
+            {
+                "AjaxContactTable" : selectedOption
+            },
+            success: function(data)
+            {
+               dataSet = JSON.parse(data);
+                    $('#contactLivraison option').remove();
+                    $('#contactLivraison').append(new Option('Aucun', 'Aucun' , false, true));
+
+                    for (let index = 0; index < dataSet.length; index++)
+                    {   
+                        $('#contactLivraison').append(new Option(dataSet[index].contact__nom + " " + dataSet[index].contact__prenom + " - "  + dataSet[index].kw__lib ,dataSet[index].contact__id));  
+                    }
+                    $('.selectpicker').selectpicker('refresh'); 
+                    $('#contactLivraison').selectpicker('val', 'Aucun');
+            },
+            error: function (err) 
+            {
+                console.log('error: ' , err);
+            }
+        })
+})
+
 
 
 

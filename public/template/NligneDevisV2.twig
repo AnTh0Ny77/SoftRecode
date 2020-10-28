@@ -1,0 +1,40 @@
+{% extends 'layoutMain.twig' %}
+
+
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+{% endblock %}
+ 
+
+{% block main %}
+<main  role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">                                                                                  
+    <div class="d-flex justify-content-start flex-column mb-5 border-bottom">
+        <form class="d-flex align-items-center" action="DevisV2" method="POST">
+            <div class="mr-4">
+            <input type="hidden" value="{{devis.devis__id}}" name="modif">
+            <button class="btn btn-warning btn-sm "><i class="fas fa-arrow-left"></i> Retour</button>
+            </div>
+            <div class="mx-4">
+            <h2 >Lignes Devis N° {{devis.devis__id}}  <i class="fal fa-file-edit"></i></h2>
+            </div>
+        </form>
+    </div>
+     
+        <!-- 1ere ligne -->
+    <div class="d-flex flex-wrap flex-row justify-content-center">
+        {{ dump(devis) }}
+    </div>
+</main>
+{% endblock %}
+     
+{% block script %}
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+
+{% endblock %}

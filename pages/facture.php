@@ -209,11 +209,15 @@ if (empty($devisList) && isset($_POST['rechercheF'])  && strlen($_POST['recherch
   switch ($alertFiche->devis__etat) 
   {
     case 'VLD':
-      $visuelFiche = ' déja facturée';
+      $visuelFiche = ' déja facturée facture N° '.$alertFiche->cmd__id_facture.'';
     break;
 
     case 'ARH':
       $visuelFiche = ' une Garantie ou un reliquat';
+    break;
+
+    case 'CMD':
+      $visuelFiche = 'pas encore expédiée';
     break;
 
     case 'NFT':

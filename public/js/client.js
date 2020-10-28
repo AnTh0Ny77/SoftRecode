@@ -796,7 +796,6 @@ idUtilisateur = $('#idUtilisateur').val();
                     {
                         var opt = $("<option>").val(dataSet[index].apn__pn).text(dataSet[index].apn__pn);
                         $('#UPchoixPn').append(new Option(dataSet[index].apn__pn_long + " " + dataSet[index].apn__desc_short ,dataSet[index].apn__pn));
-                        
                     }
                     $('.selectpicker').selectpicker('refresh'); 
                     $('#UPchoixPn').selectpicker('val', formContent.pn);
