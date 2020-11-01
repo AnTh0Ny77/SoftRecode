@@ -24,9 +24,156 @@
     </div>
      
         <!-- 1ere ligne -->
-    <div class="d-flex flex-wrap flex-row justify-content-center">
-        {{ dump(devis) }}
+    <div class="d-flex flex-wrap flex-row justify-content-between col-12">
+
+        <div class="card col-7" >
+            <div class="card-body">
+               <h5 class="card-title">Variable</h5>
+                    <form>
+                        <div class="d-flex flex-row justify-content-between col-12 my-4">
+
+                            <div class="col-1">
+                                <label for="prestationChoix">Prestation:</label>
+                                <select class="selectpicker" data-width="auto">
+                                {% for presta in prestaList %}
+                                    <option class=""  value={{presta.kw__value}}>{{presta.kw__lib}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="col-8 ">
+                                <label for="choixDesignation">Modèle:</label>
+                                    <select class="selectpicker col-12"  data-live-search="true" data-width="100%">
+                                        <option class="optionSelect modelSelect" value="">..</option>
+                                        {% for article in articleList %} 
+                                        <option class="optionSelect modelSelect" value={{article.afmm__id}}>{{article.afmm__modele   ~ " " ~ article.famille ~ " " ~ article.Marque }}</option>
+                                        {% endfor %}
+                                    </select> 
+                            </div>
+
+                        </div>
+
+                        <div class="d-flex flex-row justify-content-between col-12 my-4">
+                            <div class="col-12 ">
+                                    <label for="referenceS">Désignation sur le devis/facture: </label>
+                                    <input type="text" class="form-control">
+                            </div>
+                        </div>
+
+
+                    <div class="d-flex justify-content-between col-12 my-4">
+
+                        <div class="col-3">
+                            <label  for="etatRow">Etat</label>
+                            <select class="form-control" id="etatRow">
+                            {% for etat in etatList %}
+                            <option   value="{{etat.kw__value}}" >{{etat.kw__lib}}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-3">
+                            <label for="validationCustom04">Garantie/mois</label>
+                            <select class="form-control" id="garantieRow" >
+                            {% for garantie in garantiesList %}
+                            <option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                    
+                        <div class="col-2">
+                            <label for="validationCustom04">Quantité</label>
+                            <input type="number" class="form-control" value="1" id="quantiteRow">
+                        </div> 
+                    </div>
+
+                     <div class="d-flex justify-content-between col-12 my-4">
+
+                        <div class="col-3">
+                            <label for="validationCustom04"><strike>Promotion H.T</strike></label>
+                            <input class="form-control" type="text"  >
+                        </div>
+                    
+                        <div class="col-3">
+                            <label for="validationCustom04">Prix € H.T</label>
+                            <input class="form-control" type="text" >
+                        </div>
+
+                        <div class="col-2">
+                            <label for="validationCustom04">Ordre</label>
+                            <input type="number" class="form-control" value="1">
+                        </div> 
+                    </div>
+
+
+                    <div class="d-flex justify-content-between col-12 my-4">
+
+                        <div class="" id="accordion">
+                            <button class="btn btn-link  " type="button" data-toggle="collapse" data-target="#extensions" aria-expanded="false" aria-controls="xtendGarantie">Extensions de garantie</button>
+                        </div>
+
+                        <div class="" id="accordion">
+                            <button class="btn btn-link " type="button" data-toggle="collapse" data-target="#commentaire" aria-expanded="false" aria-controls="xtendGarantie">Commentaires</button>
+                        </div>
+
+                        <div class="" id="accordion">
+                            <button class="btn btn-outline-primary  " type="button" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Validation</button>
+                        </div>
+                    </div>
+
+                    <div id="accordion">
+                        <div class="collapse multi-collapse show" id="extensions"   data-parent="#accordion">
+                                <div class="col-12 mt-3 mb-2 d-flex justify-content-between">
+                                    <div class="d-flex flex-row flex-wrap">
+                                   {% for garantie in garanties %}
+                                        {% if garantie.kw__value != 00 %}
+                                        <div class="input-group-text col-3">
+                                            <input type="checkbox" aria-label="{{garantie.kw__lib}}">
+                                             <input type="text" class="form-control">
+                                        </div>
+                                       
+                                      
+
+                                        {% endif %}
+                                   {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="collapse multi-collapse" id="commentaire" data-parent="#accordion">
+                                <div class="col-12 mt-3 mb-2 d-flex justify-content-between">
+                                    <div class="col-6">
+                                        <label for="comClient">Commentaire Client</label>
+                                    <textarea class="ck-content" id="comClient" placeholder="Commentaire client...." rows="4"></textarea>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="comInterne">Commentaire Interne</label>
+                                        <textarea class="CKE" id="comInterne" placeholder="Commentaire interne...." rows="4"></textarea>
+                                    </div>   
+                                </div>
+                            </div>
+                    </div>
+
+                      
+
+                    
+
+
+            </form>   
+            </div>
+        </div>
+
+
+        <div class=" col-5" >
+            <div class="card-body">
+                
+                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                <a href="#" class="card-link">Card link</a>
+                <a href="#" class="card-link">Another link</a>
+            </div>
+        </div>
     </div>
+
 </main>
 {% endblock %}
      

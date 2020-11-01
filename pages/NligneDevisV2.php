@@ -67,8 +67,9 @@ switch ($_POST['clientSelect'])
 
 
 $devis = $Cmd->GetById($idDevis);
-
-
+$articleTypeList = $Article->getModels();
+$prestaList = $Keywords->getPresta();
+$garanties = $Keywords->getGaranties();
 
 
 
@@ -77,9 +78,12 @@ $devis = $Cmd->GetById($idDevis);
 // Donnée transmise au template : 
 echo $twig->render('NligneDevisV2.twig',[
     'user'=>$_SESSION['user'],
-    'devis'=> $devis
+    'devis'=> $devis,
+    'prestaList' => $prestaList , 
+    'articleList' => $articleTypeList,
+    'garanties' => $garanties
     
- ]);;
+ ]);
 
 
 

@@ -803,50 +803,52 @@
 
                   </div>
               <div class="form-row align-items-center  d-flex justify-content-between mt-3">
-                <div class="col-4">
-                  <label class="ml-3" for="etatRow">Etat</label>
-                  <select class="selectpicker col-12" id="etatRow">
-                    {% for etat in etatList %}
-                    <option   value="{{etat.kw__value}}" >{{etat.kw__lib}}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-                <div class="col-4">
-                  <label for="validationCustom04">Garantie/mois</label>
-                  <select class="selectpicker" id="garantieRow" >
-                    {% for garantie in garantiesList %}
-                    <option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}}</option>
-                    {% endfor %}
-                  </select>
-                </div>
+                  <div class="col-4">
+                    <label class="ml-3" for="etatRow">Etat</label>
+                    <select class="selectpicker col-12" id="etatRow">
+                      {% for etat in etatList %}
+                      <option   value="{{etat.kw__value}}" >{{etat.kw__lib}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <label for="validationCustom04">Garantie/mois</label>
+                    <select class="selectpicker" id="garantieRow" >
+                      {% for garantie in garantiesList %}
+                      <option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
                 
-                <div class="col-1">
-                  <label for="validationCustom04">Quantité</label>
-                  <input type="number" class="form-control" value="1" id="quantiteRow">
-                </div>
-                <div class="col-2">
-                  <label for="validationCustom04">Prix € H.T</label>
-                  <input class="form-control" type="text"  id="prixRow">
-                </div>
+                  <div class="col-1">
+                    <label for="validationCustom04">Quantité</label>
+                    <input type="number" class="form-control" value="1" id="quantiteRow">
+                  </div>
+                  <div class="col-2">
+                    <label for="validationCustom04">Prix € H.T</label>
+                    <input class="form-control" type="text"  id="prixRow">
+                  </div>
               </div>
               <div class="form-row mt-2 form-row align-items-center  d-flex justify-content-start">
-                <div class="d-flex justify-content-start">
-                
-                <div class="custom-control custom-checkbox mt-4" id="accordion">
-                  <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Extensions de garantie</button>
-                </div>
-               
-              </div>
-                  <div class="custom-control custom-checkbox mt-4">
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#commentaire" aria-expanded="false" aria-controls="commentaire">Commentaires</button>
-                  </div>
-                  <div class="custom-control custom-checkbox mt-4">
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#prixBarres" aria-expanded="false" aria-controls="commentaire">Prix barrés</button>
-                  </div>
-                  <div class="collapse col-12" id="xtendGarantie" data-parent="#accordion">
-                    <ul class="list-group list-group-flush" id="xtendList">
 
-                    </ul>
+                  <div class="d-flex justify-content-start">
+                    <div class="custom-control custom-checkbox mt-4" id="accordion">
+                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Extensions de garantie</button>
+                    </div>
+                  </div>
+
+                    <div class="custom-control custom-checkbox mt-4">
+                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#commentaire" aria-expanded="false" aria-controls="commentaire">Commentaires</button>
+                    </div>
+                    
+                    <div class="custom-control custom-checkbox mt-4">
+                      <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#prixBarres" aria-expanded="false" aria-controls="commentaire">Prix barrés</button>
+                    </div>
+              
+                    <div class="collapse col-12" id="xtendGarantie" data-parent="#accordion">
+                      <ul class="list-group list-group-flush" id="xtendList">
+
+                      </ul>
                     <div class="col-12 mt-2 mb-2 d-flex justify-content-start">
                       
                       <div class="col-2">
