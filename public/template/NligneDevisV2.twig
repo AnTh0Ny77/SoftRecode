@@ -122,14 +122,32 @@
                     </div>
 
                     <div id="accordion">
-                        <div class="collapse multi-collapse show" id="extensions"   data-parent="#accordion">
-                                <div class="col-12 mt-3 mb-2 d-flex justify-content-between">
-                                    <div class="d-flex flex-row flex-wrap">
+                        <div class="collapse multi-collapse " id="extensions"   data-parent="#accordion">
+                                <div class="col-12 mt-3 mb-2 d-flex justify-content-around">
+                                    <div class="d-flex flex-row flex-wrap justify-content-around">
                                    {% for garantie in garanties %}
                                         {% if garantie.kw__value != 00 %}
-                                        <div class="input-group-text col-3">
-                                            <input type="checkbox" aria-label="{{garantie.kw__lib}}">
-                                             <input type="text" class="form-control">
+                                        <div class="input-group-text col-5 my-2">
+                                            <div>
+                                                <div>
+                                                    <label ><b>{{garantie.kw__lib}} mois</b></label>
+                                                </div>
+                                                <div>
+                                                    <input type="checkbox" aria-label="{{garantie.kw__lib}}">
+                                                </div>
+                                            </div>
+                                            <div class="col-10 d-flex justify-content-around">
+                                                <div class="col-6">
+                                                 <label ><strike>Promo</strike></label>
+                                                <input type="text" class="form-control">
+                                                </div>
+                                                 <div class="col-6">
+                                                 <label >Prix H.T</label>
+                                                <input type="text" class="form-control">
+                                                </div>
+                                                 
+                                            </div>
+                                           
                                         </div>
                                        
                                       
@@ -140,7 +158,7 @@
                                 </div>
                             </div>
                             <div class="collapse multi-collapse" id="commentaire" data-parent="#accordion">
-                                <div class="col-12 mt-3 mb-2 d-flex justify-content-between">
+                                <div class="col-12 my-3 d-flex justify-content-between">
                                     <div class="col-6">
                                         <label for="comClient">Commentaire Client</label>
                                     <textarea class="ck-content" id="comClient" placeholder="Commentaire client...." rows="4"></textarea>
@@ -183,5 +201,7 @@
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+<script type="text/javascript" src="public/js/nDevisLigne.js"></script>
+
 
 {% endblock %}
