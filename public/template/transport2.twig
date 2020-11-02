@@ -1,0 +1,345 @@
+{% extends 'layoutMain.twig' %}
+
+
+  {% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+  {% endblock %}
+ 
+ 
+     {% block main %}
+     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        <h1 class="h2">Saisie transport <i class="fal fa-truck"></i></h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group mr-2">
+          </div>
+        </div>
+      </div>
+       <!-- 1ere ligne -->
+       <div class="d-flex flex-wrap flex-row justify-content-start">
+      
+        <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
+        
+        <!--carte liste de Devis -->
+      <div class="col-5">
+        <div class="card shadow mb-4">
+          <!-- Card Header - -->
+          <div class="my-2 mx-4"> 
+            
+            <h6 class="m-0 font-weight-bold text-primary">Recherche <i class="far fa-mouse-pointer"> </i> 
+                <small class="ml-3"> Id de commande : </small>
+            </h6>
+                   
+          </div>
+          
+          <div class="card-header d-flex flex-row align-items-center justify-content-between">
+            <div class="d-flex flex-column">
+                <div>
+                  <form class="form-inline" action="transport2" method="POST">
+                    {% if champRecherche %}
+                    <input class="form-control mr-2" type="search" name="rechercheF" placeholder="Id de commande" aria-label="Search" value="{{champRecherche}}">
+                    {% else %}
+                    <input class="form-control mr-2" type="search" name="rechercheF" placeholder="Id de commande" aria-label="Search">
+                    {% endif %}
+                   
+                    <button class="btn btn-outline-primary  " type="submit"><i class="fal fa-bullseye-arrow"></i></button>
+                  </form>
+                 </div>
+               </div>
+            </div>
+          <!-- Card Body -->
+          <div class="card-body">
+            <div class="chart-area">
+
+                {% if devis and alert == 'CMD' %}
+                <div class="card">
+                    <div class="card-body">
+
+                        {% if devis.client__livraison_societe  %}
+                        <h5 class="card-title">{{devis.client__livraison_societe}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            {{devis.client__livraison__adr1 ~ devis.client__livraison__adr2 }}<br>
+                            {{devis.client__livraison_cp ~ " " ~ devis.client__livraison_ville }}
+                        </h6>
+                        <hr>
+
+                        {% if  devis.devis__contact_livraison %}
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            {{devis.nom__livraison ~ " " ~ devis.prenom__livraison}}
+                        </h6>
+                        {% else %}
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            pas de contact
+                        </h6>
+                        {% endif %}
+
+                        {% if devis.devis__note_interne %}
+                        <p class="card-text">{{devis.devis__note_interne}}</p>
+                        {% else %}
+                        <p class="card-text">pas de commentaires</p>
+                        {% endif %}
+                        
+                            
+                        
+                        {% else %}
+                        <h5 class="card-title">{{devis.client__societe}}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            {{devis.client__adr1 }}<br>
+                            {{devis.client__cp ~ " " ~ devis.client__ville }}
+                        </h6>
+                        <hr>
+
+                        {% if  devis.devis__contact__id %}
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            {{devis.contact__nom ~ " " ~ devis.contact__prenom}}
+                        </h6>
+                        {% else %}
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            pas de contact
+                        </h6>
+                        {% endif %}
+
+                        {% if devis.devis__note_interne %}
+                        <p class="card-text">{{devis.devis__note_interne}}</p>
+                        {% else %}
+                        <p class="card-text">pas de commentaires</p>
+                        {% endif %}
+
+                    {% endif %}
+                        
+                    </div>
+                  </div>
+
+                {% endif %}
+           </div>
+           
+          </div>
+         
+        </div>
+      </div>
+
+        <!--carte option -->
+        <div class="col-7 cardVisio" >
+          <div class="card shadow mb-4">
+            <!-- Card Body -->
+             <div class="card-body" >
+
+            
+              <div class="card-header" id="JumbResponse">
+                {% if devis and alert == 'CMD' %}
+               
+                <h4 class="" id="JumboCmd">Commande N°: {{devis.devis__id}}</h4>
+                {% endif %}
+              </div>
+                <div id="loaderTravail" class="">
+                 <form method='POST' action="printBl" id="valid-saisie" >
+                  <div id="containerLines" class="card my-4">
+                    {% if devis and alert == 'CMD' %}
+                    <table CELLSPACING=0 style="width: 95%;  margin-top : 30px;" class="table table-striped">
+                        {% for ligne in devisLigne %}
+                        <tr style='font-size: 95%;'>
+                            <td style='border-style: none; width: 22%;'  > 
+                            <select name='linesTransport[{{ligne.devl__id}}]' class='form-control col-8'>
+                                {% for i in 0.. devl_quantite  %}
+                                    {% if i == devl_quantite %}
+                                    <option value='{{loop.index}}' selected>{{loop.index}}</option>
+                                    {% else %}
+                                    <option value='{{loop.index}}'>{{loop.index}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                            </td>
+                            <td style='border-bottom: 1px #ccc solid; text-align:left; '>{{ligne.prestaLib}} <br>{{ligne.kw__lib}}</td>
+                            <td style='border-bottom: 1px #ccc solid; '><strong> {{ligne.devl__designation}}</td>
+                            <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong>
+                        {% endfor %}
+                    </table>
+                    {% endif %}
+                    
+                   
+
+                  </div>
+
+    
+              <div class="d-flex flex-row justify-content-around">
+                
+                {% if devis and alert == 'CMD' %}
+                <div class="  d-flex  flex-column  justify-content-start align-items-center ">
+                    <h5>Poids <i class="fas fa-weight-hanging"></i></h5>
+                    <div class="shadow my-2 py-2 px-2" id="calc">
+                      
+                      <div class="d-flex flex-row justify-content-between">
+                          <div  >
+                              <input type="text"  name="calc_resultat" id="calc_resultat" class="form-control bg-dark text-white font-weight-bold text-right"  placeholder="0.00" />
+                          </div>
+                      </div>
+                     
+                      <div class="d-flex flex-row justify-content-between my-2">
+                          <div >
+                                  <input type="button" class="btn btn-primary btn-lg btn-block calcuClick" value="7"  />
+                          </div>
+                          <div class="calc_td_btn">
+                                  <input type="button" class="btn btn-primary btn-lg btn-block calcuClick" value="8" />
+                          </div>
+                          <div class="calc_td_btn">
+                                  <input type="button" class="btn btn-primary btn-lg btn-block calcuClick" value="9" />
+                          </div>
+            
+                      </div >
+                                  <div class="d-flex flex-row justify-content-between my-2">
+                          <div class="calc_td_btn">
+                                  <input type="button" class="btn btn-primary btn-lg btn-block calcuClick" value="4"  />
+                          </div>
+                          <div class="calc_td_btn">
+                                  <input type="button" class="btn btn-primary btn-lg btn-block calcuClick" value="5"  />
+                          </div>
+                          <div class="calc_td_btn">
+                                  <input type="button" class="btn btn-primary btn-lg btn-block calcuClick" value="6" />
+                          </div>
+                          
+                      </div>
+                      <div class="d-flex flex-row justify-content-between my-2">
+                          <div class="calc_td_btn">
+                                  <input type="button" class="btn btn-primary btn-lg btn-block calcuClick " value="1"  />
+                          </div>
+                          <div class="calc_td_btn">
+                                  <input type="button" class="btn btn-primary btn-lg btn-block calcuClick" value="2" />
+                          </div>
+                          <div class="calc_td_btn">
+                                  <input type="button" class="btn btn-primary btn-lg btn-block calcuClick" value="3"/>
+                          </div>
+                      </div>
+                      <div class="d-flex flex-row justify-content-between my-2">
+                          <div class="calc_td_btn">
+                                  <input type="button" class="btn btn-primary btn-lg btn-block calcuClick" value="0" />
+                          </div>
+                         
+                          <div class="calc_td_btn">
+                                  <input type="button" class="btn btn-secondary btn-lg btn-block calcuClick" value="." />
+                          </div>
+                          <div class="calc_td_btn">
+                                  <input type="button" class="btn btn-warning btn-lg btn-block" value="←" id="delete" />
+                          </div>
+                      </div>
+                  </div>
+                 </div>
+                 <div class="d-flex flex-column justify-content-around mt-5" id="flexTransport">
+
+
+
+                    <div  class="my-3"> 
+                      <h6 >Transporteur</h6>
+                      <select class="selectpicker "  name="" id="select-transport">
+                        {% for entry in transporteurs %}
+
+                        {% if entry.kw__value == 'TNT' %}
+                        <option value="{{entry.kw__value}}" selected>{{entry.kw__lib}}</option>
+                        {% else %}
+                        <option value="{{entry.kw__value}}">{{entry.kw__lib}}</option>
+                        {% endif %}
+                       
+                        {% endfor %}
+                      </select> 
+                    </div>
+
+
+
+                    <div class="my-3"> 
+                      <h6 >Nombre de paquets</h6>
+                      <select class="selectpicker " name="" id="select-transporteur">
+
+                      <option value="1" selected>1</option>
+                      <option value="2" >2</option>
+                      <option value="3" >3</option> 
+                      <option value="4" >4</option>
+                      <option value="5" >5</option>
+                      </select> 
+                    </div>
+
+
+                   
+
+
+                    <div class=" my-3" > 
+                      <button type='button' class=" btn btn-success btn-lg btn-block" id="post-saisie"> saisir <i class="fas fa-truck"></i></button>
+                    </div>
+
+                   </div>
+                {% else %}
+                        {% if alert == 'ATN' %}
+                        <div class="alert alert-warning" role="alert">
+                           Cette commande n'est pas validée ! 
+                        </div>
+                        {% elseif alert == 'VLD' %}
+                        <div class="alert alert-danger" role="alert">
+                           Cette commande est déja facturée
+                        </div>
+                        {% elseif alert == 'IMP' %}
+                        <div class="alert alert-danger" role="alert">
+                            Cette commande est déja expédiée
+                         </div>
+                        {% elseif alert == 'DEF' %}
+                        <div class="alert alert-danger" role="alert">
+                            Touche plus à rien ! 
+                         </div>
+                        {% else %}
+                        <div class="alert alert-info" role="alert">
+                           Saisir un numéro de fiche !  
+                         </div>
+                        {% endif %}
+                {% endif %}
+
+                   
+                   
+                   
+
+
+
+                  
+                </div>
+               
+                <input type='hidden' name='id_trans' value='{{devis.devis__id}}' id='id_trans'>
+                <input type="hidden" name="poids" id='poids' value="">
+                <input type="hidden" name="transporteur" id="transporteur" value="">
+                <input type="hidden" name="paquets" id='paquets' value="">
+                </form>
+
+                </div>
+
+
+              
+             
+               
+
+
+
+
+
+
+             </div>
+          </div>
+         </div>
+
+    </div>
+  
+
+    </main>
+     {% endblock %}
+     
+    
+     {% block script %}
+     <!-- Optional JavaScript -->
+
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/js/transport2.js"></script>
+
+
+
+     {% endblock %}

@@ -73,8 +73,6 @@ $garanties = $Keywords->getGaranties();
 
 
 
-
-
 // Donnée transmise au template : 
 echo $twig->render('NligneDevisV2.twig',[
     'user'=>$_SESSION['user'],
@@ -84,20 +82,6 @@ echo $twig->render('NligneDevisV2.twig',[
     'garanties' => $garanties
     
  ]);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ?>

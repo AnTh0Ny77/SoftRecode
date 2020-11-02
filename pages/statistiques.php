@@ -53,7 +53,6 @@ if (empty($_POST['dateDebut']) && empty($_POST['dateFin']))
     $date = new DateTime();
     $dateDeb = $date->format('Y-m-01');
     $dateFin = $date->format('Y-m-t');
-
     $_POST['dateDebut'] = $dateDeb;
     $_POST['dateFin'] = $dateFin;
     $_POST['client'] = 'Tous';
@@ -75,8 +74,6 @@ else
 if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin'])) 
 {
 
- 
- 
   $dateDebut = date($_POST['dateDebut'].' H:i:s');
   $dateFin = date($_POST['dateFin'].' H:i:s');
 

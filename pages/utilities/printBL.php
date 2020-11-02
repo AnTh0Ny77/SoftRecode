@@ -21,7 +21,8 @@ if (empty($_SESSION['user']))
  }
 
 
-  
+  var_dump($_POST);
+ 
 //date du jour:
 $date = date("Y-m-d H:i:s");
 
@@ -34,13 +35,9 @@ if(!empty($_POST['poids']) && !empty($_POST['transporteur']))
    }
    $Command->updateTransport($_POST['transporteur'] , floatval($_POST['poids']), $paquet, $_POST['id_trans'] , 'IMP' , $date);
    $Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date , $_POST['id_trans'] , 'Saisie Transport effectuée' );
+   $arrayTrans = $Command->devisLigne($_POST['id_trans']);
 
-    $arrayTrans = $Command->devisLigne($_POST['id_trans']);
-
-   
-   
-  
-   
+      
 //met a jour les différentes lignes en fonction de la quantité validé par le client : 
     foreach ($arrayTrans as  $ligne) 
     {

@@ -1,10 +1,9 @@
 
 
 
-$(document).ready(function() {
-
-   
-    
+$(document).ready(function() 
+{
+    $('.file-upload').file_upload();
     //init du commentaire Client global : 
     if ($('#comClient').length) 
     {
@@ -92,7 +91,7 @@ $(document).ready(function() {
     
     
    
-   
+   $('#dropZone').dropzone({ url: "/file/post" });
     
     
     

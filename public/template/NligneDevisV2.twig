@@ -5,6 +5,7 @@
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css">
 <link rel="stylesheet" href="public/css/dashboard.css">
 {% endblock %}
  
@@ -117,7 +118,7 @@
                         </div>
 
                         <div class="" id="accordion">
-                            <button class="btn btn-outline-primary  " type="button" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Validation</button>
+                            <button class="btn btn-outline-primary  " type="button" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Valider</button>
                         </div>
                     </div>
 
@@ -144,14 +145,9 @@
                                                  <div class="col-6">
                                                  <label >Prix H.T</label>
                                                 <input type="text" class="form-control">
-                                                </div>
-                                                 
-                                            </div>
-                                           
+                                                </div>  
+                                            </div> 
                                         </div>
-                                       
-                                      
-
                                         {% endif %}
                                    {% endfor %}
                                     </div>
@@ -162,17 +158,22 @@
                                     <div class="col-6">
                                         <label for="comClient">Commentaire Client</label>
                                     <textarea class="ck-content" id="comClient" placeholder="Commentaire client...." rows="4"></textarea>
+                                    <label for="comInterne">Commentaire Interne</label>
+                                    <textarea class="CKE" id="comInterne" placeholder="Commentaire interne...." rows="4"></textarea>
                                     </div>
-                                    <div class="col-6">
-                                        <label for="comInterne">Commentaire Interne</label>
-                                        <textarea class="CKE" id="comInterne" placeholder="Commentaire interne...." rows="4"></textarea>
-                                    </div>   
+                                    <div class="file-upload-wrapper col-6 ">
+                                        <input type="file" id="input-file-now-custom-2" class="file-upload"
+                                       data-height="200" />
+                                     </div>
                                 </div>
+
+                               
+
                             </div>
                     </div>
 
                       
-
+                  
                     
 
 
@@ -201,7 +202,7 @@
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+<script type="text/javascript" src="public/mdb/js/mdb.min.js"></script> <!-- MDB core JavaScript -->
+<script type="text/javascript" src="public/mdb/js/mdb-file-upload.min.js"></script>
 <script type="text/javascript" src="public/js/nDevisLigne.js"></script>
-
-
 {% endblock %}
