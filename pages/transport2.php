@@ -23,8 +23,14 @@ session_start();
  $Client = new App\Tables\Client($Database);
  $Contact = new \App\Tables\Contact($Database);
  $Cmd = new App\Tables\Cmd($Database);
+ 
+ $alertFail =null;
 
-
+ if (isset($_SESSION['alertSaisie']) && $_SESSION['alertSaisie'] = 'PB') 
+ {
+    $alertFail = 'Merci de choisir un transporteur';
+    $_SESSION['alertSaisie'] = '';
+ }
  
 //par défault le champ de recherche est égal a null:
  $champRecherche = null;
@@ -85,5 +91,6 @@ echo $twig->render('transport2.twig',
 'champRecherche'=>$champRecherche,
 'transporteurs'=>$TransportListe,
 'alert' => $alert , 
-'devisLigne' => $devisLigne
+'devisLigne' => $devisLigne,
+'alertFail' => $alertFail
 ]);

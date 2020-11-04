@@ -12,7 +12,7 @@ $Client = new \App\Tables\Client($Database);
 $User = new App\Tables\User($Database);
 $Global = new App\Tables\General($Database);
 $Contact = new App\Tables\Contact($Database);
-$Pisteur = new App\Tables\Pistage($Database);
+//$Pisteur = new App\Tables\Pistage($Database);
  
 
 if (empty($_SESSION['user'])) 
@@ -26,7 +26,7 @@ if (empty($_SESSION['user']))
 //date du jour:
 $date = date("Y-m-d H:i:s");
 
-if(!empty($_POST['poids']) && !empty($_POST['transporteur']))
+if(!empty($_POST['poids']) && !empty($_POST['transporteur']) && $_POST['transporteur']!= 'NONE')
 {
    $paquet = null ;
    if (intval($_POST['paquets']) > 1 ) 
@@ -107,8 +107,9 @@ ob_start();
      <table style="width: 100%;">
          <tr>
              <td style="text-align: left;  width: 50%"><img  style=" width:60mm" src="public/img/recodeDevis.png"/></td>
-             <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br>
-             <a>www.recode.fr</a><br><br>
+             <td style="text-align: left; width:50%"><h3>Reparation - Location - Vente</h3>imprimantes - lecteurs codes-barres<br>
+             <a>www.recode.fr</a><br>
+              04 93 47 25 00<br>
              <br></td>
              </tr>
              <tr>
@@ -116,7 +117,9 @@ ob_start();
              <barcode dimension="1D" type="C128" label="none" value="<?php echo $command->devis__id ?>" style="width:40mm; height:8mm; color: #3b3b3b; font-size: 4mm"></barcode><br>
 
              <small>Envoyé  le : <?php echo $formated_date ?></small><br>
-             Vendeur :<?php echo  $command->nomDevis . " " .$command->prenomDevis  ?> </td>
+             Vendeur :<?php echo  $command->nomDevis . " " .$command->prenomDevis  ?> <br>
+             Code cmd :<?php echo $command->cmd__code_cmd_client ?>
+            </td>
              <td style="text-align: left; width:50%"><strong><?php 
              if ($command->devis__contact_livraison) {
                             //si un contact est présent dans l'adresse de livraison : 
@@ -196,7 +199,7 @@ try
         $doc->output('O:\intranet\Auto_Print\BL\BL_'.$command->devis__id.'.pdf' , 'F'); 
     }
    
-    header('location: transport');
+    header('location: transport2');
 } 
 catch (Html2PdfException $e) 
 {
@@ -206,6 +209,8 @@ catch (Html2PdfException $e)
 }
 else 
 {
-    header('location: transport');
+    $_SESSION['alertSaisie'] = 'PB';
+    header('location: transport2');
+    
 }
  

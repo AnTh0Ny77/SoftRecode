@@ -87,7 +87,7 @@
 
     //transport / fiches de travail->
     case '/SoftRecode/transport';
-      require __DIR__ .'/pages/transport.php'; break;
+      require __DIR__ .'/pages/transport2.php'; break;
 
     case '/SoftRecode/transport2';
       require __DIR__ .'/pages/transport2.php'; break;

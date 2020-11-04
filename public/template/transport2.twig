@@ -104,7 +104,7 @@
                         {% endif %}
 
                         {% if devis.devis__note_interne %}
-                        <p class="card-text">{{devis.devis__note_interne}}</p>
+                        <p class="card-text">{{devis.devis__note_interne|raw}}</p>
                         {% else %}
                         <p class="card-text">pas de commentaires</p>
                         {% endif %}
@@ -134,6 +134,7 @@
                
                 <h4 class="" id="JumboCmd">Commande N°: {{devis.devis__id}}</h4>
                 {% endif %}
+
               </div>
                 <div id="loaderTravail" class="">
                  <form method='POST' action="printBl" id="valid-saisie" >
@@ -234,14 +235,9 @@
                     <div  class="my-3"> 
                       <h6 >Transporteur</h6>
                       <select class="selectpicker "  name="" id="select-transport">
-                        {% for entry in transporteurs %}
-
-                        {% if entry.kw__value == 'TNT' %}
-                        <option value="{{entry.kw__value}}" selected>{{entry.kw__lib}}</option>
-                        {% else %}
+                      <option value="NONE" selected>Aucuns</option>
+                        {% for entry in transporteurs %} 
                         <option value="{{entry.kw__value}}">{{entry.kw__lib}}</option>
-                        {% endif %}
-                       
                         {% endfor %}
                       </select> 
                     </div>
@@ -290,6 +286,12 @@
                         <div class="alert alert-info" role="alert">
                            Saisir un numéro de fiche !  
                          </div>
+                        {% endif %}
+
+                        {%  if alertFail %}
+                        <div class="alert alert-danger" role="alert">
+                           Erreur dans le choix du transporteur
+                        </div>
                         {% endif %}
                 {% endif %}
 
