@@ -3,7 +3,7 @@
 
 $(document).ready(function() 
 {
-    $('.file-upload').file_upload();
+  
     //init du commentaire Client global : 
     if ($('#comClient').length) 
     {
@@ -89,9 +89,12 @@ $(document).ready(function()
     }
     
     
-    
-   
-   $('#dropZone').dropzone({ url: "/file/post" });
+    $('#fmm').on('change', function()
+{
+    var selectedArticle = $(this).children("option:selected").text();
+    $("#designation").val(selectedArticle);
+})
+  
     
     
     

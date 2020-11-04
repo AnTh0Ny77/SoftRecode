@@ -93,31 +93,42 @@ $(document).ready(function() {
 
     // fonction de validation de commandes : 
      $('#SendCmd').on('click', function(){
+
         radio = $(".radioCmd");
         radioP = $('.radioCmdP');
         arrayOFsheet = [];
         arrayOfItem = JSON.parse($('#arrayOfLines').val());
 
-
         
         //input radio
-        for (let nb = 0; nb < radio.length; nb++) {
-            if(radio[nb].checked == true){
+        for (let nb = 0; nb < radio.length; nb++) 
+        {
+            if(radio[nb].checked == true)
+            {
                 arrayTemp = [];
-                arrayTemp.push(radio[nb].value,radioP[nb].value);
+                arrayTemp.push(radio[nb].value,radioP[nb].value,radio[nb].id );
                 arrayOFsheet.push(arrayTemp);    
             }
         }
 
 
-       for (let index = 0; index < arrayOfItem.length; index++) {
-            if (arrayOFsheet[index] === undefined) {
+        for (let index = 0; index < arrayOfItem.length; index++) 
+        {
+            if (arrayOFsheet[index] === undefined) 
+            {
                 arrayOFsheet[index] = [null,null];
             }
-
-            //renvoi la reponse dans le champ ( prix-barre pour les commentaires)
-           arrayOfItem[index].devl__prix_barre = arrayOFsheet[index];
-
+          
+            for(let y = 0; y < arrayOFsheet.length; y++) 
+            {
+                  
+                if (arrayOfItem[index].devl__ordre == arrayOFsheet[y][2]) 
+                {
+                    arrayOFsheet[y].pop();
+                    arrayOfItem[index].devl__prix_barre = arrayOFsheet[y];
+                }       
+            }
+                
            //commentaire interne pour chaque ligne:
            if (parseInt(arrayCommentaires[index].name) == parseInt(arrayOfItem[index].devl__ordre) ) {
             arrayOfItem[index].devl__note_interne = arrayCommentaires[index].getData();
@@ -126,7 +137,7 @@ $(document).ready(function() {
            //quantite pour chaque ligne:
            if (parseInt(nodeQuantité[index].id) == parseInt(arrayOfItem[index].devl__id)) {
             arrayOfItem[index].devl_quantite = parseInt(nodeQuantité[index].value);
-            console.log(arrayOfItem[index].devl_quantite);
+           
            }           
       }
       
@@ -136,6 +147,7 @@ $(document).ready(function() {
       $('#ComInterCommande').val(dataCom);
      
       $('#code_cmd').val($('#codeClient').val());
+      
       
      $('#formValideCMD').submit();
     })

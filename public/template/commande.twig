@@ -191,13 +191,13 @@
                         <div class="form-check form-check-inline">
                             {% for xtend in ligne.devl__prix_barre %}
                             <input type="hidden" class="radioCmdP" value="{{xtend.devg__prix}}">
-                            <input class="form-check-input mx-1 radioCmd " name="{{loop.parent.loop.index}}" type="radio" value="{{xtend.devg__type}}">
+                            <input class="form-check-input mx-1 radioCmd " id="{{ligne.devl__ordre}}" type="radio" value="{{xtend.devg__type}}">
                             <label class="form-check-label" for="{{xtend.devg__id}}">
                               <strong> {{xtend.devg__type}} Mois.</strong>
                             </label>
                             {% if loop.last %}
                             <input type="hidden" class="radioCmdP" value="{{null}}">
-                            <input class="form-check-input mx-1 radioCmd" name="{{loop.parent.loop.index}}" type="radio" value="{{null}}">
+                            <input class="form-check-input mx-1 radioCmd" id="{{ligne.devl__ordre}}" type="radio" value="{{null}}">
                             <label class="form-check-label" for="{{xtend.devg__id}}">
                                <strong>Aucunes </strong>
                             </label>

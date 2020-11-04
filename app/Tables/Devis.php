@@ -65,4 +65,51 @@ class Devis extends Table {
     return $id;
   }
 
+
+  public function insertLine($ordre , $idCmd , $prestation, $fmm , $designation , $etat , $garantie , $qte , $prixBarre , $puht , $noteC , $noteI  )
+  {
+    $request = $this->Db->Pdo->prepare('INSERT INTO cmd_ligne 
+    (cmdl__ordre, 
+    cmdl__cmd__id, 
+    cmdl__prestation, 
+    cmdl__id__fmm, 
+    cmdl__designation, 
+    cmdl__etat, 
+    cmdl__garantie_base, 
+    cmdl__qte_cmd,
+    cmdl__prix_barre,
+    cmdl__puht,
+    cmdl__note_client,
+    cmdl__note_interne)
+    VALUES (:cmdl__ordre, 
+    :cmdl__cmd__id, 
+    :cmdl__prestation, 
+    :cmdl__id__fmm, 
+    :cmdl__designation, 
+    :cmdl__etat, 
+    :cmdl__garantie_base, 
+    :cmdl__qte_cmd,
+    :cmdl__prix_barre,
+    :cmdl__puht,
+    :cmdl__note_client,
+    :cmdl__note_interne)');
+    $request->bindValue(":cmdl__ordre", $ordre);
+    $request->bindValue(":cmdl__cmd__id", $idCmd);
+    $request->bindValue(":cmdl__prestation", $prestation);
+    $request->bindValue(":cmdl__id__fmm", $fmm);
+    $request->bindValue(":cmdl__designation", $designation);
+    $request->bindValue(":cmdl__etat", $etat);
+    $request->bindValue(":cmdl__garantie_base",  $garantie);
+    $request->bindValue(":cmdl__qte_cmd",$qte);
+    $request->bindValue(":cmdl__prix_barre", $prixBarre);
+    $request->bindValue(":cmdl__puht", $puht);
+    $request->bindValue(":cmdl__note_client", $noteC);
+    $request->bindValue(":cmdl__note_interne", $noteI);
+    $request->execute();
+    $id = $this->Db->Pdo->lastInsertId();
+    return $id;
+
+  }
+
+
 }

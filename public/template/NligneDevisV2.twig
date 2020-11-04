@@ -5,7 +5,6 @@
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css">
 <link rel="stylesheet" href="public/css/dashboard.css">
 {% endblock %}
  
@@ -30,12 +29,13 @@
         <div class="card col-7" >
             <div class="card-body">
                <h5 class="card-title">Variable</h5>
-                    <form>
+                    <form action="ligneDevisV2" method="POST">
+                    <input type="hidden" value="{{devis.devis__id}}" name="devis">
                         <div class="d-flex flex-row justify-content-between col-12 my-4">
 
                             <div class="col-1">
                                 <label for="prestationChoix">Prestation:</label>
-                                <select class="selectpicker" data-width="auto">
+                                <select class="selectpicker" data-width="auto" name="presta" required>
                                 {% for presta in prestaList %}
                                     <option class=""  value={{presta.kw__value}}>{{presta.kw__lib}}</option>
                                     {% endfor %}
@@ -44,7 +44,7 @@
 
                             <div class="col-8 ">
                                 <label for="choixDesignation">Modèle:</label>
-                                    <select class="selectpicker col-12"  data-live-search="true" data-width="100%">
+                                    <select class="selectpicker col-12"  data-live-search="true" data-width="100%" name="fmm" id="fmm" required>
                                         <option class="optionSelect modelSelect" value="">..</option>
                                         {% for article in articleList %} 
                                         <option class="optionSelect modelSelect" value={{article.afmm__id}}>{{article.afmm__modele   ~ " " ~ article.famille ~ " " ~ article.Marque }}</option>
@@ -57,7 +57,7 @@
                         <div class="d-flex flex-row justify-content-between col-12 my-4">
                             <div class="col-12 ">
                                     <label for="referenceS">Désignation sur le devis/facture: </label>
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control" name="designation" id="designation" required>
                             </div>
                         </div>
 
@@ -66,7 +66,7 @@
 
                         <div class="col-3">
                             <label  for="etatRow">Etat</label>
-                            <select class="form-control" id="etatRow">
+                            <select class="form-control" id="etatRow" name="etat">
                             {% for etat in etatList %}
                             <option   value="{{etat.kw__value}}" >{{etat.kw__lib}}</option>
                             {% endfor %}
@@ -75,8 +75,8 @@
 
                         <div class="col-3">
                             <label for="validationCustom04">Garantie/mois</label>
-                            <select class="form-control" id="garantieRow" >
-                            {% for garantie in garantiesList %}
+                            <select class="form-control" id="garantieRow" name="garantie">
+                            {% for garantie in garanties %}
                             <option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}}</option>
                             {% endfor %}
                             </select>
@@ -84,7 +84,7 @@
                     
                         <div class="col-2">
                             <label for="validationCustom04">Quantité</label>
-                            <input type="number" class="form-control" value="1" id="quantiteRow">
+                            <input type="number" class="form-control" value="1" name="quantite">
                         </div> 
                     </div>
 
@@ -92,17 +92,17 @@
 
                         <div class="col-3">
                             <label for="validationCustom04"><strike>Promotion H.T</strike></label>
-                            <input class="form-control" type="text"  >
+                            <input class="form-control" type="text"  name="promo">
                         </div>
                     
                         <div class="col-3">
                             <label for="validationCustom04">Prix € H.T</label>
-                            <input class="form-control" type="text" >
+                            <input class="form-control" type="text" name="prix" required>
                         </div>
 
                         <div class="col-2">
                             <label for="validationCustom04">Ordre</label>
-                            <input type="number" class="form-control" value="1">
+                            <input type="number" class="form-control" value="1" name="ordre">
                         </div> 
                     </div>
 
@@ -118,7 +118,7 @@
                         </div>
 
                         <div class="" id="accordion">
-                            <button class="btn btn-outline-primary  " type="button" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Valider</button>
+                            <button class="btn btn-outline-primary  " type="submit" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Valider</button>
                         </div>
                     </div>
 
@@ -134,17 +134,17 @@
                                                     <label ><b>{{garantie.kw__lib}} mois</b></label>
                                                 </div>
                                                 <div>
-                                                    <input type="checkbox" aria-label="{{garantie.kw__lib}}">
+                                                    <input type="checkbox" aria-label="{{garantie.kw__lib}}" name="{{garantie.kw__value}}">
                                                 </div>
                                             </div>
                                             <div class="col-10 d-flex justify-content-around">
                                                 <div class="col-6">
                                                  <label ><strike>Promo</strike></label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" class="form-control" name="{{garantie.kw__value}}[]">
                                                 </div>
                                                  <div class="col-6">
                                                  <label >Prix H.T</label>
-                                                <input type="text" class="form-control">
+                                                <input type="text" class="form-control" name="{{garantie.kw__value}}HT[]">
                                                 </div>  
                                             </div> 
                                         </div>
@@ -157,14 +157,12 @@
                                 <div class="col-12 my-3 d-flex justify-content-between">
                                     <div class="col-6">
                                         <label for="comClient">Commentaire Client</label>
-                                    <textarea class="ck-content" id="comClient" placeholder="Commentaire client...." rows="4"></textarea>
-                                    <label for="comInterne">Commentaire Interne</label>
-                                    <textarea class="CKE" id="comInterne" placeholder="Commentaire interne...." rows="4"></textarea>
+                                        <textarea class="ck-content" id="comClient" placeholder="Commentaire client...." rows="4" name="commentaire"></textarea>
                                     </div>
-                                    <div class="file-upload-wrapper col-6 ">
-                                        <input type="file" id="input-file-now-custom-2" class="file-upload"
-                                       data-height="200" />
-                                     </div>
+                                    <div class="col-6 ">
+                                        <label for="comInterne">Commentaire Interne</label>
+                                        <textarea class="CKE" id="comInterne" placeholder="Commentaire interne...." rows="4" name="interne"></textarea>
+                                    </div>
                                 </div>
 
                                
@@ -183,13 +181,19 @@
 
 
         <div class=" col-5" >
-            <div class="card-body">
-                
-                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
+        
+            {% for ligne in devisLignes %}
+            <div class="card my-1">
+            <div class='card-body'>
+            <h6 class="card-subtitle mb-2 text-muted">{{ ligne.devl_quantite ~ "x " ~ ligne.devl__designation}}</h6>
+                <p class="card-text">
+                    {{ligne.kw__lib ~ " " ~  ligne.devl_puht ~ " €"}}
+                </p>
+                <a href="#" class="card-link">Modifier</a>
+                <a href="#" class="card-link">Dupliquer</a>
+                </div>
             </div>
+            {% endfor %}     
         </div>
     </div>
 
@@ -202,7 +206,5 @@
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
-<script type="text/javascript" src="public/mdb/js/mdb.min.js"></script> <!-- MDB core JavaScript -->
-<script type="text/javascript" src="public/mdb/js/mdb-file-upload.min.js"></script>
 <script type="text/javascript" src="public/js/nDevisLigne.js"></script>
 {% endblock %}
