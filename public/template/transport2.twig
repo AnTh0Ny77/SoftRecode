@@ -142,27 +142,29 @@
                     {% if devis and alert == 'CMD' %}
                     <table CELLSPACING=0 style="width: 95%;  margin-top : 30px;" class="table table-striped">
                         {% for ligne in devisLigne %}
-                        <tr style='font-size: 95%;'>
-                            <td style='border-style: none; width: 22%;'  > 
-                            <select name='linesTransport[{{ligne.devl__id}}]' class='form-control col-8'>
-                                {% for i in 0.. devl_quantite  %}
-                                    {% if i == devl_quantite %}
-                                    <option value='{{loop.index}}' selected>{{loop.index}}</option>
-                                    {% else %}
-                                    <option value='{{loop.index}}'>{{loop.index}}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
-                            </td>
-                            <td style='border-bottom: 1px #ccc solid; text-align:left; '>{{ligne.prestaLib}} <br>{{ligne.kw__lib}}</td>
-                            <td style='border-bottom: 1px #ccc solid; '><strong> {{ligne.devl__designation}}</td>
-                            <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong>
+
+                            {% if ligne.devl__type != 'PRT' %}
+                            <tr style='font-size: 95%;'>
+                              <td style='border-style: none; width: 22%;'  > 
+                              <select name='linesTransport[{{ligne.devl__id}}]' class='form-control col-8'>
+                                  {% for i in 0.. devl_quantite  %}
+                                      {% if i == devl_quantite %}
+                                      <option value='{{loop.index}}' selected>{{loop.index}}</option>
+                                      {% else %}
+                                      <option value='{{loop.index}}'>{{loop.index}}</option>
+                                      {% endif %}
+                                  {% endfor %}
+                              </select>
+                              </td>
+                              <td style='border-bottom: 1px #ccc solid; text-align:left; '>{{ligne.prestaLib}} <br>{{ligne.kw__lib}}</td>
+                              <td style='border-bottom: 1px #ccc solid; '><strong> {{ligne.devl__designation}}</td>
+                              <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong>
+                              </tr>
+                            {% endif %}
+                        
                         {% endfor %}
                     </table>
                     {% endif %}
-                    
-                   
-
                   </div>
 
     
