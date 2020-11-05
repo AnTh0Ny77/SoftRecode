@@ -112,4 +112,38 @@ class Devis extends Table {
   }
 
 
+  public function insertGaranties($ordre , $idCmdl , $type, $prix , $promo  )
+  {
+    $request = $this->Db->Pdo->prepare('INSERT INTO cmd_garantie 
+    (cmdg__ordre, 
+    cmdg__id__cmdl, 
+    cmdg__type, 
+    cmdg__prix, 
+    cmdg__ordre, 
+    )
+    VALUES (:cmdg__ordre, 
+    :cmdg__id__cmdl, 
+    :cmdg__type, 
+    :cmdg__prix, 
+    :cmdg__ordre)');
+
+    $request->bindValue(":cmdg__ordre", $ordre);
+    $request->bindValue(":cmdg__id__cmdl", $idCmdl);
+    $request->bindValue(":cmdg__type", $type);
+    $request->bindValue(":cmdg__prix", $prix);
+    $request->bindValue(":cmdg__ordre", $promo);
+    $request->execute();
+    $id = $this->Db->Pdo->lastInsertId();
+    return $id;
+
+  }
+
+  public function deleteGarantie($id)
+  {
+    $request = $this->Db->Pdo->prepare("DELETE FROM cmd_garantie 
+    WHERE cmdg__id__cmdl = '".$id."'");
+    $request->execute();
+  }
+
+
 }

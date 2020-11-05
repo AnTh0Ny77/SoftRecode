@@ -24,6 +24,8 @@ session_start();
  $Database->DbConnect();
 
 
+ 
+
 //creation devis :
 if (!empty($_POST['clientSelect']) && empty($_POST['modifReturn'])) 
 {
@@ -115,12 +117,29 @@ if (!empty($_POST['modifReturn']))
 // creation lignes : 
 if (!empty($_POST['devis'])) 
 {
+    
     $newLines = $Devis->insertLine(
     $_POST['ordre'] , $_POST['devis'] , $_POST['presta'], $_POST['fmm'],
     $_POST['designation'] , $_POST['etat'] , $_POST['garantie'],
     intval($_POST['quantite']) , floatval($_POST['promo']), floatval($_POST['prix']), $_POST['commentaire'] , $_POST['interne']);
     $idDevis = $_POST['devis'];
     $_POST['devis'] = "";
+
+
+    //extension de garanties : 
+    foreach ($_POST['xtendP'] as $key => $value) 
+    {
+       if (!empty($value[0])) 
+       {
+           foreach ($_POST['xtendG'] as $mois => $promo) 
+           {
+               if (intval($mois) == intval($key)) 
+               {
+                  
+               }
+           }
+       }
+    }
 }
 
 
