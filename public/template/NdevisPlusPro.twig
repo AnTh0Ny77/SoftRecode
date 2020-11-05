@@ -37,6 +37,12 @@
         <div class="col-11 " id="navSociete">
 
         <form action="ligneDevisV2" method="POST">
+            {% if modif %}
+            <input type="hidden" name="modifReturn" value="{{modif.devis__id}}">
+            {% else %}
+            <input type="hidden" name="modifReturn">
+            {% endif %}
+           
         <div class="col-12 d-flex justify-content-center">
 
 
@@ -169,12 +175,22 @@
                 <div class="col-12">
                       <div class=" col-12  my-3 ">
                         <h5><span class="badge badge-danger badge-pill">Titre</span></h5>
-                          <input class="form-control " type="text"  id="titreDevis" name="titreDevis" value="">
+                        {% if modif %}
+                        <input class="form-control " type="text"  id="titreDevis" name="titreDevis" value="{{modif.cmd__nom_devis}}">
+                        {% else %}
+                        <input class="form-control " type="text"  id="titreDevis" name="titreDevis" value="">
+                        {% endif %}
+                         
                           
                       </div>
                       <div class=" col-12  my-3 ">
                         <h5><span class="badge badge-warning badge-pill">Code Cmd</span></h5>
-                          <input class="form-control " type="text"   name="code" >
+                        {% if modif %}
+                        <input class="form-control " type="text"   name="code" value="{{modif.cmd__code_cmd_client}}">
+                        {% else %}
+                        <input class="form-control " type="text"   name="code" >
+                        {% endif %}
+                          
                           
                       </div>
                        
@@ -182,9 +198,20 @@
                         <h5><span class="badge badge-dark badge-pill">Modèle</span></h5>
                         
                           <select class="selectpicker show-tick" data-width="100%"  name="modele"  required>
-                            {% for modele in modeleList %}
-                              <option class=""  value={{modele.kw__value}}>{{modele.kw__lib}}</option>
-                              {% endfor %}
+                              {% if modif %}
+                                {% for modele in modeleList %}
+                                        {% if modif.cmd__modele_devis ==  modele.kw__value %}
+                                            <option class=""  value={{modele.kw__value}} selected>{{modele.kw__lib}}</option>
+                                        {% else %}
+                                            <option class=""  value={{modele.kw__value}}>{{modele.kw__lib}}</option>
+                                        {% endif %}   
+                                {% endfor %}
+                              {% else %}
+                                {% for modele in modeleList %}
+                                        <option class=""  value={{modele.kw__value}}>{{modele.kw__lib}}</option>
+                                {% endfor %}
+                              {% endif %}
+                                
                           </select>
                        
                        </div>
@@ -192,11 +219,21 @@
                             <h5><span class="badge badge-success badge-pill">Commentaires</span></h5>
                           <div class="col-12 my-2  show multi-col">
                             <label for="globalComClient">Client</label>
-                          <textarea class="CKE" id="globalComClient" name="globalComClient" placeholder="Commentaire client...."></textarea>
+                            {% if modif %}
+                                <textarea class="CKE" id="globalComClient" name="globalComClient" placeholder="Commentaire client....">{{ modif.devis__note_client|raw }}</textarea>
+                            {% else %}
+                                <textarea class="CKE" id="globalComClient" name="globalComClient" placeholder="Commentaire client...."></textarea>
+                            {% endif %}
+                         
                           </div>
                           <div class="col-12 my-2  multi-col">
                             <label for="globalComInt">Interne</label>
-                            <textarea class="CKE" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." ></textarea>
+                            {% if modif %}
+                                <textarea class="CKE" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." >{{modif.devis__note_interne}}</textarea>
+                            {% else %}
+                                <textarea class="CKE" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." ></textarea>
+                            {% endif %}
+                            
                             </div>    
                         </div>
                     
