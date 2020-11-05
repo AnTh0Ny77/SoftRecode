@@ -147,7 +147,8 @@
                             <tr style='font-size: 95%;'>
                               <td style='border-style: none; width: 22%;'  > 
                               <select name='linesTransport[{{ligne.devl__id}}]' class='form-control col-8'>
-                                  {% for i in  0.. ligne.devl_quantite  %}
+                                <option value='0' >0</option>
+                                  {% for i in  1.. ligne.devl_quantite  %}
                                  
                                       {% if i == ligne.devl_quantite %}
                                       <option value='{{loop.index}}' selected> {{loop.index}}</option>

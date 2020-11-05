@@ -114,6 +114,10 @@ class Devis extends Table {
 
   public function insertGaranties($ordre , $idCmdl , $type, $prix , $promo  )
   {
+    $verifOrdre = $this->Db->Pdo->query(
+      'SELECT MAX(cmdg__ordre) as maxOrdre from cmd_garantie WHERE cmdl__cmd__id = '.$object->idDevis.' ');
+
+    $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
     $request = $this->Db->Pdo->prepare('INSERT INTO cmd_garantie 
     (cmdg__ordre, 
     cmdg__id__cmdl, 

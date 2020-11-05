@@ -131,17 +131,17 @@ if (!empty($_POST['devis']))
     {
        if (!empty($value[0])) 
        {
-           foreach ($_POST['xtendG'] as $mois => $promo) 
+           foreach ($_POST['xtendB'] as $mois => $promo) 
            {
                if (intval($mois) == intval($key)) 
                {
-                  
+                   $Devis->insertGaranties('', $newLines , $mois , $value , $promo );
                }
            }
        }
     }
 }
-
+die();
 
 $devis = $Cmd->GetById($idDevis);
 $devisLigne = $Cmd->devisLigne($idDevis);
