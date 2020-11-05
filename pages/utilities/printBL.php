@@ -12,6 +12,7 @@ $Client = new \App\Tables\Client($Database);
 $User = new App\Tables\User($Database);
 $Global = new App\Tables\General($Database);
 $Contact = new App\Tables\Contact($Database);
+$Pisteur = new App\Tables\Pistage($Database);
 //$Pisteur = new App\Tables\Pistage($Database);
  
 
