@@ -25,10 +25,14 @@ $(document).ready(function()
         }
         
          let transporteur = $('#select-transport').val();
+         console.log(transporteur);
+
          let paquet = $('#select-transporteur').val();
          $('#poids').val(poids);
          $('#transporteur').val(transporteur);
          $('#paquets').val(paquet);
+
+        
     }
 
     $('#post-saisie').on('click', function(){
@@ -41,6 +45,10 @@ $(document).ready(function()
         { 
            
            alert('Le poids est incorrect')
+        }
+        if ($('#transporteur').val().length < 1) 
+        {
+            alert('Choisi un transporteur !! ')
         }
         else
         { 
