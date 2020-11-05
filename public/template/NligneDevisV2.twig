@@ -183,12 +183,63 @@
             {% for ligne in devisLignes %}
             <div class="card my-1">
             <div class='card-body'>
-            <h6 class="card-subtitle mb-2 text-muted">{{ ligne.devl_quantite ~ "x " ~ ligne.devl__designation}}</h6>
-                <p class="card-text">
-                    {{ligne.kw__lib ~ " " ~  ligne.devl_puht ~ " €"}}
-                </p>
-                <a href="#" class="card-link">Modifier</a>
-                <a href="#" class="card-link">Dupliquer</a>
+
+            <h5 class="card-subtitle mb-2 text-muted">{{ ligne.devl_quantite ~ "x " ~ ligne.devl__designation}} 
+            </h5>
+
+                <div class="d-flex flex-column">
+                    <div class="col-6">
+                        <p class="card-text">
+                            {{ligne.kw__lib ~ " " }}
+                            {% if ligne.devl__prix_barre and ligne.devl__prix_barre > 0  %}
+                                <strike>
+                                    {{" " ~ ligne.devl__prix_barre ~ " "}}
+                                </strike>
+                            {% endif %}
+                        </p>
+                        <b>
+                            {{ " " ~ ligne.devl_puht ~ " €"}}
+                        </b>
+                    </div>  
+                </div>
+
+                <div class="d-flex">
+                    <div class="col-6">
+                        <p>
+                            {% if ligne.xtend %}
+                            Extensions de garantie : <br>
+                                {% for xtend in ligne.xtend %}
+                                   
+                                        {{xtend.cmdg__type ~ " mois "}}
+                                            {% if xtend.cmdg__prix_barre and xtend.cmdg__prix_barre > 0 %}
+                                            <strike class="text-muted">{{xtend.cmdg__prix_barre ~ " € "}}</strike>
+                                            {% endif %}
+                                        {{ xtend.cmdg__prix ~ " € "}}
+                                        <br>
+                                {% endfor %}
+                            {% else %}
+                            Pas d'extensions de garanties
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-6">
+                        hello
+                    </div>
+                </div>
+
+                <div class="d-flex">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-outline-primary btn-sm">Modifier</button>
+                        <button type="button" class="btn btn-outline-secondary btn-sm">Dupliquer</button>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" class="btn btn-outline-danger btn-sm">Supprimer</button>
+                    </div>
+
+                </div>
+                
+              
+                
                 </div>
             </div>
             {% endfor %}     

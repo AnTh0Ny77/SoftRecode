@@ -112,34 +112,42 @@ class Devis extends Table {
   }
 
 
-  public function insertGaranties($ordre , $idCmdl , $type, $prix , $promo  )
+  public function insertGaranties( $idCmdl , $type, $prix , $promo  )
   {
-    $verifOrdre = $this->Db->Pdo->query(
-      'SELECT MAX(cmdg__ordre) as maxOrdre from cmd_garantie WHERE cmdl__cmd__id = '.$object->idDevis.' ');
+    $verifOrdre = $this->Db->Pdo->query('SELECT MAX(cmdg__ordre) as maxOrdre from cmd_garantie WHERE cmdg__id__cmdl = '.$idCmdl.' ');
 
     $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
+    $ordreMax = $ordreMax->maxOrdre + 1 ;
+
     $request = $this->Db->Pdo->prepare('INSERT INTO cmd_garantie 
     (cmdg__ordre, 
     cmdg__id__cmdl, 
     cmdg__type, 
     cmdg__prix, 
-    cmdg__ordre, 
+    cmdg__prix_barre
     )
     VALUES (:cmdg__ordre, 
     :cmdg__id__cmdl, 
     :cmdg__type, 
     :cmdg__prix, 
-    :cmdg__ordre)');
+    :cmdg__prix_barre)');
 
-    $request->bindValue(":cmdg__ordre", $ordre);
+    $request->bindValue(":cmdg__ordre", $ordreMax);
     $request->bindValue(":cmdg__id__cmdl", $idCmdl);
     $request->bindValue(":cmdg__type", $type);
     $request->bindValue(":cmdg__prix", $prix);
-    $request->bindValue(":cmdg__ordre", $promo);
+    $request->bindValue(":cmdg__prix_barre", $promo);
     $request->execute();
     $id = $this->Db->Pdo->lastInsertId();
     return $id;
 
+  }
+
+  public function selectGaranties($idCmdl)
+  {
+    $list = $this->Db->Pdo->query('SELECT * from cmd_garantie WHERE cmdg__id__cmdl = '.$idCmdl.' ');
+    $response = $list->fetchAll(PDO::FETCH_OBJ);
+    return $response;
   }
 
   public function deleteGarantie($id)

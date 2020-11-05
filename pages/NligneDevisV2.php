@@ -135,16 +135,26 @@ if (!empty($_POST['devis']))
            {
                if (intval($mois) == intval($key)) 
                {
-                   $Devis->insertGaranties('', $newLines , $mois , $value , $promo );
+                  $Devis->insertGaranties( $newLines , $mois , floatval($value[0]) , floatval($promo[0]) );
+                   
                }
            }
        }
     }
+   
 }
-die();
+
 
 $devis = $Cmd->GetById($idDevis);
 $devisLigne = $Cmd->devisLigne($idDevis);
+
+foreach ($devisLigne as $ligne) 
+{
+   $garanties = $Devis->selectGaranties($ligne->devl__id);
+  
+   $ligne->xtend = $garanties;
+}
+
 $articleTypeList = $Article->getModels();
 $prestaList = $Keywords->getPresta();
 $garanties = $Keywords->getGaranties();
