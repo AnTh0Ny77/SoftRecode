@@ -41,9 +41,9 @@
                 <div>
                   <form class="form-inline" action="transport2" method="POST">
                     {% if champRecherche %}
-                    <input class="form-control mr-2" type="search" name="rechercheF" placeholder="Id de commande" aria-label="Search" value="{{champRecherche}}">
+                    <input class="form-control mr-2" type="search" name="rechercheF" placeholder="Id de commande" aria-label="Search" value="{{champRecherche}}" autofocus>
                     {% else %}
-                    <input class="form-control mr-2" type="search" name="rechercheF" placeholder="Id de commande" aria-label="Search">
+                    <input class="form-control mr-2" type="search" name="rechercheF" placeholder="Id de commande" aria-label="Search" autofocus>
                     {% endif %}
                    
                     <button class="btn btn-outline-primary  " type="submit"><i class="fal fa-bullseye-arrow"></i></button>
