@@ -112,6 +112,27 @@ if (!empty($_POST['modifReturn']))
 } 
 
 
+//descend une ligne : 
+if (!empty($_POST['down'])) 
+{
+    $updateOrdre = $Devis->upanDonwn('down',$_POST['downId'], $_POST['downLigne'] , $_POST['down'][0]);
+    $idDevis = $_POST['downId'];
+}
+
+//monte une ligne : 
+if (!empty($_POST['up'])) 
+{
+    $updateOrdre = $Devis->upanDonwn('up',$_POST['upId'], $_POST['upLigne'] , $_POST['up'][0]);
+    $idDevis = $_POST['upId'];
+}
+
+//efface une ligne : 
+if (!empty($_POST['deleteId'])) 
+{
+    $Devis->deleteLine($_POST['deleteId']);
+    $idDevis = $_POST['deleteIdCmd'];
+}
+
 
 
 // creation lignes : 
@@ -119,7 +140,7 @@ if (!empty($_POST['devis']))
 {
     
     $newLines = $Devis->insertLine(
-    $_POST['ordre'] , $_POST['devis'] , $_POST['presta'], $_POST['fmm'],
+    $_POST['devis'] , $_POST['presta'], $_POST['fmm'],
     $_POST['designation'] , $_POST['etat'] , $_POST['garantie'],
     intval($_POST['quantite']) , floatval($_POST['promo']), floatval($_POST['prix']), $_POST['commentaire'] , $_POST['interne']);
     $idDevis = $_POST['devis'];

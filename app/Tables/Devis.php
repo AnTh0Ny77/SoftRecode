@@ -66,8 +66,13 @@ class Devis extends Table {
   }
 
 
-  public function insertLine($ordre , $idCmd , $prestation, $fmm , $designation , $etat , $garantie , $qte , $prixBarre , $puht , $noteC , $noteI  )
+  public function insertLine( $idCmd , $prestation, $fmm , $designation , $etat , $garantie , $qte , $prixBarre , $puht , $noteC , $noteI  )
   {
+    $verifOrdre = $this->Db->Pdo->query('SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne WHERE cmdl__cmd__id = '.$idCmd.' ');
+
+    $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
+    $ordreMax = $ordreMax->maxOrdre + 1 ;
+
     $request = $this->Db->Pdo->prepare('INSERT INTO cmd_ligne 
     (cmdl__ordre, 
     cmdl__cmd__id, 
@@ -93,7 +98,7 @@ class Devis extends Table {
     :cmdl__puht,
     :cmdl__note_client,
     :cmdl__note_interne)');
-    $request->bindValue(":cmdl__ordre", $ordre);
+    $request->bindValue(":cmdl__ordre", $ordreMax);
     $request->bindValue(":cmdl__cmd__id", $idCmd);
     $request->bindValue(":cmdl__prestation", $prestation);
     $request->bindValue(":cmdl__id__fmm", $fmm);
@@ -154,6 +159,58 @@ class Devis extends Table {
   {
     $request = $this->Db->Pdo->prepare("DELETE FROM cmd_garantie 
     WHERE cmdg__id__cmdl = '".$id."'");
+    $request->execute();
+  }
+
+
+  public function upanDonwn($option, $idCmd , $idLigne,$ordre)
+  {
+
+    if ($option == 'down') 
+    {
+      $list = $this->Db->Pdo->query("SELECT *  from cmd_ligne WHERE cmdl__cmd__id = '".$idCmd."' AND cmdl__ordre > '".$ordre."' ORDER BY cmdl__ordre LIMIT 1 ");
+    }
+    else 
+    {
+      $list = $this->Db->Pdo->query("SELECT *  from cmd_ligne WHERE cmdl__cmd__id = '".$idCmd."' AND cmdl__ordre < '".$ordre."' ORDER BY cmdl__ordre DESC LIMIT 1 ");
+    }
+    
+    $response = $list->fetch(PDO::FETCH_OBJ);
+    
+   
+
+    if (!empty($response)) 
+    {
+
+      $ordreFirst = $ordre;
+      $ordreSecond = $response->cmdl__ordre;
+
+      $update2 = $this->Db->Pdo->prepare(
+        'UPDATE cmd_ligne 
+         SET cmdl__ordre=? 
+         WHERE cmdl__id =?');
+      $update2->execute([ $ordreSecond , $idLigne]);
+
+
+      $update = $this->Db->Pdo->prepare(
+        'UPDATE cmd_ligne 
+         SET cmdl__ordre=? 
+         WHERE cmdl__id =?');
+      $update->execute([$ordreFirst ,$response->cmdl__id]);
+
+      return true;
+    }
+
+    else
+    {
+      return false ;
+    }
+  }
+
+  public function deleteLine($lineId)
+  {
+    $request = $this->Db->Pdo->prepare("DELETE FROM cmd_ligne 
+    WHERE cmdl__id = '".$lineId."'");
     $request->execute();
   }
 

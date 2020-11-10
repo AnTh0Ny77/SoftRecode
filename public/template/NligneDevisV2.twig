@@ -101,8 +101,8 @@
                         </div>
 
                         <div class="col-2">
-                            <label for="validationCustom04">Ordre</label>
-                            <input type="number" class="form-control" value="1" name="ordre">
+                            <label for="validationCustom04"> inclure l'image</label>
+                            <input type="checkbox" class="form-control" value="1" name="ordre">
                         </div> 
                     </div>
 
@@ -151,7 +151,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="collapse multi-collapse" id="commentaire" data-parent="#accordion">
+                            <div class="collapse  multi-collapse" id="commentaire" data-parent="#accordion">
                                 <div class="col-12 my-3 d-flex justify-content-between">
                                     <div class="col-6">
                                         <label for="comClient">Commentaire Client</label>
@@ -181,7 +181,7 @@
         <div class=" col-5" >
         
             {% for ligne in devisLignes %}
-            <div class="card my-1 shadow">
+            <div class="card my-1 shadow col-12">
             <div class='card-body'>
 
             <div class="d-flex ">
@@ -204,19 +204,31 @@
                 <div class="col-4">
                     <div class="d-flex justify-content-end ">
                         <div class="align-content-end my-1">
-                            <button type="button" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i></button>
+                            <form action="ligneDevisV2" method="POST">
+                                <input type="hidden" name="up[]" value="{{ligne.devl__ordre}}"/>
+                                <input type="hidden" name="upId" value="{{ligne.cmdl__cmd__id}}"/>
+                                <input type="hidden" name="upLigne" value="{{ligne.devl__id}}"/>
+                                <button type="submit" class="btn btn-outline-success btn-sm"><i class="far fa-arrow-to-top"></i></button>
+                            </form>
+                            
                         </div> 
                     </div>
                     <div class="d-flex justify-content-end ">
                         <div class="align-content-end my-1">
-                            <button type="button" class="btn btn-outline-success btn-sm"><i class="far fa-arrow-to-top"></i></button>
+                            <form action="ligneDevisV2" method="POST">
+                                <input type="hidden" name="deleteIdCmd" value="{{ligne.cmdl__cmd__id}}"/>
+                                <input type="hidden" name="deleteId" value="{{ligne.devl__id}}"/>
+                                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i></button>
+                            </form>
                         </div> 
                     </div>
                     <div class="d-flex justify-content-end ">
-                        <div class="align-content-end my-1">
-                            <button type="button" class="btn btn-outline-success btn-sm"><i class="far fa-arrow-to-bottom"></i></button>
-                        </div> 
+                        <div class=" my-1">
+                                <button type="submit" class="btn btn-outline-primary btn-sm"><i class="fal fa-file-edit"></i></button>
+                        </div>    
                     </div>
+                    
+                   
                 </div>
                 
             </div>
@@ -245,15 +257,21 @@
                         </p>
                     </div>
                     <div class='col-6'>
-                        <div class="d-flex justify-content-end ">
-                            <div class=" my-1">
-                                <button type="button" class="btn btn-outline-primary btn-sm"><i class="fal fa-file-edit"></i></button>
-                            </div>    
-                        </div>
+                       
                         <div class="d-flex justify-content-end ">
                             <div class='my-1'>
                                 <button type="button" class="btn btn-outline-secondary btn-sm"><i class="far fa-copy"></i></button>
                             </div>
+                        </div>
+                        <div class="d-flex justify-content-end ">
+                            <div class="align-content-end my-1">
+                                <form action="ligneDevisV2" method="POST">
+                                    <input type="hidden" name="down[]" value="{{ligne.devl__ordre}}"/>
+                                    <input type="hidden" name="downId" value="{{ligne.cmdl__cmd__id}}"/>
+                                    <input type="hidden" name="downLigne" value="{{ligne.devl__id}}"/>
+                                <button type="submit" class="btn btn-outline-success btn-sm"><i class="far fa-arrow-to-bottom"></i></button>
+                                </form>
+                            </div> 
                         </div>
                     </div>
                     </div>
@@ -274,7 +292,7 @@
               
                 
                 </div>
-            </div>
+            
             {% endfor %}     
         </div>
     </div>
