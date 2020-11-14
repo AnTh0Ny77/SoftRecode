@@ -155,6 +155,13 @@ class Devis extends Table {
     return $response;
   }
 
+  public function selecOneLine($idCmdl)
+  {
+    $request = $this->Db->Pdo->query('SELECT * from cmd_ligne WHERE cmdl__id = '.$idCmdl.' ');
+    $response = $request->fetch(PDO::FETCH_OBJ);
+    return $response;
+  }
+
   public function deleteGarantie($id)
   {
     $request = $this->Db->Pdo->prepare("DELETE FROM cmd_garantie 

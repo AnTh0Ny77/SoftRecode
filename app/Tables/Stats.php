@@ -88,7 +88,7 @@ public function returnCmdBetween2Dates($debut , $fin , $abn)
 {
     if (!empty($abn)) 
     {
-      $stat = "AND cmd__etat = 'VLD' OR cmd__etat = 'VLA' ";
+      $stat = "AND (cmd__etat = 'VLD' OR cmd__etat = 'VLA' )";
     }
     else 
     {

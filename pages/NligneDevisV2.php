@@ -133,10 +133,21 @@ if (!empty($_POST['deleteId']))
     $idDevis = $_POST['deleteIdCmd'];
 }
 
+//modification de ligne demandée :
+$modif = null; 
+if (!empty($_POST['modifyId']) && !empty($_POST['modifyIdCmd'])) 
+{
+    $modif = $Devis->selecOneLine($_POST['modifyId']);
+    $xtend = $Devis->selectGaranties($_POST['modifyId']);
+    $modif->xtend = $xtend;
+    $modif->modif = true;
+    $idDevis = $_POST['modifyIdCmd'];
+}
 
 
-// creation lignes : 
-if (!empty($_POST['devis'])) 
+
+// creation lignes ou duplicata : 
+if (!empty($_POST['devis']) && empty($_POST['boolModif'])) 
 {
     
     $newLines = $Devis->insertLine(
@@ -165,6 +176,45 @@ if (!empty($_POST['devis']))
    
 }
 
+//modification de ligne : 
+if (!empty($_POST['boolModif'])) 
+    {
+        $General->updateAll('cmd_ligne' , $_POST['presta'] , 'cmdl__prestation' , 'cmdl__id' , $_POST['boolModif']);
+        $General->updateAll('cmd_ligne' , $_POST['fmm'] , 'cmdl__id__fmm' , 'cmdl__id' , $_POST['boolModif']);
+        $General->updateAll('cmd_ligne' , $_POST['designation'] , 'cmdl__designation' , 'cmdl__id' , $_POST['boolModif']);
+        $General->updateAll('cmd_ligne' , $_POST['etat'] , 'cmdl__etat' , 'cmdl__id' , $_POST['boolModif']);
+        $General->updateAll('cmd_ligne' , $_POST['garantie'] , 'cmdl__garantie_base' , 'cmdl__id' , $_POST['boolModif']);
+        $General->updateAll('cmd_ligne' , intval($_POST['quantite']) , 'cmdl__qte_cmd' , 'cmdl__id' , $_POST['boolModif']);
+        $General->updateAll('cmd_ligne' , floatval($_POST['promo']) , 'cmdl__prix_barre' , 'cmdl__id' , $_POST['boolModif']);
+        $General->updateAll('cmd_ligne' , floatval($_POST['prix']) , 'cmdl__puht' , 'cmdl__id' , $_POST['boolModif']);
+        $General->updateAll('cmd_ligne' , $_POST['commentaire'] , 'cmdl__note_client' , 'cmdl__id' , $_POST['boolModif']);
+        $General->updateAll('cmd_ligne' , $_POST['interne'] , 'cmdl__note_interne' , 'cmdl__id' , $_POST['boolModif']);
+      
+
+        $Devis->deleteGarantie($_POST['boolModif']);
+
+        $idDevis = $_POST['boolIdCmd'];
+       
+
+    
+        //extension de garanties : 
+        foreach ($_POST['xtendP'] as $key => $value) 
+        {
+           if (!empty($value[0])) 
+           {
+               foreach ($_POST['xtendB'] as $mois => $promo) 
+               {
+                   if (intval($mois) == intval($key)) 
+                   {
+                      $Devis->insertGaranties( $_POST['boolModif'] , $mois , floatval($value[0]) , floatval($promo[0]) );
+                       
+                   }
+               }
+           }
+        }
+       
+    }
+
 
 $devis = $Cmd->GetById($idDevis);
 $devisLigne = $Cmd->devisLigne($idDevis);
@@ -190,7 +240,8 @@ echo $twig->render('NligneDevisV2.twig',[
     'articleList' => $articleTypeList,
     'garanties' => $garanties,
     'etatList'=> $etatList,
-    'devisLignes' => $devisLigne
+    'devisLignes' => $devisLigne,
+    'modif' => $modif
     
  ]);
 
