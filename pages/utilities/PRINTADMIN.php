@@ -260,10 +260,10 @@ if ($temp->devis__note_client) {
      $numFact = substr($numFact , -7 );
      if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
     {
-        $doc->output('F:\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
+        $doc->output('F:/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
      
     }
-    $doc->output('O:\intranet\Auto_Print\FC\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
+    $doc->output('O:\intranet\Auto_Print\FC/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
     
     $_SESSION["facture"] =  ' BL n°: '. $temp->devis__id . ' Facturé n°: '. $numFact ;
      header('location: facture');

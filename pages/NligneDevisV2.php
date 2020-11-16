@@ -24,8 +24,6 @@ session_start();
  $Database->DbConnect();
 
 
- 
-
 //creation devis :
 if (!empty($_POST['clientSelect']) && empty($_POST['modifReturn'])) 
 {

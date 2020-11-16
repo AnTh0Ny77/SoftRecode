@@ -40,7 +40,7 @@
 
                             <div class="col-1">
                                 <label for="prestationChoix">Prestation:</label>
-                                <select class="selectpicker" data-width="auto" name="presta" required>
+                                <select class="border selectpicker" data-width="auto" name="presta" required>
                                 {% for presta in prestaList %}
                                     {% if modif.cmdl__prestation == presta.kw__value %}
                                         <option class=""  value={{presta.kw__value}} selected>{{presta.kw__lib}}</option>
@@ -53,8 +53,8 @@
 
                             <div class="col-8 ">
                                 <label for="choixDesignation">Modèle:</label>
-                                    <select class="selectpicker col-12"  data-live-search="true" data-width="100%" name="fmm" id="fmm" required>
-                                        <option class="optionSelect modelSelect" value="">..</option>
+                                    <select class=" border selectpicker col-12"  data-live-search="true" data-width="100%" name="fmm" id="fmm" required>
+                                        <option class="  optionSelect modelSelect" value="">..</option>
                                         {% for article in articleList %} 
                                             {% if modif.cmdl__id__fmm == article.afmm__id %}
                                                 <option class="optionSelect modelSelect" value={{article.afmm__id}} selected>{{article.afmm__modele   ~ " " ~ article.famille ~ " " ~ article.Marque }}</option>
@@ -74,8 +74,7 @@
                                       <input type="text" class="form-control" name="designation" id="designation" value="{{modif.cmdl__designation}}"  text="{{modif.cmdl__designation}}" required>
                                     {% else %}
                                       <input type="text" class="form-control" name="designation" id="designation" required>
-                                    {% endif %}
-                                  
+                                    {% endif %}     
                             </div>
                         </div>
 
@@ -170,51 +169,65 @@
                     </div>
 
                     <div id="accordion">
-                        <div class="collapse multi-collapse " id="extensions"   data-parent="#accordion">
+                        <div class="collapse show multi-collapse " id="extensions"   data-parent="#accordion">
                                 <div class="col-12 mt-3 mb-2 d-flex justify-content-around">
                                     <div class="d-flex flex-row flex-wrap justify-content-around">
+                            {% if modif.xtend %}
+                                {% for xtend in modif.xtend %}
                                    {% for garantie in garanties %}
-                                        {% if garantie.kw__value != 00 %}
+                                        {% if garantie.kw__value != 00 and xtend.cmdg__type == garantie.kw__value and xtend.cmdg__prix_barre %}
                                         <div class="input-group-text col-5 my-2">
                                             <div>
                                                 <div>
                                                     <label ><b>{{garantie.kw__lib}} mois</b></label>
                                                 </div>
-                                                
                                             </div>
                                             <div class="col-10 d-flex justify-content-around">
                                                 <div class="col-6">
                                                  <label ><strike>Promo</strike></label>
-                                                    {% if modif.xtend %}
-                                                        {% for xtend in modif.xtend %}
-                                                            {% if xtend.cmdg__type == garantie.kw__value  %}
-                                                                <input type="text" class="form-control" value='{{xtend.cmdg__prix_barre}}' name="xtendB[{{garantie.kw__value}}][]">
-                                                            {% else %}
-                                                                <input type="text" class="form-control" name="xtendB[{{garantie.kw__value}}][]">
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    {% else %}
-                                                        <input type="text" class="form-control" name="xtendB[{{garantie.kw__value}}][]">
-                                                    {% endif %}
+                                                   
+                                                    <input type="text" class="form-control" value='{{xtend.cmdg__prix_barre}}' name="xtendB[{{garantie.kw__value}}][]">
+                                                        
+  
+                                                   
                                                 </div>
                                                  <div class="col-6">
                                                  <label >Prix H.T</label>
-                                                    {% if  modif.xtend %}
-                                                        {% for xtend in modif.xtend %}
-                                                            {% if xtend.cmdg__type  == garantie.kw__value %}
-                                                            <input type="text" class="form-control" value='{{xtend.cmdg__prix}}' name="xtendP[{{garantie.kw__value}}][]">
-                                                            {% else %}
-                                                            <input type="text" class="form-control" name="xtendP[{{garantie.kw__value}}][]">
-                                                            {% endif %}
-                                                        {% endfor %}
-                                                    {% else %}
-                                                        <input type="text" class="form-control" name="xtendP[{{garantie.kw__value}}][]">
-                                                    {% endif %}
+                                                   
+                                                        <input type="text" class="form-control" value='{{xtend.cmdg__prix}}' name="xtendP[{{garantie.kw__value}}][]">        
                                                 </div>  
                                             </div> 
                                         </div>
+                                        {% elseif  garantie.kw__value != 00 %}  
+                                            {{ dump(xtend.cmdg__type) }}
+
                                         {% endif %}
                                    {% endfor %}
+                                {% endfor %}
+                            {% else %}
+                                {% for garantie in garanties %}
+                                    {% if garantie.kw__value != 00 %}
+                                        <div class="input-group-text col-5 my-2">
+                                            <div>
+                                                <div>
+                                                    <label ><b>{{garantie.kw__lib}} mois</b></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-10 d-flex justify-content-around">
+                                                <div class="col-6">
+                                                <label ><strike>Promo</strike></label>
+                                                    <input type="text" class="form-control"  name="xtendB[{{garantie.kw__value}}][]">
+                                                </div>
+                                                <div class="col-6">
+                                                <label >Prix H.T</label>
+                                                
+                                                        <input type="text" class="form-control"  name="xtendP[{{garantie.kw__value}}][]">        
+                                                </div>  
+                                            </div> 
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
                                     </div>
                                 </div>
                             </div>
