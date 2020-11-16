@@ -97,8 +97,6 @@ if (!empty($_POST['PrintFormat']))
              <td style="text-align: left; width:50%">
              <h3>Facture PRO Format: <?php echo ' le '. $formate ; ?></h3><br>
              
-             
-
              <?php 
              // si une societe de livraion est présente 
                 if ($temp->devis__contact__id) 
@@ -122,7 +120,7 @@ if (!empty($_POST['PrintFormat']))
 </page_header>
 <page_footer>
 <div >
-<table style=" margin-bottom: 30px;  width:100%;" >
+<table style=" margin-bottom: 30px;  width:100%;">
     <tr>
     <td style="width: 55%;">  </td>
     <td align="right">
