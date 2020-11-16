@@ -151,13 +151,13 @@ else
                 <input type='hidden' name='AdminGarantie' value=". $temp->devis__id.">
                 <button class='btn btn-primary btn-sm'>Administration</button>
                 </form>";
-                // if ($_SESSION['user']->user__facture_acces >=  10 ) 
-                // {
-                //     echo "<form class='my-2 mx-2' action='PRINTFORMAT' method='POST'>
-                //     <input type='hidden' name='IDFORMAT' value=". $temp->devis__id.">
-                //     <button class='btn btn-secondary btn-sm'>Facture pro format</button>
-                //     </form>";
-                // }
+                if ($_SESSION['user']->user__facture_acces >=  10 ) 
+                {
+                    echo "<form class='my-2 mx-2' action='PRINTFORMAT' method='POST'>
+                    <input type='hidden' name='PrintFormat' value=". $temp->devis__id.">
+                    <button class='btn btn-secondary btn-sm'>Facture pro format</button>
+                    </form>";
+                }
              ?>
              </div>
              

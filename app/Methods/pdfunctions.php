@@ -427,6 +427,47 @@ public static function totalFacturePDF($objectCmd, $arrayLigne )
 
 
 
+public static function totalFacturePRO($objectCmd, $arrayLigne )
+{
+	$tva = floatval($objectCmd->tva_Taux);
+	$array_prix = [];
+	$response = [] ; 
+	foreach ($arrayLigne as $ligne ) 
+	{
+		if (!empty($ligne->devl_puht)) 
+		{
+			
+			$quantite = intval($ligne->devl_quantite);
+			
+			
+			$prix = floatval($ligne->devl_puht);
+			$total_ligne = $quantite * $prix ;
+
+				if (!empty($ligne->cmdl__garantie_option)) 
+				{
+					$prix_extension = floatval($ligne->cmdl__garantie_puht);
+					$total_extension = $quantite * $prix_extension;
+					$total_ligne = $total_ligne + $total_extension ;
+				}
+			 
+			array_push($array_prix , $total_ligne);
+		}
+	}
+	
+	
+	$global_ht = array_sum($array_prix);
+
+	$montant_tva = floatval(($global_ht*$tva)/100);
+
+	$global_ttc = $global_ht + $montant_tva;
+
+	array_push($response , floatval($global_ht) , floatval($tva) , floatval($montant_tva) , floatval($global_ttc));
+
+	return $response;	
+}
+
+
+
 // fonction d'affichage de garantie dans View :
 public static function showGarantieView($object)
 {
@@ -874,6 +915,157 @@ public static function magicLineFTC($arrayLigne , $cmd){
 
 
 		if ($ligne->cmdl__qte_fact > 0) 
+		{
+		$table .= $pack;
+		}
+	}
+
+	
+
+	$tete =  '<tr style=" margin-top : 70px;  background-color: #dedede; ">
+	<td style=" text-align: center;  border: 1px solid black;  padding-top: 4px; padding-bottom: 4px;"><b>Prestation</b></td>
+	<td style=" text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Désignation</b></td>
+	<td  style=" text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Qté</b></td>
+	<td style="text-align: center;  border: 1px solid black;  padding-top: 4px; padding-bottom: 4px;"><b>P.U € HT</b></td>
+	<td style="text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>TOTAL € HT</b></td>
+	</tr> ';
+
+	echo $tete . $table ;
+}
+
+
+
+
+public static function magicLinePRO($arrayLigne , $cmd){
+	// variables des tailles de cellules afin de pouvoir regler la largeur de la table facilement :
+	$firstW = '12%';
+	$secondW = '50%';
+	$thirdW ='10%';
+	$fourthW = '14%';
+	$fifthW = '14%';
+	
+	
+	
+	// paddind de la premiere ligne : 
+	$firstPadding = '0px';
+	
+	$table = "";
+	$countPadding = 0;
+
+	if ($countPadding == 1 ) {
+		$firstPadding = '15px';
+	}
+	else { $firstPadding = '0px';}
+
+	$tva = floatval($cmd->tva_Taux);
+
+	//boucle sur les lignes passées en parametres
+	foreach ($arrayLigne as $ligne) 
+	{
+		
+			
+		
+		// + 1 dans la valeur du padding
+		$countPadding += 1;
+
+		if ($countPadding == 1 ) {
+			$firstPadding = '15px';
+		}
+		else { $firstPadding = '0px';}
+
+		$pack = "";
+
+		$pack .= '<tr>';
+
+		$firstCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$firstW."; max-width: ".$firstW."; text-align: left;  '>"
+
+			. $ligne->prestaLib. "
+	
+		</td>";
+
+		if (!empty($ligne->devl__note_client)) 
+		{
+			$secondCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$secondW."; max-width: ".$secondW."; text-align: left; padding-bottom: 5px;  '>"
+
+				. $ligne->devl__designation.  $ligne->devl__note_client."
+		
+			</td>";
+		}
+		else 
+		{
+			$secondCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  '>"
+
+				. $ligne->devl__designation. "
+		
+			</td>";
+		}
+
+		$thirdCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW."; text-align: right;  '>"
+
+		. $ligne->devl_quantite . "
+
+		</td>";
+
+		$FourthCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
+
+		.  number_format($ligne->devl_puht , 2) . "
+
+		</td>";
+
+		$prixTTc = floatval($ligne->devl_puht * $ligne->devl_quantite);
+	
+
+		$FifthCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
+
+		. number_format($prixTTc , 2) . "
+
+		</td>";
+		$pack .= $firstCell . $secondCell . $thirdCell . $FourthCell . $FifthCell ;
+		$pack .= '</tr>';
+
+		if (!empty($ligne->cmdl__garantie_option) && $ligne->cmdl__garantie_option!= '00' ) 
+		{
+
+			$firstCellXT = "<td valign='top' style='  width: ".$firstW."; max-width: ".$firstW."; text-align: left;  '>
+
+			Extension 
+	
+			</td>";
+
+			$secondCellXT = "<td valign='top' style='   width: ".$secondW."; max-width: ".$secondW."; text-align: left;  '>
+
+			Extension de Garantie à ". $ligne->cmdl__garantie_option ." mois
+		
+			</td>";
+
+			$thirdCellXT = "<td valign='top' style='   width: ".$thirdW."; max-width: ".$thirdW."; text-align: right;  '>"
+
+			. $ligne->devl_quantite . "
+
+			</td>";
+
+			$FourthCellXT = "<td valign='top' style='   width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
+
+			.  number_format($ligne->cmdl__garantie_puht , 2) . "
+
+			</td>";
+
+			$prixTTcXT = floatval($ligne->cmdl__garantie_puht* $ligne->devl_quantite);
+			
+			
+
+			$FifthCellXT = "<td valign='top' style='   width: ".$fourthW."; max-width: ".$fourthW."; text-align: right;  '>"
+
+			. number_format($prixTTcXT , 2) . "
+
+			</td>";
+
+			$pack .= '<tr>' . $firstCellXT . $secondCellXT . $thirdCellXT . $FourthCellXT . $FifthCellXT . '</tr>';
+			
+		}
+
+
+		if ($ligne->devl_quantite > 0) 
 		{
 		$table .= $pack;
 		}
