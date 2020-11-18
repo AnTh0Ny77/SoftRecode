@@ -3,6 +3,10 @@
 
 $(document).ready(function() 
 {
+    //initialization des tooltips 
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip({ html: true })
+    })
   
     //init du commentaire Client global : 
     if ($('#comClient').length) 

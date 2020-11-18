@@ -279,6 +279,10 @@
                     <div class="">
                         <p class="card-text">
                             {{ligne.kw__lib ~ " " }}
+                                {% if ligne.devl__note_interne %}
+                                <i class="far fa-comment-edit"  data-toggle="tooltip" data-placement="top"  title="{{'<h3>Interne</h3>' ~  ligne.devl__note_interne}}"></i>
+                                {% endif %}
+                           
                             {% if ligne.devl__prix_barre and ligne.devl__prix_barre > 0  %}
                                 <strike>
                                     {{" " ~ ligne.devl__prix_barre ~ " "}}
