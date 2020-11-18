@@ -25,7 +25,7 @@ $(document).ready(function()
         }
         
          let transporteur = $('#select-transport').val();
-         console.log(transporteur);
+       
 
          let paquet = $('#select-transporteur').val();
          $('#poids').val(poids);
@@ -39,14 +39,19 @@ $(document).ready(function()
         bindData();
        
         var poidsNb = $('#poids').val();
+        var paquetNb = parseInt($('#select-transporteur').val());
+        
 
-      
         if(isNaN(poidsNb) || parseInt(poidsNb) == 0 ) 
         { 
            
            alert('Le poids est incorrect')
         }
-        if ($('#transporteur').val().length < 1) 
+        else if ($('#transporteur').val() == 'TNT' && parseInt(poidsNb)/paquetNb > 30 ) 
+        {
+            alert('Paquet supérieur à 30 kilos !! ');
+        }
+        else if ($('#transporteur').val().length < 1) 
         {
             alert('Choisi un transporteur !! ')
         }

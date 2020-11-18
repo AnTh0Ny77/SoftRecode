@@ -51,9 +51,45 @@
                     <label for="exampleInputPassword1">Commentaire Interne</label>
                     <textarea class="form-control " name='comInterne' id="comInterne"  rows="5" cols="40">{{cmd.devis__note_interne}}</textarea>
                 </div>
+                 <div class="form-group">
+                    <label for="exampleInputPassword1">Facturation</label>
+                    <select class="selectpicker show-tick"  data-live-search="true" data-width="100%"  name="clientfact" required>     
+                           
+                                {% for client in clientList %}
+                                    {% if cmd.client__id == client.client__id  %}
+                                        <option value="{{client.client__id}}" selected>{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                                    {% else %}
+                                        <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                    </select>
+                    
+                </div>
+                 <div class="form-group">
+                    <label for="exampleInputPassword1">Livraison</label>
+                    <select class="selectpicker show-tick"  data-live-search="true" data-width="100%"  name="clientLivr" required>     
+                                {% for client in clientList %}
+                                  {% if cmd.devis__id_client_livraison %}
+                                    {% if cmd.devis__id_client_livraison == client.client__id  %}
+                                          <option value="{{client.client__id}}" selected>{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                                      {% else %}
+                                          <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                                      {% endif %}
+                                  {% else %}
+                                      {% if cmd.client__id == client.client__id  %}
+                                          <option value="{{client.client__id}}" selected>{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                                      {% else %}
+                                          <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                                      {% endif %}
+                                  {% endif %}
+                                    
+                                {% endfor %}
+                    </select>
+                    
+                </div>
                <div class='modal-footer'>
                <a class="btn btn-secondary" href="ficheTravail" role="button">retour à recherche</a>
-                <button type="button" class="btn btn-success" id="clickLivraison">Livraison</button>
+                {# <button type="button" class="btn btn-success" id="clickLivraison">Livraison</button> #}
                <button class="btn btn-primary">Mettre à Jour</button>
                </div>
                 
@@ -77,14 +113,14 @@
 
               <div class="card" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title"> facturé :<br> {{ cmd.client__societe }}</h5>
+                    <h5 class="card-title"> facturé :<br><strong> {{ cmd.client__societe }} </strong></h5>
                      <p class="card-text">{{ cmd.client__adr1 ~  " " ~ cmd.client__ville ~ " " ~ cmd.client__cp }}</p>
                 </div>
               </div>
 
               <div class="card" style="width: 18rem;">
                 <div class="card-body">
-                    <h5 class="card-title"> Livré :<br> {{ cmd.client__livraison_societe }}</h5>
+                    <h5 class="card-title"> Livré :<br><strong> {{ cmd.client__livraison_societe }}</strong></h5>
                      <p class="card-text">{{ cmd.client__livraison__adr1 ~  " " ~ cmd.client__livraison_ville ~ " " ~ cmd.client__livraison_cp }}</p>
                 </div>
               </div>

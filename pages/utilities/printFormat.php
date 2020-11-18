@@ -229,11 +229,11 @@ if ($temp->devis__note_client) {
      ob_clean();
      $numFact = '0000000' . $temp->cmd__id_facture ;
      $numFact = substr($numFact , -7 );
+
      if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
-    {
-       
-     
-    }
+     {
+        $doc->output('O:\intranet\Auto_Print\PF/'.$temp->devis__id.'PF-'.$temp->devis__id.'C.pdf' , 'F'); 
+     }
     
     
     header('location: ficheTravail');

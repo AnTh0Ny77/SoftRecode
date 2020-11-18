@@ -87,6 +87,12 @@ if (intval($command->client__id) < 10)
 {
    $Command->updateGarantieToArchive($command->devis__id);
 }
+
+if ($command->cmd__trans == 'NBL') 
+{
+    header('location: transport2');
+    
+}
 $commandLignes = $Command->devisLigne($_POST['id_trans']);
 $dateTemp = new DateTime($command->cmd__date_envoi);
  //cree une variable pour la date de commande du devis

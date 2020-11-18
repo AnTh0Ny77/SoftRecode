@@ -268,7 +268,7 @@ public static function magicLine($arrayLigne){
 		$firstCell2 = "<td valign='top' style=' width:".$firstW."; max-width: ".$firstW."; text-align: left; '>garantie</td>";
 
 		if ($object->devl__type == "REP") {
-			$secondCell2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW.";  text-align: left;  '>mise sous garantie du matériel réparé optionnelle - retour atelier & renvoi sous 24h </td>";
+			$secondCell2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW.";  text-align: left;  '>mise sous garantie du matériel réparé optionnelle  </td>";
 		}
 		else {
 			if (is_int(intval($array['devg__type'])/12) ) {
@@ -290,7 +290,7 @@ public static function magicLine($arrayLigne){
 			$secondLine = "<tr style='font-size: 95%; font-style: italic;'>" ;
 			$firstCell2 = "<td valign='top' style=' width:".$firstW."; text-align: left; border-bottom: 1px #ccc solid'>garantie</td>";
 			if ($object->devl__type == "REP") {
-				$secondCell2 = "<td valign='top' style=' width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid; padding-bottom:15px '>mise sous garantie du matériel réparé optionnelle - retour atelier & renvoi sous 24h </td>";
+				$secondCell2 = "<td valign='top' style=' width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid; padding-bottom:15px '>mise sous garantie du matériel réparé optionnelle  </td>";
 		}
 		else 
 		{

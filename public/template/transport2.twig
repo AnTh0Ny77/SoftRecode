@@ -239,10 +239,12 @@
                     <div  class="my-3"> 
                       <h6 >Transporteur</h6>
                       <select class="selectpicker " title="Choix"  name="" id="select-transport" required>
-                     
+                      
                         {% for entry in transporteurs %} 
                         <option value="{{entry.kw__value}}">{{entry.kw__lib}}</option>
+                        
                         {% endfor %}
+                        <option value="NBL">Pas de bon de livraison</option>
                       </select> 
                     </div>
 

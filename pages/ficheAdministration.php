@@ -59,6 +59,9 @@ session_start();
  if (!empty($_POST['idAdminFiche']) ) 
  {
     $umpdateCode = $General->updateAll('cmd' , $_POST['codeCommandeClient'] , 'cmd__code_cmd_client' , 'cmd__id' , $_POST['idAdminFiche'] );
+    $umpdateFact = $General->updateAll('cmd' , $_POST['clientfact'] , 'cmd__client__id_fact' , 'cmd__id' , $_POST['idAdminFiche'] );
+    $umpdateLivr = $General->updateAll('cmd' , $_POST['clientLivr'] , 'cmd__client__id_livr' , 'cmd__id' , $_POST['idAdminFiche'] );
+    
     
     $umpdateCommentaire = $General->updateAll('cmd' , $_POST['comInterne'] , 'cmd__note_interne' , 'cmd__id' , $_POST['idAdminFiche'] );
     $cmd = $Cmd->GetById($_POST['idAdminFiche']);
@@ -76,35 +79,36 @@ session_start();
 
  }
 
- //si une mise a jour de livraison a été effectuée: 
- if (!empty($_POST['majIdFiche']) && !empty($_POST['MajLivraison'])) 
- {
-    $umpdateLivraion = $General->updateAll('cmd' , $_POST['MajLivraison'] , 'cmd__client__id_livr' , 'cmd__id' , $_POST['majIdFiche'] );
+//  //si une mise a jour de livraison a été effectuée: 
+//  if (!empty($_POST['majIdFiche']) && !empty($_POST['MajLivraison'])) 
+//  {
+//     $umpdateLivraion = $General->updateAll('cmd' , $_POST['MajLivraison'] , 'cmd__client__id_livr' , 'cmd__id' , $_POST['majIdFiche'] );
     
     
-    $cmd = $Cmd->GetById($_POST['majIdFiche']);
-    $lignes = $Cmd->devisLigne($_POST['majIdFiche']);
+//     $cmd = $Cmd->GetById($_POST['majIdFiche']);
+//     $lignes = $Cmd->devisLigne($_POST['majIdFiche']);
 
-    $devisDate = date_create($cmd->devis__date_crea);
-    $date = date_format($devisDate, 'd/m/Y');
-    $cmd->devis__date_crea = $date;
+//     $devisDate = date_create($cmd->devis__date_crea);
+//     $date = date_format($devisDate, 'd/m/Y');
+//     $cmd->devis__date_crea = $date;
 
-    $cmdDate = date_create($cmd->cmd__date_cmd);
-    $date = date_format($cmdDate, 'd/m/Y');
-    $cmd->cmd__date_cmd = $date;
+//     $cmdDate = date_create($cmd->cmd__date_cmd);
+//     $date = date_format($cmdDate, 'd/m/Y');
+//     $cmd->cmd__date_cmd = $date;
 
-    $Pisteur->addPiste($_SESSION['user']->id_utilisateur , $datePist , $_POST['majIdFiche'] ,'a changé l adresse de livraison de la Fiche de Travail');
+//     $Pisteur->addPiste($_SESSION['user']->id_utilisateur , $datePist , $_POST['majIdFiche'] ,'a changé l adresse de livraison de la Fiche de Travail');
     
- }
+//  }
 
-
+ $clientList = $Client->getAll();
 
  // Donnée transmise au template : 
  echo $twig->render('ficheAdministration.twig',
  [
  'user'=>$user , 
  'cmd' =>$cmd , 
- 'lignes' =>$lignes
+ 'lignes' =>$lignes , 
+ 'clientList' => $clientList 
  
  ]);
  
