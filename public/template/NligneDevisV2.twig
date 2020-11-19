@@ -1,4 +1,4 @@
-{% extends 'layoutMain.twig' %}
+{% extends 'layoutLight.twig' %}
 
 
 {% block style %}
@@ -10,7 +10,7 @@
  
 
 {% block main %}
-<main  role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">                                                                                  
+<main  role="main" class=" pt-3 px-4">                                                                                  
     <div class="d-flex justify-content-start flex-column mb-5 border-bottom">
         <form class="d-flex align-items-center" action="DevisV2" method="POST">
             <div class="mr-4">
@@ -31,7 +31,7 @@
         <!-- 1ere ligne -->
     <div class="d-flex flex-wrap flex-row justify-content-between col-12">
 
-        <div class="card col-7" >
+        <div class="card col-6" >
             <div class="card-body">
                <h5 class="card-title">Variable</h5>
                     <form action="ligneDevisV2" method="POST">
@@ -172,39 +172,7 @@
                         <div class="collapse show multi-collapse " id="extensions"   data-parent="#accordion">
                                 <div class="col-12 mt-3 mb-2 d-flex justify-content-around">
                                     <div class="d-flex flex-row flex-wrap justify-content-around">
-                            {% if modif.xtend %}
-                                {% for xtend in modif.xtend %}
-                                   {% for garantie in garanties %}
-                                        {% if garantie.kw__value != 00 and xtend.cmdg__type == garantie.kw__value and xtend.cmdg__prix_barre %}
-                                        <div class="input-group-text col-5 my-2">
-                                            <div>
-                                                <div>
-                                                    <label ><b>{{garantie.kw__lib}} mois</b></label>
-                                                </div>
-                                            </div>
-                                            <div class="col-10 d-flex justify-content-around">
-                                                <div class="col-6">
-                                                 <label ><strike>Promo</strike></label>
-                                                   
-                                                    <input type="text" class="form-control" value='{{xtend.cmdg__prix_barre}}' name="xtendB[{{garantie.kw__value}}][]">
-                                                        
-  
-                                                   
-                                                </div>
-                                                 <div class="col-6">
-                                                 <label >Prix H.T</label>
-                                                   
-                                                        <input type="text" class="form-control" value='{{xtend.cmdg__prix}}' name="xtendP[{{garantie.kw__value}}][]">        
-                                                </div>  
-                                            </div> 
-                                        </div>
-                                        {% elseif  garantie.kw__value != 00 %}  
-                                            {{ dump(xtend.cmdg__type) }}
-
-                                        {% endif %}
-                                   {% endfor %}
-                                {% endfor %}
-                            {% else %}
+                           
                                 {% for garantie in garanties %}
                                     {% if garantie.kw__value != 00 %}
                                         <div class="input-group-text col-5 my-2">
@@ -216,7 +184,21 @@
                                             <div class="col-10 d-flex justify-content-around">
                                                 <div class="col-6">
                                                 <label ><strike>Promo</strike></label>
-                                                    <input type="text" class="form-control"  name="xtendB[{{garantie.kw__value}}][]">
+                                                       
+                                                       
+                                                        {{ dump(modif.xtend[loop.index]) }}
+                                                        
+                                                            {% if  modif.xtend.cmdg__type == garantie.kw__value  %}
+                                                                <input type="text" class="form-control" value="{{xtend.cmdg__prix_barre}}"   name="xtendB[{{garantie.kw__value}}][]">
+                                                            {% else %}
+                                                                <input type="text" class="form-control"  name="xtendB[{{garantie.kw__value}}][]">
+                                                            {% endif %}
+
+
+                                                        
+                                                           
+                                                       
+                                                        
                                                 </div>
                                                 <div class="col-6">
                                                 <label >Prix H.T</label>
@@ -227,7 +209,7 @@
                                         </div>
                                     {% endif %}
                                 {% endfor %}
-                            {% endif %}
+                           
                                     </div>
                                 </div>
                             </div>
@@ -247,27 +229,17 @@
                                             <textarea class="CKE" id="comInterne" placeholder="Commentaire interne...." rows="4" name="interne">{{modif.cmdl__note_interne}}</textarea>
                                         {% else %}
                                             <textarea class="CKE" id="comInterne" placeholder="Commentaire interne...." rows="4" name="interne"></textarea>
-                                        {% endif %}
-                                        
+                                        {% endif %} 
                                     </div>
                                 </div>
-
-                               
-
                             </div>
                     </div>
-
-                      
-                  
-                    
-
-
             </form>   
             </div>
         </div>
 
 
-        <div class=" col-5" >
+        <div class=" col-6" >
         
             {% for ligne in devisLignes %}
             <div class="card my-1 shadow col-12">

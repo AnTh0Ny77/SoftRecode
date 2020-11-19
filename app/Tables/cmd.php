@@ -464,11 +464,11 @@ public function classicReliquat($cmd)
    
     $reliquat = $this->GetById($cmd);
 
-    $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd, cmd__client__id_fact,
+    $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd, cmd__date_devis, cmd__client__id_fact,
       cmd__client__id_livr, cmd__contact__id_fact,  cmd__contact__id_livr,
       cmd__note_client, cmd__note_interne, cmd__code_cmd_client,
       cmd__etat, cmd__user__id_devis, cmd__user__id_cmd)
-      VALUES (:cmd__date_cmd, :cmd__client__id_fact, :cmd__client__id_livr, :cmd__contact__id_fact, :cmd__contact__id_livr,
+      VALUES (:cmd__date_cmd, :cmd__date_devis, :cmd__client__id_fact, :cmd__client__id_livr, :cmd__contact__id_fact, :cmd__contact__id_livr,
       :cmd__note_client, :cmd__note_interne, :cmd__code_cmd_client, :cmd__etat, :cmd__user__id_devis, :cmd__user__id_cmd)');
 
       
@@ -476,6 +476,7 @@ public function classicReliquat($cmd)
     $code_cmd = 'RELIQUAT n°' . $reliquat->devis__id . "  " .  $reliquat->cmd__code_cmd_client;
 
     $request->bindValue(":cmd__date_cmd", $reliquat->cmd__date_cmd);
+    $request->bindValue(":cmd__date_devis", $reliquat->cmd__date_cmd);
     $request->bindValue(":cmd__client__id_fact", $reliquat->client__id);
     $request->bindValue(":cmd__client__id_livr", $reliquat->devis__id_client_livraison);
     $request->bindValue(":cmd__contact__id_fact", $reliquat->devis__contact__id);

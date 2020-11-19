@@ -27,6 +27,10 @@ session_start();
 //creation devis :
 if (!empty($_POST['clientSelect']) && empty($_POST['modifReturn'])) 
 {
+
+    
+
+
     switch ($_POST['clientSelect']) 
     {
         case 'Aucun':
@@ -35,6 +39,12 @@ if (!empty($_POST['clientSelect']) && empty($_POST['modifReturn']))
             break;
         
         default:
+            //verification de la tva intracom à 0 : 
+            $verifClient  = $Client->getOne($_POST['clientSelect']);
+            // if (empty($verifClient->client__tva_intracom) && $verifClient->client__tva == ) 
+            // {
+               
+            // }
             //creation de Devis:
             $date = date("Y-m-d H:i:s");
             //livraison
@@ -188,7 +198,6 @@ if (!empty($_POST['boolModif']))
         $General->updateAll('cmd_ligne' , $_POST['commentaire'] , 'cmdl__note_client' , 'cmdl__id' , $_POST['boolModif']);
         $General->updateAll('cmd_ligne' , $_POST['interne'] , 'cmdl__note_interne' , 'cmdl__id' , $_POST['boolModif']);
       
-
         $Devis->deleteGarantie($_POST['boolModif']);
 
         $idDevis = $_POST['boolIdCmd'];

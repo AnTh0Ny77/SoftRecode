@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="fr">
+<head>
+
+<!--
+8b    d8 888888 88b 88 88   88     888888 888888     888888 88b 88 888888 888888 888888 
+88b  d88 88__   88Yb88 88   88     88__     88       88__   88Yb88   88     88   88__   
+88YbdP88 88""   88 Y88 Y8   8P     88""     88       88""   88 Y88   88     88   88""   
+88 YY 88 888888 88  Y8 `YbodP'     888888   88       888888 88  Y8   88     88   888888 --> 
+
+
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+{% block style  %}
+{% endblock %}
+
+
+<title>Soft Recode</title>
+</head>
+<body >
+
+<!--NavBar--> 
+<nav class="navbar navbar-light navbar-large  sticky-top bg-white flex-md-nowrap p-0 shadow">
+  
+  <a class="navbar-brand  ml-5 pr-2" href="#">  {{ user.prenom ~  " " ~  user.nom ~ " " }}<i class="fas fa-user"></i></a> 
+ 
+ 
+  <ul class="navbar-nav px-3">
+    <li class="nav-item text-nowrap">
+      <a class="nav-link" href="unlog">Se deconnecter <i class="fad fa-sign-out"></i></a>
+    </li>
+   
+  </ul>
+</nav>
+
+<!--end navbar-->
+<div class="container-fluid ">
+ 
+   
+    <!--Block -->
+    {% block main  %}
+    {% endblock %}
+  
+</div>
+
+
+
+{% block script  %}
+{% endblock %}
+<script>
+  //script de toogle de la navbar : 
+/* $(document).ready(function() 
+ {
+   $('#clickSideBar').on('click' , function()
+  {
+     if($('#sideBare').hasClass( "hideSide" ))
+     {
+      $('#sideBare').removeClass("hideSide");
+      }
+      else 
+      {
+        $('#sideBare').addClass("hideSide");
+      }
+     
+    })
+
+  })*/
+</script>
+
+
+</body>
+</html>

@@ -44,74 +44,72 @@ $(document).ready(function()
 
 
 
-$('#clickLivraison').on('click' , function()
+
+
+//fonction de remplissage des select contact en fonction de leur client : 
+//facturation : 
+$('#clientSelect').on('change', function()
 {
-    dataFiche = 7 ;
+    var selectedOption = parseInt($(this).children("option:selected").val());
+   
     $.ajax({
         type: 'post',
-        url: "AjaxSociete",
-        data:
-        {
-            "AjaxSociete": dataFiche
-        },
-        success: function (data) {
-
-            dataSet = JSON.parse(data);
-            arrayClient = dataSet;
-            tableClient=$("#ClientTable").DataTable(
-                {language:{decimal:"",emptyTable:"aucuns résultats",info:"Voir _START_ a _END_ de _TOTAL_ résultats",infoEmpty:"Voir 0 to 0 of 0 résultats",infoFiltered:"(filtré dans _MAX_ total résultats)",infoPostFix:"",thousands:",",lengthMenu:"Voir _MENU_ résultats par pages",loadingRecords:"Loading...",processing:"Processing...",search:"Recherche:",zeroRecords:"Aucun résultats",paginate:{first:"Première",last:"Dernière",next:"Suivante",previous:"Précédente"}}
-                ,paging:!0,info:!0,retrieve:!0,deferRender:!0,searching:!0
-                , data: arrayClient,
-                columns: 
-                [
-                    {data:"client__id"},
-                    {data:"client__societe"},
-                    {data:"client__cp"},
-                    {data:"client__ville"}
-                ],
-                "lengthMenu": [ 8]
-                });
-
-              
-            $('#modalLivraison').modal('show');
-            //click selection
-            tableClient.on('click' , 'tr' , function()
+        url: "tableContact",
+        data : 
             {
-               //classe selected
-               if ($(this).hasClass('selected')) 
-               {
-                   $(this).removeClass('selected');
-                   $('#buttonPost').prop("disabled", true);
-               }
-               else if (tableClient.rows().count() >= 1) 
-               {
-                   tableClient.$('tr.selected').removeClass('selected');
-                   
-                   $(this).addClass('selected');
-                   $('#buttonPost').removeAttr('disabled');
-               }
-               let dataRow = tableClient.row(this).data();
-              $('#MajLivraison').val(dataRow.client__id);
-             
-              //enleve le disabled du button de choix client 
-              $('#buttonPost').removeAttr('disabled');
-             
-              
-            })
+                "AjaxContactTable" : selectedOption
+            },
+            success: function(data)
+            {
+               dataSet = JSON.parse(data);
+               $('#contactSelect option').remove();
+               $('#contactSelect').append(new Option('Aucun', 'Aucun' , false, true));
 
-
-           
-           
-        },
-        error: function (err) {
-            console.log('error: ' , err);
-        }
-
-    })
+                    for (let index = 0; index < dataSet.length; index++)
+                    {
+                        
+                        $('#contactSelect').append(new Option(dataSet[index].contact__nom + " " + dataSet[index].contact__prenom + " - "  + dataSet[index].kw__lib ,dataSet[index].contact__id));  
+                    }
+                    $('.selectpicker').selectpicker('refresh'); 
+                    $('#contactSelect').selectpicker('val', 'Aucun');
+            },
+            error: function (err) 
+            {
+                console.log('error: ' , err);
+            }
+        })
 })
 
+//livraison : 
+$('#clientLivraison').on('change', function()
+{
+    var selectedOption = parseInt($(this).children("option:selected").val());
+    $.ajax({
+        type: 'post',
+        url: "tableContact",
+        data : 
+            {
+                "AjaxContactTable" : selectedOption
+            },
+            success: function(data)
+            {
+               dataSet = JSON.parse(data);
+                    $('#contactLivraison option').remove();
+                    $('#contactLivraison').append(new Option('Aucun', 'Aucun' , false, true));
 
-
+                    for (let index = 0; index < dataSet.length; index++)
+                    {   
+                        $('#contactLivraison').append(new Option(dataSet[index].contact__nom + " " + dataSet[index].contact__prenom + " - "  + dataSet[index].kw__lib ,dataSet[index].contact__id));  
+                    }
+                    $('.selectpicker').selectpicker('refresh'); 
+                    $('#contactLivraison').selectpicker('val', 'Aucun');
+            },
+            error: function (err) 
+            {
+                console.log('error: ' , err);
+            }
+        })
+})
 
 
 

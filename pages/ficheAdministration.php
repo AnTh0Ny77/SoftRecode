@@ -59,8 +59,32 @@ session_start();
  if (!empty($_POST['idAdminFiche']) ) 
  {
     $umpdateCode = $General->updateAll('cmd' , $_POST['codeCommandeClient'] , 'cmd__code_cmd_client' , 'cmd__id' , $_POST['idAdminFiche'] );
+    
+    //facturation: 
     $umpdateFact = $General->updateAll('cmd' , $_POST['clientfact'] , 'cmd__client__id_fact' , 'cmd__id' , $_POST['idAdminFiche'] );
+    $umpdateClientFact = $General->updateAll('cmd' , null , 'cmd__contact__id_fact' , 'cmd__id' , $_POST['idAdminFiche'] );
+    if ($_POST['contactSelect'] != 'Aucun') 
+    {
+      $umpdateClientFact = $General->updateAll('cmd' , $_POST['contactSelect'] , 'cmd__contact__id_fact' , 'cmd__id' , $_POST['idAdminFiche'] );
+    }
+    else 
+    {
+      $umpdateClientFact = $General->updateAll('cmd' , null , 'cmd__contact__id_fact' , 'cmd__id' , $_POST['idAdminFiche'] );
+    }
+    
+    //livraison: 
     $umpdateLivr = $General->updateAll('cmd' , $_POST['clientLivr'] , 'cmd__client__id_livr' , 'cmd__id' , $_POST['idAdminFiche'] );
+    $umpdateClientLivr = $General->updateAll('cmd' , null , 'cmd__contact__id_livr' , 'cmd__id' , $_POST['idAdminFiche'] );
+    if ($_POST['contactLivraison'] != 'Aucun') 
+    {
+      $umpdateClientLivr = $General->updateAll('cmd' , $_POST['contactLivraison'] , 'cmd__contact__id_livr' , 'cmd__id' , $_POST['idAdminFiche'] );
+    }
+    else 
+    {
+      $umpdateClientLivr = $General->updateAll('cmd' , null , 'cmd__contact__id_livr' , 'cmd__id' , $_POST['idAdminFiche'] );
+    }
+
+
     
     
     $umpdateCommentaire = $General->updateAll('cmd' , $_POST['comInterne'] , 'cmd__note_interne' , 'cmd__id' , $_POST['idAdminFiche'] );
@@ -101,14 +125,21 @@ session_start();
 //  }
 
  $clientList = $Client->getAll();
-
+ $contactList = $Contact->getFromLiaison($cmd->client__id);
+ $contactLivraisonList = null;
+ if ($cmd->devis__id_client_livraison) 
+ {
+   $contactLivraisonList = $Contact->getFromLiaison($cmd->devis__id_client_livraison);
+ }
  // Donnée transmise au template : 
  echo $twig->render('ficheAdministration.twig',
  [
  'user'=>$user , 
  'cmd' =>$cmd , 
  'lignes' =>$lignes , 
- 'clientList' => $clientList 
+ 'clientList' => $clientList ,
+ 'contactList' => $contactList ,
+ 'contactLivraison' => $contactLivraisonList
  
  ]);
  
