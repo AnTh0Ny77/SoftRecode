@@ -983,22 +983,22 @@ public static function magicLinePRO($arrayLigne , $cmd){
 	
 		</td>";
 
-		if (!empty($ligne->devl__note_client)) 
-		{
-			$secondCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$secondW."; max-width: ".$secondW."; text-align: left; padding-bottom: 5px;  '>"
+		// if (!empty($ligne->devl__note_client)) 
+		// {
+		// 	$secondCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$secondW."; max-width: ".$secondW."; text-align: left; padding-bottom: 5px;  '>"
 
-				. $ligne->devl__designation.  $ligne->devl__note_client."
+		// 		. $ligne->devl__designation.  $ligne->devl__note_client."
 		
-			</td>";
-		}
-		else 
-		{
+		// 	</td>";
+		// }
+		// else 
+		// {
 			$secondCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  '>"
 
 				. $ligne->devl__designation. "
 		
 			</td>";
-		}
+		// }
 
 		$thirdCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW."; text-align: right;  '>"
 

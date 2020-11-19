@@ -65,11 +65,14 @@ $user = $_SESSION['user'];
      }
  }
 
+ $clientList = $Client->getAll();
+
 // Donnée transmise au template : 
 echo $twig->render('contactCrea.twig',[ 
    'user'=>$user , 
    'keywordList' => $keywordList, 
    'alert' => $alert , 
-   'alertSucces' => $alertSuccess
+   'alertSucces' => $alertSuccess , 
+   'clientList' => $clientList
    ]);
 }

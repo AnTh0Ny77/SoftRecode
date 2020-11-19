@@ -2,6 +2,7 @@
 {% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
 <link rel="stylesheet" href="public/css/dashboard.css">
 {% endblock %}
@@ -77,15 +78,18 @@
                     <input type="email" class="form-control"name="mailContact" maxlength="200" id="mailContact" >
                   </div>
                 </div>
-                <div class="form-row">
+                <div class="">
+                  <label for="exampleInputPassword1">Societe</label>
                     <div class="d-flex col-md-6">
-                      <div>
-                      <label for="inputCity">Id de la societe</label>
-                      <input type="text" class="form-control"name="sociteContact" id="sociteContact" required>
-                    </div>
-                    <div class="d-flex align-items-end">
-                      <button class="btn btn-success" type="button" id="openModal"><i class="far fa-building"></i></button>
-                    </div>
+                      
+                        
+                        <select class="selectpicker show-tick"  data-live-search="true" data-width="100%"  name="sociteContact" required>        
+                            {% for client in clientList %}
+                                  <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                            {% endfor %}
+                        </select>
+                   
+                    
                     </div>
                   </div>
             </div>

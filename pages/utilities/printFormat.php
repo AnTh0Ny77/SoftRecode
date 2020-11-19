@@ -36,6 +36,10 @@ if (!empty($_POST['PrintFormat']))
     {
         $societeLivraison = $Client->getOne($temp->devis__id_client_livraison);
     }
+    else 
+    {
+        $societeLivraison = $Client->getOne($temp->client__id);
+    }
 
     //ligne de devis : 
     $arrayOfDevisLigne = $Cmd->devisLigne($temp->devis__id);
@@ -92,7 +96,8 @@ if (!empty($_POST['PrintFormat']))
             Notre B.L n° : <?php echo $temp->devis__id ; ?>
             <br><br>
             <small>Livraison:<br>
-            <b><?php  echo Pdfunctions::showSociete($societeLivraison) ?></b></small>
+            <b><?php  
+            echo Pdfunctions::showSociete($societeLivraison) ?></b></small>
             </td>
              <td style="text-align: left; width:50%">
              <h3>Facture PRO Format: <?php echo ' le '. $formate ; ?></h3><br>
@@ -235,7 +240,7 @@ if ($temp->devis__note_client) {
         $doc->output('O:\intranet\Auto_Print\PF/'.$temp->devis__id.'PF-'.$temp->devis__id.'C.pdf' , 'F'); 
      }
     
-    
+     $doc->output('O:\intranet\Auto_Print\PF/'.$temp->devis__id.'PF-'.$temp->devis__id.'C.pdf' , 'F'); 
     header('location: ficheTravail');
     
  } catch (Html2PdfException $e) 
