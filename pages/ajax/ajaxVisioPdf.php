@@ -144,7 +144,8 @@ $garanties = $Keyword->getGaranties();
     <?php
     // on affiche le tableau de totaux en cas de modèle adéquate :
 
-    if ($temp->cmd__modele_devis != 'STX') {
+    if ($temp->cmd__modele_devis != 'STX') 
+    {
         switch ($temp->cmd__modele_devis) {
             // devis standart total classique:
             case 'STT':
