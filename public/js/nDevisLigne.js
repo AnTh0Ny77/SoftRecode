@@ -152,10 +152,10 @@ $(document).ready(function()
 arrayBoxClient  = $('.jBoxModalClient');
 
 //parcours  le tableau jboxModal pour le commentaire interne: 
-for (let index = 0; index < arrayBoxClient.length; index++) 
+for (let y = 0; y < arrayBoxClient.length; y++) 
 {
-    let idLigne = arrayBox[index];
-    let attach = '#' + idLigne.id;
+    let idLigne = arrayBoxClient[y];
+    let attach = '#c' + idLigne.id;
 
   $.ajax(
   {

@@ -34,13 +34,13 @@
 
         <div class="card col-6" >
             <div class="card-body">
-               <h5 class="card-title">Variable</h5>
+               
                     <form action="ligneDevisV2" method="POST">
                     <input type="hidden" value="{{devis.devis__id}}" name="devis">
                         <div class="d-flex flex-row justify-content-between col-12 my-4">
 
                             <div class="col-1">
-                                <label for="prestationChoix">Prestation:</label>
+                                <label for="prestationChoix"><b>Prestation:</b></label>
                                 <select class="border selectpicker" data-width="auto" name="presta" required>
                                 {% for presta in prestaList %}
                                     {% if modif.cmdl__prestation == presta.kw__value %}
@@ -53,7 +53,7 @@
                             </div>
 
                             <div class="col-8 ">
-                                <label for="choixDesignation">Modèle:</label>
+                                <label for="choixDesignation"><b>Modèle:</b></label>
                                     <select class=" border selectpicker col-12"  data-live-search="true" data-width="100%" name="fmm" id="fmm" required>
                                         <option class="  optionSelect modelSelect" value="">..</option>
                                         {% for article in articleList %} 
@@ -70,7 +70,7 @@
 
                         <div class="d-flex flex-row justify-content-between col-12 my-4">
                             <div class="col-12 ">
-                                    <label for="referenceS">Désignation sur le devis/facture: </label>
+                                    <label for="referenceS"><b>Désignation sur le devis/facture:</b></label>
                                     {% if modif.cmdl__designation %}
                                       <input type="text" class="form-control" name="designation" id="designation" value="{{modif.cmdl__designation}}"  text="{{modif.cmdl__designation}}" required>
                                     {% else %}
@@ -83,7 +83,7 @@
                     <div class="d-flex justify-content-between col-12 my-4">
 
                         <div class="col-3">
-                            <label  for="etatRow">Etat</label>
+                            <label  for="etatRow"><b>Etat</b></label>
                             <select class="form-control" id="etatRow" name="etat">
                             {% for etat in etatList %}
                                 {% if modif.cmdl__etat == etat.kw__value %}
@@ -96,7 +96,7 @@
                         </div>
 
                         <div class="col-3">
-                            <label for="validationCustom04">Garantie/mois</label>
+                            <label for="validationCustom04"><b>Garantie/mois</b></label>
                             <select class="form-control" id="garantieRow" name="garantie">
                             {% for garantie in garanties %}
                                 {% if garantie.kw__value == modif.cmdl__garantie_base %}
@@ -109,7 +109,7 @@
                         </div>
                     
                         <div class="col-2">
-                            <label for="validationCustom04">Quantité</label>
+                            <label for="validationCustom04"><b>Quantité</b></label>
                                 {% if modif.cmdl__qte_cmd %}
                                     <input type="number" class="form-control" value="{{modif.cmdl__qte_cmd}}" name="quantite">
                                 {% else %}
@@ -121,7 +121,7 @@
                      <div class="d-flex justify-content-between col-12 my-4">
 
                         <div class="col-3">
-                            <label for="validationCustom04"><strike>Promotion H.T</strike></label>
+                            <label for="validationCustom04"><strike><b>Promotion H.T</b></strike></label>
                             {% if modif.cmdl__prix_barre  and  modif.cmdl__prix_barre > 0 %}
                                 <input class="form-control" type="text" value="{{modif.cmdl__prix_barre}}"  name="promo">
                             {% else %}
@@ -131,7 +131,7 @@
                         </div>
                     
                         <div class="col-3">
-                            <label for="validationCustom04">Prix € H.T</label>
+                            <label for="validationCustom04"><b>Prix € H.T</b></label>
                             {% if modif.cmdl__puht %}
                                 <input class="form-control" type="text" name="prix" value='{{modif.cmdl__puht }}' required>
                             {% else %}
@@ -141,50 +141,47 @@
                         </div>
 
                         <div class="col-2">
-                            <label for="validationCustom04"> inclure l'image</label>
+                            <label for="validationCustom04"> <b>inclure l'image</b></label>
                             <input type="checkbox" class="form-control" value="1" name="ordre">
                         </div> 
                     </div>
 
 
-                    <div class="d-flex justify-content-between col-12 my-4">
-
-                        <div class="" id="">
-                            <button class="btn btn-link  " type="button" data-toggle="collapse" data-target="#extensions" aria-expanded="false" aria-controls="xtendGarantie">Extensions de garantie</button>
-                        </div>
-
-                        <div class="" >
-                            <button class="btn btn-link " type="button" data-toggle="collapse" data-target="#commentaire" aria-expanded="false" aria-controls="xtendGarantie">Commentaires</button>
-                        </div>
-
-                        <div class="" >
-                            {% if modif.modif %}
-                                 <input type='hidden' name='boolModif' value='{{modif.cmdl__id}}'>
-                                 <input type='hidden' name='boolIdCmd' value='{{modif.cmdl__cmd__id}}'>
-                                 <button class="btn btn-outline-primary  " type="submit" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">modifier</button>
-                            {% else %}
-                                 <input type='hidden' name='boolModif' value=''>
-                                 <button class="btn btn-outline-primary  " type="submit" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Valider</button>
-                            {% endif %}
-                        </div>
-                    </div>
+                    
 
                     <div id="accordion">
-                        <div class="collapse show multi-collapse " id="extensions"   data-parent="#accordion">
-                                <div class="col-12 mt-3 mb-2 d-flex justify-content-around">
-                                    <div class="d-flex flex-row flex-wrap justify-content-around">
-                           
+                        <div class="d-flex" id="extensions"   data-parent="#accordion">
+                                <div class="col-6 mt-3 mb-2 d-flex justify-content-between">
+                                    <div class="d-flex flex-row flex-wrap justify-content-start">
+                                        <div class="input-group-text bg-light border-0 col-10 mx-2">
+                                            <div>
+                                                <div class="text-center">
+                                                    <label ><b>Extension</b></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-10 d-flex justify-content-around">
+                                                <div class="col-6 text-center">
+                                                    <label ><b><strike>Promo</strike></b></label>
+                                                        
+                                                </div>
+                                                <div class="col-6 text-center">
+                                                
+                                                    <label ><b>P.U.HT</b></label>   
+                                                </div>  
+                                            </div> 
+                                        </div>
+                                        
                                 {% for garantie in garanties %}
                                     {% if garantie.kw__value != 00 %}
-                                        <div class="input-group-text col-5 my-2">
+                                        <div class="input-group-text bg-light border-0 col-12 mx-1">
                                             <div>
-                                                <div>
+                                                <div >
                                                     <label ><b>{{garantie.kw__lib}} mois</b></label>
                                                 </div>
                                             </div>
                                             <div class="col-10 d-flex justify-content-around">
                                                 <div class="col-6">
-                                                <label ><strike>Promo</strike></label>     
+                                                     
                                                         {% if  garantie.xtend.cmdg__type == garantie.kw__value and garantie.xtend.cmdg__prix_barre  %}
                                                             <input type="text" class="form-control" value="{{ garantie.xtend.cmdg__prix_barre}}"   name="xtendB[{{garantie.kw__value}}][]">
                                                         {% else %}
@@ -192,7 +189,7 @@
                                                         {% endif %}       
                                                 </div>
                                                 <div class="col-6">
-                                                <label >Prix H.T</label>
+                                                
                                                         {% if  garantie.xtend.cmdg__type == garantie.kw__value and garantie.xtend.cmdg__prix  %}
                                                             <input type="text" class="form-control" value="{{ garantie.xtend.cmdg__prix}}"   name="xtendP[{{garantie.kw__value}}][]">
                                                         {% else %}
@@ -206,27 +203,40 @@
                            
                                     </div>
                                 </div>
-                            </div>
-                            <div class="collapse  multi-collapse" id="commentaire" data-parent="#accordion">
-                                <div class="col-12 my-3 d-flex justify-content-between">
-                                    <div class="col-6">
-                                        <label for="comClient">Commentaire Client</label>
-                                        {% if modif.cmdl__note_client %}
-                                            <textarea class="ck-content" id="comClient" placeholder="Commentaire client...." rows="4" name="commentaire">{{modif.cmdl__note_client}}</textarea>
-                                        {% else %}
-                                            <textarea class="ck-content" id="comClient" placeholder="Commentaire client...." rows="4" name="commentaire"></textarea>
-                                        {% endif %}    
-                                    </div>
-                                    <div class="col-6 ">
-                                        <label for="comInterne">Commentaire Interne</label>
-                                        {% if modif.cmdl__note_interne %}
-                                            <textarea class="CKE" id="comInterne" placeholder="Commentaire interne...." rows="4" name="interne">{{modif.cmdl__note_interne}}</textarea>
-                                        {% else %}
-                                            <textarea class="CKE" id="comInterne" placeholder="Commentaire interne...." rows="4" name="interne"></textarea>
-                                        {% endif %} 
+                                <div class="col-6"  >
+                                    <div class="col-12 my-3 d-flex flex-column justify-content-around">
+                                        <div class="col-12 mb-4">
+                                            <label for="comClient"><b>Commentaire Client</b></label>
+                                            {% if modif.cmdl__note_client %}
+                                                <textarea class="ck-content" id="comClient" placeholder="Commentaire client...." rows="4" name="commentaire">{{modif.cmdl__note_client}}</textarea>
+                                            {% else %}
+                                                <textarea class="ck-content" id="comClient" placeholder="Commentaire client...." rows="4" name="commentaire"></textarea>
+                                            {% endif %}    
+                                        </div>
+                                        <div class="col-12 my-4 ">
+                                            <label for="comInterne"><b>Commentaire Interne</b></label>
+                                            {% if modif.cmdl__note_interne %}
+                                                <textarea class="CKE" id="comInterne" placeholder="Commentaire interne...." rows="4" name="interne">{{modif.cmdl__note_interne}}</textarea>
+                                            {% else %}
+                                                <textarea class="CKE" id="comInterne" placeholder="Commentaire interne...." rows="4" name="interne"></textarea>
+                                            {% endif %} 
+                                        </div>
+                                        <div class="col-12 my-4 d-flex flex-column justify-content-end" >
+                                            {% if modif.modif %}
+                                                 <input type='hidden' name='boolModif' value='{{modif.cmdl__id}}'>
+                                                 <input type='hidden' name='boolIdCmd' value='{{modif.cmdl__cmd__id}}'>
+                                                 <button class="btn btn-outline-primary  " type="submit" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">modifier <i class="far fa-bullseye-pointer"></i></button>
+                                            {% else %}
+                                                 <input type='hidden' name='boolModif' value=''>
+                                                 <button class="btn btn-outline-primary  " type="submit" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Valider <i class="far fa-bullseye-pointer"></i></button>
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
+                                
                             </div>
+                           
+                            
                     </div>
             </form>   
             </div>
@@ -243,10 +253,11 @@
                 <div class="col-8">
                     <h5 class="card-subtitle mb-2 text-muted">{{ ligne.devl_quantite ~ "x " ~ ligne.devl__designation}} </h5>
                      {% if ligne.devl__note_interne %}
-                 
                                     <button  type="button" value="{{ligne.devl__id}}" id="{{ligne.devl__id}}" class="btn btn-sm btn-success jBoxModal"><i class="far fa-comment-edit"></i></button>
-                                   
-                                {% endif %}
+                     {% endif %}
+                     {% if ligne.devl__note_client %}
+                                    <button  type="button" value="{{ligne.devl__id}}" id="c{{ligne.devl__id}}" class="btn btn-sm btn-primary jBoxModalClient"><i class="far fa-comment-edit"></i></button>
+                     {% endif %}
                     <div class="">
                         <p class="card-text">
                             {{ligne.kw__lib ~ " " }}
