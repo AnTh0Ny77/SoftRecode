@@ -153,13 +153,13 @@ $garanties = $Keyword->getGaranties();
     <?php
     // on affiche le tableau de totaux en cas de modèle adéquate :
 
-    if ($temp->cmd__modele_devis != 'STX') {
+    if ($temp->cmd__modele_devis != 'STX') 
+    {
         switch ($temp->cmd__modele_devis) {
             // devis standart total classique:
             case 'STT':
                $totalPrice = array_sum($arrayPrice);
-               $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true);
-               
+               $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true , $temp->tva_Taux);
                 break;
             // devis standart total logique: 
             case 'STL':
@@ -170,20 +170,17 @@ $garanties = $Keyword->getGaranties();
             // devis sans TVA total classique: 
             case 'TVT':
                 $totalPrice = array_sum($arrayPrice);
-                $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , false);
-               
+                $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , false , $temp->tva_Taux );
                 break;
             // devis sans TVA total logique: 
             case 'TVL':
                 $totalPrice = array_sum($arrayPrice);
                 $totaux = Pdfunctions::magicXtend($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , false );
-               
-                 break;
                 break;
             
             default:
                 $totalPrice = array_sum($arrayPrice);
-                $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true);
+                $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true , $temp->tva_Taux);
                
                 break;
         }

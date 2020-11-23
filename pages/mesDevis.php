@@ -34,8 +34,6 @@ session_start();
   //date du jour:
   $date = date("Y-m-d H:i:s");
 
- 
-
  // Si un devis a été validé: 
 if (!empty($_POST['clientSelect'])) 
 {
@@ -116,6 +114,8 @@ if (!empty($_POST['clientSelect']))
         $livraisonContact  , 
         $titre
      );
+     $clientTva = $Client->getOne($_POST['clientSelect']);
+     $updateTva = $Global->updateAll('cmd', $clientTva->client__tva,'cmd__tva', 'cmd__id', $_POST['ModifierDevis']);
      header('location: mesDevis');
    }
   //sinon je cree un nouveau devis:
@@ -135,6 +135,8 @@ if (!empty($_POST['clientSelect']))
         $livraisonContact , 
         $titre 
     );
+    $clientTva = $Client->getOne($_POST['clientSelect']);
+    $updateTva = $Global->updateAll('cmd', $clientTva->client__tva,'cmd__tva', 'cmd__id', $devis);
     header('location: mesDevis');
   }
 }

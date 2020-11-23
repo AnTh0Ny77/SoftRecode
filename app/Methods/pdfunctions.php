@@ -540,9 +540,10 @@ public static function xTendTotalView($xtendArray){
 
 
 // fonction d'affichage du total à la con : 
-public static function totalCon($lignes , $garantieArray , $prixTotal , $tva){
+public static function totalCon($lignes , $garantieArray , $prixTotal , $tva , $_taux_tva){
 	$globalArray = array();
-	foreach ($garantieArray as  $value) {
+	foreach ($garantieArray as  $value) 
+	{
 		// création d'un tableau multidimensionnel pour chaque valeur présente dans le tableau : 
 		$type = intval($value->kw__value);
 		$globalArray[$type]  = [$type];
@@ -564,7 +565,8 @@ public static function totalCon($lignes , $garantieArray , $prixTotal , $tva){
 							//  pousse dans le tableau correspondant à la valeur de la garantie :
 							array_push( $globalArray[$value[0]] , $results );     
 						} 
-						else {
+						else 
+						{
 							// sinon détruit la valeur : 
 							unset($value);
 						}
@@ -600,7 +602,7 @@ public static function totalCon($lignes , $garantieArray , $prixTotal , $tva){
 						$echoArrays .=  "<tr><td style='width: 210px; font-size: 95%; font-style: italic;  text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style='font-size: 95%; font-style: italic; text-align: center'><strong>  "
 						. number_format($prix,2  ,',', ' ').
 						" €</strong></td><td style='font-size: 95%; font-style: italic; text-align: right'> " 
-						.number_format(Pdfunctions::ttc( floatval($prix)),2 ,',', ' ').
+						.number_format(Pdfunctions::ttcTVA( floatval($prix), $_taux_tva),2 ,',', ' ').
 						" €</td></tr>";
 				}
 			}       
@@ -611,7 +613,7 @@ public static function totalCon($lignes , $garantieArray , $prixTotal , $tva){
 
 			if (empty($echoArrays)) 
 			{
-			
+				
 				$finalEcho = '<table CELLSPACING=0  style=" margin-left: 180px;  border: 1px black solid;">
 				<tr style="background-color: #dedede; ">
 				<td style=" margin-left: 210px; width: 0px; text-align: left"> '. $marqueurType .'</td>
@@ -620,10 +622,11 @@ public static function totalCon($lignes , $garantieArray , $prixTotal , $tva){
 				</tr>
 				<tr><td style="width: 0px; font-size: 95%; font-style: italic; text-align: left"> </td>
 				<td style="text-align: center; font-style: italic;  font-size: 95%;"><strong>  '. number_format($prixTotal,2  ,',', ' ') . ' €</strong></td>
-				<td style="text-align: right; font-style: italic; font-size: 95%;"> ' .number_format(Pdfunctions::ttc(floatval($prixTotal)),2 ,',', ' ').' €</td>
+				<td style="text-align: right; font-style: italic; font-size: 95%;"> ' .number_format(Pdfunctions::ttcTVA(floatval($prixTotal), $_taux_tva),2 ,',', ' ').' €</td>
 				</tr>' . $echoArrays;
 
-			if (!$tva) {
+			if (!$tva) 
+			{
 			  $finalEcho = '<table CELLSPACING=0  style=" margin-left: 200px;  border: 1px black solid;">
 			  <tr style="background-color: #dedede;">
 			  <td style="width: 0px; text-align: left"> '. $marqueurType .'</td>
@@ -647,10 +650,11 @@ public static function totalCon($lignes , $garantieArray , $prixTotal , $tva){
 				</tr>
 				<tr><td style="width: 210px; font-size: 95%; font-style: italic; text-align: left"> '.$marqueurPresta.'</td>
 				<td style="text-align: center; font-style: italic;  font-size: 95%;"><strong>  '. number_format($prixTotal,2  ,',', ' ') . ' €</strong></td>
-				<td style="text-align: right; font-style: italic; font-size: 95%;"> ' .number_format(Pdfunctions::ttc(floatval($prixTotal)),2 ,',', ' ').' €</td>
+				<td style="text-align: right; font-style: italic; font-size: 95%;"> ' .number_format(Pdfunctions::ttcTVA(floatval($prixTotal), $_taux_tva),2 ,',', ' ').' €</td>
 				</tr>' . $echoArrays;
 
-			if (!$tva) {
+			if (!$tva) 
+			{
 				$finalEcho = '<table CELLSPACING=0  style=" border: 1px black solid;">
 				<tr style="background-color: #dedede;">
 				<td style="width: 250px; text-align: left"> '. $marqueurType .'</td>
@@ -776,12 +780,18 @@ public static function magicXtend($lignes, $garantiesArray , $prixTotal , $tva )
 
 
 // function 20% 
-public static function ttc($price){
-   
+public static function ttc($price)
+{
 	$opex = floatval(($price*20)/100);
 	$results = $opex + $price;
 	return $results;
+}
 
+public static function ttcTVA($price,$tva)
+{
+	$opex = floatval(($price*$tva)/100);
+	$results = $opex + $price;
+	return $results;
 }
 
 

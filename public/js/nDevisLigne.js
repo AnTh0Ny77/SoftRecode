@@ -100,13 +100,97 @@ $(document).ready(function()
 })
   
 
-new jBox('Tooltip', {
-    width: 600,
-    height: 200,
-    attach: '#jboxModal',
-    title: 'Commentaire Interne',
-    content: '<i>Hello there!</i>'
-  });
+
+
+//mise en place des button tooltips pour le com interne: 
+
+  //array de tous les elements jboxModal:
+  arrayBox  = $('.jBoxModal');
+
+  //parcours  le tableau jboxModal pour le commentaire interne: 
+  for (let index = 0; index < arrayBox.length; index++) 
+  {
+      let idLigne = arrayBox[index];
+      let attach = '#' + idLigne.id;
+
+    $.ajax(
+    {
+        type: 'post',
+        url: "AjaxLigneFT",
+        data : 
+            {"AjaxLigneFT" : idLigne.id
+            },    
+        success: function(data)
+        {
+            dataSet = JSON.parse(data);
+          
+                
+                if (dataSet.devl__id == parseInt(idLigne.id)) 
+                {
+                   
+                    new jBox('Tooltip', 
+                    {
+                        width: 400,
+                        height: 300,
+                        attach: attach,
+                        title: 'Commentaire Interne',
+                        content: dataSet.devl__note_interne
+                    });
+                    
+                } 
+           
+        },
+        error: function (err) 
+        {
+            console.log('error: ' + err);
+        }
+    })  
+  }
+
+//mise en place des tootltips pour le commentaire client:  
+//array de tous les elements jboxModal:
+arrayBoxClient  = $('.jBoxModalClient');
+
+//parcours  le tableau jboxModal pour le commentaire interne: 
+for (let index = 0; index < arrayBoxClient.length; index++) 
+{
+    let idLigne = arrayBox[index];
+    let attach = '#' + idLigne.id;
+
+  $.ajax(
+  {
+      type: 'post',
+      url: "AjaxLigneFT",
+      data : 
+          {"AjaxLigneFT" : idLigne.id
+          },    
+      success: function(data)
+      {
+          dataSet = JSON.parse(data);
+        
+              
+              if (dataSet.devl__id == parseInt(idLigne.id)) 
+              {
+                 
+                  new jBox('Tooltip', 
+                  {
+                      width: 400,
+                      height: 300,
+                      attach: attach,
+                      title: 'Commentaire Client',
+                      content: dataSet.devl__note_client
+                  });
+                  
+              } 
+         
+      },
+      
+      error: function (err) 
+      {
+          console.log('error: ' + err);
+      }
+  })  
+}
     
     
     

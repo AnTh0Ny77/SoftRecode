@@ -149,15 +149,15 @@
 
                     <div class="d-flex justify-content-between col-12 my-4">
 
-                        <div class="" id="accordion">
+                        <div class="" id="">
                             <button class="btn btn-link  " type="button" data-toggle="collapse" data-target="#extensions" aria-expanded="false" aria-controls="xtendGarantie">Extensions de garantie</button>
                         </div>
 
-                        <div class="" id="accordion">
+                        <div class="" >
                             <button class="btn btn-link " type="button" data-toggle="collapse" data-target="#commentaire" aria-expanded="false" aria-controls="xtendGarantie">Commentaires</button>
                         </div>
 
-                        <div class="" id="accordion">
+                        <div class="" >
                             {% if modif.modif %}
                                  <input type='hidden' name='boolModif' value='{{modif.cmdl__id}}'>
                                  <input type='hidden' name='boolIdCmd' value='{{modif.cmdl__cmd__id}}'>
@@ -243,7 +243,9 @@
                 <div class="col-8">
                     <h5 class="card-subtitle mb-2 text-muted">{{ ligne.devl_quantite ~ "x " ~ ligne.devl__designation}} </h5>
                      {% if ligne.devl__note_interne %}
-                                    <button id='jboxModal' type="button" class="btn btn-sm btn-success"><i class="far fa-comment-edit"></i></button>
+                 
+                                    <button  type="button" value="{{ligne.devl__id}}" id="{{ligne.devl__id}}" class="btn btn-sm btn-success jBoxModal"><i class="far fa-comment-edit"></i></button>
+                                   
                                 {% endif %}
                     <div class="">
                         <p class="card-text">
