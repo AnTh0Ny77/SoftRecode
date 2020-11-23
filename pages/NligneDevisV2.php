@@ -236,6 +236,22 @@ foreach ($devisLigne as $ligne)
 $articleTypeList = $Article->getModels();
 $prestaList = $Keywords->getPresta();
 $garanties = $Keywords->getGaranties();
+if (!empty($modif)) 
+{
+    foreach ($garanties as $garantie) 
+    {
+        
+        foreach ($modif->xtend as $xtend) 
+        {
+            if ($garantie->kw__value== $xtend->cmdg__type) 
+            {
+               $garantie->xtend = $xtend;
+               
+            }
+        }
+    }
+}
+
 $etatList = $Keywords->getEtat();
 
 

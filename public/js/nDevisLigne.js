@@ -99,10 +99,18 @@ $(document).ready(function()
     $("#designation").val(selectedArticle);
 })
   
+
+new jBox('Tooltip', {
+    width: 600,
+    height: 200,
+    attach: '#jboxModal',
+    title: 'Commentaire Interne',
+    content: '<i>Hello there!</i>'
+  });
     
     
     
-    })
+})
     
     
     

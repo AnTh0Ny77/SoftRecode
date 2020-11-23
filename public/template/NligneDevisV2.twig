@@ -5,6 +5,7 @@
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/css/dashboard.css">
 {% endblock %}
  
@@ -183,27 +184,20 @@
                                             </div>
                                             <div class="col-10 d-flex justify-content-around">
                                                 <div class="col-6">
-                                                <label ><strike>Promo</strike></label>
-                                                       
-                                                       
-                                                        {{ dump(modif.xtend[loop.index]) }}
-                                                        
-                                                            {% if  modif.xtend.cmdg__type == garantie.kw__value  %}
-                                                                <input type="text" class="form-control" value="{{xtend.cmdg__prix_barre}}"   name="xtendB[{{garantie.kw__value}}][]">
-                                                            {% else %}
-                                                                <input type="text" class="form-control"  name="xtendB[{{garantie.kw__value}}][]">
-                                                            {% endif %}
-
-
-                                                        
-                                                           
-                                                       
-                                                        
+                                                <label ><strike>Promo</strike></label>     
+                                                        {% if  garantie.xtend.cmdg__type == garantie.kw__value and garantie.xtend.cmdg__prix_barre  %}
+                                                            <input type="text" class="form-control" value="{{ garantie.xtend.cmdg__prix_barre}}"   name="xtendB[{{garantie.kw__value}}][]">
+                                                        {% else %}
+                                                            <input type="text" class="form-control"  name="xtendB[{{garantie.kw__value}}][]">
+                                                        {% endif %}       
                                                 </div>
                                                 <div class="col-6">
                                                 <label >Prix H.T</label>
-                                                
-                                                        <input type="text" class="form-control"  name="xtendP[{{garantie.kw__value}}][]">        
+                                                        {% if  garantie.xtend.cmdg__type == garantie.kw__value and garantie.xtend.cmdg__prix  %}
+                                                            <input type="text" class="form-control" value="{{ garantie.xtend.cmdg__prix}}"   name="xtendP[{{garantie.kw__value}}][]">
+                                                        {% else %}
+                                                            <input type="text" class="form-control"  name="xtendP[{{garantie.kw__value}}][]">
+                                                        {% endif %}        
                                                 </div>  
                                             </div> 
                                         </div>
@@ -248,12 +242,13 @@
             <div class="d-flex ">
                 <div class="col-8">
                     <h5 class="card-subtitle mb-2 text-muted">{{ ligne.devl_quantite ~ "x " ~ ligne.devl__designation}} </h5>
+                     {% if ligne.devl__note_interne %}
+                                    <button id='jboxModal' type="button" class="btn btn-sm btn-success"><i class="far fa-comment-edit"></i></button>
+                                {% endif %}
                     <div class="">
                         <p class="card-text">
                             {{ligne.kw__lib ~ " " }}
-                                {% if ligne.devl__note_interne %}
-                                <i class="far fa-comment-edit"  data-toggle="tooltip" data-placement="top"  title="{{'<h3>Interne</h3>' ~  ligne.devl__note_interne}}"></i>
-                                {% endif %}
+                               
                            
                             {% if ligne.devl__prix_barre and ligne.devl__prix_barre > 0  %}
                                 <strike>
@@ -374,6 +369,7 @@
 <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
 <script type="text/javascript" src="public/js/nDevisLigne.js"></script>
 {% endblock %}

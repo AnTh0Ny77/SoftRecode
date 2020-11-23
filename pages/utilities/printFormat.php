@@ -92,15 +92,15 @@ if (!empty($_POST['PrintFormat']))
               
              ?><br>
             Votre cde n° :<?php echo $temp->cmd__code_cmd_client ; ?> <br>
-            Date commande :  <?php echo $formated_date ; ?><br>
-            Notre B.L n° : <?php echo $temp->devis__id ; ?>
-            <br><br>
+            Date :  <?php echo $formated_date ; ?><br>
+            Notre B.L n° : <?php echo $temp->devis__id ; ?><br>
+            <br>
             <small>Livraison:<br>
             <b><?php  
             echo Pdfunctions::showSociete($societeLivraison) ?></b></small>
             </td>
              <td style="text-align: left; width:50%">
-             <h3>Facture PRO Format: <?php echo ' le '. $formate ; ?></h3><br>
+             <h3>Facture PROFORMA n°<?php echo $temp->devis__id; ?></h3><br>
              
              <?php 
              // si une societe de livraion est présente 
