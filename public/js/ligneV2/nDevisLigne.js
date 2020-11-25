@@ -118,14 +118,15 @@ $(document).ready(function()
         type: 'post',
         url: "AjaxLigneFT",
         data : 
-            {"AjaxLigneFT" : idLigne.id
+            {"AjaxLigneFT" : idLigne.value
             },    
         success: function(data)
         {
+           
             dataSet = JSON.parse(data);
-          
+            
                 
-                if (dataSet.devl__id == parseInt(idLigne.id)) 
+                if (dataSet.devl__id == parseInt(idLigne.value)) 
                 {
                    
                     new jBox('Tooltip', 
@@ -155,21 +156,21 @@ arrayBoxClient  = $('.jBoxModalClient');
 for (let y = 0; y < arrayBoxClient.length; y++) 
 {
     let idLigne = arrayBoxClient[y];
-    let attach = '#c' + idLigne.id;
+    let attach = '#' + idLigne.id;
 
   $.ajax(
   {
       type: 'post',
       url: "AjaxLigneFT",
       data : 
-          {"AjaxLigneFT" : idLigne.id
+          {"AjaxLigneFT" : idLigne.value
           },    
       success: function(data)
       {
           dataSet = JSON.parse(data);
         
               
-              if (dataSet.devl__id == parseInt(idLigne.id)) 
+              if (dataSet.devl__id == parseInt(idLigne.value)) 
               {
                  
                   new jBox('Tooltip', 

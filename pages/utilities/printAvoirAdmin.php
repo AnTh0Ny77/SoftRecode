@@ -209,7 +209,7 @@ if (empty($_SESSION['user']))
            <tr>
                <td style="text-align: left; ">
                    TVA: FR33 397 934 068<br>
-                   Siret 397 937 068 00016 - APE 9511Z<br>
+                   Siret 397 934 068 00016 - APE 9511Z<br>
                    SAS au capital 38112.25 € 
                </td>
    
