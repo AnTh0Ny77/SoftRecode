@@ -65,11 +65,12 @@ $(document).ready(function()
                 break;
 
             case 'PRT':
-                $('#garantieRow option[value="00"]').prop('selected', true);
+                
                 $('#etatRow option[value="NC."]').prop('selected', true);
                 $("#garantieRow").prop('disabled', 'disabled');
                 $("#etatRow").prop('disabled', 'disabled');
                 $('.controlOption').prop('disabled', true);
+                $('#garantieRow option[value="00"]').prop('selected', true);
                 break;
 
             case 'RPR':

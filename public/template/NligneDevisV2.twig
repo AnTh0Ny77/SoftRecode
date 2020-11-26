@@ -11,7 +11,14 @@
  
 
 {% block main %}
-<main  role="main" class=" pt-3 px-4">                                                                                  
+
+
+<main  role="main" class=" pt-3 px-4"> 
+    <div id="loading">
+        <div class="lds-hourglass">
+    
+        </div>
+    </div>                                                                                 
     <div class="d-flex justify-content-start flex-column mb-5 border-bottom">
         <form class="d-flex align-items-center" action="DevisV2" method="POST">
             <div class="mr-4">
@@ -230,7 +237,7 @@
                            
                                     </div>
                                     <div class="col-6 my-4 d-flex flex-column justify-content-start" >
-                                                {% if modif.modif %}
+                                                {% if modif.modif and not duplicate %}
                                                     <input type='hidden' name='boolModif' value='{{modif.cmdl__id}}'>
                                                     <input type='hidden' name='boolIdCmd' value='{{modif.cmdl__cmd__id}}'>
                                                     <button class="btn btn-outline-primary  " type="submit" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">modifier <i class="far fa-bullseye-pointer"></i></button>
@@ -258,15 +265,40 @@
             <div class='card-body'>
 
             <div class="d-flex ">
-                <div class="col-8">
-                    <h5 class="card-subtitle  text-muted">{{ ligne.devl_quantite ~ "x " ~ ligne.devl__designation}} </h5>
+              
+                <div class="col-9">
+                   
+                      
+                    <h5 class="card-subtitle  text-muted mb-1"> 
+                        <span class="badge badge-secondary">{{ligne.prestaLib}}</span> <b>{{ligne.devl_quantite}}</b>{{  "x " ~ ligne.devl__designation}} </h5>
+                    <div class="d-flex flex-row">
                      {% if ligne.devl__note_client %}
+                        <div class=" mx-1">
                             <button  type="button" value="{{ligne.devl__id}}" id="c{{ligne.devl__id}}" class="btn btn-sm btn-primary jBoxModalClient"><i class="far fa-comment-edit"></i></button>
+                        </div>
                      {% endif %}
                      {% if ligne.devl__note_interne %}
+                        <div class="mx-1">
                             <button  type="button" value="{{ligne.devl__id}}" id="{{ligne.devl__id}}" class="btn btn-sm btn-success jBoxModal"><i class="fas fa-tools"></i></button>
+                        </div>
                      {% endif %}
+                     <form class="mx-1" action="ligneDevisV2" method="POST">
+                        <input type="hidden" name="modifyIdCmd" value="{{ligne.cmdl__cmd__id}}"/>
+                        <input type="hidden" name="modifyId" value="{{ligne.devl__id}}"/>
+                        <button type="submit" class="btn btn-outline-primary btn-sm"><i class="fal fa-file-edit"></i></button>
+                    </form>
+                    <div class='mx-1'>
+                        <form class="mx-1" action="ligneDevisV2" method="POST">
+                            <input type="hidden" name="modifyIdCmd" value="{{ligne.cmdl__cmd__id}}"/>
+                            <input type="hidden" name="modifyId" value="{{ligne.devl__id}}"/>
+                            <input type="hidden" name="duplicate" value="{{ligne.devl__id}}">
+                            <button type="submit" class="btn btn-outline-secondary btn-sm"><i class="far fa-copy"></i></button>
+                        </form>
+                    </div>
                     
+                    
+                    
+                    </div>
                     <div class="">
                         <p class="card-text">
                             <b>{{ligne.kw__lib ~ " " }}</b> : 
@@ -282,44 +314,8 @@
                             </b>
                         </p>
                         
-                    </div>  
-                </div>
-                <div class="col-4">
-                    <div class="d-flex justify-content-end ">
-                        <div class="align-content-end my-1">
-                            <form action="ligneDevisV2" method="POST">
-                                <input type="hidden" name="up[]" value="{{ligne.devl__ordre}}"/>
-                                <input type="hidden" name="upId" value="{{ligne.cmdl__cmd__id}}"/>
-                                <input type="hidden" name="upLigne" value="{{ligne.devl__id}}"/>
-                                <button type="submit" class="btn btn-outline-success btn-sm"><i class="far fa-arrow-to-top"></i></button>
-                            </form>
-                            
-                        </div> 
                     </div>
-                    <div class="d-flex justify-content-end ">
-                        <div class="align-content-end my-1">
-                            <form action="ligneDevisV2" method="POST">
-                                <input type="hidden" name="deleteIdCmd" value="{{ligne.cmdl__cmd__id}}"/>
-                                <input type="hidden" name="deleteId" value="{{ligne.devl__id}}"/>
-                                <button type="submit" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i></button>
-                            </form>
-                        </div> 
-                    </div>
-                    {# <div class="d-flex justify-content-end ">
-                        
-                    </div> #}
-                    
-                   
-                </div>
-                
-            </div>
-
-                <div class="d-flex flex-column">
-                    
-                </div>
-
-                <div class="d-flex">
-                    <div class="col-6">
+                    <div class="">
                         <p>
                             {% if ligne.xtend %}
                             Extensions de garantie : <br>
@@ -336,51 +332,68 @@
                             Pas d'extensions de garanties
                             {% endif %}
                         </p>
-                    </div>
+                    </div>  
+                </div>
+                
+                <div class="col-3 d-flex flex-column justify-content-between">
                     <div class="d-flex justify-content-end ">
-                            <div class='mx-1'>
-                                <button type="button" class="btn btn-outline-secondary btn-sm"><i class="far fa-copy"></i></button>
-                            </div>
-                            <div class="mx-1 ">
+                        {% if loop.first %}
+                        <div class="align-content-end my-1">
                             <form action="ligneDevisV2" method="POST">
-                                    <input type="hidden" name="modifyIdCmd" value="{{ligne.cmdl__cmd__id}}"/>
-                                    <input type="hidden" name="modifyId" value="{{ligne.devl__id}}"/>
-                                    <button type="submit" class="btn btn-outline-primary btn-sm"><i class="fal fa-file-edit"></i></button>
+                                <input type="hidden" name="up[]" value="{{ligne.devl__ordre}}"/>
+                                <input type="hidden" name="upId" value="{{ligne.cmdl__cmd__id}}"/>
+                                <input type="hidden" name="upLigne" value="{{ligne.devl__id}}"/>
+                                <button type="submit" class="btn btn-outline-success btn-sm" disabled><i class="far fa-arrow-to-top"></i></button>
                             </form>
-                        </div>    
-                    </div>
-                    <div class=''>
-                       
+                        </div> 
+                        {% else %}
+                        <div class="align-content-end my-1">
+                            <form action="ligneDevisV2" method="POST">
+                                <input type="hidden" name="up[]" value="{{ligne.devl__ordre}}"/>
+                                <input type="hidden" name="upId" value="{{ligne.cmdl__cmd__id}}"/>
+                                <input type="hidden" name="upLigne" value="{{ligne.devl__id}}"/>
+                                <button type="submit" class="btn btn-outline-success btn-sm"><i class="far fa-arrow-to-top"></i></button>
+                            </form>
+                        </div> 
+                        {% endif %}
                         
-                        <div class="d-flex justify-content-end ">
-                            <div class="align-content-end my-1">
-                                <form action="ligneDevisV2" method="POST">
-                                    <input type="hidden" name="down[]" value="{{ligne.devl__ordre}}"/>
-                                    <input type="hidden" name="downId" value="{{ligne.cmdl__cmd__id}}"/>
-                                    <input type="hidden" name="downLigne" value="{{ligne.devl__id}}"/>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <form action="ligneDevisV2" method="POST">
+                            <input type="hidden" name="deleteIdCmd" value="{{ligne.cmdl__cmd__id}}"/>
+                            <input type="hidden" name="deleteId" value="{{ligne.devl__id}}"/>
+                            <button type="submit" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i></button>
+                        </form>
+                    </div> 
+                    {% if loop.last %}
+                    <div class="d-flex justify-content-end ">
+                        <div class="align-content-end my-1">
+                            <form action="ligneDevisV2" method="POST">
+                                <input type="hidden" name="down[]" value="{{ligne.devl__ordre}}"/>
+                                <input type="hidden" name="downId" value="{{ligne.cmdl__cmd__id}}"/>
+                                <input type="hidden" name="downLigne" value="{{ligne.devl__id}}"/>
+                            <button type="submit" class="btn btn-outline-success btn-sm" disabled><i class="far fa-arrow-to-bottom"></i></button>
+                            </form>
+                        </div> 
+                    </div>  
+                    {% else %}
+                    <div class="d-flex justify-content-end ">
+                        <div class="align-content-end my-1">
+                            <form action="ligneDevisV2" method="POST">
+                                <input type="hidden" name="down[]" value="{{ligne.devl__ordre}}"/>
+                                <input type="hidden" name="downId" value="{{ligne.cmdl__cmd__id}}"/>
+                                <input type="hidden" name="downLigne" value="{{ligne.devl__id}}"/>
                                 <button type="submit" class="btn btn-outline-success btn-sm"><i class="far fa-arrow-to-bottom"></i></button>
-                                </form>
-                            </div> 
-                        </div>
-                    </div>
-                    </div>
-                        
-                              
-                    </div>
-
-                <div class="d-flex">
-                    <div class="col-6">
-                        
-                    </div>
-                    <div class="col-6">
-                        
-                    </div>
-
+                            </form>
+                        </div> 
+                    </div>  
+                    {% endif %}
+                    
                 </div>
                 
-              
-                
-                </div>
+                </div>                 
+            </div>
+            </div>
             
             {% endfor %}     
         </div>
@@ -394,6 +407,11 @@
 <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script>
+    jQuery(document).ready(function() {
+        jQuery('#loading').fadeOut(1500);
+    });
+    </script>
 <script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
 <script type="text/javascript" src="public/js/ligneV2/nDevisLigne.js"></script>

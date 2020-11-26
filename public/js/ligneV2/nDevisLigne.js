@@ -86,6 +86,7 @@ $(document).ready(function()
                 'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , 'fontColor'
             ]
              })
+             
              .catch( error =>
              {
                  console.error( error );
@@ -193,6 +194,8 @@ for (let y = 0; y < arrayBoxClient.length; y++)
   })  
 }
     
+
+
     
     
 })

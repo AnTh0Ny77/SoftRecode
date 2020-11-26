@@ -143,7 +143,8 @@ if (!empty($_POST['deleteId']))
 
 //modification de ligne demandée :
 $modif = null; 
-if (!empty($_POST['modifyId']) && !empty($_POST['modifyIdCmd'])) 
+$duplicate = null;
+if (!empty($_POST['modifyId']) && !empty($_POST['modifyIdCmd']) && empty($_POST['duplicate'])) 
 {
     $modif = $Devis->selecOneLine($_POST['modifyId']);
     $xtend = $Devis->selectGaranties($_POST['modifyId']);
@@ -151,13 +152,34 @@ if (!empty($_POST['modifyId']) && !empty($_POST['modifyIdCmd']))
     $modif->modif = true;
     $idDevis = $_POST['modifyIdCmd'];
 }
+//duplicata de ligne :
+if (!empty($_POST['modifyId']) && !empty($_POST['duplicate'])) 
+{
+    $modif = $Devis->selecOneLine($_POST['modifyId']);
+    $xtend = $Devis->selectGaranties($_POST['modifyId']);
+    $modif->xtend = $xtend;
+    $idDevis = $_POST['modifyIdCmd'];
+    $duplicate = $_POST['duplicate'];
+}
 
 
 
 // creation lignes ou duplicata : 
 if (!empty($_POST['devis']) && empty($_POST['boolModif'])) 
 {
-    
+    if (empty($_POST['etat'])) 
+    {
+        $_POST['etat'] = 'NC.';
+    }
+    if (empty($_POST['garantie'])) 
+    {
+        $_POST['garantie'] = '00';
+    }
+    if (empty($_POST['xtendP'])) 
+    {
+        $_POST['xtendP'] = [];
+    }
+
     $newLines = $Devis->insertLine(
     $_POST['devis'] , $_POST['presta'], $_POST['fmm'],
     $_POST['designation'] , $_POST['etat'] , $_POST['garantie'],
@@ -185,8 +207,20 @@ if (!empty($_POST['devis']) && empty($_POST['boolModif']))
 }
 
 //modification de ligne : 
-if (!empty($_POST['boolModif'])) 
+if (!empty($_POST['boolModif']) ) 
     {
+        if (empty($_POST['etat'])) 
+        {
+            $_POST['etat'] = 'NC.';
+        }
+        if (empty($_POST['garantie'])) 
+        {
+            $_POST['garantie'] = '00';
+        }
+        if (empty($_POST['xtendP'])) 
+        {
+            $_POST['xtendP'] = [];
+        }
         $General->updateAll('cmd_ligne' , $_POST['presta'] , 'cmdl__prestation' , 'cmdl__id' , $_POST['boolModif']);
         $General->updateAll('cmd_ligne' , $_POST['fmm'] , 'cmdl__id__fmm' , 'cmdl__id' , $_POST['boolModif']);
         $General->updateAll('cmd_ligne' , $_POST['designation'] , 'cmdl__designation' , 'cmdl__id' , $_POST['boolModif']);
@@ -221,6 +255,8 @@ if (!empty($_POST['boolModif']))
         }
        
     }
+
+
 
 
 $devis = $Cmd->GetById($idDevis);
@@ -264,7 +300,8 @@ echo $twig->render('NligneDevisV2.twig',[
     'garanties' => $garanties,
     'etatList'=> $etatList,
     'devisLignes' => $devisLigne,
-    'modif' => $modif
+    'modif' => $modif,
+    'duplicate' => $duplicate
     
  ]);
 
