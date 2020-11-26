@@ -90,8 +90,7 @@ if (intval($command->client__id) < 10)
 
 if ($command->cmd__trans == 'NBL') 
 {
-    header('location: transport2');
-    
+    header('location: transport2');  
 }
 $commandLignes = $Command->devisLigne($_POST['id_trans']);
 $dateTemp = new DateTime($command->cmd__date_envoi);
