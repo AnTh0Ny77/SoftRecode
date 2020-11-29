@@ -419,6 +419,13 @@ else
                 echo "<td class='text-right'>".number_format($totaux[1] , 2,',', ' ')." %</td>";
                 echo "<td class='text-right'>".number_format($totaux[2] , 2,',', ' ')." €</td>";
                 echo "<td class='text-right'><b>".number_format($totaux[3] , 2,',', ' ')." €</b></td>";
+
+                $alert_zero = false ;
+                if (floatval($totaux[3]) <= 00) 
+                {
+                    $alert_zero = true ;
+                }
+               
                
             
             ?>
@@ -454,6 +461,14 @@ else
      <input type="hidden" value="<?php echo $temp->devis__id ?>" name="archiveID">
      <button class="btn btn-secondary btn-lg">Archiver</button>
      </form>
+     <?php
+     if ($alert_zero) 
+     {
+        echo "<div class='alert alert-warning' role='alert'>
+        Attention au montant de la facture !
+        </div>";
+     }
+     ?>
      <form class="text-right d-inline mx-2" method="POST" action="printFTC" id="PostForms">
      <input type="hidden" value="<?php echo $temp->devis__id ?>" name="hiddenCommentaire" id="hiddenCommentaire" >
      <button class="btn btn-success btn-lg">Facturer</button>
