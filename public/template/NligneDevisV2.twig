@@ -395,7 +395,45 @@
             </div>
             </div>
             
-            {% endfor %}     
+            {% endfor %} 
+            
+            {% if devisLignes  %}
+            <div class="card my-1 shadow col-12">
+                <div class='card-body'>
+                <p class="h4 text-center">Totaux hors extensions</p>
+                   <div class="table-responsive-md">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th >Montant remisé</th>
+                                    <th >TVA taux</th>
+                                    <th >TVA montant</th>
+                                    <th >Total h.t</th>
+                                    <th >Total ttc</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th class="text-center" > €</th>
+                                    <th class="text-center">{{totaux[1]}} %</th>
+                                    <th class="text-center">{{totaux[2]}} €</th>
+                                    <th class="text-center">{{totaux[0]}} €</th>
+                                    <th class="text-center">{{totaux[3]}} €</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+             <div class="card my-1 shadow col-12">
+                <div class='card-body'>
+                    <div class="alert alert-warning text-center" role="alert">
+                        Aucun article présent ! 
+                    </div>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 

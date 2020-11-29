@@ -2,6 +2,7 @@
 <?php
 require "./vendor/autoload.php";
 require "./App/twigloader.php";
+use App\Methods\Pdfunctions;
 session_start();
 
 //URL bloqué si pas de connexion :
@@ -261,6 +262,10 @@ if (!empty($_POST['boolModif']) )
 
 $devis = $Cmd->GetById($idDevis);
 $devisLigne = $Cmd->devisLigne($idDevis);
+$totaux  = Pdfunctions::totalFacturePRO($devis, $devisLigne);
+
+
+
 
 foreach ($devisLigne as $ligne) 
 {
@@ -301,7 +306,8 @@ echo $twig->render('NligneDevisV2.twig',[
     'etatList'=> $etatList,
     'devisLignes' => $devisLigne,
     'modif' => $modif,
-    'duplicate' => $duplicate
+    'duplicate' => $duplicate,
+    'totaux' => $totaux
     
  ]);
 
