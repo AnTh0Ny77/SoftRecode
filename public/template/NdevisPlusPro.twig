@@ -67,7 +67,7 @@
             <div class="card-body d-flex flex-column">
             
                 <div class="my-3">
-                <h5><span class="badge badge-secondary badge-pill">Facturation</span></h5>
+                    <label for="comClient"><b>Facturation</b></label>
                     <div>
                         <div class="mt-2 pt-2 ">
                             <label for="exampleInputEmail1">Client : </label>   
@@ -115,7 +115,7 @@
                 </div>
                
                 <div class="my-3">
-                    <h5><span class="badge badge-secondary badge-pill">Livraison</span></h5>
+                    <label for="comClient"><b>Livraison</b></label>
                         <div>
                             <div class="mt-1 pt-2 ">
                                 <label for="exampleInputEmail1">Client : <b>indentique si non specifiée</b></label>   
@@ -180,7 +180,7 @@
                <div class="  d-flex flex-row justify-content-between">
                 <div class="col-12">
                       <div class=" col-12  my-3 ">
-                        <h5><span class="badge badge-secondary badge-pill">Titre</span></h5>
+                        <label for="comClient"><b>Titre</b></label>
                         {% if modif %}
                         <input class="form-control " type="text"  id="titreDevis" name="titreDevis" value="{{modif.cmd__nom_devis}}">
                         {% else %}
@@ -190,7 +190,7 @@
                           
                       </div>
                       <div class=" col-12  my-3 ">
-                        <h5><span class="badge badge-secondary badge-pill">Code commande client</span></h5>
+                        <label for="comClient"><b>Code commande client</b></label>
                         {% if modif %}
                         <input class="form-control " type="text"   name="code" value="{{modif.cmd__code_cmd_client}}">
                         {% else %}
@@ -200,29 +200,9 @@
                           
                       </div>
                        
-                       <div class="col-12 my-3 ">
-                        <h5><span class="badge badge-secondary badge-pill">Modèle</span></h5>
-                        
-                          <select class="selectpicker show-tick" data-width="100%"  name="modele"  required>
-                              {% if modif %}
-                                {% for modele in modeleList %}
-                                        {% if modif.cmd__modele_devis ==  modele.kw__value %}
-                                            <option class=""  value={{modele.kw__value}} selected>{{modele.kw__lib}}</option>
-                                        {% else %}
-                                            <option class=""  value={{modele.kw__value}}>{{modele.kw__lib}}</option>
-                                        {% endif %}   
-                                {% endfor %}
-                              {% else %}
-                                {% for modele in modeleList %}
-                                        <option class=""  value={{modele.kw__value}}>{{modele.kw__lib}}</option>
-                                {% endfor %}
-                              {% endif %}
-                                
-                          </select>
-                       
-                       </div>
+                      
                         <div class="col-12 my-2 d-flex flex-column">
-                            <h5><span class="badge badge-secondary badge-pill">Commentaires</span></h5>
+                            <label for="comClient"><b>Commentaires</b></label>
                           <div class="col-12 my-2  show multi-col">
                             <label for="globalComClient">Client</label>
                             {% if modif %}

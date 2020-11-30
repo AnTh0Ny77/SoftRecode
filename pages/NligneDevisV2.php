@@ -74,7 +74,7 @@ if (!empty($_POST['clientSelect']) && empty($_POST['modifReturn']))
             $idDevis = $Devis->createDevis(
             $date, $user, $_POST['clientSelect'], $livraison, $_POST['contactSelect'],
             $_POST['contactLivraison'], $_POST['globalComClient'], $_POST['globalComInt'],
-            $_POST['modele'], $tva, $titre, $_POST['code']);
+            'STT', $tva, $titre, $_POST['code']);
             break;
     } 
 }
@@ -113,7 +113,7 @@ if (!empty($_POST['modifReturn']))
     $General->updateAll('cmd' , $_POST['contactLivraison'] , 'cmd__contact__id_livr' , 'cmd__id' , $_POST['modifReturn']);
     $General->updateAll('cmd' , $_POST['globalComClient'] , 'cmd__note_client' , 'cmd__id' , $_POST['modifReturn']);
     $General->updateAll('cmd' , $_POST['globalComInt'] , 'cmd__note_interne' , 'cmd__id' , $_POST['modifReturn']);
-    $General->updateAll('cmd' , $_POST['modele'] , 'cmd__modele_devis' , 'cmd__id' , $_POST['modifReturn']);
+    $General->updateAll('cmd' , 'STT' , 'cmd__modele_devis' , 'cmd__id' , $_POST['modifReturn']);
     $General->updateAll('cmd' , $tva , 'cmd__tva' , 'cmd__id' , $_POST['modifReturn']);
     $General->updateAll('cmd' , $titre , 'cmd__nom_devis' , 'cmd__id' , $_POST['modifReturn']);
     $General->updateAll('cmd' , $_POST['code'] , 'cmd__code_cmd_client' , 'cmd__id' , $_POST['modifReturn']);
@@ -263,7 +263,18 @@ if (!empty($_POST['boolModif']) )
 $devis = $Cmd->GetById($idDevis);
 $devisLigne = $Cmd->devisLigne($idDevis);
 $totaux  = Pdfunctions::totalFacturePRO($devis, $devisLigne);
-
+$remiseRequest = $Devis->getRemise($idDevis);
+$remiseTotal = 0.00 ;
+foreach ($remiseRequest as $remise) 
+{
+    $remiseTotal += floatval($remise->cmdl__prix_barre);
+}
+//formatte les totaux pour affichage : 
+$remiseTotal =  number_format($remiseTotal , 2,',', ' ');
+$totaux[0] = number_format($totaux[0] , 2,',', ' ');
+$totaux[1] = number_format($totaux[1] , 2,',', ' ');
+$totaux[2] = number_format($totaux[2] , 2,',', ' ');
+$totaux[3] = number_format($totaux[3] , 2,',', ' ');
 
 
 
@@ -307,7 +318,8 @@ echo $twig->render('NligneDevisV2.twig',[
     'devisLignes' => $devisLigne,
     'modif' => $modif,
     'duplicate' => $duplicate,
-    'totaux' => $totaux
+    'totaux' => $totaux ,
+    'remise_total'=> $remiseTotal
     
  ]);
 

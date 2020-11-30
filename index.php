@@ -2,6 +2,7 @@
 
  
   $request = $_SERVER['REQUEST_URI'];
+  $get = '.';
 
   switch($request)
   {
@@ -67,6 +68,8 @@
 
     case '/SoftRecode/mesDevis';
       require __DIR__ .'/pages/mesDevis.php'; break;
+
+    
 
     case '/SoftRecode/pdf';
       require __DIR__ .'/pages/utilities/pdf.php'; break;
@@ -239,10 +242,6 @@
     case '/SoftRecode/PRINTFORMAT';
       require __DIR__ .'/pages/utilities/printFormat.php'; break;
 
-
-
-      
-    
     case '/SoftRecode/stat';
       require __DIR__ .'/pages/statistiques.php'; break;
     

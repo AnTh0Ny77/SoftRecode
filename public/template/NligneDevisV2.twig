@@ -148,8 +148,15 @@
                         </div>
 
                         <div class="col-2">
-                            <label for="validationCustom04"> <b>inclure l'image</b></label>
-                            <input type="checkbox" class="form-control" value="1" name="ordre">
+                            <div class="custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="checkEtat">
+                                <label class="custom-control-label" for="checkEtat">Masquer Etat</label>
+                            </div>
+                            <div class="custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="checkImage">
+                                <label class="custom-control-label" for="checkImage">Inclure image</label>
+                            </div>
+                           
                         </div> 
                     </div>
 
@@ -414,7 +421,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th class="text-center" > €</th>
+                                    <th class="text-center" >{{remise_total}} €</th>
                                     <th class="text-center">{{totaux[1]}} %</th>
                                     <th class="text-center">{{totaux[2]}} €</th>
                                     <th class="text-center">{{totaux[0]}} €</th>
@@ -424,6 +431,26 @@
                         </table>
                     </div>
                 </div>
+                <form action="" method="POST">
+                    <input type="hidden" name="idDevis" value="{{devis.devis__id}}">
+                <div class="d-flex justify-content-around flex-wrap my-3 ">
+                    
+                    <div class="custom-control custom-checkbox col-4">
+                        <input type="checkbox" class="custom-control-input" id="checkTva">
+                        <label class="custom-control-label" for="checkTva">Masquer la Tva</label>
+                    </div>
+                   
+                   
+                  
+                    <div class="custom-control custom-checkbox col-4">
+                        <input type="checkbox" class="custom-control-input" id="checkExtend">
+                        <label class="custom-control-label" for="checkExtend">Reporter les extensions</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success">Valider le Devis</button>
+                </div>     
+            </form>
             </div>
             {% else %}
              <div class="card my-1 shadow col-12">

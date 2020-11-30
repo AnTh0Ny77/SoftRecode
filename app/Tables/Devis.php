@@ -221,5 +221,12 @@ class Devis extends Table {
     $request->execute();
   }
 
+  public function getRemise($idCmd)
+  {
+    $array = $this->Db->Pdo->query("SELECT cmdl__prix_barre  from cmd_ligne WHERE cmdl__cmd__id = ". $idCmd ."");
+    $response = $array->fetchAll(PDO::FETCH_OBJ);
+    return $response;
+  }
+
 
 }
