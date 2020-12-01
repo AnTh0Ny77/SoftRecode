@@ -32,6 +32,8 @@ if (!empty($_POST['clientSelect']) && empty($_POST['modifReturn']))
     
 
 
+  
+
     switch ($_POST['clientSelect']) 
     {
         case 'Aucun':
@@ -121,6 +123,7 @@ if (!empty($_POST['modifReturn']))
 } 
 
 
+
 //descend une ligne : 
 if (!empty($_POST['down'])) 
 {
@@ -180,6 +183,8 @@ if (!empty($_POST['devis']) && empty($_POST['boolModif']))
     {
         $_POST['xtendP'] = [];
     }
+    
+
 
     $newLines = $Devis->insertLine(
     $_POST['devis'] , $_POST['presta'], $_POST['fmm'],
@@ -188,6 +193,24 @@ if (!empty($_POST['devis']) && empty($_POST['boolModif']))
     $idDevis = $_POST['devis'];
     $_POST['devis'] = "";
 
+    //affichage de l'état : 
+    if (!empty($_POST['checkEtat'])) 
+    {
+        $General->updateAll('cmd_ligne' , 1 , 'cmdl__etat_masque' , 'cmdl__id' , $newLines);
+    }
+    else 
+    {
+        $General->updateAll('cmd_ligne' , 0 , 'cmdl__etat_masque' , 'cmdl__id' , $newLines);
+    }
+    //affichage de l'etat: 
+    if (!empty($_POST['checkImage'])) 
+    {
+        $General->updateAll('cmd_ligne' ,1  , 'cmdl__image' , 'cmdl__id' , $newLines);
+    }
+    else 
+    {
+        $General->updateAll('cmd_ligne' , 0 , 'cmdl__image' , 'cmdl__id' , $newLines);
+    }
 
     //extension de garanties : 
     foreach ($_POST['xtendP'] as $key => $value) 
@@ -232,7 +255,25 @@ if (!empty($_POST['boolModif']) )
         $General->updateAll('cmd_ligne' , floatval($_POST['prix']) , 'cmdl__puht' , 'cmdl__id' , $_POST['boolModif']);
         $General->updateAll('cmd_ligne' , $_POST['commentaire'] , 'cmdl__note_client' , 'cmdl__id' , $_POST['boolModif']);
         $General->updateAll('cmd_ligne' , $_POST['interne'] , 'cmdl__note_interne' , 'cmdl__id' , $_POST['boolModif']);
-      
+        //affichage de l'état : 
+        if(!empty($_POST['checkEtat'])) 
+        {
+            $General->updateAll('cmd_ligne' , 1 , 'cmdl__etat_masque' , 'cmdl__id' , $_POST['boolModif']);
+        }
+        else 
+        {
+            $General->updateAll('cmd_ligne' , 0 , 'cmdl__etat_masque' , 'cmdl__id' ,$_POST['boolModif']);
+        }
+        //affichage de l'etat: 
+        if(!empty($_POST['checkImage'])) 
+        {
+            $General->updateAll('cmd_ligne' ,1  , 'cmdl__image' , 'cmdl__id' ,$_POST['boolModif']);
+        }
+        else 
+        {
+            $General->updateAll('cmd_ligne' , 0 , 'cmdl__image' , 'cmdl__id' , $_POST['boolModif']);
+        }
+            
         $Devis->deleteGarantie($_POST['boolModif']);
 
         $idDevis = $_POST['boolIdCmd'];

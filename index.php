@@ -76,6 +76,10 @@
 
     case '/SoftRecode/voirDevis';
       require __DIR__ .'/pages/utilities/viewPdf.php'; break;
+
+    case '/SoftRecode/printDevis2';
+      require __DIR__ .'/pages/utilities/PdfDevis2.php'; break;
+     
     
     case '/SoftRecode/contactCrea';
       require __DIR__ .'/pages/contactCrea.php'; break;

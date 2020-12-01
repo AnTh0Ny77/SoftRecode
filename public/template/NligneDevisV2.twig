@@ -148,14 +148,30 @@
                         </div>
 
                         <div class="col-2">
+                        {% if modif.cmdl__etat_masque > 0 %}
                             <div class="custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="checkEtat">
+                                <input type="checkbox" class="custom-control-input" id="checkEtat" name="checkEtat" value='ok' checked>
                                 <label class="custom-control-label" for="checkEtat">Masquer Etat</label>
                             </div>
+                        {% else %}
                             <div class="custom-control custom-checkbox ">
-                                <input type="checkbox" class="custom-control-input" id="checkImage">
+                                <input type="checkbox" class="custom-control-input" id="checkEtat" name="checkEtat" value='ok'>
+                                <label class="custom-control-label" for="checkEtat">Masquer Etat</label>
+                            </div>
+                        {% endif %}
+                        {% if modif.cmdl__image > 0 %}
+                            <div class="custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="checkImage" name='checkImage' value='ok' checked>
                                 <label class="custom-control-label" for="checkImage">Inclure image</label>
                             </div>
+                        {% else %}
+                            <div class="custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="checkImage" name='checkImage' value='ok'>
+                                <label class="custom-control-label" for="checkImage">Inclure image</label>
+                            </div>
+                        {% endif %}
+                            
+                            
                            
                         </div> 
                     </div>
@@ -289,6 +305,11 @@
                             <button  type="button" value="{{ligne.devl__id}}" id="{{ligne.devl__id}}" class="btn btn-sm btn-success jBoxModal"><i class="fas fa-tools"></i></button>
                         </div>
                      {% endif %}
+                      {% if ligne.cmdl__image %}
+                        <div class="mx-1">
+                            <button  type="button" value="{{ligne.devl__id}}"  class="btn btn-sm btn-info"><i class="far fa-camera-alt"></i></button>
+                        </div>
+                     {% endif %}
                      <form class="mx-1" action="ligneDevisV2" method="POST">
                         <input type="hidden" name="modifyIdCmd" value="{{ligne.cmdl__cmd__id}}"/>
                         <input type="hidden" name="modifyId" value="{{ligne.devl__id}}"/>
@@ -308,7 +329,10 @@
                     </div>
                     <div class="">
                         <p class="card-text">
-                            <b>{{ligne.kw__lib ~ " " }}</b> : 
+                            <b>{{ligne.kw__lib ~ " " }}</b>
+                            {% if ligne.cmdl__etat_masque > 0 %}
+                            <i class="fas fa-eye-slash"></i> 
+                            {% endif %} : 
                                
                            
                             {% if ligne.devl__prix_barre and ligne.devl__prix_barre > 0  %}
@@ -431,24 +455,22 @@
                         </table>
                     </div>
                 </div>
-                <form action="" method="POST">
+                <form action="printDevis2" method="POST">
                     <input type="hidden" name="idDevis" value="{{devis.devis__id}}">
                 <div class="d-flex justify-content-around flex-wrap my-3 ">
                     
                     <div class="custom-control custom-checkbox col-4">
-                        <input type="checkbox" class="custom-control-input" id="checkTva">
-                        <label class="custom-control-label" for="checkTva">Masquer la Tva</label>
+                        <input type="checkbox" class="custom-control-input" id="checkremise" name="checkremise" value='ok'>
+                        <label class="custom-control-label" for="checkremise">Mode remise</label>
                     </div>
-                   
-                   
-                  
                     <div class="custom-control custom-checkbox col-4">
-                        <input type="checkbox" class="custom-control-input" id="checkExtend">
+                        <input type="checkbox" class="custom-control-input" id="checkExtend" name="checkExtend" value='ok'>
                         <label class="custom-control-label" for="checkExtend">Reporter les extensions</label>
                     </div>
+
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success">Valider le Devis</button>
+                    <button type="submit" class="btn btn-success">Valider le Devis</button>
                 </div>     
             </form>
             </div>
