@@ -4,6 +4,7 @@ require "./vendor/autoload.php";
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Methods\Pdfunctions;
+use App\Methods\Devis_functions;
 session_start();
 $Database = new App\Database('devis');
 $Database->DbConnect();
@@ -44,6 +45,12 @@ if (!empty($_POST['idDevis']))
 
     $devis = $Cmd->GetById($_POST['idDevis']);
     $devis_ligne = $Cmd->devisLigne($_POST['idDevis']);
+    foreach ($devis_ligne as $ligne) 
+    {
+        $tableau_extension = $Cmd->xtenGarantie($ligne->devl__id);
+        $ligne->tableau_extension = $tableau_extension;
+    } 
+
     //recuperation de la date du devis et formate : 
     $date_time = new DateTime($devis->devis__date_crea);
     $date_devis_formate = $date_time->format('d/m/Y');
@@ -162,6 +169,13 @@ if (!empty($_POST['idDevis']))
                     </tr>
                 </table>
         </page_footer>
+
+        <table CELLSPACING=0 style="margin-top: 15px; width:100%">
+        
+        <?php 
+            
+        ?>
+        </table>
 
     
 

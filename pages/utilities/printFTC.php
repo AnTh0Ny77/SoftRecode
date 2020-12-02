@@ -33,18 +33,32 @@ if (!empty($_POST['hiddenCommentaire']))
 {
 
 //gestion de la date de facturation
-if (!empty($_POST['date_fact'])) 
+if (!empty($_POST['date_fact']) ) 
 {
     $date = date($_POST['date_fact']);
     setcookie("date_facture_cookies", $date, time()+3600);
     $date = new DateTime($_POST['date_fact']);
-    var_dump($date);
     $date = $date->format('Y-m-d H:i:s'); 
 }
 else 
 {
-    header('location: facture');
+    if (empty($_COOKIE['date_facture_cookies'])) 
+    {
+        $date = date("Y-m-d");
+        setcookie("date_facture_cookies", $date, time()+3600);
+        $date = new DateTime($date);
+        $date = $date->format('Y-m-d H:i:s'); 
+    }
+    else
+    {
+        $date = date($_COOKIE['date_facture_cookies']);
+        setcookie("date_facture_cookies", $date, time()+3600);
+        $date = new DateTime($date);
+        $date = $date->format('Y-m-d H:i:s'); 
+    }
 }
+
+
 
 //  2  changer le status de la commande et attribuer un numero de facture:
 $Cmd->commande2facture($_POST['hiddenCommentaire']);
