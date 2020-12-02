@@ -118,6 +118,7 @@ class Devis_functions
                         //boucle sur les extensions de garanties:
                         foreach($ligne->tableau_extension as $array)
                         {
+                           
                             $counter = $counter + 1; 
                             $extension_ligne = "";
                             $seconde_balise_tr = "<tr style='font-size: 95%; font-style: italic;'>" ;
