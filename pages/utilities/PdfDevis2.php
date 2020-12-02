@@ -173,7 +173,7 @@ if (!empty($_POST['idDevis']))
         <table CELLSPACING=0 style="margin-top: 15px; width:100%">
         
         <?php 
-            
+            echo Devis_functions::classic_devis_ligne_pdf($devis_ligne, 0);
         ?>
         </table>
 
