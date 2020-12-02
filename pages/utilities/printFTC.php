@@ -32,9 +32,22 @@ if(!empty($_SESSION['factureEtoile']))
 if (!empty($_POST['hiddenCommentaire'])) 
 {
 
+//gestion de la date de facturation
+if (!empty($_POST['date_fact'])) 
+{
+    $date = date($_POST['date_fact']);
+    setcookie("date_facture_cookies", $date, time()+3600);
+    $date = new DateTime($_POST['date_fact']);
+    var_dump($date);
+    $date = $date->format('Y-m-d H:i:s'); 
+}
+else 
+{
+    header('location: facture');
+}
+
 //  2  changer le status de la commande et attribuer un numero de facture:
 $Cmd->commande2facture($_POST['hiddenCommentaire']);
-$date = date("Y-m-d H:i:s");
 $General->updateAll('cmd', $date , 'cmd__date_fact' , 'cmd__id', $_POST['hiddenCommentaire'] );
 $General->updateAll('cmd', $_SESSION['user']->id_utilisateur , 'cmd__user__id_fact' , 'cmd__id', $_POST['hiddenCommentaire'] );
 

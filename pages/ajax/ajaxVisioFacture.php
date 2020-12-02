@@ -11,6 +11,13 @@ $Contact = new \App\Tables\Contact($Database);
 $Keyword = new \App\Tables\Keyword($Database);
 $User = new \App\Tables\User($Database);
 
+if (empty($_COOKIE['date_facture_cookies'])) 
+{
+    $date = date("Y-m-d");
+    setcookie("date_facture_cookies", $date, time()+3600);
+}
+
+
 
 // si pas connecté on ne vole rien ici :
 if (empty($_SESSION['user'])) 
@@ -456,7 +463,7 @@ else
 
 
 
-     <div class="d-flex justify-content-end mr-3 mt-4"> 
+     <div class="d-flex justify-content-end mr-3 mt-4 align-items-end"> 
      <form class="text-right d-inline mx-2" method="POST" action="archiveFacture">
      <input type="hidden" value="<?php echo $temp->devis__id ?>" name="archiveID">
      <button class="btn btn-secondary btn-lg">Archiver</button>
@@ -470,8 +477,9 @@ else
      }
      ?>
      <form class="text-right d-inline mx-2" method="POST" action="printFTC" id="PostForms">
+     <input class="form-control my-2" type="date" id="date_fact" name="date_fact" value="<?php echo $_COOKIE['date_facture_cookies'] ?>">
      <input type="hidden" value="<?php echo $temp->devis__id ?>" name="hiddenCommentaire" id="hiddenCommentaire" >
-     <button class="btn btn-success btn-lg">Facturer</button>
+     <button class="btn btn-success btn-lg btn-block">Facturer</button>
      </form>
      <p id="keystroke"></p>
      </div>

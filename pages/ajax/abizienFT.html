@@ -149,14 +149,15 @@
 
 
 
-     <div class="d-flex justify-content-end mr-3 mt-4"> 
+     <div class="d-flex justify-content-end mr-3 mt-4 align-items-end"> 
      <form class="text-right d-inline mx-2" method="POST" action="archiveFacture">
      <input type="hidden" value="3210129" name="archiveID">
      <button class="btn btn-secondary btn-lg">Archiver</button>
      </form>
           <form class="text-right d-inline mx-2" method="POST" action="printFTC" id="PostForms">
+     <input class="form-control my-2" type="date" id="date_fact" name="date_fact" value="2020-12-03">
      <input type="hidden" value="3210129" name="hiddenCommentaire" id="hiddenCommentaire" >
-     <button class="btn btn-success btn-lg">Facturer</button>
+     <button class="btn btn-success btn-lg btn-block">Facturer</button>
      </form>
      <p id="keystroke"></p>
      </div>

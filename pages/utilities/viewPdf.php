@@ -34,7 +34,7 @@ if (empty($_SESSION['user'])) {
         $ligne->ordre2 = $xtendArray;
     } 
 
-$date_time = new DateTime( $temp->devis__date_crea);
+$date_time = new DateTime($temp->devis__date_crea);
 $formated_date = $date_time->format('d/m/Y'); 
 $Keyword = new \App\Tables\Keyword($Database);
 $garanties = $Keyword->getGaranties();
