@@ -309,7 +309,13 @@ $remiseTotal = 0.00 ;
 foreach ($remiseRequest as $remise) 
 {
     $remiseTotal += floatval($remise->cmdl__prix_barre);
+    
 }
+$remiseTotal = $remiseTotal - $totaux[0];
+    if ($remiseTotal <= 0) 
+    {
+        $remiseTotal = 0.00 ;
+    }
 //formatte les totaux pour affichage : 
 $remiseTotal =  number_format($remiseTotal , 2,',', ' ');
 $totaux[0] = number_format($totaux[0] , 2,',', ' ');

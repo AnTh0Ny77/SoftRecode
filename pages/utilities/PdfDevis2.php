@@ -173,10 +173,57 @@ if (!empty($_POST['idDevis']))
         <table CELLSPACING=0 style="margin-top: 15px; width:100%">
         
         <?php 
-            echo Devis_functions::remise_devis_ligne_pdf($devis_ligne, 0);
+
+            if ($devis->cmd__mode_remise > 0) 
+            {
+                echo Devis_functions::remise_devis_ligne_pdf($devis_ligne, 0);
+            }
+            else
+            {
+                echo Devis_functions::classic_devis_ligne_pdf($devis_ligne, 0);
+            }
+           
             
         ?>
         </table>
+        <div>
+            <table style=" margin-top: 25px;  width:100%;" >
+                <tr>
+                    <td style="width: 45%;"></td>
+                    <td align="right">
+                        <?php
+                        // if ($temp->cmd__modele_devis != 'STX') 
+                        // {
+                        //     switch ($temp->cmd__modele_devis) 
+                        //     {
+                        //         // devis standart total classique:
+                        //         case 'STT':
+                        //            $totalPrice = array_sum($arrayPrice);
+                        //            $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true , $temp->tva_Taux);
+                        //             break;
+                              
+                        //         // devis sans TVA total classique: 
+                        //         case 'TVT':
+                        //             $totalPrice = array_sum($arrayPrice);
+                        //             $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , false , $temp->tva_Taux);
+                        //             break;
+                    
+                        //         default:
+                        //             $totalPrice = array_sum($arrayPrice);
+                        //             $totaux = Pdfunctions::totalCon($arrayOfDevisLigne , $garanties , array_sum($arrayPrice) , true , $temp->tva_Taux);
+                        //             break;
+                        //     }
+                          
+                        // }
+                    
+                       
+                      
+                        ?>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
 
     
 

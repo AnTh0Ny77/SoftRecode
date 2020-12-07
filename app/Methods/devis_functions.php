@@ -86,7 +86,7 @@ class Devis_functions
                         $premiere_cellule = 
                         "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$firstW."; max-width: ".$firstW."; text-align: left;  '>" . $prestation  . "</td>";
                         $deuxieme_cellule = 
-                        "<td valign='top' class='NoBR' style='  padding-top:".$firstPadding.";  width: ".$secondW."; max-width: ".$secondW."; text-align: left;  padding-bottom:15px'>"  . $designation. "</td>";
+                        "<td valign='top' class='NoBR' style='  padding-top:".$firstPadding.";  width: ".$secondW."; max-width: ".$secondW."; text-align: left;  padding-bottom:10px'>"  . $designation. "</td>";
                         if ($ligne->devl__etat == 'NC.') 
                         {
                             $troisieme_cellule =  
@@ -112,7 +112,7 @@ class Devis_functions
                         $cinquieme_cellule =
                         "<td valign='top' style='padding-top:".$firstPadding."; width: ".$fifthW."; max-width: ".$fifthW."; text-align: center;  '>" .$quantité ."</td>";
                         $derniere_cellule = 
-                        "<td valign='top' style='padding-top:".$firstPadding."; width: ".$lastW."; max-width: ".$lastW.";  text-align: right;   padding-bottom:15px'>" . $barre . " " . $prix ."</td>" ;
+                        "<td valign='top' style='padding-top:".$firstPadding."; width: ".$lastW."; max-width: ".$lastW.";  text-align: right;   padding-bottom:10px'>" . $barre . " " . $prix ."</td>" ;
                         $balise_tr_fermeture = "</tr>";
                         $counter = 0 ;
                         //boucle sur les extensions de garanties:
@@ -127,7 +127,7 @@ class Devis_functions
                             if ($ligne->devl__type == "REP") 
                             {
                                 $seconde_cellule_2 = 
-                                "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW.";  text-align: left;  '>mise sous garantie du matériel réparé optionnelle  </td>";
+                                "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW.";  text-align: left;  '>mise sous garantie du matériel réparé</td>";
                             }
                             else 
                             {
@@ -160,7 +160,7 @@ class Devis_functions
                                 $premiere_cellule_2 = "<td valign='top' style=' width:".$firstW."; text-align: left; border-bottom: 1px #ccc solid'>garantie</td>";
                                 if ($ligne->devl__type == "REP") 
                                 {
-                                    $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid; padding-bottom:15px '>mise sous garantie du matériel réparé optionnelle  </td>";
+                                    $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid; padding-bottom:10px '>mise sous garantie du matériel réparé</td>";
                                 }
                                 else 
                                 {
@@ -199,7 +199,7 @@ class Devis_functions
                         $premiere_cellule = 
                         "<td valign='top' style='padding-top:".$firstPadding."; width: ".$firstW.";  max-width: ".$firstW."; text-align: left; border-bottom: 1px #ccc solid; '>" . $prestation  . "</td>";
                         $deuxieme_cellule = 
-                        "<td valign='top' class='NoBR' style='padding-top:".$firstPadding.";  width: ".$secondW.";  max-width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid ;  padding-bottom:15px'>"  . $designation. "</td>";
+                        "<td valign='top' class='NoBR' style='padding-top:".$firstPadding.";  width: ".$secondW.";  max-width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid ;  padding-bottom:10px'>"  . $designation. "</td>";
                         //condition pour etat = a NC. OU etat masque est demandé: 
                         if ($ligne->devl__etat == 'NC' || $ligne->cmdl__etat_masque > 0 ) 
                         {
@@ -227,12 +227,12 @@ class Devis_functions
                         $cinquieme_cellule =
                         "<td valign='top' style='padding-top:".$firstPadding."; width: ".$fifthW."; max-width: ".$fifthW."; text-align: center; border-bottom: 1px #ccc solid '>" .$quantité ."</td>";
                         $derniere_cellule =  
-                        "<td valign='top' style='padding-top:".$firstPadding."; width: ".$lastW."; max-width: ".$lastW."; text-align: right;  border-bottom: 1px #ccc solid; padding-bottom:15px'>" . $barre . " " . $prix ."</td>" ;
+                        "<td valign='top' style='padding-top:".$firstPadding."; width: ".$lastW."; max-width: ".$lastW."; text-align: right;  border-bottom: 1px #ccc solid; padding-bottom:10px'>" . $barre . " " . $prix ."</td>" ;
                         $balise_tr_fermeture = "<br></tr> ";
                     }
 
-                    //Incrementation de la table pour chaque ligne: 
-                    $table .=  $balise_tr_ouvrante . $premiere_cellule . $deuxieme_cellule . $troisieme_cellule . $quatrieme_cellule . $cinquieme_cellule . $derniere_cellule . $balise_tr_fermeture . $extension;
+                //Incrementation de la table pour chaque ligne: 
+                $table .=  $balise_tr_ouvrante . $premiere_cellule . $deuxieme_cellule . $troisieme_cellule . $quatrieme_cellule . $cinquieme_cellule . $derniere_cellule . $balise_tr_fermeture . $extension;
                 //fin de boucle sur les ligne :  
                 }
                 if ($countEtat == 0 )
@@ -266,7 +266,22 @@ class Devis_functions
 
 
 
-
+    //function qui converti le rendu de la base de donnée en image: 
+    public static function base64_to_image($data) 
+    {
+        
+           
+            $data = str_replace( ' ', '+', $data );
+            $data = base64_decode($data);
+        
+            if ($data === false) 
+            {
+                throw new \Exception('base64_decode failed');
+            }
+         
+        
+        file_put_contents("devis.png", $data);
+    }
 
 
 
@@ -324,12 +339,35 @@ class Devis_functions
                                 $firstPadding = '0px';
                             }
                             //si un commentaire client est présent il s'ajoute sous la désignation 
-                            if (!empty($ligne->devl__note_client)) 
+                           
+                            if (!empty($ligne->devl__note_client) && intval($ligne->cmdl__image) < 1) 
                             {
                                 $designation =  $ligne->devl__designation .'<span style="margin-top: -10px;">'. $ligne->devl__note_client .'</span>';
                             }
+                            elseif(intval($ligne->cmdl__image) == 1) 
+                            {
+                              
+                               
+                               $test =  Devis_functions::base64_to_image(base64_encode($ligne->ligne_image), 'png');
+                               
+                                $designation =  $ligne->devl__designation .'
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <figure class="image" style="height:100px;">
+                                                <img style="height:100px; width:100px" src = "devis.png" />
+                                            </figure>   
+                                        </td>
+                                        <td>
+                                            '.$ligne->devl__note_client.'
+                                        </td>
+                                    </tr>
+                                </table>';
+                            }
+                            
                             else 
                             { 
+                               
                                 $designation = $ligne->devl__designation; 
                             }
                             // garantie
@@ -363,7 +401,6 @@ class Devis_functions
                                 {
                                        
                                         $montant_remise = floatval($ligne->devl__prix_barre) - floatVal($ligne->devl_puht) ;
-                                        
                                         //debut du gerbage du html 
                                         $balise_tr_ouvrante = 
                                         "<tr style='font-size: 95%; font-style: italic;'>";
@@ -397,11 +434,11 @@ class Devis_functions
                                         $cinquieme_cellule ="<td valign='top' style=' width:".$fifthW."; max-width: ".$fifthW."; text-align: center;'>" .$quantité ."</td>";
                                     
                                         $derniere_cellule = 
-                                        "<td valign='top' style='padding-top:".$firstPadding."; width: ".$lastW."; max-width: ".$lastW.";  text-align: right;   '>" . $barre . "</td>" ;
+                                        "<td valign='top' style='padding-top:".$firstPadding."; width: ".$lastW."; max-width: ".$lastW.";  text-align: right;  '>" . $barre . "</td>" ;
                                         $balise_tr_fermeture = "</tr>";
                                         $ligne_de_remise = "<tr style='font-size: 95%; font-style: italic;'>";
                                         $ligne_de_remise .= 
-                                        "<td valign='top' style=' width: ".$firstW.";  max-width: ".$firstW."; text-align: left;  '>remise </td>";
+                                        "<td valign='top' style=' width: ".$firstW.";  max-width: ".$firstW."; text-align: left;  padding-bottom:10px '>remise </td>";
                                         $ligne_de_remise .= 
                                         "<td valign='top' class='NoBR' style='  width: ".$secondW.";  max-width: ".$secondW."; text-align: left; '>Remise exeptionelle de ".number_format(floatval($montant_remise) ,2 , ',',' ') ."€</td>";
                                         $ligne_de_remise .=  
@@ -418,7 +455,6 @@ class Devis_functions
                                         //boucle sur les extensions de garanties:
                                         foreach($ligne->tableau_extension as $array)
                                         {
-                                        
                                             $counter = $counter + 1; 
                                             $extension_ligne = "";
                                             $seconde_balise_tr = "<tr style='font-size: 95%; font-style: italic;'>" ;
@@ -427,7 +463,7 @@ class Devis_functions
                                             if ($ligne->devl__type == "REP") 
                                             {
                                                 $seconde_cellule_2 = 
-                                                "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW.";  text-align: left;  '>mise sous garantie du matériel réparé optionnelle  </td>";
+                                                "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW.";  text-align: left;  '>mise sous garantie du matériel réparé</td>";
                                             }
                                             else 
                                             {
@@ -450,7 +486,7 @@ class Devis_functions
                                                 $derniere_cellule_2 = "<td valign='top' style=' width: ".$lastW."; max-width: ".$lastW."; text-align: right;'>" .number_format(floatval($array['cmdg__prix_barre']),2 , ',',' ') ."€</td>" ;
                                                 $ligne_de_remise_extension = "<tr style='font-size: 95%; font-style: italic;'>";
                                                 $ligne_de_remise_extension .= 
-                                                "<td valign='top' style=' width: ".$firstW.";  max-width: ".$firstW."; text-align: left;  '>remise </td>";
+                                                "<td valign='top' style=' width: ".$firstW.";  max-width: ".$firstW."; text-align: left;   '>remise </td>";
                                                 $ligne_de_remise_extension .= 
                                                 "<td valign='top' class='NoBR' style='  width: ".$secondW.";  max-width: ".$secondW."; text-align: left; '>Remise exeptionelle de ".number_format(floatval($montant_remise_extension) ,2 , ',',' ') ." €</td>";
                                                 $ligne_de_remise_extension .=  
@@ -461,21 +497,18 @@ class Devis_functions
                                                     "<td valign='top' style=' width: ".$fifthW."; max-width: ".$fifthW."; text-align: center; '>" .$quantité ."</td>";
                                                 $ligne_de_remise_extension .=  
                                                     "<td valign='top' style=' width: ".$lastW."; max-width: ".$lastW."; text-align: right; '>" . number_format(floatVal($array['devg__prix']) ,2 , ',',' ') ." €</td>" ;
-                                                $ligne_de_remise_extension .= "</tr> ";
+                                                $ligne_de_remise_extension .= "<br></tr> ";
 
                                                 $balise_tr_fermeture_2 = "</tr> ";
                                                 $balise_tr_fermeture_2 .= $ligne_de_remise_extension;
                                             }
                                             else
                                             {
-                                                $derniere_cellule_2 = "<td valign='top' style=' width: ".$lastW."; max-width: ".$lastW."; text-align: right;'>" . number_format(floatVal($array['devg__prix']),2 , ',',' ') ." €</td>" ;
+                                                $derniere_cellule_2 = "<td valign='top' style=' width: ".$lastW."; max-width: ".$lastW."; text-align: right; padding-bottom:10px '>" . number_format(floatVal($array['devg__prix']),2 , ',',' ') ." €</td>" ;
                                                 $balise_tr_fermeture_2 = "</tr> ";
                                             }
-                                            
-                                            
-                                        
-                                    
-                                            if ($array === end($ligne->tableau_extension)) 
+                                             
+                                            if($array === end($ligne->tableau_extension)) 
                                             {
                                                 if (!empty($array['cmdg__prix_barre']) && floatval($array['cmdg__prix_barre']) > 00) 
                                                 {
@@ -485,7 +518,7 @@ class Devis_functions
                                                     if ($ligne->devl__type == "REP") 
                                                     {
                                                         $seconde_cellule_2 = 
-                                                        "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW.";  text-align: left;  '>mise sous garantie du matériel réparé optionnelle  </td>";
+                                                        "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW.";  text-align: left;  '>mise sous garantie du matériel réparé </td>";
                                                     }
                                                     else 
                                                     {
@@ -514,7 +547,7 @@ class Devis_functions
                                                     $ligne_de_remise_extension .=
                                                     "<td valign='top' style=' width: ".$fifthW."; max-width: ".$fifthW."; text-align: center; border-bottom: 1px #ccc solid; '>" .$quantité ."</td>";
                                                     $ligne_de_remise_extension .=  
-                                                    "<td valign='top' style=' width: ".$lastW."; max-width: ".$lastW."; text-align: right; border-bottom: 1px #ccc solid; '>" . number_format(floatVal($array['devg__prix']) ,2 , ',',' ') ." €</td>" ;
+                                                    "<td valign='top' style=' width: ".$lastW."; max-width: ".$lastW."; text-align: right; border-bottom: 1px #ccc solid; padding-bottom:10px; '>" . number_format(floatVal($array['devg__prix']) ,2 , ',',' ') ." €</td>" ;
                                                     $ligne_de_remise_extension .= "</tr> ";
                                                     $balise_tr_fermeture_2 = "</tr> ";
                                                     $balise_tr_fermeture_2 .= $ligne_de_remise_extension;
@@ -526,7 +559,7 @@ class Devis_functions
                                                     $premiere_cellule_2 = "<td valign='top' style=' width:".$firstW."; text-align: left; border-bottom: 1px #ccc solid'>garantie</td>";
                                                     if ($ligne->devl__type == "REP") 
                                                     {
-                                                        $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid;  '>mise sous garantie du matériel réparé optionnelle  </td>";
+                                                        $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid; padding-bottom:10px; '>mise sous garantie du matériel réparé </td>";
                                                     }
                                                     else 
                                                     {
@@ -536,7 +569,7 @@ class Devis_functions
                                                         }
                                                         else 
                                                         {
-                                                            $seconde_cellule_2 = "<td valign='top' style='border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie</td>";
+                                                            $seconde_cellule_2 = "<td valign='top' style='border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left; padding-bottom:10px ;'> extension de garantie</td>";
                                                         }
                                                     }
                                         
@@ -557,7 +590,7 @@ class Devis_functions
                                             $ligne_extension = $seconde_balise_tr . $premiere_cellule_2 . $seconde_cellule_2 . $troisieme_cellule_2 . $quatrieme_cellule_2 . $cinquieme_cellule_2 . $derniere_cellule_2 . $balise_tr_fermeture_2  ;
                                             $extension .= $ligne_extension ;
                                             $counter = 0;
-                                            }
+                                        }
                                 }
                                 else 
                                 {
@@ -594,7 +627,7 @@ class Devis_functions
                                     $cinquieme_cellule ="<td valign='top' style=' width:".$fifthW."; max-width: ".$fifthW."; text-align: center;'>" .$quantité ."</td>";
                                 
                                     $derniere_cellule = 
-                                    "<td valign='top' style='padding-top:".$firstPadding."; width: ".$lastW."; max-width: ".$lastW.";  text-align: right;  '>" . $barre . " " . $prix ."</td>" ;
+                                    "<td valign='top' style='padding-top:".$firstPadding."; width: ".$lastW."; max-width: ".$lastW.";  text-align: right;   padding-bottom:10px;'>" . $barre . " " . $prix ."</td>" ;
                                     $balise_tr_fermeture = "</tr>";
 
                                    
@@ -611,7 +644,7 @@ class Devis_functions
                                         if ($ligne->devl__type == "REP") 
                                         {
                                             $seconde_cellule_2 = 
-                                            "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW.";  text-align: left;  '>mise sous garantie du matériel réparé optionnelle  </td>";
+                                            "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW.";  text-align: left;  '>mise sous garantie du matériel réparé</td>";
                                         }
                                         else 
                                         {
@@ -647,7 +680,7 @@ class Devis_functions
                                                 "<td valign='top' style=' width: ".$lastW."; max-width: ".$lastW."; text-align: right; '>" . number_format(floatVal($array['devg__prix']) ,2 , ',',' ') ." €</td>" ;
                                             $ligne_de_remise_extension .= "</tr> ";
 
-                                            $balise_tr_fermeture_2 = "</tr> ";
+                                            $balise_tr_fermeture_2 = "<br></tr> ";
                                             $balise_tr_fermeture_2 .= $ligne_de_remise_extension;
                                         }
                                         else
@@ -667,7 +700,7 @@ class Devis_functions
                                                 if ($ligne->devl__type == "REP") 
                                                 {
                                                     $seconde_cellule_2 = 
-                                                    "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW.";  text-align: left;  '>mise sous garantie du matériel réparé optionnelle  </td>";
+                                                    "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW.";  text-align: left;  '>mise sous garantie du matériel réparé</td>";
                                                 }
                                                 else 
                                                 {
@@ -686,7 +719,7 @@ class Devis_functions
                                                 $derniere_cellule_2 = "<td valign='top' style=' width: ".$lastW."; max-width: ".$lastW."; text-align: right;'>" .number_format(floatval($array['cmdg__prix_barre']),2 , ',',' ') ."€</td>" ;
                                                 $ligne_de_remise_extension = "<tr style='font-size: 95%; font-style: italic;'>";
                                                 $ligne_de_remise_extension .= 
-                                                "<td valign='top' style=' width: ".$firstW.";  max-width: ".$firstW."; text-align: left; border-bottom: 1px #ccc solid; '>remise </td>";
+                                                "<td valign='top' style=' width: ".$firstW.";  max-width: ".$firstW."; text-align: left; border-bottom: 1px #ccc solid; padding-bottom:10px; '>remise </td>";
                                                 $ligne_de_remise_extension .= 
                                                 "<td valign='top' class='NoBR' style='  width: ".$secondW.";  max-width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid;'>Remise exeptionelle de ".number_format(floatval($montant_remise_extension) ,2 , ',',' ') ." €</td>";
                                                 $ligne_de_remise_extension .=  
@@ -708,7 +741,7 @@ class Devis_functions
                                                 $premiere_cellule_2 = "<td valign='top' style=' width:".$firstW."; text-align: left; border-bottom: 1px #ccc solid'>garantie</td>";
                                                 if ($ligne->devl__type == "REP") 
                                                 {
-                                                    $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid; padding-bottom:15px '>mise sous garantie du matériel réparé optionnelle  </td>";
+                                                    $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid; padding-bottom:10px; '>mise sous garantie du matériel réparé</td>";
                                                 }
                                                 else 
                                                 {
@@ -741,10 +774,7 @@ class Devis_functions
                             {
                                 
                                 if ($ligne->devl__prix_barre > 0) 
-                                {
-                                    
-                                   
-                                    
+                                {   
                                     $montant_remise = floatval($ligne->devl__prix_barre) - floatVal($ligne->devl_puht) ;
                                    //debut du gerbage du html 
                                     $balise_tr_ouvrante = 
@@ -785,7 +815,7 @@ class Devis_functions
 
                                     $ligne_de_remise = "<tr style='font-size: 95%; font-style: italic;'>";
                                     $ligne_de_remise .= 
-                                    "<td valign='top' style=' width: ".$firstW.";  max-width: ".$firstW."; text-align: left; border-bottom: 1px #ccc solid; '>remise </td>";
+                                    "<td valign='top' style=' width: ".$firstW.";  max-width: ".$firstW."; text-align: left; border-bottom: 1px #ccc solid; padding-bottom:10px; '>remise </td>";
                                     $ligne_de_remise .= 
                                     "<td valign='top' class='NoBR' style='  width: ".$secondW.";  max-width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid;'>Remise exeptionelle de ".number_format(floatval($montant_remise) ,2 , ',',' ') ."€</td>";
                                     $ligne_de_remise .=  
@@ -796,7 +826,7 @@ class Devis_functions
                                         "<td valign='top' style=' width: ".$fifthW."; max-width: ".$fifthW."; text-align: center; border-bottom: 1px #ccc solid;'>" .$quantité ."</td>";
                                     $ligne_de_remise .=  
                                         "<td valign='top' style=' width: ".$lastW."; max-width: ".$lastW."; text-align: right; border-bottom: 1px #ccc solid;'>" . number_format(floatVal($ligne->devl_puht) ,2 , ',',' ') ."€</td>" ;
-                                    $ligne_de_remise .= "<br></tr> ";
+                                    $ligne_de_remise .= "</tr> ";
                                     $balise_tr_fermeture .= $ligne_de_remise;
                                 }
                                 else
@@ -805,7 +835,7 @@ class Devis_functions
                                     $balise_tr_ouvrante = 
                                     "<tr style='font-size: 95%; font-style: italic;'>";
                                     $premiere_cellule = 
-                                    "<td valign='top' style='padding-top:".$firstPadding."; width: ".$firstW.";  max-width: ".$firstW."; text-align: left; border-bottom: 1px #ccc solid; '>" . $prestation  . "</td>";
+                                    "<td valign='top' style='padding-top:".$firstPadding."; width: ".$firstW.";  max-width: ".$firstW."; text-align: left; border-bottom: 1px #ccc solid; padding-bottom:10px;  '>" . $prestation  . "</td>";
                                     $deuxieme_cellule = 
                                     "<td valign='top' class='NoBR' style='padding-top:".$firstPadding.";  width: ".$secondW.";  max-width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid ;  '>"  . $designation. "</td>";
                                     //condition pour etat = a NC. OU etat masque est demandé: 
@@ -836,7 +866,7 @@ class Devis_functions
                                     "<td valign='top' style='padding-top:".$firstPadding."; width: ".$fifthW."; max-width: ".$fifthW."; text-align: center; border-bottom: 1px #ccc solid '>" .$quantité ."</td>";
                                     $derniere_cellule =  
                                     "<td valign='top' style='padding-top:".$firstPadding."; width: ".$lastW."; max-width: ".$lastW."; text-align: right;  border-bottom: 1px #ccc solid; '>" . $barre . " " . $prix ."</td>" ;
-                                    $balise_tr_fermeture = "<br></tr> ";
+                                    $balise_tr_fermeture = "</tr> ";
                                 }
                                 
                             }
@@ -862,7 +892,7 @@ class Devis_functions
                         <td style="text-align: center; padding-top: 4px; padding-bottom: 4px;">Qté</td>
                         <td style="text-align: right; ; padding-top: 4px; padding-bottom: 4px;">P.u € HT</td>
                         </tr> ';
-                        echo $tete . $table ;
+                        echo $tete . $table;
                         break;
                     
                     default:
@@ -872,13 +902,199 @@ class Devis_functions
                 
     }
 
-    public static function classic_total_devis_pdf()
+    public static function classic_total_devis_pdf($cmd , $array_ligne)
     {
-
+        $tva = floatval($cmd->tva_Taux);
+        $array_prix = [];
+        $response = [] ; 
+        foreach ($array_ligne as $ligne) 
+	    {
+            if (!empty($ligne->devl_puht)) 
+            {   
+                $quantite = intval($ligne->devl_quantite); 
+                $prix = floatval($ligne->devl_puht);
+                $total_ligne = $quantite * $prix ;
+                array_push($array_prix , $total_ligne);
+            }
+        }
+        $global_ht = array_sum($array_prix);
+        $montant_tva = floatval(($global_ht*$tva)/100);
+        $global_ttc = $global_ht + $montant_tva;
+        array_push($response , floatval($global_ht) , floatval($tva) , floatval($montant_tva) , floatval($global_ttc));
+        return $response;	
     }
 
-    public static function remise_total_devis_pdf()
+
+    public static function ttc($price,$tva)
     {
+        $opex = floatval(($price*$tva)/100);
+        $results = $opex + $price;
+        return $results;
+    }
+
+
+    public static function classic_total_devis($lignes , $garantieArray , $prixTotal , $tva , $_taux_tva)
+    {
+	$globalArray = array();
+	foreach ($garantieArray as  $value) 
+	{
+		// création d'un tableau multidimensionnel pour chaque valeur présente dans le tableau : 
+		$type = intval($value->kw__value);
+		$globalArray[$type]  = [$type];
+	}  
+		// pour sur chaque ligne de garantie 
+        foreach ($lignes as $ligne ) 
+        { 
+			// variable $xtend déclaré pour chaque tableau d'extension de garanties : 
+			$xtend =  $ligne->ordre2;
+			// si il ne s'agit pas d'un service pour sur chaque tableau d'extension du tableau des extensions de  garantie : 
+            if ($ligne->famille != 'SER') 
+            {
+                foreach($xtend as $array) 
+                {
+					//sur chaque valeur du tableau des garantie dans keyword : 
+                    foreach ($globalArray as  $value) 
+                    {
+						// si la valeur du nombre de mois dans l'extension correspond à la valeur du  tableau de la liste keyword : 
+                        if (intval($array['devg__type']) == $value[0]) 
+                        {
+							// la variable $results est le résultat du prix de l'extension correspondante * la quantité 
+							$results = floatval($array['devg__prix']) * intval($ligne->devl_quantite);
+							//  pousse dans le tableau correspondant à la valeur de la garantie :
+							array_push( $globalArray[$value[0]] , $results );     
+						} 
+						else 
+						{
+							// sinon détruit la valeur : 
+							unset($value);
+						}
+					}    
+				} 
+			}
+		}
+
+		$marqueurPresta = ' <input type="checkbox"> garantie standard';
+		$marqueurType = '';
+        foreach ($lignes  as $ligne) 
+        {
+             if ($ligne->devl__type == 'REP') 
+             {
+			 $marqueurPresta = '<input type="checkbox"> hors garantie' ;
+			 }
+		 }
+         $echoArrays = "";
+         
+        foreach ($globalArray as  $resultsArray) 
+        {
+            if (sizeof($resultsArray) > 1)
+            {
+                // si la taille du tableau correspond au nombre de ligne +1 (index 0 )alors chaque ligne possède la garantie : 
+                $marqueurType = "Type de garantie";
+                //on retire l'index 0 corespondant à la valeur de la garantie :
+                $prixTemp =  floatval(array_sum($resultsArray) - $resultsArray[0]);
+                // on additionne au prix total  :
+                $prix = $prixTemp + $prixTotal;
+                // renvoi dans le template html => 
+                if (!$tva) 
+                {
+                    $echoArrays .=  "<tr><td style='width: 250px; font-size: 95%; font-style: italic; text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style=' font-size: 95%; font-style: italic; text-align: center'><strong>  "
+                    . number_format($prix,2  ,',', ' ').
+                    " €</strong></td></tr>";
+                } 
+                else 
+                {
+                    $echoArrays .=  "<tr><td style='width: 210px; font-size: 95%; font-style: italic;  text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style='font-size: 95%; font-style: italic; text-align: center'><strong>  "
+                    . number_format($prix,2  ,',', ' ').
+                    " €</strong></td><td style='font-size: 95%; font-style: italic; text-align: right'> " 
+                    .number_format(Devis_functions::ttc( floatval($prix), $_taux_tva),2 ,',', ' ').
+                    " €</td></tr>";
+                }
+            }       
+        }
         
+		if (empty($echoArrays)) 
+			{
+                $finalEcho = '<table CELLSPACING=0  style=" margin-left: 180px;  border: 1px black solid;">
+                <tr style="background-color: #dedede; ">
+                <td style=" margin-left: 210px; width: 0px; text-align: left"> '. $marqueurType .'</td>
+                <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
+                <td style="text-align: center">Total € TTC</td>
+                </tr>
+                <tr><td style="width: 0px; font-size: 95%; font-style: italic; text-align: left"> </td>
+                <td style="text-align: center; font-style: italic;  font-size: 95%;"><strong>  '. number_format($prixTotal,2  ,',', ' ') . ' €</strong></td>
+                <td style="text-align: right; font-style: italic; font-size: 95%;"> ' .number_format(Devis_functions::ttc(floatval($prixTotal), $_taux_tva),2 ,',', ' ').' €</td>
+			    </tr>' . $echoArrays;
+
+                if(!$tva) 
+                {
+                    $finalEcho = '<table CELLSPACING=0  style=" margin-left: 200px;  border: 1px black solid;">
+                    <tr style="background-color: #dedede;">
+                    <td style="width: 0px; text-align: left"> '. $marqueurType .'</td>
+                    <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
+                    </tr>
+                    <tr><td style=" color: white; width: 0px;font-size: 95%; font-style: italic; text-align: left"></td>
+                    <td style="font-style: italic; text-align: center; font-size: 95%;"><strong>  '. number_format($prixTotal,2  ,',', ' ') . '€</strong></td>
+                    </tr>' . $echoArrays;'';
+                }  
+		
+			}
+			else 
+			{
+				$finalEcho = '<table CELLSPACING=0  style=" border: 1px black solid;">
+				<tr style="background-color: #dedede; ">
+				<td style="width: 210px; text-align: left"> '. $marqueurType .'</td>
+				<td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
+				<td style="text-align: center">Total € TTC</td>
+				</tr>
+				<tr><td style="width: 210px; font-size: 95%; font-style: italic; text-align: left"> '.$marqueurPresta.'</td>
+				<td style="text-align: center; font-style: italic;  font-size: 95%;"><strong>  '. number_format($prixTotal,2  ,',', ' ') . ' €</strong></td>
+				<td style="text-align: right; font-style: italic; font-size: 95%;"> ' .number_format(Devis_functions::ttc(floatval($prixTotal), $_taux_tva),2 ,',', ' ').' €</td>
+				</tr>' . $echoArrays;
+
+                if (!$tva) 
+                {
+                    $finalEcho = '<table CELLSPACING=0  style=" border: 1px black solid;">
+                    <tr style="background-color: #dedede;">
+                    <td style="width: 250px; text-align: left"> '. $marqueurType .'</td>
+                    <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
+                    </tr>
+                    <tr><td style="width: 250px;font-size: 95%; font-style: italic; text-align: left"> '.$marqueurPresta.'</td>
+                    <td style="font-style: italic; text-align: center; font-size: 95%;"><strong>  '. number_format($prixTotal,2  ,',', ' ') . '€</strong></td>
+                    </tr>' . $echoArrays;'';
+                }
+		    }
+			echo  $finalEcho . '</table>';
+}
+
+    public static function remise_total_devis_pdf($cmd , $array_ligne)
+    {
+        $tva = floatval($cmd->tva_Taux);
+        $array_prix = [];
+        $array_remise = [];
+        $response = [] ; 
+        foreach ($array_ligne as $ligne) 
+	    {
+            if (!empty($ligne->devl_puht)) 
+            {   
+                $quantite = intval($ligne->devl_quantite); 
+                $prix = floatval($ligne->devl_puht);
+                $total_ligne = $quantite * $prix ;
+                array_push($array_prix , $total_ligne);
+            }
+            if (!empty($ligne->devl__prix_barre)) 
+            {   
+                $quantite = intval($ligne->devl_quantite); 
+                $prix = floatval($ligne->devl_puht);
+                $remise = floatval($ligne->devl__prix_barre);
+                $total_remise = ($quantite * $prix) - ($quantite * $remise) ;
+                array_push($array_remise , $total_remise);
+            }
+        }
+        $global_ht = array_sum($array_prix);
+        $global_remise = array_sum($array_remise);
+        $montant_tva = floatval(($global_ht*$tva)/100);
+        $global_ttc = $global_ht + $montant_tva;
+        array_push($response , floatval($global_ht) , floatval($tva) , floatval($montant_tva) , floatval($global_ttc) , floatval($global_remise));
+        return $response;	
     }
 }

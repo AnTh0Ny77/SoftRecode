@@ -541,7 +541,8 @@ public static function xTendTotalView($xtendArray){
 
 
 // fonction d'affichage du total à la con : 
-public static function totalCon($lignes , $garantieArray , $prixTotal , $tva , $_taux_tva){
+public static function totalCon($lignes , $garantieArray , $prixTotal , $tva , $_taux_tva)
+{
 	$globalArray = array();
 	foreach ($garantieArray as  $value) 
 	{
