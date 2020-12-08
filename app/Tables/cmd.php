@@ -38,7 +38,7 @@ class Cmd extends Table {
     cmd__contact__id_livr as  devis__contact_livraison , 
     cmd__nom_devis, cmd__modele_devis , 
     cmd__date_cmd, cmd__date_envoi, cmd__code_cmd_client, cmd__tva, cmd__user__id_cmd, LPAD(cmd__id_facture ,7,0) as cmd__id_facture ,
-    cmd__modele_facture, cmd__id_facture , cmd__date_fact, cmd__trans, 
+    cmd__modele_facture, cmd__id_facture , cmd__date_fact, cmd__trans, cmd__mode_remise, cmd__report_xtend,
     k.kw__lib,
     t.contact__nom, t.contact__prenom, t.contact__email,
     t2.contact__nom as nom__livraison , t2.contact__prenom as prenom__livraison , t2.contact__civ as civ__Livraison , 
@@ -1265,7 +1265,7 @@ public function devisLigne($id){
   cmdl__etat_masque, cmdl__image, 
   k.kw__lib , k.kw__value , 
   f.afmm__famille as famille,
-  f.afmm__modele as modele,
+  f.afmm__modele as modele, f.afmm__image as ligne_image , 
   k2.kw__lib as prestaLib,
   k3.kw__info as groupe_famille,
   k3.kw__lib as famille__lib,
@@ -1969,7 +1969,7 @@ public function modify(
 
     public function xtenGarantie($id){
       $request =$this->Db->Pdo->query("SELECT 
-      cmdg__id as devg__id,  LPAD(cmdg__type ,2,0)  as  devg__type, cmdg__prix as  devg__prix
+      cmdg__id as devg__id,  LPAD(cmdg__type ,2,0)  as  devg__type, cmdg__prix as  devg__prix , cmdg__prix_barre 
       FROM cmd_garantie  
       WHERE cmdg__id__cmdl = ". $id ."");
       $data = $request->fetchAll(PDO::FETCH_ASSOC);

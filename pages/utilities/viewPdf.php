@@ -155,7 +155,8 @@ $garanties = $Keyword->getGaranties();
 
     if ($temp->cmd__modele_devis != 'STX') 
     {
-        switch ($temp->cmd__modele_devis) {
+        switch ($temp->cmd__modele_devis) 
+        {
             // devis standart total classique:
             case 'STT':
                $totalPrice = array_sum($arrayPrice);

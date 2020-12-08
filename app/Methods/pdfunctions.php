@@ -231,7 +231,8 @@ public static function magicLine($arrayLigne){
 
 	//extensions 
 	$extension = "";
-	if (!empty($object->ordre2)) {
+	if (!empty($object->ordre2)) 
+	{
 
 	$fisrtLine = "<tr style='font-size: 95%; font-style: italic;'>";
 	$firstCell = "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$firstW."; max-width: ".$firstW."; text-align: left;  '>" . $presta  . "</td>";
@@ -540,7 +541,8 @@ public static function xTendTotalView($xtendArray){
 
 
 // fonction d'affichage du total à la con : 
-public static function totalCon($lignes , $garantieArray , $prixTotal , $tva , $_taux_tva){
+public static function totalCon($lignes , $garantieArray , $prixTotal , $tva , $_taux_tva)
+{
 	$globalArray = array();
 	foreach ($garantieArray as  $value) 
 	{

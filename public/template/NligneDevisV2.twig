@@ -460,12 +460,28 @@
                 <div class="d-flex justify-content-around flex-wrap my-3 ">
                     
                     <div class="custom-control custom-checkbox col-4">
-                        <input type="checkbox" class="custom-control-input" id="checkremise" name="checkremise" value='ok'>
-                        <label class="custom-control-label" for="checkremise">Mode remise</label>
+                        {% if devis.cmd__mode_remise %}
+                            <input type="checkbox" class="custom-control-input" id="checkremise" name="checkremise" value='ok' checked>
+                            <label class="custom-control-label" for="checkremise">Mode remise</label>
+                        {% else %}
+                            <input type="checkbox" class="custom-control-input" id="checkremise" name="checkremise" value='ok'>
+                            <label class="custom-control-label" for="checkremise">Mode remise</label>
+                        {% endif %}
+                        
                     </div>
                     <div class="custom-control custom-checkbox col-4">
-                        <input type="checkbox" class="custom-control-input" id="checkExtend" name="checkExtend" value='ok'>
-                        <label class="custom-control-label" for="checkExtend">Reporter les extensions</label>
+                        {% if devis.cmd__report_xtend %}
+                            <input type="checkbox" class="custom-control-input" id="checkExtend" name="checkExtend" value='ok' checked>
+                            <label class="custom-control-label" for="checkExtend">Reporter les extensions</label>
+                        {% else %}
+                            <input type="checkbox" class="custom-control-input" id="checkExtend" name="checkExtend" value='ok'>
+                            <label class="custom-control-label" for="checkExtend">Reporter les extensions</label>
+                        {% endif %}
+                        
+                    </div>
+                    <div class="custom-control custom-checkbox col-4">
+                            <input type="checkbox" class="custom-control-input" id="check_total" name="check_total" value='ok'>
+                            <label class="custom-control-label" for="check_total">Masquer le total</label>
                     </div>
 
                 </div>

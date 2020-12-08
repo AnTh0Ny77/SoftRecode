@@ -86,13 +86,13 @@ public function WLstatsGlobal($cmd)
 
 public function returnCmdBetween2Dates($debut , $fin , $abn)
 {
-    if (!empty($abn)) 
+    if(!empty($abn)) 
     {
-      $stat = "AND (cmd__etat = 'VLD' OR cmd__etat = 'VLA' )";
+        $stat = "AND (cmd__etat = 'VLD' OR cmd__etat = 'VLA' )";
     }
     else 
     {
-    $stat = "AND cmd__etat = 'VLD' ";
+        $stat = "AND cmd__etat = 'VLD' ";
     }
     $request =$this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur 
     FROM cmd 
