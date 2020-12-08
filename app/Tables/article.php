@@ -200,9 +200,10 @@ class Article extends Table
       {
         // prefixage des nom de image te doc avec le id du model (format 00000-) (ID complété par zero)
         $prefixe = substr('00000'.$ligne->FMM_ID.'-',-6); // pour completer a zero sur 5 positions et - a la fin
-        $Image = 'Modele_Image/'.$prefixe.$ligne->FMM_Image;
+        //$Image = 'Modele_Image/'.$prefixe.$ligne->FMM_Image; // pour les nom de fichier en base
+        // if ($Image) $Image = '<img src="public/_Documents_/'.$Image.'" class=" ml-5 my-2" height="55">';
+        $Image = base64_encode($ligne->FMM_Image); // pour image en base (codé sur un BLOB)
       }
-      if ($Image) $Image = '<img src="public/_Documents_/'.$Image.'" class=" ml-5 my-2" height="55">';
       // je cherche la doc 
       $Doc = '';
       if ($ligne->FMM_Doc) $Doc = 'Modele_Doc/'.$ligne->FMM_Doc;

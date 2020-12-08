@@ -85,7 +85,8 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88Ybd
 								<button type="submit" name="link_marque"  class="btn btn-link py-0 px-0 ">{{Art.Marque}}</button> -
 								<button type="submit" name="link_modele"  class="btn btn-link py-0 px-0 ">{{Art.Modele}}</button>
 								</td>
-								<td align=center>{{Art.Image|raw}}</td>
+								{#<td align=center>{{Art.Image|raw}}</td>#}
+								<td align=center><figure class="image"><img src="data:image/jpeg;base64,{{Art.Image|raw}}"></figure></td>
 								<td align=center>{% if Art.Doc %}<a href="{{Art.Doc}}" target="_blank"><i class="fad fa-file-pdf fa-lg" style="--fa-primary-color: orangered;"></i></a>{% endif %}
 								<i class="fal fa-cubes fa-lg"></i></td>
 							</tr>
@@ -115,12 +116,12 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88Ybd
 <script  type="text/javascript" src="public/js/devisFunction.js"></script> 
 
 <!-- jQuery first, then Bootstrap JS -->
-<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
-<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
-<script  type="text/javascript" src="public/js/client.js"></script>
-<script  type="text/javascript" src="public/js/client2.js"></script>
+<script type="text/javascript" src="public/js/client.js"></script>
+<script type="text/javascript" src="public/js/client2.js"></script>
 <script type="text/javascript" src="public/mdb/js/mdb.min.js"></script> <!-- MDB core JavaScript -->
 <script type="text/javascript" src="public/mdb/js/mdb-file-upload.min.js"></script>
 
