@@ -1,4 +1,5 @@
-$(document).ready(function() {
+$(document).ready(function() 
+{
 
 //initialization de  tout les tooltips 
 $(function () {

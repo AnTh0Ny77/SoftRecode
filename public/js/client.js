@@ -467,16 +467,18 @@ idUtilisateur = $('#idUtilisateur').val();
         // requete Ajax sur le devis selectionné dans la page mes devis : 
         $.ajax({
             type: 'post',
-            url: "AjaxVisio",
+            url: "AjaxVisio2",
             data:
             {
                 "AjaxDevis": dataRow[0]
             },
-            success: function (data) {
+            success: function (data) 
+            {
+                console.log(data);
                 dataSet = JSON.parse(data);
                 checkradio(dataSet);
                 $('#loaderPdf').hide();
-                $('#iframeDevis').attr('src', 'pages/ajax/' + idUtilisateur + 'devis.html');
+                $('#iframeDevis').attr('src', 'pages/ajax/' + idUtilisateur + 'devis.pdf');
                 $('#iframeDevis').show();
                 $('.multiButton').removeAttr('disabled');
                

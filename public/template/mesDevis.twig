@@ -89,16 +89,16 @@
               <div class="d-flex flex-row justify-content-around" >
                 
                 <div>
-                  <a class="btn btn btn-sm btn-link mx-2" href="nouveauDevis">Nouveau Devis</a>
+                  <a class="btn btn btn-sm btn-link mx-2" href="DevisV2">Nouveau Devis</a>
                 </div>
-                {% if user.user__devis_acces >= 15 %}
+                {# {% if user.user__devis_acces >= 15 %}
                 <div>
                   <form action="mesDevis" method="POST"> 
                       <input type="hidden" value="{{ AllDevis }}" name="MyDevis">
                       <button type="submit" class="btn btn-sm btn-link">{{ AllDevis }}</button>
                   </form>
                 </div>
-                {% endif %}
+                {% endif %} #}
                
 
                 
@@ -226,11 +226,11 @@
                
                 
                 <form class=" " method="POST" action="voirDevis" target="_blank">
-                  <input type="hidden" name="VoirDevis" id="VoirDevis" value="">
+                  <input type="hidden" name="AjaxDevis" id="VoirDevis" value="">
                 <button type="submit" class="btn btn-link   btn-sm  multiButton" disabled>PDF</button>
                  </form>
-                <form class=" " action="nouveauDevis" method="POST" id="formModif">
-                  <input type="hidden" name="ModifierDevis" id="ModifierDevis" value="">
+                <form class=" " action="DevisV2" method="POST" id="formModif">
+                  <input type="hidden" name="modif" id="ModifierDevis" value="">
                 <button type="submit" class="btn btn-link btn-sm    multiButton" disabled>Modifier</button>
                 </form>
                 <form class=" " action="nouveauDevis" method="POST">

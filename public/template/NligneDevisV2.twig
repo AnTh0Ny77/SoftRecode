@@ -480,8 +480,24 @@
                         
                     </div>
                     <div class="custom-control custom-checkbox col-4">
-                            <input type="checkbox" class="custom-control-input" id="check_total" name="check_total" value='ok'>
-                            <label class="custom-control-label" for="check_total">Masquer le total</label>
+                            {% if devis.cmd__modele_devis == 'STX' %}
+                                <input type="checkbox" class="custom-control-input" id="check_total" name="check_total" value='ok' checked>
+                                <label class="custom-control-label" for="check_total">Masquer le total</label>
+                            {% else %}
+                                <input type="checkbox" class="custom-control-input" id="check_total" name="check_total" value='ok'>
+                                <label class="custom-control-label" for="check_total">Masquer le total</label>
+                            {% endif %}
+                            
+                    </div>
+                    <div class="custom-control custom-checkbox col-4">
+                        {% if devis.cmd__modele_devis == 'TVT' %}
+                            <input type="checkbox" class="custom-control-input" id="check_tva" name="check_tva" value='ok' checked>
+                            <label class="custom-control-label" for="check_tva">Masquer la tva</label>
+                        {% else %}
+                            <input type="checkbox" class="custom-control-input" id="check_tva" name="check_tva" value='ok'>
+                            <label class="custom-control-label" for="check_tva">Masquer la tva</label>
+                        {% endif %}
+                           
                     </div>
 
                 </div>
