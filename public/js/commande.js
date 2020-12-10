@@ -40,6 +40,7 @@ $(document).ready(function() {
 
             arrayCommentaires = [];
 
+            
              arrayLine  = $('#arrayOfLines').val();
              arrayLine = JSON.parse(arrayLine);
              for (let index = 1; index <= arrayLine.length; index++) {

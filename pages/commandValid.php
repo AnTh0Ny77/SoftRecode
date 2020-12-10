@@ -25,6 +25,7 @@ $devis = $Devis->GetById($_POST['ValideCmd']);
 $arrayOfDevisLigne = $Devis->devisLigne($_POST['ValideCmd']);
 
 
+
 // foreach ($arrayOfDevisLigne as $lignes) {
 //   $arrayOfData = [];
 //   array_push($arrayOfData, intval($lignes->devl__ordre));

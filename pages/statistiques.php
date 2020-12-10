@@ -225,7 +225,7 @@ $arrayPresta = json_encode($arrayPresta);
           if (!empty($totalParVendeur)) 
           {
             $tempsarrayVendeur = [];
-            $tempsarrayVendeur[0] = $vendeurN->nom;
+            $tempsarrayVendeur[0] = $vendeurN->nom . ' : ' . $totalParVendeur . '€' ;
             $tempsarrayVendeur[1] = $totalParVendeur;
             array_push($arrayGlobal ,$tempsarrayVendeur );
           }    

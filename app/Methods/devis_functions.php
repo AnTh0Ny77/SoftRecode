@@ -56,7 +56,7 @@ class Devis_functions
                             <tr>
                                 <td>
                                     <figure class="image" >
-                                        <img src="data:image/png;base64,'.base64_encode($ligne->ligne_image).'"  width="70" />
+                                        <img src="data:image/png;base64,'.$ligne->ligne_image.'"  width="70" />
                                     </figure>   
                                 </td>
                                 <td>
@@ -369,7 +369,7 @@ class Devis_functions
                                         <tr>
                                             <td>
                                                 <figure class="image" >
-                                                    <img src="data:image/png;base64,'.base64_encode($ligne->ligne_image).'"  width="70" />
+                                                    <img src="data:image/png;base64,'.$ligne->ligne_image.'"  width="70" />
                                                 </figure>   
                                             </td>
                                             <td>

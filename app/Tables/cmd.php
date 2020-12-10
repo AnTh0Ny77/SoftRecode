@@ -1375,6 +1375,13 @@ public function devisLigne($id){
   ORDER BY devl__ordre ");
  
   $data = $request->fetchAll(PDO::FETCH_OBJ);
+  foreach ($data as $ligne) 
+  {
+    if (!empty($ligne->ligne_image)) 
+    {
+      $ligne->ligne_image = base64_encode($ligne->ligne_image);
+    }
+  }
   return $data;
 }
 
