@@ -78,34 +78,38 @@ session_start();
 
 
 // si une modication de devis à été demandée depuis : modifier devis : 
-if (!empty($_POST['ModifierDevis'])) {
+if (!empty($_POST['ModifierDevis'])) 
+{
   $devisModif = [];
-
   $temp =   $Cmd->GetById($_POST['ModifierDevis']);
-
   $societe = $Client->getOne($temp->client__id);
 
-  if (!empty($temp->devis__contact__id)) {
+  if (!empty($temp->devis__contact__id)) 
+  {
     $contact = $Contact->getOne($temp->devis__contact__id);
   }
 
-  if (!empty($temp->devis__id_client_livraison)){
+  if (!empty($temp->devis__id_client_livraison))
+  {
     $livraison =  $Client->getOne($temp->devis__id_client_livraison);
   }
 
-  if (!empty($temp->devis__contact_livraison)) {
+  if (!empty($temp->devis__contact_livraison)) 
+  {
     $contactLVR = $Contact->getOne( $temp->devis__contact_livraison);
   }
 
 
   $arrayOfDevisLigne = $Cmd->devisLigne($_POST['ModifierDevis']);
-    foreach ($arrayOfDevisLigne as $ligne) {
+  
+    foreach ($arrayOfDevisLigne as $ligne) 
+    {
       $xtendArray = $Cmd->xtenGarantie($ligne->devl__id);
       $ligne->ordre = $xtendArray;
       array_push($devisModif,$ligne);
     }
     
-      $sessionModif = $_POST['ModifierDevis'];
+    $sessionModif = $_POST['ModifierDevis'];
 }
 
 
