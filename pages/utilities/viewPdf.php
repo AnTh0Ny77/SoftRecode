@@ -1,10 +1,10 @@
 <?php
 require "./vendor/autoload.php";
-
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Methods\Pdfunctions;
 use App\Methods\Devis_functions;
+
 session_start();
 $Database = new App\Database('devis');
 $Database->DbConnect();
@@ -204,6 +204,30 @@ if (empty($_SESSION['user']))
                 </tr>
             </table>
         </div>
+        <div>
+            <?php
+            if($devis->devis__note_client) 
+            {
+                echo $devis->devis__note_client;
+            }
+            ?>
+        </div>
+
+        <div style="margin-top: 55 px;">
+            <table CELLSPACING=0 style=" width: 100%; margin-top: 55 px;">
+                <tr style="background-color: #dedede;  "><td style="text-align: left;  width: 50%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;"><strong>BON POUR COMMANDE</strong><BR>NOM DU SIGNATAIRE: <br>VOTRE N° DE CDE :<br>DATE:</td><td style="text-align: right;  width: 50%; vertical-align:top; padding-top: 7px; padding-right: 6px;">CACHET & SIGNATURE</td></tr>
+            </table>
+            <table style="width: 100%;">
+                    <table style="   margin-top: 5px; color: #8c8c8c; width: 100%;">
+                        <tr><td style="font-size: 80%;"><small>Le client accepte la présente proposition ainsi que les condition générales de vente Recode.<br>Recode conserve la propriété du matériel jusqu'a 
+                        paiement intégral du prix et des frais annexes.</small></td></tr>
+                        <tr>
+                            <td><small><strong>Coordonnées bancaires(Banque Populaire Méditéranée)</strong><br>
+                            IBAN : FR76 1460 7003 6569 0218 9841 804- BIC: CCBPFRPPMAR</small></td>
+                        </tr>
+                </table>  
+            </table>
+        </div> 
 
 
     
