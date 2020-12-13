@@ -1313,11 +1313,11 @@ public function insert_ligne_duplicata($cmdId, $object)
     'INSERT INTO  cmd_ligne (
      cmdl__cmd__id, cmdl__prestation,  cmdl__designation ,
      cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  ,  
-     cmdl__puht , cmdl__note_facture  ,  cmdl__ordre , cmdl__id__fmm , cmdl__garantie_option , cmdl__garantie_puht , cmdl__note_interne)
+     cmdl__puht , cmdl__note_facture  ,  cmdl__ordre , cmdl__id__fmm , cmdl__garantie_option , cmdl__garantie_puht , cmdl__note_interne , cmdl__etat_masque , cmdl__image , cmdl__actif )
      VALUES (
      :devl__devis__id, :devl__type,  :devl__designation,
      :devl__etat, :devl__mois_garantie , :devl_quantite,  
-     :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm , :cmdl__garantie_option , :cmdl__garantie_puht , :cmdl__note_interne)');
+     :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm , :cmdl__garantie_option , :cmdl__garantie_puht , :cmdl__note_interne , :cmdl__etat_masque , :cmdl__image , :cmdl__actif )');
 
 
     $verifOrdre = $this->Db->Pdo->query(
@@ -1340,6 +1340,10 @@ public function insert_ligne_duplicata($cmdId, $object)
     $requestLigne->bindValue(":cmdl__garantie_option", $object->devl__mois_garantie);
     $requestLigne->bindValue(":cmdl__garantie_puht", floatVal($object->cmdl__garantie_puht));
     $requestLigne->bindValue(":cmdl__note_interne", $object->devl__note_interne);
+    $requestLigne->bindValue(":cmdl__etat_masque", $object->cmdl__etat_masque);
+    $requestLigne->bindValue(":cmdl__image", $object->cmdl__image);
+    $requestLigne->bindValue(":cmdl__actif", $object->cmdl__actif);
+    
     $requestLigne->execute();  
 
     $id_ligne = $this->Db->Pdo->lastInsertId();
@@ -1357,7 +1361,7 @@ public function devisLigne($id){
   cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
   cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
   cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__garantie_puht , cmdl__note_facture,
-  cmdl__etat_masque, cmdl__image, 
+  cmdl__etat_masque, cmdl__image, cmdl__actif ,
   k.kw__lib , k.kw__value , 
   f.afmm__famille as famille,
   f.afmm__modele as modele, f.afmm__image as ligne_image , 
@@ -1383,6 +1387,55 @@ public function devisLigne($id){
     }
   }
   return $data;
+}
+
+
+//recupère les lignes liées à un devis:
+public function devisLigne_actif($id)
+{
+  $request =$this->Db->Pdo->query("SELECT
+  cmdl__cmd__id,
+  cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
+  cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
+  cmdl__etat as devl__etat, LPAD(cmdl__garantie_base,2,0) as devl__mois_garantie,
+  cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
+  cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
+  cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
+  cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__garantie_puht , cmdl__note_facture,
+  cmdl__etat_masque, cmdl__image, cmdl__actif ,
+  k.kw__lib , k.kw__value , 
+  f.afmm__famille as famille,
+  f.afmm__modele as modele, f.afmm__image as ligne_image , 
+  k2.kw__lib as prestaLib,
+  k3.kw__info as groupe_famille,
+  k3.kw__lib as famille__lib,
+  a.am__marque as marque
+  FROM cmd_ligne 
+  LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
+  LEFT JOIN keyword as k2 ON cmdl__prestation = k2.kw__value AND k2.kw__type = 'pres'
+  LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
+  LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
+  LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
+  WHERE cmdl__cmd__id = ". $id ." AND cmdl__actif > 0
+  ORDER BY devl__ordre ");
+ 
+  $data = $request->fetchAll(PDO::FETCH_OBJ);
+  foreach ($data as $ligne) 
+  {
+    if (!empty($ligne->ligne_image)) 
+    {
+      $ligne->ligne_image = base64_encode($ligne->ligne_image);
+    }
+  }
+  return $data;
+}
+
+public function delete_ligne_inactif($id)
+{
+  $request = "DELETE FROM cmd_ligne WHERE  cmdl__cmd__id = '".$id."' AND  cmdl__actif < 1 ";
+  $update = $this->Db->Pdo->prepare($request);
+  $update->execute();
+  return true;
 }
 
 

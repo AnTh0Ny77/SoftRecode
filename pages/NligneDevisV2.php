@@ -29,11 +29,6 @@ session_start();
 if (!empty($_POST['clientSelect']) && empty($_POST['modifReturn'])) 
 {
 
-    
-
-
-  
-
     switch ($_POST['clientSelect']) 
     {
         case 'Aucun':
@@ -211,6 +206,15 @@ if (!empty($_POST['devis']) && empty($_POST['boolModif']))
     {
         $General->updateAll('cmd_ligne' , 0 , 'cmdl__image' , 'cmdl__id' , $newLines);
     }
+    //gerer l' activité de la ligne : 
+    if (!empty($_POST['checkactif'])) 
+    {
+        $General->updateAll('cmd_ligne' , 0  , 'cmdl__actif' , 'cmdl__id' , $newLines);
+    }
+    else 
+    {
+        $General->updateAll('cmd_ligne' ,1  , 'cmdl__actif' , 'cmdl__id' , $newLines);
+    }
 
     //extension de garanties : 
     foreach ($_POST['xtendP'] as $key => $value) 
@@ -263,6 +267,15 @@ if (!empty($_POST['boolModif']) )
         else 
         {
             $General->updateAll('cmd_ligne' , 0 , 'cmdl__etat_masque' , 'cmdl__id' ,$_POST['boolModif']);
+        }
+         //gerer l' activité de la ligne : 
+        if (!empty($_POST['checkactif'])) 
+        {
+            $General->updateAll('cmd_ligne' , 0  , 'cmdl__actif' , 'cmdl__id' ,$_POST['boolModif']);
+        }
+        else 
+        {
+            $General->updateAll('cmd_ligne' ,1  , 'cmdl__actif' , 'cmdl__id' , $_POST['boolModif']);
         }
         //affichage de l'etat: 
         if(!empty($_POST['checkImage'])) 

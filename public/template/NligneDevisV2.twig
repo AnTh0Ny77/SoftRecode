@@ -170,7 +170,18 @@
                                 <label class="custom-control-label" for="checkImage">Inclure image</label>
                             </div>
                         {% endif %}
-                            
+                       
+                        {% if modif.cmdl__actif <  1 and modif  %}
+                            <div class="custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="checkactif" name='checkactif' value='ok' checked>
+                                <label class="custom-control-label" for="checkactif" >Inactif</label>
+                            </div>
+                        {% else %}
+                            <div class="custom-control custom-checkbox ">
+                                <input type="checkbox" class="custom-control-input" id="checkactif" name='checkactif' value='ok'>
+                                <label class="custom-control-label" for="checkactif" >Inactif</label>
+                            </div>
+                        {% endif %}
                             
                            
                         </div> 
@@ -291,9 +302,21 @@
               
                 <div class="col-9">
                    
-                      
+                     
                     <h5 class="card-subtitle  text-muted mb-1"> 
-                        <span class="badge badge-secondary">{{ligne.prestaLib}}</span> <b>{{ligne.devl_quantite}}</b>{{  "x " ~ ligne.devl__designation}} </h5>
+                    {% if ligne.cmdl__actif %}
+                         <span style='color: LimeGreen;' >
+                            <i class="fas fa-toggle-on"></i>
+                        </span>
+                    {% else %}
+                        <span style='color: IndianRed;' >
+                            <i class="fas fa-toggle-off"></i>
+                        </span>
+                    {% endif %}
+                   
+                    
+                        <span class="badge badge-secondary">{{ligne.prestaLib}}</span> <b>{{ligne.devl_quantite}}</b>{{  "x " ~ ligne.devl__designation}} 
+                    </h5>
                     <div class="d-flex flex-row">
                      {% if ligne.devl__note_client %}
                         <div class=" mx-1">

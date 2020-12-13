@@ -23,6 +23,14 @@ if (empty($_SESSION['user']))
 
 if (!empty($_POST['idDevis'])) 
 {
+    //mise a jour de la date du devis : 
+    $date = date("Y-m-d H:i:s");
+    $General->updateAll('cmd' , $date , 'cmd__date_devis' , 'cmd__id' , $_POST['idDevis']);
+
+    //mide a jour de l'id utilisateur : 
+    $user = $_SESSION['user']->id_utilisateur;
+    $General->updateAll('cmd' , $user , 'cmd__user__id_devis' , 'cmd__id' , $_POST['idDevis']);
+
     //mise à jour du status :
     $General->updateAll('cmd' , 'ATN' , 'cmd__etat' , 'cmd__id' , $_POST['idDevis']);
 

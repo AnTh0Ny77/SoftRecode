@@ -7,7 +7,8 @@ if ($_SESSION['user']->user__devis_acces < 10 ) {
   header('location: noAccess');
 }
  //URL bloqué si pas de connexion :
- if (empty($_SESSION['user']) || empty($_POST['ValideCmd'])) {
+ if (empty($_SESSION['user']) || empty($_POST['ValideCmd'])) 
+ {
     header('location: login');
  }else{
 
@@ -22,7 +23,7 @@ $Database->DbConnect();
 $devis = $Devis->GetById($_POST['ValideCmd']);
 
 //recupere les lignes de devis:
-$arrayOfDevisLigne = $Devis->devisLigne($_POST['ValideCmd']);
+$arrayOfDevisLigne = $Devis->devisLigne_actif($_POST['ValideCmd']);
 
 
 

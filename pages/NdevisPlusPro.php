@@ -19,6 +19,7 @@ $Client = new App\Tables\Client($Database);
 $Keywords = new App\Tables\Keyword($Database);
 $Contact = new App\Tables\Contact($Database);
 $Article = new App\Tables\Article($Database);
+$General = new App\Tables\General($Database);
 $Cmd = new App\Tables\Cmd($Database);
 $Database->DbConnect();
 
@@ -65,6 +66,14 @@ if (!empty($_POST['DupliquerDevis']))
         {
             $nouvelle_extension = $Cmd->duplicate_extension_garantie($extension ,$ligne_nouveau_devis ); 
         }
+    }
+    if (!empty($devis_source->cmd__mode_remise)) 
+    {
+        $General->updateAll('cmd', 1 , 'cmd__mode_remise' , 'cmd__id',$devis_source->devis__id );
+    }
+    if (!empty($devis_source->cmd__report_xtend)) 
+    {
+        $General->updateAll('cmd', 1 , 'cmd__report_xtend' , 'cmd__id',$devis_source->devis__id );
     }
     $_POST['modif'] = $devis_duplicata;
 }

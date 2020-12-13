@@ -27,7 +27,7 @@ if (empty($_SESSION['user']))
  {
      
         $devis = $Cmd->GetById($_POST['AjaxDevis']);
-        $devis_ligne = $Cmd->devisLigne($_POST['AjaxDevis']);
+        $devis_ligne = $Cmd->devisLigne_actif($_POST['AjaxDevis']);
         foreach ($devis_ligne as $ligne) 
         {
             $tableau_extension = $Cmd->xtenGarantie($ligne->devl__id);
