@@ -155,6 +155,9 @@
     case '/SoftRecode/AjaxVisio';
       require __DIR__ .'/pages/ajax/AjaxVisioPDF.php'; break;
 
+    case '/SoftRecode/AjaxVisio2';
+      require __DIR__ .'/pages/ajax/ajax_visio_devis.php'; break;
+
     case '/SoftRecode/AjaxFT';
       require __DIR__ .'/pages/ajax/AjaxVisionFT.php'; break;
     

@@ -109,8 +109,10 @@ let dataSetContact = [];
         })
     })
 
+
 //appel ajax au choix du contact livraison : 
-$('#contactTableLVR tbody').on('click', 'tr', function () {
+$('#contactTableLVR tbody').on('click', 'tr', function () 
+{
         let donne = tableContactLVR.row( this ).data();
         $.ajax({
             type: 'post',
@@ -130,10 +132,12 @@ $('#contactTableLVR tbody').on('click', 'tr', function () {
                 console.log('error: ' + err);
             }
         })
-    });
+});
+
 
 //appel data  table contact : 
-$('#toogleContact').on('click', function(){
+$('#toogleContact').on('click', function()
+{
         let dataSetContact = [];
         $.ajax({
             type: 'post',
@@ -467,16 +471,18 @@ idUtilisateur = $('#idUtilisateur').val();
         // requete Ajax sur le devis selectionné dans la page mes devis : 
         $.ajax({
             type: 'post',
-            url: "AjaxVisio",
+            url: "AjaxVisio2",
             data:
             {
                 "AjaxDevis": dataRow[0]
             },
-            success: function (data) {
+            success: function (data) 
+            {
+                console.log(data);
                 dataSet = JSON.parse(data);
                 checkradio(dataSet);
                 $('#loaderPdf').hide();
-                $('#iframeDevis').attr('src', 'pages/ajax/' + idUtilisateur + 'devis.html');
+                $('#iframeDevis').attr('src', 'pages/ajax/' + idUtilisateur + 'devis.pdf');
                 $('#iframeDevis').show();
                 $('.multiButton').removeAttr('disabled');
                
@@ -511,7 +517,7 @@ idUtilisateur = $('#idUtilisateur').val();
         // requete Ajax sur le devis selectionné dans la page mes devis : 
         $.ajax({
             type: 'post',
-            url: "AjaxVisio",
+            url: "AjaxVisio2",
             data : 
             {
                 "AjaxDevis" : dataRow[0]
@@ -520,7 +526,7 @@ idUtilisateur = $('#idUtilisateur').val();
                 dataSet = JSON.parse(data);
                 checkradio(dataSet);
                 $('#loaderPdf').hide();
-                $('#iframeDevis').attr('src', 'pages/ajax/'+idUtilisateur+'devis.html');
+                $('#iframeDevis').attr('src', 'pages/ajax/' + idUtilisateur + 'devis.pdf');
                 $('#iframeDevis').show();
                 $('.multiButton').removeAttr('disabled');
 

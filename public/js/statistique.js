@@ -1,24 +1,22 @@
 $(document).ready(function()
 {
   
-
    google.charts.load('current', {'packages':['corechart']});
    google.charts.setOnLoadCallback(drawVisualization);
    function drawVisualization() 
-    {
+  {
         data = JSON.parse($('#chartsResponse').val());
        
         var data = google.visualization.arrayToDataTable(data);
 
-        var options = {
+        var options = 
+          {
             title: 'Chiffre par prestation'
           };
   
         var chart = new google.visualization.PieChart(document.getElementById('chartsDiv1'));
         chart.draw(data, options);
-    }
-
-
+  }
 
     //camenbert : 
     google.charts.setOnLoadCallback(drawChart);
@@ -28,7 +26,8 @@ $(document).ready(function()
         
         var data = google.visualization.arrayToDataTable( $dataVendeur);
 
-        var options = {
+        var options = 
+        {
           title: 'Chiffre par vendeur'
         };
 

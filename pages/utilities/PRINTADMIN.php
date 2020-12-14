@@ -15,14 +15,9 @@ if (empty($_SESSION['user']))
  {
     header('location: login');
  }
-
-
-
  // si un devis a été validé : 
  if (!empty($_POST['PRINTADMINID'])) 
  {
-
-    
     //ATN a FTC  
     $lignes = $Cmd->devisLigne($_POST['PRINTADMINID']);
     foreach($lignes as $ligne )
@@ -32,11 +27,9 @@ if (empty($_SESSION['user']))
     }
 
     $Cmd->commande2facture($_POST['PRINTADMINID']);
-
-   
+    
    //  3 enregistrer la facture au format pdf dans un folder 
     $temp =   $Cmd->GetById($_POST['PRINTADMINID']);
-
     $clientView = $Client->getOne($temp->client__id);
     $societeLivraison = false ;
     $General->updateAll('cmd' , $clientView->client__tva , 'cmd__tva', 'cmd__id' , $_POST['PRINTADMINID'] );
@@ -50,11 +43,7 @@ if (empty($_SESSION['user']))
     $General->updateAll('cmd' ,$_SESSION['user']->id_utilisateur, 'cmd__user__id_cmd', 'cmd__id' , $_POST['PRINTADMINID']);
 
     $temp =   $Cmd->GetById($_POST['PRINTADMINID']);
-
-        
     $societeLivraison = $Client->getOne($temp->devis__id_client_livraison);
-  
-
     $arrayOfDevisLigne = $Cmd->devisLigne($_POST['PRINTADMINID']);
 
     foreach ($arrayOfDevisLigne as $ligne) 
@@ -62,7 +51,6 @@ if (empty($_SESSION['user']))
         $xtendArray = $Cmd->xtenGarantie($ligne->devl__id);
         $ligne->ordre2 = $xtendArray;
     } 
-
 $dateFact = new DateTime( $temp->cmd__date_fact);
 $formate = $dateFact->format('d/m/Y'); 
 

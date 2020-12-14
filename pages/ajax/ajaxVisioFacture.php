@@ -428,10 +428,7 @@ else
                 echo "<td class='text-right'><b>".number_format($totaux[3] , 2,',', ' ')." €</b></td>";
 
                 $alert_zero = false ;
-                if (floatval($totaux[3]) <= 00) 
-                {
-                    $alert_zero = true ;
-                }
+               
                
                
             

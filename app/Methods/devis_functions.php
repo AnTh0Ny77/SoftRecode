@@ -45,9 +45,27 @@ class Devis_functions
                         $firstPadding = '0px';
                     }
                     //si un commentaire client est présent il s'ajoute sous la désignation 
-                    if (!empty($ligne->devl__note_client)) 
+                    if (!empty($ligne->devl__note_client) && intval($ligne->cmdl__image) > 1) 
                     {
                         $designation =  $ligne->devl__designation .'<span style="margin-top: -10px;">'. $ligne->devl__note_client .'</span>';
+                    }
+                    elseif(intval($ligne->cmdl__image) == 1) 
+                    {
+                        $designation =  $ligne->devl__designation .'
+                        <table>
+                            <tr>
+                                <td>
+                                    <figure class="image" >
+                                        <img src="data:image/png;base64,'.$ligne->ligne_image.'"  width="70" />
+                                    </figure>   
+                                </td>
+                                <td>
+                                    <span style="margin-top: -10px;"  width="140" >
+                                        '.$ligne->devl__note_client.'
+                                    </span>
+                                </td>
+                            </tr>
+                        </table>';
                     }
                     else 
                     { 
@@ -87,7 +105,7 @@ class Devis_functions
                         "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$firstW."; max-width: ".$firstW."; text-align: left;  '>" . $prestation  . "</td>";
                         $deuxieme_cellule = 
                         "<td valign='top' class='NoBR' style='  padding-top:".$firstPadding.";  width: ".$secondW."; max-width: ".$secondW."; text-align: left;  padding-bottom:10px'>"  . $designation. "</td>";
-                        if ($ligne->devl__etat == 'NC.') 
+                        if ($ligne->devl__etat == 'NC.' || $ligne->cmdl__etat_masque > 0) 
                         {
                             $troisieme_cellule =  
                             "<td valign='top' style=' padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW.";  color: white ; text-align: center; '>" .$ligne->kw__lib ."</td>";
@@ -201,7 +219,7 @@ class Devis_functions
                         $deuxieme_cellule = 
                         "<td valign='top' class='NoBR' style='padding-top:".$firstPadding.";  width: ".$secondW.";  max-width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid ;  padding-bottom:10px'>"  . $designation. "</td>";
                         //condition pour etat = a NC. OU etat masque est demandé: 
-                        if ($ligne->devl__etat == 'NC' || $ligne->cmdl__etat_masque > 0 ) 
+                        if ($ligne->devl__etat == 'NC.' || $ligne->cmdl__etat_masque > 0 ) 
                         {
                             $troisieme_cellule =  
                             "<td valign='top' style='padding-top:".$firstPadding.";  width: ".$thirdW."; max-width: ".$thirdW."; color: white ; text-align: center; border-bottom: 1px #ccc solid'>" .$ligne->kw__lib ."</td>";
@@ -340,36 +358,32 @@ class Devis_functions
                             }
                             //si un commentaire client est présent il s'ajoute sous la désignation 
                            
-                            if (!empty($ligne->devl__note_client) && intval($ligne->cmdl__image) < 1) 
-                            {
-                                $designation =  $ligne->devl__designation .'<span style="margin-top: -10px;">'. $ligne->devl__note_client .'</span>';
-                            }
-                            elseif(intval($ligne->cmdl__image) == 1) 
-                            {
-                              
-                               
-                               $test =  Devis_functions::base64_to_image(base64_encode($ligne->ligne_image), 'png');
-                               
-                                $designation =  $ligne->devl__designation .'
-                                <table>
-                                    <tr>
-                                        <td>
-                                            <figure class="image" style="height:100px;">
-                                                <img style="height:100px; width:100px" src = "devis.png" />
-                                            </figure>   
-                                        </td>
-                                        <td>
-                                            '.$ligne->devl__note_client.'
-                                        </td>
-                                    </tr>
-                                </table>';
-                            }
-                            
-                            else 
-                            { 
-                               
-                                $designation = $ligne->devl__designation; 
-                            }
+                                if (!empty($ligne->devl__note_client) && intval($ligne->cmdl__image) > 1) 
+                                {
+                                    $designation =  $ligne->devl__designation .'<span style="margin-top: -10px;">'. $ligne->devl__note_client .'</span>';
+                                }
+                                elseif(intval($ligne->cmdl__image) == 1) 
+                                {
+                                    $designation =  $ligne->devl__designation .'
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <figure class="image" >
+                                                    <img src="data:image/png;base64,'.$ligne->ligne_image.'"  width="70" />
+                                                </figure>   
+                                            </td>
+                                            <td>
+                                                <span style="margin-top: -10px;" width="140" >
+                                                '.$ligne->devl__note_client.'
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </table>';
+                                }
+                                else 
+                                { 
+                                    $designation = $ligne->devl__designation; 
+                                }
                             // garantie
                             $garantie = $ligne->devl__mois_garantie . " mois";
                             //prix barre 
@@ -408,7 +422,7 @@ class Devis_functions
                                         "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$firstW."; max-width: ".$firstW."; text-align: left;  '>" . $prestation  . "</td>";
                                         $deuxieme_cellule = 
                                         "<td valign='top' class='NoBR' style='  padding-top:".$firstPadding.";  width: ".$secondW."; max-width: ".$secondW."; text-align: left;  '>"  . $designation. "</td>";
-                                        if ($ligne->devl__etat == 'NC.') 
+                                        if ($ligne->devl__etat == 'NC.' || $ligne->cmdl__etat_masque > 0) 
                                         {
                                             $troisieme_cellule =  
                                             "<td valign='top' style=' padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW.";  color: white ; text-align: center; '>" .$ligne->kw__lib ."</td>";
@@ -431,7 +445,7 @@ class Devis_functions
                                             "<td valign='top' style='padding-top:".$firstPadding."; width: ".$fourthW."; max-width: ".$fourthW.";  color: white; text-align: center; '>" . $garantie ." </td>";
                                         }
                                     
-                                        $cinquieme_cellule ="<td valign='top' style=' width:".$fifthW."; max-width: ".$fifthW."; text-align: center;'>" .$quantité ."</td>";
+                                        $cinquieme_cellule ="<td valign='top' style='padding-top:".$firstPadding."; width:".$fifthW."; max-width: ".$fifthW."; text-align: center;'>" .$quantité ."</td>";
                                     
                                         $derniere_cellule = 
                                         "<td valign='top' style='padding-top:".$firstPadding."; width: ".$lastW."; max-width: ".$lastW.";  text-align: right;  '>" . $barre . "</td>" ;
@@ -601,10 +615,10 @@ class Devis_functions
                                     "<td valign='top' style='  padding-top:".$firstPadding."; width: ".$firstW."; max-width: ".$firstW."; text-align: left;  '>" . $prestation  . "</td>";
                                     $deuxieme_cellule = 
                                     "<td valign='top' class='NoBR' style='  padding-top:".$firstPadding.";  width: ".$secondW."; max-width: ".$secondW."; text-align: left;  '>"  . $designation. "</td>";
-                                    if ($ligne->devl__etat == 'NC.') 
+                                    if ($ligne->devl__etat == 'NC.' || $ligne->cmdl__etat_masque > 0) 
                                     {
                                         $troisieme_cellule =  
-                                        "<td valign='top' style=' padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW.";  color: white ; text-align: center; '>" .$ligne->kw__lib ."</td>";
+                                        "<td valign='top' style=' padding-top:".$firstPadding."; width: ".$thirdW."; max-width: ".$thirdW.";  color: white; text-align: center; '>" .$ligne->kw__lib ."</td>";
                                     }
                                     else 
                                     {
@@ -784,10 +798,10 @@ class Devis_functions
                                     $deuxieme_cellule = 
                                     "<td valign='top' class='NoBR' style='padding-top:".$firstPadding.";  width: ".$secondW.";  max-width: ".$secondW."; text-align: left; '>"  . $designation. "</td>";
                                     //condition pour etat = a NC. OU etat masque est demandé: 
-                                    if ($ligne->devl__etat == 'NC' || $ligne->cmdl__etat_masque > 0 ) 
+                                    if ($ligne->devl__etat == 'NC.' || $ligne->cmdl__etat_masque > 0 ) 
                                     {
                                         $troisieme_cellule =  
-                                        "<td valign='top' style='padding-top:".$firstPadding.";  width: ".$thirdW."; max-width: ".$thirdW."; color: white ; text-align: center; '>" .$ligne->kw__lib ."</td>";
+                                        "<td valign='top' style='padding-top:".$firstPadding.";  width: ".$thirdW."; max-width: ".$thirdW."; color: white; text-align: center; '>" .$ligne->kw__lib ."</td>";
                                     }
                                     else
                                     {
@@ -839,10 +853,10 @@ class Devis_functions
                                     $deuxieme_cellule = 
                                     "<td valign='top' class='NoBR' style='padding-top:".$firstPadding.";  width: ".$secondW.";  max-width: ".$secondW."; text-align: left; border-bottom: 1px #ccc solid ;  '>"  . $designation. "</td>";
                                     //condition pour etat = a NC. OU etat masque est demandé: 
-                                    if ($ligne->devl__etat == 'NC' || $ligne->cmdl__etat_masque > 0 ) 
+                                    if ($ligne->devl__etat == 'NC.' || $ligne->cmdl__etat_masque > 0 ) 
                                     {
                                         $troisieme_cellule =  
-                                        "<td valign='top' style='padding-top:".$firstPadding.";  width: ".$thirdW."; max-width: ".$thirdW."; color: white ; text-align: center; border-bottom: 1px #ccc solid'>" .$ligne->kw__lib ."</td>";
+                                        "<td valign='top' style='padding-top:".$firstPadding.";  width: ".$thirdW."; max-width: ".$thirdW."; color: white; text-align: center; border-bottom: 1px #ccc solid'>" .$ligne->kw__lib ."</td>";
                                     }
                                     else
                                     {
@@ -946,7 +960,7 @@ class Devis_functions
         foreach ($lignes as $ligne ) 
         { 
 			// variable $xtend déclaré pour chaque tableau d'extension de garanties : 
-			$xtend =  $ligne->ordre2;
+			$xtend =  $ligne->tableau_extension;
 			// si il ne s'agit pas d'un service pour sur chaque tableau d'extension du tableau des extensions de  garantie : 
             if ($ligne->famille != 'SER') 
             {

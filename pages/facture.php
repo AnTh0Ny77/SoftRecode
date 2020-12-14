@@ -198,7 +198,16 @@ if (!empty($_POST['recherche-fiche']))
 else $devisList = $Cmd->getFromStatusAll('IMP');
 
 //variable qui determine le visuel d'une recherche sans résultats: 
-$visuelFiche = null;
+if ( $_SESSION['facture_zero'] == 'TTZ') 
+{
+  $visuelFiche = 'Total à Zero';
+  $_SESSION['facture_zero'] = '';
+}
+else
+{
+  $visuelFiche = null;
+}
+
 
 //si le resultat est numm mais qu'il correspond bien a un numéri d'id : 
 if (empty($devisList) && isset($_POST['rechercheF'])  && strlen($_POST['rechercheF']) == 7) 
@@ -206,32 +215,32 @@ if (empty($devisList) && isset($_POST['rechercheF'])  && strlen($_POST['recherch
   $alertFiche = $Cmd->GetById($_POST['rechercheF']);
   if(!empty($alertFiche)) 
   {
-  switch ($alertFiche->devis__etat) 
-  {
-    case 'VLD':
-      $visuelFiche = ' déja facturée facture N° '.$alertFiche->cmd__id_facture.'';
-    break;
+    switch ($alertFiche->devis__etat) 
+      {
+        case 'VLD':
+          $visuelFiche = ' déja facturée facture N° '.$alertFiche->cmd__id_facture.'';
+        break;
 
-    case 'ARH':
-      $visuelFiche = ' une Garantie ou un reliquat';
-    break;
+        case 'ARH':
+          $visuelFiche = ' une Garantie ou un reliquat';
+        break;
 
-    case 'CMD':
-      $visuelFiche = 'pas encore expédiée';
-    break;
+        case 'CMD':
+          $visuelFiche = 'pas encore expédiée';
+        break;
 
-    case 'NFT':
-      $visuelFiche = 'archivée';
-    break;
+        case 'NFT':
+          $visuelFiche = 'archivée';
+        break;
 
-    case 'PBL':
-      $visuelFiche = 'a supprimer ( le signaler à François ) ';
-    break;
-                
-    case 'PLL':
-      $visuelFiche = 'a supprimer ( le signaler à François ) ';
-    break;
-  } 
+        case 'PBL':
+          $visuelFiche = 'a supprimer ( le signaler à François ) ';
+        break;
+                    
+        case 'PLL':
+          $visuelFiche = 'a supprimer ( le signaler à François ) ';
+        break;
+      } 
   }
 }
 

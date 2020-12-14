@@ -1,10 +1,10 @@
 <?php
 require "./vendor/autoload.php";
+
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Methods\Pdfunctions;
 use App\Methods\Devis_functions;
-
 session_start();
 $Database = new App\Database('devis');
 $Database->DbConnect();
@@ -228,23 +228,11 @@ if (empty($_SESSION['user']))
                 </table>  
             </table>
         </div> 
-
-
-    
-
-
     </page>
  <?php
  $content = ob_get_contents();
 
- if ($devis->cmd__nom_devis) 
- {
-    $name  = $devis->cmd__nom_devis;
-   }
-   else 
-   {
-      $name = $devis->devis__id;
-   }
+ 
  
  try 
  {
@@ -253,7 +241,7 @@ if (empty($_SESSION['user']))
      $doc->pdf->SetDisplayMode('fullpage');
      $doc->writeHTML($content);
      ob_clean();
-     $doc->output(''.$devis->devis__id.'-'.$name.'.pdf');
+     $doc->output(__DIR__ .'/'.$_SESSION['user']->log_nec.'devis.pdf', 'F'); 
  } 
  catch (Html2PdfException $e) 
  {
@@ -261,7 +249,11 @@ if (empty($_SESSION['user']))
  }
 
  
+ echo  json_encode($devis);
 
  }
- 
+ else {
+    echo json_encode('{"erreur" : 503 }');
+ }
+
 }

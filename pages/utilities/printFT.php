@@ -36,6 +36,7 @@ if (!empty($_SESSION['garanFiche']))
  // si une validation de devis a été effectuée : 
 if(!empty($_POST['devisCommande']))
 {
+  $deleteLines = $Command->delete_ligne_inactif($_POST['devisCommande']);
   $date = date("Y-m-d H:i:s");
   $Command->updateStatus('CMD',$_POST['devisCommande']);
   $Command->updateDate('cmd__date_cmd' , $date , $_POST['devisCommande'] );
