@@ -1,15 +1,15 @@
 {% extends 'layoutMain.twig' %}
 {% block style %}
-<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
-<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
-<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
-<link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css"> <!-- File Upload -->
-<link rel="stylesheet" href="public/css/dashboard.css">
-<link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css">
-  {% endblock %}
-{% block main %}
+    <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+    <link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css"> <!-- File Upload -->
+    <link rel="stylesheet" href="public/css/dashboard.css">
+    <link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css">
+{% endblock %}
 
+{% block main %}
 {# en paramettre je recupere action qui me donne Creat ou Modif, l'option par defaut est Creat. #}
 {% set Modif = FALSE %}
 {% if action == 'Modif' %}
@@ -101,7 +101,7 @@
                         </div>
                         <div class="col-9">
                             <div class="file-upload-wrapper">
-                                    <input type="file" name="modele_image" id="modele_image" class="file_upload" data-max-file-size="2M" data-height="300"/>
+                                    <input type="file" name="modele_image" id="modele_image" class="file_upload" data-max-file-size="2M" data-height="200"/>
                             </div>
                         </div>
                     </div>
