@@ -2,9 +2,7 @@
 require "./vendor/autoload.php";
 require "./App/twigloader.php";
 session_start();
-
-// fonctions
-require "./App/Methods/tools_functions.php";
+require "./App/Methods/tools_functions.php"; // fonctions
 
 // Validation de connexion :
 if(empty($_SESSION['user'])) 
