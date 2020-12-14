@@ -69,7 +69,7 @@ class Devis_functions
                     }
                     else 
                     { 
-                        $designation = $ligne->devl__designation; 
+                        $designation =  $ligne->devl__designation .'<span style="margin-top: -10px;">'. $ligne->devl__note_client .'</span>';
                     }
                     // garantie
                     $garantie = $ligne->devl__mois_garantie . " mois";
@@ -382,7 +382,7 @@ class Devis_functions
                                 }
                                 else 
                                 { 
-                                    $designation = $ligne->devl__designation; 
+                                    $designation =  $ligne->devl__designation .'<span style="margin-top: -10px;">'. $ligne->devl__note_client .'</span>';
                                 }
                             // garantie
                             $garantie = $ligne->devl__mois_garantie . " mois";
