@@ -11,7 +11,8 @@ session_start();
 if (empty($_SESSION['user'])) {
   header('location: login');
 }
-if ($_SESSION['user']->user__facture_acces  < 10) {
+if ($_SESSION['user']->user__facture_acces  < 10) 
+{
   header('location: noAccess');
 }
 
@@ -40,7 +41,8 @@ foreach ($ABNList as $abn) {
   array_push($arrayList, $item);
 }
 
-foreach ($arrayList as $devis) {
+foreach ($arrayList as $devis) 
+{
   $devisDate = date_create($devis->cmd__date_cmd);
   $date = date_format($devisDate, 'd/m/Y');
   $devis->devis__date_crea = $date;

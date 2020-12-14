@@ -49,7 +49,7 @@ class Devis_functions
                     {
                         $designation =  $ligne->devl__designation .'<span style="margin-top: -10px;">'. $ligne->devl__note_client .'</span>';
                     }
-                    elseif(intval($ligne->cmdl__image) == 1) 
+                    elseif(intval($ligne->cmdl__image) == 1 && !empty($ligne->ligne_image)) 
                     {
                         $designation =  $ligne->devl__designation .'
                         <table>
@@ -362,7 +362,7 @@ class Devis_functions
                                 {
                                     $designation =  $ligne->devl__designation .'<span style="margin-top: -10px;">'. $ligne->devl__note_client .'</span>';
                                 }
-                                elseif(intval($ligne->cmdl__image) == 1) 
+                                elseif(intval($ligne->cmdl__image) == 1 && !empty($ligne->ligne_image)) 
                                 {
                                     $designation =  $ligne->devl__designation .'
                                     <table>

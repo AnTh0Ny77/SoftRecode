@@ -18,10 +18,10 @@ class Abonnement extends Table
 
     public function createOne($cmd , $client , $actif , $auto , $presta , $note , $mois  )
     {
-        $BigAbn= $this->Db->Pdo->query('SELECT MAX(ab__contrat) as lastFact from ab__contrat');
-        $BigAbn = $BigAbn->fetch(PDO::FETCH_OBJ);
+    //     $BigAbn= $this->Db->Pdo->query('SELECT MAX(ab__contrat) as lastFact from ab__contrat');
+    //     $BigAbn = $BigAbn->fetch(PDO::FETCH_OBJ);
 
-        $newAbn = $BigAbn->lastFact + 1;
+    //     $newAbn = $BigAbn->lastFact + 1;
 
         $request = $this->Db->Pdo->prepare('INSERT INTO abonnement ( ab__cmd__id, ab__client__id_fact,
         ab__actif, ab__fact_auto,  ab__presta,

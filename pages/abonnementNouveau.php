@@ -51,10 +51,11 @@ if (!empty($_POST['numCmd']))
         $id = null;
       }
     }
+
     $verif = $Abonnement->getById($_POST['numCmd']);
     if (empty($verif)) 
     {
-      $abn = $Abonnement->createOne($_POST['numCmd'] , $id , 1, $_POST['facturationAuto'], $_POST['prestation'] , $_POST['comAbn'] , $_POST['mois'] );
+      $abn = $Abonnement->createOne($_POST['numCmd'] , $valid->client__id , 1, $_POST['facturationAuto'], $_POST['prestation'] , $_POST['comAbn'] , $_POST['mois'] );
       header('location: abonnement');
     }
     else 
