@@ -60,7 +60,7 @@ class Devis_functions
                                     </figure>   
                                 </td>
                                 <td>
-                                    <span style="margin-top: -10px;">
+                                    <span style="margin-top: -10px;"  width="140" >
                                         '.$ligne->devl__note_client.'
                                     </span>
                                 </td>
@@ -373,7 +373,7 @@ class Devis_functions
                                                 </figure>   
                                             </td>
                                             <td>
-                                                <span style="margin-top: -10px;">
+                                                <span style="margin-top: -10px;" width="140" >
                                                 '.$ligne->devl__note_client.'
                                                 </span>
                                             </td>

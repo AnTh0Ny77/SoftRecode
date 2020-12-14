@@ -1390,6 +1390,8 @@ public function devisLigne($id){
 }
 
 
+
+
 //recupère les lignes liées à un devis:
 public function devisLigne_actif($id)
 {

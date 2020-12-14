@@ -109,8 +109,10 @@ let dataSetContact = [];
         })
     })
 
+
 //appel ajax au choix du contact livraison : 
-$('#contactTableLVR tbody').on('click', 'tr', function () {
+$('#contactTableLVR tbody').on('click', 'tr', function () 
+{
         let donne = tableContactLVR.row( this ).data();
         $.ajax({
             type: 'post',
@@ -130,10 +132,12 @@ $('#contactTableLVR tbody').on('click', 'tr', function () {
                 console.log('error: ' + err);
             }
         })
-    });
+});
+
 
 //appel data  table contact : 
-$('#toogleContact').on('click', function(){
+$('#toogleContact').on('click', function()
+{
         let dataSetContact = [];
         $.ajax({
             type: 'post',
