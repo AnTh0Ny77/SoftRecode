@@ -1,0 +1,108 @@
+
+
+    <style type="text/css">
+    .global-wrapper{min-height: 900px};
+        .bodyFrame {font-family:Century Gothic,arial,sans-serif; }
+        .div{   font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate;}
+        .table{ font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate;}
+        strong{ color:#000;}
+        .head-wrapper{
+            display: flex;
+            justify-content: space-around;
+            padding-left: 5%;
+        }
+    </style>
+    
+    <div class="global-wrapper">
+        <div class="div bodyFrame mt-4" style="width: 100%;" >
+         <div class="head-wrapper div">
+             <div class="div" style="text-align: left;  width: 50%;" >
+                <div class="div">
+                    <img  style=" width:55mm;" src="public\img\recodeDevis.png"/>
+                </div>
+                <div class="div" style=" margin-top: 15%" >
+                <p>Commandé le : 
+                11/12/2020 à : 14h 07</p>
+                Commercial : 
+                <strong>
+                    RIVARD Franck                </strong> 
+                     (Tél: 109)                     
+                
+                    <br>Commandé par : <strong>CASTOR Lorenne                </strong> 
+                     (Tél: 104)             <div class="d-flex">
+
+             <form class='my-2 mx-2' action='adminFiche' method='POST'>
+                <input type='hidden' name='AdminGarantie' value=3211667>
+                <button class='btn btn-primary btn-sm'>Administration</button>
+                </form><form class='my-2 mx-2' action='PRINTFORMAT' method='POST'>
+                    <input type='hidden' name='PrintFormat' value=3211667>
+                    <button class='btn btn-secondary btn-sm'>Facture pro format</button>
+                    </form>             </div>
+             
+             </td>
+            
+             </div>
+            </div>
+         
+            <div class="div" style="text-align: left;  width: 45% ;"><h5>Fiche de Travail N°:<strong> 3211667</strong><br></h5>
+             <br> <small>Societe :</small><strong><br>ATLANTIQUE PECHES (034091)<br>57 LA BUTTE DE PRAUD<br>44400 REZE</strong></td>        
+        <div class="d-flex flex-column">
+                        
+            <form class='mt-3 ml-2' method='POST' action='ficheTravail'>
+                    <h6>Date d'envoi prévue:</h6>
+                    <input type='hidden' value='3211667' name='dateId'>
+                    <input type='date' name='estimDate' value=2020-12-12>
+                    <button type='submit' class='btn btn-sm btn-success'><i class='far fa-exchange'></i></button>
+                    </form>           
+            
+        </div>
+
+       </div>
+      
+      </div>
+    
+       
+    </div>
+
+    <div class="div" style="display: flex; justify-content: center; margin-top: 10%;">
+        <table CELLSPACING=0 style="width: 95%;" class="table">
+            
+                <tr style=" margin-top : 50px; background-color: #dedede; vertical-align: top;" >
+                    <td style="width: 5%; background-color: white; border-style: none;" ></td>
+                    <td style="width: 13%; text-align: left;">Prestation<br>Type<br>Garantie</td>
+                    <td style="width: 50%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
+                    <td style="text-align: right; width: 12%"><strong>CMD</strong><br>Livr</td>
+                </tr>
+           
+                <tr style='font-size: 95%;'>
+                                <td style='border-style: none; '> <button class='clickFT btn btn-secondary mt-2' value='12011' '><i class='fas fa-clipboard-list'></i></button></td>
+                                <td style='border-bottom: 1px #ccc solid; text-align:left;'>Vente <br> neuf <br>   </td>
+                                <td style='border-bottom: 1px #ccc solid'><strong> cordon Wedge pour Symbol LS9100 <br> <p><span style="background-color:rgb(255,255,204);color:rgb(102,102,102);">25-11497-01</span></p> </td>
+                                <td style='border-bottom: 1px #ccc solid;  text-align: right '><strong> 1 </strong> </td>
+                                </tr><tr style='font-size: 95%;'>
+                                <td style='border-style: none; '> <button class='clickFT btn btn-secondary mt-2' value='12012' '><i class='fas fa-clipboard-list'></i></button></td>
+                                <td style='border-bottom: 1px #ccc solid; text-align:left;'>Vente <br> reconditionné <br>   </td>
+                                <td style='border-bottom: 1px #ccc solid'><strong> adaptateur Synapse <br> <p>STI80-0192&nbsp;</p> </td>
+                                <td style='border-bottom: 1px #ccc solid;  text-align: right '><strong> 1 </strong> </td>
+                                </tr><tr style='font-size: 95%;'>
+                                <td style='border-style: none; '> <button class='clickFT btn btn-secondary mt-2' value='12013' '><i class='fas fa-clipboard-list'></i></button></td>
+                                <td style='border-bottom: 1px #ccc solid; text-align:left;'>Vente <br> reconditionné <br> 6 mois  </td>
+                                <td style='border-bottom: 1px #ccc solid'><strong> Imprimante Epson TM-U950 série <br>  </td>
+                                <td style='border-bottom: 1px #ccc solid;  text-align: right '><strong> 1 </strong> </td>
+                                </tr><tr style='font-size: 95%;'>
+                                <td style='border-style: none; '> <button class='clickFT btn btn-secondary mt-2' value='12014' '><i class='fas fa-clipboard-list'></i></button></td>
+                                <td style='border-bottom: 1px #ccc solid; text-align:left;'>Port <br> Non Concerné <br>   </td>
+                                <td style='border-bottom: 1px #ccc solid'><strong> forfait emballage et port <br>  </td>
+                                <td style='border-bottom: 1px #ccc solid;  text-align: right '><strong> 1 </strong> </td>
+                                </tr>        </table> 
+     </div>
+     <div class="d-flex justify-content-end mr-3">
+     <p>#ADV: attente virement avant envoi du matériel&nbsp;</p>     </div>
+    
+    
+     </div>
+     
+    
+
+ 
+    

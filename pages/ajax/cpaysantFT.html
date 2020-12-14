@@ -1,0 +1,95 @@
+
+
+    <style type="text/css">
+    .global-wrapper{min-height: 900px};
+        .bodyFrame {font-family:Century Gothic,arial,sans-serif; }
+        .div{   font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate;}
+        .table{ font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate;}
+        strong{ color:#000;}
+        .head-wrapper{
+            display: flex;
+            justify-content: space-around;
+            padding-left: 5%;
+        }
+    </style>
+    
+    <div class="global-wrapper">
+        <div class="div bodyFrame mt-4" style="width: 100%;" >
+         <div class="head-wrapper div">
+             <div class="div" style="text-align: left;  width: 50%;" >
+                <div class="div">
+                    <img  style=" width:55mm;" src="public\img\recodeDevis.png"/>
+                </div>
+                <div class="div" style=" margin-top: 15%" >
+                <p>Commandé le : 
+                09/12/2020 à : 12h 02</p>
+                Commercial : 
+                <strong>
+                    PAYSANT Cindy                </strong> 
+                     (Tél: 103)                     
+                
+                    <br>Commandé par : <strong>PAYSANT Cindy                </strong> 
+                     (Tél: 103)<br> code cmd client: <b>013177</b>             <div class="d-flex">
+
+             <form class='my-2 mx-2' action='adminFiche' method='POST'>
+                <input type='hidden' name='AdminGarantie' value=3211495>
+                <button class='btn btn-primary btn-sm'>Administration</button>
+                </form>             </div>
+             
+             </td>
+            
+             </div>
+            </div>
+         
+            <div class="div" style="text-align: left;  width: 45% ;"><h5>Fiche de Travail N°:<strong> 3211495</strong><br></h5>
+             <small>Societe : M. LOTS Pascal</small><strong><br>PAPETERIES CARTONNERIES LACAUX (028755)<br>1 AVENUE DE LA VIENNE<br>CS 70005 BOSMIE L AIGUILL<br>87221 FEYTIAT CEDEX</strong></td>        
+        <div class="d-flex flex-column">
+                        
+            <form class='mt-3 ml-2' method='POST' action='ficheTravail'>
+                    <h6>Date d'envoi prévue:</h6>
+                    <input type='hidden' value='3211495' name='dateId'>
+                    <input type='date' name='estimDate' value=2020-12-10>
+                    <button type='submit' class='btn btn-sm btn-success'><i class='far fa-exchange'></i></button>
+                    </form>           
+            
+        </div>
+
+       </div>
+      
+      </div>
+    
+       
+    </div>
+
+    <div class="div" style="display: flex; justify-content: center; margin-top: 10%;">
+        <table CELLSPACING=0 style="width: 95%;" class="table">
+            
+                <tr style=" margin-top : 50px; background-color: #dedede; vertical-align: top;" >
+                    <td style="width: 5%; background-color: white; border-style: none;" ></td>
+                    <td style="width: 13%; text-align: left;">Prestation<br>Type<br>Garantie</td>
+                    <td style="width: 50%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
+                    <td style="text-align: right; width: 12%"><strong>CMD</strong><br>Livr</td>
+                </tr>
+           
+                <tr style='font-size: 95%;'>
+                                <td style='border-style: none; '> <button class='clickFT btn btn-success mt-2' value='11383' '><i class='fas fa-barcode'></i></button></td>
+                                <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #e6ffe6;'>Location <br> reconditionné <br>  </td>
+                                <td style='border-bottom: 1px #ccc solid; background-color: #e6ffe6;'><small>désignation sur le devis:</small> <strong> terminal MC92 - 1D longue portée - 29 touches - Windows mobile 6.5 - WIFI - BLT</strong>  <br>Terminal mobile MC92N0 ZEBRA <br><p>MC92N0GJ0SXARA5WR</p> </td>
+                                <td style='border-bottom: 1px #ccc solid;  text-align: right; background-color: #e6ffe6; '><strong> 1 </strong> </td>
+                                </tr><tr style='font-size: 95%;'>
+                                <td style='border-style: none; '> <button class='clickFT btn btn-secondary mt-2' value='11384' '><i class='fas fa-clipboard-list'></i></button></td>
+                                <td style='border-bottom: 1px #ccc solid; text-align:left;'>Port <br> Non Concerné <br>   </td>
+                                <td style='border-bottom: 1px #ccc solid'><strong> Forfait emballage et port <br>  </td>
+                                <td style='border-bottom: 1px #ccc solid;  text-align: right '><strong> 1 </strong> </td>
+                                </tr>        </table> 
+     </div>
+     <div class="d-flex justify-content-end mr-3">
+     <p>attendre caution avant envoi</p><p>ADV : surveiller arrivée de la caution pour cette commande stp merci</p>     </div>
+    
+    
+     </div>
+     
+    
+
+ 
+    
