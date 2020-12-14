@@ -14,11 +14,14 @@ if(empty($_SESSION['user']))
 if($_SESSION['user']->user__admin_acces < 10 )
 	{ header('location: noAccess'); }
 
-// Variables de session
+// Récup de variables (Session et post get)
 	$user       = $_SESSION['user'];
 	$art_filtre = get_post('art_filtre', FALSE, 'GETPOST');
-	// print '-------------------------------------------------------art_filtre--'.$art_filtre.'<br>';
-		
+	if(isset($_POST['link_famille'])) $art_filtre = trim($_POST['filtre_famille']);
+	if(isset($_POST['link_marque']))  $art_filtre = trim($_POST['filtre_marque']);
+	if(isset($_POST['link_modele']))  $art_filtre = trim($_POST['filtre_modele']);
+	if(isset($_POST['link_pn']))      $art_filtre = trim($_POST['filtre_pn']);
+
 // variable locale
 	$big_sql = $Art_ACC_CON_PID = $ArtACC = $ArtCON = $ArtPID = $ArtModele = FALSE;
 	$CountACC = $CountCON = $CountPID = 0;
@@ -26,15 +29,6 @@ if($_SESSION['user']->user__admin_acces < 10 )
 	$Database = new App\Database('devis');
 	$Database->DbConnect();
 	$Article = new App\Tables\Article($Database);
-// recuperation des post et get..
-if(isset($_POST['link_famille']))
-	$art_filtre = trim($_POST['filtre_famille']);
-if(isset($_POST['link_marque']))
-	$art_filtre = trim($_POST['filtre_marque']);
-if(isset($_POST['link_modele']))
-	$art_filtre = trim($_POST['filtre_modele']);
-if(isset($_POST['link_pn']))
-	$art_filtre = trim($_POST['filtre_pn']);
 // rechreche de prefixe (: ou !) pour savoir si c'est Modele po PN et faire plus de recherche sur les parts...
 if(substr($art_filtre,0,1) == ":" OR substr($art_filtre,0,1) == "!") // c'est bien un Modele ou PN en filtre
 	$big_sql = TRUE;
