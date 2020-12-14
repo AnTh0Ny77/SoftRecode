@@ -286,7 +286,7 @@ public static function magicLine($arrayLigne){
 		$lastCell2 = "<td valign='top' style=' width: ".$lastW."; max-width: ".$lastW."; text-align: right;'>" . number_format(floatVal($array['devg__prix']),2 , ',',' ') ." €</td>" ;
 		$endSecondLine = "</tr> ";
 
-		if ( $array === end($object->ordre2)) 
+		if ($array === end($object->ordre2)) 
 		{
 			$secondLine = "<tr style='font-size: 95%; font-style: italic;'>" ;
 			$firstCell2 = "<td valign='top' style=' width:".$firstW."; text-align: left; border-bottom: 1px #ccc solid'>garantie</td>";

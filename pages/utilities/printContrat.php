@@ -56,31 +56,11 @@ ob_start();
 ?>
  
 <style type="text/css">
-    .page_header
-     {
-        margin-left: 30px;
-        margin-top: 30px;
-     }
-
-    table
-    {  
-        font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate; 
-    }
-
-    strong
-    {
-        color:#000;
-    }
-
-    h3
-    { 
-        color:#666666;
-    }
-
-    h2
-    { 
-        color:#3b3b3b;
-    }  
+    .page_header{margin-left: 30px;margin-top: 30px;}
+    table{ font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate; }
+    strong{color:#000;}
+    h3{color:#666666;}
+    h2{color:#3b3b3b;}  
  </style>
 
 
@@ -94,14 +74,7 @@ ob_start();
          </tr>
          <tr>
             <td  style="text-align: left;  width: 50% ; margin-left: 25%; padding-top: 20px;">
-
-            </td>
-
-             <td style="text-align: left; width:50%">
-             <h3><?php echo $abn->prestaionAbn . " " .  $temp->devis__id  ; ?></h3>
-             <br>
-             
-             <?php 
+            <?php 
              // si une societe de livraion est présente 
                 if ($temp->devis__contact__id) 
                 {
@@ -116,6 +89,13 @@ ob_start();
                 }
 
              ?>
+            </td>
+
+             <td style="text-align: left; width:50%">
+             <h3><?php echo $abn->prestaionAbn . " " .  $temp->devis__id  ." du " .$formated_date ; ?></h3>
+             <br>
+             
+            
              <br>  
             
             </td>
@@ -227,6 +207,7 @@ ob_start();
 
     $doc->output('O:\intranet\Auto_Print\CT\CT'.$temp->devis__id.'.pdf', 'F');
     //declarer la session pour s'en servir à l'impression:
+    $_SESSION['abn_admin'] = $temp->devis__id;
     header('location: abonnementAdmin');
 
  } 

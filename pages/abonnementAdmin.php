@@ -30,7 +30,14 @@ session_start();
  $moisList = $Keyword->getGaranties();
 
  $alert = false;
+ $alert_impression = false ;
 
+if(!empty($_SESSION['abn_admin']))
+{
+  $_POST['hiddenId'] = $_SESSION['abn_admin'];
+  $alert_impression =true;
+  $_SESSION['abn_admin'] = "";
+}
 //traite le post avec l'id abonnement: 
 if (!empty($_POST['hiddenId'])) 
 {
@@ -70,8 +77,6 @@ if (!empty($_POST['idCmd']))
 {
   $update = $Abonnement->UpdateMachine(
   $_POST['idCmd'],  $_POST['numL'], $_POST['date'], $_POST['actif'], $_POST['fmm'], $_POST['designation'], $_POST['sn'], $_POST['prestation'], floatval($_POST['prix']), $_POST['comAbn']);
-
- 
   $abn = $Abonnement->getById($_POST['idCmd']);
   $cmd = $Cmd->GetById($abn->ab__cmd__id);
   $lignes = $Abonnement->getLigne($abn->ab__cmd__id);

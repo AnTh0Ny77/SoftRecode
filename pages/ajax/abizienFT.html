@@ -1,7 +1,7 @@
 
 
     <style type="text/css">
-    .global-wrapper{min-height: 900px};
+    .global-wrapper{min-height: 700px};
         .bodyFrame {font-family:Century Gothic,arial,sans-serif; }
         .div{   font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate;}
         .table{ font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate;}
@@ -13,69 +13,39 @@
         }
     </style>
     
+
     <div class="global-wrapper">
-        <div class="div bodyFrame mt-4" style="width: 100%;" >
+        <div class="div bodyFrame mt-2" style="width: 100%;" >
          <div class="head-wrapper div">
+
+
              <div class="div" style="text-align: left;  width: 50%;" >
-<<<<<<< HEAD
              <div class="div">
             
              </div>
              <div class="div" style=" margin-top: 2%" >
-             <h6><small>Commandé le : </small><b>25/09/2020 à : 00h 00</b></h6>
+             <h6><small>Commandé le : </small><b>01/10/2020 à : 14h 55</b></h6>
              <div class='' '>
                <h6> <small>Expédié le :</small>  <b>12/10/2020</b></h6>    
            </div>            <h6> 
-                <small>Vendeur:</small> <b>RIVARD Franck </b> 
-                 (Tél: 109) 
+                <small>Vendeur:</small> <b>WYCKAERT Marilyne </b> 
+                 (Tél: 102) 
              </h6>
           
-=======
-                <div class="div">
-                    <img  style=" width:55mm;" src="public\img\recodeDevis.png"/>
-                </div>
-                <div class="div" style=" margin-top: 15%" >
-                <p>Commandé le : 
-                10/12/2020 à : 11h 43</p>
-                Commercial : 
-                <strong>
-                    RIVARD Franck                </strong> 
-                     (Tél: 109)                     
-                
-                    <br>Commandé par : <strong>CASTOR Lorenne                </strong> 
-                     (Tél: 104)             <div class="d-flex">
-
-             <form class='my-2 mx-2' action='adminFiche' method='POST'>
-                <input type='hidden' name='AdminGarantie' value=3211579>
-                <button class='btn btn-primary btn-sm'>Administration</button>
-                </form><form class='my-2 mx-2' action='PRINTFORMAT' method='POST'>
-                    <input type='hidden' name='PrintFormat' value=3211579>
-                    <button class='btn btn-secondary btn-sm'>Facture pro format</button>
-                    </form>             </div>
->>>>>>> b6bc3573caa041ad0f5e8f35a65fb748874640f4
              
              </td>
             
              </div>
             </div>
-<<<<<<< HEAD
            
-            <div class="div" style="text-align: left;  width: 45% ;"><h5>Commande N°:<strong> 3204122</strong><br></h5>
-            <div><button class='btn btn-sm btn-success' id='ClientClick' value='3204122' ><i class='far fa-magic'></i></button></div> <small>facturation :</small><strong><br>CH DE MARTIGUES (018221)<br>3 BOULEVARD RAYETTES<br>CODE SERVICE DSIO-1<br>13500 MARTIGUES </strong><br> <small>livraison :</small><strong><br>CH MARTIGUES (033822)<br>QUAI DU MAGASIN CENTRAL<br>3 BD DES RAYETTES<br>13500 MARTIGUES</strong></td>             
+            <div class="div" style="text-align: left;  width: 45% ;"><h5>Commande N°:<strong> 3210025</strong><br></h5>
+            <div><button class='btn btn-sm btn-success' id='ClientClick' value='3210025' ><i class='far fa-magic'></i></button></div> <small>livraison & facturation : M. LEANVILLE Gilles</small><strong><br>LA ROBINETTERIE INDUSTRIELLE (031826)<br>ZA LE BOURAY<br>38200 VILLETTE DE VIENNE</strong></td>             
         
-=======
-         
-            <div class="div" style="text-align: left;  width: 45% ;"><h5>Fiche de Travail N°:<strong> 3211579</strong><br></h5>
-             <br> <small>Societe :</small><strong><br>DACO FRANCE (034177)<br>SITE D ABLIS NORD<br>3727 RUE ANTONINS<br>78660 ABLIS</strong></td>        
->>>>>>> b6bc3573caa041ad0f5e8f35a65fb748874640f4
         <div class="d-flex flex-column">
-                        
-            <form class='mt-3 ml-2' method='POST' action='ficheTravail'>
-                    <h6>Date d'envoi prévue:</h6>
-                    <input type='hidden' value='3211579' name='dateId'>
-                    <input type='date' name='estimDate' value=2020-12-11>
-                    <button type='submit' class='btn btn-sm btn-success'><i class='far fa-exchange'></i></button>
-                    </form>           
+          
+            
+          
+           
             
         </div>
 
@@ -85,22 +55,25 @@
     
        
     </div>
-<<<<<<< HEAD
-    <button value="3204122" class=' btn btn-success mt-2' id="addNewItem"><i class='far fa-plus'></i></i></button>
+    <button value="3210025" class=' btn btn-success mt-2' id="addNewItem"><i class='far fa-plus'></i></i></button>
     <div class="div" style="display: flex; justify-content: center; margin-top: 1%;">
     
         <table CELLSPACING=0 style="width: 95%;  margin-top : 10px;" class="table">
 
 
         <tr style='font-size: 95%;'>
-                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='5133'  '><i class='far fa-magic'></i></i></button></td>
-                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>Vente <br> reconditionné <br> 06 mois </td>
-                    <td style='border-bottom: 1px #ccc solid; '><strong> 15 x BORNE WIFI ARUBA AP-207</strong>  <br><small>Famille marque modèle:</small> Divers (codes AS400) Ex ref AS400 GENERIQUE  </td>
-                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> 15 - 15 - 15 <br> 286.00 €  </strong> </td></tr><tr style='font-size: 95%;'>
-                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='5134'  '><i class='far fa-magic'></i></i></button></td>
-                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>Port <br> Non Concerné <br>  </td>
-                    <td style='border-bottom: 1px #ccc solid; '><strong> 1 x COMMANDE GDSIO-200149</strong>  <br><small>Famille marque modèle:</small> Divers (codes AS400) Ex ref AS400 GENERIQUE  </td>
-                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> 1 - 1 - 1 <br> 0.00 €  </strong> </td></tr>              
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='5277'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>Reparation <br> Non Concerné <br>   </td>
+                    <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> 2 x forfait de réparation niveau 1 / audit - réparations - tests - nettoyage</strong>  <br><small>Famille marque modele:</small> Terminal mobile MC9090 ZEBRA  </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  background-color: #ffeded;'><strong> 2 - 2 - 0 <br> 295.00 €  </strong> </td></tr><tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='5278'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>Reparation <br> Non Concerné <br>   </td>
+                    <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> 2 x forfait de réparation niveau 3 / audit - réparations - tests - nettoyage</strong>  <br><small>Famille marque modele:</small> Terminal mobile MC9090 ZEBRA  </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  background-color: #ffeded;'><strong> 2 - 2 - 0 <br> 570.00 €  </strong> </td></tr><tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='5279'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>Port <br> Non Concerné <br>   </td>
+                    <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> 1 x Forfait emballage et port </strong>  <br><small>Famille marque modele:</small> Service Forfait emballage et port 5Kg RECODE  </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  background-color: #ffeded;'><strong> 1 - 1 - 0 <br> 35.00 €  </strong> </td></tr>              
         </table> 
      </div>
 
@@ -116,17 +89,17 @@
                         TVA: 
                         <b>20.00 %</b>                    </div>
                     <div>
-                        <button value="3204122" class="btn btn-success btn-sm" id="buttonModalTVA"><i class='far fa-magic'></i></button>
+                        <button value="3210025" class="btn btn-success btn-sm" id="buttonModalTVA"><i class='far fa-magic'></i></button>
                         
                     </div>
                </div>
             </div>
             <hr class="my-4">
             <p>
-                code cmd client: <b>BORNE WIFI</b>            </p>
+                Pas de code commande client            </p>
             <hr class="my-4">
             <p>
-                MME BELAADI            </p>
+                Pas de commentaire Client            </p>
         </div>
      </div>
 
@@ -149,23 +122,11 @@
             </thead>
             <tbody> 
                 <tr>  
-            <td class='text-right'><b>4 290,00 €</b></td><td class='text-right'>20,00 %</td><td class='text-right'>858,00 €</td><td class='text-right'><b>5 148,00 €</b></td>            </tr>
+            <td class='text-right'><b>0,00 €</b></td><td class='text-right'>20,00 %</td><td class='text-right'>0,00 €</td><td class='text-right'><b>0,00 €</b></td>            </tr>
             </tbody>
     </table>
-=======
->>>>>>> b6bc3573caa041ad0f5e8f35a65fb748874640f4
 
-    <div class="div" style="display: flex; justify-content: center; margin-top: 10%;">
-        <table CELLSPACING=0 style="width: 95%;" class="table">
-            
-                <tr style=" margin-top : 50px; background-color: #dedede; vertical-align: top;" >
-                    <td style="width: 5%; background-color: white; border-style: none;" ></td>
-                    <td style="width: 13%; text-align: left;">Prestation<br>Type<br>Garantie</td>
-                    <td style="width: 50%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
-                    <td style="text-align: right; width: 12%"><strong>CMD</strong><br>Livr</td>
-                </tr>
            
-<<<<<<< HEAD
 
         </div>
 
@@ -190,31 +151,16 @@
 
      <div class="d-flex justify-content-end mr-3 mt-4 align-items-end"> 
      <form class="text-right d-inline mx-2" method="POST" action="archiveFacture">
-     <input type="hidden" value="3204122" name="archiveID">
+     <input type="hidden" value="3210025" name="archiveID">
      <button class="btn btn-secondary btn-lg">Archiver</button>
      </form>
           <form class="text-right d-inline mx-2" method="POST" action="printFTC" id="PostForms">
      <input class="form-control my-2" type="date" id="date_fact" name="date_fact" value="2020-12-14">
-     <input type="hidden" value="3204122" name="hiddenCommentaire" id="hiddenCommentaire" >
+     <input type="hidden" value="3210025" name="hiddenCommentaire" id="hiddenCommentaire" >
      <button class="btn btn-success btn-lg btn-block">Facturer</button>
      </form>
      <p id="keystroke"></p>
-=======
-                <tr style='font-size: 95%;'>
-                                <td style='border-style: none; '> <button class='clickFT btn btn-danger mt-2 ' value='11913''><i class='fas fa-print'></i></button></td>
-                                <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>Vente <br> Non Concerné <br>  </td>
-                                <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><small>désignation sur le devis:</small> <strong> forfait modification en atelier - imprimante Intermec PM43C - passage de version direct thermique à version transfert thermique</strong>  <br>Imprimante thermique PM43C INTERMEC <br> </td>
-                                <td style='border-bottom: 1px #ccc solid;  text-align: right; background-color: #ffeded; '><strong> 5 </strong> </td>
-                                </tr><tr style='font-size: 95%;'>
-                                <td style='border-style: none; '> <button class='clickFT btn btn-secondary mt-2' value='11914' '><i class='fas fa-clipboard-list'></i></button></td>
-                                <td style='border-bottom: 1px #ccc solid; text-align:left;'>Port <br> Non Concerné <br>   </td>
-                                <td style='border-bottom: 1px #ccc solid'><strong> forfait emballage et port palette <br>  </td>
-                                <td style='border-bottom: 1px #ccc solid;  text-align: right '><strong> 1 </strong> </td>
-                                </tr>        </table> 
->>>>>>> b6bc3573caa041ad0f5e8f35a65fb748874640f4
      </div>
-     <div class="d-flex justify-content-end mr-3">
-     <p><b>pas de commentaire interne</b></p>     </div>
     
     
      </div>
