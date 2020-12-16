@@ -1250,16 +1250,16 @@ public static function totalABN($objectCmd, $arrayLigne )
 
 
 
-public static function magicLineContrat($arrayLigne)
+public static function magicLineContrat($arrayLigne , $fin)
 {
 
 
 	// variables des tailles de cellules afin de pouvoir regler la largeur de la table facilement :
-	$firstW = '5%';
-	$thirdW ='35%';
-	$fifthW = '30%';
-	$sixthW = '15%';
-	$sevenhW = '15%';
+	$_5 = '5%';
+	$_20 ='20%';
+	$_30 = '30%';
+	$_15 = '15%';
+	
 
 	$pack = '';
 	//boucle sur les lignes passées en parametres
@@ -1270,33 +1270,38 @@ public static function magicLineContrat($arrayLigne)
 	$date = new DateTime($ligne->abl__dt_debut);
 	$date = $date->format('d/m/Y'); 
 
-	$code = 'M';
-
 	$pack .= '<tr>';
 
-	$cell1 = "<td valign='top' style='  padding-top:5px ; width: ".$firstW."; max-width: ".$firstW."; text-align: center;  '>" . $ligne->abl__type_repair . "</td>";
+	$numero = "<td valign='top' style='padding-top:5px; width: ".$_5."; max-width: ".$_5."; text-align: center;'>" . $ligne->abl__ligne . "</td>";
 
-	$cell5 = "<td valign='top' style='  padding-top:5px ; width: ".$fifthW."; max-width: ".$fifthW."; text-align: center;  '>" . $ligne->abl__designation . "</td>";
+	$cell1 = "<td valign='top' style='padding-top:5px; width: ".$_5."; max-width: ".$_5."; text-align: center;'>" . $ligne->abl__type_repair . "</td>";
 
-	$cell3 = "<td valign='top' style='  padding-top:5px ; width: ".$thirdW."; max-width: ".$thirdW."; text-align: center;  '>" . $ligne->abl__sn . "</td>";
+	$cell5 = "<td valign='top' style='padding-top:5px; width: ".$_30."; max-width: ".$_30."; text-align: left;'>" . $ligne->abl__designation . "</td>";
 
-	$cell6 = "<td valign='top' style='  padding-top:5px ; width: ".$sixthW."; max-width: ".$sixthW."; text-align: center;  '>" . $date . "</td>";
+	$cell3 = "<td valign='top' style='padding-top:5px; width: ".$_20."; max-width: ".$_20."; text-align: left;'>" . $ligne->abl__sn . "</td>";
 
-	$cell7 = "<td valign='top' style='  padding-top:5px ; width: ".$sevenhW."; max-width: ".$sevenhW."; text-align: right;  '>" . $ligne->abl__prix_mois . "</td>";
+	$cell6 = "<td valign='top' style='padding-top:5px; width: ".$_15."; max-width: ".$_15."; text-align: center;'>" . $date . "</td>";
+
+	$fin = "<td valign='top' style='padding-top:5px; width: ".$_5."; max-width: ".$_5."; text-align: center;'>" . $fin . "</td>";
+
+	$cell7 = "<td valign='top' style='padding-top:5px; width: ".$_20."; max-width: ".$_20."; text-align: right;'>" . $ligne->abl__prix_mois ."</td>";
 	
-	$pack .= $cell1  . $cell3  . $cell5 . $cell6 . $cell7 ;
+	$pack .= $numero . $cell1  . $cell5  . $cell3 . $cell6 . $fin .  $cell7 ;
 
 	$pack .= '</tr>';
 
 	}
 
 	$tete =  '<tr style=" margin-top : 30px;  background-color: #dedede; ">
+
+	<td style=" text-align: center;  border: 1px solid black;  padding-top: 4px; padding-bottom: 4px;"><b>N°</b></td>
 	<td style=" text-align: center;  border: 1px solid black;  padding-top: 4px; padding-bottom: 4px;"><b>Code</b></td>
 	<td style="text-align: center;  border: 1px solid black;  padding-top: 4px; padding-bottom: 4px;"><b>Désignation</b></td>
 	<td  style=" text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Numéro de série</b></td>
-	
 	<td style="text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Début</b></td>
+	<td style="text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Durée/mois</b></td>
 	<td style="text-align: center;  border: 1px solid black; padding-top: 4px; padding-bottom: 4px;"><b>Prix/Mois EUR</b></td>
+
 	</tr> ';
 
 	echo $tete . $pack ;

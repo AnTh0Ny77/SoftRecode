@@ -88,6 +88,11 @@ if (!empty($_POST['idCmd']))
   } 
 }
 
+if (empty($_POST['hiddenId']) && empty($_POST['idAbnUpdate']) && empty($_POST['idCmd'])) 
+{
+  header('location: abonnement');
+}
+
 
   // Donnée transmise au template : 
   echo $twig->render('abonnementAdmin.twig',

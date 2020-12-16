@@ -69,7 +69,7 @@
 
                             <div class="col-8 ">
                                 <label for="choixDesignation"><b>Modèle:</b></label>
-                                    <select class=" border selectpicker col-12"  data-live-search="true" data-width="100%" name="fmm" id="fmm" required>
+                                    <select class=" border selectpicker col-12"  data-live-search="true" data-size="10" data-width="100%" name="fmm" id="fmm" required>
                                         <option class="  optionSelect modelSelect" value="">..</option>
                                         {% for article in articleList %} 
                                             {% if modif.cmdl__id__fmm == article.afmm__id %}
@@ -99,7 +99,7 @@
 
                         <div class="col-3">
                             <label  for="etatRow"><b>Etat</b></label>
-                            <select class="form-control" id="etatRow" name="etat">
+                            <select class="form-control" id="etatRow" name="etat" data-size="10">
                             {% for etat in etatList %}
                                 {% if modif.cmdl__etat == etat.kw__value %}
                                     <option   value="{{etat.kw__value}}"  selected>{{etat.kw__lib}}</option>
