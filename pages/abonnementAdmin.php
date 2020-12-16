@@ -35,7 +35,7 @@ session_start();
 if(!empty($_SESSION['abn_admin']))
 {
   $_POST['hiddenId'] = $_SESSION['abn_admin'];
-  $alert_impression =true;
+  $alert_impression = true;
   $_SESSION['abn_admin'] = "";
 }
 //traite le post avec l'id abonnement: 
@@ -97,7 +97,8 @@ if (!empty($_POST['idCmd']))
   'moisList' => $moisList,
   'cmd'=> $cmd, 
   'abn'=> $abn,
-  'lignes' => $lignes
+  'lignes' => $lignes ,
+  'alert_impression'=> $alert_impression
 ]);
  
   

@@ -50,16 +50,37 @@ $(document).ready(function()
            
             
             case 'VTE':
-                $('#garantieRow option[value="00"]').prop('selected', true);
-                $('#etatRow option[value="OCC"]').prop('selected', true);
+                
+                  if (parseInt($('#garantieRow').val()) == 0 ) 
+                  {
+                    $('#garantieRow option[value="00"]').prop('selected', true);
+                  }
+                  if ( $('#etatRow').val() == 'OCC') 
+                  {
+                    $('#etatRow option[value="OCC"]').prop('selected', true);
+                  }
+                  else
+                  {
+                    $('#etatRow option[value="NEU"]').prop('selected', true);
+                  }
                 $('#etatRow option[value="NC."]').prop('disabled', 'disabled');
                 $('#etatRow option[value="NC."]').addClass('bg-dark');
                
                 break;
             
             case 'ECH':
-                $('#garantieRow option[value="00"]').prop('selected', true);
-                $('#etatRow option[value="NC."]').prop('disabled', 'disabled');
+                if (parseInt($('#garantieRow').val()) == 0 ) 
+                  {
+                    $('#garantieRow option[value="00"]').prop('selected', true);
+                  }
+                  if ( $('#etatRow').val() == 'OCC') 
+                  {
+                    $('#etatRow option[value="OCC"]').prop('selected', true);
+                  }
+                  else
+                  {
+                    $('#etatRow option[value="NEU"]').prop('selected', true);
+                  }
                 $('#etatRow option[value="OCC"]').prop('selected', true);
                 $('#etatRow option[value="NC."]').addClass('bg-dark');
                 break;

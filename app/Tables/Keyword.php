@@ -23,7 +23,7 @@ class Keyword extends Table {
 
 
 public function get2_icon(){
-  $request =$this->Db->Pdo->query('SELECT  kw__type,  kw__lib , kw__value FROM keyword WHERE kw__type= "i_con" ORDER BY  kw__value ASC ');
+  $request =$this->Db->Pdo->query('SELECT  kw__type,  kw__lib , kw__value FROM keyword WHERE kw__type= "i_con" ORDER BY   kw__ordre ASC ');
   $data = $request->fetchAll(PDO::FETCH_OBJ);
   return $data;
 }

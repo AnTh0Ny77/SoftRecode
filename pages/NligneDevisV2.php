@@ -117,6 +117,15 @@ if (!empty($_POST['modifReturn']))
     $idDevis = $_POST['modifReturn'];
 } 
 
+//si un retour pour tva intracom a été signalé : 
+$alert_intracom = false;
+if (!empty($_SESSION['alert_intracom'])) 
+{
+    $idDevis = $_SESSION['alert_intracom'];
+    $_SESSION['alert_intracom'] = '';
+    $alert_intracom = true;
+}
+
 
 
 //descend une ligne : 
@@ -379,7 +388,8 @@ echo $twig->render('NligneDevisV2.twig',[
     'modif' => $modif,
     'duplicate' => $duplicate,
     'totaux' => $totaux ,
-    'remise_total'=> $remiseTotal
+    'remise_total'=> $remiseTotal,
+    'alert_intracom'=> $alert_intracom
     
  ]);
 

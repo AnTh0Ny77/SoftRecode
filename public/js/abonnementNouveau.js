@@ -42,4 +42,32 @@ $(document).ready(function() {
                     {
                         console.error( error );
                     });    
+
+
+    let notif_impression = $('#notif_impression').val();
+   
+
+    let send_notif = function(retour_template)
+    {
+        if (retour_template == 'ok') 
+        {
+            new jBox('Notice', 
+            {
+                content: 'Impression réussie ! ', 
+                color: 'green' ,
+               
+                onInit: function() 
+                    { 
+                        this.open(); 
+                        setTimeout(this.close() , 3);
+                    }
+            });
+        }
+        else
+        {
+            console.log('pas de notifications !')
+        }
+    }
+
+   send_notif(notif_impression);
 })    

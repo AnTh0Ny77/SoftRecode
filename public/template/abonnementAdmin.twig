@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/css/dashboard.css">
   {% endblock %}
  
@@ -27,6 +28,11 @@
     <!--carte liste de Devis -->
       <div class="col-6">
         <div class="card shadow mb-4">
+        {% if alert_impression  %}
+        <input type='hidden' id='notif_impression' value="ok"/>
+        {% else %}
+         <input type='hidden' id='notif_impression' value=""/>
+        {% endif %}
          
           <!-- Card Body -->
           <div class="card-body">
@@ -220,6 +226,7 @@
 <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
 <script type="text/javascript" src="public/js/abonnementNouveau.js"></script>
 

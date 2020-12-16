@@ -39,8 +39,16 @@
         <!-- 1ere ligne -->
     <div class="d-flex flex-wrap flex-row justify-content-between col-12">
 
+        {% if modif %}
+        <div class="card col-7 border border-success" >
+        {% else %}
         <div class="card col-7" >
+        {% endif %}
+        
+           
             <div class="card-body">
+           
+            
                
                     <form action="ligneDevisV2" method="POST">
                     <input type="hidden" value="{{devis.devis__id}}" name="devis">
@@ -478,6 +486,15 @@
                         </table>
                     </div>
                 </div>
+                {% if alert_intracom == true  %}
+                    <div class="alert alert-danger" role="alert">
+                        <b>Impossible de valider le devis !</b><br>
+                        Merci de renseigner les numeros de TVA intracom du client.
+                    </div>
+             
+                {% endif %}
+                
+
                 <form action="printDevis2" method="POST">
                     <input type="hidden" name="idDevis" value="{{devis.devis__id}}">
                 <div class="d-flex justify-content-around flex-wrap my-3 ">
