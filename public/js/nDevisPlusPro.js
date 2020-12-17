@@ -127,7 +127,8 @@ $('#clientSelect').on('change', function()
 $('#clientLivraison').on('change', function()
 {
     var selectedOption = parseInt($(this).children("option:selected").val());
-    $.ajax({
+    $.ajax(
+    {
         type: 'post',
         url: "tableContact",
         data : 
@@ -156,6 +157,10 @@ $('#clientLivraison').on('change', function()
 
 
 
+    $('#ajax_client_button').on('click' , function()
+    {
+
+    })
 
 })
 

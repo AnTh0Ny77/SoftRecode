@@ -5,7 +5,7 @@
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/css/dashboard.css">
 {% endblock %}
 
@@ -53,7 +53,11 @@
 		<!-- Card Header - -->
 		<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 			<h6 class="m-0 font-weight-bold text-primary">Société et Contact <i class="fal fa-building"></i></h6>
-			<div class="dropdown no-arrow">
+			<div class="dropdown no-arrow ">
+			
+					<button class="btn btn-primary" id="ajax_client_button" type="button"><i class="fas fa-plus"></i></button>
+			
+				
 			</div>
 		</div>
 		<!-- Card Body xx -->
@@ -226,6 +230,7 @@ jQuery(document).ready(function() {
 jQuery('#loading').fadeOut(1500);
 });
 </script>
+<script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
 <script  type="text/javascript" src="public/js/NdevisPlusPro.js"></script>
 {% endblock %}
