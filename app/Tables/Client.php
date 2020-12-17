@@ -5,7 +5,8 @@ use App\Tables\Table;
 use App\Database;
 use PDO;
 
-class Client extends Table {
+class Client extends Table 
+{
 
   public string $Table = 'client';
   public Database $Db;
@@ -15,8 +16,18 @@ class Client extends Table {
     $this->Db = $db;
 }
 
-  public function getAll(){
-    $request =$this->Db->Pdo->query('SELECT  LPAD(client__id,6,0) as client__id, client__societe ,  client__ville , client__cp  FROM client WHERE client__id  > 10 ORDER BY client__societe ASC LIMIT 150000');
+public function getAll()
+{
+    $request =$this->Db->Pdo->query('SELECT  LPAD(client__id,6,0) as client__id, client__societe ,  client__ville , client__cp  FROM client WHERE client__id  > 10 ORDER BY client__societe ASC LIMIT 50000');
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+}
+
+
+public function get_client_devis()
+{
+    $request =$this->Db->Pdo->query(
+    'SELECT  LPAD(client__id,6,0) as client__id, client__societe ,  client__ville , client__cp  FROM client WHERE client__id  > 10  ORDER BY client__dt_last_modif DESC LIMIT 4000');
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
 }

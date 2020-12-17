@@ -6,7 +6,8 @@ use App\Database;
 use PDO;
 
 
-class Transporteur extends Table {
+class Transporteur extends Table 
+{
 
   public string $Table = 'transporteur';
   public Database $Db;

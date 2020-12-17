@@ -24,7 +24,7 @@ $Cmd = new App\Tables\Cmd($Database);
 $Database->DbConnect();
 
 //listes  : 
-$clientList = $Client->getAll();
+$clientList = $Client->get_client_devis();
 $modeleList = $Keywords->getModele();
 
 //alertes et variables : 

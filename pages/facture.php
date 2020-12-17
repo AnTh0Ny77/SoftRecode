@@ -198,7 +198,7 @@ if (!empty($_POST['recherche-fiche']))
 else $devisList = $Cmd->getFromStatusAll('IMP');
 
 //variable qui determine le visuel d'une recherche sans résultats: 
-if ( $_SESSION['facture_zero'] == 'TTZ') 
+if ( isset($_SESSION['facture_zero']) && $_SESSION['facture_zero'] == 'TTZ') 
 {
   $visuelFiche = 'Total à Zero';
   $_SESSION['facture_zero'] = '';
