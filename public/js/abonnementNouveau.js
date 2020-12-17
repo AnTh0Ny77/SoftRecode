@@ -49,6 +49,7 @@ $(document).ready(function() {
 
     let send_notif = function(retour_template)
     {
+       
         if (retour_template == 'ok') 
         {
             new jBox('Notice', 

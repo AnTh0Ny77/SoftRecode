@@ -190,13 +190,22 @@ ob_start();
                     ?>
             </table>
     </div>
+    <div  style="margin-top: 20px;">
+
+    <?php
+        if ($abn->ab__note) 
+        {
+          echo $abn->ab__note;
+        }
+    ?>
+
+    </div>
 </page>
 
 
  <?php
  $content = ob_get_contents();
 
- 
  try
  {
      $doc = new Html2Pdf('P','A4','fr');
@@ -205,11 +214,12 @@ ob_start();
      $doc->writeHTML($content);
      ob_clean();
 
-    // $doc->output('O:\intranet\Auto_Print\CT\CT'.$temp->devis__id.'.pdf', 'F');
-    $doc->output(''.$temp->devis__id.'.pdf');
+    
+    $doc->output('O:\intranet\Auto_Print\CT\CT'.$temp->devis__id.'.pdf', 'F');
+    // $doc->output(''.$temp->devis__id.'.pdf');
     //declarer la session pour s'en servir à l'impression:
-    // $_SESSION['abn_admin'] = $temp->devis__id;
-    // header('location: abonnementAdmin');
+    $_SESSION['abn_admin'] = $temp->devis__id;
+    header('location: abonnementAdmin');
 
  } 
  catch (Html2PdfException $e) 

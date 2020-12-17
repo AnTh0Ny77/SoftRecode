@@ -103,7 +103,7 @@
       <select id="inputState" class="form-control" name="moisAbn">
         <option value="00">Non-défini</option>
         {% for mois in moisList %}
-        {% if mois.kw__value > 06  %}
+        {% if mois.kw__value > 00  %}
             {% if abn.ab__mois_engagement == mois.kw__value %}
             <option value="{{mois.kw__value}}" selected>{{ mois.kw__lib}}</option>
             {% else %}

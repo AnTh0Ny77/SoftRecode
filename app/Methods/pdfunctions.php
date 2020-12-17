@@ -1276,17 +1276,17 @@ public static function magicLineContrat($arrayLigne , $fin)
 
 	$cell1 = "<td valign='top' style='padding-top:5px; width: ".$_5."; max-width: ".$_5."; text-align: center;'>" . $ligne->abl__type_repair . "</td>";
 
-	$cell5 = "<td valign='top' style='padding-top:5px; width: ".$_30."; max-width: ".$_30."; text-align: left;'>" . $ligne->abl__designation . "</td>";
+	$cell2 = "<td valign='top' style='padding-top:5px; width: ".$_30."; max-width: ".$_30."; text-align: left;'>" . $ligne->abl__designation . "</td>";
 
 	$cell3 = "<td valign='top' style='padding-top:5px; width: ".$_20."; max-width: ".$_20."; text-align: left;'>" . $ligne->abl__sn . "</td>";
 
-	$cell6 = "<td valign='top' style='padding-top:5px; width: ".$_15."; max-width: ".$_15."; text-align: center;'>" . $date . "</td>";
+	$cell4 = "<td valign='top' style='padding-top:5px; width: ".$_15."; max-width: ".$_15."; text-align: center;'>" . $date . "</td>";
 
-	$fin = "<td valign='top' style='padding-top:5px; width: ".$_5."; max-width: ".$_5."; text-align: center;'>" . $fin . "</td>";
+	$date_fin = "<td valign='top' style='padding-top:5px; width: ".$_5."; max-width: ".$_5."; text-align: center;'>" . $fin . "</td>";
 
-	$cell7 = "<td valign='top' style='padding-top:5px; width: ".$_20."; max-width: ".$_20."; text-align: right;'>" . $ligne->abl__prix_mois ."</td>";
+	$cell6 = "<td valign='top' style='padding-top:5px; text-align: right;'>" . $ligne->abl__prix_mois ."</td>";
 	
-	$pack .= $numero . $cell1  . $cell5  . $cell3 . $cell6 . $fin .  $cell7 ;
+	$pack .= $numero . $cell1  . $cell2  . $cell3 . $cell4 .$date_fin .  $cell6 ;
 
 	$pack .= '</tr>';
 
