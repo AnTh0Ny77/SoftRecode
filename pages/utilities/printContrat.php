@@ -186,7 +186,7 @@ ob_start();
     <div style="margin-top: 35px;">
             <table CELLSPACING=0 style="margin-top: 35px; width:100%">        
                     <?php         
-                        echo Pdfunctions::magicLineContrat($abnLignes);     
+                        echo Pdfunctions::magicLineContrat($abnLignes ,$abn->ab__mois_engagement );     
                     ?>
             </table>
     </div>
@@ -205,10 +205,11 @@ ob_start();
      $doc->writeHTML($content);
      ob_clean();
 
-    $doc->output('O:\intranet\Auto_Print\CT\CT'.$temp->devis__id.'.pdf', 'F');
+    // $doc->output('O:\intranet\Auto_Print\CT\CT'.$temp->devis__id.'.pdf', 'F');
+    $doc->output(''.$temp->devis__id.'.pdf');
     //declarer la session pour s'en servir à l'impression:
-    $_SESSION['abn_admin'] = $temp->devis__id;
-    header('location: abonnementAdmin');
+    // $_SESSION['abn_admin'] = $temp->devis__id;
+    // header('location: abonnementAdmin');
 
  } 
  catch (Html2PdfException $e) 

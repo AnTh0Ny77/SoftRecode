@@ -47,7 +47,7 @@
  
   <div class="form-row">
    <div class="form-group col-md-4">
-      <label for="inputState">Facturation Auto</label>
+      <label for="inputState">Facturation Auto Trimestrielle</label>
       <select id="inputState" class="form-control" name="facturationAuto">
         <option value="1" selected>Oui</option>
         <option value='0'>Non</option>
@@ -64,11 +64,11 @@
     <div class="form-group col-md-4">
       <label for="inputState">Engagement en mois</label>
       <select id="inputState" class="form-control" name="mois">
-        <option value="00">Non-défini</option>
+        <option value="00">Libre</option>
         {% for mois in moisList %}
-        {% if mois.kw__value > 06  %}
+        
         <option value="{{mois.kw__value}}">{{ mois.kw__lib}}</option>
-        {% endif %}
+       
         
         {% endfor %}
       </select>

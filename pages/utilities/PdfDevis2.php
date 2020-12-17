@@ -23,50 +23,65 @@ if (empty($_SESSION['user']))
 
 if (!empty($_POST['idDevis'])) 
 {
-    //mise a jour de la date du devis : 
-    $date = date("Y-m-d H:i:s");
-    $General->updateAll('cmd' , $date , 'cmd__date_devis' , 'cmd__id' , $_POST['idDevis']);
+    //control de la tva intracom : 
+    $devis_controle = $Cmd->GetById($_POST['idDevis']);
 
-    //mide a jour de l'id utilisateur : 
-    $user = $_SESSION['user']->id_utilisateur;
-    $General->updateAll('cmd' , $user , 'cmd__user__id_devis' , 'cmd__id' , $_POST['idDevis']);
+    $client_controle = $Client->getOne($devis_controle->client__id);
 
-    //mise à jour du status :
-    $General->updateAll('cmd' , 'ATN' , 'cmd__etat' , 'cmd__id' , $_POST['idDevis']);
-
-    //mise a jour pour mode classique ou remise : 
-    if (!empty($_POST['checkremise'])) 
+    if ($client_controle->client__tva == 1 &&  empty($client_controle->client__tva_intracom)) 
     {
-        $General->updateAll('cmd' , 1 , 'cmd__mode_remise' , 'cmd__id' , $_POST['idDevis']);
+        $_SESSION['alert_intracom'] = $_POST['idDevis'];
+        header('location: ligneDevisV2');
     }
     else
     {
-        $General->updateAll('cmd' , 0 , 'cmd__mode_remise' , 'cmd__id' , $_POST['idDevis']);
-    }
-    //mise a jour pour le report des extensions
-    if (!empty($_POST['checkExtend'])) 
-    {
-        $General->updateAll('cmd' , 1 , 'cmd__report_xtend' , 'cmd__id' , $_POST['idDevis']);
-    }
-    else
-    {
-        $General->updateAll('cmd' , 0 , 'cmd__report_xtend' , 'cmd__id' , $_POST['idDevis']);
-    }
-    // si absence de total :
-    if(!empty($_POST['check_tva'])) 
-    { 
-        $General->updateAll('cmd' , 'TVT' , 'cmd__modele_devis' , 'cmd__id' , $_POST['idDevis']);
-    }
-    else
-    {
-        $General->updateAll('cmd' , 'STT' , 'cmd__modele_devis' , 'cmd__id' , $_POST['idDevis']);
+        //mise a jour de la date du devis : 
+        $date = date("Y-m-d H:i:s");
+        $General->updateAll('cmd' , $date , 'cmd__date_devis' , 'cmd__id' , $_POST['idDevis']);
+
+        //mide a jour de l'id utilisateur : 
+        $user = $_SESSION['user']->id_utilisateur;
+        $General->updateAll('cmd' , $user , 'cmd__user__id_devis' , 'cmd__id' , $_POST['idDevis']);
+
+        //mise à jour du status :
+        $General->updateAll('cmd' , 'ATN' , 'cmd__etat' , 'cmd__id' , $_POST['idDevis']);
+
+        //mise a jour pour mode classique ou remise : 
+        if (!empty($_POST['checkremise'])) 
+        {
+            $General->updateAll('cmd' , 1 , 'cmd__mode_remise' , 'cmd__id' , $_POST['idDevis']);
+        }
+        else
+        {
+            $General->updateAll('cmd' , 0 , 'cmd__mode_remise' , 'cmd__id' , $_POST['idDevis']);
+        }
+        //mise a jour pour le report des extensions
+        if (!empty($_POST['checkExtend'])) 
+        {
+            $General->updateAll('cmd' , 1 , 'cmd__report_xtend' , 'cmd__id' , $_POST['idDevis']);
+        }
+        else
+        {
+            $General->updateAll('cmd' , 0 , 'cmd__report_xtend' , 'cmd__id' , $_POST['idDevis']);
+        }
+        // si absence de total :
+        if(!empty($_POST['check_tva'])) 
+        { 
+            $General->updateAll('cmd' , 'TVT' , 'cmd__modele_devis' , 'cmd__id' , $_POST['idDevis']);
+        }
+        else
+        {
+            $General->updateAll('cmd' , 'STT' , 'cmd__modele_devis' , 'cmd__id' , $_POST['idDevis']);
+        }
+
+        //si absence de total :
+        if (!empty($_POST['check_total'])) 
+        {
+            $General->updateAll('cmd' , 'STX' , 'cmd__modele_devis' , 'cmd__id' , $_POST['idDevis']);
+        }
+        
+        header('location: mesDevis');
     }
 
-    //si absence de total :
-    if (!empty($_POST['check_total'])) 
-    {
-        $General->updateAll('cmd' , 'STX' , 'cmd__modele_devis' , 'cmd__id' , $_POST['idDevis']);
-    }
     
-    header('location: mesDevis');
 }

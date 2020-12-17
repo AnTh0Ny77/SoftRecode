@@ -148,7 +148,7 @@ class Abonnement extends Table
     public function returnMax($cmd)
     {
         $verifOrdre = $this->Db->Pdo->query(
-            'SELECT MAX(abl__ligne) as ligne from abonnement_ligne');
+            'SELECT MAX(abl__ligne) as ligne from abonnement_ligne WHERE abl__cmd__id = '.$cmd.'');
         $response  = $verifOrdre->fetch(PDO::FETCH_OBJ);
         return $response;
     }
