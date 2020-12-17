@@ -159,7 +159,7 @@ $('#clientLivraison').on('change', function()
 
     $('#ajax_client_button').on('click' , function()
     {
-
+        console.log('Hey nous cliquons sur le boutton');
     })
 
 })
