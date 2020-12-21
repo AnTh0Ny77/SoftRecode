@@ -114,7 +114,7 @@
 					<div class="mt-1 pt-2 ">
 						<label for="exampleInputEmail1"  >Client : <b>indentique si non specifiée</b></label>   
 					</div>
-					<select class="selectpicker border show-tick"  data-live-search="true" data-width="100%" name="clientLivraison" id="clientLivraison" required> 
+					<select class="selectpicker border show-tick"  data-live-search="true" data-size="10" data-width="100%" name="clientLivraison" id="clientLivraison" required> 
 					{% if modif.devis__id_client_livraison and modif.devis__id_client_livraison != modif.client__id %}
 					<option value="Aucun" >Indentique</option>
 					{% for client in clientList %}
@@ -136,7 +136,7 @@
 					<div class="mt-2 pt-2 ">
 						<label for="exampleInputEmail1">Contact : </label>
 					</div>
-					<select class="selectpicker border show-tick"  data-live-search="true" data-width="100%" name="contactLivraison" id="contactLivraison" required> 
+					<select class="selectpicker border show-tick"  data-live-search="true" data-size="10" data-width="100%" name="contactLivraison" id="contactLivraison" required> 
 					{% if contactLivraison %}
 					<option value="Aucun" >Aucun</option>
 					{% for contactL in contactLivraison %}
