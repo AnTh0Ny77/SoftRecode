@@ -1,7 +1,7 @@
 
 
     <style type="text/css">
-    .global-wrapper{min-height: 900px};
+    .global-wrapper{min-height: 700px};
         .bodyFrame {font-family:Century Gothic,arial,sans-serif; }
         .div{   font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate;}
         .table{ font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate;}
@@ -13,47 +13,39 @@
         }
     </style>
     
-    <div class="global-wrapper">
-        <div class="div bodyFrame mt-4" style="width: 100%;" >
-         <div class="head-wrapper div">
-             <div class="div" style="text-align: left;  width: 50%;" >
-                <div class="div">
-                    <img  style=" width:55mm;" src="public\img\recodeDevis.png"/>
-                </div>
-                <div class="div" style=" margin-top: 15%" >
-                <p>Commandé le : 
-                17/12/2020 à : 15h 36</p>
-                Commercial : 
-                <strong>
-                    WYCKAERT Marilyne                </strong> 
-                     (Tél: 102)                     
-                
-                    <br>Commandé par : <strong>WYCKAERT Marilyne                </strong> 
-                     (Tél: 102)<br> code cmd client: <b>05932 / A200471 / E6T RL20 U30809</b>             <div class="d-flex">
 
-             <form class='my-2 mx-2' action='adminFiche' method='POST'>
-                <input type='hidden' name='AdminGarantie' value=3211431>
-                <button class='btn btn-primary btn-sm'>Administration</button>
-                </form><form class='my-2 mx-2' action='PRINTFORMAT' method='POST'>
-                    <input type='hidden' name='PrintFormat' value=3211431>
-                    <button class='btn btn-secondary btn-sm'>Facture pro format</button>
-                    </form>             </div>
+    <div class="global-wrapper">
+        <div class="div bodyFrame mt-2" style="width: 100%;" >
+         <div class="head-wrapper div">
+
+
+             <div class="div" style="text-align: left;  width: 50%;" >
+             <div class="div">
+            
+             </div>
+             <div class="div" style=" margin-top: 2%" >
+             <h6><small>Commandé le : </small><b>17/12/2020 à : 08h 25</b></h6>
+             <div class='' '>
+               <h6> <small>Expédié le :</small>  <b>17/12/2020</b></h6>    
+           </div>            <h6> 
+                <small>Vendeur:</small> <b>CASTOR Lorenne </b> 
+                 (Tél: 104) 
+             </h6>
+          
              
              </td>
             
              </div>
             </div>
-         
-            <div class="div" style="text-align: left;  width: 45% ;"><h5>Fiche de Travail N°:<strong> 3211431</strong><br></h5>
-             <br> <small>Societe : M. PILETTE Sylvain</small><strong><br>GETRAG FORD TRANSMISSIONS GMBH (032927)<br>65 RUE JEAN DUVERT<br>B 123 - ZONE INDUSTRIELLE<br>33294 BLANQUEFORT CEDEX</strong></td>        
+           
+            <div class="div" style="text-align: left;  width: 45% ;"><h5>Commande N°:<strong> 3211712</strong><br></h5>
+            <div><button class='btn btn-sm btn-success' id='ClientClick' value='3211712' ><i class='far fa-magic'></i></button></div> <small>livraison & facturation : </small><strong><br>THEODORE MAISON DE PEINTURE (029195)<br>ZI A5 - 5 RUE RENE CAUCHE<br>59139 NOYELLES LES SECLIN</strong></td>             
+        
         <div class="d-flex flex-column">
-                        
-            <form class='mt-3 ml-2' method='POST' action='ficheTravail'>
-                    <h6>Date d'envoi prévue:</h6>
-                    <input type='hidden' value='3211431' name='dateId'>
-                    <input type='date' name='estimDate' value=2020-12-18>
-                    <button type='submit' class='btn btn-sm btn-success'><i class='far fa-exchange'></i></button>
-                    </form>           
+          
+            
+          
+           
             
         </div>
 
@@ -63,31 +55,108 @@
     
        
     </div>
+    <button value="3211712" class=' btn btn-success mt-2' id="addNewItem"><i class='far fa-plus'></i></i></button>
+    <div class="div" style="display: flex; justify-content: center; margin-top: 1%;">
+    
+        <table CELLSPACING=0 style="width: 95%;  margin-top : 10px;" class="table">
 
-    <div class="div" style="display: flex; justify-content: center; margin-top: 10%;">
-        <table CELLSPACING=0 style="width: 95%;" class="table">
-            
-                <tr style=" margin-top : 50px; background-color: #dedede; vertical-align: top;" >
-                    <td style="width: 5%; background-color: white; border-style: none;" ></td>
-                    <td style="width: 13%; text-align: left;">Prestation<br>Type<br>Garantie</td>
-                    <td style="width: 50%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
-                    <td style="text-align: right; width: 12%"><strong>CMD</strong><br>Livr</td>
-                </tr>
-           
-                <tr style='font-size: 95%;'>
-                                <td style='border-style: none; '> <button class='clickFT btn btn-success mt-2' value='10743' '><i class='fas fa-barcode'></i></button></td>
-                                <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #e6ffe6;'>Reparation <br> Non Concerné <br>  </td>
-                                <td style='border-bottom: 1px #ccc solid; background-color: #e6ffe6;'><small>désignation sur le devis:</small> <strong> forfait de réparation niveau 1 / audit - réparations - tests - nettoyage</strong>  <br>Terminal mobile SKORPIOX4 DATALOGIC <br> </td>
-                                <td style='border-bottom: 1px #ccc solid;  text-align: right; background-color: #e6ffe6; '><strong> 1 </strong> </td>
-                                </tr><tr style='font-size: 95%;'>
-                                <td style='border-style: none; '> <button class='clickFT btn btn-secondary mt-2' value='10744' '><i class='fas fa-clipboard-list'></i></button></td>
-                                <td style='border-bottom: 1px #ccc solid; text-align:left;'>Port <br> Non Concerné <br>   </td>
-                                <td style='border-bottom: 1px #ccc solid'><strong> Forfait emballage et port  <br>  </td>
-                                <td style='border-bottom: 1px #ccc solid;  text-align: right '><strong> 1 </strong> </td>
-                                </tr>        </table> 
+
+        <tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='12198'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>Vente <br> neuf <br> 60 mois </td>
+                    <td style='border-bottom: 1px #ccc solid; '><strong> 1 x platine Axel 85 AX3000 </strong>  <br><small>Famille marque modèle:</small> Client léger AX85 AXEL  </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> 1 - 1 - 1 <br> 269.00 €  </strong> </td></tr><tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='12199'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>Port <br> Non Concerné <br>  </td>
+                    <td style='border-bottom: 1px #ccc solid; '><strong> 1 x Forfait emballage et port</strong>  <br><small>Famille marque modèle:</small> Service Forfait emballage et port 5Kg RECODE  </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> 1 - 1 - 1 <br> 35.00 €  </strong> </td></tr>              
+        </table> 
      </div>
-     <div class="d-flex justify-content-end mr-3">
-     <p>Voir incident 42586 merci&nbsp;</p>     </div>
+
+
+        
+     <div class="d-flex mt-1 justify-content-between">
+
+     <div class=" card  px-2 mx-1 col-6">
+        <div>
+            <div class="my-4">
+               <div class="d-flex justify-content-between">
+                   <div>
+                        TVA: 
+                        <b>20.00 %</b>                    </div>
+                    <div>
+                        <button value="3211712" class="btn btn-success btn-sm" id="buttonModalTVA"><i class='far fa-magic'></i></button>
+                        
+                    </div>
+               </div>
+            </div>
+            <hr class="my-4">
+            <p>
+                Pas de code commande client            </p>
+            <hr class="my-4">
+            <p>
+                Pas de commentaire Client            </p>
+        </div>
+     </div>
+
+    
+     <div class="card px-4 py-2 mx-1 col-6">
+        <div>
+            <h3>Total :</h3>
+            <hr class="mx-2">
+        </div>
+
+        <div>
+    <table class="table table-sm">
+            <thead>
+                    <tr>
+                    <th scope="col">Prix € HT</th>
+                    <th scope="col">Taux TVA</th>
+                    <th scope="col">Montant TVA</th>
+                    <th scope="col">Total TTC</th>
+                    </tr>
+            </thead>
+            <tbody> 
+                <tr>  
+            <td class='text-right'><b>304,00 €</b></td><td class='text-right'>20,00 %</td><td class='text-right'>60,80 €</td><td class='text-right'><b>364,80 €</b></td>            </tr>
+            </tbody>
+    </table>
+
+           
+
+        </div>
+
+     </div>
+
+
+
+
+     
+
+
+
+
+     </div>
+
+
+
+
+
+
+
+
+     <div class="d-flex justify-content-end mr-3 mt-4 align-items-end"> 
+     <form class="text-right d-inline mx-2" method="POST" action="archiveFacture">
+     <input type="hidden" value="3211712" name="archiveID">
+     <button class="btn btn-secondary btn-lg">Archiver</button>
+     </form>
+          <form class="text-right d-inline mx-2" method="POST" action="printFTC" id="PostForms">
+     <input class="form-control my-2" type="date" id="date_fact" name="date_fact" value="2020-12-18">
+     <input type="hidden" value="3211712" name="hiddenCommentaire" id="hiddenCommentaire" >
+     <button class="btn btn-success btn-lg btn-block">Facturer</button>
+     </form>
+     <p id="keystroke"></p>
+     </div>
     
     
      </div>
