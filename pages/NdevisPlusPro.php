@@ -41,7 +41,12 @@ if(isset($_SESSION['alertV2']))
             $_SESSION['alertV2'] = '';
             $alertClient = 'Aucun Client selectionné';
             break;
-        
+
+        case 'Modif':
+            $_SESSION['alertV2'] = '';
+            $alertClient = 'Opération annulée.. impossible de modifier le devis sans client facturé';
+            break;
+           
         default:
             $_SESSION['alertV2'] = '';
             break;

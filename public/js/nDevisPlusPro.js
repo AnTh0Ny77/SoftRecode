@@ -174,7 +174,7 @@ $('#clientLivraison').on('change', function()
             {
             $('#loading').show();
             },
-            
+
             complete: function()
             {
             $('#loading').hide();
@@ -190,6 +190,12 @@ $('#clientLivraison').on('change', function()
                 $('#clientLivraison option').remove();
                 $('#clientLivraison').append(new Option('Indentique', 'Aucun' , false, true));
 
+                $('#contactSelect option').remove();
+                $('#contactSelect').append(new Option('Aucun', 'Aucun' , false, true));
+
+                $('#contactLivraison option').remove();
+                $('#contactLivraison').append(new Option('Aucun', 'Aucun' , false, true));
+
                 for (let index = 0; index < dataSet.length; index++)
                 {
                   
@@ -200,6 +206,8 @@ $('#clientLivraison').on('change', function()
                 $('.selectpicker').selectpicker('refresh'); 
                 $('#clientSelect').selectpicker('val', 'Aucun' );
                 $('#clientLivraison').selectpicker('val', 'Aucun' );
+                $('#contactSelect').selectpicker('val', 'Aucun');
+                $('#contactLivraison').selectpicker('val', 'Aucun');
                 $('#ajax_client_button').prop('disabled', true);
             },
                     
