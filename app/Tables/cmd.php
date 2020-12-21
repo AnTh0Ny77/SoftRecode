@@ -1,17 +1,17 @@
 <?php
+namespace App\Tables;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 
 
-namespace App\Tables;
+
 use App\Tables\Table;
 use App\Database;
 use App\Methods\Pdfunctions;
 use PDO;
 use stdClass;
 use DateTime;
-use Spipu\Html2Pdf\Exception\Html2PdfException;
-use Spipu\Html2Pdf\Html2Pdf;
+
 use App\Tables\Client;
 use App\Tables\Contact;
 use App\Tables\User;
