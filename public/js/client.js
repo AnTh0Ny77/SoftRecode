@@ -283,7 +283,8 @@ $('#postContactLVR').on('click', function () {
     });
 
 //supression de l'adresse de livraison au click : 
-$('#deleteLivraison').on('click', function(){
+$('#deleteLivraison').on('click', function()
+{
         $('#spanLivraison').html('');
         $('#spanLivraison').addClass('d-none');
         $('#contactDivLVR').html("Aucun contact");
@@ -294,7 +295,8 @@ $('#deleteLivraison').on('click', function(){
 })
 
 //appel ajax creation de client:  
-$('#PostClient').on('click', function(){
+$('#PostClient').on('click', function()
+{
         $('#contactDiv').html(" Aucun contact");
         $('#contactSelect').val("");
         $('#spanLivraison').html('');

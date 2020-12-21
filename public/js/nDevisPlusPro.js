@@ -156,10 +156,59 @@ $('#clientLivraison').on('change', function()
 })
 
 
+  
 
+    //ajoute la liste client complète dans les 2 select picker: 
     $('#ajax_client_button').on('click' , function()
     {
-        console.log('Hey nous cliquons sur le boutton');
+        $.ajax(
+        {
+            type: 'post',
+            url: "AjaxSociete",
+            data : 
+            {
+                "AjaxLivraison" : 7
+            }, 
+
+            beforeSend: function() 
+            {
+            $('#loading').show();
+            },
+            
+            complete: function()
+            {
+            $('#loading').hide();
+            }, 
+
+            success: function(data)
+            {
+                dataSet = JSON.parse(data);
+
+                $('#clientSelect option').remove();
+                $('#clientSelect').append(new Option('Aucun', 'Aucun' , false, true));
+                
+                $('#clientLivraison option').remove();
+                $('#clientLivraison').append(new Option('Indentique', 'Aucun' , false, true));
+
+                for (let index = 0; index < dataSet.length; index++)
+                {
+                  
+                    $('#clientSelect').append(new Option(dataSet[index].client__societe + " " + dataSet[index].client__ville + " " + dataSet[index].client__cp  ,dataSet[index].client__id));
+                    $('#clientLivraison').append(new Option(dataSet[index].client__societe + " " + dataSet[index].client__ville + " " + dataSet[index].client__cp  ,dataSet[index].client__id));
+                }
+
+                $('.selectpicker').selectpicker('refresh'); 
+                $('#clientSelect').selectpicker('val', 'Aucun' );
+                $('#clientLivraison').selectpicker('val', 'Aucun' );
+                $('#ajax_client_button').prop('disabled', true);
+            },
+                    
+            error: function (err) 
+            {
+                console.log('error: ' + err);
+            }
+        })
+    
     })
 
 })

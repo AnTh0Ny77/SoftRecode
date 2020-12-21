@@ -12,7 +12,8 @@ class Client extends Table
   public Database $Db;
 
   
-  public function __construct($db) {
+public function __construct($db) 
+{
     $this->Db = $db;
 }
 
@@ -32,13 +33,15 @@ public function get_client_devis()
     return $data;
 }
 
-public function getOne($id){
+public function getOne($id)
+{
     $request =$this->Db->Pdo->query("SELECT LPAD(client__id,6,0) as client__id,  client__societe , client__adr1 , client__adr2, client__cp , client__ville , client__tel , client__tva_intracom , client__id_vendeur , client__tva FROM " .$this->Table. " WHERE client__id = " . $id ."");
     $data = $request->fetch(PDO::FETCH_OBJ);
     return $data;
 }
 
-public function insertOne($name , $adresse, $adresse2 , $cp, $ville){
+public function insertOne($name , $adresse, $adresse2 , $cp, $ville)
+{
     $request = $this->Db->Pdo->prepare('INSERT INTO ' .$this->Table."(client__societe , client__adr1 , client__adr2, client__cp , client__ville )
      VALUES (:societe, :adr1, :adr2, :cp, :ville)");
     $request->bindValue(":societe", strtoupper($name));
