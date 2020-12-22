@@ -1,0 +1,43 @@
+{% extends 'layoutLight.twig' %}
+
+
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/css/dashboard.css">
+{% endblock %}
+ 
+
+{% block main %}
+
+
+<main  role="main" class=" pt-3 px-4"> 
+    <div id="loading">
+        <div class="lds-hourglass">
+        </div>
+    </div>  
+    
+    
+    <h2>Fiche de garantie</h2>
+    <input class="form-control mr-sm-2" type="search" placeholder="Recherche client" aria-label="Search" id="client_input">
+
+</main>
+{% endblock %}
+     
+{% block script %}
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script>
+    jQuery(document).ready(function() {
+        jQuery('#loading').fadeOut(1500);
+    });
+    </script>
+<script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
+<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+<script type="text/javascript" src="public/js/fiches_garanties_2.js"></script>
+
+{% endblock %}

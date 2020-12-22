@@ -39,6 +39,9 @@ if (!empty($_POST['idDevis']))
         $date = date("Y-m-d H:i:s");
         $General->updateAll('cmd' , $date , 'cmd__date_devis' , 'cmd__id' , $_POST['idDevis']);
 
+        //mise a jour de la date de client : 
+        $General->updateAll('client' , $date , 'client__dt_last_modif' , 'client__id' , $devis_controle->client__id);
+
         //mide a jour de l'id utilisateur : 
         $user = $_SESSION['user']->id_utilisateur;
         $General->updateAll('cmd' , $user , 'cmd__user__id_devis' , 'cmd__id' , $_POST['idDevis']);

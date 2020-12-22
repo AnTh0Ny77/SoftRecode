@@ -114,6 +114,9 @@
     case '/SoftRecode/garantieCreation';
       require __DIR__ .'/pages/garantieCreation.php'; break;
 
+    case '/SoftRecode/fiches_garantie';
+      require __DIR__ .'/pages/fiches_garantie_2.php'; break;
+
     case '/SoftRecode/garantiesFiches';
       require __DIR__ .'/pages/garantiesFiches.php'; break;
 
@@ -184,6 +187,9 @@
 
     case '/SoftRecode/AjaxPn';
       require __DIR__ .'/pages/ajax/ajaxPn.php'; break;
+
+    case '/SoftRecode/Ajax_search_client';
+      require __DIR__ .'/pages/ajax/ajax_search_client.php'; break;
 
     case '/SoftRecode/ajaxLigneTransport';
       require __DIR__ .'/pages/ajax/ajaxLigneTransport.php'; break;
