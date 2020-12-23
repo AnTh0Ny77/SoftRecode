@@ -30,11 +30,6 @@ $modeleList = $Keywords->getModele();
 
 
 
-
-
-
-
-
 // Donnée transmise au template : 
 echo $twig->render('fiches_garanties_2.twig',
 [

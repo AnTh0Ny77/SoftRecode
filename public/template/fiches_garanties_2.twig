@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
+
 <link rel="stylesheet" href="public/css/dashboard.css">
 {% endblock %}
  
@@ -20,8 +21,87 @@
     </div>  
     
     
-    <h2>Fiche de garantie</h2>
-    <input class="form-control mr-sm-2" type="search" placeholder="Recherche client" aria-label="Search" id="client_input">
+    
+
+    <div class="d-flex justify-content-start flex-column mb-5 border-bottom">
+        <h2>Fiche de garantie</h2>
+    </div>
+
+    <div class="progress mb-5">
+        <div class="progress-bar progress-bar-striped bg-success" id="progress_bar" role="progressbar" style="width: 10%"  aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+
+    <div class=" my-1  col-5">
+
+        <!--carte recherche-->
+        <div class='card-body' id="search_client">
+            <input class="form-control mr-sm-2 " list="search_list" type="search"  placeholder="Recherche client" aria-label="Search" id="client_input" autocomplete='off'>
+            <ul id="search_list" class="list-group">
+                
+            <ul/>
+        </div>
+
+
+        <div class="container">
+
+            <!--carte client select -->
+            <div class="card bg-light mb-3 d-none" id="card_client">
+                <div class="card-header">
+                   
+                    <button type="button" class="close"  aria-label="Close" id="client_button">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      <h5 class="card-title text-primary" id="titre_client"></h5>
+                </div>
+                <div class="card-body">
+                    <h6 id="societe_client"></h6>
+                    <p class="card-text"></p>
+                </div>
+            </div>
+
+            <!--carte fortmulaire-->
+            <form id="container_forms" class="d-none">
+                <input type="hidden" id="hidden_client" name="hidden_client">
+
+                <div class="form-group">
+                    <label for="contact_select">Contact</label>
+                    <select class="form-control" id="contact_select" data-size="5">
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="prestation">Type garantie</label>
+                    <select class="form-control" name="prestation" id="prestation" data-size="5">
+                        <option value="02" selected>Garantie</option>
+                        <option value='03'>Maintenance</option>
+                        <option value='06'>RMA Fournisseur</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="commande_origine">N° commande d'origine</label>
+                    <input class="form-control" type="text" id="commande_origine" name="commande_origine"/ required>
+                </div>
+
+                <div class="form-group">
+                    <label for="commentaire_interne">Commentaire</label>
+                    <textarea class="form-control"  id="commentaire_interne" name="commentaire_interne"   placeholder="Commentaire interne...." ></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success">Articles <i class="fas fa-plus"></i></button>
+                </div>
+
+
+
+                
+            </form>
+
+        </div>
+        
+          
+    </div>
+  
 
 </main>
 {% endblock %}
@@ -32,12 +112,14 @@
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script>
-    jQuery(document).ready(function() {
-        jQuery('#loading').fadeOut(1500);
+    jQuery(document).ready(function() 
+    {
+        jQuery('#loading').fadeOut(2000);
     });
     </script>
 <script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+
 <script type="text/javascript" src="public/js/fiches_garanties_2.js"></script>
 
 {% endblock %}

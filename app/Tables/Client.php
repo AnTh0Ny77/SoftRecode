@@ -65,7 +65,7 @@ public function getSpecials()
 public function search_client($recherche)
 {
     $filtre = str_replace("-" , ' ', $recherche);
-
+    $filtre = str_replace("'" , ' ' , $filtre);
     $nb_mots_filtre = str_word_count($filtre , 0 , "0123456789");
 
     $mots_filtre = str_word_count($filtre, 1 ,'0123456789');
@@ -89,23 +89,23 @@ public function search_client($recherche)
    
     if ($mode_filtre) 
     {
-        $request .=   $operateur. "( client__id = '".$mots_filtre[0]."' 
+        $request .=   $operateur. "( client__id LIKE '%".$mots_filtre[0]."%' 
         OR client__societe LIKE '%".$mots_filtre[0]."%' 
         OR client__ville LIKE '%".$mots_filtre[0]."%' 
         OR client__cp LIKE '%".$mots_filtre[0]."%') ";
 
         for ( $i=1; $i < $nb_mots_filtre ; $i++) 
         { 
-        $request .=  $operateur. " ( client__id = '".$mots_filtre[$i]."' 
+        $request .=  $operateur. " ( client__id LIKE '%".$mots_filtre[$i]."%' 
         OR client__societe LIKE '%".$mots_filtre[$i]."%' 
         OR client__ville LIKE '%".$mots_filtre[$i]."%' 
         OR client__cp LIKE '%".$mots_filtre[$i]."%') ";
         }
-        $request .= "ORDER BY  client__societe DESC  LIMIT 5  ";
+        $request .= "ORDER BY  client__societe DESC  LIMIT 7  ";
     }
     else 
     {
-        $request.=  "ORDER BY  client__societe DESC  LIMIT 5 ";
+        $request.=  "ORDER BY  client__societe DESC  LIMIT 7 ";
     }
 
     $send = $this->Db->Pdo->query($request);
