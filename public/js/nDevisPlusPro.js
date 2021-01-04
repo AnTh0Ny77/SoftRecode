@@ -3,6 +3,10 @@
 
 $(document).ready(function() {
 
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+      })
+
 //init du commentaire Interne global : 
 if ($('#globalComInt').length) 
 {
@@ -183,7 +187,7 @@ $('#clientLivraison').on('change', function()
             success: function(data)
             {
                 dataSet = JSON.parse(data);
-
+                $('#text_nombre').text('Toutes')
                 $('#clientSelect option').remove();
                 $('#clientSelect').append(new Option('Aucun', 'Aucun' , false, true));
                 
@@ -199,8 +203,8 @@ $('#clientLivraison').on('change', function()
                 for (let index = 0; index < dataSet.length; index++)
                 {
                   
-                    $('#clientSelect').append(new Option(dataSet[index].client__societe + " " + dataSet[index].client__ville + " " + dataSet[index].client__cp  ,dataSet[index].client__id));
-                    $('#clientLivraison').append(new Option(dataSet[index].client__societe + " " + dataSet[index].client__ville + " " + dataSet[index].client__cp  ,dataSet[index].client__id));
+                    $('#clientSelect').append(new Option(dataSet[index].client__societe + " ("+dataSet[index].client__id+") " + dataSet[index].client__ville + " " + dataSet[index].client__cp  ,dataSet[index].client__id));
+                    $('#clientLivraison').append(new Option(dataSet[index].client__societe + " ("+dataSet[index].client__id+") " + dataSet[index].client__ville + " " + dataSet[index].client__cp  ,dataSet[index].client__id));
                 }
 
                 $('.selectpicker').selectpicker('refresh'); 
@@ -208,7 +212,7 @@ $('#clientLivraison').on('change', function()
                 $('#clientLivraison').selectpicker('val', 'Aucun' );
                 $('#contactSelect').selectpicker('val', 'Aucun');
                 $('#contactLivraison').selectpicker('val', 'Aucun');
-                $('#ajax_client_button').prop('disabled', true);
+                $('#ajax_client_button').hide();
             },
                     
             error: function (err) 

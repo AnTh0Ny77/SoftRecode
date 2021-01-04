@@ -158,6 +158,13 @@ else
                     <button class='btn btn-secondary btn-sm'>Facture pro format</button>
                     </form>";
                 }
+                else
+                {
+                    echo "<form class='my-2 mx-2' action='PRINTFORMAT' method='POST'>
+                    <input type='hidden' name='PrintFormat' value=". $temp->devis__id.">
+                    <button class='btn btn-secondary btn-sm' data-toggle='tooltip' data-placement='top' title='Pas de Pro Format sur fiche de garantie' disabled>Facture pro format</button>
+                    </form>";
+                }
              ?>
              </div>
              

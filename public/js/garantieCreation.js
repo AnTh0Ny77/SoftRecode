@@ -56,7 +56,7 @@ $(document).ready(function()
                 "AjaxSociete": dataFiche
             },
             success: function (data) {
-
+                console.log(data);
                 dataSet = JSON.parse(data);
                 arrayClient = dataSet;
                 tableClient=$("#ClientTable").DataTable(

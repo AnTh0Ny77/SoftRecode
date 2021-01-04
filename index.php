@@ -69,8 +69,6 @@
     case '/SoftRecode/mesDevis';
       require __DIR__ .'/pages/mesDevis.php'; break;
 
-    
-
     case '/SoftRecode/pdf';
       require __DIR__ .'/pages/utilities/pdf.php'; break;
 
@@ -83,6 +81,9 @@
     
     case '/SoftRecode/contactCrea';
       require __DIR__ .'/pages/contactCrea.php'; break;
+
+    case '/SoftRecode/societe_crea';
+      require __DIR__ .'/pages/societe_crea.php'; break;
     
     case '/SoftRecode/DevisV2';
       require __DIR__ .'/pages/NdevisPlusPro.php'; break;

@@ -36,5 +36,30 @@ public function insertOne($fonction , $civilite, $nom , $prenom, $tel, $gsm , $f
     return $idContact;
 }
 
+public function insertSociete($client_sossuke)
+{
+   
+    $request = $this->Db->Pdo->prepare('INSERT INTO client 
+    (id_client , famille  , nsoc , adr1 , adr2 , cp ,  ville , date_crea , tel , code_tva ,  id_vendeur , tva , )
+     VALUES (:id_client , :famille , :nsoc , :adr1, :adr2 , :cp , :ville, :date_crea , :tel  , :code_tva , :id_vendeur , :tva )');
+
+    $request->bindValue(":id_client", $client_sossuke->client__id);
+    $request->bindValue(":famille", 1 );
+    $request->bindValue(":nsoc", $client_sossuke->client__societe);
+    $request->bindValue(":adr1", $client_sossuke->client__adr1);
+    $request->bindValue(":adr2", $client_sossuke->client__adr2);
+    $request->bindValue(":cp", $client_sossuke->client__cp);
+    $request->bindValue(":ville", $client_sossuke->client__ville);
+    $request->bindValue(":date_crea", $client_sossuke->client__date_crea);
+    $request->bindValue(":tel", $client_sossuke->client__tel);
+    $request->bindValue(":code_tva", $client_sossuke->client__tva);
+    $request->bindValue(":id_vendeur",$client_sossuke->client__id_vendeur);
+    $request->bindValue(":tva", $client_sossuke->client__tva_intracom);
+
+    $request->execute();
+    $idSociete = $this->Db->Pdo->lastInsertId();
+    return $idSociete;
+}
+
 }
 	
