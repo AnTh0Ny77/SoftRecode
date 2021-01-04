@@ -71,15 +71,11 @@
                 <div class="">
                   <label for="exampleInputPassword1">Tva</label>
                     <div class="d-flex col-md-6">
-                      
-                        
                         <select class="selectpicker show-tick"  data-live-search="true" data-width="100%"  name="sociteContact" required>        
                             {% for tva in tva_list %}
                                   <option value="{{tva.kw__value}}">{{tva.kw__lib}}</option>
                             {% endfor %}
                         </select>
-                   
-                    
                     </div>
                   </div>
             </div>
