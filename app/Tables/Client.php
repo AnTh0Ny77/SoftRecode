@@ -35,7 +35,7 @@ public function get_client_devis()
 
 public function getOne($id)
 {
-    $request =$this->Db->Pdo->query("SELECT LPAD(client__id,6,0) as client__id,  client__societe , client__adr1 , client__adr2, client__cp , client__ville , client__tel , client__tva_intracom , client__id_vendeur , client__tva FROM " .$this->Table. " WHERE client__id = " . $id ."");
+    $request =$this->Db->Pdo->query("SELECT LPAD(client__id,6,0) as client__id,  client__societe , client__adr1 , client__adr2, client__cp , client__ville , client__tel , client__tva_intracom , client__id_vendeur , client__tva , client__date_crea, client__dt_last_modif FROM " .$this->Table. " WHERE client__id = " . $id ."");
     $data = $request->fetch(PDO::FETCH_OBJ);
     return $data;
 }
@@ -49,6 +49,32 @@ public function insertOne($name , $adresse, $adresse2 , $cp, $ville)
     $request->bindValue(":adr2", $adresse2);
     $request->bindValue(":cp", $cp);
     $request->bindValue(":ville", $ville);
+    $request->execute();
+    return $this->Db->Pdo->lastInsertId();
+}
+
+public function create_one($societe , $adr1, $adr2 , $cp, $ville , $tel, $fax ,  $tva , $intracom , $comm , $vendeur)
+{
+    $request = $this->Db->Pdo->prepare('INSERT INTO ' .$this->Table."
+    (client__societe , client__adr1 , client__adr2, client__cp , client__ville , client__tel,
+     client__fax, client__tva , client__tva_intracom , client__comment, client__date_crea , client__dt_last_modif  , client__id_vendeur)
+     VALUES (:societe, :adr1, :adr2, :cp, :ville, :tel, :fax,  :tva, :intracom, :comment, :date, :last_modif , :vendeur  )");
+
+    $date = date("Y-m-d H:i:s");
+
+    $request->bindValue(":societe", strtoupper($societe));
+    $request->bindValue(":adr1", $adr1);
+    $request->bindValue(":adr2", $adr2);
+    $request->bindValue(":cp", $cp);
+    $request->bindValue(":ville", $ville);
+    $request->bindValue(":tel", $tel);
+    $request->bindValue(":fax", $fax);
+    $request->bindValue(":tva", $tva);
+    $request->bindValue(":intracom", $intracom);
+    $request->bindValue(":comment", $comm);
+    $request->bindValue(":date", $date);
+    $request->bindValue(":last_modif", $date);
+    $request->bindValue(":vendeur", $vendeur);
     $request->execute();
     return $this->Db->Pdo->lastInsertId();
 }

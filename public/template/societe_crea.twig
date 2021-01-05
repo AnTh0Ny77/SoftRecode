@@ -17,8 +17,16 @@
               </div>
             </div>
           </div>
+           {% if alertSucces %}
+                <div class="alert alert-success mt-2" role="alert">
+                  Societe créee avec succès, numéro de client : <b>{{alertSucces}}</b> 
+                  <a class="badge badge-success mx-5" href="DevisV2">Nouveau devis</a>
+                  <a class="badge badge-secondary mx-2" href="contactCrea">Nouveau contact</a>
+                </div>
+                {% endif %}
            <!-- 1ere ligne -->
            <div class="d-flex flex-wrap flex-row justify-content-start my-4">
+           
        <!-- Societe -->
        <div class="col-md-8">
         <div class="card shadow mb-4 h-100">
@@ -34,61 +42,92 @@
             
             <form id="" method="POST" action="">
                 <div class="form-row">
-                  <div class="form-group col-md-7">
+                  <div class="form-group col-md-6">
                     <label for="inputState">Nom societe</label>
-                    <input type="text" class="form-control" name="nomContact" id="nomContact" maxlength="50" required>
+                    <input type="text" class="form-control" name="nom_societe" id="nom_societe" maxlength="50" required>
                   </div>
-                  <div class="form-group col-md-5">
+                  <div class="form-group col-md-4">
                     <label for="inputCiv">Ville</label>
-                    <input type="text" class="form-control" name="nomContact" id="nomContact" maxlength="50" required>
+                    <input type="text" class="form-control" name="ville" id="ville" maxlength="50" required>
+                  </div>
+                   <div class="form-group col-md-2">
+                    <label for="inputCiv">CP</label>
+                    <input type="text" class="form-control" name="code_postal" id="code_postal" maxlength="10" required>
                   </div>
                 </div>
                 <div class="form-row">
                   <div class="form-group col-md-6">
-                    <label for="inputCity">Nom</label>
-                    <input type="text" class="form-control" name="nomContact" id="nomContact" maxlength="50" required>
+                    <label for="inputCity">adresse 1</label> 
+                    <input type="text" class="form-control" name="adresse_1" id="adresse_1" maxlength="150" required>
                   </div>
                   <div class="form-group col-md-6">
-                    <label for="inputCity">Prenom</label>
-                    <input type="text" class="form-control" name="prenomContact" maxlength="50" id="prenomContact">
+                    <label for="inputCity">adresse 2</label>
+                    <input type="text" class="form-control" name="adresse_2" maxlength="150" id="">
                   </div>
                 </div>
 
                 <div class="form-row">
                   <div class="form-group col-md-3">
                     <label for="inputZip">Telephone</label>
-                    <input type="tel" class="form-control" name="telContact" maxlength="25" id="telContact">
+                    <input type="tel" class="form-control" name="telephone" maxlength="25" id="telephone">
                   </div>
                   <div class="form-group col-md-3">
                     <label for="inputZip">Fax </label>
-                    <input type="tel" class="form-control"name="faxContact" maxlength="25" id="faxContact">
+                    <input type="tel" class="form-control"name="fax" maxlength="25" id="fax">
                   </div>
-                  <div class="form-group col-md-6">
-                    <label for="inputCity">Mail</label>
-                    <input type="email" class="form-control"name="mailContact" maxlength="200" id="mailContact" >
-                  </div>
+                 
                 </div>
-                <div class="">
-                  <label for="exampleInputPassword1">Tva</label>
-                    <div class="d-flex col-md-6">
-                        <select class="selectpicker show-tick"  data-live-search="true" data-width="100%"  name="sociteContact" required>        
+                
+                <div class="my-2 ">
+                   <label for="select_tva">Tva</label>
+                    <div class="d-flex col-md-6 ">
+                        <select class="selectpicker show-tick border"   data-live-search="true" data-width="100%" id="select_tva"  name="select_tva" required>        
                             {% for tva in tva_list %}
                                   <option value="{{tva.kw__value}}">{{tva.kw__lib}}</option>
                             {% endfor %}
                         </select>
                     </div>
+                     <div class="col-6 my-2 d-none" id="div_intracom">
+                          <label for="mailContact"><i>N° Intracom * </i></label>
+                          <input type="email" class="form-control" name="intracom_input" id='intracom_input' maxlength="200"  >
+                      </div>
+                  </div>
+
+                  <div class="my-2">
+                  <label for="exampleInputPassword1">Vendeurs</label>
+                    <div class="d-flex col-md-6">
+                        <select class="selectpicker show-tick border"  data-live-search="true" data-width="100%"  name="vendeur" required>        
+                            {% for users in user_list %}
+                              {% if user.id_utilisateur == users.id_utilisateur %}
+                                <option value="{{users.id_utilisateur}}" selected>{{users.prenom ~ " " ~ users.nom}}</option>
+                              {% else %}
+                                <option value="{{users.id_utilisateur}}">{{users.prenom ~ " " ~ users.nom}}</option>
+                              {% endif %}
+                                  
+                            {% endfor %}
+                        </select>
+                    </div>
                   </div>
             </div>
+            
+           <div>
+
+      
+                <div class="mx-2 mb-4 col-8 ">
+                <label for="exampleInputPassword1">Commentaires</label>
+                    <textarea class="CKE" id="commentaire_client" name="commentaire_client" placeholder="Commentaire interne...." ></textarea>
+                  </div>
+                <div>
+
+
+
             <div class="modal-footer justify-content-end">
+             
               <div>
                 <button type="submit" class="btn btn-success" id="postContact">Creer</button>
               </div>
               <div>
-                {% if alertSucces %}
-                <div class="alert alert-success mt-2" role="alert">
-                  Contact crée avec succès ! 
-                </div>
-                {% endif %}
+               
               </div>
             </div>
           </form>
@@ -105,33 +144,7 @@
     
 
     <!-- Modal -->
-<div class="modal fade " id="ModalSociete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Choix du client </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <table id="ClientTable" class="table  display " style="width:100%"> 
-            <thead>
-            <tr><th>Id</th><th>Nom</th><th>CP</th><th>Ville</th></tr>
-            </thead>
-            
-            <tbody class="trClick">
-            </tbody>
-        </table>
-      </div>
-      <div class="modal-footer">
-       
-      
-       
-      </div>
-    </div>
-  </div>
-</div>
+
     
       
         
@@ -149,5 +162,5 @@
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
-<script type="text/javascript" src="public/js/creaContact.js"></script>
+<script type="text/javascript" src="public/js/societe_crea.js"></script>
 {% endblock %}
