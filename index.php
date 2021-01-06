@@ -219,6 +219,11 @@
     case '/SoftRecode/AvoirVisio';
       require __DIR__ .'/pages/ajax/ajaxVisoAvoir.php'; break;
 
+    case '/SoftRecode/ajax_crea_contact_devis';
+      require __DIR__ .'/pages/ajax/ajax_crea_contact_devis.php'; break;
+
+     
+
     //Traitement et Utilities : 
     case '/SoftRecode/pdfTravail';
       require __DIR__ .'/pages/utilities/pdfTravail.php'; break;

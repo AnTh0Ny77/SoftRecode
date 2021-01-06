@@ -98,65 +98,173 @@ if ($('#globalComClient').length)
 $('#clientSelect').on('change', function()
 {
     var selectedOption = parseInt($(this).children("option:selected").val());
+    let optionText = $(this).children("option:selected").val();
+    if (optionText != 'Aucun') 
+    {
+        $('#button_crea_contact').removeClass('d-none');
+        $.ajax({
+            type: 'post',
+            url: "tableContact",
+            data : 
+                {
+                    "AjaxContactTable" : selectedOption
+                },
+                success: function(data)
+                {
+                   dataSet = JSON.parse(data);
+                   $('#contactSelect option').remove();
+                   $('#contactSelect').append(new Option('Aucun', 'Aucun' , false, true));
+    
+                        for (let index = 0; index < dataSet.length; index++)
+                        {
+                            
+                            $('#contactSelect').append(new Option(dataSet[index].contact__nom + " " + dataSet[index].contact__prenom + " - "  + dataSet[index].kw__lib ,dataSet[index].contact__id));  
+                        }
+                        $('.selectpicker').selectpicker('refresh'); 
+                        $('#contactSelect').selectpicker('val', 'Aucun');
+                       
+                },
+                error: function (err) 
+                {
+                    console.log('error: ' , err);
+                }
+            })
+    }
+    else
+    {
+        $('#button_crea_contact').addClass('d-none');
+    }
    
-    $.ajax({
-        type: 'post',
-        url: "tableContact",
-        data : 
-            {
-                "AjaxContactTable" : selectedOption
-            },
-            success: function(data)
-            {
-               dataSet = JSON.parse(data);
-               $('#contactSelect option').remove();
-               $('#contactSelect').append(new Option('Aucun', 'Aucun' , false, true));
-
-                    for (let index = 0; index < dataSet.length; index++)
-                    {
-                        
-                        $('#contactSelect').append(new Option(dataSet[index].contact__nom + " " + dataSet[index].contact__prenom + " - "  + dataSet[index].kw__lib ,dataSet[index].contact__id));  
-                    }
-                    $('.selectpicker').selectpicker('refresh'); 
-                    $('#contactSelect').selectpicker('val', 'Aucun');
-            },
-            error: function (err) 
-            {
-                console.log('error: ' , err);
-            }
-        })
+   
 })
 
 //livraison : 
 $('#clientLivraison').on('change', function()
 {
+    let optionText = $(this).children("option:selected").val();
     var selectedOption = parseInt($(this).children("option:selected").val());
-    $.ajax(
-    {
-        type: 'post',
-        url: "tableContact",
-        data : 
-            {
-                "AjaxContactTable" : selectedOption
-            },
-            success: function(data)
-            {
-               dataSet = JSON.parse(data);
-                    $('#contactLivraison option').remove();
-                    $('#contactLivraison').append(new Option('Aucun', 'Aucun' , false, true));
 
-                    for (let index = 0; index < dataSet.length; index++)
-                    {   
-                        $('#contactLivraison').append(new Option(dataSet[index].contact__nom + " " + dataSet[index].contact__prenom + " - "  + dataSet[index].kw__lib ,dataSet[index].contact__id));  
-                    }
-                    $('.selectpicker').selectpicker('refresh'); 
-                    $('#contactLivraison').selectpicker('val', 'Aucun');
-            },
-            error: function (err) 
+    if (optionText != 'Aucun') 
+    {
+        $('#button_contact_crea_livraison').removeClass('d-none');
+        $('#societe_input').val(selectedOption);
+        $.ajax(
             {
-                console.log('error: ' , err);
-            }
-        })
+                type: 'post',
+                url: "tableContact",
+                data : 
+                    {
+                        "AjaxContactTable" : selectedOption
+                    },
+                    success: function(data)
+                    {
+                       dataSet = JSON.parse(data);
+                            $('#contactLivraison option').remove();
+                            $('#contactLivraison').append(new Option('Aucun', 'Aucun' , false, true));
+        
+                            for (let index = 0; index < dataSet.length; index++)
+                            {   
+                                $('#contactLivraison').append(new Option(dataSet[index].contact__nom + " " + dataSet[index].contact__prenom + " - "  + dataSet[index].kw__lib ,dataSet[index].contact__id));  
+                            }
+                            $('.selectpicker').selectpicker('refresh'); 
+                            $('#contactLivraison').selectpicker('val', 'Aucun');
+                    },
+                    error: function (err) 
+                    {
+                        console.log('error: ' , err);
+                    }
+                })
+    }
+    else
+    {
+        $('#button_contact_crea_livraison').addClass('d-none');
+    }
+    
+})
+
+
+//fonction qui vide les inputs: 
+let deleteInput = function()
+{
+    $('#prenomContact').val('');
+    $('#telContact').val('');
+    $('#faxContact').val('');
+    $('#mailContact').val(''); 
+    $('#societe_input').val('');
+}
+
+//creation de contact : 
+$('#postContact').on('click' , function()
+{
+    let fonction = $('#inputStateContact').val();
+    let nom = $('#nomContact').val();
+    let prenom = $('#prenomContact').val();
+    let civilite = $('#inputCiv').val();
+    let tel = $('#telContact').val();
+    let fax = $('#faxContact').val();
+    let mail = $('#mailContact').val(); 
+    let societe = $('#societe_input').val();
+    
+    if (fonction && nom.length > 1 && civilite) 
+    {
+        $.ajax(
+            {
+                type: 'post',
+                url: "ajax_crea_contact_devis",
+                data : 
+                    {
+                        "fonction" : fonction,
+                        "nom" : nom,
+                        "prenom" : prenom,
+                        "civilite" : civilite , 
+                        "tel" : tel ,
+                        "fax" : fax , 
+                        "mail" : mail ,
+                        "societe" : societe
+                    },
+                    success: function(data)
+                    {
+                        console.log(data);
+                       dataSet = JSON.parse(data);
+                       deleteInput();
+                       $.ajax(
+                        {
+                            type: 'post',
+                            url: "tableContact",
+                            data : 
+                                {
+                                    "AjaxContactTable" : societe
+                                },
+                                success: function(data)
+                                {
+                                   dataSet = JSON.parse(data);
+                                        $('#contactLivraison option').remove();
+                                        $('#contactLivraison').append(new Option('Aucun', 'Aucun' , false, true));
+                    
+                                        for (let index = 0; index < dataSet.length; index++)
+                                        {   
+                                            $('#contactLivraison').append(new Option(dataSet[index].contact__nom + " " + dataSet[index].contact__prenom + " - "  + dataSet[index].kw__lib ,dataSet[index].contact__id));  
+                                        }
+                                        $('.selectpicker').selectpicker('refresh'); 
+                                        $('#contactLivraison').selectpicker('val', 'Aucun');
+                                },
+                                error: function (err) 
+                                {
+                                    console.log('error: ' , err);
+                                }
+                            })
+                           
+                    },
+                    error: function (err) 
+                    {
+                        console.log('error: ' , err);
+                    }
+                })
+    }
+    else 
+    {
+        alert('Le nom , la fonction et la civilité sont obligatoires')
+    }
 })
 
 

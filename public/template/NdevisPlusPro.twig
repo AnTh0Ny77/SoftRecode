@@ -77,16 +77,18 @@
 					{% endif %}
 					{% endfor %}
 					{% else %}
-					<option value="Aucun" selected>Aucun.</option>
+					<option value="Aucun" selected>Aucun</option>
 					{% for client in clientList %}
 					<option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
 					{% endfor %}
 					{% endif %}
 					</select>
 				</div>
+			
 				<div>
 					<div class="mt-2 pt-2 ">
-						<label for="exampleInputEmail1" >Contact : </label>   
+						<label for="exampleInputEmail1" >Contact : </label>  
+							<button id="button_crea_contact" type='button' data-toggle="modal" data-target="#modal_contact" class="btn btn-link d-none"><i class="far fa-plus"></i></button> 
 					</div>
 					<select class="selectpicker border show-tick"  data-live-search="true" data-size="10" data-width="100%" name="contactSelect" id="contactSelect" required> 
 					{% if  modif %}
@@ -108,6 +110,7 @@
 
 			<div class="my-3">
 				<label for="comClient"><b>Livraison</b></label>
+				
 				<div>
 					<div class="mt-1 pt-2 ">
 						<label for="exampleInputEmail1"  >Client : <b>indentique si non specifiée</b></label>   
@@ -133,6 +136,7 @@
 				<div>
 					<div class="mt-2 pt-2 ">
 						<label for="exampleInputEmail1">Contact : </label>
+						<button type='button' id="button_contact_crea_livraison" data-toggle="modal" data-target="#modal_contact_livraison" class="btn btn-link d-none"><i class="far fa-plus"></i></button> 
 					</div>
 					<select class="selectpicker border show-tick"  data-live-search="true" data-size="10" data-width="100%" name="contactLivraison" id="contactLivraison" required> 
 					{% if contactLivraison %}
@@ -149,6 +153,7 @@
 					{% endif %}
 					</select>
 				</div>
+				
 			</div>
 		</div>
 	</div>
@@ -215,6 +220,93 @@
 </div>
 </div>
 </main>
+
+<!--modal creation de contact -->
+<div class="modal fade bd-example-modal-lg" id="modal_contact" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    	<div class="modal-header">
+			<h5 class="modal-title" id="titre_creation">Creation de Contact</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+			</button>
+      	</div>
+
+		<div class="modal-body">
+			<div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="inputState">Fonction *</label>
+                    <select id="inputStateContact" class="form-control" >
+                      {% for keyword in keywordList %}
+                      <option value={{keyword.kw__value}}>{{keyword.kw__lib}}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="inputCiv">Civilité</label>
+                    <select id="inputCiv" class="form-control" >
+                      <option value="M.">Mr</option>
+                      <option value="Mme">Mme</option>
+                      <option value="Melle">Melle</option>
+                      <option value="Service">Service</option>
+                    </select>
+                  </div>
+            </div>
+			 <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="inputCity">Nom</label>
+                    <input type="text" class="form-control"  id="nomContact" maxlength="50" >
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="inputCity">Prenom</label>
+                    <input type="text" class="form-control"  maxlength="50" id="prenomContact">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-3">
+                    <label for="inputZip">Telephone</label>
+                    <input type="tel" class="form-control"  maxlength="25" id="telContact">
+                  </div>
+                  <div class="form-group col-md-3">
+                    <label for="inputZip">Fax </label>
+                    <input type="tel" class="form-control"  maxlength="25" id="faxContact">
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="inputCity">Mail</label>
+                    <input type="email" class="form-control" maxlength="200" id="mailContact" >
+					 <input type="hidden"  id="societe_input" >
+                  </div>
+                </div>
+		</div>
+		<div class="modal-footer justify-content-end">
+              <div>
+                <button type="button" class="btn btn-success" id="postContact">Creer</button>
+              </div>
+              <div>
+		  
+		   
+    </div>
+  </div>
+</div>
+
+<!--modal creation de contact livraison -->
+<div class="modal fade bd-example-modal-lg" id="modal_contact_livraison" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Creation de Contact livraison</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+	
+    </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block script %}

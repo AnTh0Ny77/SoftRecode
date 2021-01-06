@@ -26,6 +26,7 @@ $Database->DbConnect();
 //listes  : 
 $clientList = $Client->get_client_devis();
 $modeleList = $Keywords->getModele();
+$keywordList = $Keywords->get2_icon();
 
 //alertes et variables : 
 $alertClient = false;
@@ -107,5 +108,6 @@ echo $twig->render('NdevisPlusPro.twig',[
    'alertClient' => $alertClient,
    'modif'=> $modif,
    'contactList' => $contactList,
-   'contactLivraison' => $contactLivraison
+   'contactLivraison' => $contactLivraison,
+   'keywordList'=> $keywordList
 ]);;
