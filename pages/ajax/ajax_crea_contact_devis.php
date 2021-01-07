@@ -17,12 +17,12 @@ if (empty($_SESSION['user'])) {
  if (!empty($_POST['fonction']) && !empty($_POST['nom']))
  {
 
-    //   $Database = null;
-    //   $Totoro = new App\Totoro('euro');
-    //   $Totoro->DbConnect();
-    //   $Database = new App\Database('devis');
-    //   $Database->DbConnect();
-    //   $ContactTotoro = new App\Tables\ContactTotoro($Totoro);
+      $Database = null;
+      $Totoro = new App\Totoro('euro');
+      $Totoro->DbConnect();
+      $Database = new App\Database('devis');
+      $Database->DbConnect();
+      $ContactTotoro = new App\Tables\ContactTotoro($Totoro);
 
        //questions sur les controles de tout
          $newClientTotoro = $ContactTotoro->insertOne(
@@ -34,12 +34,12 @@ if (empty($_SESSION['user'])) {
          $newId = '0000000' . $newClientTotoro ;
          $newId = substr($newId , -6 );
          
-        //  $Contact = new App\Tables\Contact($Database);
-        //  $newLocalContact = $Contact->insertTotoro(
-        //  $newClientTotoro , $_POST['fonction'] , $_POST['civilite'],
-        //  $_POST['nom'] ,$_POST['prenom'], 
-        //  $_POST['tel'] , "" , 
-        //  $_POST['mail'] , $_POST['societe']);
+         $Contact = new App\Tables\Contact($Database);
+         $newLocalContact = $Contact->insertTotoro(
+         $newClientTotoro , $_POST['fonction'] , $_POST['civilite'],
+         $_POST['nom'] ,$_POST['prenom'], 
+         $_POST['tel'] , "" , 
+         $_POST['mail'] , $_POST['societe']);
 
         echo  json_encode($newClientTotoro);
  }

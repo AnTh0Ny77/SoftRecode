@@ -92,7 +92,7 @@ ob_start();
             </td>
 
              <td style="text-align: left; width:50%">
-             <h3><?php echo $abn->prestaionAbn . " " .  $temp->devis__id  ." du " .$formated_date ; ?></h3>
+             <h3><?php echo $abn->prestaionAbn . " " .  $temp->devis__id   ; ?></h3>
              <br>
              
             
@@ -134,7 +134,7 @@ ob_start();
 <table  style="width:100%;  margin-bottom: 5px; margin-top: 35 px;">
     <tr>
     <td style="text-align: center;  width: 50%; padding-top: 7px; padding-bottom: 5px; padding-left:6px;">
-    <b> NEW EUROCOMPUTER : </b>
+    <b> RECODE : </b>
      <br>
     Date et signature : 
     <br>

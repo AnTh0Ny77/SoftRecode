@@ -101,6 +101,7 @@ $('#clientSelect').on('change', function()
     let optionText = $(this).children("option:selected").val();
     if (optionText != 'Aucun') 
     {
+        $('#societe_input').val(selectedOption);
         $('#button_crea_contact').removeClass('d-none');
         $.ajax({
             type: 'post',
@@ -147,7 +148,8 @@ $('#clientLivraison').on('change', function()
     if (optionText != 'Aucun') 
     {
         $('#button_contact_crea_livraison').removeClass('d-none');
-        $('#societe_input').val(selectedOption);
+        $('#societe_input_livraison').val(selectedOption);
+        console.log(selectedOption);
         $.ajax(
             {
                 type: 'post',
@@ -190,8 +192,10 @@ let deleteInput = function()
     $('#telContact').val('');
     $('#faxContact').val('');
     $('#mailContact').val(''); 
-    $('#societe_input').val('');
+    
 }
+
+
 
 //creation de contact : 
 $('#postContact').on('click' , function()
@@ -204,6 +208,8 @@ $('#postContact').on('click' , function()
     let fax = $('#faxContact').val();
     let mail = $('#mailContact').val(); 
     let societe = $('#societe_input').val();
+
+   
     
     if (fonction && nom.length > 1 && civilite) 
     {
@@ -224,8 +230,8 @@ $('#postContact').on('click' , function()
                     },
                     success: function(data)
                     {
-                        console.log(data);
                        dataSet = JSON.parse(data);
+                       id_contact = parseInt(dataSet);
                        deleteInput();
                        $.ajax(
                         {
@@ -237,23 +243,113 @@ $('#postContact').on('click' , function()
                                 },
                                 success: function(data)
                                 {
+                                   
                                    dataSet = JSON.parse(data);
-                                        $('#contactLivraison option').remove();
-                                        $('#contactLivraison').append(new Option('Aucun', 'Aucun' , false, true));
-                    
+                                        $('#contactSelect option').remove();
+                                        $('#contactSelect').append(new Option('Aucun', 'Aucun' , false, true));
                                         for (let index = 0; index < dataSet.length; index++)
                                         {   
-                                            $('#contactLivraison').append(new Option(dataSet[index].contact__nom + " " + dataSet[index].contact__prenom + " - "  + dataSet[index].kw__lib ,dataSet[index].contact__id));  
+                                            $('#contactSelect').append(new Option(dataSet[index].contact__nom + " " + dataSet[index].contact__prenom + " - "  + dataSet[index].kw__lib ,dataSet[index].contact__id));  
                                         }
                                         $('.selectpicker').selectpicker('refresh'); 
-                                        $('#contactLivraison').selectpicker('val', 'Aucun');
+                                        $('#contactSelect').selectpicker('val',id_contact);
+                                        $('.modal').modal('hide');
                                 },
                                 error: function (err) 
                                 {
                                     console.log('error: ' , err);
                                 }
                             })
-                           
+                            
+                    },
+                    error: function (err) 
+                    {
+                        console.log('error: ' , err);
+                    }
+                })
+    }
+    else 
+    {
+        alert('Le nom , la fonction et la civilité sont obligatoires')
+    }
+})
+
+
+let deleteInputLivraison = function()
+{
+    $('#prenomContact_livraison').val('');
+    $('#nomContact_livraison').val('');
+    $('#telContact_livraison').val('');
+    $('#faxContact_livraison').val('');
+    $('#mailContact_livraison').val(''); 
+    
+}
+
+//creation de contact livraison : 
+$('#postContact_livraison').on('click' , function()
+{
+    let fonction = $('#input_livraison_fonction').val();
+    let nom = $('#nomContact_livraison').val();
+    let prenom = $('#prenomContact_livraison').val();
+    let civilite = $('#inputCiv_livraison').val();
+    let tel = $('#telContact_livraison').val();
+    let fax = $('#faxContact_livraison').val();
+    let mail = $('#mailContact_livraison').val(); 
+    let societe = $('#societe_input_livraison').val();
+
+   
+    
+    if (fonction && nom.length > 1 && civilite) 
+    {
+        $.ajax(
+            {
+                type: 'post',
+                url: "ajax_crea_contact_devis",
+                data : 
+                    {
+                        "fonction" : fonction,
+                        "nom" : nom,
+                        "prenom" : prenom,
+                        "civilite" : civilite , 
+                        "tel" : tel ,
+                        "fax" : fax , 
+                        "mail" : mail ,
+                        "societe" : societe
+                    },
+                    success: function(data)
+                    {
+                       console.log(data);
+                       dataSet = JSON.parse(data);
+                       id_contact = parseInt(dataSet);
+                       deleteInputLivraison();
+                       $.ajax(
+                        {
+                            type: 'post',
+                            url: "tableContact",
+                            data : 
+                                {
+                                    "AjaxContactTable" : societe
+                                },
+                                success: function(data)
+                                {
+                                   
+                                   dataSet = JSON.parse(data);
+                                        $('#contactLivraison option').remove();
+                                        $('#contactLivraison').append(new Option('Aucun', 'Aucun' , false, true));
+                                        for (let index = 0; index < dataSet.length; index++)
+                                        {   
+                                            $('#contactLivraison').append(new Option(dataSet[index].contact__nom + " " + dataSet[index].contact__prenom + " - "  + dataSet[index].kw__lib ,dataSet[index].contact__id));  
+                                        }
+                                        $('.selectpicker').selectpicker('refresh'); 
+                                        $('#contactLivraison').selectpicker('val',id_contact);
+                                        $('.modal').modal('hide');
+                                },
+                                error: function (err) 
+                                {
+                                    console.log('error: ' , err);
+                                }
+                            })
+                            
                     },
                     error: function (err) 
                     {

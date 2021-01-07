@@ -40,8 +40,8 @@ public function insertSociete($client_sossuke)
 {
    
     $request = $this->Db->Pdo->prepare('INSERT INTO client 
-    (id_client , famille  , nsoc , adr1 , adr2 , cp ,  ville , date_crea , tel , code_tva ,  id_vendeur , tva , )
-     VALUES (:id_client , :famille , :nsoc , :adr1, :adr2 , :cp , :ville, :date_crea , :tel  , :code_tva , :id_vendeur , :tva )');
+    (id_client , famille  , nsoc , adr1 , adr2 , cp ,  ville , date_crea , tel , code_tva ,  id_vendeur , tva  )
+     VALUES (:id_client, :famille, :nsoc, :adr1, :adr2, :cp, :ville, :date_crea, :tel, :code_tva, :id_vendeur, :tva )');
 
     $request->bindValue(":id_client", $client_sossuke->client__id);
     $request->bindValue(":famille", 1 );

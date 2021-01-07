@@ -34,11 +34,10 @@ $user = $_SESSION['user'];
       $_POST['fax'] ,  $_POST['select_tva'] , $_POST['intracom_input'] , $_POST['commentaire_client'] , $_POST['vendeur']);
 
       $creation_totoro = $Client->getOne($creation_societe);
-
-      // $Totoro = new App\Totoro('euro');
-      // $Totoro->DbConnect();
-      // $ContactTotoro = new App\Tables\ContactTotoro($Totoro);
-      // $creation =  $ContactTotoro->insertSociete($creation_totoro);
+      $Totoro = new App\Totoro('euro');
+      $Totoro->DbConnect();
+      $ContactTotoro = new App\Tables\ContactTotoro($Totoro);
+      $creation =  $ContactTotoro->insertSociete($creation_totoro);
 
       $alertSuccess = $creation_societe ;
  }

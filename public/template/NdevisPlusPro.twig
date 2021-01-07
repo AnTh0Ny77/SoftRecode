@@ -290,6 +290,8 @@
     </div>
   </div>
 </div>
+</div>
+</div>
 
 <!--modal creation de contact livraison -->
 <div class="modal fade bd-example-modal-lg" id="modal_contact_livraison" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -301,11 +303,65 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+	  <div class="modal-body">
+		<div class="form-row">
+			  <div class="form-group col-md-6">
+				<label for="inputState">Fonction *</label>
+				<select id="input_livraison_fonction" class="form-control" >
+				  {% for keyword in keywordList %}
+				  <option value={{keyword.kw__value}}>{{keyword.kw__lib}}</option>
+				  {% endfor %}
+				</select>
+			  </div>
+
+			  <div class="form-group col-md-6">
+				<label for="inputCiv_livraison">Civilité</label>
+				<select id="inputCiv_livraison" class="form-control" >
+				  <option value="M.">Mr</option>
+				  <option value="Mme">Mme</option>
+				  <option value="Melle">Melle</option>
+				  <option value="Service">Service</option>
+				</select>
+			  </div>
+		</div>
+		 <div class="form-row">
+			  <div class="form-group col-md-6">
+				<label for="inputCity">Nom</label>
+				<input type="text" class="form-control"  id="nomContact_livraison" maxlength="50" >
+			  </div>
+			  <div class="form-group col-md-6">
+				<label for="inputCity">Prenom</label>
+				<input type="text" class="form-control"  maxlength="50" id="prenomContact_livraison">
+			  </div>
+			</div>
+
+			<div class="form-row">
+			  <div class="form-group col-md-3">
+				<label for="inputZip">Telephone</label>
+				<input type="tel" class="form-control"  maxlength="25" id="telContact_livraison">
+			  </div>
+			  <div class="form-group col-md-3">
+				<label for="inputZip">Fax </label>
+				<input type="tel" class="form-control"  maxlength="25" id="faxContact_livraison">
+			  </div>
+			  <div class="form-group col-md-6">
+				<label for="inputCity">Mail</label>
+				<input type="email" class="form-control" maxlength="200" id="mailContact_livraison" >
+				 <input type="hidden"  id="societe_input_livraison" >
+			  </div>
+			</div>
+	</div>
+	<div class="modal-footer justify-content-end">
+		<div>
+		  <button type="button" class="btn btn-success" id="postContact_livraison">Creer</button>
+		</div>
+		<div>
 
 	
     </div>
     </div>
   </div>
+</div>
 </div>
 {% endblock %}
 

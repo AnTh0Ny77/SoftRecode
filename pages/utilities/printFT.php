@@ -120,13 +120,17 @@ ob_start();
    
         <table CELLSPACING=0 style=" width: 100%;  ">
             <tr style="background-color: #dedede;">
-                        <td style="text-align: center; width: 30%"><strong>Traitement en atelier </strong></td>
+                        <td style="text-align: center; width: 30%"><strong>Préparé par</strong></td>
                         <td style="text-align: center; width: 40%"><strong>Réceptionné par : </strong></td>
                         <td style="text-align: center; width: 30%"><strong>POIDS</strong></td>
             </tr> 
             <tr>
                 <td style="border: 1px #ccc solid; height: 150px;">
-                    
+                        <table  CELLSPACING=0 style=" width: 100%; margin-top:50px;">
+                            <tr style="background-color: #dedede;">
+                                <td style="text-align: center; width: 100%"><strong>Vérifié par</strong></td>
+                            </tr>
+                        </table>
                 </td>
                 <td style="border: 1px #ccc solid; ">
                     <small><i>Nom/signature/tampon</i></small>
