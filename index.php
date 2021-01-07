@@ -2,9 +2,22 @@
 
  
   $request = $_SERVER['REQUEST_URI'];
-  $get = '.';
 
-  switch($request)
+  $get_request = explode('?'  , $request , 2);
+
+  if (isset($get_request[1])) 
+  {
+   $get_data = '?' . $get_request[1];
+  }
+  else 
+  {
+    $get_data = "";
+  }
+ 
+  $global_request = $get_request[0] . $get_data ; 
+  
+
+  switch($global_request)
   {
     //pages :: 
     case '/SoftRecode/'.'':
