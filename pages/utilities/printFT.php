@@ -125,12 +125,9 @@ ob_start();
                         <td style="text-align: center; width: 30%"><strong>POIDS</strong></td>
             </tr> 
             <tr>
-                <td style="border: 1px #ccc solid; height: 150px;">
-                        <table  CELLSPACING=0 style=" width: 100%; margin-top:50px;">
-                            <tr style="background-color: #dedede;">
-                                <td style="text-align: center; width: 100%"><strong>Vérifié par</strong></td>
-                            </tr>
-                        </table>
+                <td style="border: 1px #ccc solid; height: 150px; text-align:center;">
+                
+                    <span style="margin-top: 65px; background-color: #dedede;"><strong>Vérifié par</strong></span>
                 </td>
                 <td style="border: 1px #ccc solid; ">
                     <small><i>Nom/signature/tampon</i></small>
@@ -347,7 +344,7 @@ try
     $doc->pdf->SetDisplayMode('fullpage');
     $doc->writeHTML($content);
     ob_clean();
-
+    
     if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
      {
         $doc->output('O:\intranet\Auto_Print\FT\Ft_'.$command->devis__id.'.pdf' , 'F'); 
