@@ -53,6 +53,7 @@ if (empty($_SESSION['user']))
         $update = $General->updateAll('cmd','ABF','cmd__etat','cmd__id',$temp);
         $update = $General->updateAll('cmd',' ','cmd__code_cmd_client','cmd__id',$temp);
         $General->updateAll('cmd', $date , 'cmd__date_fact' , 'cmd__id', $temp );
+        $General->updateAll('cmd', $date , 'cmd__date_devis' , 'cmd__id', $temp );
         $General->updateAll('cmd', $_SESSION['user']->id_utilisateur , 'cmd__user__id_fact' , 'cmd__id', $temp );
 
         //calcule le total la prestation et les lignes : 

@@ -19,6 +19,7 @@
 
   switch($global_request)
   {
+    
     //pages :: 
     case '/SoftRecode/'.'':
       require __DIR__ .'/pages/login.php'; break;
@@ -105,7 +106,6 @@
       require __DIR__ .'/pages/NligneDevisV2.php'; break;
 
       
-
     //transport / fiches de travail->
     case '/SoftRecode/transport';
       require __DIR__ .'/pages/transport2.php'; break;
