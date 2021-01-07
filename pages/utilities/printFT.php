@@ -121,7 +121,7 @@ ob_start();
       
       if (!empty($societeLivraison->client__memo_config)) 
       {
-          echo '⚠ : '. $societeLivraison->client__memo_config;
+          echo '<strong>ATTENTION CONFIG CLIENT</strong> : '. $societeLivraison->client__memo_config;
       }
 
      ?>
