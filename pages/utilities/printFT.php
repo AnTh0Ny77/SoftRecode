@@ -116,7 +116,15 @@ ob_start();
     <page_footer >
          
      <div style=" width: 100%; position: absolute; bottom:1px">
-    
+         
+     <?php
+      
+      if (!empty($societeLivraison->client__memo_config)) 
+      {
+          echo '⚠ : '. $societeLivraison->client__memo_config;
+      }
+
+     ?>
    
         <table CELLSPACING=0 style=" width: 100%;  ">
             <tr style="background-color: #dedede;">
