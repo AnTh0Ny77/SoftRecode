@@ -174,6 +174,7 @@ foreach($prestaList as $presta)
     }
     $totalParPresta = array_sum($totalParPresta) ;
     $arrayTemp[1] = $totalParPresta;
+    $arrayTemp[0] = $presta->kw__lib . ' ' . number_format($totalParPresta , 2,',', ' ') . ' € ';
     if ($arrayTemp[1] > 0) 
     {
       array_push($arrayPresta , $arrayTemp);

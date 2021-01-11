@@ -1,7 +1,7 @@
 
 
     <style type="text/css">
-    .global-wrapper{min-height: 900px};
+    .global-wrapper{min-height: 700px};
         .bodyFrame {font-family:Century Gothic,arial,sans-serif; }
         .div{   font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate;}
         .table{ font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate;}
@@ -13,47 +13,39 @@
         }
     </style>
     
-    <div class="global-wrapper">
-        <div class="div bodyFrame mt-4" style="width: 100%;" >
-         <div class="head-wrapper div">
-             <div class="div" style="text-align: left;  width: 50%;" >
-                <div class="div">
-                    <img  style=" width:55mm;" src="public\img\recodeDevis.png"/>
-                </div>
-                <div class="div" style=" margin-top: 15%" >
-                <p>Commandé le : 
-                07/01/2021 à : 14h 44</p>
-                Commercial : 
-                <strong>
-                    RIVARD Franck                </strong> 
-                     (Tél: 109)                     
-                
-                    <br>Commandé par : <strong>BIZIEN Anthony                </strong> 
-                     (Tél: 162)             <div class="d-flex">
 
-             <form class='my-2 mx-2' action='adminFiche' method='POST'>
-                <input type='hidden' name='AdminGarantie' value=3212026>
-                <button class='btn btn-primary btn-sm'>Administration</button>
-                </form><form class='my-2 mx-2' action='PRINTFORMAT' method='POST'>
-                    <input type='hidden' name='PrintFormat' value=3212026>
-                    <button class='btn btn-secondary btn-sm'>Facture pro format</button>
-                    </form>             </div>
+    <div class="global-wrapper">
+        <div class="div bodyFrame mt-2" style="width: 100%;" >
+         <div class="head-wrapper div">
+
+
+             <div class="div" style="text-align: left;  width: 50%;" >
+             <div class="div">
+            
+             </div>
+             <div class="div" style=" margin-top: 2%" >
+             <h6><small>Commandé le : </small><b>06/01/2021 à : 16h 10</b></h6>
+             <div class='' '>
+               <h6> <small>Expédié le :</small>  <b>06/01/2021</b></h6>    
+           </div>            <h6> 
+                <small>Vendeur:</small> <b>WYCKAERT Marilyne </b> 
+                 (Tél: 102) 
+             </h6>
+          
              
              </td>
             
              </div>
             </div>
-         
-            <div class="div" style="text-align: left;  width: 45% ;"><h5>Fiche de Travail N°:<strong> 3212026</strong><br></h5>
-             <br> <small>Societe :</small><strong><br>FTRECAL (013454)<br>718 RUE DIVISION LECLERC<br>88140 BULGNEVILLE</strong></td>        
+           
+            <div class="div" style="text-align: left;  width: 45% ;"><h5>Commande N°:<strong> 3211995</strong><br></h5>
+            <div><button class='btn btn-sm btn-success' id='ClientClick' value='3211995' ><i class='far fa-magic'></i></button></div> <small>livraison & facturation : M. RAVENEAU Florian</small><strong><br>LE FOURNIL DU VAL DE LOIRE (024271)<br>RUE D AUVERGNE<br>CS50233<br>37302 JOUE LES TOURS</strong></td>             
+        
         <div class="d-flex flex-column">
-                        
-            <form class='mt-3 ml-2' method='POST' action='ficheTravail'>
-                    <h6>Date d'envoi prévue:</h6>
-                    <input type='hidden' value='3212026' name='dateId'>
-                    <input type='date' name='estimDate' value=2021-01-08>
-                    <button type='submit' class='btn btn-sm btn-success'><i class='far fa-exchange'></i></button>
-                    </form>           
+          
+            
+          
+           
             
         </div>
 
@@ -63,31 +55,124 @@
     
        
     </div>
+    <button value="3211995" class=' btn btn-success mt-2' id="addNewItem"><i class='far fa-plus'></i></i></button>
+    <div class="div" style="display: flex; justify-content: center; margin-top: 1%;">
+    
+        <table CELLSPACING=0 style="width: 95%;  margin-top : 10px;" class="table">
 
-    <div class="div" style="display: flex; justify-content: center; margin-top: 10%;">
-        <table CELLSPACING=0 style="width: 95%;" class="table">
-            
-                <tr style=" margin-top : 50px; background-color: #dedede; vertical-align: top;" >
-                    <td style="width: 5%; background-color: white; border-style: none;" ></td>
-                    <td style="width: 13%; text-align: left;">Prestation<br>Type<br>Garantie</td>
-                    <td style="width: 50%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
-                    <td style="text-align: right; width: 12%"><strong>CMD</strong><br>Livr</td>
-                </tr>
-           
-                <tr style='font-size: 95%;'>
-                                <td style='border-style: none; '> <button class='clickFT btn btn-danger mt-2 ' value='12914''><i class='fas fa-print'></i></button></td>
-                                <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>Vente <br> reconditionné <br> 36 mois </td>
-                                <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><small>désignation sur le devis:</small> <strong> Imprimante Zebra ZM600</strong>  <br>Imprimante thermique ZM600 ZEBRA <br><p><a href="http://intranet/locator_query.php?f_art=ZM600200E0100T"><strong>ZM600200E0100T</strong></a></p> </td>
-                                <td style='border-bottom: 1px #ccc solid;  text-align: right; background-color: #ffeded; '><strong> 1 </strong> </td>
-                                </tr><tr style='font-size: 95%;'>
-                                <td style='border-style: none; '> <button class='clickFT btn btn-secondary mt-2' value='12917' '><i class='fas fa-clipboard-list'></i></button></td>
-                                <td style='border-bottom: 1px #ccc solid; text-align:left;'>Port <br> Non Concerné <br>   </td>
-                                <td style='border-bottom: 1px #ccc solid'><strong> Forfait emballage et port <br>  </td>
-                                <td style='border-bottom: 1px #ccc solid;  text-align: right '><strong> 1 </strong> </td>
-                                </tr>        </table> 
+
+        <tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='12828'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>Vente <br> neuf <br>  </td>
+                    <td style='border-bottom: 1px #ccc solid; '><strong> 1 x tête d'impression 203dpi pour imprimante Zebra ZM400</strong>  <br><small>Famille marque modèle:</small> Imprimante thermique test_tete GENERIQUE  </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> 1 - 1 - 1 <br> 359.00 €  </strong> </td></tr><tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='12829'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>Vente <br> neuf <br>  </td>
+                    <td style='border-bottom: 1px #ccc solid; '><strong> 2 x tête d'impression 203dpi pour imprimante Zebra ZM600</strong>  <br><small>Famille marque modèle:</small> Imprimante thermique test_tete GENERIQUE  </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> 2 - 2 - 2 <br> 386.00 €  </strong> </td></tr><tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='12830'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>Vente <br> neuf <br>  </td>
+                    <td style='border-bottom: 1px #ccc solid; '><strong> 1 x tête d'impression 203dpi pour imprimante Zebra ZT420</strong>  <br><small>Famille marque modèle:</small> Imprimante thermique test_tete GENERIQUE  </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> 1 - 1 - 1 <br> 419.00 €  </strong> </td></tr><tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='12831'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>Vente <br> reconditionné <br> 06 mois  </td>
+                    <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> 3 x scanner Motorola LS3408 1D filaire </strong>  <br><small>Famille marque modele:</small> Lecteur code barre LS3408 ZEBRA  </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  background-color: #ffeded;'><strong> 3 - 0 - 0 <br> 169.00 €  </strong> </td></tr><tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='12832'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>Vente <br> reconditionné <br> 06 mois  </td>
+                    <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><strong> 2 x scanner Motorola LS3478 1D sans fil - kit complet</strong>  <br><small>Famille marque modele:</small> Pièce détachée NC GENERIQUE  </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  background-color: #ffeded;'><strong> 2 - 0 - 0 <br> 485.00 €  </strong> </td></tr><tr style='font-size: 95%;'>
+                    <td style='border-style: none; '> <button class='clickFact btn btn-success mt-2' value='12833'  '><i class='far fa-magic'></i></i></button></td>
+                    <td style='border-bottom: 1px #ccc solid; text-align:left; '>Port <br> Non Concerné <br>  </td>
+                    <td style='border-bottom: 1px #ccc solid; '><strong> 1 x Forfait emballage et port </strong>  <br><small>Famille marque modèle:</small> Service Forfait emballage et port 5Kg RECODE  </td>
+                    <td style='border-bottom: 1px #ccc solid;  text-align: right;  '><strong> 1 - 1 - 1 <br> 35.00 €  </strong> </td></tr>              
+        </table> 
      </div>
-     <div class="d-flex justify-content-end mr-3">
-     <p><b>pas de commentaire interne</b></p>     </div>
+
+
+        
+     <div class="d-flex mt-1 justify-content-between">
+
+     <div class=" card  px-2 mx-1 col-6">
+        <div>
+            <div class="my-4">
+               <div class="d-flex justify-content-between">
+                   <div>
+                        TVA: 
+                        <b>20.00 %</b>                    </div>
+                    <div>
+                        <button value="3211995" class="btn btn-success btn-sm" id="buttonModalTVA"><i class='far fa-magic'></i></button>
+                        
+                    </div>
+               </div>
+            </div>
+            <hr class="my-4">
+            <p>
+                code cmd client: <b>4700059448</b>            </p>
+            <hr class="my-4">
+            <p>
+                Pas de commentaire Client            </p>
+        </div>
+     </div>
+
+    
+     <div class="card px-4 py-2 mx-1 col-6">
+        <div>
+            <h3>Total :</h3>
+            <hr class="mx-2">
+        </div>
+
+        <div>
+    <table class="table table-sm">
+            <thead>
+                    <tr>
+                    <th scope="col">Prix € HT</th>
+                    <th scope="col">Taux TVA</th>
+                    <th scope="col">Montant TVA</th>
+                    <th scope="col">Total TTC</th>
+                    </tr>
+            </thead>
+            <tbody> 
+                <tr>  
+            <td class='text-right'><b>1 585,00 €</b></td><td class='text-right'>20,00 %</td><td class='text-right'>317,00 €</td><td class='text-right'><b>1 902,00 €</b></td>            </tr>
+            </tbody>
+    </table>
+
+           
+
+        </div>
+
+     </div>
+
+
+
+
+     
+
+
+
+
+     </div>
+
+
+
+
+
+
+
+
+     <div class="d-flex justify-content-end mr-3 mt-4 align-items-end"> 
+     <form class="text-right d-inline mx-2" method="POST" action="archiveFacture">
+     <input type="hidden" value="3211995" name="archiveID">
+     <button class="btn btn-secondary btn-lg">Archiver</button>
+     </form>
+          <form class="text-right d-inline mx-2" method="POST" action="printFTC" id="PostForms">
+     <input class="form-control my-2" type="date" id="date_fact" name="date_fact" value="2021-01-11">
+     <input type="hidden" value="3211995" name="hiddenCommentaire" id="hiddenCommentaire" >
+     <button class="btn btn-success btn-lg btn-block">Facturer</button>
+     </form>
+     <p id="keystroke"></p>
+     </div>
     
     
      </div>

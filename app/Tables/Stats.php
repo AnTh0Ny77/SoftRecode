@@ -97,7 +97,7 @@ public function returnCmdBetween2Dates($debut , $fin , $abn)
     $request =$this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur 
     FROM cmd 
     LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
-    WHERE  cmd__date_fact > '".$debut."' AND cmd__date_fact < '".$fin."'
+    WHERE  ( cmd__date_fact BETWEEN  '".$debut." 00:00:00 ' AND  '".$fin." 23:59:59' )
     ".$stat."
     ORDER BY cmd__date_fact DESC 
     ");

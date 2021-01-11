@@ -97,7 +97,9 @@ VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571101
         foreach ($value as $test) 
         {
            
-            $compta = $Cmd->getCompta($test , $commande);
+            if (floatval($test->devl_puht) > 00.00 ) 
+            {
+                $compta = $Cmd->getCompta($test , $commande);
             
             $txt.= 'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.'; ;'.$test->devl__type .' '.$test->cmdl__qte_fact.' '.$test->famille.';'.$compta[0]->cpt__compte_quadra.'; ;'.number_format($test->devl_puht * $test->cmdl__qte_fact , 2 , ',' ,' ').'
 ';
@@ -107,6 +109,8 @@ VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571101
                 $txt.= 'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.'; ;EXT'.$test->cmdl__qte_fact.' '.$test->famille.';'.$compta[1]->cpt__compte_quadra.'; ;'.number_format($test->cmdl__garantie_puht * $test->cmdl__qte_fact, 2, ',' , ' ').'
 ';
             }
+            }
+           
             
         }
         
