@@ -63,6 +63,15 @@ $commande_temporaire = $Cmd->GetById($_POST['hiddenCommentaire']);
 $ligne_temporaire = $Cmd->devisLigne($_POST['hiddenCommentaire']);
 
 
+//controle si la facture  n'est pas deja une facture :
+if ($commande_temporaire->devis__etat == 'VLD') 
+{
+    $_SESSION['facture'] = $_POST['hiddenCommentaire'];
+    header('location: facture');
+    die();
+}
+
+
 //controle si le total n'est pas a zero : 
 $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);        
        
@@ -124,35 +133,16 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
 
             //Debut de l'enregistrement: 
             ob_start();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             ?>
+
             <style type="text/css">
-            
-                .page_header{
+                .page_header
+                {
                     margin-left: 30px;
                     margin-top: 30px;
                 }
-
-                
                 
                 table{   font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate; }
-                
                 strong{ color:#000;}
                 h3{ color:#666666;}
                 h2{ color:#3b3b3b;}
