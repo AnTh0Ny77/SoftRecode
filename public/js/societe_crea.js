@@ -43,7 +43,23 @@ if ($('#commentaire_client').length)
          });     
 }
 
+let chekifitracom = function ()
+{
+   let intracom =  $('#intracom_input').val();
 
+   if (intracom.length > 1 ) 
+   {
+        $('#div_intracom').removeClass('d-none');
+        $('#intracom_input').prop('required', true);
+   }
+   else 
+   {
+        $('#div_intracom').addClass('d-none');
+        $('#intracom_input').prop('required', false);
+    }
+}
+
+chekifitracom();
 
 
     $('#select_tva').on('change', function()

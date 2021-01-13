@@ -1,0 +1,82 @@
+{% extends 'layoutLight.twig' %}
+
+
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="public/css/dashboard.css">
+{% endblock %}
+ 
+
+{% block main %}
+
+
+<main  role="main" class=" pt-3 px-4"> 
+    
+    
+
+    <div class="d-flex justify-content-start flex-column mb-5 border-bottom">
+        <h2>Choix du client</h2>
+    </div>
+
+    <div class=" my-1  col-5">
+
+        <!--carte recherche-->
+        <div class='card-body' id="search_client">
+            <input class="form-control mr-sm-2 " list="search_list" type="search"  placeholder="Recherche client" aria-label="Search" id="client_input" autocomplete='off'>
+            <ul id="search_list" class="list-group">
+                
+            <ul/>
+        </div>
+
+
+        <div class="container">
+
+            <!--carte client select -->
+            <div class="card bg-light mb-3 d-none" id="card_client">
+                <div class="card-header">
+                   
+                    <button type="button" class="close"  aria-label="Close" id="client_button">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      <h5 class="card-title text-primary" id="titre_client"></h5>
+                </div>
+                <div class="card-body">
+                    <h6 id="societe_client"></h6>
+                    <p class="card-text"></p>
+                </div>
+            </div>
+
+            <div class="modal-footer d-none" id="card_form">
+                <form id="container_forms" class="d-none" action='societe_crea' method='POST'>
+                    <input type="hidden" id="hidden_client" name="hidden_client">
+                    <button class='btn btn-success'>Modifier</button>
+                </form>
+            </div>
+            
+           
+
+        </div>
+        
+          
+    </div>
+  
+
+</main>
+{% endblock %}
+     
+{% block script %}
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
+<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+
+<script type="text/javascript" src="public/js/admin_client.js"></script>
+
+{% endblock %}

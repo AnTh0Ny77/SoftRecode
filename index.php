@@ -105,6 +105,15 @@
     case '/SoftRecode/ligneDevisV2';
       require __DIR__ .'/pages/NligneDevisV2.php'; break;
 
+    case '/SoftRecode/admin_client';
+      require __DIR__ .'/pages/admin_client.php'; break;
+
+    case '/SoftRecode/admin_contact';
+      require __DIR__ .'/pages/admin_contact.php'; break;
+
+    case '/SoftRecode/test';
+      require __DIR__ .'/pages/test.php'; break;
+
       
     //transport / fiches de travail->
     case '/SoftRecode/transport';

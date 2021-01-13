@@ -19,13 +19,17 @@ $user = $_SESSION['user'];
  $Database->DbConnect();
  $Client = new App\Tables\Client($Database);
  $Keywords = new App\Tables\Keyword($Database);
- 
+ $Contact = new App\Tables\Contact($Database);
+ $General = new App\Tables\General($Database);
  
  $keywordList = $Keywords->get2_icon();
 
  $alert = false ;
  $alertSuccess = false ;
- if (!empty($_POST['fonctionContact']) && !empty($_POST['sociteContact'])) 
+ $alert_modif = false ;
+ $modif = false ;
+
+ if (!empty($_POST['fonctionContact']) && !empty($_POST['sociteContact']) && empty($_POST['modif_id'])) 
  {
      $verif = $Client->getOne($_POST['sociteContact']);
      if (!empty($verif)) 
@@ -65,6 +69,39 @@ $user = $_SESSION['user'];
      }
  }
 
+ //si une mise a jour a été effectuée :
+ if (!empty($_POST['modif_id']) && !empty($_POST['fonctionContact'])) 
+ {
+   //je met à jour dans sossuke puis totoro 
+   $General->updateAll('contact' , $_POST['fonctionContact'] , 'contact__fonction' , 'contact__id' , $_POST['modif_id']);
+   $General->updateAll('contact' , $_POST['civiliteContact'] , 'contact__civ' , 'contact__id' , $_POST['modif_id']);
+   $General->updateAll('contact' , $_POST['nomContact'] , 'contact__nom' , 'contact__id' , $_POST['modif_id']);
+   $General->updateAll('contact' , $_POST['prenomContact'] , 'contact__prenom' , 'contact__id' , $_POST['modif_id']);
+   $General->updateAll('contact' , $_POST['telContact'] , 'contact__telephone' , 'contact__id' , $_POST['modif_id']);
+   $General->updateAll('contact' , $_POST['faxContact'] , 'contact__fax' , 'contact__id' , $_POST['modif_id']);
+   $General->updateAll('contact' , $_POST['mailContact'] , 'contact__email' , 'contact__id' , $_POST['modif_id']);
+   
+  //  $Totoro = new App\Totoro('euro');
+  //  $Totoro->DbConnect();
+  //  $ContactTotoro = new App\Tables\ContactTotoro($Totoro);
+  //  $ContactTotoro->updateAll('crm_contact' , $_POST['fonctionContact'] , 'interet_contact' , 'id_contact' , $_POST['modif__id']);
+  //  $ContactTotoro->updateAll('crm_contact' , $_POST['civiliteContact'] , 'civ' , 'id_contact' , $_POST['modif__id']);
+  //  $ContactTotoro->updateAll('crm_contact' , $_POST['nomContact'] , 'nom' , 'id_contact' , $_POST['modif__id']);
+  //  $ContactTotoro->updateAll('crm_contact' , $_POST['prenomContact'] , 'prenom' , 'id_contact' , $_POST['modif__id']);
+  //  $ContactTotoro->updateAll('crm_contact' , $_POST['telContact'] , 'gsm' , 'id_contact' , $_POST['modif__id']);
+  //  $ContactTotoro->updateAll('crm_contact' , $_POST['faxContact'] , 'fax' , 'id_contact' , $_POST['modif__id']);
+  //  $ContactTotoro->updateAll('crm_contact' , $_POST['mailContact'] , 'email' , 'id_contact' , $_POST['modif__id']);
+  
+  $alert_modif = true;
+   
+ }
+
+ if (!empty($_POST['contact_select'])) 
+ {
+  $modif = $Contact->getOne($_POST['contact_select']);
+  
+ }
+
  $clientList = $Client->getAll();
 
 // Donnée transmise au template : 
@@ -73,6 +110,8 @@ echo $twig->render('contactCrea.twig',[
    'keywordList' => $keywordList, 
    'alert' => $alert , 
    'alertSucces' => $alertSuccess , 
-   'clientList' => $clientList
+   'clientList' => $clientList , 
+   'modif' => $modif ,
+  'alert_modif' => $alert_modif
    ]);
 }

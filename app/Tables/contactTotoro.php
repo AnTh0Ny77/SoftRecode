@@ -61,5 +61,16 @@ public function insertSociete($client_sossuke)
     return $idSociete;
 }
 
+public function updateAll( string $table, $data, string $column, string $condition, string $clause )
+{
+  $update = $this->Db->Pdo->prepare
+    ('UPDATE  '.$table.'
+    SET '. $column .' = ? 
+    WHERE '.$condition.' = ?');
+      
+  $update->execute([$data, $clause]);
+
+}
+
 }
 	

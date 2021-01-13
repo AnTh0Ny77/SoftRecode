@@ -25,7 +25,7 @@ public function getFromLiaison($idClient){
 }
 
 public function getOne($id){
-    $request =$this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , contact__civ , contact__email , k.kw__lib 
+    $request =$this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , contact__fax ,  contact__civ , contact__telephone , contact__email , k.kw__lib , contact__fonction
     FROM contact 
     JOIN keyword AS k ON contact__fonction = k.kw__value AND k.kw__type = 'i_con'
     WHERE contact__id = ". $id ."");
