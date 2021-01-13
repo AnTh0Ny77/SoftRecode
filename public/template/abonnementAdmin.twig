@@ -180,11 +180,19 @@
                         <th scope="col">{{ligne.abl__dt_debut}}</th>
                         <th scope="col">{{ligne.abl__sn}} <i class=" text-success fas fa-check"></i></th>
                         <th scope="col">
+                          <div class="d-flex">
+                             <form action="ajoutMachine" method="POST">
+                            <input type="hidden" value="{{ligne.abl__cmd__id}}" name="idCMD">
+                            <input type="hidden" value="{{ligne.abl__ligne}}" name="numLigne">
+                            <button class="btn btn-link"><i class="far fa-copy"></i></button>
+                          </form>
                           <form action="adminMachine" method="POST">
                             <input type="hidden" value="{{ligne.abl__cmd__id}}" name="idCMD">
                             <input type="hidden" value="{{ligne.abl__ligne}}" name="numLigne">
                             <button class="btn btn-link"><i class="fad fa-screwdriver"></i></button>
                           </form>
+                          </div>
+                         
                         </th>
                       </tr>
                       

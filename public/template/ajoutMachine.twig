@@ -48,20 +48,38 @@
     <div class="form-group col-md-4">
         <p >Famille-marque-modèle</p>
         <select id="inputStateFF" class="selectpicker" name="fmm" data-width="85%" data-live-search="true" required>
-         {% for model in modeleList %}
-         <option value="{{model.afmm__id}}">{{model.famille ~ " " ~ model.afmm__modele ~ " " ~ model.Marque}}</option>
-         {% endfor %}
+        {% if duplicata %}
+           {% for model in modeleList %}
+                {% if duplicata.abl__id__fmm == model.afmm__id %}
+                  <option value="{{model.afmm__id}}" selected>{{model.famille ~ " " ~ model.afmm__modele ~ " " ~ model.Marque}}</option>
+                {% else %}
+                  <option value="{{model.afmm__id}}">{{model.famille ~ " " ~ model.afmm__modele ~ " " ~ model.Marque}}</option>
+                {% endif %}
+                
+           {% endfor %}
+        {% else %}
+          {% for model in modeleList %}
+          <option value="{{model.afmm__id}}">{{model.famille ~ " " ~ model.afmm__modele ~ " " ~ model.Marque}}</option>
+          {% endfor %}
+        {% endif %}
+        
         </select>
        
       </div>
 
     <div class="form-group col-md-4">
       <label for="inputEmail4">Désignation</label>
-      <input type="text" name="designation" class="form-control" id="inputEmail4" placeholder="désignation" required>
+       {% if duplicata %}
+        <input type="text" value="{{duplicata.abl__designation}}" name="designation" class="form-control" id="inputEmail4" placeholder="désignation" required>
+       {% else %}
+        <input type="text" name="designation" class="form-control" id="inputEmail4" placeholder="désignation" required>
+       {% endif %}
+      
     </div>
 
     <div class="form-group col-md-4">
         <label for="inputEmail4">Numéro de série</label>
+
         <input type="text" name="sn" class="form-control" id="inputEmail4" placeholder="N° de série" required>
       </div>
   </div>
@@ -71,18 +89,40 @@
     <div class="form-group col-md-4">
       <label for="inputState">Prestation</label>
       <select id="inputState" class="form-control" name="prestation">
-        {% for presta in prestaList %}
-        <option value="{{presta.kw__value}}">{{ presta.kw__lib}}</option>
+      {% if duplicata %}
+         {% for presta in prestaList %}
+            {% if duplicata.abl__type_repair == presta.kw__value %}
+              <option value="{{presta.kw__value}}">{{ presta.kw__lib}}</option>
+            {% else %}
+              <option value="{{presta.kw__value}}" selected>{{ presta.kw__lib}}</option>
+            {% endif %}
+            
         {% endfor %}
+      {% else %}
+         {% for presta in prestaList %}
+          <option value="{{presta.kw__value}}">{{ presta.kw__lib}}</option>
+        {% endfor %}
+      {% endif %}
+       
       </select>
     </div>
     <div class="form-group col-md-2">
         <label for="inputEmail4">Prix au mois H.T</label>
-        <input type="text" name="prix" class="form-control" id="inputEmail4" placeholder="Prix" required>
+        {% if duplicata %}
+          <input type="text" name="prix" value='{{duplicata.abl__prix_mois}}' class="form-control" id="inputEmail4" placeholder="Prix" required>
+        {% else %}
+          <input type="text" name="prix" class="form-control" id="inputEmail4" placeholder="Prix" required>
+        {% endif %}
+        
       </div>
       <div class="form-group col-md-2">
         <label for="inputEmail4">Date de début</label>
-        <input class="form-control" type='date' name='date'>
+        {% if duplicata %}
+          <input class="form-control" value='{{duplicata.abl__dt_debut}}' type='date' name='date'>
+        {% else %}
+          <input class="form-control" type='date' name='date'>
+        {% endif %}
+        
       </div>
   </div>
   
@@ -92,7 +132,12 @@
 
   <div class="form-group">
     <div class="col-6 mt-4">
-      <textarea  id="comAbn" name="comAbn" placeholder="Commentaire abonnement...." ></textarea>
+      {% if duplicata %}
+        <textarea value="{{duplicata.abl__note_interne}}"  id="comAbn" name="comAbn" placeholder="Commentaire abonnement...." ></textarea>
+      {% else %}
+        <textarea  id="comAbn" name="comAbn" placeholder="Commentaire abonnement...." ></textarea>
+      {% endif %}
+      
     </div>
   </div>
   <div class="modal-footer">

@@ -30,6 +30,7 @@ session_start();
  $prestaList = $Keyword->getPrestaABN();
  $moisList = $Keyword->getGaranties();
  $modeleList = $Article->getModels();
+ $duplicata = false ;
  $alert = false;
 
 
@@ -52,6 +53,26 @@ if (!empty($_POST['idCmd'])  )
 
  
 }
+
+if (!empty($_POST['idCMD'])) 
+{
+  $valid = $Cmd->getById($_POST['idCMD']);
+  $verif = $Abonnement->getById($_POST['idCMD']);
+
+  if ($verif->ab__presta == 'LOC') 
+  {
+    $prestaList = $Keyword->getPrestaABL();
+  }
+  else
+  {
+    $prestaList = $Keyword->getPrestaABM();
+  }
+
+  $duplicata = $Abonnement->getOneLigne($_POST['idCMD'] ,$_POST['numLigne']);
+
+}
+
+
 
 
 // si une machine à été ajoutée: 
@@ -85,7 +106,8 @@ if (!empty($_POST['idCmd'])  )
   'moisList' => $moisList,
   'alert' => $alert ,
   'cmd' => $valid, 
-  'modeleList' => $modeleList
+  'modeleList' => $modeleList, 
+  'duplicata' => $duplicata
   ]);
  
  
