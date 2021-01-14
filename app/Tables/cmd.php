@@ -1315,6 +1315,46 @@ public function insertLine($object){
 }
 
 //insère une ligne dans un devis :
+public function insertLineDevis($object){
+  $requestLigne =  $this->Db->Pdo->prepare(
+    'INSERT INTO  cmd_ligne (
+     cmdl__cmd__id, cmdl__prestation,  cmdl__designation ,
+     cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  ,  
+     cmdl__puht , cmdl__note_client  ,  cmdl__ordre , cmdl__id__fmm ,  cmdl__qte_livr)
+     VALUES (
+     :devl__devis__id, :devl__type,  :devl__designation,
+     :devl__etat, :devl__mois_garantie , :devl_quantite,  
+     :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm , :cmdl__qte_livr)');
+
+
+    $verifOrdre = $this->Db->Pdo->query(
+      'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne WHERE cmdl__cmd__id = '.$object->idDevis.' ');
+
+    $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
+    
+    
+    
+    $ordreMax = $ordreMax->maxOrdre + 1 ;
+
+    $requestLigne->bindValue(":devl__devis__id", $object->idDevis);
+    $requestLigne->bindValue(":devl__type", $object->prestation);
+    $requestLigne->bindValue(":devl__designation", $object->designation);
+    $requestLigne->bindValue(":devl__etat", $object->etat);
+    $requestLigne->bindValue(":devl__mois_garantie", intval($object->garantie));
+    $requestLigne->bindValue(":devl_quantite", $object->quantite);
+    $requestLigne->bindValue(":devl_puht", floatval($object->prix));
+    $requestLigne->bindValue(":devl__note_client", $object->comClient);
+    $requestLigne->bindValue(":devl__ordre", $ordreMax);
+    $requestLigne->bindValue(":id__fmm", $object->idfmm);
+    $requestLigne->bindValue(":cmdl__qte_livr", intval($object->quantite));
+    $requestLigne->execute();  
+    
+    return $requestLigne;
+}
+
+
+
+//insère une ligne dans un devis :
 public function insertLineReliquat($object){
   $requestLigne =  $this->Db->Pdo->prepare(
     'INSERT INTO  cmd_ligne (
@@ -1364,11 +1404,11 @@ public function insert_ligne_duplicata($cmdId, $object)
     'INSERT INTO  cmd_ligne (
      cmdl__cmd__id, cmdl__prestation,  cmdl__designation ,
      cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  ,  
-     cmdl__puht , cmdl__note_facture  ,  cmdl__ordre , cmdl__id__fmm , cmdl__garantie_option , cmdl__garantie_puht , cmdl__note_interne , cmdl__etat_masque , cmdl__image , cmdl__actif )
+     cmdl__puht , cmdl__note_facture  ,  cmdl__ordre , cmdl__id__fmm , cmdl__note_interne , cmdl__etat_masque , cmdl__image , cmdl__actif )
      VALUES (
      :devl__devis__id, :devl__type,  :devl__designation,
      :devl__etat, :devl__mois_garantie , :devl_quantite,  
-     :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm , :cmdl__garantie_option , :cmdl__garantie_puht , :cmdl__note_interne , :cmdl__etat_masque , :cmdl__image , :cmdl__actif )');
+     :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm ,  :cmdl__note_interne , :cmdl__etat_masque , :cmdl__image , :cmdl__actif )');
 
 
     $verifOrdre = $this->Db->Pdo->query(
@@ -1388,8 +1428,7 @@ public function insert_ligne_duplicata($cmdId, $object)
     $requestLigne->bindValue(":devl__note_client", $object->devl__note_client);
     $requestLigne->bindValue(":devl__ordre", $ordreMax);
     $requestLigne->bindValue(":id__fmm", $object->id__fmm);
-    $requestLigne->bindValue(":cmdl__garantie_option", $object->devl__mois_garantie);
-    $requestLigne->bindValue(":cmdl__garantie_puht", floatVal($object->cmdl__garantie_puht));
+   
     $requestLigne->bindValue(":cmdl__note_interne", $object->devl__note_interne);
     $requestLigne->bindValue(":cmdl__etat_masque", $object->cmdl__etat_masque);
     $requestLigne->bindValue(":cmdl__image", $object->cmdl__image);
