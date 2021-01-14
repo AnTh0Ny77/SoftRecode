@@ -70,6 +70,7 @@ if (!empty($_POST['exportStart']) && !empty($_POST['exportEnd']))
         $lignes = $Cmd->devisLigne($value[0]->cmdl__cmd__id);
         $total = Pdfunctions::totalFacture($commande,$value);
         $libelle = 'F';
+        
         if ($commande->cmd__modele_facture == 'AVR') 
         {
             $libelle = 'A';
