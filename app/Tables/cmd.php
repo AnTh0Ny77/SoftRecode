@@ -1404,7 +1404,7 @@ public function insert_ligne_duplicata($cmdId, $object)
     'INSERT INTO  cmd_ligne (
      cmdl__cmd__id, cmdl__prestation,  cmdl__designation ,
      cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  ,  
-     cmdl__puht , cmdl__note_facture  ,  cmdl__ordre , cmdl__id__fmm , cmdl__note_interne , cmdl__etat_masque , cmdl__image , cmdl__actif )
+     cmdl__puht , cmdl__note_client  ,  cmdl__ordre , cmdl__id__fmm , cmdl__note_interne , cmdl__etat_masque , cmdl__image , cmdl__actif )
      VALUES (
      :devl__devis__id, :devl__type,  :devl__designation,
      :devl__etat, :devl__mois_garantie , :devl_quantite,  
