@@ -31,6 +31,7 @@ $user = $_SESSION['user'];
 
  if (!empty($_POST['fonctionContact']) && !empty($_POST['sociteContact']) && empty($_POST['modif_id'])) 
  {
+   
      $verif = $Client->getOne($_POST['sociteContact']);
      if (!empty($verif)) 
      {
@@ -81,16 +82,16 @@ $user = $_SESSION['user'];
    $General->updateAll('contact' , $_POST['faxContact'] , 'contact__fax' , 'contact__id' , $_POST['modif_id']);
    $General->updateAll('contact' , $_POST['mailContact'] , 'contact__email' , 'contact__id' , $_POST['modif_id']);
    
-  //  $Totoro = new App\Totoro('euro');
-  //  $Totoro->DbConnect();
-  //  $ContactTotoro = new App\Tables\ContactTotoro($Totoro);
-  //  $ContactTotoro->updateAll('crm_contact' , $_POST['fonctionContact'] , 'interet_contact' , 'id_contact' , $_POST['modif__id']);
-  //  $ContactTotoro->updateAll('crm_contact' , $_POST['civiliteContact'] , 'civ' , 'id_contact' , $_POST['modif__id']);
-  //  $ContactTotoro->updateAll('crm_contact' , $_POST['nomContact'] , 'nom' , 'id_contact' , $_POST['modif__id']);
-  //  $ContactTotoro->updateAll('crm_contact' , $_POST['prenomContact'] , 'prenom' , 'id_contact' , $_POST['modif__id']);
-  //  $ContactTotoro->updateAll('crm_contact' , $_POST['telContact'] , 'gsm' , 'id_contact' , $_POST['modif__id']);
-  //  $ContactTotoro->updateAll('crm_contact' , $_POST['faxContact'] , 'fax' , 'id_contact' , $_POST['modif__id']);
-  //  $ContactTotoro->updateAll('crm_contact' , $_POST['mailContact'] , 'email' , 'id_contact' , $_POST['modif__id']);
+   $Totoro = new App\Totoro('euro');
+   $Totoro->DbConnect();
+   $ContactTotoro = new App\Tables\ContactTotoro($Totoro);
+   $ContactTotoro->updateAll('crm_contact' , $_POST['fonctionContact'] , 'interet_contact' , 'id_contact' , $_POST['modif_id']);
+   $ContactTotoro->updateAll('crm_contact' , $_POST['civiliteContact'] , 'civ' , 'id_contact' , $_POST['modif_id']);
+   $ContactTotoro->updateAll('crm_contact' , $_POST['nomContact'] , 'nom' , 'id_contact' , $_POST['modif_id']);
+   $ContactTotoro->updateAll('crm_contact' , $_POST['prenomContact'] , 'prenom' , 'id_contact' , $_POST['modif_id']);
+   $ContactTotoro->updateAll('crm_contact' , $_POST['telContact'] , 'gsm' , 'id_contact' , $_POST['modif_id']);
+   $ContactTotoro->updateAll('crm_contact' , $_POST['faxContact'] , 'fax' , 'id_contact' , $_POST['modif_id']);
+   $ContactTotoro->updateAll('crm_contact' , $_POST['mailContact'] , 'email' , 'id_contact' , $_POST['modif_id']);
   
   $alert_modif = true;
    

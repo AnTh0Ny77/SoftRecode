@@ -1280,7 +1280,7 @@ public function insertLine($object){
     'INSERT INTO  cmd_ligne (
      cmdl__cmd__id, cmdl__prestation,  cmdl__designation ,
      cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  ,  
-     cmdl__puht , cmdl__note_facture  ,  cmdl__ordre , cmdl__id__fmm , cmdl__garantie_option , cmdl__garantie_puht , cmdl__qte_livr)
+     cmdl__puht , cmdl__note_client  ,  cmdl__ordre , cmdl__id__fmm , cmdl__garantie_option , cmdl__garantie_puht , cmdl__qte_livr)
      VALUES (
      :devl__devis__id, :devl__type,  :devl__designation,
      :devl__etat, :devl__mois_garantie , :devl_quantite,  

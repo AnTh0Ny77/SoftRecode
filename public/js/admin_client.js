@@ -20,6 +20,12 @@ $(document).ready(function()
                 success: function(data)
                 {
                     dataSet = JSON.parse(data); 
+                    $('#card_creation').addClass('d-none');
+                    if (dataSet.length < 1) 
+                    {
+                        $('#card_creation').removeClass('d-none');
+                    }
+                   
                     //cree une suggestion pour chaque concordances trouvée: 
                     for (let index = 0; index < dataSet.length; index++)
                     {
