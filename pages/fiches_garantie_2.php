@@ -26,7 +26,7 @@ $Database->DbConnect();
 //listes  : 
 $clientList = $Client->get_client_devis();
 $modeleList = $Keywords->getModele();
-
+$articleTypeList = $Article->getModels();
 
 
 
@@ -36,5 +36,6 @@ echo $twig->render('fiches_garanties_2.twig',
    'user'=>$_SESSION['user'],
    'clientList' => $clientList,
    'modeleList' => $modeleList,
+   'articleList' => $articleTypeList
    
 ]);;

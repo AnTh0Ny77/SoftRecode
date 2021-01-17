@@ -32,7 +32,7 @@ $(document).ready(function()
                     //fonction sur le click pour chaque nouvelle option:
                     $('.click_option').on('click' , function()
                     {
-                        $("#progress_bar").css({"width": "30%"});
+                       
                         $('#search_list li').remove();
                         $('#client_input').val('');
                         $('#card_client').toggleClass('d-none');
@@ -97,16 +97,111 @@ $(document).ready(function()
      //fonction pour retablir son choix client et reinitialiser le formulaire: 
      $('#client_button').on('click', function()
      {
-        $("#progress_bar").css({"width": "10%"});
+      
         $('#contact_select option').remove();
         $('#search_list li').remove();
         $('#client_input').val('');
         $('#card_client').toggleClass('d-none');
         $('#search_client').toggleClass('d-none');
         $('#container_forms').toggleClass('d-none');
+        tableau_article = [];
+        write_array(); 
         
      })
 
+     //check si le tableau article est present et crée le formulaire a poster  :  
+     let check_post = function()
+     {
+         if (tableau_article.length > 0 ) 
+         {
+            $('#print_button').removeClass('d-none');
+         }
+         else 
+         {
+            $('#print_button').addClass('d-none');
+         }
+     }
+
+
+     //transmet sur le change de l'article : 
+     $('#choixDesignation').on('change' , function()
+     {
+          let article = $(this).children("option:selected").html();
+         $('#designationArticle').val(article);
+     })
+
+     let tableau_article = [];
+     
+     let write_array = function()
+     {
+        $("#form_article").html('');
+        for (let index = 0; index < tableau_article.length; index++) 
+        {
+            //on creer une ligne pour chaque article : 
+           let ite = index + 1 ;
+           if(tableau_article[index].typ == 'ECH')
+           {
+               text_variable = 'Echange:'
+           }
+           else
+           {
+               text_variable = 'Retour:'
+           } 
+           let new_line = '<div class=" shadow card my-3 px-4 py-4 d-flex flex-row justify-content-around"><div >'+ text_variable  +'</div> <div class="mx-3">'+ tableau_article[index].qte + ' X <b class="mx-3">' + tableau_article[index].design +'</b></div><div> <button type="button" class=" btn btn-danger btn-sm click_article" value="'+index+'"><i class="far fa-times"></i></button></div>  </div>';
+          
+           $("#form_article").append(new_line);
+          
+        }
+        delete_article();
+        check_post();
+     }
+     let delete_article = function()
+     {
+        $('.click_article').on('click', function()
+        {
+           
+           tableau_article.splice(this.value, 1);
+           write_array(); 
+        })
+        
+     }
+
+     //post d'un article :
+     $('#post_article').on('click', function()
+     {
+       
+
+         let id__fmm =  $('#choixDesignation').children("option:selected").val(); 
+         let designation =$('#choixDesignation').children("option:selected").html();
+         let quantite = $('#quantiteLigne').val();
+         let type = $('#typeLigne').val();
+        
+        
+         if ( designation.length > 1 && quantite > 0) 
+         {
+             let article = 
+             {
+                 id : id__fmm ,
+                 design : designation ,
+                 qte : quantite ,
+                 typ : type ,
+               
+             }
+             tableau_article.push(article);
+             write_array();
+             
+
+             
+            
+         }
+         else 
+         {
+             alert('formulaire incorrect')
+         }
+         
+     })
+     
+       
 
      //innit de l'éditeur de texte de la zone de commentaire: 
      ClassicEditor       
