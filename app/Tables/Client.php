@@ -115,7 +115,7 @@ public function search_client($recherche)
    
     if ($mode_filtre) 
     {
-        $request .=   $operateur. "( client__id LIKE '%".$mots_filtre[0]."%' 
+        $request .=   $operateur. "( CONCAT('0000',client__id) LIKE '%".$mots_filtre[0]."%' 
         OR client__societe LIKE '%".$mots_filtre[0]."%' 
         OR client__ville LIKE '%".$mots_filtre[0]."%' 
         OR client__cp LIKE '%".$mots_filtre[0]."%') ";
