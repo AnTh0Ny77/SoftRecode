@@ -61,12 +61,12 @@
             </div>
 
             <!--carte fortmulaire-->
-            <form id="container_forms" class="d-none">
+            <form id="container_forms" class="d-none" method="POST" action="fiches_garantie">
                 <input type="hidden" id="hidden_client" name="hidden_client">
 
                 <div class="form-group">
                     <label for="contact_select">Contact</label>
-                    <select class="form-control" id="contact_select" data-size="5">
+                    <select class="form-control" id="contact_select" name="contact_select" data-size="5">
                     </select>
                 </div>
 
@@ -91,6 +91,7 @@
 
                 <div class="modal-footer" id="">
                     <button data-toggle="modal" data-target="#modal_ligne" type="button" class="btn btn-success">Articles <i class="fas fa-plus"></i></button>
+                    <input type="hidden" name="json_array" id="json_array">
                      <button  type="submit" id="print_button" class="btn btn-primary d-none" disabled>Valider <i class="fas fa-print"></i></button>
                 </div>
             </form>

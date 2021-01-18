@@ -115,10 +115,12 @@ $(document).ready(function()
          if (tableau_article.length > 0 ) 
          {
             $('#print_button').removeClass('d-none');
+            $('#print_button').removeAttr("disabled");
          }
          else 
          {
             $('#print_button').addClass('d-none');
+            $('#print_button').prop("disabled", true);
          }
      }
 
@@ -132,13 +134,18 @@ $(document).ready(function()
 
      let tableau_article = [];
      
-     let write_array = function()
-     {
+
+
+
+
+     //fonction chargée de d'ecrire le tableau d'article ( recursive => appel delete article qui appelle write-array )
+    let write_array = function()
+    {
+        //vide le formulaire: 
         $("#form_article").html('');
         for (let index = 0; index < tableau_article.length; index++) 
         {
             //on creer une ligne pour chaque article : 
-           let ite = index + 1 ;
            if(tableau_article[index].typ == 'ECH')
            {
                text_variable = 'Echange:'
@@ -150,11 +157,33 @@ $(document).ready(function()
            let new_line = '<div class=" shadow card my-3 px-4 py-4 d-flex flex-row justify-content-around"><div >'+ text_variable  +'</div> <div class="mx-3">'+ tableau_article[index].qte + ' X <b class="mx-3">' + tableau_article[index].design +'</b></div><div> <button type="button" class=" btn btn-danger btn-sm click_article" value="'+index+'"><i class="far fa-times"></i></button></div>  </div>';
           
            $("#form_article").append(new_line);
+        
           
         }
+
+        //fonction qui implemente la fonction de supression d'article et rapelle write post à l'interieur : 
         delete_article();
+        //check le tableau et rend accèssible ou non le post : 
         check_post();
-     }
+
+        //converti le tableau en objet JSON 
+        let json_array = JSON.stringify(tableau_article);
+        //si le tableau n'est pas vide je transmet à l'input : 
+        if (tableau_article.length > 0 ) 
+        {
+            $('#json_array').val(json_array);
+        }
+        else 
+        {
+            $('#json_array').val('');
+        }
+        
+    }
+
+
+
+
+    //implente la fonction de suppression au button des articles : 
      let delete_article = function()
      {
         $('.click_article').on('click', function()
@@ -172,7 +201,7 @@ $(document).ready(function()
        
 
          let id__fmm =  $('#choixDesignation').children("option:selected").val(); 
-         let designation =$('#choixDesignation').children("option:selected").html();
+         let designation = $('#designationArticle').val();
          let quantite = $('#quantiteLigne').val();
          let type = $('#typeLigne').val();
         
@@ -189,10 +218,9 @@ $(document).ready(function()
              }
              tableau_article.push(article);
              write_array();
-             
-
-             
-            
+             $('#designationArticle').val('');   
+             $('#quantiteLigne').val(1); 
+             $('#modal_ligne').modal('hide');
          }
          else 
          {
