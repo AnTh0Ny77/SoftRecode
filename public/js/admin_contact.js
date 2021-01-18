@@ -19,6 +19,7 @@ $(document).ready(function()
                 },
                 success: function(data)
                 {
+                    $('#supose_contact').html('');
                     dataSet = JSON.parse(data); 
                     //cree une suggestion pour chaque concordances trouvée: 
                     for (let index = 0; index < dataSet.length; index++)
@@ -35,11 +36,12 @@ $(document).ready(function()
                        
                         $('#search_list li').remove();
                         $('#client_input').val('');
-                        $('#card_client').toggleClass('d-none');
-                        $('#container_forms').toggleClass('d-none');
-                        $('#search_client').toggleClass('d-none');
-                        $('#card_form').toggleClass('d-none');
+                        $('#card_client').removeClass('d-none');
+                        $('#container_forms').removeClass('d-none');
+                        $('#search_client').addClass('d-none');
+                        $('#card_form').removeClass('d-none');
                         $('#hidden_client').val(this.value);
+                        $('#hidden_client_2').val(this.value);
                         //requete ajax secondaire recupère les infos clients principal : 
                         $.ajax(
                             {
@@ -66,13 +68,14 @@ $(document).ready(function()
                             success: function(data)
                             {
                                 dataSet = JSON.parse(data); 
-                                $('#contact_select').append(new Option('Aucun', '' , false, true));
+                              
                                 for (let index_contact = 0; index_contact <  dataSet.length; index_contact++) 
                                 {
-                                    $('#contact_select').append(new Option(dataSet[index_contact].contact__nom + " " + dataSet[index_contact].contact__prenom + " " + dataSet[index_contact].kw__lib, dataSet[index_contact].contact__id , false, true));
-                                }
-                                $('#contact_select option[value=""]').prop('selected', true);
-                               
+                                   
+                                    $('#supose_contact').append('<li class="list-group-item d-flex justify-content-between">'+ dataSet[index_contact].contact__nom + " " + dataSet[index_contact].contact__prenom + " " + dataSet[index_contact].kw__lib +' <button value="'+ dataSet[index_contact].contact__id+'" type="button"  class="btn btn-link btn-sm btn_click">Modifier</button> </li>')
+                                  
+                                } 
+                                click_to_modif();
                             },
                             error: function(err)
                             {
@@ -99,17 +102,35 @@ $(document).ready(function()
      $('#client_button').on('click', function()
      {
         $("#progress_bar").css({"width": "10%"});
-        $('#contact_select option').remove();
+        $('#supose_contact').html('');
         $('#search_list li').remove();
         $('#client_input').val('');
-        $('#card_client').toggleClass('d-none');
-        $('#search_client').toggleClass('d-none');
-        $('#container_forms').toggleClass('d-none');
-        $('#card_form').toggleClass('d-none');
+        $('#card_client').addClass('d-none');
+        $('#search_client').removeClass('d-none');
+        $('#container_forms').addClass('d-none');
+        $('#contact_select');val('');
+        $('#card_form').addClass('d-none');
+        $('#hidden_client').val('');
+        $('#hidden_client_2').val('');
         
      })
 
+     //attribut la fonction de click au boutton génrés dynamiquement :
+     let click_to_modif = function()
+     {
+        $('.btn_click').on('click' ,function()
+        {
+            $('#contact_select').val(this.value);
+            $('#container_forms').submit();
+            
+        })
+     }
 
+     $('#post_create').on('click' , function()
+     {
+         $('#crea_forms').submit();
+     })
+     
     
 })
     

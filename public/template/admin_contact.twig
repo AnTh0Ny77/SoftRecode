@@ -49,18 +49,23 @@
 
             <!--carte fortmulaire-->
             <form id="container_forms" method="POST" action='contactCrea' class="d-none">
-                <input type="hidden" id="hidden_client" name="hidden_client">
+                <input type="hidden" id="hidden_client" name="hidden_client" value="">
+                <input type="hidden" class="form-control" name="contact_select" id="contact_select" data-size="5" required>
+                <div class="form-group" >
+                    <ul class="list-group" id='supose_contact'>
 
-                <div class="form-group">
-                    <label for="contact_select">Contact</label>
-                    <select class="form-control" name="contact_select" id="contact_select" data-size="5" required>
-                    </select>
+                    </ul>
                 </div>
                     <div class="modal-footer d-none" id="card_form">
-                        <input type="hidden" id="hidden_client" name="hidden_client">
-                        <button class='btn btn-success'>Modifier</button>
+                        <button  type="button"  id="post_create"   class='btn btn-success'>Créer</button>
                     </div>
+                  
             </form>
+            <form id="crea_forms" method="POST" action='contactCrea'>
+                <input type="hidden" value="" id="hidden_client_2" name="hidden_client_2">
+            </form>
+
+            
 
         </div>
         

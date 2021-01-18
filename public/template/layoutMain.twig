@@ -24,10 +24,10 @@
 
 <!--NavBar--> 
 <nav class="navbar navbar-light  sticky-top bg-white flex-md-nowrap p-0 shadow">
-  
+  <div>
   <a class="navbar-brand  ml-5 pr-2" href="#">  {{ user.prenom ~  " " ~  user.nom ~ " " }}<i class="fas fa-user"></i></a> 
- 
- 
+  
+</div>
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
       <a class="nav-link" href="unlog">Se deconnecter <i class="fad fa-sign-out"></i></a>
@@ -103,7 +103,7 @@
             </a>
             <div class="collapse" id="menu_client">
               <ul class="list-group">
-                <li class="list-group-item  bg-transparent border-0 certificate" >
+                <li class="list-group-item  bg-transparent border-0 certificate">
                   <a class="nav-link text-white" href="admin_client">
                     <span data-feather="file"></span>
                     <i class="far fa-building"></i> Creer/Modifier Client
@@ -112,17 +112,9 @@
               </ul>
               <ul class="list-group">
                 <li class="list-group-item  bg-transparent border-0 certificate" >
-                  <a class="nav-link text-white" href="contactCrea">
-                    <span data-feather="file"></span>
-                    <i class="far fa-id-badge"></i> Nouveau Contact
-                  </a>
-                </li>
-              </ul>
-              <ul class="list-group">
-                <li class="list-group-item  bg-transparent border-0 certificate" >
                   <a class="nav-link text-white" href="admin_contact">
                     <span data-feather="file"></span>
-                    <i class="fas fa-tools"></i> Modifier Contact
+                    <i class="fas fa-tools"></i> Creer/Modifier Contact
                   </a>
                 </li>
               </ul>
@@ -159,6 +151,14 @@
               </ul>
               <ul class="list-group">
                 <li class="list-group-item  bg-transparent border-0 ">
+                  <a class="nav-link text-white" href="fiches_garantie">
+                    <span data-feather="file"></span>
+                    <i class="fas fa-pencil-alt"></i> Fiches de garantie
+                  </a>
+                </li>
+              </ul>
+              <ul class="list-group">
+                <li class="list-group-item  bg-transparent border-0 ">
                   <a class="nav-link text-white" href="transport">
                     <span data-feather="file"></span>
                     <i class="far fa-truck-couch fa-fw"></i> Saisie Transport
@@ -173,6 +173,7 @@
                   </a>
                 </li>
               </ul>
+              
 
             </div>
           </td>

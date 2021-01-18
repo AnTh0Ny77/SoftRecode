@@ -186,7 +186,12 @@
                               
                               <select class="selectpicker show-tick"  data-live-search="true" data-width="100%"  name="sociteContact" required>        
                                   {% for client in clientList %}
-                                        <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                                        {% if preselected == client.client__id  %}
+                                          <option value="{{client.client__id}}" selected>{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                                        {% else %}
+                                          <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                                        {% endif %}
+                                       
                                   {% endfor %}
                               </select>
                         

@@ -28,6 +28,7 @@ $user = $_SESSION['user'];
  $alertSuccess = false ;
  $alert_modif = false ;
  $modif = false ;
+ $preselected = false ;
 
  if (!empty($_POST['fonctionContact']) && !empty($_POST['sociteContact']) && empty($_POST['modif_id'])) 
  {
@@ -103,16 +104,22 @@ $user = $_SESSION['user'];
   
  }
 
+ if (!empty($_POST['hidden_client_2'])) 
+ {
+  $preselected = $_POST['hidden_client_2'] ;
+ }
+
  $clientList = $Client->getAll();
 
 // Donnée transmise au template : 
 echo $twig->render('contactCrea.twig',[ 
-   'user'=>$user , 
-   'keywordList' => $keywordList, 
-   'alert' => $alert , 
-   'alertSucces' => $alertSuccess , 
-   'clientList' => $clientList , 
-   'modif' => $modif ,
-  'alert_modif' => $alert_modif
+    'user'=>$user , 
+    'keywordList' => $keywordList, 
+    'alert' => $alert , 
+    'alertSucces' => $alertSuccess , 
+    'clientList' => $clientList , 
+    'modif' => $modif ,
+    'alert_modif' => $alert_modif,
+    'preselected' => $preselected
    ]);
 }

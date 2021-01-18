@@ -25,13 +25,16 @@
 <!--NavBar--> 
 <nav class="navbar navbar-light navbar-large  sticky-top bg-white flex-md-nowrap p-0 shadow">
   
-  <a class="navbar-brand  ml-5 pr-2" href="#">  {{ user.prenom ~  " " ~  user.nom ~ " " }}<i class="fas fa-user"></i></a> 
+  <div>
+    <a class="navbar-brand  ml-5 pr-2" href="#">  {{ user.prenom ~  " " ~  user.nom ~ " " }}<i class="fas fa-user"></i></a> 
+    <a class="navbar-brand  ml-2 pr-2" href="dashboard"> Retour menu <i class="fad fa-long-arrow-alt-left"></i></a>
+  </div>
  
  
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
       <a class="nav-link" href="unlog">Se deconnecter <i class="fad fa-sign-out"></i></a>
-    </li>
+  </li>
    
   </ul>
 </nav>
