@@ -41,16 +41,26 @@
       <label for="inputEmail4">Numero de commande</label>
       <input type="text" name="numCmd" class="form-control" id="inputEmail4" placeholder="N° commande" required>
     </div>
+    <div  class="form-group col-md-3">
+          <label for="inputEmail4">Date échéance</label>
+         <input class="form-control " value="{{date}}" type="date" id="start" name="start" required>
+    </div>
   
   </div>
     
  
   <div class="form-row">
    <div class="form-group col-md-4">
-      <label for="inputState">Facturation Auto Trimestrielle</label>
+      <label for="inputState">Facturé tous les : (durée en mois) </label>
       <select id="inputState" class="form-control" name="facturationAuto">
-        <option value="1" selected>Oui</option>
-        <option value='0'>Non</option>
+         {% for mois in moisList %}
+          {% if mois.kw__value != 00 and mois.kw__value != 03 and mois.kw__value < 24  %} 
+            <option value="{{mois.kw__value}}">{{ mois.kw__lib}}</option>
+            {% elseif mois.kw__value == 03  %}
+            <option value="{{mois.kw__value}}" selected>{{ mois.kw__lib}}</option>
+          {% endif %}
+        
+        {% endfor %}
       </select>
     </div>
     <div class="form-group col-md-4">
