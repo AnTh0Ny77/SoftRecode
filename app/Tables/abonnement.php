@@ -250,6 +250,7 @@ class Abonnement extends Table
                 for ($i= 1 ; $i < $nombre_itteration ; $i++) 
                 {     
                         $multiple_fact_periode  = $abn->ab__fact_periode *  $i ;
+                        
                         if ( $multiple_fact_periode < 12  ) 
                         {
                             $sql_condition .='OR MONTH(ab__date_anniv) + '. $multiple_fact_periode .' =   '.$mois.' ';
