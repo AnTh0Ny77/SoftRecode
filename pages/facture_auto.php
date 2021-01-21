@@ -35,9 +35,11 @@ if ($_SESSION['user']->user__facture_acces < 10 )
    $date = date("".$_POST['anneAuto']."-".$mois."-d H:i:s");
    foreach ($abonnement_liste as $abn) 
    {
+     
     $abn->client = $Client->getOne($abn->ab__client__id_fact);
     
     $ligne = $Abonnement->getLigneFacturableAuto($abn->ab__cmd__id , $date);
+    
     $abn->nbMachine =  sizeof($ligne);
     $abn->total = 00.00;
       foreach($ligne as $machine)
@@ -53,6 +55,8 @@ if ($_SESSION['user']->user__facture_acces < 10 )
       }
     
    }
+   
+  
 
    $text = $_POST['anneAuto'] . '-' . $mois .'-' . '1' ;
    $date = new DateTime($text);

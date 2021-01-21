@@ -242,31 +242,46 @@ class Abonnement extends Table
 
         foreach ($data  as $abn) 
         {
-                
-                $nombre_itteration =  24 / $abn->ab__fact_periode  ;
+                //nombre de fatcuration sur 24 mois en rapport avec la période ( ex : 4 fois trimestres )
+                $nombre_itteration =  12 / $abn->ab__fact_periode  ;
                 $sql_condition ='';
-
                
-                for ($i= 1 ; $i < $nombre_itteration ; $i++) 
+                //tant que i est plus petit que ou égal au nombre de facturation prévues : 
+                for ($i= 1 ; $i <= $nombre_itteration ; $i++) 
                 {     
+                        //represente le nombre de mois d'ecart entre les facturation ex : 
+                        // trimestre 2 ème iteration i = 2 -  2 X 3 = 6 : 
                         $multiple_fact_periode  = $abn->ab__fact_periode *  $i ;
                         
-                        if ( $multiple_fact_periode < 12  ) 
+                        //si l'ecart en mois + le mois courant est plus petit ou égal à 12 ( moins d'une année ) 
+                        if ($i + $mois  <= 12) 
                         {
+                            echo($abn->ab__date_anniv . ' anniverssaire <br> ');
+                            echo($abn->ab__fact_periode . ' periode<br>');
+                            echo($multiple_fact_periode + $abn->ab__date_anniv  . ' echeance  <br> ');
+                            echo($mois . ' mois en cours <br> ');
+                            
+                            // si  le mois anniv + lecart en mois entre les echeance est egal au mois demandé :   
                             $sql_condition .='OR MONTH(ab__date_anniv) + '. $multiple_fact_periode .' =   '.$mois.' ';
                         } 
+                        //a l'inverse on depasse le mois 12 donc on cherche l'année suivante en aditionnant le mois recherché a 12 pour mois: 13-14 etc:  
                         else 
                         { 
-                           $mois_sup = 12 + $mois ;
+                           $mois_sup =  12 + $mois ;
+                           echo($abn->ab__date_anniv . ' anniverssaire <br> ');
+                           echo($abn->ab__fact_periode . ' periode <br>');
+                           echo($multiple_fact_periode + $abn->ab__date_anniv . ' echeance  <br> ');
+                           echo($mois_sup . ' mois en cours <br> ');
                            $sql_condition .='OR MONTH(ab__date_anniv) + '. $multiple_fact_periode .' =   '.$mois_sup.' ';
                         }      
                 }
-
+               echo('<br><br>');
+               
                 $request_abn = $this->Db->Pdo->query("SELECT  ab__cmd__id, ab__client__id_fact, 
                 ab__actif, ab__fact_periode,  ab__presta , ab__date_anniv, ab__mois_engagement , k.kw__lib as prestaLib , ab__note
                 FROM abonnement
                 LEFT JOIN keyword as k ON ab__presta = k.kw__value AND k.kw__type = 'pres'
-                WHERE (ab__actif = 1) AND ( MONTH(ab__date_anniv) +  ab__fact_periode  = "  . $mois  ."    " . $sql_condition .")
+                WHERE (ab__actif = 1) AND ( MONTH(ab__date_anniv)  = "  . $mois  ."    " . $sql_condition .")
                 AND ab__cmd__id = ".$abn->ab__cmd__id."
                 ORDER BY  ab__cmd__id DESC LIMIT 2000 ");
                 $data = $request_abn->fetch(PDO::FETCH_OBJ);
@@ -275,13 +290,9 @@ class Abonnement extends Table
                 {
                     $data->ab__note = ' Echeance : ' . $data->ab__date_anniv .' Facturé tous les : ' . $data->ab__fact_periode . ' Mois en cours : ' . $mois ;
                     array_push($array_response,$data );
-                }
-            
-            
-          
-         
+                }    
         }
-
+        die();
        return $array_response;
     }
 
