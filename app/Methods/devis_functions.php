@@ -44,28 +44,29 @@ class Devis_functions
                     {
                         $firstPadding = '0px';
                     }
+
+                   
+                   
                     //si un commentaire client est présent il s'ajoute sous la désignation 
                     if (!empty($ligne->devl__note_client) && intval($ligne->cmdl__image) > 1) 
                     {
+                        $ligne->devl__note_client = '<span style="max-width= 100%; "> ' .$ligne->devl__note_client.'</span>';
                         $designation =  $ligne->devl__designation .'<span style="margin-top: -10px;">'. $ligne->devl__note_client .'</span>';
                     }
                     elseif(intval($ligne->cmdl__image) == 1 && !empty($ligne->ligne_image)) 
                     {
+                        
                         $designation =  $ligne->devl__designation .'
-                        <table>
-                            <tr>
-                                <td>
+                                <span style="   max-width: 70px;">
                                     <figure class="image" >
                                         <img src="data:image/png;base64,'.$ligne->ligne_image.'"  width="70" />
                                     </figure>   
-                                </td>
-                                <td>
-                                    <span style="margin-top: -10px;"  width="140" >
+                                </span>
+                                
+                                <span style="margin-top: -10px;"  >
                                         '.$ligne->devl__note_client.'
-                                    </span>
-                                </td>
-                            </tr>
-                        </table>';
+                                </span>
+                         ';
                     }
                     else 
                     { 
@@ -356,34 +357,31 @@ class Devis_functions
                             {
                                 $firstPadding = '0px';
                             }
-                            //si un commentaire client est présent il s'ajoute sous la désignation 
-                           
-                                if (!empty($ligne->devl__note_client) && intval($ligne->cmdl__image) > 1) 
-                                {
-                                    $designation =  $ligne->devl__designation .'<span style="margin-top: -10px;">'. $ligne->devl__note_client .'</span>';
-                                }
-                                elseif(intval($ligne->cmdl__image) == 1 && !empty($ligne->ligne_image)) 
-                                {
-                                    $designation =  $ligne->devl__designation .'
-                                    <table>
-                                        <tr>
-                                            <td>
-                                                <figure class="image" >
-                                                    <img src="data:image/png;base64,'.$ligne->ligne_image.'"  width="70" />
-                                                </figure>   
-                                            </td>
-                                            <td>
-                                                <span style="margin-top: -10px;" width="140" >
+                             //si un commentaire client est présent il s'ajoute sous la désignation 
+                            if (!empty($ligne->devl__note_client) && intval($ligne->cmdl__image) > 1) 
+                            {
+                                $ligne->devl__note_client = '<span style="max-width= 100%; "> ' .$ligne->devl__note_client.'</span>';
+                                $designation =  $ligne->devl__designation .'<span style="margin-top: -10px;">'. $ligne->devl__note_client .'</span>';
+                            }
+                            elseif(intval($ligne->cmdl__image) == 1 && !empty($ligne->ligne_image)) 
+                            {
+                                
+                                $designation =  $ligne->devl__designation .'
+                                        <span style="   max-width: 70px;">
+                                            <figure class="image" >
+                                                <img src="data:image/png;base64,'.$ligne->ligne_image.'"  width="70" />
+                                            </figure>   
+                                        </span>
+                                        
+                                        <span style="margin-top: -10px;"  >
                                                 '.$ligne->devl__note_client.'
-                                                </span>
-                                            </td>
-                                        </tr>
-                                    </table>';
-                                }
-                                else 
-                                { 
-                                    $designation =  $ligne->devl__designation .'<span style="margin-top: -10px;">'. $ligne->devl__note_client .'</span>';
-                                }
+                                        </span>
+                                ';
+                            }
+                            else 
+                            { 
+                                $designation =  $ligne->devl__designation .'<span style="margin-top: -10px;">'. $ligne->devl__note_client .'</span>';
+                            }
                             // garantie
                             $garantie = $ligne->devl__mois_garantie . " mois";
                             //prix barre 
