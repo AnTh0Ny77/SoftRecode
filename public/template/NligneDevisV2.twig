@@ -354,7 +354,9 @@
                             <button type="submit" class="btn btn-outline-secondary btn-sm"><i class="far fa-copy"></i></button>
                         </form>
                     </div>
-                    
+                    <div class='mx-1'>
+                        <button type="button" class="btn btn-outline-success btn-sm open_modal"  value="{{ligne.cmdl__cmd__id}}" ><i class="far fa-arrow-circle-down"></i></button>
+                    </div>
                     
                     
                     </div>
@@ -558,6 +560,20 @@
         </div>
     </div>
 
+    <!--modal de creation de sous ref-->
+    <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="modal_sous_ref">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ajout sous</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+          </div>
+        </div>
+    </div>
+
 </main>
 {% endblock %}
      
@@ -566,14 +582,9 @@
 <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
-{# <script>
-    jQuery(document).ready(function() 
-    {
-        jQuery('#loading').fadeOut(400,'swing');
-    });
-    </script> #}
 <script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
 <script type="text/javascript" src="public/js/ligneV2/nDevisLigne.js"></script>
 <script type="text/javascript" src="public/js/ligneV2/scenario.js"></script>
+<script type="text/javascript" src="public/js/ligneV2/sous_ref.js"></script>
 {% endblock %}
