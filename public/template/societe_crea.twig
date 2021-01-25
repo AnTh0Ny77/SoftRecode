@@ -43,7 +43,7 @@
        <!-- Societe -->
        <div class="col-md-8">
         <div class="card shadow mb-4 h-100">
-          <!-- Card Header - -->
+        
           
           <!-- Card Body -->
           <div class="card-body  ">
@@ -121,7 +121,7 @@
                   </div>
 
                   <div class="my-2">
-                  <label for="exampleInputPassword1">Vendeurs</label>
+                  <label >Vendeurs</label>
                     <div class="d-flex col-md-6">
                         <select class="selectpicker show-tick border"  data-live-search="true" data-width="100%"  name="vendeur" required>        
                             {% for users in user_list %}
@@ -129,8 +129,7 @@
                                 <option value="{{users.id_utilisateur}}" selected>{{users.prenom ~ " " ~ users.nom}}</option>
                               {% else %}
                                 <option value="{{users.id_utilisateur}}">{{users.prenom ~ " " ~ users.nom}}</option>
-                              {% endif %}
-                                  
+                              {% endif %}        
                             {% endfor %}
                         </select>
                     </div>
@@ -139,14 +138,13 @@
             
               <div>
                 <div class="mx-2 mb-4 col-8 ">
-                    <label for="exampleInputPassword1">Commentaires</label>
+                    <label for="commentaire_client">Commentaires</label>
                     <textarea class="CKE" id="commentaire_client" value='{{modif.client__comment}}' name="commentaire_client" placeholder="Commentaire interne...." ></textarea>
                 </div>
               <div>
               <div>
                  <div class="mx-2 mb-4 col-8 ">
                     <label for="config">Configuration spéciale</label>
-
                       <input class="form-control" value='{{modif.client__memo_config}}' id="config" name="config" maxlength="100" ></input>
                   </div>
               <div>
@@ -154,7 +152,6 @@
 
 
             <div class="modal-footer justify-content-end">
-             
               <div>
                 <button type="submit" class="btn btn-success" id="">Modifier</button>
               </div>
@@ -208,7 +205,7 @@
                 
                 <div class="my-2 ">
                    <label for="select_tva">Tva</label>
-                    <div class="d-flex col-md-6 ">
+                    <div class="d-flex col-md-12 ">
                         <select class="selectpicker show-tick border"   data-live-search="true" data-width="100%" id="select_tva"  name="select_tva" required>        
                             {% for tva in tva_list %}
                                   <option value="{{tva.kw__value}}">{{tva.kw__lib}}</option>
@@ -222,7 +219,7 @@
                   </div>
 
                   <div class="my-2">
-                  <label for="exampleInputPassword1">Vendeurs</label>
+                  <label >Vendeurs</label>
                     <div class="d-flex col-md-6">
                         <select class="selectpicker show-tick border"  data-live-search="true" data-width="100%"  name="vendeur" required>        
                             {% for users in user_list %}
@@ -240,7 +237,7 @@
             
               <div>
                 <div class="mx-2 mb-4 col-8 ">
-                    <label for="exampleInputPassword1">Commentaires</label>
+                    <label>Commentaires</label>
                     <textarea class="CKE" id="commentaire_client" name="commentaire_client" placeholder="Commentaire interne...." ></textarea>
                 </div>
               <div>

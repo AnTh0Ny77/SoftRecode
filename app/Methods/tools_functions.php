@@ -179,7 +179,7 @@ FFFFFFFFFFF           ooooooooooo     nnnnnn    nnnnnn    cccccccccccccccc      
 	function get_post($get_post, $arg=FALSE, $get_sess=FALSE) 
 	{
 		// récupération des Post et Get + Session en option 
-		// Option remplace vide par : [0:0, 1:false, 2:false/true, 3:Null, 8:img, 7:SQL, 9:Tab] 
+		// $arg Option remplace vide par : [0:0, 1:false, 2:false/true, 3:Null, 8:img, 7:SQL, 9:Tab] 
 		// Valeur Session[FALSE:pas pris en compte, 'SESS':prend en priorité la session, 'GETPOST':prend en priorité le get post]
 
 		$vide = "";  
@@ -191,7 +191,7 @@ FFFFFFFFFFF           ooooooooooo     nnnnnn    nnnnnn    cccccccccccccccc      
 		if ($arg)
 		{ // si il a argument suplementaire
 			switch ($arg)
-			{ // regarde l'argument suplementaire
+			{ // regarde l argument suplementaire
 				case 0: // si pas de valeur retour alors 0 a la place de ""
 					$vide = 0; break;
 				case 1: // si pas de valeur retour alors FALSE a la place de ""
@@ -200,11 +200,11 @@ FFFFFFFFFFF           ooooooooooo     nnnnnn    nnnnnn    cccccccccccccccc      
 					$vide = FALSE; break;
 				case 3: // si pas de valeur retour alors NULL a la place de "" 
 					$vide = NULL; break;
-				case 8: // c'est une image je recupere la coordoné x
+				case 8: // c est une image je recupere la coordoné x
 					$is_img = TRUE; break;
-				case 7: // c'est un text destiner à etre mis dans une commande SQL donc je le ADDSLASHES()
+				case 7: // c est un text destiner à etre mis dans une commande SQL donc je le ADDSLASHES()
 					$add_slashes = TRUE; break;
-				case 9: // C'est un tableau je n'utilise pas la fonction trim
+				case 9: // C est un tableau je n utilise pas la fonction trim
 					$is_array = TRUE; break;
 			}			
 		}

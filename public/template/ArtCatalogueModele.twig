@@ -1,4 +1,5 @@
 {% extends 'layoutMain.twig' %}
+
 {% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
@@ -7,9 +8,9 @@
 <link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css"> <!-- File Upload -->
 <link rel="stylesheet" href="public/css/dashboard.css">
 <link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css">
-  {% endblock %}
-{% block main %}
+{% endblock %}
 
+{% block main %}
 
  {#""b8    db    888888    db    88      dP"Yb   dP""b8 88   88 888888     8b    d8  dP"Yb  8888b.  888888 88     888888 
 dP   `"   dPYb     88     dPYb   88     dP   Yb dP   `" 88   88 88__       88b  d88 dP   Yb  8I  Yb 88__   88     88__   
@@ -86,10 +87,10 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88Ybd
 								<button type="submit" name="link_modele"  class="btn btn-link py-0 px-0 ">{{Art.Modele}}</button>
 								</td>
 								<td align=center>
-									{% if Art.Image %}<figure class="image"><img src="data:image/jpeg;base64,{{Art.Image|raw}}">{% endif %}</figure>
+									{% if Art.Image %}<figure class="image"><img src="data:image/jpeg;base64,{{Art.Image|raw}}" width=90>{% endif %}</figure>
 								</td>
 								<td align=center>{% if Art.Doc %}<a href="{{Art.Doc}}" target="_blank"><i class="fad fa-file-pdf fa-lg" style="--fa-primary-color: orangered;"></i></a>{% endif %}
-								<i class="fal fa-cubes fa-lg"></i></td>
+								<i class="fal fa-edit fa-lg"></i></td>
 							</tr>
 							</form>
 							{% endfor %}
@@ -113,10 +114,8 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88Ybd
 
 
 {% block script %}
-<!-- Optional JavaScript -->
-<script  type="text/javascript" src="public/js/devisFunction.js"></script> 
-
-<!-- jQuery first, then Bootstrap JS -->
+<!-- Optional JavaScript + jQuery first, then Bootstrap JS -->
+<script type="text/javascript" src="public/js/devisFunction.js"></script> 
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
@@ -126,5 +125,5 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88Ybd
 <script type="text/javascript" src="public/mdb/js/mdb.min.js"></script> <!-- MDB core JavaScript -->
 <script type="text/javascript" src="public/mdb/js/mdb-file-upload.min.js"></script>
 
-<script>$('.file_upload').file_upload();</script> {# pour le file_upload #}
-  {% endblock %}
+<script>$('.file_upload').file_upload();</script> <!-- pour le file_upload -->
+{% endblock %}
