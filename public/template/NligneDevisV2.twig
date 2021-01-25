@@ -354,9 +354,9 @@
                             <button type="submit" class="btn btn-outline-secondary btn-sm"><i class="far fa-copy"></i></button>
                         </form>
                     </div>
-                    <div class='mx-1'>
+                    {# <div class='mx-1'>
                         <button type="button" class="btn btn-outline-success btn-sm open_modal"  value="{{ligne.cmdl__cmd__id}}" ><i class="far fa-arrow-circle-down"></i></button>
-                    </div>
+                    </div> #}
                     
                     
                     </div>
@@ -565,10 +565,21 @@
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Ajout sous</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Sous référence</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <input type="hidden"  id="input_id_ref" name="input_id_ref">
+                  </div>
+                  <div class="form-group">
+                    <label for="message-text" class="col-form-label">Modèle</label>
+                    <textarea class="form-control" id="message-text"></textarea>
+                  </div>
+                </form>
               </div>
           </div>
         </div>
