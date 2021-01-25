@@ -65,6 +65,81 @@ class Devis extends Table {
     return $id;
   }
 
+  public function get_line_by_id($id)
+  {
+    $request =$this->Db->Pdo->query("SELECT
+    cmdl__cmd__id,
+    cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
+    cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
+    cmdl__etat as devl__etat, LPAD(cmdl__garantie_base,2,0) as devl__mois_garantie,
+    cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
+    cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
+    cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
+    cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__garantie_puht , cmdl__note_facture,
+    cmdl__etat_masque, cmdl__image, cmdl__actif ,
+    k.kw__lib , k.kw__value , 
+    f.afmm__famille as famille,
+    f.afmm__modele as modele, 
+    k2.kw__lib as prestaLib,
+    k3.kw__info as groupe_famille,
+    k3.kw__lib as famille__lib,
+    a.am__marque as marque
+    FROM cmd_ligne 
+    LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
+    LEFT JOIN keyword as k2 ON cmdl__prestation = k2.kw__value AND k2.kw__type = 'pres'
+    LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
+    LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
+    LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
+    WHERE cmdl__id = ". $id ." 
+    ");
+    $data = $request->fetch(PDO::FETCH_OBJ);
+    return $data;
+  }
+
+  public function create_daugther_line($mother_line , $select_modele, $designation , $quantite , $commentaire)
+  {
+    $verifOrdre = $this->Db->Pdo->query('SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne WHERE cmdl__cmd__id = '.$mother_line->cmdl__cmd__id.' ');
+    $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
+    $ordreMax = $ordreMax->maxOrdre + 1 ;
+    $request = $this->Db->Pdo->prepare('INSERT INTO cmd_ligne 
+    (cmdl__ordre, 
+    cmdl__cmd__id, 
+    cmdl__prestation, 
+    cmdl__id__fmm, 
+    cmdl__designation, 
+    cmdl__etat, 
+    cmdl__garantie_base, 
+    cmdl__qte_cmd,
+    cmdl__puht,
+    cmdl__note_interne,
+    cmdl__sous_ref)
+    VALUES (:cmdl__ordre, 
+    :cmdl__cmd__id, 
+    :cmdl__prestation, 
+    :cmdl__id__fmm, 
+    :cmdl__designation, 
+    :cmdl__etat, 
+    :cmdl__garantie_base, 
+    :cmdl__qte_cmd,
+    :cmdl__puht,
+    :cmdl__note_interne,
+    :cmdl__sous_ref)');
+    $request->bindValue(":cmdl__ordre", $ordreMax);
+    $request->bindValue(":cmdl__cmd__id", $mother_line->cmdl__cmd__id);
+    $request->bindValue(":cmdl__prestation", $mother_line->devl__type);
+    $request->bindValue(":cmdl__id__fmm", $select_modele);
+    $request->bindValue(":cmdl__designation", $designation);
+    $request->bindValue(":cmdl__etat", $mother_line->devl__etat);
+    $request->bindValue(":cmdl__garantie_base",  $mother_line->devl__mois_garantie);
+    $request->bindValue(":cmdl__qte_cmd",$quantite);
+    $request->bindValue(":cmdl__puht", 00);
+    $request->bindValue(":cmdl__note_interne", $commentaire);
+    $request->bindValue(":cmdl__sous_ref",$mother_line->devl__id);
+    $request->execute();
+    $id = $this->Db->Pdo->lastInsertId();
+    return $id;
+  }
+
 
   public function insertLine( $idCmd , $prestation, $fmm , $designation , $etat , $garantie , $qte , $prixBarre , $puht , $noteC , $noteI  )
   {

@@ -56,7 +56,7 @@ class Devis_functions
                     elseif(intval($ligne->cmdl__image) == 1 && !empty($ligne->ligne_image)) 
                     {
                         
-                        $designation =  $ligne->devl__designation .'
+                        $designation =  $ligne->devl__designation .'<br>
                                 <span style="   max-width: 70px;">
                                     <figure class="image" >
                                         <img src="data:image/png;base64,'.$ligne->ligne_image.'"  width="70" />

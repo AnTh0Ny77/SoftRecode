@@ -178,6 +178,15 @@ if (!empty($_POST['modifyId']) && !empty($_POST['duplicate']))
     $duplicate = $_POST['duplicate'];
 }
 
+//creation de sous référence :
+if (!empty($_POST['input_id_ref']) && !empty($_POST['select_sous_ref']) && !empty($_POST['designation_sous_ref'])) 
+{
+   $mother_line = $Devis->get_line_by_id($_POST['input_id_ref']); 
+  
+   $daugther_line = $Devis->create_daugther_line($mother_line,$_POST['select_sous_ref'],$_POST['designation_sous_ref'],$_POST['quantite_sous_ref'],$_POST['com_sous_ref']);
+   $idDevis = $mother_line->cmdl__cmd__id;
+   
+}
 
 
 // creation lignes ou duplicata : 
@@ -332,7 +341,7 @@ if (!empty($_POST['boolModif']) )
 
 
 $devis = $Cmd->GetById($idDevis);
-$devisLigne = $Cmd->devisLigne($idDevis);
+$devisLigne = $Cmd->devisLigne_sous_ref($idDevis);
 $totaux  = Pdfunctions::totalFacturePRO($devis, $devisLigne);
 $remiseRequest = $Devis->getRemise($idDevis);
 $remiseTotal = 0.00 ;
