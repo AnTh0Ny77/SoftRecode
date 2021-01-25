@@ -15,7 +15,6 @@ use PDO;
    
 
 
-   
 
 class User extends Table 
 {
