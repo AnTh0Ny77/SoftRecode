@@ -28,6 +28,7 @@ session_start();
  
  $prestaList = $Keyword->getPrestaABN();
  $moisList = $Keyword->getGaranties();
+ $date = date("Y-m-01");
 
  $alert = false;
 
@@ -56,7 +57,10 @@ if (!empty($_POST['numCmd']))
     if (empty($verif)) 
     {
       $abn = $Abonnement->createOne($_POST['numCmd'] , $valid->client__id , 1, $_POST['facturationAuto'], $_POST['prestation'] , $_POST['comAbn'] , $_POST['mois'] );
+      $updat =  $General->updateAll('abonnement' , $_POST['start'] , 'ab__date_anniv' , 'ab__cmd__id' , $_POST['numCmd']);
       header('location: abonnement');
+      
+     
     }
     else 
     {
@@ -79,7 +83,8 @@ echo $twig->render('abonnementNouveau.twig',
 'user'=>$user,
 'prestaList'=> $prestaList,
 'moisList' => $moisList,
-'alert' => $alert
+'alert' => $alert,
+'date' => $date
 
 
 

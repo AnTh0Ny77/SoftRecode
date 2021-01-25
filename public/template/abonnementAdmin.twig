@@ -57,19 +57,7 @@
     
  
   <div class="form-row col-10">
-   <div class="form-group col-md-10">
-      <label for="inputState">Facturation Auto</label>
-      <select id="inputState" class="form-control" name="facturationAuto">
-        {% if abn.ab__fact_auto == 0  %}
-        <option value="1">Oui</option>
-        <option value='0' selected>Non</option>
-        {% else %}
-        <option value="1" selected>Oui</option>
-        <option value='0'>Non</option>
-        {% endif %}
-        
-      </select>
-    </div>
+  
     <div class="form-group col-md-10">
       <label for="inputState">Prestation</label>
       <select id="inputState" class="form-control" name="prestationAbn">

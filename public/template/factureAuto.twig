@@ -14,7 +14,7 @@
      {% block main %}
      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">Facturation Automatique des abonnemennts <i class="fas fa-scroll"></i></h1>
+        <h1 class="h2">Facturation Automatique des abonnemennts <i class="fas fa-scroll"></i> {{ date}}</h1>
         <div class="btn-toolbar mb-2 mb-md-0">
           <div class="btn-group mr-2">
           </div>
@@ -79,9 +79,7 @@
           </div>
           <div class="modal-footer">
             <form action="printABN" method="POST">
-              <input type="hidden" name="dateDebut" value="{{dateDebut}}">
-              <input type="hidden" name="dateFin" value="{{dateFin}}">
-              <input type="hidden" value='{{arrayfacturable}}' name="hiddenABN">
+              <input type="hidden" name="hiddenABN" value="{{arrayfacturable}}">
               <button class="btn btn-success">Facturer</button>
             </form>
           </div>

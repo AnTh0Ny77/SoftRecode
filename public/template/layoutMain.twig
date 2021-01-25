@@ -93,6 +93,65 @@
 	</div>
 	</td>
 </tr>
+         
+          <tr>
+          <td>
+            <a class="nav-link text-white" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+              <span data-feather="file"></span>
+              <i class="fad fa-shopping-cart fa-lg fa-fw" style="color: #18FFFF;"></i> Devis
+            </a>
+            <div class="collapse" id="collapseExample">
+              <ul class="list-group">
+                <li class="list-group-item  bg-transparent border-0 ">
+                  <a class="nav-link text-white" href="mesDevis">
+                    <span data-feather="file"></span>
+                    <i class="fal fa-file-search fa-fw"></i> Recherche
+                  </a>
+                </li>
+              </ul>
+              <ul class="list-group">
+                <li class="list-group-item  bg-transparent border-0 certificate" >
+                  <a class="nav-link text-white" href="DevisV2">
+                    <span data-feather="file"></span>
+                    <i class="fal fa-file-edit fa-fw"></i> Nouveau devis
+                  </a>
+                </li>
+              </ul>
+              
+            </div>
+          </td>
+          </tr>
+
+
+
+          <!--Client/Contact-->
+          <tr>
+            <td class="nav-item">
+            <a class="nav-link text-white" data-toggle="collapse" href="#menu_client" role="button" aria-expanded="false" aria-controls="colFT">
+              <span data-feather="file"></span>
+              <i class="fas fa-user-tag fa-lg fa-fw" style="color: #da7212;"></i> Clients / Contacts
+            </a>
+            <div class="collapse" id="menu_client">
+              <ul class="list-group">
+                <li class="list-group-item  bg-transparent border-0 certificate">
+                  <a class="nav-link text-white" href="admin_client">
+                    <span data-feather="file"></span>
+                    <i class="far fa-building"></i> Creer/Modifier Client
+                  </a>
+                </li>
+              </ul>
+              <ul class="list-group">
+                <li class="list-group-item  bg-transparent border-0 certificate" >
+                  <a class="nav-link text-white" href="admin_contact">
+                    <span data-feather="file"></span>
+                    <i class="fas fa-tools"></i> Creer/Modifier Contact
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </td>
+          </tr>
+
 
  {#""b8 88     88 888888 88b 88 888888    dP  dP""b8  dP"Yb  88b 88 888888    db     dP""b8 888888
 dP   `" 88     88 88__   88Yb88   88     dP  dP   `" dP   Yb 88Yb88   88     dPYb   dP   `"   88
@@ -315,25 +374,9 @@ dP""""Yb 8888Y"  88 YY 88 88 88  #}
 {% endblock %}
 <!-- fin du bloc main -->
 
-</div>
-<!-- Appel du bloc script -->
-{% block script  %}
+{% block script %}
 {% endblock %}
-<!-- fin du bloc script -->
 
-<!-- script de layoutmain.twig-->
-<script>
-//script de toogle de la navbar : 
-/* $(document).ready(function() 
-{ $('#clickSideBar').on('click' , function()
-	{
-	if($('#sideBare').hasClass( "hideSide" ))
-	{ $('#sideBare').removeClass("hideSide"); }
-	else 
-	{ $('#sideBare').addClass("hideSide"); }
-	})
-})*/
-</script>
 
 </body>
 </html>

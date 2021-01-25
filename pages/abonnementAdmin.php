@@ -59,7 +59,7 @@ if (!empty($_POST['idAbnUpdate']))
 {
 
  
-  $update = $Abonnement->UpdateAbn($_POST['idAbnUpdate'] , $_POST['actifAbn'] ,  $_POST['facturationAuto'] ,  $_POST['prestationAbn'] ,  $_POST['comAbnG'] ,  $_POST['moisAbn'] );
+  $update = $Abonnement->UpdateAbn($_POST['idAbnUpdate'] , $_POST['actifAbn']  ,  $_POST['prestationAbn'] ,  $_POST['comAbnG'] ,  $_POST['moisAbn'] );
   $abn = $Abonnement->getById($_POST['idAbnUpdate']);
   $cmd = $Cmd->GetById($abn->ab__cmd__id);
   $lignes = $Abonnement->getLigne($abn->ab__cmd__id);

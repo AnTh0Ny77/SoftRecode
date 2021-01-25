@@ -99,22 +99,30 @@
             </div>
             <!-- Card Body -->
             <div class="card-body" >
-              <form action="factureAuto" method="POST">
+              <form action="facture_auto" method="POST">
                 <div class="d-flex justify-content-around">
                       <div class="col-4">
-                        <label for="exampleFormControlSelect1">Trimestre</label>
+                        <label for="exampleFormControlSelect1">Mois</label>
                         <select class="form-control" id="exampleFormControlSelect1" name="trimestre">
-                          <option>1</option>
-                          <option>2</option>
-                          <option>3</option>
-                          <option>4</option>
+                          <option value="01">Janvier</option>
+                          <option value="02">Fevrier</option>
+                          <option value="03">Mars</option>
+                          <option value="04">Avril</option>
+                          <option value="05">Mai</option>
+                          <option value="06">Juin</option>
+                          <option value="07">Juillet</option>
+                          <option value="08">Aout</option>
+                          <option value="09">Septembre</option>
+                          <option value="10">Octobre</option>
+                          <option value="11">Novembre</option>
+                          <option value="12">Decembre</option>
                         </select>
                       </div>
 
                       <div class="col-4">
                         <label for="exampleFormControlSelect1">Année</label>
                         <select class="form-control" id="exampleFormControlSelect1" name="anneAuto">
-                          {% for i in 2020..2030 %}
+                          {% for i in 2021..2050 %}
                           <option value="{{i}}">{{i}}</option>
                           {% endfor %}
                         </select>
