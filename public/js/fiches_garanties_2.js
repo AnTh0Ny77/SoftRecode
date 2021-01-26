@@ -109,6 +109,7 @@ $(document).ready(function()
         
      })
 
+     
      //check si le tableau article est present et crée le formulaire a poster  :  
      let check_post = function()
      {

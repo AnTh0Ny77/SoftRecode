@@ -292,7 +292,7 @@ class Devis extends Table {
   public function deleteLine($lineId)
   {
     $request = $this->Db->Pdo->prepare("DELETE FROM cmd_ligne 
-    WHERE cmdl__id = '".$lineId."'");
+    WHERE cmdl__id = '".$lineId."' OR cmdl__sous_ref = '".$lineId."'");
     $request->execute();
   }
 

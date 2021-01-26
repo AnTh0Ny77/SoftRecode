@@ -1451,7 +1451,7 @@ public function devisLigne($id){
   cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
   cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
   cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__garantie_puht , cmdl__note_facture,
-  cmdl__etat_masque, cmdl__image, cmdl__actif ,
+  cmdl__etat_masque, cmdl__image, cmdl__actif , cmdl__sous_ref,
   k.kw__lib , k.kw__value , 
   f.afmm__famille as famille,
   f.afmm__modele as modele, f.afmm__image as ligne_image , 
@@ -1480,6 +1480,10 @@ public function devisLigne($id){
 }
 
 
+
+
+
+
 //recupere les ligne et leur attribue leur filles : 
 public function devisLigne_sous_ref($id)
 {
@@ -1506,13 +1510,14 @@ public function devisLigne_sous_ref($id)
   LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
   LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
   LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
-  WHERE cmdl__cmd__id = ". $id ."
+  WHERE cmdl__cmd__id = ". $id ." 
   ORDER BY devl__ordre ");
  
   $data = $request->fetchAll(PDO::FETCH_OBJ);
   $array_filles = [];
   foreach ($data as $k=> $ligne) 
   {
+    $ligne->sous_ref = [];
     //encode image en base 64 
     if (!empty($ligne->ligne_image)) 
     {
@@ -1529,17 +1534,86 @@ public function devisLigne_sous_ref($id)
 
   foreach ($array_filles as $filles) 
   {
-      foreach ($data as $mere) 
+
+    foreach ($data as $mere) 
+    {
+      
+      if ($filles->cmdl__sous_ref == $mere->devl__id) 
       {
-        $mere->sous_ref = [];
-        if ($mere->devl__id = $filles->devl__id ) 
-        {
-          array_push($mere->sous_ref, $filles);
-        }
+        array_push($mere->sous_ref , $filles);
+        // var_dump($filles->cmdl__sous_ref ,$mere->devl__id );
       }
+    }
+   
   }
  
+  return $data;
+}
 
+
+//recupere les ligne et leur attribue leur filles : 
+public function devisLigne_sous_ref_actif($id)
+{
+  $request =$this->Db->Pdo->query("SELECT
+  cmdl__cmd__id,
+  cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
+  cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
+  cmdl__etat as devl__etat, LPAD(cmdl__garantie_base,2,0) as devl__mois_garantie,
+  cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
+  cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
+  cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
+  cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__garantie_puht , cmdl__note_facture,
+  cmdl__etat_masque, cmdl__image, cmdl__actif ,cmdl__sous_ref ,
+  k.kw__lib , k.kw__value , 
+  f.afmm__famille as famille,
+  f.afmm__modele as modele, f.afmm__image as ligne_image , 
+  k2.kw__lib as prestaLib,
+  k3.kw__info as groupe_famille,
+  k3.kw__lib as famille__lib,
+  a.am__marque as marque
+  FROM cmd_ligne 
+  LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
+  LEFT JOIN keyword as k2 ON cmdl__prestation = k2.kw__value AND k2.kw__type = 'pres'
+  LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
+  LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
+  LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
+  WHERE cmdl__cmd__id = ". $id ." AND cmdl__actif > 0
+  ORDER BY devl__ordre ");
+ 
+  $data = $request->fetchAll(PDO::FETCH_OBJ);
+  $array_filles = [];
+  foreach ($data as $k=> $ligne) 
+  {
+    $ligne->sous_ref = [];
+    //encode image en base 64 
+    if (!empty($ligne->ligne_image)) 
+    {
+      $ligne->ligne_image = base64_encode($ligne->ligne_image);
+    }
+    //reporte les lignes filles dans un tableau a part : 
+    if (!empty($ligne->cmdl__sous_ref)) 
+    {
+      array_push($array_filles , $ligne);
+      unset($data[$k]);
+    }
+
+  }
+
+  foreach ($array_filles as $filles) 
+  {
+
+    foreach ($data as $mere) 
+    {
+      
+      if ($filles->cmdl__sous_ref == $mere->devl__id) 
+      {
+        array_push($mere->sous_ref , $filles);
+        // var_dump($filles->cmdl__sous_ref ,$mere->devl__id );
+      }
+    }
+   
+  }
+ 
   return $data;
 }
 
@@ -1572,7 +1646,7 @@ public function devisLigne_actif($id)
   LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
   LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
   LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
-  WHERE cmdl__cmd__id = ". $id ." AND cmdl__actif > 0
+  WHERE cmdl__cmd__id = ". $id ." AND cmdl__actif > 0 AND cmdl__sous_ref IS NULL
   ORDER BY devl__ordre ");
  
   $data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -2092,6 +2166,8 @@ public function deleteLine($id , $cmdid)
   return true;
   
 }
+
+
 
 //efface et remplace le devis: 
 public function modify(

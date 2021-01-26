@@ -133,7 +133,7 @@
         </div>
         </div>
     </div>
-
+    
      <!-- 2eme ligne -->
      <div class="d-flex flex-wrap flex-row justify-content-center my-4">
 
@@ -151,21 +151,21 @@
                   {% set count = count + 1 %}
                   
                   <div class=" col-3 mt-1 " >
-                  <div class="card shadow">
-                    <div class="card-header">
-                      <h6 class="m-0 font-weight-bold text-primary">
+                    <div class="card shadow">
+                      <div class="card-header">
+                        <h6 class="m-0 font-weight-bold text-primary">
                         {% if ligne.prestaLib %}
-                       {{ligne.prestaLib}}
-                       {% else %}
-                       Prestation
+                          {{ligne.prestaLib}}
+                        {% else %}
+                          Prestation
                        {% endif %}
-                      </h6>
+                        </h6>
                       </div>
                     <div class="card-body">
-                        <h6 class="card-title text-bold">
+                      <h6 class="card-title text-bold">
                           <strong>
-                          {{ ligne.devl__designation}}
-                        </strong>
+                            {{ ligne.devl__designation}}
+                          </strong>
                       </h6>
                       <ul class="list-group list-group-flush ">
                         <li class="list-group-item"><strong>{{ ligne.kw__lib}}</strong></li>
@@ -173,7 +173,7 @@
                         <li class="list-group-item"> 
                           <div class="d-flex justify-content-start">
                             <div class=" col-5" for="You">
-                            <strong>Quantite </strong>
+                              <strong>Quantite </strong>
                             </div> 
                             <input type="number" class="form-control col-7 QTE-CMD" name="You" id="{{ligne.devl__id}}" value="{{ligne.devl_quantite}}">  
                           </div>
@@ -191,18 +191,18 @@
                        
                         <div class="form-check form-check-inline">
                             {% for xtend in ligne.devl__prix_barre %}
-                            <input type="hidden" class="radioCmdP" value="{{xtend.devg__prix}}">
-                            <input class="form-check-input mx-1 radioCmd " name="radio_group" id="{{ligne.devl__ordre}}" type="radio" value="{{xtend.devg__type}}">
-                            <label class="form-check-label" for="{{xtend.devg__id}}">
-                              <strong> {{xtend.devg__type}} Mois.</strong>
-                            </label>
-                            {% if loop.last %}
-                            <input type="hidden" class="radioCmdP" value="{{null}}">
-                            <input class="form-check-input mx-1 radioCmd" name="radio_group" id="{{ligne.devl__ordre}}" type="radio" value="{{null}}">
-                            <label class="form-check-label" for="{{xtend.devg__id}}">
-                               <strong>Aucunes </strong>
-                            </label>
-                            {% endif %}
+                              <input type="hidden" class="radioCmdP" value="{{xtend.devg__prix}}">
+                              <input class="form-check-input mx-1 radioCmd " name="radio_group" id="{{ligne.devl__ordre}}" type="radio" value="{{xtend.devg__type}}">
+                              <label class="form-check-label" for="{{xtend.devg__id}}">
+                                <strong> {{xtend.devg__type}} Mois.</strong>
+                              </label>
+                              {% if loop.last %}
+                                <input type="hidden" class="radioCmdP" value="{{null}}">
+                                <input class="form-check-input mx-1 radioCmd" name="radio_group" id="{{ligne.devl__ordre}}" type="radio" value="{{null}}">
+                                <label class="form-check-label" for="{{xtend.devg__id}}">
+                                  <strong>Aucunes </strong>
+                                </label>
+                              {% endif %}
                             {% endfor %}
                         </div>
                     </div>

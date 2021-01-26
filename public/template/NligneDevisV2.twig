@@ -458,9 +458,10 @@
                 </div>                 
             </div>
             </div>
-
+            
             {% if ligne.sous_ref %}
                 {% for sous_ref in ligne.sous_ref %}
+               
                 <div class=" my-1 shadow col-12 sous_ref_card">
                     <div class='card-body'>
                         <div class="d-flex ">
@@ -632,9 +633,12 @@
                             <textarea class="CKE"  placeholder="Commentaire interne...." rows="4" id="com_sous_ref" name="com_sous_ref"></textarea>
                         </div>
                             
-                        
+                       <div class="custom-control custom-checkbox col-4">
+                            <input type="checkbox" class="custom-control-input" id="sous_ref_garantie" name="sous_ref_garantie" value='ok'>
+                            <label class="custom-control-label" for="sous_ref_garantie">Etendre la garantie</label>
+                        </div>
                        
-                       
+                      
                       
                 </div>
                 <div class="modal-footer">

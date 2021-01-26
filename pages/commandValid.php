@@ -23,17 +23,10 @@ $Database->DbConnect();
 $devis = $Devis->GetById($_POST['ValideCmd']);
 
 //recupere les lignes de devis:
-$arrayOfDevisLigne = $Devis->devisLigne_actif($_POST['ValideCmd']);
+$arrayOfDevisLigne = $Devis->devisLigne_sous_ref($_POST['ValideCmd']);
 
 
 
-// foreach ($arrayOfDevisLigne as $lignes) {
-//   $arrayOfData = [];
-//   array_push($arrayOfData, intval($lignes->devl__ordre));
-//   array_push($arrayOfData, intval($lignes->devl_quantite));
-//   array_push($arrayOfData, $lignes->devl__note_client);
-// var_dump( $arrayOfData);
-// }
 
 //recupere les garanties liees:
 foreach ($arrayOfDevisLigne as $ligne) 
