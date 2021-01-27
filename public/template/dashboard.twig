@@ -1,123 +1,75 @@
 {% extends 'layoutMain.twig' %}
 
 
-  {% block style %}
-  <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="public/css/dashboard.css">
-  {% endblock %}
- 
- 
-     {% block main %}
-     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-
-      <div class="d-flex justify-content-start flex-column     mb-5 border-bottom">
-       
-        <h1 class="h2">Tableau de bord <i class="fal fa-chart-network fa-lg fa-fw" ></i></h1>
-       
-        <nav class="nav mt-4  pt-2">
-          
-          <button class="btn btn-link  font-weight-bold mx-4  " href="#" id="toogleSociete">Devis <span class="badge badge-pill badge-primary d-none" id="spanSociete"></span></button>
-      
-          <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleLivraison">Nouveau Devis <span class="badge badge-pill badge-primary d-none" id="spanLivraison"></span></button>
-          
-          <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleDevis" >CRM </button>
-
-          <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleDevis" >Intranet</button>
-
-          <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleDevis" >Tickets</button>
-
-          <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleDevis" >Matériel</button>
-
-          <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleDevis" >Facture</button>
-
-          <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleDevis" >Administration</button>
-
-          
-
-        </nav>
-      </div>
+{% endblock %}
 
 
+{% block main %}
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
 
+  <div class="d-flex justify-content-start flex-column     mb-5 border-bottom">
 
+    <h1 class="h2">Tableau de bord <i class="fal fa-chart-network fa-lg fa-fw"></i></h1>
 
+    <nav class="nav mt-4  pt-2">
 
-         <!-- 1ere ligne -->
-      <div class="d-flex flex-wrap flex-row justify-content-center">
-        <div class="col-11 " >
-          <div class="col-12 d-flex justify-content-start">
-            <div class="col-6 " >
-              <div class="card  shadow mb-2 " style="height: 27rem;">
-              <!-- Card Header - -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Statistiques Devis <i class="fas fa-chart-bar"></i></h6>
-                  <div class="dropdown no-arrow">
-                
-                
-                </div>
+      <button class="btn btn-link  font-weight-bold mx-4  " href="#" id="toogleSociete">Devis <span
+          class="badge badge-pill badge-primary d-none" id="spanSociete"></span></button>
+
+      <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleLivraison">Nouveau Devis <span
+          class="badge badge-pill badge-primary d-none" id="spanLivraison"></span></button>
+
+      <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleDevis">CRM </button>
+
+      <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleDevis">Intranet</button>
+
+      <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleDevis">Tickets</button>
+
+      <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleDevis">Matériel</button>
+
+      <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleDevis">Facture</button>
+
+      <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleDevis">Administration</button>
+    </nav>
+  </div>
+  <!-- 1ere ligne -->
+  <div class="d-flex flex-wrap flex-row justify-content-center">
+    <div class="col-11 ">
+      <div class="col-12 d-flex justify-content-start">
+        <div class="col-6 ">
+          <div class="card  shadow mb-2 " style="height: 27rem;">
+            <!-- Card Header - -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+              <h6 class="m-0 font-weight-bold text-primary">Statistiques Devis <i class="fas fa-chart-bar"></i></h6>
+              <div class="dropdown no-arrow">
               </div>
-              <!-- Card Body -->
-                <div class="card-body d-flex flex-column justify-content-around " style=" height: 18rem;">
-
-
-                  <div id="charts-Devis">
-
-
-                  </div id="">
-
-                
-
-
-
-                
-                </div>
-              </div>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body d-flex flex-column justify-content-around " style=" height: 18rem;">
+              <div id="charts-Devis">
+              </div id="">
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
 
 
+{% block script %}
+<!-- Optional JavaScript -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </main>
-    {% endblock %}
-    
-   
-    {% block script %}
-    <!-- Optional JavaScript -->
-    
-    <!-- jQuery first, then Bootstrap JS -->
-    <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
-    <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
-    <script  type="text/javascript" src="public/js/chartsLoader.js"></script>
-    <script  type="text/javascript" src="public/js/charts.js"></script>
-    {% endblock %}
+<!-- jQuery first, then Bootstrap JS -->
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/js/chartsLoader.js"></script>
+<script type="text/javascript" src="public/js/charts.js"></script>
+{% endblock %}

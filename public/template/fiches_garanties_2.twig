@@ -1,186 +1,143 @@
 {% extends 'layoutLight.twig' %}
-
-
 {% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
-
 <link rel="stylesheet" href="public/css/dashboard.css">
 {% endblock %}
- 
-
 {% block main %}
-
-
-<main  role="main" class=" pt-3 px-4"> 
-    <div id="loading">
-        <div class="lds-hourglass">
-        </div>
-    </div>  
-    
-    
-    
-
-    <div class="d-flex justify-content-start flex-column mb-5 border-bottom">
-        <h2>Fiche de garantie</h2>
+<main role="main" class=" pt-3 px-4">
+  <div id="loading">
+    <div class="lds-hourglass">
     </div>
-
-   
-
-
-    <div class='d-flex flex-row'>
-    
+  </div>
+  <div class="d-flex justify-content-start flex-column mb-5 border-bottom">
+    <h2>Fiche de garantie</h2>
+  </div>
+  <div class='d-flex flex-row'>
     <div class=" my-1  col-5">
-
-        <!--carte recherche-->
-        <div class='card-body' id="search_client">
-            <input class="form-control mr-sm-2 " list="search_list" type="search"  placeholder="Recherche client" aria-label="Search" id="client_input" autocomplete='off'>
-            <ul id="search_list" class="list-group">
-                
-            <ul/>
-        </div>
-
-
-        <div class="container">
-
-            <!--carte client select -->
-            <div class="card bg-light mb-3 d-none" id="card_client">
-                <div class="card-header">
-                   
-                    <button type="button" class="close"  aria-label="Close" id="client_button">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                      <h5 class="card-title text-primary" id="titre_client"></h5>
-                </div>
-                <div class="card-body">
-                    <h6 id="societe_client"></h6>
-                    <p class="card-text"></p>
-                </div>
-            </div>
-
-            <!--carte fortmulaire-->
-            <form id="container_forms" class="d-none" method="POST" action="fiches_garantie">
-                <input type="hidden" id="hidden_client" name="hidden_client">
-
-                <div class="form-group">
-                    <label for="contact_select">Contact</label>
-                    <select class="form-control" id="contact_select" name="contact_select" data-size="5">
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="prestation">Type garantie</label>
-                    <select class="form-control" name="prestation" id="prestation" data-size="5">
-                        <option value="02" selected>Garantie</option>
-                        <option value='03'>Maintenance</option>
-                        <option value='06'>RMA Fournisseur</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="commande_origine">N° commande d'origine</label>
-                    <input class="form-control" type="text" id="commande_origine" name="commande_origine"/ required>
-                </div>
-
-                <div class="form-group">
-                    <label for="commentaire_interne">Commentaire</label>
-                    <textarea class="form-control"  id="commentaire_interne" name="commentaire_interne"   placeholder="Commentaire interne...." ></textarea>
-                </div>
-
-                <div class="modal-footer" id="">
-                    <button data-toggle="modal" data-target="#modal_ligne" type="button" class="btn btn-success">Articles <i class="fas fa-plus"></i></button>
-                    <input type="hidden" name="json_array" id="json_array">
-                     <button  type="submit" id="print_button" class="btn btn-primary d-none" disabled>Valider <i class="fas fa-print"></i></button>
-                </div>
-            </form>
-
-           
-
-        </div>
-        
-            
-    </div>
-
-    <div id="div_article" class='my-1  col-4'>
-        <form id='form_article'>
-
-        </form>
-    
-    </div>
- 
-</div>
-
-
-
-
-
-
-<div class="modal fade bd-example-modal-lg" id="modal_ligne" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Ajout Ligne</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+      <!--carte recherche-->
+      <div class='card-body' id="search_client">
+        <input class="form-control mr-sm-2 " list="search_list" type="search" placeholder="Recherche client"
+          aria-label="Search" id="client_input" autocomplete='off'>
+        <ul id="search_list" class="list-group">
+        </ul>
       </div>
+      <div class="container">
+        <!--carte client select -->
+        <div class="card bg-light mb-3 d-none" id="card_client">
+          <div class="card-header">
+            <button type="button" class="close" aria-label="Close" id="client_button">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <h5 class="card-title text-primary" id="titre_client"></h5>
+          </div>
+          <div class="card-body">
+            <h6 id="societe_client"></h6>
+            <p class="card-text"></p>
+          </div>
+        </div>
+        <!--carte fortmulaire-->
+        <form id="container_forms" class="d-none" method="POST" action="fiches_garantie">
+          <input type="hidden" id="hidden_client" name="hidden_client">
+          <div class="form-group">
+            <label for="contact_select">Contact</label>
+            <select class="form-control" id="contact_select" name="contact_select" data-size="5">
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="prestation">Type garantie</label>
+            <select class="form-control" name="prestation" id="prestation" data-size="5">
+              <option value="02" selected>Garantie</option>
+              <option value='03'>Maintenance</option>
+              <option value='06'>RMA Fournisseur</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="commande_origine">N° commande d'origine</label>
+            <input class="form-control" type="text" id="commande_origine" name="commande_origine" / required>
+          </div>
+          <div class="form-group">
+            <label for="commentaire_interne">Commentaire</label>
+            <textarea class="form-control" id="commentaire_interne" name="commentaire_interne"
+              placeholder="Commentaire interne...."></textarea>
+          </div>
+          <div class="modal-footer" id="">
+            <button data-toggle="modal" data-target="#modal_ligne" type="button" class="btn btn-success">Articles <i
+                class="fas fa-plus"></i></button>
+            <input type="hidden" name="json_array" id="json_array">
+            <button type="submit" id="print_button" class="btn btn-primary d-none" disabled>Valider <i
+                class="fas fa-print"></i></button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="div_article" class='my-1  col-4'>
+      <form id='form_article'>
+      </form>
+    </div>
+  </div>
+  <div class="modal fade bd-example-modal-lg" id="modal_ligne" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Ajout Ligne</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
         <input type="hidden" name="hiddenAddLines" value="{{ retour.devis__id}}">
         <input type='hidden' id="hiddenAddLinesCmd" name='hiddenAddLinesCmd' value='{{cmd.devis__id}}'>
         <div class="d-flex flex-row form-group m-3 justify-content-around">
           <div class="col-6 form-group">
             <label for="validationCustom04">Article</label>
-              <select class="selectpicker col-12" id="choixDesignation" name="choixDesignation" data-live-search="true">
-                {% for article in articleList %} 
-                  <option class="optionSelect modelSelect " value={{article.afmm__id}}>{{article.afmm__modele   ~ " " ~ article.famille ~ " " ~ article.Marque }}</option>
-                  {% endfor %}
-              </select> 
-            </div>
-            <div class="form-group col-3">
-              <label for="validationCustom04">Quantité</label>
-              <input type="number" class="form-control" value="1" min="1" id="quantiteLigne" name="quantiteLigne" required >
-            </div>
+            <select class="selectpicker col-12" id="choixDesignation" name="choixDesignation" data-live-search="true">
+              {% for article in articleList %}
+              <option class="optionSelect modelSelect " value={{article.afmm__id}}>{{article.afmm__modele ~ " " ~
+                article.famille ~ " " ~ article.Marque }}</option>
+              {% endfor %}
+            </select>
           </div>
-          <div class="d-flex flex-row form-group m-2 justify-content-around">
-            <div class="form-group col-7">
-              <label for="validationCustom04">Désignation</label>
-              <input type="text" class="form-control" id="designationArticle" name="designationArticle" required >
-            </div>
-            <div class="col-md-3 ">
-              <label for="prestationChoix">Type de retour</label>
-              <select class="form-control" name="typeLigne" id='typeLigne' required>
-                  <option class="" value="ECH">Echange</option>
-                  <option class="" value="RTE" >Retour</option>
-              </select>
-            </div>
+          <div class="form-group col-3">
+            <label for="validationCustom04">Quantité</label>
+            <input type="number" class="form-control" value="1" min="1" id="quantiteLigne" name="quantiteLigne"
+              required>
           </div>
-                <div class="modal-footer">
-                    <button class="btn btn-success" id='post_article'>Valider</button>
-                </div>
-            </div>
         </div>
+        <div class="d-flex flex-row form-group m-2 justify-content-around">
+          <div class="form-group col-7">
+            <label for="validationCustom04">Désignation</label>
+            <input type="text" class="form-control" id="designationArticle" name="designationArticle" required>
+          </div>
+          <div class="col-md-3 ">
+            <label for="prestationChoix">Type de retour</label>
+            <select class="form-control" name="typeLigne" id='typeLigne' required>
+              <option class="" value="ECH">Echange</option>
+              <option class="" value="RTE">Retour</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success" id='post_article'>Valider</button>
+        </div>
+      </div>
     </div>
-</div>
-
-
-
-  
-
+  </div>
+  </div>
 </main>
 {% endblock %}
-     
 {% block script %}
 <!-- jQuery first, then Bootstrap JS -->
-<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
-<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script>
-    jQuery(document).ready(function() 
-    {
-        jQuery('#loading').fadeOut(50);
-    });
-    </script>
+  jQuery(document).ready(function () {
+    jQuery('#loading').fadeOut(50);
+  });
+</script>
 <script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
 

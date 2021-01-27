@@ -44,7 +44,7 @@ public function insertOne($name , $adresse, $adresse2 , $cp, $ville)
 {
     $request = $this->Db->Pdo->prepare('INSERT INTO ' .$this->Table."(client__societe , client__adr1 , client__adr2, client__cp , client__ville )
      VALUES (:societe, :adr1, :adr2, :cp, :ville)");
-    $request->bindValue(":societe", strtoupper($name));
+    $request->bindValue(":societe",mb_strtoupper($name , 'UTF8'));
     $request->bindValue(":adr1", $adresse);
     $request->bindValue(":adr2", $adresse2);
     $request->bindValue(":cp", $cp);
@@ -53,16 +53,17 @@ public function insertOne($name , $adresse, $adresse2 , $cp, $ville)
     return $this->Db->Pdo->lastInsertId();
 }
 
-public function create_one($societe , $adr1, $adr2 , $cp, $ville , $tel, $fax ,  $tva , $intracom , $comm , $vendeur)
+public function create_one($societe , $adr1, $adr2 , $cp, $ville , $tel, $fax ,  $tva , $intracom , $comm , $vendeur , $pays)
 {
     $request = $this->Db->Pdo->prepare('INSERT INTO ' .$this->Table."
     (client__societe , client__adr1 , client__adr2, client__cp , client__ville , client__tel,
-     client__fax, client__tva , client__tva_intracom , client__comment, client__date_crea , client__dt_last_modif  , client__id_vendeur)
-     VALUES (:societe, :adr1, :adr2, :cp, :ville, :tel, :fax,  :tva, :intracom, :comment, :date, :last_modif , :vendeur  )");
+     client__fax, client__tva , client__tva_intracom , client__comment, client__date_crea , client__dt_last_modif  , client__id_vendeur , client__pays)
+     VALUES (:societe, :adr1, :adr2, :cp, :ville, :tel, :fax,  :tva, :intracom, :comment, :date, :last_modif , :vendeur , :pays )");
 
     $date = date("Y-m-d H:i:s");
-
-    $request->bindValue(":societe", strtoupper($societe));
+   
+    $request->bindValue(":societe", mb_strtoupper($societe, 'UTF8'));
+    $request->bindValue(":pays", $pays);
     $request->bindValue(":adr1", $adr1);
     $request->bindValue(":adr2", $adr2);
     $request->bindValue(":cp", $cp);

@@ -37,11 +37,20 @@ if (!empty($_POST['hidden_client']))
 }
 
 
- if ( empty($_POST['modif__id']) &&!empty($_POST['nom_societe']) && !empty($_POST['ville']) && !empty($_POST['code_postal']) && !empty($_POST['select_tva'])) 
+ if ( empty($_POST['modif__id']) &&!empty($_POST['nom_societe']) && !empty($_POST['ville']) && !empty($_POST['code_postal'])) 
  {
+      $pays = mb_strtoupper($_POST['input_pays'], 'UTF8');
+      if ($pays = "FRANCE") {
+         $pays = '';
+         
+      } else {
+         $pays = $pays;
+      }
+      var_dump($pays);
+      die();
       $creation_societe = $Client->create_one(
       $_POST['nom_societe'],$_POST['adresse_1'] ,$_POST['adresse_2'] , $_POST['code_postal'] , $_POST['ville'], $_POST['telephone'],
-      $_POST['fax'] ,  $_POST['select_tva'] , $_POST['intracom_input'] , $_POST['commentaire_client'] , $_POST['vendeur']);
+      $_POST['fax'] ,  $_POST['select_tva'] , $_POST['intracom_input'] , $_POST['commentaire_client'] , $_POST['vendeur'], $pays);
 
       if (!empty($_POST['input_pays'])) 
       {
@@ -52,19 +61,19 @@ if (!empty($_POST['hidden_client']))
       {
          $General->updateAll('client' , $_POST['config'] , 'client__memo_config' , 'client__id' , $creation_societe);
       }
-
-      $creation_totoro = $Client->getOne($creation_societe);
-      $Totoro = new App\Totoro('euro');
-      $Totoro->DbConnect();
-      $ContactTotoro = new App\Tables\ContactTotoro($Totoro);
-      $creation =  $ContactTotoro->insertSociete($creation_totoro);
+    
+      // $creation_totoro = $Client->getOne($creation_societe);
+      // $Totoro = new App\Totoro('euro');
+      // $Totoro->DbConnect();
+      // $ContactTotoro = new App\Tables\ContactTotoro($Totoro);
+      // $creation =  $ContactTotoro->insertSociete($creation_totoro);
 
       $alertSuccess = $creation_societe ;
       $date = date("Y-m-d H:i:s");
       $Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date , $creation_societe , ' création de societe: ' ); 
  }
 
- if (!empty($_POST['modif__id']) &&!empty($_POST['nom_societe']) && !empty($_POST['ville']) && !empty($_POST['code_postal']) && !empty($_POST['select_tva'])) 
+ if (!empty($_POST['modif__id']) &&!empty($_POST['nom_societe']) && !empty($_POST['ville']) && !empty($_POST['code_postal']) ) 
  {
    //on met dabord à jour dans sossuke : 
    $General->updateAll('client' , $_POST['nom_societe'] , 'client__societe' , 'client__id' , $_POST['modif__id']);
