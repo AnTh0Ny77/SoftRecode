@@ -39,7 +39,7 @@ if (empty($_SESSION['user'])) {
    if (empty($_POST['modif__id']) && !empty($_POST['nom_societe']) && !empty($_POST['ville']) && !empty($_POST['code_postal'])) {
       
       $pays = mb_strtoupper($_POST['input_pays'], 'UTF8');
-      if ($pays = "FRANCE") {
+      if ($pays === "FRANCE") {
          $pays = '';
       } else {
          $pays = $pays;
@@ -64,11 +64,11 @@ if (empty($_SESSION['user'])) {
          $General->updateAll('client', $_POST['config'], 'client__memo_config', 'client__id', $creation_societe);
       }
 
-      $creation_totoro = $Client->getOne($creation_societe);
-      $Totoro = new App\Totoro('euro');
-      $Totoro->DbConnect();
-      $ContactTotoro = new App\Tables\ContactTotoro($Totoro);
-      $creation =  $ContactTotoro->insertSociete($creation_totoro);
+      // $creation_totoro = $Client->getOne($creation_societe);
+      // $Totoro = new App\Totoro('euro');
+      // $Totoro->DbConnect();
+      // $ContactTotoro = new App\Tables\ContactTotoro($Totoro);
+      // $creation =  $ContactTotoro->insertSociete($creation_totoro);
 
       $alertSuccess = $creation_societe;
       $date = date("Y-m-d H:i:s");
@@ -88,8 +88,9 @@ if (empty($_SESSION['user'])) {
       $General->updateAll('client', $_POST['intracom_input'], 'client__tva_intracom', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['commentaire_client'], 'client__comment', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['vendeur'], 'client__id_vendeur', 'client__id', $_POST['modif__id']);
+
       $pays = mb_strtoupper($_POST['input_pays'], 'UTF8');
-      if ($pays = "FRANCE") {
+      if ($pays === "FRANCE") {
          $pays = '';
       } else {
          $pays = $pays;
@@ -97,19 +98,19 @@ if (empty($_SESSION['user'])) {
       $General->updateAll('client',  $pays, 'client__pays', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['config'], 'client__memo_config', 'client__id', $_POST['modif__id']);
       //ensuite totoro : 
-      $Totoro = new App\Totoro('euro');
-      $Totoro->DbConnect();
-      $ContactTotoro = new App\Tables\ContactTotoro($Totoro);
-      $ContactTotoro->updateAll('client', $_POST['nom_societe'], 'nsoc', 'id_client', $_POST['modif__id']);
-      $ContactTotoro->updateAll('client', $_POST['adresse_1'], 'adr1', 'id_client', $_POST['modif__id']);
-      $ContactTotoro->updateAll('client', $_POST['adresse_2'], 'adr2', 'id_client', $_POST['modif__id']);
-      $ContactTotoro->updateAll('client', $_POST['code_postal'], 'cp', 'id_client', $_POST['modif__id']);
-      $ContactTotoro->updateAll('client', $_POST['ville'], 'ville', 'id_client', $_POST['modif__id']);
-      $ContactTotoro->updateAll('client', $_POST['telephone'], 'tel', 'id_client', $_POST['modif__id']);
-      $ContactTotoro->updateAll('client', $_POST['fax'], 'fax', 'id_client', $_POST['modif__id']);
-      $ContactTotoro->updateAll('client', $_POST['select_tva'], 'code_tva', 'id_client', $_POST['modif__id']);
-      $ContactTotoro->updateAll('client', $_POST['intracom_input'], 'tva', 'id_client', $_POST['modif__id']);
-      $ContactTotoro->updateAll('client', $_POST['vendeur'], 'tva', 'id_vendeur', $_POST['modif__id']);
+      // $Totoro = new App\Totoro('euro');
+      // $Totoro->DbConnect();
+      // $ContactTotoro = new App\Tables\ContactTotoro($Totoro);
+      // $ContactTotoro->updateAll('client', mb_strtoupper($_POST['nom_societe'], 'UTF8'), 'nsoc', 'id_client', $_POST['modif__id']);
+      // $ContactTotoro->updateAll('client', $_POST['adresse_1'], 'adr1', 'id_client', $_POST['modif__id']);
+      // $ContactTotoro->updateAll('client', $_POST['adresse_2'], 'adr2', 'id_client', $_POST['modif__id']);
+      // $ContactTotoro->updateAll('client', $_POST['code_postal'], 'cp', 'id_client', $_POST['modif__id']);
+      // $ContactTotoro->updateAll('client', mb_strtoupper($_POST['ville'], 'UTF8'), 'ville', 'id_client', $_POST['modif__id']);
+      // $ContactTotoro->updateAll('client', $_POST['telephone'], 'tel', 'id_client', $_POST['modif__id']);
+      // $ContactTotoro->updateAll('client', $_POST['fax'], 'fax', 'id_client', $_POST['modif__id']);
+      // $ContactTotoro->updateAll('client', $_POST['select_tva'], 'code_tva', 'id_client', $_POST['modif__id']);
+      // $ContactTotoro->updateAll('client', $_POST['intracom_input'], 'tva', 'id_client', $_POST['modif__id']);
+      // $ContactTotoro->updateAll('client', $_POST['vendeur'], 'tva', 'id_vendeur', $_POST['modif__id']);
 
       $date = date("Y-m-d H:i:s");
       $Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date, $_POST['modif__id'], ' modification de societe: ');
