@@ -46,7 +46,7 @@ if(!empty($_POST['devisCommande']))
   if (!empty($_POST['arrayLigneDeCommande'])) 
   {
     $validLignes = json_decode($_POST['arrayLigneDeCommande']);
-    //je met a jour les extension de garanties choisies ainsi que les commentaire et quantité :  
+    //je met a jour les extension de garanties choisies ainsi que les commentaires et quantités (meme si ça n'a aucun sens) :  
     foreach ($validLignes as $lignes) 
     {
       $Command->updateGarantie(
