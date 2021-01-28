@@ -22,8 +22,6 @@ if (empty($_SESSION['user'])) {
    $User = new App\Tables\User($Database);
    $General = new App\Tables\General($Database);
    $Pisteur = new App\Tables\Pistage($Database);
-
-
    $tva_list = $Keywords->getAllFromParam('tva');
    $user_list = $User->getAll();
    $alert = false;

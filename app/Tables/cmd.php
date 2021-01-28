@@ -2,16 +2,12 @@
 namespace App\Tables;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
-
-
-
 use App\Tables\Table;
 use App\Database;
 use App\Methods\Pdfunctions;
 use PDO;
 use stdClass;
 use DateTime;
-
 use App\Tables\Client;
 use App\Tables\Contact;
 use App\Tables\User;
@@ -23,7 +19,7 @@ class Cmd extends Table {
     $this->Db = $db;
   }
 
-
+//si un jour quelqu'un se demande pourquoi y'a des allias pourris : changement de DB en plein dev .. goood luck 
   public function GetById($id){
     $request =$this->Db->Pdo->query("SELECT
     cmd__id as devis__id ,
@@ -63,11 +59,6 @@ class Cmd extends Table {
     $data = $request->fetch(PDO::FETCH_OBJ);
     return $data;
   }
-
-
-  
-
-
 
 
   public function getUserDevis($id){
@@ -1680,6 +1671,15 @@ public function delete_ligne_inactif_filles($id)
     $update->execute();
   }
   return true;
+}
+
+public function update_filles_extensions($mere)
+{ 
+    $data = [ $mere->cmdl__garantie_option , $mere->cmdl__garantie_puht , $mere->cmdl__cmd__id , $mere->devl__id  ];
+    $request = "UPDATE cmd_ligne SET cmdl__garantie_option = ? , cmdl__garantie_puht = ?   WHERE cmdl__cmd__id = ?  AND cmdl__sous_ref = ? AND cmdl__sous_garantie = 1";
+    $update = $this->Db->Pdo->prepare($request);
+    $update->execute($data);
+    return true ; 
 }
 
 
