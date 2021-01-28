@@ -16,14 +16,14 @@ if (empty($_SESSION['user']))
 {
     header('location: login');
 }
-//si une variable de session de creation de fiche est presente: (reliquat)
+//si une variable de session de creation de fiche est presente: (reliquat) je recupere la variable de session : 
 if (!empty($_SESSION['creaFiche'])) 
 {
     $command = $Command->getById(intval($_SESSION['creaFiche']));
     $_POST['devisCommande'] = $command->devis__id ;
     $_SESSION['creaFiche'] = '';
 }
-//si une creation de fiche de garantie a eu lieu : 
+//si une creation de fiche de garantie a eu lieu je recupere la variable de session : 
 if (!empty($_SESSION['garanFiche'])) 
 {
     $command = $Command->getById(intval($_SESSION['garanFiche']));
@@ -46,6 +46,7 @@ if(!empty($_POST['devisCommande']))
   if (!empty($_POST['arrayLigneDeCommande'])) 
   {
     $validLignes = json_decode($_POST['arrayLigneDeCommande']);
+    //je met a jour les extension de garanties choisies ainsi que les commentaire et quantité :  
     foreach ($validLignes as $lignes) 
     {
       $Command->updateGarantie(
