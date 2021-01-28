@@ -77,18 +77,24 @@ if (empty($_SESSION['user'])) {
 
    if (!empty($_POST['modif__id']) && !empty($_POST['nom_societe']) && !empty($_POST['ville']) && !empty($_POST['code_postal'])) {
       //on met dabord à jour dans sossuke : 
-      $General->updateAll('client', $_POST['nom_societe'], 'client__societe', 'client__id', $_POST['modif__id']);
+      $General->updateAll('client',  mb_strtoupper($_POST['nom_societe'], 'UTF8') , 'client__societe', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['adresse_1'], 'client__adr1', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['adresse_2'], 'client__adr2', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['code_postal'], 'client__cp', 'client__id', $_POST['modif__id']);
-      $General->updateAll('client', $_POST['ville'], 'client__ville', 'client__id', $_POST['modif__id']);
+      $General->updateAll('client', mb_strtoupper($_POST['ville'], 'UTF8'), 'client__ville', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['telephone'], 'client__tel', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['fax'], 'client__fax', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['select_tva'], 'client__tva', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['intracom_input'], 'client__tva_intracom', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['commentaire_client'], 'client__comment', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['vendeur'], 'client__id_vendeur', 'client__id', $_POST['modif__id']);
-      $General->updateAll('client', $_POST['input_pays'], 'client__pays', 'client__id', $_POST['modif__id']);
+      $pays = mb_strtoupper($_POST['input_pays'], 'UTF8');
+      if ($pays = "FRANCE") {
+         $pays = '';
+      } else {
+         $pays = $pays;
+      }
+      $General->updateAll('client',  $pays, 'client__pays', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['config'], 'client__memo_config', 'client__id', $_POST['modif__id']);
       //ensuite totoro : 
       $Totoro = new App\Totoro('euro');
