@@ -1650,6 +1650,7 @@ public function devisLigne_actif($id)
   return $data;
 }
 
+//supprime une ligne innactive 
 public function delete_ligne_inactif($id)
 {
   $request = "DELETE FROM cmd_ligne WHERE  cmdl__cmd__id = '".$id."' AND  cmdl__actif < 1 ";
@@ -1658,6 +1659,7 @@ public function delete_ligne_inactif($id)
   return true;
 }
 
+//efface les ligne filles d'une ligne inactive
 public function delete_ligne_inactif_filles($id)
 {
   $request =$this->Db->Pdo->query("SELECT cmdl__id , cmdl__cmd__id  FROM cmd_ligne 
@@ -1672,14 +1674,19 @@ public function delete_ligne_inactif_filles($id)
   }
   return true;
 }
-
+//met à jour les extension de garantie des filles : 
 public function update_filles_extensions($mere)
 { 
-    $data = [ $mere->cmdl__garantie_option , $mere->cmdl__garantie_puht , $mere->cmdl__cmd__id , $mere->devl__id  ];
-    $request = "UPDATE cmd_ligne SET cmdl__garantie_option = ? , cmdl__garantie_puht = ?   WHERE cmdl__cmd__id = ?  AND cmdl__sous_ref = ? AND cmdl__sous_garantie = 1";
-    $update = $this->Db->Pdo->prepare($request);
-    $update->execute($data);
-    return true ; 
+    if (!empty($mere->cmdl__sous_ref)) 
+    {
+      $data = [ $mere->cmdl__garantie_option , $mere->cmdl__garantie_puht , $mere->cmdl__cmd__id , $mere->devl__id  ];
+      $request = "UPDATE cmd_ligne SET cmdl__garantie_option = ? , cmdl__garantie_puht = ?   WHERE cmdl__cmd__id = ?  AND cmdl__sous_ref = ? AND cmdl__sous_garantie = 1";
+      $update = $this->Db->Pdo->prepare($request);
+      $update->execute($data);
+      return true ; 
+    }
+    else return false ;
+   
 }
 
 

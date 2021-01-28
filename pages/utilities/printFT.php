@@ -1,6 +1,5 @@
 <?php
 require "./vendor/autoload.php";
-
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Methods\Pdfunctions;
@@ -12,95 +11,101 @@ $Client = new \App\Tables\Client($Database);
 $User = new App\Tables\User($Database);
 $Global = new App\Tables\General($Database);
 $Contact = new App\Tables\Contact($Database);
-
-if (empty($_SESSION['user'])) {
+//controle de la connexion : 
+if (empty($_SESSION['user'])) 
+{
     header('location: login');
- }
-
-
- if (!empty($_SESSION['creaFiche'])) 
+}
+//si une variable de session de creation de fiche est presente: (reliquat)
+if (!empty($_SESSION['creaFiche'])) 
 {
     $command = $Command->getById(intval($_SESSION['creaFiche']));
     $_POST['devisCommande'] = $command->devis__id ;
     $_SESSION['creaFiche'] = '';
 }
-
+//si une creation de fiche de garantie a eu lieu : 
 if (!empty($_SESSION['garanFiche'])) 
 {
     $command = $Command->getById(intval($_SESSION['garanFiche']));
     $_POST['devisCommande'] = $command->devis__id ;
     $_SESSION['garanFiche'] = '';
 }
-
-
- // si une validation de devis a été effectuée : 
+// si une validation de devis a été effectuée : 
 if(!empty($_POST['devisCommande']))
 {
+  //efface les lignes filles des lignes inactives :
   $delete_daugther_lines_with_inactif_mum = $Command->delete_ligne_inactif_filles($_POST['devisCommande']);
+  //efface les lignes inactives : 
   $deleteLines = $Command->delete_ligne_inactif($_POST['devisCommande']);
   $date = date("Y-m-d H:i:s");
+  //mise a jour des dates , satus et validateur de cmd : 
   $Command->updateStatus('CMD',$_POST['devisCommande']);
   $Command->updateDate('cmd__date_cmd' , $date , $_POST['devisCommande'] );
   $Command->updateAuthor('cmd__user__id_cmd' , $_SESSION['user']->id_utilisateur , $_POST['devisCommande']);
+  //recupere le json contenant les lignes avec les extensions pré-choisies: 
   if (!empty($_POST['arrayLigneDeCommande'])) 
   {
     $validLignes = json_decode($_POST['arrayLigneDeCommande']);
     foreach ($validLignes as $lignes) 
     {
       $Command->updateGarantie(
-        $lignes->devl__prix_barre[0],
-        $lignes->devl__prix_barre[1],
-        $lignes->devl__note_interne,
-        $lignes->devl_quantite,
-        $lignes->cmdl__cmd__id,
-        $lignes->devl__ordre );
+      $lignes->devl__prix_barre[0],
+      $lignes->devl__prix_barre[1],
+      $lignes->devl__note_interne,
+      $lignes->devl_quantite,
+      $lignes->cmdl__cmd__id,
+      $lignes->devl__ordre );
     } 
   }
+  //si un code commande à été mis a jour durant la validation : 
   if (!empty($_POST['code_cmd'])) 
   {
     $Global->updateAll('cmd', $_POST['code_cmd'],'cmd__code_cmd_client', 'cmd__id', $_POST['devisCommande']);
   }
- 
+  //si le commentaire interne global a été mis a jour pendant la creation de commande : 
   if (!empty($_POST['ComInterCommande'])) 
   {
     $Global->updateAll('cmd', $_POST['ComInterCommande'],'cmd__note_interne', 'cmd__id', $_POST['devisCommande']);
   }
-
   //contient l'id du devis pour l'imprssion de la fiche de travail : client2.js
   $print_request = $_POST['devisCommande'];
 }
-
-  
+//recupère la commande mise a jour :
 $command = $Command->getById(intval($_POST['devisCommande']));
-
-//si la date de divis est vide ( reliquat ou garantie)
+//si la date de devis est vide (reliquat ou garantie): je met a jour en me servant de la date commande : 
 if (empty($command->devis__date_crea)) 
 {
     $date = date("Y-m-d H:i:s");
     $Global->updateAll('cmd', $date,'cmd__date_devis', 'cmd__id', $command->devis__id);
 }
-
+//recupère le tableau de ligne à jour : 
 $commandLignes = $Command->devisLigne($_POST['devisCommande']);
+//met a jour les extensions de garanties des lignes fillles : 
+foreach ($commandLignes as $ligne) 
+{
+    //je met a jour les ligne filles qui ont le droit de bénéficier de l'extension de garantie de la mère : 
+    $update =$Command->update_filles_extensions($ligne);
+}
+//je recupère le client , user et validateur du  pdf : 
 $clientView = $Client->getOne($command->client__id);
 $user = $User->getByID($clientView->client__id_vendeur);
 $userCMD = $User->getByID($command->cmd__user__id_cmd);
+//si une societe de livraison existe je la recupère : 
 $societeLivraison = false ;
-
-//si une societe de livraison existe: 
 if($command->devis__id_client_livraison) 
 {
     $societeLivraison = $Client->getOne($command->devis__id_client_livraison);
 }
-
+//je recupère ma commande mise a jour : 
 $command = $Command->getById(intval($_POST['devisCommande']));
-    
+//variable pour la gloire ? je ne l'enlève pas pour l'instant :    
 $dateTemp = new DateTime($command->cmd__date_cmd);
- //cree une variable pour la date de commande du devis
- $date_time = new DateTime( $command->cmd__date_cmd);
- //formate la date pour l'utilisateur:
- $formated_date = $date_time->format('d/m/Y');
+//cree une variable pour la date de commande du devis
+$date_time = new DateTime( $command->cmd__date_cmd);
+//formate la date pour l'utilisateur:
+$formated_date = $date_time->format('d/m/Y');
+//debut de la génération du contenu html : 
 ob_start();
-
 ?>
 <style type="text/css">
       strong{ color:#000;}
@@ -111,43 +116,35 @@ ob_start();
        border-collapse:separate; 
        border-spacing: 0 15px; 
          }  
- </style>
-
+</style>
 <page backtop="10mm" backleft="5mm" backright="5mm" backbottom='15%' footer="page">
-    <page_footer >
-         
-     <div style=" width: 100%; position: absolute; bottom:1px">
-         
+    <page_footer > 
+        <div style=" width: 100%; position: absolute; bottom:1px">
      <?php
-      
+      //si une configuration client est présente : 
       if (!empty($societeLivraison->client__memo_config)) 
       {
           echo '<strong>ATTENTION CONFIG CLIENT</strong> : '. $societeLivraison->client__memo_config;
       }
-
      ?>
-   
-        <table CELLSPACING=0 style=" width: 100%;  ">
-            <tr style="background-color: #dedede;">
-                        <td style="text-align: center; width: 30%"><strong>Préparé par</strong></td>
-                        <td style="text-align: center; width: 40%"><strong>Réceptionné par : </strong></td>
-                        <td style="text-align: center; width: 30%"><strong>POIDS</strong></td>
-            </tr> 
-            <tr>
-                <td style="border: 1px #ccc solid; height: 150px; text-align:center;">
-                
-                    <span style="margin-top: 65px; background-color: #dedede;"><strong>Vérifié par</strong></span>
-                </td>
-                <td style="border: 1px #ccc solid; ">
-                    <small><i>Nom/signature/tampon</i></small>
-                </td>
-                <td style="border: 1px #ccc solid; ">
-                    
-                </td>
-            </tr>
-        </table>  
-   
-   </div>  
+            <table CELLSPACING=0 style=" width: 100%;  ">
+                <tr style="background-color: #dedede;">
+                            <td style="text-align: center; width: 30%"><strong>Préparé par</strong></td>
+                            <td style="text-align: center; width: 40%"><strong>Réceptionné par : </strong></td>
+                            <td style="text-align: center; width: 30%"><strong>POIDS</strong></td>
+                </tr> 
+                <tr>
+                    <td style="border: 1px #ccc solid; height: 150px; text-align:center;">
+                        <span style="margin-top: 65px; background-color: #dedede;"><strong>Vérifié par</strong></span>
+                    </td>
+                    <td style="border: 1px #ccc solid; ">
+                        <small><i>Nom/signature/tampon</i></small>
+                    </td>
+                    <td style="border: 1px #ccc solid; ">    
+                    </td>
+                </tr>
+            </table>  
+        </div>  
     </page_footer>
      <table style="width: 100%;">
          <tr>
