@@ -1,6 +1,5 @@
 $(document).ready(function() 
 {
-
     //ouvre le modal et transmet l'id ligne à l'input correspondant 
     $('.open_modal').on('click' , function()
     {

@@ -29,6 +29,7 @@ if (empty($_SESSION['user'])) {
         $societeLivraison = $Client->getOne($temp->devis__id_client_livraison);
     }
     $arrayOfDevisLigne = $Cmd->devisLigne_actif($_POST['AjaxDevis']);
+   
     foreach ($arrayOfDevisLigne as $ligne) {
       $xtendArray = $Cmd->xtenGarantie($ligne->devl__id);
       $ligne->ordre2 = $xtendArray;

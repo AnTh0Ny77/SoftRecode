@@ -1496,7 +1496,7 @@ public function devisLigne_sous_ref($id)
   cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
   cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
   cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__garantie_puht , cmdl__note_facture,
-  cmdl__etat_masque, cmdl__image, cmdl__actif ,cmdl__sous_ref ,
+  cmdl__etat_masque, cmdl__image, cmdl__actif ,cmdl__sous_ref , cmdl__sous_garantie, 
   k.kw__lib , k.kw__value , 
   f.afmm__famille as famille,
   f.afmm__modele as modele, f.afmm__image as ligne_image , 
@@ -1563,7 +1563,7 @@ public function devisLigne_sous_ref_actif($id)
   cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
   cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
   cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__garantie_puht , cmdl__note_facture,
-  cmdl__etat_masque, cmdl__image, cmdl__actif ,cmdl__sous_ref ,
+  cmdl__etat_masque, cmdl__image, cmdl__actif ,cmdl__sous_ref , cmdl__sous_garantie , 
   k.kw__lib , k.kw__value , 
   f.afmm__famille as famille,
   f.afmm__modele as modele, f.afmm__image as ligne_image , 
@@ -1618,8 +1618,6 @@ public function devisLigne_sous_ref_actif($id)
 }
 
 
-
-
 //recupère les lignes liées à un devis:
 public function devisLigne_actif($id)
 {
@@ -1657,6 +1655,7 @@ public function devisLigne_actif($id)
       $ligne->ligne_image = base64_encode($ligne->ligne_image);
     }
   }
+ 
   return $data;
 }
 
@@ -1667,6 +1666,23 @@ public function delete_ligne_inactif($id)
   $update->execute();
   return true;
 }
+
+public function delete_ligne_inactif_filles($id)
+{
+  $request =$this->Db->Pdo->query("SELECT cmdl__id , cmdl__cmd__id  FROM cmd_ligne 
+  WHERE cmdl__cmd__id = ". $id ." AND  cmdl__actif < 1 
+  ORDER BY cmdl__id ");
+  $data = $request->fetchAll(PDO::FETCH_OBJ);
+  foreach ($data as $ligne) 
+  {
+    $request = "DELETE FROM cmd_ligne WHERE cmdl__cmd__id = ". $id ."  AND cmdl__sous_ref = '".$ligne->cmdl__id."'";
+    $update = $this->Db->Pdo->prepare($request);
+    $update->execute();
+  }
+  return true;
+}
+
+
 
 
 //recupère les lignes liées à un devis:

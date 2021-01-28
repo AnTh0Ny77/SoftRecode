@@ -1,6 +1,4 @@
 {% extends 'layoutMain.twig' %}
-
-
 {% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
@@ -10,8 +8,6 @@
 <link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/css/dashboard.css">
 {% endblock %}
-
-
 {% block main %}
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
 	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
@@ -21,8 +17,6 @@
 		<div class="btn-toolbar mb-2 mb-md-0">
 			<div class="btn-group mr-2"></div>
 		</div>
-	
-
 	</div>
 	<!-- 1ere ligne -->
 	<div class="d-flex flex-wrap flex-row justify-content-start">
@@ -35,7 +29,6 @@
 				{% else %}
 				<input type='hidden' id='notif_impression' value="" />
 				{% endif %}
-
 				<!-- Card Body -->
 				<div class="card-body">
 
@@ -56,26 +49,27 @@
 									{{cmd.devis__id}}</h5>
 								{% endif %}
 								<hr>
-								<p class="lead">{{cmd.client__societe ~ " (" ~ cmd.client__id ~ ")"}}
+								<p class="lead">{{cmd.client__societe ~ " (" ~
+									cmd.client__id ~ ")"}}
 								</p>
 								{{cmd.client__adr1}}<br>
 								{{cmd.client__cp ~ " " ~ cmd.client__ville }}
 
 							</div>
 						</div>
-
-
 						<div class="form-row col-10">
-
 							<div class="form-group col-md-10">
 								<label for="inputState">Prestation</label>
-								<select id="inputState" class="form-control" name="prestationAbn">
+								<select id="inputState" class="form-control"
+									name="prestationAbn">
 									{% for presta in prestaList %}
 
 									{% if abn.ab__presta == presta.kw__value %}
-									<option value="{{presta.kw__value}}" selected>{{ presta.kw__lib}}</option>
+									<option value="{{presta.kw__value}}" selected>{{
+										presta.kw__lib}}</option>
 									{% else %}
-									<option value="{{presta.kw__value}}">{{ presta.kw__lib}}</option>
+									<option value="{{presta.kw__value}}">{{
+										presta.kw__lib}}</option>
 									{% endif %}
 
 									{% endfor %}
@@ -83,7 +77,8 @@
 							</div>
 							<div class="form-group col-md-10">
 								<label for="inputState">Actif</label>
-								<select id="inputState" class="form-control" name="actifAbn">
+								<select id="inputState" class="form-control"
+									name="actifAbn">
 									{% if abn.ab__actif == 0 %}
 									<option value='0' selected>Non</option>
 									<option value="1">Oui</option>
@@ -97,17 +92,19 @@
 							</div>
 							<div class="form-group col-md-10">
 								<label for="inputState">Engagement en mois</label>
-								<select id="inputState" class="form-control" name="moisAbn">
+								<select id="inputState" class="form-control"
+									name="moisAbn">
 									<option value="00">Non-défini</option>
 									{% for mois in moisList %}
 									{% if mois.kw__value > 00 %}
-									{% if abn.ab__mois_engagement == mois.kw__value %}
-									<option value="{{mois.kw__value}}" selected>{{ mois.kw__lib}}</option>
+									{% if abn.ab__mois_engagement == mois.kw__value
+									%}
+									<option value="{{mois.kw__value}}" selected>{{
+										mois.kw__lib}}</option>
 									{% else %}
-									<option value="{{mois.kw__value}}">{{ mois.kw__lib}}</option>
+									<option value="{{mois.kw__value}}">{{
+										mois.kw__lib}}</option>
 									{% endif %}
-
-
 									{% endif %}
 
 									{% endfor %}
@@ -121,7 +118,6 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-
 							<button type="submit" class="btn btn-success">Modifier</button>
 					</form>
 					<form action="printContrat" method="POST">
@@ -129,19 +125,14 @@
 						<button type="submit" class="btn btn-warning">Imprimer</button>
 					</form>
 				</div>
-
-
 			</div>
 		</div>
 	</div>
-
-
 	<!--carte liste de Devis -->
 	<div class="col-6">
 		<div class="card shadow mb-4">
 			<!-- Card Body -->
 			<div class="card-body">
-
 				<table class="table table-striped">
 					<thead>
 						<tr>
@@ -153,13 +144,12 @@
 						</tr>
 					</thead>
 					<tbody>
-
 						{% for ligne in lignes %}
-
 						{% if ligne.abl__actif == 0 %}
 						<tr class="text-muted">
 							<th scope="col">{{ligne.abl__ligne}}</th>
-							<th scope="col">{{ligne.abl__designation}}<br><small>{{ligne.famille ~ " " ~ ligne.modele
+							<th scope="col">{{ligne.abl__designation}}<br><small>{{ligne.famille
+									~ " " ~ ligne.modele
 									}}</small>
 							</th>
 							<th scope="col">{{ligne.abl__dt_debut}}</th>
@@ -168,8 +158,12 @@
 							</th>
 							<th scope="col">
 								<form action="adminMachine" method="POST">
-									<input type="hidden" value="{{ligne.abl__cmd__id}}" name="idCMD">
-									<input type="hidden" value="{{ligne.abl__ligne}}" name="numLigne">
+									<input type="hidden"
+										value="{{ligne.abl__cmd__id}}"
+										name="idCMD">
+									<input type="hidden"
+										value="{{ligne.abl__ligne}}"
+										name="numLigne">
 									<button class="btn btn-link">
 										<i class="fad fa-screwdriver"></i>
 									</button>
@@ -179,7 +173,8 @@
 						{% else %}
 						<tr>
 							<th scope="col">{{ligne.abl__ligne}}</th>
-							<th scope="col">{{ligne.abl__designation}}<br><small>{{ligne.famille ~ " " ~ ligne.modele ~
+							<th scope="col">{{ligne.abl__designation}}<br><small>{{ligne.famille
+									~ " " ~ ligne.modele ~
 									" " ~ ligne.marque }}</small>
 							</th>
 							<th scope="col">{{ligne.abl__dt_debut}}</th>
@@ -189,44 +184,42 @@
 							<th scope="col">
 								<div class="d-flex">
 									<form action="ajoutMachine" method="POST">
-										<input type="hidden" value="{{ligne.abl__cmd__id}}" name="idCMD">
-										<input type="hidden" value="{{ligne.abl__ligne}}" name="numLigne">
+										<input type="hidden"
+											value="{{ligne.abl__cmd__id}}"
+											name="idCMD">
+										<input type="hidden"
+											value="{{ligne.abl__ligne}}"
+											name="numLigne">
 										<button class="btn btn-link">
 											<i class="far fa-copy"></i>
 										</button>
 									</form>
 									<form action="adminMachine" method="POST">
-										<input type="hidden" value="{{ligne.abl__cmd__id}}" name="idCMD">
-										<input type="hidden" value="{{ligne.abl__ligne}}" name="numLigne">
+										<input type="hidden"
+											value="{{ligne.abl__cmd__id}}"
+											name="idCMD">
+										<input type="hidden"
+											value="{{ligne.abl__ligne}}"
+											name="numLigne">
 										<button class="btn btn-link">
-											<i class="fad fa-screwdriver"></i>
+											<i
+												class="fad fa-screwdriver"></i>
 										</button>
 									</form>
 								</div>
-
 							</th>
 						</tr>
-
 						{% endif %}
-
 						{% endfor %}
-
 					</tbody>
-
 				</table>
 			</div>
 			<div class="modal-footer">
-				</form>
-
 				<form action="ajoutMachine" method="POST">
 					<input type="hidden" name="idCmd" value='{{cmd.devis__id}}'>
 					<button type="" class="btn btn-success">Ajouter une machine</button>
 				</form>
-
-
 			</div>
-
-
 		</div>
 	</div>
 

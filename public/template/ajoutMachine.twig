@@ -1,174 +1,143 @@
 {% extends 'layoutMain.twig' %}
-
-
-  {% block style %}
+{% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
-<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
 <link rel="stylesheet" href="public/css/dashboard.css">
-  {% endblock %}
- 
- 
-     {% block main %}
-     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">Ajout de machine pour l'abonnement N°: {{cmd.devis__id}} <i class="fas fa-plus"></i></h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-          </div>
-        </div>
-        {% if alert %}
-        <div class="alert alert-success" role="alert">
-          la machine à été ajouté avec succès !  
-          <form action="abonnementAdmin" method="POST">
-            <input type="hidden" name="hiddenId" value="{{cmd.devis__id}}">
-            <button class="btn btn-link">Retourner à l'administration</button>
-          </form>
-        </div>
-        {% endif %}
+{% endblock %}
+{% block main %}
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">Ajout de machine pour l'abonnement N°: {{cmd.devis__id}} <i class="fas fa-plus"></i></h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group mr-2">
       </div>
-       <!-- 1ere ligne -->
-       <div class="d-flex flex-wrap flex-row justify-content-start">
-        <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
+    </div>
+    {% if alert %}
+    <div class="alert alert-success" role="alert">
+      la machine à été ajouté avec succès !
+      <form action="abonnementAdmin" method="POST">
+        <input type="hidden" name="hiddenId" value="{{cmd.devis__id}}">
+        <button class="btn btn-link">Retourner à l'administration</button>
+      </form>
+    </div>
+    {% endif %}
+  </div>
+  <!-- 1ere ligne -->
+  <div class="d-flex flex-wrap flex-row justify-content-start">
+    <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
     <!--carte liste de Devis -->
     <form class="col-10" action="ajoutMachine" method='POST'>
-    <input type="hidden" name="idCmdM" value="{{cmd.devis__id}}">
+      <input type="hidden" name="idCmdM" value="{{cmd.devis__id}}">
       <div class="col-12">
         <div class="card shadow mb-4">
-         
           <!-- Card Body -->
           <div class="card-body">
-
-  
-  <div class="form-row">
-    
-    <div class="form-group col-md-4">
-        <p >Famille-marque-modèle</p>
-        <select id="inputStateFF" class="selectpicker" name="fmm" data-width="85%" data-live-search="true" required>
-        {% if duplicata %}
-           {% for model in modeleList %}
-                {% if duplicata.abl__id__fmm == model.afmm__id %}
-                  <option value="{{model.afmm__id}}" selected>{{model.famille ~ " " ~ model.afmm__modele ~ " " ~ model.Marque}}</option>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <p>Famille-marque-modèle</p>
+                <select id="inputStateFF" class="selectpicker" name="fmm" data-width="85%" data-live-search="true"
+                  required>
+                  {% if duplicata %}
+                  {% for model in modeleList %}
+                  {% if duplicata.abl__id__fmm == model.afmm__id %}
+                  <option value="{{model.afmm__id}}" selected>{{model.famille ~ " " ~ model.afmm__modele ~ " " ~
+                    model.Marque}}</option>
+                  {% else %}
+                  <option value="{{model.afmm__id}}">{{model.famille ~ " " ~ model.afmm__modele ~ " " ~ model.Marque}}
+                  </option>
+                  {% endif %}
+                  {% endfor %}
+                  {% else %}
+                  {% for model in modeleList %}
+                  <option value="{{model.afmm__id}}">{{model.famille ~ " " ~ model.afmm__modele ~ " " ~ model.Marque}}
+                  </option>
+                  {% endfor %}
+                  {% endif %}
+                </select>
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputEmail4">Désignation</label>
+                {% if duplicata %}
+                <input type="text" value="{{duplicata.abl__designation}}" name="designation" class="form-control"
+                  id="inputEmail4" placeholder="désignation" required>
                 {% else %}
-                  <option value="{{model.afmm__id}}">{{model.famille ~ " " ~ model.afmm__modele ~ " " ~ model.Marque}}</option>
+                <input type="text" name="designation" class="form-control" id="inputEmail4" placeholder="désignation"
+                  required>
                 {% endif %}
-                
-           {% endfor %}
-        {% else %}
-          {% for model in modeleList %}
-          <option value="{{model.afmm__id}}">{{model.famille ~ " " ~ model.afmm__modele ~ " " ~ model.Marque}}</option>
-          {% endfor %}
-        {% endif %}
-        
-        </select>
-       
-      </div>
-
-    <div class="form-group col-md-4">
-      <label for="inputEmail4">Désignation</label>
-       {% if duplicata %}
-        <input type="text" value="{{duplicata.abl__designation}}" name="designation" class="form-control" id="inputEmail4" placeholder="désignation" required>
-       {% else %}
-        <input type="text" name="designation" class="form-control" id="inputEmail4" placeholder="désignation" required>
-       {% endif %}
-      
-    </div>
-
-    <div class="form-group col-md-4">
-        <label for="inputEmail4">Numéro de série</label>
-
-        <input type="text" name="sn" class="form-control" id="inputEmail4" placeholder="N° de série" required>
-      </div>
-  </div>
-    
- 
-  <div class="form-row">
-    <div class="form-group col-md-4">
-      <label for="inputState">Prestation</label>
-      <select id="inputState" class="form-control" name="prestation">
-      {% if duplicata %}
-         {% for presta in prestaList %}
-            {% if duplicata.abl__type_repair == presta.kw__value %}
-              <option value="{{presta.kw__value}}">{{ presta.kw__lib}}</option>
-            {% else %}
-              <option value="{{presta.kw__value}}" selected>{{ presta.kw__lib}}</option>
-            {% endif %}
-            
-        {% endfor %}
-      {% else %}
-         {% for presta in prestaList %}
-          <option value="{{presta.kw__value}}">{{ presta.kw__lib}}</option>
-        {% endfor %}
-      {% endif %}
-       
-      </select>
-    </div>
-    <div class="form-group col-md-2">
-        <label for="inputEmail4">Prix au mois H.T</label>
-        {% if duplicata %}
-          <input type="text" name="prix" value='{{duplicata.abl__prix_mois}}' class="form-control" id="inputEmail4" placeholder="Prix" required>
-        {% else %}
-          <input type="text" name="prix" class="form-control" id="inputEmail4" placeholder="Prix" required>
-        {% endif %}
-        
-      </div>
-      <div class="form-group col-md-2">
-        <label for="inputEmail4">Date de début</label>
-        {% if duplicata %}
-          <input class="form-control" value='{{duplicata.abl__dt_debut}}' type='date' name='date'>
-        {% else %}
-          <input class="form-control" type='date' name='date'>
-        {% endif %}
-        
-      </div>
-  </div>
-  
-</div>
-
-  
-
-  <div class="form-group">
-    <div class="col-6 mt-4">
-      {% if duplicata %}
-        <textarea value="{{duplicata.abl__note_interne}}"  id="comAbn" name="comAbn" placeholder="Commentaire abonnement...." ></textarea>
-      {% else %}
-        <textarea  id="comAbn" name="comAbn" placeholder="Commentaire abonnement...." ></textarea>
-      {% endif %}
-      
-    </div>
-  </div>
-  <div class="modal-footer">
-  <button type="submit" class="btn btn-success">Valider</button>
-  </div>
-  
-
-            
+              </div>
+              <div class="form-group col-md-4">
+                <label for="inputEmail4">Numéro de série</label>
+                <input type="text" name="sn" class="form-control" id="inputEmail4" placeholder="N° de série" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                <label for="inputState">Prestation</label>
+                <select id="inputState" class="form-control" name="prestation">
+                  {% if duplicata %}
+                  {% for presta in prestaList %}
+                  {% if duplicata.abl__type_repair == presta.kw__value %}
+                  <option value="{{presta.kw__value}}">{{ presta.kw__lib}}</option>
+                  {% else %}
+                  <option value="{{presta.kw__value}}" selected>{{ presta.kw__lib}}</option>
+                  {% endif %}
+                  {% endfor %}
+                  {% else %}
+                  {% for presta in prestaList %}
+                  <option value="{{presta.kw__value}}">{{ presta.kw__lib}}</option>
+                  {% endfor %}
+                  {% endif %}
+                </select>
+              </div>
+              <div class="form-group col-md-2">
+                <label for="inputEmail4">Prix au mois H.T</label>
+                {% if duplicata %}
+                <input type="text" name="prix" value='{{duplicata.abl__prix_mois}}' class="form-control"
+                  id="inputEmail4" placeholder="Prix" required>
+                {% else %}
+                <input type="text" name="prix" class="form-control" id="inputEmail4" placeholder="Prix" required>
+                {% endif %}
+              </div>
+              <div class="form-group col-md-2">
+                <label for="inputEmail4">Date de début</label>
+                {% if duplicata %}
+                <input class="form-control" value='{{duplicata.abl__dt_debut}}' type='date' name='date'>
+                {% else %}
+                <input class="form-control" type='date' name='date'>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-6 mt-4">
+              {% if duplicata %}
+              <textarea value="{{duplicata.abl__note_interne}}" id="comAbn" name="comAbn"
+                placeholder="Commentaire abonnement...."></textarea>
+              {% else %}
+              <textarea id="comAbn" name="comAbn" placeholder="Commentaire abonnement...."></textarea>
+              {% endif %}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Valider</button>
           </div>
         </div>
-    </form>
       </div>
-        
-       
-    </div>
-
-    </main>
-     {% endblock %}
-     
-    
-     {% block script %}
-     <!-- Optional JavaScript -->
-
+    </form>
+  </div>
+  </div>
+</main>
+{% endblock %}
+{% block script %}
+<!-- Optional JavaScript -->
 <!-- jQuery first, then Bootstrap JS -->
-<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
-<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
 <script type="text/javascript" src="public/js/ajoutMachine.js"></script>
-
-
-
-
-     {% endblock %}
+{% endblock %}

@@ -525,6 +525,7 @@ idUtilisateur = $('#idUtilisateur').val();
                 "AjaxDevis" : dataRow[0]
             },
             success: function(data){
+               
                 dataSet = JSON.parse(data);
                 checkradio(dataSet);
                 $('#loaderPdf').hide();

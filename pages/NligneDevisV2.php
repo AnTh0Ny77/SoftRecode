@@ -184,6 +184,10 @@ if (!empty($_POST['input_id_ref']) && !empty($_POST['select_sous_ref']) && !empt
    $mother_line = $Devis->get_line_by_id($_POST['input_id_ref']); 
   
    $daugther_line = $Devis->create_daugther_line($mother_line,$_POST['select_sous_ref'],$_POST['designation_sous_ref'],$_POST['quantite_sous_ref'],$_POST['com_sous_ref']);
+   if (!empty($_POST['sous_ref_garantie'])) 
+   {
+        $General->updateAll('cmd_ligne' , 1 , 'cmdl__sous_garantie' , 'cmdl__id' , $daugther_line);
+   }
    $idDevis = $mother_line->cmdl__cmd__id;
    
 }

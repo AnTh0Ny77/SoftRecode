@@ -6,11 +6,6 @@ use DateTime;
 
 class Pdfunctions {
 
-
-
-
- 
-
 // fonction d'affichage de la societe : nom (id) adr1 adr2 cp ville : 
 
 public static function showSociete($object)
@@ -65,9 +60,6 @@ public static function showSocieteFacture($object , $contact)
 }
 
 
-
-
-
 // fontion d'affichage du prix dans View : 
 public static function showPriceView($object){
 	$barre = '';
@@ -92,7 +84,7 @@ public static function showPriceView($object){
 //fonction d'affichage de l'etat : 
 public static function showEtat($object){
 	$none = "";
-	if ($object == 'Non Concerné') {
+	if ($object == 'Non Concerné'){
 	   
 	   return $none;
 	}
@@ -382,10 +374,6 @@ public static function totalFacture($objectCmd, $arrayLigne )
 }
 	
 
-
-
-
-
 //fonction d'affichage du total dans la vision facture : retourne prix ht , tva taux , tva montant , prix ttc 
 public static function totalFacturePDF($objectCmd, $arrayLigne )
 {
@@ -396,10 +384,7 @@ public static function totalFacturePDF($objectCmd, $arrayLigne )
 	{
 		if (!empty($ligne->devl_puht)) 
 		{
-			
 			$quantite = intval($ligne->cmdl__qte_fact);
-			
-			
 			$prix = floatval($ligne->devl_puht);
 			$total_ligne = $quantite * $prix ;
 
@@ -409,7 +394,6 @@ public static function totalFacturePDF($objectCmd, $arrayLigne )
 					$total_extension = $quantite * $prix_extension;
 					$total_ligne = $total_ligne + $total_extension ;
 				}
-			 
 			array_push($array_prix , $total_ligne);
 		}
 	}

@@ -354,9 +354,9 @@
                             <button type="submit" class="btn btn-outline-secondary btn-sm"><i class="far fa-copy"></i></button>
                         </form>
                     </div>
-                    <div class='mx-1'>
+                    {# <div class='mx-1'>
                         <button type="button" class="btn btn-outline-success btn-sm open_modal"  value="{{ligne.devl__id}}" ><i class="far fa-arrow-circle-down"></i></button>
-                    </div>
+                    </div> #}
                     
                     
                     </div>
@@ -469,6 +469,12 @@
                                 <h5 class="card-subtitle  text-muted mb-1">   
                                     <span class="badge badge-secondary">{{sous_ref.prestaLib}}</span> <b>{{sous_ref.devl_quantite}}</b>{{  "x " ~ sous_ref.devl__designation}} 
                                 </h5>
+                                {% if sous_ref.cmdl__sous_garantie == 1 %}
+                                <div class="mx-1 text-primary">
+                                   <span><i>garantie étendue</i></span>
+                                </div>
+                                {% endif %}
+
                                 {% if sous_ref.devl__note_interne %}
                                 <div class="mx-1">
                                    <span>{{sous_ref.devl__note_interne|raw}}</span>
@@ -491,7 +497,7 @@
                 </div>
                 {% endfor %}
             {% endif %}
-            
+
             {% endfor %} 
             
             {% if devisLignes  %}
@@ -636,10 +642,7 @@
                        <div class="custom-control custom-checkbox col-4">
                             <input type="checkbox" class="custom-control-input" id="sous_ref_garantie" name="sous_ref_garantie" value='ok'>
                             <label class="custom-control-label" for="sous_ref_garantie">Etendre la garantie</label>
-                        </div>
-                       
-                      
-                      
+                        </div>     
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Valider</button>

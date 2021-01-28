@@ -221,8 +221,11 @@
                 <div class="card shadow sous_ref_card h-100">
                   <div class="card-header">
                     <h6 class="m-0 font-weight-bold text-primary">
-                      {{sous_ref.prestaLib}}
+                      {{sous_ref.prestaLib}} 
                     </h6>
+                    <span class="text-primary">
+                          Sous-référence
+                    </span>
                   </div>
                   <div class="card-body">
                     <h6 class="card-title text-bold">
@@ -238,27 +241,28 @@
                         <div class=" col-5" for="You">
                           <strong>Quantite </strong>
                         </div>
-                        <input type="number" class="form-control col-7 QTE-CMD" name="You" id="{{sous_ref.devl__id}}"
-                          value="{{sous_ref.devl_quantite}}">
+                          <span> {{sous_ref.devl_quantite}}</span>
                       </div>
                     </li>
                     <li class="list-group-item sous_ref_card"> PU.HT : <strong> {{ sous_ref.devl_puht}} € </strong> </li>
                     </ul>
                     <div class="foundBorder">
-                      <div class="my-2   p-1 ">
-                        Aucunes extensions de Garantie <br>
+                      <div class="my-3 text-primary  p-1 ">
+                          {% if sous_ref.cmdl__sous_garantie == 0 %}
+                            <i>garantie non étendue</i><br><br>
+                          {% else %}
+                            <i>garantie étendue</i><br><br>
+                          {% endif %}
                       </div>
                     </div>
                     <div class="mt-3">
-                        Commentaire interne :
+                        Commentaire interne :<br>
                         {% if  sous_ref.devl__note_interne %}
                         <span>{{ sous_ref.devl__note_interne|raw}}</span>
                         {% else %}
                         <span>Pas de commentaire</span>
                         {% endif %}
-                        
                       </div>
-                    
                   </div>
                 </div>
               </div>

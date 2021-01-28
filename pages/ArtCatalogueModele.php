@@ -22,7 +22,6 @@ if(isset($_POST['link_modele']))   $art_filtre = trim($_POST['filtre_modele']);
 // variable locale
 $big_sql = $Art_ACC_CON_PID = $ArtACC = $ArtCON = $ArtPID = $ArtModele = FALSE;
 $CountACC = $CountCON = $CountPID = 0;
-
 // Connexion Base de données
 $Database = new App\Database('devis');
 $Database->DbConnect();
@@ -34,11 +33,9 @@ if(substr($art_filtre,0,1) == ":") // c'est bien un Modele
   $big_sql = TRUE;
   $ArtModele = substr($art_filtre,1);
 }
-
 // Requetes
 $ArtListe = $Article->getMODELE($art_filtre);
 $CountListe = count($ArtListe);
-
 if($big_sql)
 {
   $Art_ACC_CON_PID = $Article->getPARTS($art_filtre, $ArtModele);
