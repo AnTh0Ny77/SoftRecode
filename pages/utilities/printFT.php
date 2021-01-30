@@ -46,16 +46,25 @@ if(!empty($_POST['devisCommande']))
   if (!empty($_POST['arrayLigneDeCommande'])) 
   {
     $validLignes = json_decode($_POST['arrayLigneDeCommande']);
+
+    
+    
     //je met a jour les extension de garanties choisies ainsi que les commentaires et quantités (meme si ça n'a aucun sens) :  
     foreach ($validLignes as $lignes) 
     {
-      $Command->updateGarantie(
-      $lignes->devl__prix_barre[0],
-      $lignes->devl__prix_barre[1],
-      $lignes->devl__note_interne,
-      $lignes->devl_quantite,
-      $lignes->cmdl__cmd__id,
-      $lignes->devl__ordre );
+           
+       if (!empty($lignes->devl__prix_barre[0])) 
+       {
+            $Command->updateGarantie(
+            $lignes->devl__prix_barre[0],
+            $lignes->devl__prix_barre[1],
+            $lignes->devl__note_interne,
+            $lignes->devl_quantite,
+            $lignes->cmdl__cmd__id,
+            $lignes->devl__ordre
+            );
+       }
+     
     } 
   }
   //si un code commande à été mis a jour durant la validation : 
@@ -85,7 +94,11 @@ $commandLignes = $Command->devisLigne($_POST['devisCommande']);
 foreach ($commandLignes as $ligne) 
 {
     //je met a jour les ligne filles qui ont le droit de bénéficier de l'extension de garantie de la mère : 
-    $update =$Command->update_filles_extensions($ligne);
+    if (!empty($ligne->cmdl__garantie_option)) 
+    {
+        $update = $Command->update_filles_extensions($ligne);
+    }
+   
 }
 //je recupère le client , user et validateur du  pdf : 
 $clientView = $Client->getOne($command->client__id);

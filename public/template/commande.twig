@@ -183,14 +183,14 @@
                         <div class="form-check form-check-inline">
                           {% for xtend in ligne.devl__prix_barre %}
                           <input type="hidden" class="radioCmdP" value="{{xtend.devg__prix}}">
-                          <input class="form-check-input mx-1 radioCmd " name="radio_group" id="{{ligne.devl__ordre}}"
+                          <input class="form-check-input mx-1 radioCmd " name="radio_group{{ligne.devl__id}}" id="{{ligne.devl__ordre}}"
                             type="radio" value="{{xtend.devg__type}}">
                           <label class="form-check-label" for="{{xtend.devg__id}}">
                             <strong> {{xtend.devg__type}} Mois.</strong>
                           </label>
                           {% if loop.last %}
                           <input type="hidden" class="radioCmdP" value="{{null}}">
-                          <input class="form-check-input mx-1 radioCmd" name="radio_group" id="{{ligne.devl__ordre}}"
+                          <input class="form-check-input mx-1 radioCmd" name="radio_group{{ligne.devl__id}}" id="{{ligne.devl__ordre}}"
                             type="radio" value="{{null}}">
                           <label class="form-check-label" for="{{xtend.devg__id}}">
                             <strong>Aucunes </strong>
@@ -238,7 +238,7 @@
                     <li class="list-group-item sous_ref_card"> garantie:<strong> {{ sous_ref.devl__mois_garantie}} mois</strong> </li>
                     <li class="list-group-item sous_ref_card">
                       <div class="d-flex justify-content-start sous_ref_card">
-                        <div class=" col-5" for="You">
+                        <div class=" col-5" >
                           <strong>Quantite </strong>
                         </div>
                           <span> {{sous_ref.devl_quantite}}</span>

@@ -69,7 +69,7 @@ if (empty($_SESSION['user']))
         $societeLivraison = $Client->getOne($temp->devis__id_client_livraison);
     }
 
-    $arrayOfDevisLigne = $Cmd->devisLigne($_POST['PRINTADMINAVOIR']);
+    $arrayOfDevisLigne = $Cmd->devisLigne_actif($_POST['PRINTADMINAVOIR']);
 
     foreach ($arrayOfDevisLigne as $ligne) 
     {

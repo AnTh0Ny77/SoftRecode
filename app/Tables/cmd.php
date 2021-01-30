@@ -365,6 +365,8 @@ public function returnDevis($idCmdl)
       $ordre
     ];
 
+  
+
     $sql = 
    "UPDATE cmd_ligne
     SET  
@@ -374,9 +376,14 @@ public function returnDevis($idCmdl)
     cmdl__qte_cmd = ?
     WHERE cmdl__cmd__id  = ?  
     AND  cmdl__ordre = ?";
-
+    
     $update = $this->Db->Pdo->prepare($sql);
     $update->execute($data);
+  }
+
+  public function update_garantie()
+  {
+
   }
 
 
@@ -1506,6 +1513,7 @@ public function devisLigne_sous_ref($id)
  
   $data = $request->fetchAll(PDO::FETCH_OBJ);
   $array_filles = [];
+ 
   foreach ($data as $k=> $ligne) 
   {
     $ligne->sous_ref = [];
@@ -1522,7 +1530,9 @@ public function devisLigne_sous_ref($id)
     }
 
   }
-
+   
+ 
+   
   foreach ($array_filles as $filles) 
   {
 
@@ -1540,6 +1550,8 @@ public function devisLigne_sous_ref($id)
  
   return $data;
 }
+
+
 
 
 //recupere les ligne et leur attribue leur filles : 
@@ -1677,15 +1689,13 @@ public function delete_ligne_inactif_filles($id)
 //met à jour les extension de garantie des filles : 
 public function update_filles_extensions($mere)
 { 
-    if (!empty($mere->cmdl__sous_ref)) 
-    {
-      $data = [ $mere->cmdl__garantie_option , $mere->cmdl__garantie_puht , $mere->cmdl__cmd__id , $mere->devl__id  ];
-      $request = "UPDATE cmd_ligne SET cmdl__garantie_option = ? , cmdl__garantie_puht = ?   WHERE cmdl__cmd__id = ?  AND cmdl__sous_ref = ? AND cmdl__sous_garantie = 1";
+    
+      $data = [ $mere->cmdl__garantie_option ,  $mere->cmdl__cmd__id , $mere->devl__id  ];
+      $request = "UPDATE cmd_ligne SET cmdl__garantie_option = ? , cmdl__garantie_puht = 00.0   WHERE cmdl__cmd__id = ?  AND cmdl__sous_ref = ? AND cmdl__sous_garantie = 1";
       $update = $this->Db->Pdo->prepare($request);
       $update->execute($data);
       return true ; 
-    }
-    else return false ;
+   
    
 }
 

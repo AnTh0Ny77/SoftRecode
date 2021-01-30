@@ -49,7 +49,7 @@ if (empty($_SESSION['user']))
         $societeLivraison = $Client->getOne($temp->devis__id_client_livraison);
     }
 
-    $arrayOfDevisLigne = $Cmd->devisLigne($avoir);
+    $arrayOfDevisLigne = $Cmd->devisLigne_actif($avoir);
 
     foreach ($arrayOfDevisLigne as $ligne) 
     {
