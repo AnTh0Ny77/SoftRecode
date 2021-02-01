@@ -88,8 +88,10 @@ if (empty($command->devis__date_crea))
     $date = date("Y-m-d H:i:s");
     $Global->updateAll('cmd', $date,'cmd__date_devis', 'cmd__id', $command->devis__id);
 }
+
 //recupère le tableau de ligne à jour : 
 $commandLignes = $Command->devisLigne($_POST['devisCommande']);
+
 //met a jour les extensions de garanties des lignes fillles : 
 foreach ($commandLignes as $ligne) 
 {
@@ -100,6 +102,10 @@ foreach ($commandLignes as $ligne)
     }
    
 }
+//met a jour les ordres : 
+// $Command->update_ordre_sous_ref($commandLignes);
+//recupère avec le bon ordre : 
+$commandLignes = $Command->devisLigne($_POST['devisCommande']);
 //je recupère le client , user et validateur du  pdf : 
 $clientView = $Client->getOne($command->client__id);
 $user = $User->getByID($clientView->client__id_vendeur);

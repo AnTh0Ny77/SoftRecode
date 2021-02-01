@@ -1695,8 +1695,6 @@ public function update_filles_extensions($mere)
       $update = $this->Db->Pdo->prepare($request);
       $update->execute($data);
       return true ; 
-   
-   
 }
 
 
@@ -2889,7 +2887,7 @@ public function modify(
 
 
 
-    public function alertReliquat($Cmd)
+    public function alertReliquat( $Cmd)  
     {
       $lignes = $this->devisLigne($Cmd);
 
@@ -2909,6 +2907,46 @@ public function modify(
           return true;
         }
         else return false; 
+    }
+
+
+
+    public function  update_ordre_sous_ref( ?iterable $tableau_ligne) : void 
+    {
+      //tableau qui contiendra les sous références provisoirement : 
+      $tableau_sous_ref = [];
+      //parcours le tableau de ligne donné en parmètrres : 
+      foreach ($tableau_ligne as $key=> $ligne) 
+      {
+            if (!empty($ligne->cmdl__sous_ref)) 
+            {
+              //je place la sous-ref dans le tableau provisoire :
+              array_push($tableau_sous_ref , $ligne);
+              //je la detruit dans ce tableau passé en paramètre : 
+              unset($data[$key]);
+            }
+      }
+      //une fois le premier tri terminé je boucle une deuxième fois afin de déterminer les ordres : 
+      int : $count = 0 ; 
+      foreach ($tableau_ligne as $key=> $ligne) 
+      {         
+                $count += 1 ;
+                $data_ligne = [$count,$ligne->devl__id ]; 
+                $sql_update_ligne = $this->Db->Pdo->prepare('UPDATE cmd_ligne SET cmdl__ordre = ? WHERE cmdl__id = ?');
+                $sql_update_ligne->execute($data_ligne);
+                //je parcours le tableau de sous-références : 
+                foreach ($tableau_sous_ref as $sous_ref) 
+                { 
+                      //l'id sous ref de la sous_ref est égal à l'id de la mère : 
+                      if ($sous_ref->cmdl__sous_ref == $ligne->devl__id) 
+                      {
+                        $count += 1 ;
+                        $data = [$count, $sous_ref->devl__id];
+                        $sql_update = $this->Db->Pdo->prepare('UPDATE cmd_ligne SET cmdl__ordre = ? WHERE cmdl__id = ?');
+                        $sql_update->execute($data);
+                      }
+                }
+      }
     }
     
 
