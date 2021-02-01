@@ -141,6 +141,8 @@ if (!empty($_POST['down']))
 {
     $updateOrdre = $Devis->upanDonwn('down',$_POST['downId'], $_POST['downLigne'] , $_POST['down'][0]);
     $idDevis = $_POST['downId'];
+    $ligne_temp = $Cmd->devisLigne($_POST['downId']);
+    $Cmd->update_ordre_sous_ref($ligne_temp);
 }
 
 //monte une ligne : 
@@ -148,6 +150,8 @@ if (!empty($_POST['up']))
 {
     $updateOrdre = $Devis->upanDonwn('up',$_POST['upId'], $_POST['upLigne'] , $_POST['up'][0]);
     $idDevis = $_POST['upId'];
+    $ligne_temp = $Cmd->devisLigne($_POST['upId']);
+    $Cmd->update_ordre_sous_ref($ligne_temp);
 }
 
 //efface une ligne : 
@@ -155,6 +159,7 @@ if (!empty($_POST['deleteId']))
 {
     $Devis->deleteLine($_POST['deleteId']);
     $idDevis = $_POST['deleteIdCmd'];
+  
 }
 
 //modification de ligne demandée :

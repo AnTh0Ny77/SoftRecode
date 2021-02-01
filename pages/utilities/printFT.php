@@ -103,7 +103,7 @@ foreach ($commandLignes as $ligne)
    
 }
 //met a jour les ordres : 
-// $Command->update_ordre_sous_ref($commandLignes);
+$Command->update_ordre_sous_ref($commandLignes);
 //recupère avec le bon ordre : 
 $commandLignes = $Command->devisLigne($_POST['devisCommande']);
 //je recupère le client , user et validateur du  pdf : 

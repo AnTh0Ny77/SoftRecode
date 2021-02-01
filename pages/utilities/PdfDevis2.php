@@ -82,7 +82,10 @@ if (!empty($_POST['idDevis']))
         {
             $General->updateAll('cmd' , 'STX' , 'cmd__modele_devis' , 'cmd__id' , $_POST['idDevis']);
         }
-        
+
+        //remet dans l'ordre des sous ref et les refs : 
+        $tableau_ligne = $Cmd->devisLigne($_POST['idDevis']);
+        $Cmd->update_ordre_sous_ref($tableau_ligne);
         header('location: mesDevis');
     }
 
