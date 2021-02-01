@@ -194,8 +194,10 @@ if (!empty($_POST['input_id_ref']) && !empty($_POST['select_sous_ref']) && !empt
         $General->updateAll('cmd_ligne' , 1 , 'cmdl__sous_garantie' , 'cmdl__id' , $daugther_line);
    }
    $idDevis = $mother_line->cmdl__cmd__id;
-   
 }
+
+//modification de sous garantie: 
+
 
 
 // creation lignes ou duplicata : 

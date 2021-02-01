@@ -41,6 +41,8 @@ if (!empty($_POST['idDevis']))
 
         //mise a jour de la date de client : 
         $General->updateAll('client' , $date , 'client__dt_last_modif' , 'client__id' , $devis_controle->client__id);
+        //mise a jour de la date de client livraison : 
+        $General->updateAll('client' , $date , 'client__dt_last_modif' , 'client__id' , $devis_controle->devis__id_client_livraison);
 
         //mide a jour de l'id utilisateur : 
         $user = $_SESSION['user']->id_utilisateur;

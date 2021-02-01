@@ -467,19 +467,24 @@
                                 <h5 class="card-subtitle  text-muted mb-1">   
                                     <span class="badge badge-secondary">{{sous_ref.prestaLib}}</span> <b>{{sous_ref.devl_quantite}}</b>{{  "x " ~ sous_ref.devl__designation}} 
                                 </h5>
-                                {% if sous_ref.cmdl__sous_garantie == 1 %}
-                                <div class="mx-1 text-primary">
-                                   <span><i>garantie étendue</i></span>
+                                <div class="d-flex flex-row">
+                                    <div class="mx-1 text-primary">
+                                        <button value="{{sous_ref.devl__id}}" type="button" class="btn btn-outline-primary btn-sm click_sous_ref"><i class="fal fa-file-edit"></i></button>
+                                     </div> 
+                                    {% if sous_ref.devl__note_interne %}
+                                        <div class="mx-1">
+                                            <button  type="button" value="{{sous_ref.devl__id}}" id="{{sous_ref.devl__id}}" class="btn btn-sm btn-success jBoxModal"><i class="fas fa-tools"></i></button>
+                                        </div>
+                                    {% endif %}
+                                    {% if sous_ref.cmdl__sous_garantie == 1 %}
+                                    <div class="mx-1 text-primary">
+                                       <span><i>garantie étendue</i></span>
+                                    </div>
+                                    {% endif %}
                                 </div>
-                                {% endif %}
-
-                                {% if sous_ref.devl__note_interne %}
-                                <div class="mx-1">
-                                   <span>{{sous_ref.devl__note_interne|raw}}</span>
-                                </div>
-                             {% endif %}
+                                
                             </div>
-                            <div class="col-3 d-flex flex-column justify-content-between">
+                            <div class="col-3 d-flex flex-column justify-content-center">
                                 <div class="d-flex justify-content-end ">    
                                 </div>
                                 <div class="d-flex justify-content-end">
@@ -640,6 +645,61 @@
                        <div class="custom-control custom-checkbox col-4">
                             <input type="checkbox" class="custom-control-input" id="sous_ref_garantie" name="sous_ref_garantie" value='ok'>
                             <label class="custom-control-label" for="sous_ref_garantie">Etendre la garantie</label>
+                        </div>     
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Valider</button>
+                  </div>
+              </form>
+          </div>
+        </div>
+    </div>
+
+
+    <!--modal de modif de sous ref-->
+    <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="modal_modif_sous_ref">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <form action="ligneDevisV2" method="POST">
+            <div class="modal-header">
+                <h5 class="modal-title" >Modification</h5>
+                <button type="button" class="close"  aria-label="Close" id="close_modal_modif_sous_ref">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group">
+                        <input type="hidden"  id="input_modif_sous_ref" name="input_modif_sous_ref" required>
+                        <input type="hidden"  id="input_modif_sous_ref_cmd" name="input_modif_sous_ref_cmd" required>
+                    </div>
+                        <div class="form-group ">
+                            <label><b>Modèle:</b></label>
+                            <select class=" border selectpicker col-12"  data-live-search="true" data-size="10" data-width="100%" id="select_modif_sous_ref" name="select_modif_sous_ref" required>
+                                <option class="" value="">..</option>
+                                {% for article in articleList %} 
+                                        <option class="optionSelect modelSelect" value={{article.afmm__id}}>{{article.afmm__modele   ~ " " ~ article.famille ~ " " ~ article.Marque }}</option>
+                                {% endfor %}
+                            </select> 
+                        </div>
+                        <div class="form-group">
+                            <label><b>Désignation sur le devis/facture:</b></label>
+                              <input type="text" class="form-control"  id="designation_modif_sous_ref" name="designation_modif_sous_ref" required>
+                        </div> 
+                        <div class="form-row">
+                                <div class="form-group col-2">
+                                    <label for="validationCustom04"><b>Quantité</b></label>
+                                    <input type="number" class="form-control" min="1" max="1000000" value="1" id="quantite_modif_sous_ref" name="quantite_modif_sous_ref" required>
+                                </div>     
+                        </div>
+
+                        <div class="form-group">
+                            <label for="comInterne"><b>Commentaire Interne</b></label>
+                            <textarea class="CKE"  placeholder="Commentaire interne...." rows="4" id="com_modif_sous_ref" name="com_modif_sous_ref"></textarea>
+                        </div>
+                            
+                       <div class="custom-control custom-checkbox col-4">
+                            <input type="checkbox" class="custom-control-input" id="modif_sous_ref_garantie" name="modif_sous_ref_garantie" value='ok'>
+                            <label class="custom-control-label" for="modif_sous_ref_garantie">Etendre la garantie</label>
                         </div>     
                 </div>
                 <div class="modal-footer">

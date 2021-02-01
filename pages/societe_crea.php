@@ -108,13 +108,14 @@ if (empty($_SESSION['user'])) {
       $ContactTotoro->updateAll('client', $_POST['fax'], 'fax', 'id_client', $_POST['modif__id']);
       $ContactTotoro->updateAll('client', $_POST['select_tva'], 'code_tva', 'id_client', $_POST['modif__id']);
       $ContactTotoro->updateAll('client', $_POST['intracom_input'], 'tva', 'id_client', $_POST['modif__id']);
-      $ContactTotoro->updateAll('client', $_POST['vendeur'], 'tva', 'id_vendeur', $_POST['modif__id']);
+      $ContactTotoro->updateAll('client', $_POST['vendeur'], 'id_vendeur', 'id_vendeur', $_POST['modif__id']);
 
       $date = date("Y-m-d H:i:s");
       $Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date, $_POST['modif__id'], ' modification de societe: ');
       $alertModif = true;
    }
 
+   
 
    // Donnée transmise au template : 
    echo $twig->render('societe_crea.twig', [
