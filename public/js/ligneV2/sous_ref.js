@@ -39,6 +39,16 @@ $(document).ready(function()
         editor_sous_ref.setData('');
         $('#designation_sous_ref').val('');
     }
+    //efface le formulaire de modification :
+    let delete_form_modif = function()
+    { 
+        $('#input_modif_sous_ref').val('');
+        $('#input_modif_sous_ref_cmd').val('');
+        $('#quantite_modif_sous_ref').val(1);
+        $('#designation_modif_sous_ref').val('');
+        editor_modif_sous_ref.setData('');
+        $('#modif_sous_ref_garantie').prop('checked', false);
+    }
     //vide les inputs en cas de fermeture du modal :
     $('#close_modal_sous_ref').on('click', function()
     {
@@ -66,6 +76,7 @@ $(document).ready(function()
                     $('#input_modif_sous_ref').val(dataSet.devl__id);
                     $('#input_modif_sous_ref_cmd').val(dataSet.cmdl__cmd__id);
                     $('#quantite_modif_sous_ref').val(dataSet.devl_quantite);
+                    $('#designation_modif_sous_ref').val(dataSet.devl__designation);
                     editor_modif_sous_ref.setData(dataSet.devl__note_interne);
                     let sous_garantie = parseInt(dataSet.cmdl__sous_garantie);
                     if (sous_garantie === 1 ) 
@@ -87,6 +98,7 @@ $(document).ready(function()
     //fermeture du modal de modif 
     $('#close_modal_modif_sous_ref').on('click' ,function()
     {
+        delete_form_modif();
         $('#modal_modif_sous_ref').modal('hide');
     })
 
