@@ -93,11 +93,40 @@ $(document).ready(function()
              });     
     }
     
-    
-    $('#fmm').on('change', function()
+//selection de l'article dans le select ( Ajax recupère la désignation commerciale si existante)
+$('#fmm').on('change', function()
 {
     var selectedArticle = $(this).children("option:selected").text();
-    $("#designation").val(selectedArticle);
+    var id_fmm = $(this).children("option:selected").val();
+        $.ajax(
+            {
+                type: 'post',
+                url: "ajax_idfmm",
+                data:
+                {
+                    "idfmm": id_fmm
+                },
+                success: function (data) 
+                {
+                    
+                    dataSet = JSON.parse(data); 
+                    if (dataSet.afmm__design_com != null) 
+                    {
+                        $("#designation").val(dataSet.afmm__design_com);
+                    }
+                    else 
+                    {
+                        $("#designation").val(selectedArticle);
+                    }
+                    
+                },
+                error: function (err) 
+                {
+                    $("#designation").val(selectedArticle);
+                    console.log('error: ' , err);
+                }
+            })  
+    
 })
   
 

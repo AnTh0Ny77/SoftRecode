@@ -163,11 +163,12 @@
 
 		case '/SoftRecode/archiveFacture';
 			require __DIR__ .'/pages/archiveFacture.php'; break;
-    case '/SoftRecode/facture_auto';
-      require __DIR__ .'/pages/facture_auto.php'; break;
 
-    case '/SoftRecode/archiveFacture';
-      require __DIR__ .'/pages/archiveFacture.php'; break;
+		case '/SoftRecode/facture_auto';
+		require __DIR__ .'/pages/facture_auto.php'; break;
+
+		case '/SoftRecode/archiveFacture';
+		require __DIR__ .'/pages/archiveFacture.php'; break;
 
 		case '/SoftRecode/avoir';
 			require __DIR__ .'/pages/avoir.php'; break;
@@ -241,6 +242,9 @@
 
 		case '/SoftRecode/ajax_crea_contact_devis';
 			require __DIR__ .'/pages/ajax/ajax_crea_contact_devis.php'; break; 
+
+		case '/SoftRecode/ajax_idfmm';
+			require __DIR__ .'/pages/ajax/ajax_idfmm.php'; break;
 
 		//Traitement et Utilities : 
 		case '/SoftRecode/pdfTravail';

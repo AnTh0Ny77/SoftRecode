@@ -2928,7 +2928,7 @@ public function modify(
       }
     
       //une fois le premier tri terminé je boucle une deuxième fois afin de déterminer les ordres : 
-      int : $count = 0 ; 
+      $count = 0 ; 
       foreach ($tableau_ligne as $key=> $ligne) 
       {         
                 $count += 1 ;
