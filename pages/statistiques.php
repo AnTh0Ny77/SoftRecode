@@ -1,43 +1,35 @@
 <?php
-
 use App\Tables\Stats;
-
 require "./vendor/autoload.php";
 require "./App/twigloader.php";
-
 session_start();
-
-
- //URL bloqué si pas de connexion :
- if (empty($_SESSION['user'])) 
- {
+//URL bloqué si pas de connexion :
+if (empty($_SESSION['user'])) 
+{
     header('location: login');
- }
- if ($_SESSION['user']->user__facture_acces < 10 ) 
- {
+}
+if ($_SESSION['user']->user__facture_acces < 10 ) 
+{
    header('location: noAccess');
- }
-
- //déclaration des instances nécéssaires :
- $user= $_SESSION['user'];
- $Database = new App\Database('devis');
- $Database->DbConnect();
- $Keyword = new App\Tables\Keyword($Database);
- $Client = new App\Tables\Client($Database);
- $Contact = new \App\Tables\Contact($Database);
- $Cmd = new App\Tables\Cmd($Database);
- $General = new App\Tables\General($Database);
- $Article = new App\Tables\Article($Database);
- $UserClass = new App\Tables\User($Database);
- $Pisteur = new App\Tables\Pistage($Database);
- $Stat = new App\Tables\Stats($Database);
- 
-
-
+}
+//déclaration des instances nécéssaires :
+$user= $_SESSION['user'];
+$Database = new App\Database('devis');
+$Database->DbConnect();
+$Keyword = new App\Tables\Keyword($Database);
+$Client = new App\Tables\Client($Database);
+$Contact = new \App\Tables\Contact($Database);
+$Cmd = new App\Tables\Cmd($Database);
+$General = new App\Tables\General($Database);
+$Article = new App\Tables\Article($Database);
+$UserClass = new App\Tables\User($Database);
+$Pisteur = new App\Tables\Pistage($Database);
+$Stat = new App\Tables\Stats($Database);
+//recupération des listes nécéssaires : 
 $clientList = $Client->getAll();
 $articleTypeList = $Article->getModels();
 $vendeurList = $UserClass->getCommerciaux();
-
+//declaration des variables diverses : 
 $alertDate = false;
 $resultHt = false ;
 $NombreCmd = false;
@@ -47,7 +39,7 @@ $arrayPresta = false ;
 $client= 'Tous';
 $vendeur= 'Tous';
 
-//traitement requetes: 
+//dates et filtres par default au mois en cours: 
 if (empty($_POST['dateDebut']) && empty($_POST['dateFin'])) 
 {
     $date = new DateTime();
@@ -58,8 +50,7 @@ if (empty($_POST['dateDebut']) && empty($_POST['dateFin']))
     $_POST['client'] = 'Tous';
     $_POST['vendeur'] = 'Tous';
 }
-
-//traitement d'abonnement: 
+//si la recherche inclus les abonnements : 
 if (empty($_POST['checkAbn'])) 
 {
   $abnSearch = false;
@@ -68,47 +59,64 @@ else
 {
   $abnSearch = true;
 }
-
-
-
+if (empty($_POST['check_commande'])) 
+{
+  $cmdSearch = false ;
+}
+else 
+{
+  $cmdSearch = true;
+}
+//si une requete à été envoyée : 
 if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin'])) 
 {
-
   $dateDebut = date($_POST['dateDebut'].' H:i:s');
   $dateFin = date($_POST['dateFin'].' H:i:s');
+  //si les filtres client et vendeur sont demandés : 
+      if ($_POST['client'] != 'Tous' || $_POST['vendeur'] != 'Tous') 
+      {
+            //recupere les infos pour affichage des client et vendeurs 
+            if ($_POST['client'] != 'Tous') 
+            {
+              $client = $Client->getOne($_POST['client']);
+            }
+            else
+            {
+              $client = 'Tous';
+            }
+            if ($_POST['vendeur'] != 'Tous') 
+            {
+              $vendeur = $UserClass->getByID($_POST['vendeur']);
+            }
+            else
+            {
+              $vendeur = 'Tous';
+            }
 
-  if ($_POST['client'] != 'Tous' || $_POST['vendeur'] != 'Tous') 
-  {
-
-    
-        //recupere les infos pour affichage des client et vendeurs 
-        if ($_POST['client'] != 'Tous') 
+            if (!empty($_POST['check_commande'])) 
+            {
+              $cmdList = $Stat->return_commande_client_vendeur($dateDebut, $dateFin, $_POST['client'], $_POST['vendeur']);
+              $abnSearch = false;
+            } 
+            else 
+            {
+              $cmdList = $Stat->returnCmdBetween2DatesClientVendeur($dateDebut, $dateFin, $_POST['client'], $_POST['vendeur'], $abnSearch); 
+            }
+      
+      }
+      else 
+      {
+        if (!empty($_POST['check_commande'])) 
         {
-          $client = $Client->getOne($_POST['client']);
+            $cmdList = $Stat->return_commandes($dateDebut, $dateFin);
+            $abnSearch = false;
         }
-        else
+        else 
         {
-          $client = 'Tous';
+            $cmdList = $Stat->returnCmdBetween2Dates($dateDebut, $dateFin, $abnSearch); 
         }
-
-        if ($_POST['vendeur'] != 'Tous') 
-        {
-          $vendeur = $UserClass->getByID($_POST['vendeur']);
         
-        }
-        else
-        {
-          $vendeur = 'Tous';
-        }
-
-    $cmdList = $Stat->returnCmdBetween2DatesClientVendeur($dateDebut, $dateFin, $_POST['client'] , $_POST['vendeur'] , $abnSearch);
-    
-  }
-  else 
-  {
-    $cmdList = $Stat->returnCmdBetween2Dates($dateDebut, $dateFin ,$abnSearch);
-    
-  }
+      }
 
   $arrayResults = [];
   //si les dates corespondent et que le résultats n'est pas vide : 
@@ -125,7 +133,6 @@ if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin']))
           $htg = floatval($ligne->htg) * intval($ligne->qte);
           $total = $total + $htg;
         }
-
         array_push($arrayResults , $total );
       }
     }
@@ -135,17 +142,11 @@ if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin']))
   $NombreCmd = count($cmdList);
   $arrayJson = [];
 
-
-
-
-
 //traite la liste de commande commandes pour le camenbert des prestation:
 $prestaList = $Keyword->getPresta();
 $arrayPresta = []; 
 $headerPresta = [['Presation'] , ['Chiffre']];
 array_push($arrayPresta , $headerPresta);
-
-
 foreach($prestaList as $presta) 
 {
   $arrayTemp = [];
@@ -182,8 +183,6 @@ foreach($prestaList as $presta)
 }
 $arrayPresta = json_encode($arrayPresta);
 // fin du camenbert prestation 
- 
-
 
 //traite la liste de commande pour le commanbert commercial:
   $vendeurList = $UserClass->getAll();
@@ -222,7 +221,6 @@ $arrayPresta = json_encode($arrayPresta);
             }
           }
           $totalParVendeur = array_sum($totalParVendeur);
-          
           if (!empty($totalParVendeur)) 
           {
             $tempsarrayVendeur = [];
@@ -231,12 +229,8 @@ $arrayPresta = json_encode($arrayPresta);
             array_push($arrayGlobal ,$tempsarrayVendeur );
           }    
      }
-
   $chartsVendeur = json_encode($arrayGlobal);
   // fin du camembert : 
-
-
-
   $dateFormatdebut = new DateTime($_POST['dateDebut']);
   $dateFormatdebut = $dateFormatdebut->format('d/m/Y');
   $dateFormatFin = new DateTime($_POST['dateFin']);
@@ -252,26 +246,9 @@ $arrayPresta = json_encode($arrayPresta);
     $dateFormatFin = new DateTime($_POST['dateFin']);
     $dateFormatFin = $dateFormatFin->format('d/m/Y');
     $alertDate = true;
-  }
-
-
-  
-  
-
+  } 
 }
 
-
-
-
-
-  
-
-
-
- 
-
-
- 
 // Donnée transmise au template : 
 echo $twig->render('statistique.twig',
 [
@@ -291,7 +268,8 @@ echo $twig->render('statistique.twig',
 'chartsResponse' => $chartsResponses ,
 'chartsVendeur' => $chartsVendeur , 
 'arrayPresta' => $arrayPresta , 
-'abnSearch' =>$abnSearch
+'abnSearch' =>$abnSearch,
+'cmdSearch' => $cmdSearch
 ]);
  
  
