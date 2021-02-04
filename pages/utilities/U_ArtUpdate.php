@@ -32,12 +32,7 @@ Yb      88"Yb  88""    dP__Yb    88
     { // création de FMM (Model avec famille et marque)
         $msg_info = '';
         // Upload de l'image (exemple complet sur https://phpcodeur.net/articles/php/upload)
-        // Image
-        $root_image = './public/_Documents_/Modele_Image/'; // repertoires pour image modele
-        $nom_image  = basename($_FILES['modele_image']['name']); // nom brut de destination
-        $nom_image  = preg_replace(array_keys($accents), array_values($accents), $nom_image); // enlever les accents
-        $nom_image  = strtoupper($nom_image); // mise en majuscule
-        $nom_image  = preg_replace('/([^.a-z0-9]+)/i', '-', $nom_image); // suppression des caractères autres que lettre chiffres . et remplacement par - 
+        // Image (stocker dans la base)
         $blob_image = file_get_contents($_FILES['modele_image']['tmp_name']);
         // Doc
         $root_doc = './public/_Documents_/Modele_Doc/'; // repertoires pour doc modele
@@ -46,26 +41,21 @@ Yb      88"Yb  88""    dP__Yb    88
         $nom_doc  = strtoupper($nom_doc); // mise en majuscule
         $nom_doc  = preg_replace('/([^.a-z0-9]+)/i', '-', $nom_doc); // suppression des caractères autres que lettre chiffres . et remplacement par - 
         // ecriture dans la base
-        $last_id_fmm = $Article->create($_POST['famille'], $_POST['marque'], $_POST['modele'], $blob_image, $nom_doc);
+        $last_id_fmm = $Article->create($_POST['famille'], $_POST['marque'], $_POST['modele'], $blob_image, $nom_doc, $_POST['descom']);
         // prefixage des nom de image te doc avec le id du model (format 00000-) (ID complété par zero)
         $last_id_fmm = substr('00000'.$last_id_fmm.'-',-6); // pour completer a zero sur 5 positions et - a la fin
-        // Upload de Image
-        $upload_image = $root_image.$last_id_fmm.$nom_image; // nom complet de destination dir et nom de fichier validé
-        if (move_uploaded_file($_FILES['modele_image']['tmp_name'], $upload_image)) 
-            $msg_info .= "Fichier Image Ajouté<br>"; else $msg_info .= "!Fichier Image Absent ou trop volumineux.<br>";
         // Upload de Doc
         $upload_doc = $root_doc.$last_id_fmm.$nom_doc; // nom complet de destination dir et nom de fichier validé
         if (move_uploaded_file($_FILES['modele_doc']['tmp_name'], $upload_doc)) 
             $msg_info .= "Fichier Doc Ajouté<br>"; else $msg_info .= "!Fichier Doc Absent ou trop volumineux.<br>";
-        //print $_POST['famille'].'<br>'.$_POST['marque'].'<br>'.$_POST['modele'].'<br>'.$nom_image.'<br>'.$blob_image.'<br>'.$nom_doc.'<br>'; // pour debug
 
         header('location: ArtCatalogueModele');
     }
 
-/*    d8  dP"Yb  8888b.  88 888888 
-88b  d88 dP   Yb  8I  Yb 88 88__   
-88YbdP88 Yb   dP  8I  dY 88 88""   
-88 YY 88  YbodP  8888Y"  88 8*/     
+/*    d8  dP"Yb  8888b.  88 888888
+88b  d88 dP   Yb  8I  Yb 88 88__
+88YbdP88 Yb   dP  8I  dY 88 88""
+88 YY 88  YbodP  8888Y"  88 8*/
     if($modif)
     { // Modification de user
         if ($_POST['idUser']) // pour bien verifier qu'il y a un ID

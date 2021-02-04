@@ -85,6 +85,10 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88Ybd
 								<button type="submit" name="link_famille" class="btn btn-link py-0 px-0 ">{{Art.Famille}}</button> -
 								<button type="submit" name="link_marque"  class="btn btn-link py-0 px-0 ">{{Art.Marque}}</button> -
 								<button type="submit" name="link_modele"  class="btn btn-link py-0 px-0 ">{{Art.Modele}}</button>
+								<br>
+								{% if Art.Descom %}
+									<i class="fad fa-comment-smile fa-lg"></i> <em>{{Art.Descom}}</em>
+								{% endif %}
 								</td>
 								<td align=center>
 									{% if Art.Image %}<figure class="image"><img src="data:image/jpeg;base64,{{Art.Image|raw}}" width=90>{% endif %}</figure>
