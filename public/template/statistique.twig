@@ -116,6 +116,11 @@
             <div class="card shadow mb-4 d-flex flex-row justify-content-start flex-wrap h-100">
                 <div class="col-3 my-4 mx-4">
                     <h5 class="card-title">Résultats :</h5>
+                    {% if cmdSearch %}
+                        <div class="alert alert-primary text-muted" role="alert">
+                           Inclus les commandes non-facturées
+                        </div>
+                    {% endif %}
                     {% if alertDate %}
                     <div class="alert alert-danger" role="alert">
                         <p> Aucun résultats pour les filtres selectionnés : </p>
@@ -188,13 +193,8 @@
                         <input type="hidden" id="chartsVendeur" value="{{chartsVendeur}}">
                         <div  id="CamVendeur">
                         </div>
-
                     </div>
-                   
-               
-               
             </div>
-            
         </div>
     </div>
 </main>

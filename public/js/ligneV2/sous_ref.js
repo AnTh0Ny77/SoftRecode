@@ -57,6 +57,38 @@ $(document).ready(function()
                 }
             })  
     })
+
+    //transmet le text du modèle ou la designation du select au text pour la partie modification : 
+    $('#select_modif_sous_ref').on('change' , function()
+    {
+        var selectedArticle = $(this).children("option:selected").text();
+        $("#designation_modif_sous_ref").val(selectedArticle);
+        var id_fmm = $(this).children("option:selected").val();
+        $.ajax(
+            {
+                type: 'post',
+                url: "ajax_idfmm",
+                data:
+                {
+                    "idfmm": id_fmm
+                },
+                success: function (data) {
+
+                    dataSet = JSON.parse(data);
+                    if (dataSet.afmm__design_com != null) {
+                        $("#designation_modif_sous_ref").val(dataSet.afmm__design_com);
+                    }
+                    else {
+                        $("#designation_modif_sous_ref").val(selectedArticle);
+                    }
+
+                },
+                error: function (err) {
+                    $("#designation_modif_sous_ref").val(selectedArticle);
+                    console.log('error: ', err);
+                }
+            })  
+    })
     //fonction qui vide le contenu du formulaire : 
     let delete_form = function()
     {
@@ -94,7 +126,7 @@ $(document).ready(function()
                     {"AjaxLigneFT" : id_ligne
                     },    
                 success: function(data)
-                { 
+                {
                     //prérempli les champs avec les infos récupérées
                     dataSet = JSON.parse(data);
                     $('#select_modif_sous_ref').selectpicker('val' , dataSet.id__fmm);
