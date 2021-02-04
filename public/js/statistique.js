@@ -1,5 +1,21 @@
 $(document).ready(function()
 {
+
+
+  $('#click_chiffre').on('click' , function()
+  {
+    $('#check_commande').prop( "checked", false );
+    $('#form_stat').submit();
+  })
+
+  $('#click_commande').on('click' , function()
+  {
+    $('#check_commande').prop( "checked", true );
+    $('#form_stat').submit();
+  })
+
+
+
    google.charts.load('current', {'packages':['corechart']});
    google.charts.setOnLoadCallback(drawVisualization);
    function drawVisualization() 

@@ -113,8 +113,7 @@ public function return_commandes($debut, $fin)
     $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur 
     FROM cmd 
     LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
-    WHERE  ( cmd__date_fact BETWEEN  '" . $debut . " 00:00:00 ' AND  '" . $fin ." 23:59:59' 
-    OR ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' ) )
+    WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' ) 
     AND (cmd__etat = 'VLD' OR cmd__etat = 'IMP' OR cmd__etat = 'CMD' )
     ORDER BY cmd__id DESC 
     ");
@@ -190,8 +189,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
             $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
         FROM cmd 
         LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
-        WHERE  ( cmd__date_fact > '" . $debut . "' AND cmd__date_fact < '" . $fin ."' 
-        OR ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )) 
+        WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )
         AND cmd__client__id_fact = '" . $client . "'
         AND c.client__id_vendeur = '" . $vendeur . "'
         AND (cmd__etat = 'VLD' OR cmd__etat = 'IMP' OR cmd__etat = 'CMD' )
@@ -205,8 +203,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
             $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
         FROM cmd 
         LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
-        WHERE  ( cmd__date_fact > '" . $debut . "' AND cmd__date_fact < '" . $fin ."' 
-        OR ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )) 
+        WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )
         AND cmd__client__id_fact = '" . $client . "'
         AND (cmd__etat = 'VLD' OR cmd__etat = 'IMP' OR cmd__etat = 'CMD' )
         ORDER BY cmd__id DESC 
@@ -219,8 +216,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
             $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
         FROM cmd 
         LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
-        WHERE  ( cmd__date_fact > '" . $debut . "' AND cmd__date_fact < '" . $fin ."'   
-        OR ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )) 
+        WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )
         AND c.client__id_vendeur = '" . $vendeur . "'
         AND (cmd__etat = 'VLD' OR cmd__etat = 'IMP' OR cmd__etat = 'CMD' )
         ORDER BY cmd__id DESC 

@@ -10,7 +10,13 @@
 {% block main %}
 <main role="main" class="col-md-12 ml-sm-auto  pt-3 px-4">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">Statistiques <i class="fas fa-chart-pie"></i></h1>
+        {% if  cmdSearch %}
+        <h1 class="h2">Statistiques commandes signées <i class="fas fa-chart-pie"></i></h1>
+        <button type='button' id="click_chiffre" class="btn btn-link"> voir les statistiques chiffre d'affaire</button>
+        {% else %}
+        <h1 class="h2">Statistiques chiffre d'affaire facturé <i class="fas fa-chart-pie"></i></h1>
+        <button type='button' id="click_commande"  class="btn btn-link"> voir les statistiques commandes signées</button>
+        {% endif %}
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
             </div>
@@ -23,8 +29,13 @@
             <div class="card shadow h-100 col-12">
                 <!-- Card Body -->
                 <div class="card-body">
-                    <form action="stat" method='POST'>
-                        <h5>Période </h5>
+                    <form action="stat" method='POST' id="form_stat">
+                        {% if  cmdSearch %}
+                        <h5>Période date de validation</h5>
+                        {% else %}
+                        <h5>Période date de facturation</h5>
+                        {% endif %}
+                        
                         <div class="d-flex justify-content-between my-3 col-12">
 
                             <div class="col-6">
@@ -89,7 +100,11 @@
                         </div>
                         <div class="modal-footer">
                             <div class="mx-4">
-                                <div class="form-group form-check">
+                                {% if cmdSearch %}
+                                <div class="form-group form-check d-none" id="div_abonnement">
+                                {% else %}
+                                <div class="form-group form-check" id="div_abonnement">
+                                {% endif %}
                                     {% if abnSearch %}
                                     <input type="checkbox" class="form-check-input" id="exampleCheck1" name="checkAbn" checked>
                                     {% else %}
@@ -97,7 +112,7 @@
                                     {% endif %}
                                     <label class="form-check-label" for="exampleCheck1">Inclure les abonnements</label>
                                 </div>
-                                <div class="form-group form-check">
+                                <div class="form-group form-check d-none ">
                                     {% if cmdSearch %}
                                     <input type="checkbox" class="form-check-input" id="check_commande" name="check_commande" checked>
                                     {% else %}
@@ -116,11 +131,6 @@
             <div class="card shadow mb-4 d-flex flex-row justify-content-start flex-wrap h-100">
                 <div class="col-3 my-4 mx-4">
                     <h5 class="card-title">Résultats :</h5>
-                    {% if cmdSearch %}
-                        <div class="alert alert-primary text-muted" role="alert">
-                           Inclus les commandes non-facturées
-                        </div>
-                    {% endif %}
                     {% if alertDate %}
                     <div class="alert alert-danger" role="alert">
                         <p> Aucun résultats pour les filtres selectionnés : </p>
