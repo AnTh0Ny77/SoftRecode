@@ -22,7 +22,6 @@ $Article = new App\Tables\Article($Database);
 $General = new App\Tables\General($Database);
 $Cmd = new App\Tables\Cmd($Database);
 $Database->DbConnect();
-
 //listes  : 
 $clientList = $Client->get_client_devis();
 $modeleList = $Keywords->getModele();
@@ -101,7 +100,7 @@ if(!empty($_POST['modif']))
 }else $modif =  false;
 
 // Donnée transmise au template : 
-echo $twig->render('NdevisPlusPro.twig',[
+echo $twig->render('devis_v2.twig',[
    'user'=>$_SESSION['user'],
    'clientList' => $clientList,
    'modeleList' => $modeleList,

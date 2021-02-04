@@ -5,6 +5,7 @@ session_start();
 $Database = new App\Database('devis');
 $Database->DbConnect();
 $Client = new App\Tables\Client($Database);
+$Contact = new App\Tables\Contact($Database);
 
 // si pas connecté on ne vole rien ici :
 if (empty($_SESSION['user'])) 
@@ -18,7 +19,14 @@ else
     if (!empty($_POST['search']))
     {
         $search =  htmlentities($_POST['search']);
-        $clientList = json_encode($Client->search_client($search));
+        $clientList = $Client->search_client($search);
+        foreach ($clientList as $client) 
+        {
+            $contactList = $Contact->getFromLiaison($client->client__id);
+            $client->contact_list = $contactList;
+        }
+        $clientList = json_encode($clientList);
+        
         echo $clientList;  
     }
 
