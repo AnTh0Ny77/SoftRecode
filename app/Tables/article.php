@@ -96,8 +96,7 @@ class Article extends Table
     INNER JOIN art_fmm ON art_pn.apn__afmm__id = art_fmm.afmm__id
     INNER JOIN art_marque ON art_fmm.afmm__marque = art_marque.am__id
     INNER JOIN keyword ON art_fmm.afmm__famille = keyword.kw__value and keyword.kw__type = \'famil\' '.
-    $SQL_WHERE.$SQL_ORDER.
-    'LIMIT 0,50 ';
+    $SQL_WHERE.$SQL_ORDER; // LIMIT 0,50
     //print $SQL; // pour debug
     $request =$this->Db->Pdo->query($SQL);
     $data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -181,12 +180,11 @@ class Article extends Table
     }
     $SQL = 'SELECT 
     keyword.kw__lib as Famille, art_marque.am__marque as Marque, art_fmm.afmm__modele as Modele, 
-    art_fmm.afmm__image as FMM_Image, art_fmm.afmm__doc as FMM_Doc, art_fmm.afmm__id as FMM_ID 
+    art_fmm.afmm__image as FMM_Image, art_fmm.afmm__doc as FMM_Doc, art_fmm.afmm__id as FMM_ID, art_fmm.afmm__design_com as Descom
     FROM art_fmm
     INNER JOIN art_marque ON art_fmm.afmm__marque = art_marque.am__id
     INNER JOIN keyword ON art_fmm.afmm__famille = keyword.kw__value and keyword.kw__type = \'famil\' '.
-    $SQL_WHERE.$SQL_ORDER.
-    'LIMIT 0,50 ';
+    $SQL_WHERE.$SQL_ORDER; // 'LIMIT 0,50 ';
     //print $SQL; // pour debug
     $request =$this->Db->Pdo->query($SQL);
     $data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -196,22 +194,17 @@ class Article extends Table
     {
       // je cherche l image
       $Image = '';
-      if ($ligne->FMM_Image) 
-      {
-        // prefixage des nom de image te doc avec le id du model (format 00000-) (ID complété par zero)
-        $prefixe = substr('00000'.$ligne->FMM_ID.'-',-6); // pour completer a zero sur 5 positions et - a la fin
-        //$Image = 'Modele_Image/'.$prefixe.$ligne->FMM_Image; // pour les nom de fichier en base
-        // if ($Image) $Image = '<img src="public/_Documents_/'.$Image.'" class=" ml-5 my-2" height="55">';
-        $Image = base64_encode($ligne->FMM_Image); // pour image en base (codé sur un BLOB)
-      }
+      if ($ligne->FMM_Image) $Image = base64_encode($ligne->FMM_Image); // pour image en base (codé sur un BLOB)
       // je cherche la doc 
       $Doc = '';
       if ($ligne->FMM_Doc) $Doc = 'Modele_Doc/'.$ligne->FMM_Doc;
       if ($Doc) $Doc = 'public/_Documents_/'.$Doc;
+      // creation du tableau a renvoyer 
       $TM[] = array (
         'Famille'     => $ligne->Famille,
         'Marque'      => $ligne->Marque,
         'Modele'      => $ligne->Modele,
+        'Descom'      => $ligne->Descom,
         'Image'       => $Image,
         'Doc'         => $Doc
       );
@@ -220,7 +213,6 @@ class Article extends Table
     //exit;
     return $TM;
   }
-
 
   public function getPARTS($art_filtre, $art_modele=FALSE)
   { /* Liste dans Art_Parts les PN en lien avec LE filtre (Modele ou PN) */
@@ -250,7 +242,7 @@ class Article extends Table
     INNER JOIN art_marque ON art_fmm.afmm__marque = art_marque.am__id
     INNER JOIN keyword ON art_fmm.afmm__famille = keyword.kw__value and keyword.kw__type = \'famil\' '.
     $SQL_WHERE.
-    'ORDER BY keyword.kw__ordre ASC, art_pn.apn__pn ASC limit 0,50 ';
+    'ORDER BY keyword.kw__ordre ASC, art_pn.apn__pn ASC '; // limit 50
 
     // print $SQL; // pour debug
     $request =$this->Db->Pdo->query($SQL);
@@ -326,17 +318,18 @@ class Article extends Table
  dP   `" 88__dP 88__     dPYb     88         dPYb   88__dP   88              88__   88b  d88 88b  d88 
  Yb      88"Yb  88""    dP__Yb    88        dP__Yb  88"Yb    88              88""   88YbdP88 88YbdP88 
   YboodP 88  Yb 888888 dP""""Yb   88       dP""""Yb 88  Yb   88   oooooooooo 88     88 YY 88 88 YY 8*/ 
-  public function create($famille, $marque, $modele, $image, $doc)
+  public function create($famille, $marque, $modele, $image, $doc, $descom)
   {
     /* exemple : INSERT INTO art_fmm (afmm__famille, afmm__marque, afmm__modele) VALUES ('btm', '14', 'dddd') */
     $request = $this->Db->Pdo->prepare("
-    INSERT INTO art_fmm (afmm__famille, afmm__marque, afmm__modele, afmm__image, afmm__doc) 
-    VALUES              (:famille,      :marque,      :modele,      :image,      :doc)"); 
+    INSERT INTO art_fmm (afmm__famille, afmm__marque, afmm__modele, afmm__image, afmm__doc, afmm__design_com) 
+    VALUES              (:famille,      :marque,      :modele,      :image,      :doc,      :descom)"); 
     $request->bindValue(":famille", $famille);
     $request->bindValue(":marque",  $marque);
     $request->bindValue(":modele",  $modele);
     $request->bindValue(":image",   $image);
     $request->bindValue(":doc",     $doc);
+    $request->bindValue(":descom",  $descom);
     $request->execute();
     $idFmm = $this->Db->Pdo->lastInsertId();
     return $idFmm;
