@@ -2334,7 +2334,7 @@ public function modify(
       cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
       cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
       cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
-      cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__note_facture,
+      cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__note_facture, cmdl__sous_garantie ,
       k.kw__lib , k.kw__value , 
       f.afmm__famille as famille,
       f.afmm__modele as modele,
@@ -2923,18 +2923,19 @@ public function modify(
               //je place la sous-ref dans le tableau provisoire :
               array_push($tableau_sous_ref , $ligne);
               //je la detruit dans ce tableau passé en paramètre : 
-              unset($data[$key]);
+              unset($tableau_ligne[$key]);
             }
       }
+    
       //une fois le premier tri terminé je boucle une deuxième fois afin de déterminer les ordres : 
-      int : $count = 0 ; 
+      $count = 0 ; 
       foreach ($tableau_ligne as $key=> $ligne) 
       {         
                 $count += 1 ;
-                $data_ligne = [$count,$ligne->devl__id ]; 
+                $data_ligne = [$count, $ligne->devl__id ]; 
                 $sql_update_ligne = $this->Db->Pdo->prepare('UPDATE cmd_ligne SET cmdl__ordre = ? WHERE cmdl__id = ?');
                 $sql_update_ligne->execute($data_ligne);
-                //je parcours le tableau de sous-références : 
+                //je parcours le tableau de sous-références: 
                 foreach ($tableau_sous_ref as $sous_ref) 
                 { 
                       //l'id sous ref de la sous_ref est égal à l'id de la mère : 
@@ -2947,6 +2948,7 @@ public function modify(
                       }
                 }
       }
+      
     }
     
 

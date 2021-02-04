@@ -141,6 +141,8 @@ if (!empty($_POST['down']))
 {
     $updateOrdre = $Devis->upanDonwn('down',$_POST['downId'], $_POST['downLigne'] , $_POST['down'][0]);
     $idDevis = $_POST['downId'];
+    $ligne_temp = $Cmd->devisLigne($_POST['downId']);
+    $Cmd->update_ordre_sous_ref($ligne_temp);
 }
 
 //monte une ligne : 
@@ -148,6 +150,8 @@ if (!empty($_POST['up']))
 {
     $updateOrdre = $Devis->upanDonwn('up',$_POST['upId'], $_POST['upLigne'] , $_POST['up'][0]);
     $idDevis = $_POST['upId'];
+    $ligne_temp = $Cmd->devisLigne($_POST['upId']);
+    $Cmd->update_ordre_sous_ref($ligne_temp);
 }
 
 //efface une ligne : 
@@ -155,6 +159,7 @@ if (!empty($_POST['deleteId']))
 {
     $Devis->deleteLine($_POST['deleteId']);
     $idDevis = $_POST['deleteIdCmd'];
+  
 }
 
 //modification de ligne demandée :
@@ -189,8 +194,26 @@ if (!empty($_POST['input_id_ref']) && !empty($_POST['select_sous_ref']) && !empt
         $General->updateAll('cmd_ligne' , 1 , 'cmdl__sous_garantie' , 'cmdl__id' , $daugther_line);
    }
    $idDevis = $mother_line->cmdl__cmd__id;
-   
 }
+
+//modification de sous référence :
+if (!empty($_POST['input_modif_sous_ref']) && !empty($_POST['input_modif_sous_ref_cmd']) && !empty($_POST['select_modif_sous_ref'])) 
+{
+    $General->updateAll('cmd_ligne', $_POST['select_modif_sous_ref'] , 'cmdl__id__fmm', 'cmdl__id', $_POST['input_modif_sous_ref']);
+    $General->updateAll('cmd_ligne', $_POST['quantite_modif_sous_ref'], 'cmdl__qte_cmd', 'cmdl__id', $_POST['input_modif_sous_ref']);
+    $General->updateAll('cmd_ligne', $_POST['designation_modif_sous_ref'], 'cmdl__designation', 'cmdl__id', $_POST['input_modif_sous_ref']);
+    $General->updateAll('cmd_ligne', $_POST['com_modif_sous_ref'], 'cmdl__note_interne', 'cmdl__id', $_POST['input_modif_sous_ref']);
+    if (!empty($_POST['modif_sous_ref_garantie'])) 
+    {
+        $General->updateAll('cmd_ligne', 1, 'cmdl__sous_garantie', 'cmdl__id', $_POST['input_modif_sous_ref']);
+    }
+    else 
+    {
+        $General->updateAll('cmd_ligne', 0 , 'cmdl__sous_garantie', 'cmdl__id', $_POST['input_modif_sous_ref']);
+    }
+    $idDevis = $_POST['input_modif_sous_ref_cmd'];
+}    
+
 
 
 // creation lignes ou duplicata : 

@@ -4,9 +4,9 @@ namespace App\Tables;
 use App\Tables\Table;
 use App\Database;
 use PDO;
+use stdClass;
 
-
-      /*.                    .    o8o            oooo            
+/*.                    .    o8o            oooo            
      .888.                 .o8    `"'            `888            
     .8"888.     oooo d8b .o888oo oooo   .ooooo.   888   .ooooo.  
    .8' `888.    `888""8P   888   `888  d88' `"Y8  888  d88' `88b 
@@ -347,6 +347,16 @@ class Article extends Table
     return $data ; 
   }
   
+  //recupère la désignation commerciale pour les suggestions aux commerciaux lors des devis : 
+  public function get_article_devis(int  $id_fmm) : stdClass 
+  {
+    $request = $this->Db->Pdo->query(
+    'SELECT afmm__id , afmm__design_com 
+    FROM art_fmm
+    WHERE afmm__id = '. $id_fmm.'');
+    $data = $request->fetch(PDO::FETCH_OBJ);
+    return $data;
+  }
   
   
   public function getPn($id){

@@ -250,11 +250,11 @@ class Devis extends Table {
 
     if ($option == 'down') 
     {
-      $list = $this->Db->Pdo->query("SELECT *  from cmd_ligne WHERE cmdl__cmd__id = '".$idCmd."' AND cmdl__ordre > '".$ordre."' ORDER BY cmdl__ordre LIMIT 1 ");
+      $list = $this->Db->Pdo->query("SELECT *  from cmd_ligne WHERE cmdl__cmd__id = '".$idCmd."' AND cmdl__ordre > '".$ordre."' AND cmdl__sous_ref IS NULL  ORDER BY cmdl__ordre LIMIT 1 ");
     }
     else 
     {
-      $list = $this->Db->Pdo->query("SELECT *  from cmd_ligne WHERE cmdl__cmd__id = '".$idCmd."' AND cmdl__ordre < '".$ordre."' ORDER BY cmdl__ordre DESC LIMIT 1 ");
+      $list = $this->Db->Pdo->query("SELECT *  from cmd_ligne WHERE cmdl__cmd__id = '".$idCmd."' AND cmdl__ordre < '".$ordre."' AND cmdl__sous_ref IS NULL  ORDER BY cmdl__ordre DESC LIMIT 1 ");
     }
     
     $response = $list->fetch(PDO::FETCH_OBJ);
