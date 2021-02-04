@@ -90,9 +90,6 @@ if ($('#globalComClient').length)
              console.error( error );
          });     
 }
-
-
-
 //fonction de remplissage des select contact en fonction de leur client : 
 //facturation : 
 $('#clientSelect').on('change', function()
