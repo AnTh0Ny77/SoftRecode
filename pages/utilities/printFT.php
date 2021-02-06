@@ -64,6 +64,12 @@ if(!empty($_POST['devisCommande']))
             $lignes->devl__ordre
             );
        }
+       else 
+       {
+            $Global->updateAll('cmd_ligne', $lignes->devl__note_interne, 'cmdl__note_interne', 'cmdl__id', $lignes->devl__id);
+            $Global->updateAll('cmd_ligne', $lignes->devl_quantite, 'cmdl__qte_cmd', 'cmdl__id', $lignes->devl__id);
+       }
+    
      
     } 
   }

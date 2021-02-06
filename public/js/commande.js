@@ -153,7 +153,7 @@ $(document).ready(function() {
      
       $('#code_cmd').val($('#codeClient').val());
       
-      
+         console.log(arrayOfItem);
      $('#formValideCMD').submit();
     })
 
