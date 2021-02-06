@@ -63,13 +63,21 @@
                         </div>
 				<div>
 					<div class="mt-2 pt-2">
-                                                <label for="exampleInputEmail1">Client : </label>  
-                                                        <span id="span_facturation" class="text-danger"><b>Aucun Client selectionné</b> <i class="fas fa-times-circle"></i></span> 
-                                                <input type='hidden' id="choix_client">
-					</div>
-					
+						<label>Client : </label>  
+						{% if modif %}
+						
+							<span id="span_facturation" class="text-success"><b> {{ "(" ~ modif.client__id ~ ") " ~ modif.client__societe ~ " " ~ modif.client__cp ~ "-" ~ modif.client__ville ~ " "}}</b> <i class='fas fa-check'></i></span>
+							<input type="hidden" name="clientSelect" id="clientSelect" value="{{modif.client__id}}">
+						
+						
+						{% else %}
+						
+							<span id="span_facturation" class="text-danger"><b>Aucun Client selectionné</b><div id="rotate_facturation"> <i class="fas fa-times-circle"></i></div> </span>
+							<input type="hidden" name="clientSelect" id="clientSelect" value="">
+						
+						{% endif %}
+					</div>	
 				</div>
-			
 				<div>
 					<div class="mt-2 pt-2 ">
 						<label for="exampleInputEmail1" >Contact : </label>  
@@ -94,12 +102,25 @@
 			</div>
 
 			<div class="my-3">
-				<label for="comClient"><b>Livraison</b></label>
+				<label ><b>Livraison</b></label>
+				<div class="col-6 d-flex flex-row my-3">
+					<input class="form-control" type="search" placeholder="Recherche client livraison" aria-label="Search" id="client_livraison_input"autocomplete='off' autofocus>
+					<button type="button" id="btn_search_client_livraison" class="btn btn-primary mx-3"><i class="fas fa-search"></i></button>
+				</div>
 				
-				<div>
-					<div class="mt-1 pt-2 ">
-						<label for="exampleInputEmail1"  >Client : <b>indentique si non specifiée</b></label>   
-					</div>
+				
+				<div class="mt-2 pt-2">
+					{% if modif.devis__id_client_livraison and modif.devis__id_client_livraison != modif.client__id %}
+						<label for="exampleInputEmail1">Client : <b>indentique si non specifiée</b></label>
+						<span id="span_livraison" class="text-success"><b>{{ "(" ~ modif.devis__id_client_livraison ~ ") " ~ modif.client__livraison_societe ~ " " ~ modif.client__livraison_cp ~ "-" ~ modif.client__livraison_ville ~ " "}}
+						</b><i class='fas fa-check'></i></span>
+						<input type="hidden" name="clientLivraison" id="clientLivraison" value="{{modif.devis__id_client_livraison}}">
+					{% else %}
+						<label for="exampleInputEmail1">Client : <b>indentique si non specifiée</b></label>
+						<span id="span_livraison" class="text-danger"></span>
+						<input type="hidden" name="clientLivraison" id="clientLivraison" value="">
+					{% endif %}
+					
 					
 				</div>
 				<div>
@@ -180,7 +201,7 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<button class="btn btn-primary">Valider</button>
+			<button class="btn btn-primary" id="valid_devis">Valider</button>
 		</div>
 	</div>
 </div>
@@ -331,6 +352,72 @@
     </div>
   </div>
 </div>
+</div>
+
+
+<!-- Modal choix du client-->
+<div class="modal fade" id="modal_choix_client" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" >Choix du client facturé</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<ul class="list-group" id="list_client_facture">
+					
+				</ul>
+			</div>
+			<div class="modal-footer">
+				
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal choix du client livraison-->
+<div class="modal fade" id="modal_choix_client_livraison" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Choix du client facturé</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<ul class="list-group" id="list_client_livraison">
+
+				</ul>
+			</div>
+			<div class="modal-footer">
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal alerte -->
+<div class="modal fade" id="modal_alert" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" >Alerte</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-danger"  id="alert_text" role="alert">
+					
+				</div>
+			</div>
+			<div class="modal-footer">
+				
+			</div>
+		</div>
+	</div>
 </div>
 {% endblock %}
 

@@ -235,3 +235,19 @@ body {
   {
     background-color:#ebebeb;
   }
+
+
+#rotate_facturation
+{
+  transition:  transform 0.3s ease-out;
+}
+
+ 
+.rotated {
+    -webkit-transform: rotateX(360deg) ; 
+    -moz-transform: rotateX(360deg) ;
+    -ms-transform: rotateX(360deg) ; 
+    -o-transform: rotateX(360deg) ;
+    transform:  rotateX(360deg) ;
+   
+}
