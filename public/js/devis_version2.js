@@ -163,7 +163,7 @@ $('#client_input').on('keypress' , function(e)
                 //requete ajax qui recupère les résultats de la requete  : 
                 $.ajax({
                         type: 'post',
-                        url: "Ajax_search_client",
+                        url: "Ajax_search_client_devis",
                         data : 
                             {
                                 "search" : string_recherche
@@ -175,7 +175,7 @@ $('#client_input').on('keypress' , function(e)
                                 //si la réponse est nulle : 
                                 if (dataSet.length < 1) 
                                 {
-                                        show_alert('Aucun résultat pour recherche de client');
+                                        show_alert('Aucun résultat');
                                         delete_liste_faturation();
                                 }
                                 //si la réponse est unique je selectionne de suite le client  : 
@@ -187,7 +187,17 @@ $('#client_input').on('keypress' , function(e)
                                 // si la reponse est multiple je propose une selection : 
                                 else 
                                 {
+                                        //si il y a 20 résultats ou + je préviens l'utilisateur d'utiliser des critères plus précis:
+                                        if (dataSet.length == 30) 
+                                        {
+                                                $('#alert_long_facture').text('Trop de résultats: essayer d affiner la recherche ');  
+                                        }
+                                        else 
+                                        {
+                                                $('#alert_long_facture').text(' ');
+                                        }
                                         //cree la liste client : 
+                                        delete_liste_faturation();
                                         create_list_client(dataSet);
                                         //attribue la fonction click a chaque button créé afin de selectionner le client dynamiquement : 
                                         $('.click-facturation').on('click' , function()
@@ -224,7 +234,7 @@ $('#btn_search_client').on('click' , function()
         //requete ajax qui recupère les résultats de la requete  : 
         $.ajax({
                 type: 'post',
-                url: "Ajax_search_client",
+                url: "Ajax_search_client_devis",
                 data:
                 {
                         "search": string_recherche
@@ -234,7 +244,7 @@ $('#btn_search_client').on('click' , function()
                         dataSet = JSON.parse(data);
                         //si la réponse est nulle : 
                         if (dataSet.length < 1) {
-                                show_alert('Aucun résultat pour recherche de client');
+                                show_alert('Aucun résultat');
                                 delete_liste_faturation();
                         }
                         //si la réponse est unique je selectionne de suite le client  : 
@@ -244,7 +254,17 @@ $('#btn_search_client').on('click' , function()
                         }
                         // si la reponse est multiple je propose une selection : 
                         else {
-                                //cree la liste client : 
+                                //si il y a 20 résultats ou + je préviens l'utilisateur d'utiliser des critères plus précis:
+                                if (dataSet.length == 30) 
+                                {
+                                        $('#alert_long_facture').text('Trop de résultats: essayer d affiner la recherche ');
+                                }
+                                else 
+                                {
+                                        $('#alert_long_facture').text(' ');
+                                }
+                                //cree la liste client :
+                                delete_liste_faturation(); 
                                 create_list_client(dataSet);
                                 //attribue la fonction click a chaque button créé afin de selectionner le client dynamiquement : 
                                 $('.click-facturation').on('click', function () {
@@ -280,7 +300,7 @@ $('#client_livraison_input').on('keypress', function (e)
                 //requete ajax qui recupère les résultats de la requete  : 
                 $.ajax({
                         type: 'post',
-                        url: "Ajax_search_client",
+                        url: "Ajax_search_client_devis",
                         data:
                         {
                                 "search": string_recherche
@@ -291,7 +311,7 @@ $('#client_livraison_input').on('keypress', function (e)
                                 //si la réponse est nulle : 
                                 if (dataSet.length < 1) 
                                 {
-                                        show_alert('Aucun résultat pour la recherche de client livraison');
+                                        show_alert('Aucun résultat');
                                         delete_liste_livraison();
                                 }
                                 //si la réponse est unique je selectionne de suite le client  : 
@@ -303,7 +323,15 @@ $('#client_livraison_input').on('keypress', function (e)
                                 // si la reponse est multiple je propose une selection : 
                                 else 
                                 {
+                                        //si il y a 20 résultats ou + je préviens l'utilisateur d'utiliser des critères plus précis:
+                                        if (dataSet.length == 30) {
+                                                $('#alert_long_livraison').text('Trop de résultats: essayer d affiner la recherche ');
+                                        }
+                                        else {
+                                                $('#alert_long_livraison').text(' ');
+                                        }
                                         //cree la liste client : 
+                                        delete_liste_livraison();
                                         create_list_client_livraison(dataSet);
                                         //attribue la fonction click a chaque button créé afin de selectionner le client dynamiquement : 
                                         $('.click-livraison').on('click', function () {
@@ -337,7 +365,7 @@ $('#btn_search_client_livraison').on('click' , function()
         //requete ajax qui recupère les résultats de la requete  : 
         $.ajax({
                 type: 'post',
-                url: "Ajax_search_client",
+                url: "Ajax_search_client_devis",
                 data:
                 {
                         "search": string_recherche
@@ -347,7 +375,7 @@ $('#btn_search_client_livraison').on('click' , function()
                         dataSet = JSON.parse(data);
                         //si la réponse est nulle : 
                         if (dataSet.length < 1) {
-                                show_alert('Aucun résultat pour la recherche de client livraison');
+                                show_alert('Aucun résultat');
                                 delete_liste_livraison();
                         }
                         //si la réponse est unique je selectionne de suite le client  : 
@@ -357,7 +385,15 @@ $('#btn_search_client_livraison').on('click' , function()
                         }
                         // si la reponse est multiple je propose une selection : 
                         else {
+                                //si il y a 20 résultats ou + je préviens l'utilisateur d'utiliser des critères plus précis:
+                                if (dataSet.length == 30) {
+                                        $('#alert_long_livraison').text('Trop de résultats: essayer d affiner la recherche ');
+                                }
+                                else {
+                                        $('#alert_long_livraison').text(' ');
+                                }
                                 //cree la liste client : 
+                                delete_liste_livraison();
                                 create_list_client_livraison(dataSet);
                                 //attribue la fonction click a chaque button créé afin de selectionner le client dynamiquement : 
                                 $('.click-livraison').on('click', function () {
