@@ -8,15 +8,10 @@
 <link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/css/dashboard.css">
 {% endblock %}
- 
-
 {% block main %}
-
-
 <main  role="main" class=" pt-3 px-4"> 
     {# <div id="loading">
         <div class="lds-hourglass">
-    
         </div>
     </div>                                                                                  #}
     <div class="d-flex justify-content-start flex-column mb-5 border-bottom">
@@ -26,7 +21,6 @@
             <button class="btn btn-warning btn-sm "><i class="fas fa-arrow-left"></i> Retour</button>
             </div>
             <div class="mx-4">
-            
             {% if modif %}
                 <h2 >Mofication : {{modif.cmdl__designation}}  <i class="fal fa-file-edit"></i></h2>
             {% else %}
@@ -35,25 +29,17 @@
             </div>
         </form>
     </div>
-     
         <!-- 1ere ligne -->
     <div class="d-flex flex-wrap flex-row justify-content-between col-12">
-
         {% if modif %}
         <div class="card col-7 border border-success" >
         {% else %}
         <div class="card col-7" >
-        {% endif %}
-        
-           
+        {% endif %} 
             <div class="card-body">
-           
-            
-               
                     <form action="ligneDevisV2" method="POST">
                     <input type="hidden" value="{{devis.devis__id}}" name="devis">
                         <div class="d-flex flex-row justify-content-between col-12 my-4">
-
                             <div class="col-1">
                                 <label for="prestationChoix"><b>Prestation:</b></label>
                                 <select class="border selectpicker" data-width="auto" name="presta" id='presta' required>
@@ -66,7 +52,6 @@
                                     {% endfor %}
                                 </select>
                             </div>
-
                             <div class="col-8 ">
                                 <label for="choixDesignation"><b>Modèle:</b></label>
                                     <select class=" border selectpicker col-12"  data-live-search="true" data-size="10" data-width="100%" name="fmm" id="fmm" required>
@@ -80,9 +65,7 @@
                                         {% endfor %}
                                     </select> 
                             </div>
-
                         </div>
-
                         <div class="d-flex flex-row justify-content-between col-12 my-4">
                             <div class="col-12 ">
                                     <label for="referenceS"><b>Désignation sur le devis/facture:</b></label>
@@ -93,10 +76,7 @@
                                     {% endif %}     
                             </div>
                         </div>
-
-
                     <div class="d-flex justify-content-between col-12 my-4">
-
                         <div class="col-3">
                             <label  for="etatRow"><b>Etat</b></label>
                             <select class="form-control" id="etatRow" name="etat" data-size="10">
@@ -109,7 +89,6 @@
                             {% endfor %}
                             </select>
                         </div>
-
                         <div class="col-3">
                             <label for="validationCustom04"><b>Garantie/mois</b></label>
                             <select class="form-control" id="garantieRow" name="garantie">
@@ -122,7 +101,6 @@
                             {% endfor %}
                             </select>
                         </div>
-                    
                         <div class="col-2">
                             <label for="validationCustom04"><b>Quantité</b></label>
                                 {% if modif.cmdl__qte_cmd %}
@@ -132,9 +110,7 @@
                                 {% endif %}  
                         </div> 
                     </div>
-
                      <div class="d-flex justify-content-between col-12 my-4">
-
                         <div class="col-3">
                             <label for="validationCustom04"><strike><b>Promotion H.T</b></strike></label>
                             {% if modif.cmdl__prix_barre  and  modif.cmdl__prix_barre > 0 %}
@@ -144,7 +120,6 @@
                             {% endif %}
                             
                         </div>
-                    
                         <div class="col-3">
                             <label for="validationCustom04"><b>Prix € H.T</b></label>
                             {% if modif.cmdl__puht %}
@@ -154,7 +129,6 @@
                             {% endif %}
                             
                         </div>
-
                         <div class="col-2">
                         {% if modif.cmdl__etat_masque > 0 %}
                             <div class="custom-control custom-checkbox ">
@@ -178,7 +152,6 @@
                                 <label class="custom-control-label" for="checkImage">Inclure image</label>
                             </div>
                         {% endif %}
-                       
                         {% if modif.cmdl__actif <  1 and modif  %}
                             <div class="custom-control custom-checkbox ">
                                 <input type="checkbox" class="custom-control-input" id="checkactif" name='checkactif' value='ok' checked>
@@ -189,15 +162,9 @@
                                 <input type="checkbox" class="custom-control-input" id="checkactif" name='checkactif' value='ok'>
                                 <label class="custom-control-label" for="checkactif" >Inactif</label>
                             </div>
-                        {% endif %}
-                            
-                           
+                        {% endif %}      
                         </div> 
                     </div>
-
-
-                    
-
                     <div id="accordion">
                         <div class="d-flex" id="extensions"   data-parent="#accordion">
                                 

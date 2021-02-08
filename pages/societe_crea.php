@@ -43,14 +43,31 @@ if (empty($_SESSION['user'])) {
          $pays = $pays;
       }
      
+      if (!empty($_POST['telephone'])) 
+      {
+         $telephone = preg_replace('`[^0-9]`', '', $_POST['telephone']); 
+      }
+      else 
+      {
+         $telephone = '';
+      }
+      if (!empty($_POST['fax'])) 
+      {
+         $fax = preg_replace('`[^0-9]`', '', $_POST['fax']); 
+      }
+      else 
+      {
+         $fax = '';
+      }
+     
       $creation_societe = $Client->create_one(
          $_POST['nom_societe'],
          $_POST['adresse_1'],
          $_POST['adresse_2'],
          $_POST['code_postal'],
          $_POST['ville'],
-         $_POST['telephone'],
-         $_POST['fax'],
+         $telephone,
+         $fax,
          $_POST['select_tva'],
          $_POST['intracom_input'],
          $_POST['commentaire_client'],
@@ -74,14 +91,31 @@ if (empty($_SESSION['user'])) {
    }
 
    if (!empty($_POST['modif__id']) && !empty($_POST['nom_societe']) && !empty($_POST['ville']) && !empty($_POST['code_postal'])) {
+
+      if (!empty($_POST['telephone'])) 
+      {
+         $telephone = preg_replace('`[^0-9]`', '', $_POST['telephone']); 
+      }
+      else 
+      {
+         $telephone = '';
+      }
+      if (!empty($_POST['fax'])) 
+      {
+         $fax = preg_replace('`[^0-9]`', '', $_POST['fax']); 
+      }
+      else 
+      {
+         $fax = '';
+      }
       //on met dabord à jour dans sossuke : 
       $General->updateAll('client',  mb_strtoupper($_POST['nom_societe'], 'UTF8') , 'client__societe', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['adresse_1'], 'client__adr1', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['adresse_2'], 'client__adr2', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['code_postal'], 'client__cp', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', mb_strtoupper($_POST['ville'], 'UTF8'), 'client__ville', 'client__id', $_POST['modif__id']);
-      $General->updateAll('client', $_POST['telephone'], 'client__tel', 'client__id', $_POST['modif__id']);
-      $General->updateAll('client', $_POST['fax'], 'client__fax', 'client__id', $_POST['modif__id']);
+      $General->updateAll('client', $telephone, 'client__tel', 'client__id', $_POST['modif__id']);
+      $General->updateAll('client', $fax, 'client__fax', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['select_tva'], 'client__tva', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['intracom_input'], 'client__tva_intracom', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['commentaire_client'], 'client__comment', 'client__id', $_POST['modif__id']);
@@ -104,8 +138,8 @@ if (empty($_SESSION['user'])) {
       $ContactTotoro->updateAll('client', $_POST['adresse_2'], 'adr2', 'id_client', $_POST['modif__id']);
       $ContactTotoro->updateAll('client', $_POST['code_postal'], 'cp', 'id_client', $_POST['modif__id']);
       $ContactTotoro->updateAll('client', mb_strtoupper($_POST['ville'], 'UTF8'), 'ville', 'id_client', $_POST['modif__id']);
-      $ContactTotoro->updateAll('client', $_POST['telephone'], 'tel', 'id_client', $_POST['modif__id']);
-      $ContactTotoro->updateAll('client', $_POST['fax'], 'fax', 'id_client', $_POST['modif__id']);
+      $ContactTotoro->updateAll('client', $telephone, 'tel', 'id_client', $_POST['modif__id']);
+      $ContactTotoro->updateAll('client', $fax, 'fax', 'id_client', $_POST['modif__id']);
       $ContactTotoro->updateAll('client', $_POST['select_tva'], 'code_tva', 'id_client', $_POST['modif__id']);
       $ContactTotoro->updateAll('client', $_POST['intracom_input'], 'tva', 'id_client', $_POST['modif__id']);
       $ContactTotoro->updateAll('client', $_POST['vendeur'], 'id_vendeur', 'id_vendeur', $_POST['modif__id']);

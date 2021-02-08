@@ -12,10 +12,10 @@
 {% block main %}
 
 <main  role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">   
-<div id="loading">
+<!-- <div id="loading">
 	<div class="lds-hourglass">
 	</div>
-</div>
+</div> -->
 <div class="d-flex justify-content-start flex-column mb-5 border-bottom">
 	<h1 class="h2">
 		{% if modif %}
@@ -50,38 +50,34 @@
 	<div class="card  shadow mb-2 h-100" >
 		<!-- Card Header - -->
 		<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-			<h6 class="m-0 font-weight-bold text-primary">Société et Contact <i class="fal fa-building"></i> <i><small id="text_nombre">4000 principales</small></i></h6>
-			<div class="dropdown no-arrow ">
-					<button data-toggle="tooltip" data-placement="top" title="charger toutes les sociètés" class="btn btn-primary" id="ajax_client_button" type="button"><i class="fas fa-plus"></i></button>	
-			</div>
+			<h6 class="m-0 font-weight-bold text-primary">Société et Contact <i class="fal fa-building"></i> </h6>
+			
 		</div>
 		<!-- Card Body xx -->
 		<div class="card-body d-flex flex-column">
 			<div class="my-3">
-			<label for="comClient"><b>Facturation</b></label>
+                        <label for="comClient"><b>Facturation</b></label>
+                        <div class="col-6 d-flex flex-row my-3">
+                                <input class="form-control"  type="search"  placeholder="Recherche client" aria-label="Search" id="client_input" autocomplete='off' autofocus>
+                                <button type="button" id="btn_search_client" class="btn btn-primary mx-3"><i class="fas fa-search"></i></button>
+                        </div>
 				<div>
-					<div class="mt-2 pt-2 ">
-					<label for="exampleInputEmail1">Client : </label>   
-					</div>
-					<select class="selectpicker border show-tick"  data-live-search="true" data-size="10" data-width="100%" id="clientSelect" name="clientSelect" required> 
-					{% if modif %}
-					<option value="Aucun" >Aucun</option>
-					{% for client in clientList %}
-					{% if modif.client__id == client.client__id  %}
-<option value="{{client.client__id}}" selected>{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
-					{% else %}
-<option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
-					{% endif %}
-					{% endfor %}
-					{% else %}
-					<option value="Aucun" selected>Aucun</option>
-					{% for client in clientList %}
-					<option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
-					{% endfor %}
-					{% endif %}
-					</select>
+					<div class="mt-2 pt-2">
+						<label>Client : </label>  
+						{% if modif %}
+						
+							<span id="span_facturation" class="text-success"><b> {{ "(" ~ modif.client__id ~ ") " ~ modif.client__societe ~ " " ~ modif.client__cp ~ "-" ~ modif.client__ville ~ " "}}</b> <i class='fas fa-check'></i></span>
+							<input type="hidden" name="clientSelect" id="clientSelect" value="{{modif.client__id}}">
+						
+						
+						{% else %}
+						
+							<span id="span_facturation" class="text-danger"><b>Aucun Client selectionné</b> <i class="fas fa-times-circle"></i></span>
+							<input type="hidden" name="clientSelect" id="clientSelect" value="">
+						
+						{% endif %}
+					</div>	
 				</div>
-			
 				<div>
 					<div class="mt-2 pt-2 ">
 						<label for="exampleInputEmail1" >Contact : </label>  
@@ -106,29 +102,26 @@
 			</div>
 
 			<div class="my-3">
-				<label for="comClient"><b>Livraison</b></label>
+				<label ><b>Livraison</b></label>
+				<div class="col-6 d-flex flex-row my-3">
+					<input class="form-control" type="search" placeholder="Recherche client livraison" aria-label="Search" id="client_livraison_input"autocomplete='off' autofocus>
+					<button type="button" id="btn_search_client_livraison" class="btn btn-primary mx-3"><i class="fas fa-search"></i></button>
+				</div>
 				
-				<div>
-					<div class="mt-1 pt-2 ">
-						<label for="exampleInputEmail1"  >Client : <b>indentique si non specifiée</b></label>   
-					</div>
-					<select class="selectpicker border show-tick"  data-live-search="true" data-size="10" data-width="100%" name="clientLivraison" id="clientLivraison" required> 
+				
+				<div class="mt-2 pt-2">
 					{% if modif.devis__id_client_livraison and modif.devis__id_client_livraison != modif.client__id %}
-					<option value="Aucun" >Indentique</option>
-					{% for client in clientList %}
-					{% if client.client__id == modif.devis__id_client_livraison %}
-<option value="{{client.client__id}}" selected>{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+						<label for="exampleInputEmail1">Client : <b>indentique si non specifiée</b></label>
+						<span id="span_livraison" class="text-success"><b>{{ "(" ~ modif.devis__id_client_livraison ~ ") " ~ modif.client__livraison_societe ~ " " ~ modif.client__livraison_cp ~ "-" ~ modif.client__livraison_ville ~ " "}}
+						</b><i class='fas fa-check'></i></span>
+						<input type="hidden" name="clientLivraison" id="clientLivraison" value="{{modif.devis__id_client_livraison}}">
 					{% else %}
-<option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
-					{% endif %} 
-					{% endfor %}
-					{% else %}
-					<option value="Aucun" selected>Indentique</option>
-					{% for client in clientList %}
-					<option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
-					{% endfor %}
+						<label for="exampleInputEmail1">Client : <b>indentique si non specifiée</b></label>
+						<span id="span_livraison" class="text-danger"></span>
+						<input type="hidden" name="clientLivraison" id="clientLivraison" value="">
 					{% endif %}
-					</select>
+					
+					
 				</div>
 				<div>
 					<div class="mt-2 pt-2 ">
@@ -208,7 +201,7 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<button class="btn btn-primary">Valider</button>
+			<button class="btn btn-primary" id="valid_devis">Valider</button>
 		</div>
 	</div>
 </div>
@@ -360,6 +353,75 @@
   </div>
 </div>
 </div>
+
+
+<!-- Modal choix du client-->
+<div class="modal fade" id="modal_choix_client" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" >Choix du client facturé</h5>
+				<h5 class=" modal-title text-danger ml-4" id="alert_long_facture"></h5>
+				
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<ul class="list-group" id="list_client_facture">
+					
+				</ul>
+			</div>
+			<div class="modal-footer">
+				
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal choix du client livraison-->
+<div class="modal fade" id="modal_choix_client_livraison" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Choix du client Livré</h5>
+				<h5 class=" modal-title text-danger ml-4" id="alert_long_livraison"></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<ul class="list-group" id="list_client_livraison">
+
+				</ul>
+			</div>
+			<div class="modal-footer">
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal alerte -->
+<div class="modal fade" id="modal_alert" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" >Alerte</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="alert alert-danger"  id="alert_text" role="alert">
+					
+				</div>
+			</div>
+			<div class="modal-footer">
+				
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock %}
 
 {% block script %}
@@ -368,12 +430,13 @@
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 
-<script>
+<!-- <script>
 jQuery(document).ready(function() {
 jQuery('#loading').fadeOut(1500);
 });
-</script>
+</script> -->
 <script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
 <script  type="text/javascript" src="public/js/NdevisPlusPro.js"></script>
+<script  type="text/javascript" src="public/js/devis_version2.js"></script>
 {% endblock %}
