@@ -79,9 +79,9 @@ let create_list_client = function(tableau_client)
         for (let index = 0; index < tableau_client.length; index++) 
         {
                 //crée un élément de liste avec chaque client correspondant : 
-                $text_list = '<b> (' + tableau_client[index].client__id + ') ' + tableau_client[index].client__societe + '  ' + tableau_client[index].client__cp + '-' + tableau_client[index].client__ville + ' </b></i>';
+                $text_list = ' <button class=" btn btn-sm btn-link  click-facturation" value="' + tableau_client[index].client__id + '"><b> (' + tableau_client[index].client__id + ') ' + tableau_client[index].client__societe + '  ' + tableau_client[index].client__cp + '-' + tableau_client[index].client__ville + ' </b></button>';
                 $("#list_client_facture").append('<li class="list-group-item d-flex justify-content-between align-items-center"> '
-                + $text_list + ' <button type="button" class="btn btn-sm btn-link click-facturation" value="' + tableau_client[index].client__id + '"> Sélectionner</button></li>');
+                + $text_list + '</li>');
         }
 }
 
@@ -92,9 +92,9 @@ let create_list_client_livraison = function (tableau_client)
         for (let index = 0; index < tableau_client.length; index++) 
         {
                 //crée un élément de liste avec chaque client correspondant : 
-                $text_list = '<b> (' + tableau_client[index].client__id + ') ' + tableau_client[index].client__societe + '  ' + tableau_client[index].client__cp + '-' + tableau_client[index].client__ville + ' </b></i>';
+                $text_list = ' <button class=" btn btn-sm btn-link  click-livraison" value="' + tableau_client[index].client__id + '"><b> (' + tableau_client[index].client__id + ') ' + tableau_client[index].client__societe + '  ' + tableau_client[index].client__cp + '-' + tableau_client[index].client__ville + ' </b></button>';
                 $("#list_client_livraison").append('<li class="list-group-item d-flex justify-content-between align-items-center"> '
-                + $text_list + ' <button type="button" class="btn btn-sm btn-link click-livraison" value="' + tableau_client[index].client__id + '"> Sélectionner</button></li>');
+                + $text_list + ' </li>');
         }
 }
 
