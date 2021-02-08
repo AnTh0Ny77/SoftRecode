@@ -484,7 +484,7 @@ idUtilisateur = $('#idUtilisateur').val();
                 dataSet = JSON.parse(data);
                 checkradio(dataSet);
                 $('#loaderPdf').hide();
-                $('#iframeDevis').attr('src', 'pages/ajax/' + idUtilisateur + 'devis.pdf');
+                $('#iframeDevis').attr('src', 'pages/ajax/visio/' + idUtilisateur + 'devis.pdf');
                 $('#iframeDevis').show();
                 $('.multiButton').removeAttr('disabled');
                
@@ -529,7 +529,7 @@ idUtilisateur = $('#idUtilisateur').val();
                 dataSet = JSON.parse(data);
                 checkradio(dataSet);
                 $('#loaderPdf').hide();
-                $('#iframeDevis').attr('src', 'pages/ajax/' + idUtilisateur + 'devis.pdf');
+                $('#iframeDevis').attr('src', 'pages/ajax/visio/' + idUtilisateur + 'devis.pdf');
                 $('#iframeDevis').show();
                 $('.multiButton').removeAttr('disabled');
 

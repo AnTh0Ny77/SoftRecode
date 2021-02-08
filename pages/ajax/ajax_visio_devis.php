@@ -241,7 +241,7 @@ if (empty($_SESSION['user']))
      $doc->pdf->SetDisplayMode('fullpage');
      $doc->writeHTML($content);
      ob_clean();
-     $doc->output(__DIR__ .'/'.$_SESSION['user']->log_nec.'devis.pdf', 'F'); 
+     $doc->output(__DIR__ .'/visio/'.$_SESSION['user']->log_nec.'devis.pdf', 'F'); 
  } 
  catch (Html2PdfException $e) 
  {

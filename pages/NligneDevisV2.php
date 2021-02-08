@@ -24,6 +24,7 @@ session_start();
  $General = new App\Tables\General($Database);
  $Database->DbConnect();
 
+ 
 
 //creation devis :
 if (!empty($_POST['clientSelect']) && empty($_POST['modifReturn'])) 
@@ -42,15 +43,15 @@ if (!empty($_POST['clientSelect']) && empty($_POST['modifReturn']))
             //creation de Devis:
             $date = date("Y-m-d H:i:s");
             //livraison
-            if ($_POST['clientLivraison'] != 'Aucun')
+            if (!empty($_POST['clientLivraison']) )
             { $livraison = $_POST['clientLivraison'];}
             else { $livraison =  $_POST['clientSelect'];}
             //contacts
-            if ($_POST['contactSelect'] != 'Aucun')
+            if ($_POST['contactSelect'] != 'Aucun' )
             { $_POST['contactSelect'] = $_POST['contactSelect'];}
             else { $_POST['contactSelect'] =  null;}
             //contacts livraison
-            if ($_POST['contactLivraison'] != 'Aucun')
+            if ($_POST['contactLivraison'] != 'Aucun' )
             { $_POST['contactLivraison'] = $_POST['contactLivraison'];}
             else { $_POST['contactLivraison'] =  null;}
             //tva 
@@ -87,7 +88,7 @@ if (!empty($_POST['modifReturn']) )
         //creation de Devis:
         $date = date("Y-m-d H:i:s");
         //livraison
-        if ($_POST['clientLivraison'] != 'Aucun')
+        if (!empty($_POST['clientLivraison']))
         { $livraison = $_POST['clientLivraison'];}
         else { $livraison =  $_POST['clientSelect'];}
         //contacts

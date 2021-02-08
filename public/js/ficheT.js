@@ -242,7 +242,8 @@ $(function () {
                         },
                         success: function (data) {
                             dataSet = JSON.parse(data);
-                            $('#titreLigne').text(dataSet.famille__lib+ " " + dataSet.modele + " "  + dataSet.marque);
+          
+     
                             $('#ligneID').val(dataSet.devl__id);
                             ligneDit.setData(dataSet.devl__note_interne);
                             $('#modalFT').modal('show')
