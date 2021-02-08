@@ -183,14 +183,14 @@ ob_start();
          </table>
            
 </page_footer>
-    <div style="margin-top: 35px;">
-            <table CELLSPACING=0 style="margin-top: 35px; width:100%">        
+    <div style="margin-top: 5px;">
+            <table CELLSPACING=0 style="margin-top: 10px; width:100%">        
                     <?php         
                         echo Pdfunctions::magicLineContrat($abnLignes ,$abn->ab__mois_engagement );     
                     ?>
             </table>
     </div>
-    <div  style="margin-top: 20px;">
+    <div  style="margin-top: 10px;">
 
     <?php
         if ($abn->ab__note) 

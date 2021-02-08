@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/css/dashboard.css">
+
 {% endblock %}
 {% block main %}
 <main  role="main" class=" pt-3 px-4"> 
@@ -274,10 +275,8 @@
             <div class='card-body'>
 
             <div class="d-flex ">
-              
-                <div class="col-9">
-                   
-                     
+
+                <div class="col-9">  
                     <h5 class="card-subtitle  text-muted mb-1"> 
                     {% if ligne.cmdl__actif %}
                          <span style='color: LimeGreen;' >
@@ -288,9 +287,13 @@
                             <i class="fas fa-toggle-off"></i>
                         </span>
                     {% endif %}
-                   
-                    
-                        <span class="badge badge-secondary">{{ligne.prestaLib}}</span> <b>{{ligne.devl_quantite}}</b>{{  "x " ~ ligne.devl__designation}} 
+                        <span class="badge badge-secondary">{{ligne.prestaLib}}</span> <b> Quantité : 
+                        
+                        <custom-button value="{{ligne.devl__id}}" target="{{ligne.devl_quantite}}"></custom-button>
+                       </b> 
+                    </h5>
+                    <h5 class="card-subtitle  text-muted mb-1" >
+                        {{ ligne.devl__designation}}
                     </h5>
                     <div class="d-flex flex-row">
                      {% if ligne.devl__note_client %}
@@ -384,8 +387,7 @@
                                 <button type="submit" class="btn btn-outline-success btn-sm"><i class="far fa-arrow-to-top"></i></button>
                             </form>
                         </div> 
-                        {% endif %}
-                        
+                        {% endif %}    
                     </div>
                     <div class="d-flex justify-content-end">
                         <form action="ligneDevisV2" method="POST">
@@ -431,8 +433,16 @@
                     <div class='card-body'>
                         <div class="d-flex ">
                             <div class="col-9">
+                                
                                 <h5 class="card-subtitle  text-muted mb-1">   
-                                    <span class="badge badge-secondary">{{sous_ref.prestaLib}}</span> <b>{{sous_ref.devl_quantite}}</b>{{  "x " ~ sous_ref.devl__designation}} 
+                                    <span class="badge badge-secondary">{{ligne.prestaLib}}</span> <b> Quantité : 
+                        
+                                        <custom-button value="{{sous_ref.devl__id}}" target="{{sous_ref.devl_quantite}}"></custom-button>
+                                       </b> 
+                                  
+                                </h5>
+                                <h5 class="card-subtitle  text-muted mb-1" >
+                                    {{  sous_ref.devl__designation}}
                                 </h5>
                                 <div class="d-flex flex-row">
                                     <div class="mx-1 text-primary">
@@ -478,7 +488,7 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th >Total remise</th>
+                                    
                                     <th >TVA taux</th>
                                     <th >TVA montant</th>
                                     <th >Total h.t</th>
@@ -487,11 +497,11 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th class="text-center" >{{remise_total}} €</th>
-                                    <th class="text-center">{{totaux[1]}} %</th>
-                                    <th class="text-center">{{totaux[2]}} €</th>
-                                    <th class="text-center">{{totaux[0]}} €</th>
-                                    <th class="text-center">{{totaux[3]}} €</th>
+                                   
+                                    <th class="text-center" id="tva_taux">{{totaux[1]}} %</th>
+                                    <th class="text-center" id="montant_tva">{{totaux[2]}} €</th>
+                                    <th class="text-center" id="total_ht">{{totaux[0]}} €</th>
+                                    <th class="text-center" id="total_ttc">{{totaux[3]}} €</th>
                                 </tr>
                             </tbody>
                         </table>
@@ -690,4 +700,7 @@
 <script type="text/javascript" src="public/js/ligneV2/nDevisLigne.js"></script>
 <script type="text/javascript" src="public/js/ligneV2/scenario.js"></script>
 <script type="text/javascript" src="public/js/ligneV2/sous_ref.js"></script>
+<script type="text/javascript" src="public/js/custom/custom-button-quantite.js"></script>
+
+<!-- <script type="text/javascript" src="public/js/ligneV2/ligne_admin.js"></script> -->
 {% endblock %}

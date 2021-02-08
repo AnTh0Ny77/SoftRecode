@@ -1276,7 +1276,7 @@ public static function magicLineContrat($arrayLigne , $fin)
 
 	}
 
-	$tete =  '<tr style=" margin-top : 30px;  background-color: #dedede; ">
+	$tete =  '<tr style=" margin-top : 10px;  background-color: #dedede; ">
 
 	<td style=" text-align: center;  border: 1px solid black;  padding-top: 4px; padding-bottom: 4px;"><b>N°</b></td>
 	<td style=" text-align: center;  border: 1px solid black;  padding-top: 4px; padding-bottom: 4px;"><b>Code</b></td>
