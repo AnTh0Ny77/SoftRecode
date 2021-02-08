@@ -47,6 +47,7 @@ let select_client_livraison = function (client) {
         $('#span_livraison').removeClass('text-danger');
         $('#span_livraison').addClass('text-success');
         //attribue l'id client a l'input pour le post :
+        $('#societe_input_livraison').val(client.client__id);
         $('#clientLivraison').val(client.client__id);
         //vérifie que la creation de contact est possible : 
         verifie_livraison();
