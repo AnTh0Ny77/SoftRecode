@@ -94,7 +94,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88Ybd
 									{% if Art.Image %}<figure class="image"><img src="data:image/jpeg;base64,{{Art.Image|raw}}" width=90>{% endif %}</figure>
 								</td>
 								<td align=center>{% if Art.Doc %}<a href="{{Art.Doc}}" target="_blank"><i class="fad fa-file-pdf fa-lg" style="--fa-primary-color: orangered;"></i></a>{% endif %}
-								<i class="fal fa-edit fa-lg"></i></td>
+								<a href="ArtCreat?id={{Art.ID}}"><i class="fal fa-edit fa-lg"></i></a></td>
 							</tr>
 							</form>
 							{% endfor %}

@@ -180,7 +180,8 @@ class Article extends Table
     }
     $SQL = 'SELECT 
     keyword.kw__lib as Famille, art_marque.am__marque as Marque, art_fmm.afmm__modele as Modele, 
-    art_fmm.afmm__image as FMM_Image, art_fmm.afmm__doc as FMM_Doc, art_fmm.afmm__id as FMM_ID, art_fmm.afmm__design_com as Descom
+    art_fmm.afmm__image as FMM_Image, art_fmm.afmm__doc as FMM_Doc, art_fmm.afmm__id as FMM_ID, art_fmm.afmm__design_com as Descom,
+    art_fmm.afmm__id
     FROM art_fmm
     INNER JOIN art_marque ON art_fmm.afmm__marque = art_marque.am__id
     INNER JOIN keyword ON art_fmm.afmm__famille = keyword.kw__value and keyword.kw__type = \'famil\' '.
@@ -206,7 +207,8 @@ class Article extends Table
         'Modele'      => $ligne->Modele,
         'Descom'      => $ligne->Descom,
         'Image'       => $Image,
-        'Doc'         => $Doc
+        'Doc'         => $Doc,
+        'ID'          => $ligne->afmm__id
       );
       $i++;
     }
