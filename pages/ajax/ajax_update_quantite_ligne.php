@@ -36,7 +36,7 @@ else
                 $response = $General->updateAll('cmd_ligne' , $quantite ,'cmdl__qte_cmd', 'cmdl__id',$ligne->devl__id);
                 $response = $Cmd->devisLigneUnit($_POST['search']);
                 $devis = $Cmd->GetById($response->cmdl__cmd__id);
-                $tableau_ligne = $Cmd->devisLigne($response->cmdl__cmd__id);
+                $tableau_ligne = $Cmd->devisLigne_actif($response->cmdl__cmd__id);
                 $totaux  = Pdfunctions::totalFacturePRO($devis, $tableau_ligne);
                 $totaux[0] = number_format($totaux[0] , 2,',', ' ');
                 $totaux[1] = number_format($totaux[1] , 2,',', ' ');

@@ -2334,7 +2334,7 @@ public function modify(
       cmdl__qte_cmd as devl_quantite, cmdl__prix_barre as  devl__prix_barre, 
       cmdl__puht as  devl_puht, cmdl__ordre as devl__ordre , cmdl__id__fmm as id__fmm, 
       cmdl__note_client as devl__note_client,  cmdl__note_interne as devl__note_interne , 
-      cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__note_facture, cmdl__sous_garantie ,
+      cmdl__garantie_option, cmdl__qte_livr , cmdl__qte_fact, cmdl__note_facture, cmdl__sous_garantie ,cmdl__actif ,
       k.kw__lib , k.kw__value , 
       f.afmm__famille as famille,
       f.afmm__modele as modele,

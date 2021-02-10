@@ -1,7 +1,11 @@
 $(document).ready(function()
 {
 
-
+  //initialization des tooltips 
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip({ html: true })
+  })
+  
   $('#click_chiffre').on('click' , function()
   {
     $('#check_commande').prop( "checked", false );

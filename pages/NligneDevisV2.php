@@ -25,7 +25,6 @@ session_start();
  $Database->DbConnect();
 
  
-
 //creation devis :
 if (!empty($_POST['clientSelect']) && empty($_POST['modifReturn'])) 
 {
@@ -183,6 +182,48 @@ if (!empty($_POST['modifyId']) && !empty($_POST['duplicate']))
     $idDevis = $_POST['modifyIdCmd'];
     $duplicate = $_POST['duplicate'];
 }
+
+//ajout de port automatique : 
+if (!empty($_POST['cmd__id_port'])) 
+{
+    if (!empty($_POST['value_port'])) 
+    {
+       $port = $Article->get_by_id($_POST['value_port']);
+
+        $newLines = $Devis->insertLine(
+            $_POST['cmd__id_port'],
+            'SER',
+            $_POST['value_port'],
+            $port->afmm__design_com,
+            'NC.',
+            null,
+            '1',
+            null,
+            $port->afmm__prix_conseil,
+            null,
+            null
+        );
+    }
+    $idDevis = $_POST['cmd__id_port'];
+}
+//active/deesatcive une ligne :
+if (!empty($_POST['cmd__id_activate'])) 
+{
+    if (!empty($_POST['value_activate'])) 
+    {
+        $ligne =$Cmd->devisLigneUnit($_POST['value_activate']);
+        if ($ligne->cmdl__actif == 0 ) 
+        {
+            $General->updateAll('cmd_ligne', 1, 'cmdl__actif', 'cmdl__id', $_POST['value_activate']);
+        }
+        else
+        {
+            $General->updateAll('cmd_ligne', 0 , 'cmdl__actif', 'cmdl__id', $_POST['value_activate']);
+        }
+    }
+    $idDevis = $_POST['cmd__id_activate'];
+}
+
 
 //creation de sous référence :
 if (!empty($_POST['input_id_ref']) && !empty($_POST['select_sous_ref']) && !empty($_POST['designation_sous_ref'])) 
@@ -369,8 +410,9 @@ if (!empty($_POST['boolModif']) )
 
 
 $devis = $Cmd->GetById($idDevis);
+$lignes_totaux = $Cmd->devisLigne_actif($idDevis);
 $devisLigne = $Cmd->devisLigne_sous_ref($idDevis);
-$totaux  = Pdfunctions::totalFacturePRO($devis, $devisLigne);
+$totaux  = Pdfunctions::totalFacturePRO($devis, $lignes_totaux);
 $remiseRequest = $Devis->getRemise($idDevis);
 $remiseTotal = 0.00 ;
 foreach ($remiseRequest as $remise) 

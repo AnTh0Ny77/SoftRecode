@@ -223,8 +223,21 @@ for (let y = 0; y < arrayBoxClient.length; y++)
   })  
 }
     
+    //post le formulaire d'ajout de port automatique : 
+    $('.click-port').on('click' , function()
+    {
+        let value = parseInt(this.value)
+        $('#value_port').val(value);
+        $('#form_port').submit();
+    })
 
-
+    //active/desactive la ligne concernée:
+    $('.click-span').on('click' , function()
+    {
+        let value = parseInt(this.value);
+        $('#value_activate').val(value);
+        $('#activate_line').submit();
+    })
     
     
 })

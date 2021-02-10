@@ -105,9 +105,9 @@
                         <div class="col-2">
                             <label for="validationCustom04"><b>Quantité</b></label>
                                 {% if modif.cmdl__qte_cmd %}
-                                    <input type="number" class="form-control" value="{{modif.cmdl__qte_cmd}}" name="quantite">
+                                    <input type="number" class="form-control" min="0" value="{{modif.cmdl__qte_cmd}}" name="quantite">
                                 {% else %}
-                                    <input type="number" class="form-control" value="1" name="quantite">
+                                    <input type="number" class="form-control" value="1" min="0" name="quantite">
                                 {% endif %}  
                         </div> 
                     </div>
@@ -279,13 +279,13 @@
                 <div class="col-9">  
                     <h5 class="card-subtitle  text-muted mb-1"> 
                     {% if ligne.cmdl__actif %}
-                         <span style='color: LimeGreen;' >
+                         <button style='color: LimeGreen;' type="button" class="click-span btn btn-link" value="{{ligne.devl__id}}" data-toggle="tooltip" data-placement="top" title="Désactiver la ligne">
                             <i class="fas fa-toggle-on"></i>
-                        </span>
+                        </button>
                     {% else %}
-                        <span style='color: IndianRed;' >
+                        <button style='color: IndianRed;' class="click-span btn btn-link"  value="{{ligne.devl__id}}" data-toggle="tooltip" data-placement="top" title="Réactiver la ligne">
                             <i class="fas fa-toggle-off"></i>
-                        </span>
+                        </button>
                     {% endif %}
                         <span class="badge badge-secondary">{{ligne.prestaLib}}</span> <b> Quantité : 
                         
@@ -314,18 +314,18 @@
                      <form class="mx-1" action="ligneDevisV2" method="POST">
                         <input type="hidden" name="modifyIdCmd" value="{{ligne.cmdl__cmd__id}}"/>
                         <input type="hidden" name="modifyId" value="{{ligne.devl__id}}"/>
-                        <button type="submit" class="btn btn-outline-primary btn-sm"><i class="fal fa-file-edit"></i></button>
+                        <button type="submit" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="fal fa-file-edit"></i></button>
                     </form>
                     <div class='mx-1'>
                         <form class="mx-1" action="ligneDevisV2" method="POST">
                             <input type="hidden" name="modifyIdCmd" value="{{ligne.cmdl__cmd__id}}"/>
                             <input type="hidden" name="modifyId" value="{{ligne.devl__id}}"/>
                             <input type="hidden" name="duplicate" value="{{ligne.devl__id}}">
-                            <button type="submit" class="btn btn-outline-secondary btn-sm"><i class="far fa-copy"></i></button>
+                            <button type="submit" class="btn btn-outline-secondary btn-sm" data-toggle="tooltip" data-placement="top" title="Dupliquer"><i class="far fa-copy"></i></button>
                         </form>
                     </div>
                     <div class='mx-1'>
-                        <button type="button" class="btn btn-outline-success btn-sm open_modal"  value="{{ligne.devl__id}}" ><i class="far fa-arrow-circle-down"></i></button>
+                        <button type="button" class="btn btn-outline-success btn-sm open_modal"  value="{{ligne.devl__id}}" data-toggle="tooltip" data-placement="top" title="Ajouter une sous-référence" ><i class="far fa-arrow-circle-down"></i></button>
                     </div>
                     </div>
                     <div class="">
@@ -384,7 +384,7 @@
                                 <input type="hidden" name="up[]" value="{{ligne.devl__ordre}}"/>
                                 <input type="hidden" name="upId" value="{{ligne.cmdl__cmd__id}}"/>
                                 <input type="hidden" name="upLigne" value="{{ligne.devl__id}}"/>
-                                <button type="submit" class="btn btn-outline-success btn-sm"><i class="far fa-arrow-to-top"></i></button>
+                                <button type="submit" class="btn btn-outline-success btn-sm" data-toggle="tooltip" data-placement="top" title="Monter"><i class="far fa-arrow-to-top"></i></button>
                             </form>
                         </div> 
                         {% endif %}    
@@ -393,7 +393,7 @@
                         <form action="ligneDevisV2" method="POST">
                             <input type="hidden" name="deleteIdCmd" value="{{ligne.cmdl__cmd__id}}"/>
                             <input type="hidden" name="deleteId" value="{{ligne.devl__id}}"/>
-                            <button type="submit" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i></button>
+                            <button type="submit" class="btn btn-outline-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Supprimer"><i class="far fa-trash-alt"></i></button>
                         </form>
                     </div> 
                     {% if loop.last %}
@@ -414,7 +414,7 @@
                                 <input type="hidden" name="down[]" value="{{ligne.devl__ordre}}"/>
                                 <input type="hidden" name="downId" value="{{ligne.cmdl__cmd__id}}"/>
                                 <input type="hidden" name="downLigne" value="{{ligne.devl__id}}"/>
-                                <button type="submit" class="btn btn-outline-success btn-sm"><i class="far fa-arrow-to-bottom"></i></button>
+                                <button type="submit" class="btn btn-outline-success btn-sm" data-toggle="tooltip" data-placement="top" title="Descendre"><i class="far fa-arrow-to-bottom"></i></button>
                             </form>
                         </div> 
                     </div>  
@@ -446,7 +446,7 @@
                                 </h5>
                                 <div class="d-flex flex-row">
                                     <div class="mx-1 text-primary">
-                                        <button value="{{sous_ref.devl__id}}" type="button" class="btn btn-outline-primary btn-sm click_sous_ref"><i class="fal fa-file-edit"></i></button>
+                                        <button value="{{sous_ref.devl__id}}" type="button" class="btn btn-outline-primary btn-sm click_sous_ref" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="fal fa-file-edit"></i></button>
                                      </div> 
                                     {% if sous_ref.devl__note_interne %}
                                         <div class="mx-1">
@@ -468,7 +468,7 @@
                                     <form action="ligneDevisV2" method="POST">
                                         <input type="hidden" name="deleteIdCmd" value="{{sous_ref.cmdl__cmd__id}}"/>
                                         <input type="hidden" name="deleteId" value="{{sous_ref.devl__id}}"/>
-                                        <button type="submit" class="btn btn-outline-danger btn-sm"><i class="far fa-trash-alt"></i></button>
+                                        <button type="submit" class="btn btn-outline-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Suprimer"><i class="far fa-trash-alt"></i></button>
                                     </form>
                                 </div>  
                             </div>
@@ -562,7 +562,13 @@
                     </div>
 
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer justify-content-between">
+                    <div>
+                        <button type="button" value="405" class="btn btn-primary click-port">Port 5</button>
+                        <button type="button" value="406" class="btn btn-primary click-port">Port 30</button>
+                        <button type="button" value="407" class="btn btn-primary click-port">Palette</button>
+                    </div>
+                   
                     <button type="submit" class="btn btn-success">Valider le Devis</button>
                 </div>     
             </form>
@@ -686,6 +692,18 @@
           </div>
         </div>
     </div>
+    <!--formulaire d'envoi du port auto-->
+    {% if devisLignes %}
+    <form action="ligneDevisV2" method="POST" id="form_port">
+        <input type="hidden" id="value_port" name="value_port" value="">
+        <input type="hidden" id="cmd__id_port" name="cmd__id_port" value="{{devis.devis__id}}">
+    </form>
+    <!--formulaire d'activation désactivation de ligne-->
+    <form action="ligneDevisV2" method="POST" id="activate_line">
+        <input type="hidden" id="value_activate" name="value_activate" value="">
+        <input type="hidden" id="cmd__id_activate" name="cmd__id_activate" value="{{devis.devis__id}}">
+    </form>
+    {% endif %}
 
 </main>
 {% endblock %}

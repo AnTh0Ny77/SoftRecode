@@ -114,11 +114,25 @@ public function return_commandes($debut, $fin)
     FROM cmd 
     LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
     WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' ) 
-    AND (cmd__etat = 'VLD' OR cmd__etat = 'IMP' OR cmd__etat = 'CMD' )
+    AND (  cmd__etat = 'IMP' OR cmd__etat = 'CMD' )
     ORDER BY cmd__id DESC 
     ");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
+}
+
+public function return_commandes_chiffre($debut, $fin)
+{
+
+    $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur 
+    FROM cmd 
+    LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
+    WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' ) 
+    AND (cmd__etat = 'VLD' OR cmd__etat = 'IMP' OR cmd__etat = 'CMD'  )
+    ORDER BY cmd__id DESC 
+    ");
+        $data = $request->fetchAll(PDO::FETCH_OBJ);
+        return $data;
 }
 
 
@@ -177,9 +191,6 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
         return $data;
         
     }
-
-
-    
 }
 
     public function return_commande_client_vendeur($debut, $fin, $client, $vendeur)
@@ -192,7 +203,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
         WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )
         AND cmd__client__id_fact = '" . $client . "'
         AND c.client__id_vendeur = '" . $vendeur . "'
-        AND (cmd__etat = 'VLD' OR cmd__etat = 'IMP' OR cmd__etat = 'CMD' )
+        AND ( cmd__etat = 'IMP' OR cmd__etat = 'CMD' )
         ORDER BY cmd__id DESC 
         ");
             $data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -205,7 +216,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
         LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
         WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )
         AND cmd__client__id_fact = '" . $client . "'
-        AND (cmd__etat = 'VLD' OR cmd__etat = 'IMP' OR cmd__etat = 'CMD' )
+        AND ( cmd__etat = 'IMP' OR cmd__etat = 'CMD' )
         ORDER BY cmd__id DESC 
         ");
             $data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -218,7 +229,54 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
         LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
         WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )
         AND c.client__id_vendeur = '" . $vendeur . "'
-        AND (cmd__etat = 'VLD' OR cmd__etat = 'IMP' OR cmd__etat = 'CMD' )
+        AND ( cmd__etat = 'IMP' OR cmd__etat = 'CMD' )
+        ORDER BY cmd__id DESC 
+        ");
+
+            $data = $request->fetchAll(PDO::FETCH_OBJ);
+
+            return $data;
+        }
+    }
+
+
+    public function return_commande_client_vendeur_chiffre($debut, $fin, $client, $vendeur)
+    {
+
+        if ($client != 'Tous' && $vendeur != 'Tous') {
+            $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
+        FROM cmd 
+        LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
+        WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )
+        AND cmd__client__id_fact = '" . $client . "'
+        AND c.client__id_vendeur = '" . $vendeur . "'
+        AND (cmd__etat = 'VLD' OR cmd__etat = 'IMP' OR cmd__etat = 'CMD' OR cmd__etat = 'VLD' )
+        ORDER BY cmd__id DESC 
+        ");
+            $data = $request->fetchAll(PDO::FETCH_OBJ);
+            return $data;
+        }
+
+        if ($client != 'Tous' && $vendeur = 'Tous') {
+            $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
+        FROM cmd 
+        LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
+        WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )
+        AND cmd__client__id_fact = '" . $client . "'
+        AND (cmd__etat = 'VLD' OR cmd__etat = 'IMP' OR cmd__etat = 'CMD' OR cmd__etat = 'VLD' )
+        ORDER BY cmd__id DESC 
+        ");
+            $data = $request->fetchAll(PDO::FETCH_OBJ);
+            return $data;
+        }
+
+        if ($client = 'Tous' && $vendeur != 'Tous') {
+            $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
+        FROM cmd 
+        LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
+        WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )
+        AND c.client__id_vendeur = '" . $vendeur . "'
+        AND (cmd__etat = 'VLD' OR cmd__etat = 'IMP' OR cmd__etat = 'CMD' OR cmd__etat = 'VLD' )
         ORDER BY cmd__id DESC 
         ");
 

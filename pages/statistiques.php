@@ -36,6 +36,8 @@ $NombreCmd = false;
 $chartsResponses = false ; 
 $chartsVendeur = false ;
 $arrayPresta = false ;
+$chiffre_cmd_fact = false;
+$description_recherche = '';
 $client= 'Tous';
 $vendeur= 'Tous';
 
@@ -72,6 +74,7 @@ if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin']))
 {
   $dateDebut = date($_POST['dateDebut'].' H:i:s');
   $dateFin = date($_POST['dateFin'].' H:i:s');
+
   //si les filtres client et vendeur sont demandés : 
       if ($_POST['client'] != 'Tous' || $_POST['vendeur'] != 'Tous') 
       {
@@ -92,36 +95,87 @@ if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin']))
             {
               $vendeur = 'Tous';
             }
-
+            //si les statistiques des commandes en cour à été demandée
             if (!empty($_POST['check_commande'])) 
             {
-              $cmdList = $Stat->return_commande_client_vendeur($dateDebut, $dateFin, $_POST['client'], $_POST['vendeur']);
-              $abnSearch = false;
+              //si il faut inclure les commandes deja facturées : 
+              if (!empty($_POST['check_commande_facture'])) 
+              {
+                    $cmdList = $Stat->return_commande_client_vendeur_chiffre($dateDebut, $dateFin, $_POST['client'], $_POST['vendeur']);
+                    $description_recherche = 'Les résultats concernent : les commandes passés entre les 2 dates et incluent les celles qui ont déja été facturées';
+                    $abnSearch = false;
+                    $chiffre_cmd_fact = true;
+              }
+              else 
+              {
+                    $cmdList = $Stat->return_commande_client_vendeur($dateDebut, $dateFin, $_POST['client'], $_POST['vendeur']);
+                    $description_recherche = 'Les résultats concernent : les commandes passés entre les 2 dates ( commandées et expédiées) mais n incluent PAS les commandes déja facturées';
+                    $abnSearch = false;
+                    $chiffre_cmd_fact = false;
+              }
+              
             } 
+            //sinon appel de la methode classique du chiffre d'affaire entre 2 dates : 
             else 
             {
-              $cmdList = $Stat->returnCmdBetween2DatesClientVendeur($dateDebut, $dateFin, $_POST['client'], $_POST['vendeur'], $abnSearch); 
+              $cmdList = $Stat->returnCmdBetween2DatesClientVendeur($dateDebut, $dateFin, $_POST['client'], $_POST['vendeur'], $abnSearch);
+                if ($abnSearch = true ) 
+                {
+                    $description_recherche = 'Les résultats concernent : les commandes facturée entre  les 2 dates et incluent les chiffres des abonnements de maintenance et de location ';
+                }
+                else 
+                {
+                    $description_recherche = 'Les résultats concernent : les commandes facturée entre  les 2 dates mais n incluent pas les chiffres des abonnements de maintenance et de location ';
+                }
+            
             }
       
       }
+      //si aucun filtre client vendeur n'est doné : ( code à optimiser par la suite )
       else 
       {
+        //si le chiffre des commandes en cours à été demandé : 
         if (!empty($_POST['check_commande'])) 
         {
-            $cmdList = $Stat->return_commandes($dateDebut, $dateFin);
-            $abnSearch = false;
+            //si je dois inclure le chiffre deja facturé 
+            if(!empty($_POST['check_commande_facture']))
+            {
+                $cmdList = $Stat->return_commandes_chiffre($dateDebut, $dateFin);
+                $description_recherche = 'Les résultats concernent : les commandes passés entre les 2 dates et incluent les celles qui ont déja été facturées';
+                $abnSearch = false;
+                $chiffre_cmd_fact = true;
+            }
+            else
+            {
+                $cmdList = $Stat->return_commandes($dateDebut, $dateFin);
+                $description_recherche = 'Les résultats concernent : les commandes passés entre les 2 dates ( commandées et expédiées) mais n incluent PAS les commandes déja facturées';
+                $abnSearch = false;
+                $chiffre_cmd_fact = false;
+            }
+            
         }
+        //sinon je retourne la liste de commandes classique : 
         else 
         {
-            $cmdList = $Stat->returnCmdBetween2Dates($dateDebut, $dateFin, $abnSearch); 
+            $cmdList = $Stat->returnCmdBetween2Dates($dateDebut, $dateFin, $abnSearch);
+            if ($abnSearch = true) 
+            {
+                $description_recherche = 'Les résultats concernent : les commandes facturée entre  les 2 dates et incluent les chiffres des abonnements de maintenance et de location ';
+            } 
+            else 
+            {
+                $description_recherche = 'Les résultats concernent : les commandes facturée entre  les 2 dates mais n incluent pas les chiffres des abonnements de maintenance et de location ';
+            }
         }
         
       }
 
+  //tableau des resultats afin d'alimenter les charts : 
   $arrayResults = [];
   //si les dates corespondent et que le résultats n'est pas vide : 
   if (!empty($cmdList)) 
   { 
+    //pour chaque commande présente dans ma liste de commande: 
     foreach ($cmdList as $cmd ) 
     {
       $results= $Stat->WLstatsGlobal($cmd->cmd__id);
@@ -231,6 +285,7 @@ $arrayPresta = json_encode($arrayPresta);
      }
   $chartsVendeur = json_encode($arrayGlobal);
   // fin du camembert : 
+  //formattage des dates pour l'affichage à l'utilisateur : 
   $dateFormatdebut = new DateTime($_POST['dateDebut']);
   $dateFormatdebut = $dateFormatdebut->format('d/m/Y');
   $dateFormatFin = new DateTime($_POST['dateFin']);
@@ -269,7 +324,9 @@ echo $twig->render('statistique.twig',
 'chartsVendeur' => $chartsVendeur , 
 'arrayPresta' => $arrayPresta , 
 'abnSearch' =>$abnSearch,
-'cmdSearch' => $cmdSearch
+'cmdSearch' => $cmdSearch ,
+'chiffre_commandes_fact'=> $chiffre_cmd_fact ,
+'decription_recherche' => $description_recherche
 ]);
  
  
