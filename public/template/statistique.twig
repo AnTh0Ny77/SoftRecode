@@ -178,37 +178,39 @@
                             </h4>
                         </div>
                     {% else %}
-                   
-                    <ul class="list-group list-group-flush">
-                        <p>
-                            Période du :
-                            <b>{{formatDebut}}</b><br>
-                            Au :
-                            <b>{{formatFin}}</b>
-                        </p>
-                        <p>
-                            <b> Clients : </b>
-                            {% if clientSelect.client__id %}
-                            {{clientSelect.client__societe}}
-                            {% else %}
-                            Tous
-                            {% endif %}
-                            <br>
-                            <b> Vendeur : </b>
-                            {% if vendeurSelect.nom %}
-                            {{vendeurSelect.nom }}
-                            {% else %}
-                            Tous
-                            {% endif %}
-                        </p>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <b>T.HT </b>
-                            <h4> <span class="badge badge-success badge-pill">{{resultHt ~ " ‎€"}}</span></h4>
-                        </li>
-                        <p>
-                            <b>{{NombreCmd}}</b> factures
-                        </p>
-                    </ul>
+                   <div class="alert alert-success">
+                        <ul class="list-group list-group-flush">
+                            <p>
+                                Période du : <b>{{formatDebut}}</b><br>
+                                Au : <b>{{formatFin}}</b> 
+                            </p>
+                            <p>
+                                Clients : 
+                                    <b>
+                                        {% if clientSelect.client__id %}
+                                            {{clientSelect.client__societe}}
+                                        {% else %}
+                                            Tous
+                                        {% endif %}
+                                    </b>
+                                <br>
+                                Vendeur : 
+                                <b>
+                                    {% if vendeurSelect.nom %}
+                                        {{vendeurSelect.nom }}
+                                    {% else %}
+                                        Tous
+                                    {% endif %}
+                                </b>
+                            </p>
+                            <li class=" d-flex justify-content-between align-items-center">
+                                <b>T.HT </b> <h4><span class="badge badge-success badge-pill">{{resultHt ~ " ‎€"}}</span></h4>
+                            </li>
+                            <p>
+                                <b>{{NombreCmd}}</b> factures
+                            </p>
+                        </ul>
+                    </div>
                     {% endif %}
                 </div>
                 <div class="col-7 my-4  d-flex flex column">
