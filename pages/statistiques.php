@@ -119,7 +119,7 @@ if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin']))
             else 
             {
               $cmdList = $Stat->returnCmdBetween2DatesClientVendeur($dateDebut, $dateFin, $_POST['client'], $_POST['vendeur'], $abnSearch);
-                if ($abnSearch = true ) 
+                if ($abnSearch == true ) 
                 {
                     $description_recherche = 'Les résultats concernent : les commandes facturée entre  les 2 dates et incluent les chiffres des abonnements de maintenance et de location ';
                 }
@@ -158,7 +158,7 @@ if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin']))
         else 
         {
             $cmdList = $Stat->returnCmdBetween2Dates($dateDebut, $dateFin, $abnSearch);
-            if ($abnSearch = true) 
+            if ($abnSearch == true) 
             {
                 $description_recherche = 'Les résultats concernent : les commandes facturée entre  les 2 dates et incluent les chiffres des abonnements de maintenance et de location ';
             } 
