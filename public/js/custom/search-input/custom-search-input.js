@@ -6,10 +6,8 @@ class customSearchInput extends HTMLElement
         {
                 // toujours appeller super en premier dans le constructeur : 
                 super();
-                // valeur 
+                // url passé en attribut indique le fichier ajax cible 
                 let url =  this.getAttribute('url');
-                let target_value = this.getAttribute('target');
-
                 //definition d'une div container pour les 2 elements :
                 const container =  document.createElement('div');
                 container.setAttribute('class', 'd-flex flex-row');
@@ -27,11 +25,19 @@ class customSearchInput extends HTMLElement
                 this.append(container);
                 container.append(input_search , button );
 
-
-                //definition de la fonction ajax de recherche client : 
-                this.ajax_send = function(uri , callback)
+                //fonction destinnée à etre surchargé prend sytématiquement en paramètre la response : 
+                this.callback_function = function(data)
                 {
-                         let data = this.input_search.getAttribute('value');
+                        if (data != false ) 
+                        {
+                               //exécution
+                        }
+                }
+              
+                //definition de la fonction ajax de recherche client => appel une fonction de callback qui doit etre définie dans chaque enfant et appelé avec la fonction : 
+                let ajax_send = function(uri , callback)
+                {
+                         let data = input_search.value;
                          //objet xmlhttprequest : 
                          let XHR = new XMLHttpRequest();
                          let formData = new FormData();
@@ -46,16 +52,34 @@ class customSearchInput extends HTMLElement
                          {
                                  if (XHR.readyState === 4) 
                                  {
-                                         console.log(XHR.response);
-                                         callback();
+                                         let response = JSON.parse(XHR.response); 
+                                         if (callback) 
+                                         {
+                                                callback(response)
+                                         }
                                  }
                          }
                          XHR.open("POST", uri );
                          XHR.send(formData);
                 }
+
+                 //definition des écouteur d'évenements : 
+                 button.addEventListener('click', () =>
+                 {
+                        ajax_send(url ,this.callback_function);
+                 });
+                 input_search.addEventListener('keypress' , (e)=>
+                 {
+                         //si la clef est un retour chariot : 
+                        if(e.key == "Enter") 
+                        {
+                                //annule la soumission du formulaire : 
+                                e.preventDefault();
+                                ajax_send(url ,this.callback_function);
+                        }
+                 })
         }        
 
        
 }
-//appelle le custom élément dans le dom : 
-customElements.define('custom-search-input', customSearchInput );
+export {customSearchInput}; 
