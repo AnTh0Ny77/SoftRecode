@@ -9,6 +9,7 @@ $(document).ready(function()
   $('#click_chiffre').on('click' , function()
   {
     $('#check_commande').prop( "checked", false );
+    $('#check_maintenance').prop("checked" , false);
     $('#form_stat').submit();
   })
 

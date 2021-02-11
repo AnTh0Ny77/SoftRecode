@@ -287,6 +287,18 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
     }
 
 
+public function get_ligne_maintenance($cmd)
+{
+    $request =$this->Db->Pdo->query("SELECT cmdl__puht as ht , cmdl__qte_fact as qte , cmdl__garantie_puht as htg , cmdl__prestation as presta
+    FROM cmd_ligne 
+    WHERE cmdl__cmd__id = ".$cmd." AND (cmdl__prestation = 'MNT' OR cmdl__prestation = 'LOC')
+    ORDER BY cmdl__puht ASC
+    ");
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+}
+
+
 public function camVendeur($debut, $fin , $user)
 {
 

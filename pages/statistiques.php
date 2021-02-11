@@ -37,6 +37,9 @@ $chartsResponses = false ;
 $chartsVendeur = false ;
 $arrayPresta = false ;
 $chiffre_cmd_fact = false;
+$maintenance_location = false ;
+$cmdSearch = false ;
+$abnSearch = false;
 $description_recherche = '';
 $client= 'Tous';
 $vendeur= 'Tous';
@@ -53,21 +56,19 @@ if (empty($_POST['dateDebut']) && empty($_POST['dateFin']))
     $_POST['vendeur'] = 'Tous';
 }
 //si la recherche inclus les abonnements : 
-if (empty($_POST['checkAbn'])) 
-{
-  $abnSearch = false;
-}
-else
+if (!empty($_POST['checkAbn'])) 
 {
   $abnSearch = true;
 }
-if (empty($_POST['check_commande'])) 
+
+if (!empty($_POST['check_commande'])) 
 {
-  $cmdSearch = false ;
+  $cmdSearch = true ;
 }
-else 
+
+if (!empty($_POST['check_maintenance'])) 
 {
-  $cmdSearch = true;
+  $maintenance_location = true ;
 }
 //si une requete à été envoyée : 
 if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin'])) 
@@ -102,14 +103,23 @@ if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin']))
               if (!empty($_POST['check_commande_facture'])) 
               {
                     $cmdList = $Stat->return_commande_client_vendeur_chiffre($dateDebut, $dateFin, $_POST['client'], $_POST['vendeur']);
-                    $description_recherche = 'Les résultats concernent : les commandes passés entre les 2 dates et incluent les celles qui ont déja été facturées';
+                    $description_recherche = 'Les résultats concernent : les commandes passés entre les 2 dates et incluent les celles qui ont déja été facturées ';
+                    //si je consulte uniquement la maintenance et la location je le rejoute à la description : 
+                    if ($maintenance_location == true) 
+                    {
+                      $description_recherche .= ' et prennent en compte uniquement les prestantions de maintenance et de location';
+                    }
                     $abnSearch = false;
                     $chiffre_cmd_fact = true;
               }
               else 
               {
                     $cmdList = $Stat->return_commande_client_vendeur($dateDebut, $dateFin, $_POST['client'], $_POST['vendeur']);
-                    $description_recherche = 'Les résultats concernent : les commandes passés entre les 2 dates ( commandées et expédiées) mais n incluent PAS les commandes déja facturées';
+                    $description_recherche = 'Les résultats concernent : les commandes passés entre les 2 dates ( commandées ou expédiées) mais n incluent PAS les commandes déja facturées ';
+                    if ($maintenance_location == true) 
+                    {
+                      $description_recherche .= ' et prennent en compte uniquement les prestantions de maintenance et de location';
+                    }
                     $abnSearch = false;
                     $chiffre_cmd_fact = false;
               }
@@ -142,13 +152,21 @@ if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin']))
             {
                 $cmdList = $Stat->return_commandes_chiffre($dateDebut, $dateFin);
                 $description_recherche = 'Les résultats concernent : les commandes passés entre les 2 dates et incluent les celles qui ont déja été facturées';
+                if ($maintenance_location == true) 
+                    {
+                      $description_recherche .= ' et prennent en compte uniquement les prestations de maintenance et de location';
+                    }
                 $abnSearch = false;
                 $chiffre_cmd_fact = true;
             }
             else
             {
                 $cmdList = $Stat->return_commandes($dateDebut, $dateFin);
-                $description_recherche = 'Les résultats concernent : les commandes passés entre les 2 dates ( commandées et expédiées) mais n incluent PAS les commandes déja facturées';
+                $description_recherche = 'Les résultats concernent : les commandes passés entre les 2 dates ( commandées ou expédiées) mais n incluent PAS les commandes déja facturées';
+                if ($maintenance_location == true) 
+                    {
+                      $description_recherche .= ' et prennent en compte uniquement les prestations de maintenance et de location';
+                    }
                 $abnSearch = false;
                 $chiffre_cmd_fact = false;
             }
@@ -178,7 +196,15 @@ if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin']))
     //pour chaque commande présente dans ma liste de commande: 
     foreach ($cmdList as $cmd ) 
     {
-      $results= $Stat->WLstatsGlobal($cmd->cmd__id);
+      if ($maintenance_location == true) 
+      {
+        $results= $Stat->get_ligne_maintenance($cmd->cmd__id);
+      }
+      else 
+      {
+        $results= $Stat->WLstatsGlobal($cmd->cmd__id);
+      }
+      
       foreach ($results as $ligne) 
       {
         $total = floatval($ligne->ht) * intval($ligne->qte);
@@ -209,7 +235,14 @@ foreach($prestaList as $presta)
     foreach ($cmdList as $cmd ) 
     {
         $temp = [];
-        $results= $Stat->WLstatsGlobal($cmd->cmd__id);
+        if ($maintenance_location == true) 
+        {
+          $results= $Stat->get_ligne_maintenance($cmd->cmd__id);
+        }
+        else 
+        {
+          $results= $Stat->WLstatsGlobal($cmd->cmd__id);
+        }
         foreach ($results as $ligne) 
         {
           $total = floatval($ligne->ht) * intval($ligne->qte);
@@ -252,7 +285,14 @@ $arrayPresta = json_encode($arrayPresta);
             if ($vendeurN->id_utilisateur == $cmd->client__id_vendeur) 
             {
                   $tempCmd = [];
-                  $results= $Stat->WLstatsGlobal($cmd->cmd__id);
+                  if ($maintenance_location == true) 
+                  {
+                    $results= $Stat->get_ligne_maintenance($cmd->cmd__id);
+                  }
+                  else 
+                  {
+                    $results= $Stat->WLstatsGlobal($cmd->cmd__id);
+                  }
                   $temp = [];
 
                   foreach ($results as $ligne) 
@@ -326,7 +366,8 @@ echo $twig->render('statistique.twig',
 'abnSearch' =>$abnSearch,
 'cmdSearch' => $cmdSearch ,
 'chiffre_commandes_fact'=> $chiffre_cmd_fact ,
-'decription_recherche' => $description_recherche
+'decription_recherche' => $description_recherche ,
+'maintenance_location' => $maintenance_location
 ]);
  
  

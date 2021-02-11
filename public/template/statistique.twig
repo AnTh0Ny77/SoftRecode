@@ -25,7 +25,7 @@
     <!--  ligne -->
     <div class="d-flex flex-wrap flex-row justify-content-start ">
         <!--prtemière carte-->
-        <div class="col-4 d-flex justify-content-center">
+        <div class="col-4 d-flex justify-content-center h-100">
             <div class="card shadow h-100 col-12">
                 <!-- Card Body -->
                 <div class="card-body">
@@ -111,7 +111,7 @@
                                     {% else %}
                                     <input type="checkbox" class="custom-control-input" id="exampleCheck1" name="checkAbn">
                                     {% endif %}
-                                    <label class="custom-control-label" for="exampleCheck1">Inclure les abonnements</label>
+                                    <label class="custom-control-label" for="exampleCheck1">Inclure les facturations-auto</label>
                                 </div>
                                 <div class="custom-control custom-checkbox d-none ">
                                     {% if cmdSearch %}
@@ -129,8 +129,18 @@
                                     <input type="checkbox" class="custom-control-input" id="check_commande_facture" name="check_commande_facture" >
                                     {% endif %}
                                     <label class="custom-control-label" for="check_commande_facture">Inclure les commandes deja facturées</label>
+                                   
+                                </div>
+                                <div class="custom-control custom-checkbox ">
+                                    {% if maintenance_location %}
+                                    <input type="checkbox" class="custom-control-input" id="check_maintenance" name="check_maintenance" checked>
+                                    {% else %}
+                                    <input type="checkbox" class="custom-control-input" id="check_maintenance" name="check_maintenance">
+                                    {% endif %}
+                                    <label class="custom-control-label" for="check_maintenance"> uniquement maintenance et location</label>
                                 </div>
                                 {% endif %}
+                                
                             </div>
                             <button type="submit" class="btn btn-success ">Valider</button>
                         </div>
@@ -140,7 +150,7 @@
                                 <button type='button' id="click_chiffre" class="btn btn-link"> voir les statistiques chiffre d'affaire</button>
                             </div>
                             {% else %}
-                            <div class="custom-control custom-checkbox  ">
+                            <div class="custom-control custom-checkbox">
                                 <div type='button' id="click_commande" class="btn  btn-link"> voir les statistiques prise de commandes</div>
                             </div>
                         {% endif %}
@@ -149,10 +159,20 @@
                 </div>
             </div>
         </div>
-        <div class="col-8 ">
+        <div class="col-8 h-100">
+            {% if not alertDate %}
+                <div class="card-headder">
+                    <div class="alert alert-info" role="alert">
+                        <span  class="btn btn-lg btn-link"><i class="far fa-question-circle"></i></span>
+                        {{decription_recherche}}
+                      </div>
+                </div>
+                {% endif %}
             <div class="card shadow mb-4 d-flex flex-row justify-content-start flex-wrap h-100">
+                
+                
                 <div class="col-3 my-4 mx-4">
-                    <h5 class="card-title">Résultats : <button type="button" id="hover_results" class="btn btn-lg btn-link" data-toggle="tooltip" data-placement="top" title="{{decription_recherche}}"><i class="far fa-question-circle"></i></button></h5>
+                    <h5 class="card-title">Résultats :</h5>
                     {% if alertDate %}
                         <div class="alert alert-danger" role="alert">
                             <p> Aucun résultats pour les filtres selectionnés : </p>
