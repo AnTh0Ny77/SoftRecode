@@ -184,7 +184,7 @@ ob_start();
            
 </page_footer>
     <div style="margin-top: 35px;">
-            <table CELLSPACING=0 style="margin-top: 35px; width:100%">        
+            <table CELLSPACING=0 style="margin-top: 10px; width:100%">        
                     <?php         
                         echo Pdfunctions::magicLineContrat($abnLignes ,$abn->ab__mois_engagement );     
                     ?>
