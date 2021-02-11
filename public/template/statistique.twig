@@ -11,11 +11,11 @@
 <main role="main" class="col-md-12 ml-sm-auto  pt-3 px-4">
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
         {% if  cmdSearch %}
-        <h1 class="h2">Statistiques commandes signées <i class="fas fa-chart-pie"></i></h1>
-        <button type='button' id="click_chiffre" class="btn btn-link"> voir les statistiques chiffre d'affaire</button>
+        <h1 class="h2">Statistiques prise de commandes <i class="fas fa-chart-pie"></i></h1>
+        
         {% else %}
         <h1 class="h2">Statistiques chiffre d'affaire facturé <i class="fas fa-chart-pie"></i></h1>
-        <button type='button' id="click_commande"  class="btn btn-link"> voir les statistiques commandes signées</button>
+        
         {% endif %}
         <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
@@ -25,7 +25,7 @@
     <!--  ligne -->
     <div class="d-flex flex-wrap flex-row justify-content-start ">
         <!--prtemière carte-->
-        <div class="col-4 d-flex justify-content-center">
+        <div class="col-4 d-flex justify-content-center h-100">
             <div class="card shadow h-100 col-12">
                 <!-- Card Body -->
                 <div class="card-body">
@@ -98,94 +98,139 @@
                                 {% endif %}
                             </select>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer justify-content-between">
+                           
                             <div class="mx-4">
                                 {% if cmdSearch %}
-                                <div class="form-group form-check d-none" id="div_abonnement">
+                                <div class="custom-control custom-checkbox d-none" id="div_abonnement">
                                 {% else %}
-                                <div class="form-group form-check" id="div_abonnement">
+                                <div class="custom-control custom-checkbox" id="div_abonnement">
                                 {% endif %}
                                     {% if abnSearch %}
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" name="checkAbn" checked>
+                                    <input type="checkbox" class="custom-control-input" id="exampleCheck1" name="checkAbn" checked>
                                     {% else %}
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" name="checkAbn">
+                                    <input type="checkbox" class="custom-control-input" id="exampleCheck1" name="checkAbn">
                                     {% endif %}
-                                    <label class="form-check-label" for="exampleCheck1">Inclure les abonnements</label>
+                                    <label class="custom-control-label" for="exampleCheck1">Inclure les facturations-auto</label>
                                 </div>
-                                <div class="form-group form-check d-none ">
+                                <div class="custom-control custom-checkbox d-none ">
                                     {% if cmdSearch %}
-                                    <input type="checkbox" class="form-check-input" id="check_commande" name="check_commande" checked>
+                                    <input type="checkbox" class="custom-control-input" id="check_commande" name="check_commande" checked>
                                     {% else %}
-                                    <input type="checkbox" class="form-check-input" id="check_commande" name="check_commande">
+                                    <input type="checkbox" class="custom-control-input" id="check_commande" name="check_commande">
                                     {% endif %}
-                                    <label class="form-check-label" for="check_commande">Inclure les commandes non-facturées</label>
+                                    <label class="custom-control-label" for="check_commande">Inclure les commandes non-facturées</label>
                                 </div>
+                                {% if cmdSearch %}
+                                <div class="custom-control custom-checkbox ">
+                                    {% if chiffre_commandes_fact %}
+                                    <input type="checkbox" class="custom-control-input" id="check_commande_facture" name="check_commande_facture" checked>
+                                    {% else %}
+                                    <input type="checkbox" class="custom-control-input" id="check_commande_facture" name="check_commande_facture" >
+                                    {% endif %}
+                                    <label class="custom-control-label" for="check_commande_facture">Inclure les commandes deja facturées</label>
+                                   
+                                </div>
+                                <div class="custom-control custom-checkbox ">
+                                    {% if maintenance_location %}
+                                    <input type="checkbox" class="custom-control-input" id="check_maintenance" name="check_maintenance" checked>
+                                    {% else %}
+                                    <input type="checkbox" class="custom-control-input" id="check_maintenance" name="check_maintenance">
+                                    {% endif %}
+                                    <label class="custom-control-label" for="check_maintenance"> uniquement maintenance et location</label>
+                                </div>
+                                {% endif %}
+                                
                             </div>
                             <button type="submit" class="btn btn-success ">Valider</button>
+                        </div>
+                        <div class="d-flex flex-row justify-content-between">
+                        {% if cmdSearch %}
+                            <div class="custom-control custom-checkbox ">
+                                <button type='button' id="click_chiffre" class="btn btn-link"> voir les statistiques chiffre d'affaire</button>
+                            </div>
+                            {% else %}
+                            <div class="custom-control custom-checkbox">
+                                <div type='button' id="click_commande" class="btn  btn-link"> voir les statistiques prise de commandes</div>
+                            </div>
+                        {% endif %}
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="col-8 ">
+        <div class="col-8 h-100">
+            {% if not alertDate %}
+                <div class="card-headder">
+                    <div class="alert alert-info" role="alert">
+                        <span  class="btn btn-lg btn-link"><i class="far fa-question-circle"></i></span>
+                        {{decription_recherche}}
+                      </div>
+                </div>
+                {% endif %}
             <div class="card shadow mb-4 d-flex flex-row justify-content-start flex-wrap h-100">
+                
+                
                 <div class="col-3 my-4 mx-4">
                     <h5 class="card-title">Résultats :</h5>
                     {% if alertDate %}
-                    <div class="alert alert-danger" role="alert">
-                        <p> Aucun résultats pour les filtres selectionnés : </p>
-                        <b> Période du : </b>
-                        <h4> {{formatDebut}}</h4>
-                        <b> Au : </b>
-                        <h4> {{formatFin}}</h4>
-                        <b> Clients : </b>
-                        <h4>
-                            {% if clientSelect.client__id %}
-                            {{clientSelect.client__societe}}
-                            {% else %}
-                            Tous
-                            {% endif %}
-                        </h4>
-                        <b> Vendeurs : </b>
-                        <h4>
-                            {% if vendeurSelect.nom %}
-                            {{vendeurSelect.nom }}
-                            {% else %}
-                            Tous
-                            {% endif %}
-                        </h4>
-                    </div>
-                    {% else %}
-                    <ul class="list-group list-group-flush">
-                        <p>
-                            Période du :
-                            <b>{{formatDebut}}</b><br>
-                            Au :
-                            <b>{{formatFin}}</b>
-                        </p>
-                        <p>
+                        <div class="alert alert-danger" role="alert">
+                            <p> Aucun résultats pour les filtres selectionnés : </p>
+                            <b> Période du : </b>
+                            <h4> {{formatDebut}}</h4>
+                            <b> Au : </b>
+                            <h4> {{formatFin}}</h4>
                             <b> Clients : </b>
-                            {% if clientSelect.client__id %}
-                            {{clientSelect.client__societe}}
-                            {% else %}
-                            Tous
-                            {% endif %}
-                            <br>
-                            <b> Vendeur : </b>
-                            {% if vendeurSelect.nom %}
-                            {{vendeurSelect.nom }}
-                            {% else %}
-                            Tous
-                            {% endif %}
-                        </p>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <b>T.HT </b>
-                            <h4> <span class="badge badge-success badge-pill">{{resultHt ~ " ‎€"}}</span></h4>
-                        </li>
-                        <p>
-                            <b>{{NombreCmd}}</b> factures
-                        </p>
-                    </ul>
+                            <h4>
+                                {% if clientSelect.client__id %}
+                                {{clientSelect.client__societe}}
+                                {% else %}
+                                Tous
+                                {% endif %}
+                            </h4>
+                            <b> Vendeurs : </b>
+                            <h4>
+                                {% if vendeurSelect.nom %}
+                                {{vendeurSelect.nom }}
+                                {% else %}
+                                Tous
+                                {% endif %}
+                            </h4>
+                        </div>
+                    {% else %}
+                   <div class="alert alert-success">
+                        <ul class="list-group list-group-flush">
+                            <p>
+                                Période du : <b>{{formatDebut}}</b><br>
+                                Au : <b>{{formatFin}}</b> 
+                            </p>
+                            <p>
+                                Clients : 
+                                    <b>
+                                        {% if clientSelect.client__id %}
+                                            {{clientSelect.client__societe}}
+                                        {% else %}
+                                            Tous
+                                        {% endif %}
+                                    </b>
+                                <br>
+                                Vendeur : 
+                                <b>
+                                    {% if vendeurSelect.nom %}
+                                        {{vendeurSelect.nom }}
+                                    {% else %}
+                                        Tous
+                                    {% endif %}
+                                </b>
+                            </p>
+                            <li class=" d-flex justify-content-between align-items-center">
+                                <b>T.HT </b> <h4><span class="badge badge-success badge-pill">{{resultHt ~ " ‎€"}}</span></h4>
+                            </li>
+                            <p>
+                                <b>{{NombreCmd}}</b> factures
+                            </p>
+                        </ul>
+                    </div>
                     {% endif %}
                 </div>
                 <div class="col-7 my-4  d-flex flex column">

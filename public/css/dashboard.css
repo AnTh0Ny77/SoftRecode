@@ -242,6 +242,10 @@ body {
   transition:  transform 0.3s ease-out;
 }
 
+.click-span
+{
+  cursor: pointer;
+}
  
 .rotated {
     -webkit-transform: rotateX(360deg) ; 

@@ -245,6 +245,9 @@
 
 		case '/SoftRecode/ajax_crea_contact_devis';
 			require __DIR__ .'/pages/ajax/ajax_crea_contact_devis.php'; break; 
+		
+		case '/SoftRecode/ajax_update_quantite_ligne';
+			require __DIR__ .'/pages/ajax/ajax_update_quantite_ligne.php'; break; 
 
 		case '/SoftRecode/ajax_idfmm';
 			require __DIR__ .'/pages/ajax/ajax_idfmm.php'; break;

@@ -15,11 +15,12 @@
   <div class="d-flex justify-content-start flex-column     mb-5 border-bottom">
 
     <h1 class="h2">Tableau de bord <i class="fal fa-chart-network fa-lg fa-fw"></i></h1>
-
+    
     <nav class="nav mt-4  pt-2">
 
       <button class="btn btn-link  font-weight-bold mx-4  " href="#" id="toogleSociete">Devis <span
           class="badge badge-pill badge-primary d-none" id="spanSociete"></span></button>
+          <!-- <custom-search-input></custom-search-input> -->
 
       <button class="btn btn-link font-weight-bold mx-4" href="#" id="toogleLivraison">Nouveau Devis <span
           class="badge badge-pill badge-primary d-none" id="spanLivraison"></span></button>
@@ -39,6 +40,7 @@
   </div>
   <!-- 1ere ligne -->
   <div class="d-flex flex-wrap flex-row justify-content-center">
+    
     <div class="col-11 ">
       <div class="col-12 d-flex justify-content-start">
         <div class="col-6 ">
@@ -47,11 +49,13 @@
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
               <h6 class="m-0 font-weight-bold text-primary">Statistiques Devis <i class="fas fa-chart-bar"></i></h6>
               <div class="dropdown no-arrow">
+               
               </div>
             </div>
             <!-- Card Body -->
             <div class="card-body d-flex flex-column justify-content-around " style=" height: 18rem;">
               <div id="charts-Devis">
+               
               </div id="">
             </div>
           </div>
@@ -59,6 +63,7 @@
       </div>
     </div>
   </div>
+  
 </main>
 {% endblock %}
 
@@ -71,5 +76,6 @@
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="public/js/chartsLoader.js"></script>
-<script type="text/javascript" src="public/js/charts.js"></script>
+<!-- <script type="text/javascript" src="public/js/charts.js"></script> -->
+<script type="text/javascript" src="public/js/custom/custom-search-input.js"></script>
 {% endblock %}

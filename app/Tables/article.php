@@ -359,6 +359,18 @@ class Article extends Table
     $data = $request->fetch(PDO::FETCH_OBJ);
     return $data;
   }
+
+  //recupère la désignation commerciale pour les suggestions aux commerciaux lors des devis : 
+  public function get_by_id(int  $id_fmm): stdClass
+  {
+    $request = $this->Db->Pdo->query(
+    'SELECT * 
+    FROM art_fmm
+    WHERE afmm__id = ' . $id_fmm . ''
+    );
+    $data = $request->fetch(PDO::FETCH_OBJ);
+    return $data;
+  }
   
   
   public function getPn($id){
