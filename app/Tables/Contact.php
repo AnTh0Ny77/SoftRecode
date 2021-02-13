@@ -24,6 +24,19 @@ public function getFromLiaison($idClient){
     return $data;
 }
 
+public function get_contact_search($idClient , int $limit)
+{
+    $request = $this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , 
+    contact__fonction , k.kw__lib , contact__civ , contact__telephone , contact__gsm , contact__email 
+    FROM contact AS c 
+    INNER JOIN liaison_client_contact AS l ON c.contact__id = l.liaison__contact__id 
+    JOIN keyword as k ON contact__fonction = k.kw__value AND k.kw__type = 'i_con'
+    WHERE l.liaison__client__id = ". $idClient ."
+    ORDER BY contact__id ASC LIMIT ". $limit."");
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+}
+
 public function getOne($id){
     $request =$this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , contact__fax ,  contact__civ , contact__telephone , contact__email , k.kw__lib , contact__fonction
     FROM contact 

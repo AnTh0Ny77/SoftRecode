@@ -9,7 +9,13 @@ customElements.define('custom-card-client', customCardClient );
 import {customSearchClient} from './search-input/childs/custom-search-client.js';
 customElements.define('custom-search-client', customSearchClient );
 
+//formulaire de recherche utilisé globalement : layout 
+import { customSearchMenu } from './search-input/custom-search-menu.js';
+customElements.define('custom-search-menu', customSearchMenu);
 
+//boutton formulaire pour envoi rapide data : 
+import { customFormButton} from './button/custom-form-button.js';
+customElements.define('custom-form-button', customFormButton);
 
 
 

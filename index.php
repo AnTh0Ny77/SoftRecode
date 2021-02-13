@@ -18,6 +18,10 @@
 		case '/SoftRecode/'.'':
 			require __DIR__ .'/pages/login.php'; break;
 
+		//recherches :
+		case '/SoftRecode/search_switch';
+			require __DIR__ . '/pages/search_switch.php'; break;
+		
 		//login/unlog/no access->
 		case '/SoftRecode/login':
 				require __DIR__ .'/pages/login.php'; break;

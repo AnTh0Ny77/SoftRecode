@@ -33,7 +33,7 @@ if (empty($_SESSION['user'])) {
       $modif = $Client->getOne($_POST['hidden_client']);
    }
 
-
+   //si une creatin de client a eu lieu : 
    if (empty($_POST['modif__id']) && !empty($_POST['nom_societe']) && !empty($_POST['ville']) && !empty($_POST['code_postal'])) {
       
       $pays = mb_strtoupper($_POST['input_pays'], 'UTF8');
@@ -88,8 +88,13 @@ if (empty($_SESSION['user'])) {
       $alertSuccess = $creation_societe;
       $date = date("Y-m-d H:i:s");
       $Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date, $creation_societe, ' création de societe: ');
+
+      //redirection vers la page de consultation : 
+      $_SESSION['search_switch'] = $creation_societe;
+      header('location : search_switch');
    }
 
+   // si une modif de client à été effectué : 
    if (!empty($_POST['modif__id']) && !empty($_POST['nom_societe']) && !empty($_POST['ville']) && !empty($_POST['code_postal'])) {
 
       if (!empty($_POST['telephone'])) 
@@ -147,6 +152,10 @@ if (empty($_SESSION['user'])) {
       $date = date("Y-m-d H:i:s");
       $Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date, $_POST['modif__id'], ' modification de societe: ');
       $alertModif = true;
+      //redirection vers la page de consultation : 
+      $_SESSION['search_switch'] = $_POST['modif__id'];
+      header('location: search_switch');
+      
    }
 
    

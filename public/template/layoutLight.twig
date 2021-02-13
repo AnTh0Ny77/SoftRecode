@@ -31,12 +31,15 @@
   </div>
  
  
-  <ul class="navbar-nav px-3">
-    <li class="nav-item text-nowrap">
-      <a class="nav-link" href="unlog">Se deconnecter <i class="fad fa-sign-out"></i></a>
-  </li>
-   
-  </ul>
+  <div class="d-flex flex-row ">
+    <custom-search-menu method="POST" url='search_switch'></custom-search-menu>
+    <ul class="navbar-nav px-3">
+      <li class="nav-item text-nowrap">
+        <a class="nav-link" href="unlog">Se deconnecter <i class="fad fa-sign-out"></i></a>
+      </li>
+    </ul>
+  </div>
+  
 </nav>
 
 <!--end navbar-->
@@ -53,26 +56,6 @@
 
 {% block script  %}
 {% endblock %}
-<script>
-  //script de toogle de la navbar : 
-/* $(document).ready(function() 
- {
-   $('#clickSideBar').on('click' , function()
-  {
-     if($('#sideBare').hasClass( "hideSide" ))
-     {
-      $('#sideBare').removeClass("hideSide");
-      }
-      else 
-      {
-        $('#sideBare').addClass("hideSide");
-      }
-     
-    })
-
-  })*/
-</script>
-
-
+<script type="module" src="public/js/custom/import.js"></script>
 </body>
 </html>
