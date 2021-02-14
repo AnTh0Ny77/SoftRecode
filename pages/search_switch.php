@@ -35,14 +35,24 @@ if ($_POST['search'])
                         if (count($client) == 1) 
                         {
                                 $client = $Client->getOne($client[0]->client__id);
+                                //compte les contacts : 
+                                $count_contact = $Contact->count_contact($client->client__id);
+                                //liste des 3 principaux contacts
                                 $contact_list = $Contact->get_contact_search($client->client__id ,3 );
+                                //si la liste des contacts est plus grande que les 3 contact proposés : 
+                                if (intval($count_contact[0]["COUNT(*)"]) > count($contact_list)) 
+                                {
+                                       $extendre_contacts = intval($count_contact[0]["COUNT(*)"]) - count($contact_list) ;
+                                }
+                                else $extendre_contacts = false ;
                                 // Donnée transmise au template : 
                                 echo $twig->render(
                                         'consult_client.twig',
                                         [
                                                 'user' => $_SESSION['user'],
                                                 'client' => $client ,
-                                                'contact_list' => $contact_list       
+                                                'contact_list' => $contact_list ,
+                                                'etendre_contact' =>  $extendre_contacts    
                                         ]
                                 );
                         }

@@ -37,6 +37,16 @@ public function get_contact_search($idClient , int $limit)
     return $data;
 }
 
+//compte les contact présents : 
+public function count_contact($idClient)
+{
+    $request = $this->Db->Pdo->query("SELECT COUNT(*) FROM contact as c
+    INNER JOIN liaison_client_contact AS l ON c.contact__id = l.liaison__contact__id
+    WHERE l.liaison__client__id = " . $idClient . "");
+    $data = $request->fetchAll(PDO::FETCH_ASSOC);
+    return $data;
+}
+
 public function getOne($id){
     $request =$this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , contact__fax ,  contact__civ , contact__telephone , contact__email , k.kw__lib , contact__fonction
     FROM contact 

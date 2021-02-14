@@ -63,7 +63,7 @@
                                 </div>
                                 <div class="card-body">
                                       {% if contact_list %}
-                                        <table class="table">
+                                        <table class="table table-sm">
                                                 <tbody>
                                                        {% for contact in contact_list %}
                                                         <tr>
@@ -116,9 +116,28 @@
                                                                 </td>
                                                         </tr> 
                                                        {% endfor %}
+                                                        {% if etendre_contact %}
+                                                                <tr>
+                                                                        <td>
+
+                                                                        </td>
+                                                                        <td>
+
+                                                                        </td>
+                                                                        <td>
+                                                                                <custom-form-button-mini method='POST' url='contactCrea' name='contact_select' value='{{contact.contact__id}}'
+                                                                                        logo='<i class="fas fa-arrow-to-bottom"></i>' data-toggle="tooltip" data-placement="top"
+                                                                                        title="Charger les {{etendre_contact}} contacts restants">
+                                                                                </custom-form-button-mini>
+                                                                        </td>
+                                                                </tr>
+                                                       
+                                                        {% endif %}
                                                        
                                                 </tbody>
+                                                
                                         </table>
+                                       
                                       {% else %}
                                         <div class="alert alert-warning" role="alert">
                                                 <h5><span class="text-muted font-italic">
