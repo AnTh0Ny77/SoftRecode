@@ -17,6 +17,10 @@ customElements.define('custom-search-menu', customSearchMenu);
 import { customFormButton} from './button/custom-form-button.js';
 customElements.define('custom-form-button', customFormButton);
 
+//boutton formulaire mini format pour envoi rapide data : 
+import { customFormButtonMini } from './button/custom-form-button-mini.js';
+customElements.define('custom-form-button-mini', customFormButtonMini);
+
 
 
 

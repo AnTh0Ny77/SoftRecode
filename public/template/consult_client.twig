@@ -56,7 +56,7 @@
                         <div class="card shadow border my-2">
                                 <div class="card-header text-primary d-flex flex-row justify-content-between">
                                         <h4><i class="fal fa-user"></i> Contacts</h4>
-                                        <custom-form-button method='POST' url='societe_crea' name='hidden_client' value='{{client.client__id}}'
+                                        <custom-form-button method='POST' url='contactCrea' name='hidden_client_2' value='{{client.client__id}}'
                                                 logo='<i class="far fa-plus"></i>' data-toggle="tooltip" data-placement="top"
                                                 title="Créer un nouveau contact pour :  {{client.client__societe}}">
                                         </custom-form-button>
@@ -76,14 +76,42 @@
                                                                 <td>
                                                                         <p>
                                                                                 <h6>
-                                                                                        <span class="mx-2"><i class="far fa-phone-office"></i> : <b>{{contact.contact__telephone}}</b></span>
-                                                                                        <span class="mx-2"><i class="fas fa-mobile-android-alt"></i> : <b>{{contact.contact__gsm}}</b></span>
-                                                                                        <span><i class="far fa-envelope-open-text"></i> : <b>{{contact.contact__email}}</b></span>
+                                                                                        <span class="mx-2"><i class="far fa-phone-office"></i> :
+                                                                                                <b>
+                                                                                                        {% if contact.contact__telephone %}
+                                                                                                                {{contact.contact__telephone}}
+                                                                                                        {% else %}
+                                                                                                                <small>Non-renseigné</small>
+                                                                                                        {% endif %}
+                                                                                                </b>
+                                                                                        </span>
+                                                                                        <span class="mx-2"><i class="fas fa-mobile-android-alt"></i> : 
+                                                                                                <b>
+                                                                                                        {% if contact.contact__gsm %}
+                                                                                                                {{contact.contact__gsm}}
+                                                                                                        {% else %}
+                                                                                                                <small>Non-renseigné</small>
+                                                                                                        {% endif %}
+                                                                                                </b>
+                                                                                        </span>
+                                                                                        <span>
+                                                                                                {% if contact.contact__email %}
+                                                                                                        <a href="mailto:{{contact.contact__email}}" class="badge badge-light"><i class="far fa-envelope-open-text"></i> :
+                                                                                                                <b>{{contact.contact__email}}</b></a>
+                                                                                                {% else %}
+                                                                                                        <small>Non-renseigné</small>
+                                                                                                {% endif %}
+                                                                                               
+                                                                                        </span>
                                                                                 </h6>
                                                                              
                                                                         </p>
                                                                 </td>
                                                                 <td>
+                                                                        <custom-form-button-mini method='POST' url='contactCrea' name='contact_select' value='{{contact.contact__id}}'
+                                                                                logo='<i class="far fa-user-edit"></i>' data-toggle="tooltip" data-placement="top"
+                                                                                title="Modifier : {{contact.contact__civ ~ " " ~ contact.contact__prenom ~ " " ~ contact.contact__nom ~ " "}}">
+                                                                        </custom-form-button-mini>
 
                                                                 </td>
                                                         </tr> 

@@ -12,6 +12,7 @@ class customFormButton extends HTMLElement {
                 let value  = this.getAttribute('value');
                 //le nom du post à recevoir
                 let name = this.getAttribute('name');
+               
                 //le contenu html présent dans le button : 
                 let logo = this.getAttribute('logo');
                 //definition du form container :
@@ -33,6 +34,8 @@ class customFormButton extends HTMLElement {
                 button.setAttribute('class', 'btn btn-primary btn-primary btn-rounded  mx-2');
                 button.innerHTML = logo;
                 form.append(button);
+
+                this.test = button;
 
                 //fonction de controle des donnée avant post: 
                 let check_form = function () 

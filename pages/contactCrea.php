@@ -63,6 +63,9 @@ $user = $_SESSION['user'];
          $_POST['mailContact'] , $_POST['sociteContact']);
 
          $alertSuccess = true;
+      //redirection vers la page de consultation : 
+      $_SESSION['search_switch'] = $newClientTotoro;
+      header('location: search_switch');
      }
 
      else 
@@ -93,6 +96,10 @@ $user = $_SESSION['user'];
    $ContactTotoro->updateAll('crm_contact' , $_POST['telContact'] , 'gsm' , 'id_contact' , $_POST['modif_id']);
    $ContactTotoro->updateAll('crm_contact' , $_POST['faxContact'] , 'fax' , 'id_contact' , $_POST['modif_id']);
    $ContactTotoro->updateAll('crm_contact' , $_POST['mailContact'] , 'email' , 'id_contact' , $_POST['modif_id']);
+
+    //redirection vers la page de consultation : 
+    $_SESSION['search_switch'] = $_POST['modif__id'];
+    header('location: search_switch');
   
   $alert_modif = true;
    
