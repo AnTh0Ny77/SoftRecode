@@ -198,11 +198,11 @@ if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin']))
     {
       if ($maintenance_location == true) 
       {
-        $results= $Stat->get_ligne_maintenance($cmd->cmd__id);
+        $results= $Stat->get_ligne_maintenance_stat($cmd->cmd__id);
       }
       else 
       {
-        $results= $Stat->WLstatsGlobal($cmd->cmd__id);
+        $results= $Stat->WLstatsGlobal($cmd->cmd__id ,$cmd->cmd__etat );
       }
       
       foreach ($results as $ligne) 
@@ -237,11 +237,11 @@ foreach($prestaList as $presta)
         $temp = [];
         if ($maintenance_location == true) 
         {
-          $results= $Stat->get_ligne_maintenance($cmd->cmd__id);
+          $results= $Stat->get_ligne_maintenance_stat($cmd->cmd__id);
         }
         else 
         {
-          $results= $Stat->WLstatsGlobal($cmd->cmd__id);
+          $results= $Stat->WLstatsGlobal($cmd->cmd__id ,$cmd->cmd__etat);
         }
         foreach ($results as $ligne) 
         {
@@ -287,11 +287,11 @@ $arrayPresta = json_encode($arrayPresta);
                   $tempCmd = [];
                   if ($maintenance_location == true) 
                   {
-                    $results= $Stat->get_ligne_maintenance($cmd->cmd__id);
+                    $results= $Stat->get_ligne_maintenance_stat($cmd->cmd__id);
                   }
                   else 
                   {
-                    $results= $Stat->WLstatsGlobal($cmd->cmd__id);
+                    $results= $Stat->WLstatsGlobal($cmd->cmd__id , $cmd->cmd__etat);
                   }
                   $temp = [];
 
