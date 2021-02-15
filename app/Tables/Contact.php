@@ -4,6 +4,7 @@ namespace App\Tables;
 use App\Tables\Table;
 use App\Database;
 use PDO;
+use stdClass;
 
 class Contact extends Table {
 
@@ -14,7 +15,8 @@ class Contact extends Table {
     $this->Db = $db;
 }
 
-public function getFromLiaison($idClient){
+public function getFromLiaison($idClient)
+{
     $request =$this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , contact__fonction , k.kw__lib 
     FROM contact AS c 
     INNER JOIN liaison_client_contact AS l ON c.contact__id = l.liaison__contact__id 
@@ -23,6 +25,15 @@ public function getFromLiaison($idClient){
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
 }
+
+public function retrieve_client(int $id_contact) : stdClass
+{
+    $request =$this->Db->Pdo->query("SELECT LPAD(liaison__client__id , 6, 0) as liaison__client__id
+    FROM liaison_client_contact 
+    WHERE liaison__contact__id =".$id_contact."");
+    $data = $request->fetch(PDO::FETCH_OBJ);
+    return $data;
+} 
 
 public function get_contact_search($idClient , int $limit)
 {

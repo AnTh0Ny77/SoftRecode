@@ -73,8 +73,8 @@ if (!empty($_POST['check_maintenance']))
 //si une requete à été envoyée : 
 if (!empty($_POST['dateDebut']) && !empty($_POST['dateFin'])) 
 {
-  $dateDebut = date($_POST['dateDebut'].' H:i:s');
-  $dateFin = date($_POST['dateFin'].' H:i:s');
+  $dateDebut = date($_POST['dateDebut'].' ');
+  $dateFin = date($_POST['dateFin'].' ');
 
   //si les filtres client et vendeur sont demandés : 
       if ($_POST['client'] != 'Tous' || $_POST['vendeur'] != 'Tous') 

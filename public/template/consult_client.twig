@@ -125,10 +125,10 @@
 
                                                                         </td>
                                                                         <td>
-                                                                                <custom-form-button-mini method='POST' url='contactCrea' name='contact_select' value='{{contact.contact__id}}'
-                                                                                        logo='<i class="fas fa-arrow-to-bottom"></i>' data-toggle="tooltip" data-placement="top"
-                                                                                        title="Charger les {{etendre_contact}} contacts restants">
-                                                                                </custom-form-button-mini>
+                                                                                <custom-button-list-contact  url='tableContact' name='AjaxContactTable' value='{{client.client__id}}'
+                                                                                        logo='<i class="fas fa-arrow-to-bottom"></i>' target="list-id" data-toggle="tooltip" data-placement="top"
+                                                                                        title="Afficher le/les  {{etendre_contact}} contact(s) restant(s)">
+                                                                                </custom-button-list-contact>
                                                                         </td>
                                                                 </tr>
                                                        

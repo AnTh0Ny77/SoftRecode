@@ -123,7 +123,6 @@ public function return_commandes($debut, $fin)
 
 public function return_commandes_chiffre($debut, $fin)
 {
-
     $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur 
     FROM cmd 
     LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact

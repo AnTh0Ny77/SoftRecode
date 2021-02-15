@@ -21,6 +21,10 @@ customElements.define('custom-form-button', customFormButton);
 import { customFormButtonMini } from './button/custom-form-button-mini.js';
 customElements.define('custom-form-button-mini', customFormButtonMini);
 
+//bouton de creation de la list de contact supplémentaire :  
+import{customButtonListContact} from './button/custom-button-list-contact.js';
+customElements.define('custom-button-list-contact', customButtonListContact);
+
 
 
 

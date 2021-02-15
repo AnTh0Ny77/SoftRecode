@@ -16,13 +16,14 @@ if (empty($_SESSION['user']))
 }
 
 //si une redirection arrive d'une autre page par le biais de la variable de session :
-if (!empty($_SESSION['search-switch'])) 
+
+if (!empty($_SESSION['search_switch'])) 
 {
-        $_POST['search'] =  $_SESSION['search-switch'];
+        $_POST['search'] =  $_SESSION['search_switch'];
         $_SESSION['search_switch'] = '';
 }
 //switch sur la variable de recherche : 
-if ($_POST['search']) 
+if (!empty($_POST['search'])) 
 {
         switch (strlen($_POST['search'])) 
         {
