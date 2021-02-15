@@ -192,7 +192,7 @@ if (!empty($_POST['cmd__id_port']))
 
         $newLines = $Devis->insertLine(
             $_POST['cmd__id_port'],
-            'SER',
+            'PRT',
             $_POST['value_port'],
             $port->afmm__design_com,
             'NC.',

@@ -64,7 +64,7 @@
                                 <div class="card-body">
                                       {% if contact_list %}
                                         <table class="table table-sm">
-                                                <tbody>
+                                                <tbody  id="list_contact">
                                                        {% for contact in contact_list %}
                                                         <tr>
                                                                 <td>
@@ -99,7 +99,7 @@
                                                                                                         <a href="mailto:{{contact.contact__email}}" class="badge badge-light"><i class="far fa-envelope-open-text"></i> :
                                                                                                                 <b>{{contact.contact__email}}</b></a>
                                                                                                 {% else %}
-                                                                                                        <small>Non-renseigné</small>
+                                                                                                <i class="far fa-envelope-open-text"></i> : <small>Non-renseigné</small>
                                                                                                 {% endif %}
                                                                                                
                                                                                         </span>
@@ -126,7 +126,7 @@
                                                                         </td>
                                                                         <td>
                                                                                 <custom-button-list-contact  url='tableContact' name='AjaxContactTable' value='{{client.client__id}}'
-                                                                                        logo='<i class="fas fa-arrow-to-bottom"></i>' target="list-id" data-toggle="tooltip" data-placement="top"
+                                                                                        logo='<i class="fas fa-arrow-to-bottom"></i>' target="list_contact" data-toggle="tooltip" data-placement="top"
                                                                                         title="Afficher le/les  {{etendre_contact}} contact(s) restant(s)">
                                                                                 </custom-button-list-contact>
                                                                         </td>

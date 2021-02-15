@@ -17,7 +17,8 @@ class Contact extends Table {
 
 public function getFromLiaison($idClient)
 {
-    $request =$this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , contact__fonction , k.kw__lib 
+    $request =$this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , contact__fonction , k.kw__lib , 
+    contact__civ , contact__telephone, contact__email , contact__gsm  
     FROM contact AS c 
     INNER JOIN liaison_client_contact AS l ON c.contact__id = l.liaison__contact__id 
     JOIN keyword as k ON contact__fonction = k.kw__value AND k.kw__type = 'i_con'
