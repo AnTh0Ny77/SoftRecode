@@ -92,6 +92,16 @@ $(document).ready(function()
                  console.error( error );
              });     
     }
+
+  let jbox_image =  new jBox('Tooltip',
+        {
+            width: 310,
+            height: 310,
+            id: 'jbox_image',
+            attach: '#hover_image',
+            content: ""
+        }
+    );
     
 //selection de l'article dans le select ( Ajax recupère la désignation commerciale si existante)
 $('#fmm').on('change', function()
@@ -117,6 +127,18 @@ $('#fmm').on('change', function()
                     else 
                     {
                         $("#designation").val(selectedArticle);
+                    }
+                    if (dataSet.afmm__image != null) 
+                    {
+                        $('#hover_image').removeClass('d-none');
+                        let html = '<img src="data:image/png;base64,' + dataSet.afmm__image + '" width="270" />';
+                        jbox_image.setContent(html);    
+                    }
+                    else
+                    {
+                        $('#hover_image').addClass('d-none');
+                        
+                       
                     }
                     
                 },

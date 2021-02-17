@@ -145,12 +145,12 @@
                         {% if modif.cmdl__image > 0 %}
                             <div class="custom-control custom-checkbox ">
                                 <input type="checkbox" class="custom-control-input" id="checkImage" name='checkImage' value='ok' checked>
-                                <label class="custom-control-label" for="checkImage">Inclure image</label>
+                                <label class="custom-control-label" for="checkImage">Inclure image <i id="hover_image" class="fas fa-image-polaroid d-none"></i></label>
                             </div>
                         {% else %}
                             <div class="custom-control custom-checkbox ">
                                 <input type="checkbox" class="custom-control-input" id="checkImage" name='checkImage' value='ok'>
-                                <label class="custom-control-label" for="checkImage">Inclure image</label>
+                                <label class="custom-control-label" for="checkImage">Inclure image <i id="hover_image" class="fas fa-image-polaroid d-none"></i></label>
                             </div>
                         {% endif %}
                         {% if modif.cmdl__actif <  1 and modif  %}
