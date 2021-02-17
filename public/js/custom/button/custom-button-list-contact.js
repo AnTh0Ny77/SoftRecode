@@ -8,14 +8,14 @@ class customButtonListContact extends customButtonList {
                 super();
                 //surchage des proprietes esthétique du parent du button :
                 this.button.setAttribute('class', 'btn btn-link btn-rounded mx-2');
-                //rentre le tooltip et evite un bug :  
-                this.removeAttribute('data-toggle');
+               
                 let list_id = this.getAttribute('target');
                 let list = document.getElementById(list_id);
               
                 //surcharge de la focntion de callback 
                 this.callback_function = function(data)
                 {
+                       
                         //supprime la liste existante : 
                         while (list.firstChild) 
                         {
@@ -51,7 +51,7 @@ class customButtonListContact extends customButtonList {
                                span_1.setAttribute('class' , 'mx-2');
                                //si le telephone client fixe existe : 
                                let content_telephone = '<small>Non-renseigné</small>';
-                               if (data[index].contact__telephone.length > 2 ) 
+                               if (data[index].contact__telephone) 
                                {
                                          content_telephone = data[index].contact__telephone;
                                }
@@ -62,7 +62,7 @@ class customButtonListContact extends customButtonList {
                                span_2.setAttribute('class' , 'mx-2');
                                //si le telephone client portable existe : 
                                let content_gsm = '<small>Non-renseigné</small>';
-                               if (data[index].contact__gsm.length > 2 ) 
+                               if (data[index].contact__gsm) 
                                {
                                          content_gsm = data[index].contact__gsm;
                                }
@@ -73,7 +73,7 @@ class customButtonListContact extends customButtonList {
                                span_3.setAttribute('class' , 'mx-2');
                                //si le mail client existe :  
                                let content_email = '<i class="far fa-envelope-open-text"></i> : <small>Non-renseigné</small>';
-                               if (data[index].contact__email.length > 2 ) 
+                               if (data[index].contact__email) 
                                {
                                  content_email = '<a href="mailto:'+data[index].contact__email+'" class="badge badge-light"><i class="far fa-envelope-open-text"></i> : <b>'+data[index].contact__email+'</b></a>';
                                }
@@ -82,7 +82,7 @@ class customButtonListContact extends customButtonList {
                                row.append(deuxieme_cellule);
                                //troisième cellule : 
                                let troisieme_cellule =  document.createElement('td');
-                               let button_mini = '<custom-form-button-mini method="POST" url="contactCrea" name="contact_select" value='+ data[index].contact__email +' logo="<i class="far fa-user-edit"></i>> </custom-form-button-mini>';
+                                let button_mini = "<custom-form-button-mini method='POST' url='contactCrea' name='contact_select' value='" + data[index].contact__id + "'logo='<i class=\"far fa-user-edit\"></i>' </custom-form-button-mini>";
                                troisieme_cellule.innerHTML = button_mini;
                                row.append(troisieme_cellule);
                                list.append(row);

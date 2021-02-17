@@ -46,6 +46,14 @@ if (!empty($_POST['search']))
                                        $extendre_contacts = intval($count_contact[0]["COUNT(*)"]) - count($contact_list) ;
                                 }
                                 else $extendre_contacts = false ;
+                                //liste des quinze dernière commmandes : 
+                                $cmd_list = $Cmd->get_by_client_id($client->client__id , 10 );
+                                //format les dates de la commande : 
+                                foreach ($cmd_list as $cmd) 
+                                {
+                                        $date =  new DateTime($cmd->cmd__date_devis);
+                                        $cmd->cmd__date_devis =  $date->format('d/m/Y');
+                                }
                                 // Donnée transmise au template : 
                                 echo $twig->render(
                                         'consult_client.twig',
@@ -53,7 +61,8 @@ if (!empty($_POST['search']))
                                                 'user' => $_SESSION['user'],
                                                 'client' => $client ,
                                                 'contact_list' => $contact_list ,
-                                                'etendre_contact' =>  $extendre_contacts    
+                                                'etendre_contact' =>  $extendre_contacts ,
+                                                'commandes_list' => $cmd_list
                                         ]
                                 );
                         }

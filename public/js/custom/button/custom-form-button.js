@@ -15,6 +15,7 @@ class customFormButton extends HTMLElement {
                
                 //le contenu html présent dans le button : 
                 let logo = this.getAttribute('logo');
+                
                 //definition du form container :
                 const form = document.createElement('form');
                 form.setAttribute('action', url);

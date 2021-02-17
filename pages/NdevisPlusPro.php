@@ -20,6 +20,7 @@ $Keywords = new App\Tables\Keyword($Database);
 $Contact = new App\Tables\Contact($Database);
 $Article = new App\Tables\Article($Database);
 $General = new App\Tables\General($Database);
+$Devis = new \App\Tables\Devis($Database);
 $Cmd = new App\Tables\Cmd($Database);
 $Database->DbConnect();
 //listes  : 
@@ -81,6 +82,30 @@ if (!empty($_POST['DupliquerDevis']))
         $General->updateAll('cmd', 1 , 'cmd__report_xtend' , 'cmd__id',$devis_source->devis__id );
     }
     $_POST['modif'] = $devis_duplicata;
+}
+
+//si une requete de creation de devis parvient d'une autre page => creation d'un devis au format pbl puis passage en modif :
+if (!empty($_POST['create_devis'])) 
+{
+    //creation de Devis:
+    $client = $Client->getOne($_POST['create_devis']);
+    $date = date("Y-m-d H:i:s");
+    $idDevis = $Devis->createDevis(
+        $date,
+        $_SESSION['user']->id_utilisateur,
+        $_POST['create_devis'],
+        $_POST['create_devis'],
+        null,
+        null,
+        null,
+        null,
+        'STT',
+        $client->client__tva,
+        null,
+        null
+    );
+    $_POST['modif'] = $idDevis;
+   
 }
 
 //traitement de la modification 

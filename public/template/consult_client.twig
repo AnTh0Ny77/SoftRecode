@@ -109,8 +109,7 @@
                                                                 </td>
                                                                 <td>
                                                                         <custom-form-button-mini method='POST' url='contactCrea' name='contact_select' value='{{contact.contact__id}}'
-                                                                                logo='<i class="far fa-user-edit"></i>' data-toggle="tooltip" data-placement="top"
-                                                                                title="Modifier : {{contact.contact__civ ~ " " ~ contact.contact__prenom ~ " " ~ contact.contact__nom ~ " "}}">
+                                                                                logo='<i class="far fa-user-edit"></i>'>
                                                                         </custom-form-button-mini>
 
                                                                 </td>
@@ -126,8 +125,7 @@
                                                                         </td>
                                                                         <td>
                                                                                 <custom-button-list-contact  url='tableContact' name='AjaxContactTable' value='{{client.client__id}}'
-                                                                                        logo='<i class="fas fa-arrow-to-bottom"></i>' target="list_contact" data-toggle="tooltip" data-placement="top"
-                                                                                        title="Afficher le/les  {{etendre_contact}} contact(s) restant(s)">
+                                                                                        logo=' <i class="far fa-arrow-to-bottom"></i> {{etendre_contact}} ' target="list_contact" >
                                                                                 </custom-button-list-contact>
                                                                         </td>
                                                                 </tr>
@@ -153,11 +151,81 @@
                         <div class="card shadow border my-2">
                                 <div class="card-header text-primary d-flex flex-row justify-content-between">
                                         <h4><i class="fal fa-file-alt"></i> Commandes</h4>
-                                        <custom-form-button method='POST' url='societe_crea' name='hidden_client' value='{{client.client__id}}'
+                                        <custom-form-button method='POST' url='DevisV2' name='create_devis' value='{{client.client__id}}'
                                                 logo='<i class="far fa-plus"></i>' data-toggle="tooltip" data-placement="top"
                                                 title="Créer un nouveau devis pour :  {{client.client__societe}}">
                                         </custom-form-button>
                                        
+                                </div>
+                                <div class="card-body">
+
+                                
+
+                                {% if commandes_list %}
+                                <table class="table table-sm">
+                                        <tbody id="list_contact">
+                                                {% for commande in commandes_list %}
+                                                        <tr>
+                                                                <td>
+                                                                        <p>
+                                                                                N°: <b>{{commande.cmd__id}}</b> <span class="mx-2 text-muted font-italic"> Fait le: <b>{{commande.cmd__date_devis}}</b></span>
+                                                                                <span class="mx-2 font-italic">
+                                                                                        {% if commande.cmd__nom_devis %}
+                                                                                        <i class="far fa-file-signature" data-toggle="tooltip" data-placement="top" title="Titre : {{commande.cmd__nom_devis}}"></i>
+                                                                                        {% else %}
+                                                                                        <i class="far fa-file-signature" data-toggle="tooltip" data-placement="top" title="Titre : non-renseigné"></i>
+                                                                                        {% endif %}
+                                                                                </span>
+                                                                                <span class="mx-2 font-italic">
+                                                                                        {% if commande.cmd__client__id_livr != commande.client__id %}
+                                                                                        <i class="far fa-truck" data-toggle="tooltip" data-placement="top"
+                                                                                                title="Livré chez {{client.client__livraison_societe}}"></i>
+                                                                                        {% else %}
+                                                                                        <i class="far fa-truck" data-toggle="tooltip" data-placement="top"
+                                                                                                title="Livré chez {{client.client__societe}}"></i>
+                                                                                        {% endif %}
+                                                                                </span>
+                                                                        </p>
+                                                                        
+                                                                </td>
+                                                                <td>
+                                                                        <p>
+                                                                                <span class="mx-2 text-muted font-italic">Etat: </span><b>{{commande.kw__lib}}</b>
+                                                                        </p>
+                                                                </td>
+                                                                <td>
+                                                                        <div class="d-flex flex-row">
+                                                                                <custom-form-button-mini method='POST' url='DevisV2' name='modif' value='{{commande.cmd__id}}'
+                                                                                        logo='<i class="far fa-search"></i>' data-toggle="tooltip" data-placement="top"
+                                                                                        title="Consulter la commande: {{commande.cmd__id}}">
+                                                                                </custom-form-button-mini>
+                                                                                <custom-form-button-mini method='POST' url='DevisV2' name='modif' value='{{commande.cmd__id}}'
+                                                                                        logo='<i class="far fa-copy"></i>' data-toggle="tooltip" data-placement="top"
+                                                                                        title="Dupliquer la commande: {{commande.cmd__id}}">
+                                                                                </custom-form-button-mini>
+                                                                                {% if commande.cmd__etat == 'ATN' %}
+                                                                                <custom-form-button-mini method='POST' url='DevisV2' name='DupliquerDevis' value='{{commande.cmd__id}}'
+                                                                                        logo='<i class="far fa-edit"></i>' data-toggle="tooltip" data-placement="top"
+                                                                                        title="Modifier la commande: {{commande.cmd__id}}">
+                                                                                </custom-form-button-mini>
+                                                                                {% endif %}
+
+                                                                        </div>
+                                                                       
+                                                                </td>
+                                                        </tr>
+                                                {% endfor %}
+                                        </tbody>
+                                </table>
+
+                                {% else %}
+                                        <div class="alert alert-warning" role="alert">
+                                                <h5><span class="text-muted font-italic">
+                                                                Aucune commande n'existe pour ce client ( facturé )
+                                                        </span>
+                                                </h5>
+                                        </div>
+                                {% endif %}
                                 </div>
                         </div>
 
