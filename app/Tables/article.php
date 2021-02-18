@@ -403,7 +403,7 @@ public function getModels()
 public function get_article_devis(int  $id_fmm) : stdClass 
 {
 	$request = $this->Db->Pdo->query(
-	'SELECT afmm__id , afmm__design_com 
+	'SELECT afmm__id , afmm__design_com , afmm__image
 	FROM art_fmm
 	WHERE afmm__id = '. $id_fmm.'');
 	$data = $request->fetch(PDO::FETCH_OBJ);

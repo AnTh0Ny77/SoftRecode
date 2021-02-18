@@ -159,7 +159,7 @@ if (empty($_SESSION['user']))
             }
             else
             {
-                echo Devis_functions::classic_devis_ligne_pdf($devis_ligne, 0);
+                echo Devis_functions::classic_devis_ligne_pdf_image($devis_ligne, 0);
             }
            
             

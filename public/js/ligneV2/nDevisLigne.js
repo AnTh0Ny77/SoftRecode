@@ -120,6 +120,7 @@ $('#fmm').on('change', function()
                 {
                     
                     dataSet = JSON.parse(data); 
+                    console.log(dataSet);
                     if (dataSet.afmm__design_com != null) 
                     {
                         $("#designation").val(dataSet.afmm__design_com);
@@ -128,7 +129,7 @@ $('#fmm').on('change', function()
                     {
                         $("#designation").val(selectedArticle);
                     }
-                    if (dataSet.afmm__image != null) 
+                    if (dataSet.afmm__image != null || dataSet.afmm__image.length == 0 ) 
                     {
                         $('#hover_image').removeClass('d-none');
                         let html = '<img src="data:image/png;base64,' + dataSet.afmm__image + '" width="270" />';
