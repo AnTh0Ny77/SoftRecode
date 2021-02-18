@@ -9,6 +9,9 @@
 {% endblock %}
 {% block main %}
 <main role="main" class=" pt-3 px-4">
+        <div class="alert alert-warning" role="alert">
+               <b> les fonctionnalités de cette page sont actuellement en cours de developpement</b>
+        </div>
         
         {% if client %}
         <!-- 1ere ligne -->
@@ -195,10 +198,10 @@
                                                                 </td>
                                                                 <td>
                                                                         <div class="d-flex flex-row">
-                                                                                <custom-form-button-mini method='POST' url='DevisV2' name='modif' value='{{commande.cmd__id}}'
+                                                                                <!-- <custom-form-button-mini method='POST' url='DevisV2' name='modif' value='{{commande.cmd__id}}'
                                                                                         logo='<i class="far fa-search"></i>' data-toggle="tooltip" data-placement="top"
                                                                                         title="Consulter la commande: {{commande.cmd__id}}">
-                                                                                </custom-form-button-mini>
+                                                                                </custom-form-button-mini> -->
                                                                                 <custom-form-button-mini method='POST' url='DevisV2' name='modif' value='{{commande.cmd__id}}'
                                                                                         logo='<i class="far fa-copy"></i>' data-toggle="tooltip" data-placement="top"
                                                                                         title="Dupliquer la commande: {{commande.cmd__id}}">

@@ -69,18 +69,34 @@ if (!empty($_POST['search']))
                         else 
                         {
                                 $client_list = $client ;  
+                                 // Donnée transmise au template : 
+                                 echo $twig->render(
+                                        'consult_client_list.twig',
+                                        [
+                                                'user' => $_SESSION['user'],
+                                                'client_list' => $client_list 
+                                        ]
+                                );
                         }
 
                         break;
                 
                 //si la chaine fait une longueur 7 et qu'elle ne contient que des numérics
-                case (strlen($_POST['search']) == 7 and ctype_digit($_POST['search'])):
-                        echo 'recherche de commande : logueur 7 et digit';
-                        break;
+                // case (strlen($_POST['search']) == 7 and ctype_digit($_POST['search'])):
+                //         echo 'recherche de commande : logueur 7 et digit';
+                //         break;
                 
                 //par default je recherche un client : 
                 default:
                         $client_list = $Client->search_client_devis($_POST['search']);
+                        // Donnée transmise au template : 
+                        echo $twig->render(
+                                'consult_client_list.twig',
+                                [
+                                        'user' => $_SESSION['user'],
+                                        'client_list' => $client_list 
+                                ]
+                        );
                         break;
         }
 

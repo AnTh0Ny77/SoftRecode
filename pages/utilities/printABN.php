@@ -60,7 +60,7 @@ if (empty($_SESSION['user']))
         $total = 00 ; 
         foreach($ABN->array as $key )
         {
-            $total += $key->abl__prix_mois * 3  ;
+            $total += $key->abl__prix_mois * intval($ABN->ab__fact_periode)  ;
         }
        
         $objectInsert = new stdClass;

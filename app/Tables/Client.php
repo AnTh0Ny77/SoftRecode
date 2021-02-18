@@ -165,7 +165,7 @@ class Client extends Table
 
 
         $operateur = "AND ";
-        $request = "SELECT  LPAD(client__id,6,0) as client__id, client__societe ,  client__ville , client__cp  
+        $request = "SELECT  LPAD(client__id,6,0) as client__id, client__societe ,  client__ville , client__cp  , client__adr1
         FROM client 
         WHERE client__id  > 10 ";
 
