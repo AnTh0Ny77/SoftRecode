@@ -188,11 +188,11 @@ if (!empty($_POST['cmd__id_port']))
 {
     if (!empty($_POST['value_port'])) 
     {
-       $port = $Article->get_by_id($_POST['value_port']);
+       $port = $Article->get_fmm_by_id($_POST['value_port']); // recupere les * infos sur FMM par son ID
 
         $newLines = $Devis->insertLine(
             $_POST['cmd__id_port'],
-            'SER',
+            'PRT',
             $_POST['value_port'],
             $port->afmm__design_com,
             'NC.',

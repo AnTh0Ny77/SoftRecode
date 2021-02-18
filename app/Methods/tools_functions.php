@@ -243,13 +243,16 @@ FFFFFFFFFFF           ooooooooooo     nnnnnn    nnnnnn    cccccccccccccccc      
 		return $val_return; // indique la valeur à renvoyer 
 	}
 
-	function debug($info_debug)
+	function debug($info_debug, $force=FALSE)
 	{
-		if (isset($_SESSION['user__debug']))
+		if (!isset($_SESSION['user__debug'])) $_SESSION['user__debug'] = FALSE; // pour créer user__debug en session si c'est inexistant.
+		if ($_SESSION['user__debug'] OR $force) 
 		{
-		if ($_SESSION['user__debug']) 
-			{
-				print '
+			print '
+			<div class="form-row">
+				<div class="form-group col-md-2">
+				</div>
+				<div class="form-group col-md-8">
 				<div class="alert alert-warning alert-dismissible" role=alert>
 					<div class=form-group>
 						<div class=row>
@@ -260,8 +263,11 @@ FFFFFFFFFFF           ooooooooooo     nnnnnn    nnnnnn    cccccccccccccccc      
 							</div>
 						</div>
 					</div>
-				</div>';
-			}
+				</div>
+				</div>
+				<div class="form-group col-md-2">
+				</div>
+			</div>';
 		}
 	}
 

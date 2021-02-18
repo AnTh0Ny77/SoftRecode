@@ -14,7 +14,7 @@ if($_SESSION['user']->user__admin_acces < 10 )
 
 // recup variable sess et get post
 $user = $_SESSION['user'];
-$art_filtre = get_post('art_filtre', FALSE, 'GETPOST');
+$art_filtre  = get_post('art_filtre', FALSE, 'GETPOST');
 if(isset($_POST['link_famille']))  $art_filtre = trim($_POST['filtre_famille']);
 if(isset($_POST['link_marque']))   $art_filtre = trim($_POST['filtre_marque']);
 if(isset($_POST['link_modele']))   $art_filtre = trim($_POST['filtre_modele']);
@@ -34,7 +34,7 @@ if(substr($art_filtre,0,1) == ":") // c'est bien un Modele
   $ArtModele = substr($art_filtre,1);
 }
 // Requetes
-$ArtListe = $Article->getMODELE($art_filtre);
+$ArtListe = $Article->get_catalogue_fmm($art_filtre);
 $CountListe = count($ArtListe);
 if($big_sql)
 {
@@ -46,11 +46,20 @@ if($big_sql)
   $CountCON = count($ArtCON);
   $CountPID = count($ArtPID);
 }
+// sous titre
+if ($art_filtre)
+  $txt_order = 'Tris par Famille et Modèles';
+else
+  $txt_order = 'Tris par Date de dernière modification';
+
+
+
 // Donnée transmise au template : 
 echo $twig->render('ArtCatalogueModele.twig',[
 'user'=> $user,
 'ArtListe'=> $ArtListe,
 'CountListe' => count($ArtListe),
+'TxtOrder' => $txt_order,
 'ArtACC'=> $ArtACC,
 'CountACC' => $CountACC,
 'ArtCON'=> $ArtCON,
