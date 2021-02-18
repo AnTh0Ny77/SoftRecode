@@ -66,7 +66,7 @@ if (empty($_SESSION['user']))
         $objectInsert = new stdClass;
         $objectInsert->idDevis = $temp;
         $objectInsert->prestation = $ABN->ab__presta;
-        $objectInsert->designation =  ' Période du ' . $_POST['dateDebut'] . ' au ' . $_POST['dateFin'] ;
+        $objectInsert->designation =  ' Facturation automatique  ' . $ABN->ab__fact_periode .' mois';
         $objectInsert->etat = 'NC';
         $objectInsert->garantie = '';
         $objectInsert->comClient = '';
