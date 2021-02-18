@@ -4,6 +4,7 @@ namespace App\Tables;
 use App\Tables\Table;
 use App\Database;
 use PDO;
+use stdClass;
 
 class Contact extends Table {
 
@@ -14,13 +15,47 @@ class Contact extends Table {
     $this->Db = $db;
 }
 
-public function getFromLiaison($idClient){
-    $request =$this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , contact__fonction , k.kw__lib 
+public function getFromLiaison($idClient)
+{
+    $request =$this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , contact__fonction , k.kw__lib , 
+    contact__civ , contact__telephone, contact__email , contact__gsm  
     FROM contact AS c 
     INNER JOIN liaison_client_contact AS l ON c.contact__id = l.liaison__contact__id 
     JOIN keyword as k ON contact__fonction = k.kw__value AND k.kw__type = 'i_con'
     WHERE l.liaison__client__id =".$idClient."");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+}
+
+public function retrieve_client(int $id_contact) : stdClass
+{
+    $request =$this->Db->Pdo->query("SELECT LPAD(liaison__client__id , 6, 0) as liaison__client__id
+    FROM liaison_client_contact 
+    WHERE liaison__contact__id =".$id_contact."");
+    $data = $request->fetch(PDO::FETCH_OBJ);
+    return $data;
+} 
+
+public function get_contact_search($idClient , int $limit)
+{
+    $request = $this->Db->Pdo->query("SELECT contact__id,  contact__nom , contact__prenom , 
+    contact__fonction , k.kw__lib , contact__civ , contact__telephone , contact__gsm , contact__email 
+    FROM contact AS c 
+    INNER JOIN liaison_client_contact AS l ON c.contact__id = l.liaison__contact__id 
+    JOIN keyword as k ON contact__fonction = k.kw__value AND k.kw__type = 'i_con'
+    WHERE l.liaison__client__id = ". $idClient ."
+    ORDER BY contact__id ASC LIMIT ". $limit."");
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+}
+
+//compte les contact présents : 
+public function count_contact($idClient)
+{
+    $request = $this->Db->Pdo->query("SELECT COUNT(*) FROM contact as c
+    INNER JOIN liaison_client_contact AS l ON c.contact__id = l.liaison__contact__id
+    WHERE l.liaison__client__id = " . $idClient . "");
+    $data = $request->fetchAll(PDO::FETCH_ASSOC);
     return $data;
 }
 

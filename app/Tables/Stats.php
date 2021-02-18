@@ -72,15 +72,29 @@ public function devisRFS($com) {
 }
 
 
-public function WLstatsGlobal($cmd)
+public function WLstatsGlobal($cmd , $etat)
 {
-    $request =$this->Db->Pdo->query("SELECT cmdl__puht as ht , cmdl__qte_fact as qte , cmdl__garantie_puht as htg , cmdl__prestation as presta
-    FROM cmd_ligne 
-    WHERE cmdl__cmd__id = '".$cmd."'
-    ORDER BY cmdl__puht ASC
-    ");
-    $data = $request->fetchAll(PDO::FETCH_OBJ);
-    return $data;
+    if ($etat == 'VLD' ||$etat == 'VLA') 
+    {
+        $request =$this->Db->Pdo->query("SELECT cmdl__puht as ht , cmdl__qte_fact as qte , cmdl__garantie_puht as htg , cmdl__prestation as presta
+        FROM cmd_ligne 
+        WHERE cmdl__cmd__id = '".$cmd."'
+        ORDER BY cmdl__puht ASC
+        ");
+        $data = $request->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+    else
+    {
+        $request =$this->Db->Pdo->query("SELECT cmdl__puht as ht , cmdl__qte_cmd as qte , cmdl__garantie_puht as htg , cmdl__prestation as presta
+        FROM cmd_ligne 
+        WHERE cmdl__cmd__id = '".$cmd."'
+        ORDER BY cmdl__puht ASC
+        ");
+        $data = $request->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+    
 }
 
 
@@ -95,7 +109,7 @@ public function returnCmdBetween2Dates($debut , $fin , $abn )
         $stat = "AND (cmd__etat = 'VLD') ";
     }
    
-    $request =$this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur 
+    $request =$this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur , cmd__etat
     FROM cmd 
     LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
     WHERE  ( cmd__date_fact BETWEEN  '".$debut." 00:00:00 ' AND  '".$fin." 23:59:59' )
@@ -110,9 +124,9 @@ public function returnCmdBetween2Dates($debut , $fin , $abn )
 public function return_commandes($debut, $fin)
 {
    
-    $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur 
+    $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur , cmd__etat
     FROM cmd 
-    LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
+    LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact 
     WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' ) 
     AND (  cmd__etat = 'IMP' OR cmd__etat = 'CMD' )
     ORDER BY cmd__id DESC 
@@ -123,8 +137,7 @@ public function return_commandes($debut, $fin)
 
 public function return_commandes_chiffre($debut, $fin)
 {
-
-    $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur 
+    $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur ,  cmd__etat
     FROM cmd 
     LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
     WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' ) 
@@ -148,7 +161,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
     }
     if ($client != 'Tous' && $vendeur != 'Tous') 
     {
-        $request =$this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
+        $request =$this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur , cmd__etat
         FROM cmd 
         LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
         WHERE  cmd__date_fact > '".$debut."' AND cmd__date_fact < '".$fin."'
@@ -163,7 +176,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
 
     if ($client != 'Tous' && $vendeur = 'Tous') 
     {
-        $request =$this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
+        $request =$this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur , cmd__etat
         FROM cmd 
         LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
         WHERE  cmd__date_fact > '".$debut."' AND cmd__date_fact < '".$fin."'
@@ -177,7 +190,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
 
     if ($client = 'Tous' && $vendeur != 'Tous') 
     {
-        $request =$this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
+        $request =$this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur , cmd__etat
         FROM cmd 
         LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
         WHERE  cmd__date_fact > '".$debut."' AND cmd__date_fact < '".$fin."'
@@ -197,7 +210,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
     {
      
         if ($client != 'Tous' && $vendeur != 'Tous') {
-            $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
+            $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur , cmd__etat
         FROM cmd 
         LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
         WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )
@@ -211,7 +224,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
         }
 
         if ($client != 'Tous' && $vendeur = 'Tous') {
-            $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
+            $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur , cmd__etat
         FROM cmd 
         LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
         WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )
@@ -224,7 +237,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
         }
 
         if ($client = 'Tous' && $vendeur != 'Tous') {
-            $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
+            $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur , cmd__etat
         FROM cmd 
         LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
         WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )
@@ -244,7 +257,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
     {
 
         if ($client != 'Tous' && $vendeur != 'Tous') {
-            $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
+            $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur , cmd__etat
         FROM cmd 
         LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
         WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )
@@ -258,7 +271,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
         }
 
         if ($client != 'Tous' && $vendeur = 'Tous') {
-            $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
+            $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur , cmd__etat
         FROM cmd 
         LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
         WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )
@@ -271,7 +284,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
         }
 
         if ($client = 'Tous' && $vendeur != 'Tous') {
-            $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur
+            $request = $this->Db->Pdo->query("SELECT cmd__id , c.client__id_vendeur , cmd__etat
         FROM cmd 
         LEFT JOIN client as c ON c.client__id  = cmd__client__id_fact
         WHERE ( cmd__date_cmd BETWEEN '" . $debut . " 00:00:00' AND  '" . $fin . " 23:59:59' )
@@ -287,7 +300,7 @@ public function returnCmdBetween2DatesClientVendeur($debut , $fin , $client , $v
     }
 
 
-public function get_ligne_maintenance($cmd)
+public function get_ligne_maintenance_stat($cmd)
 {
     $request =$this->Db->Pdo->query("SELECT cmdl__puht as ht , cmdl__qte_fact as qte , cmdl__garantie_puht as htg , cmdl__prestation as presta
     FROM cmd_ligne 
@@ -297,6 +310,7 @@ public function get_ligne_maintenance($cmd)
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
 }
+
 
 
 public function camVendeur($debut, $fin , $user)

@@ -9,7 +9,6 @@ class customButtonQuantite extends HTMLElement
                 // valeur 
                 let value =  this.getAttribute('value');
                 let target_value = this.getAttribute('target');
-              
                 //definition du button: 
                 const button_minus = document.createElement('button');
                 button_minus.setAttribute('class', 'btn  btn-rounded btn-link');

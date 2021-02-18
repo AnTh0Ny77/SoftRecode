@@ -17,7 +17,12 @@ else
         // requete table client:
         if (!empty($_POST['idfmm'])) 
         {
-                $response_article = json_encode($Article->get_article_devis($_POST['idfmm']));
-                echo $response_article;
+
+                $response_article = $Article->get_article_devis($_POST['idfmm']);
+                if (!empty($response_article->afmm__image)) 
+                {
+                        $response_article->afmm__image = base64_encode($response_article->afmm__image); 
+                }
+                echo json_encode($response_article);
         } 
 }

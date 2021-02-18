@@ -60,13 +60,13 @@ if (empty($_SESSION['user']))
         $total = 00 ; 
         foreach($ABN->array as $key )
         {
-            $total += $key->abl__prix_mois * 3  ;
+            $total += $key->abl__prix_mois * intval($ABN->ab__fact_periode)  ;
         }
        
         $objectInsert = new stdClass;
         $objectInsert->idDevis = $temp;
         $objectInsert->prestation = $ABN->ab__presta;
-        $objectInsert->designation =  ' Période du ' . $_POST['dateDebut'] . ' au ' . $_POST['dateFin'] ;
+        $objectInsert->designation =  ' Facturation automatique  ' . $ABN->ab__fact_periode .' mois';
         $objectInsert->etat = 'NC';
         $objectInsert->garantie = '';
         $objectInsert->comClient = '';
