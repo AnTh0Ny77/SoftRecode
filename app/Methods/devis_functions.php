@@ -1229,10 +1229,11 @@ class Devis_functions
 
                     //si le tableau d'extension ou la photo existe j efface le border bottom :
                     $border_bottom = 'border-bottom: 1px #ccc solid;';
-                    if (!empty($ligne->tableau_extension) || !empty($ligne->ligne_image) || !empty($ligne->devl__note_client)) 
+                    if (!empty($ligne->tableau_extension) || intval($ligne->cmdl__image) == 1  || !empty($ligne->devl__note_client)) 
                     {
                         $border_bottom = '';
                     }
+                  
 
                         //debut du gerbage du html 
                         $balise_tr_ouvrante =
