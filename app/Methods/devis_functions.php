@@ -1163,9 +1163,9 @@ class Devis_functions
                     if (!empty($ligne->devl__note_client) && intval($ligne->cmdl__image) < 1) 
                     {
                         $ligne_photo = "
-                        <tr style='font-size: 95%; font-style: italic; '>
+                        <tr style='font-size: 95%; font-style: italic; padding-top: -10px;'>
 
-                            <td valign='top' colspan='5' style='  ".$border_bottom_photo." '>
+                            <td valign='top' colspan='5' style='  ".$border_bottom_photo." width: 80%; max-width: 80%;'>
                               
                                ".$ligne->devl__note_client."                         
                             </td>
@@ -1177,24 +1177,25 @@ class Devis_functions
                     elseif (intval($ligne->cmdl__image) == 1 && !empty($ligne->ligne_image)) 
                     {
                         $ligne_photo = "
-                        <tr style='font-size: 95%; font-style: italic;'>
-                            <td valign='top' style=' $border_bottom_photo  padding-top: 10px; width: " . $firstW . "; max-width: " . $firstW . "; text-align: left;  '></td>
-                            <td valign='top' colspan='4' style='  padding-top: 10px;   text-align: left;  padding-bottom:10px ".$border_bottom_photo."'>
+                        <tr style='font-size: 95%; font-style: italic; padding-top: -10px;'>
+
+                            <td valign='top' colspan='5'  style=' ".$border_bottom_photo." width: 80%; max-width: 80%;'>
                                 <table>
                                     <tr>
-                                        <td>
+                                        <td style='width: 150px; max-width: 150px;'>
                                             <figure class='image'>
-                                                <img src='data:image/png;base64,".$ligne->ligne_image."' width='70' />
-                                            </figure>  
+                                                <img src='data:image/png;base64,".$ligne->ligne_image."'  width='100'/>
+                                            </figure> 
                                         </td>
-                                        <td>
-                                            <span style='margin-top: -10px;'>
-                                                ".$ligne->devl__note_client."
-                                            </span>
+                                        <td style='width: 350px; max-width: 350px;'>
+                                            ".$ligne->devl__note_client." 
                                         </td>
                                     </tr>
                                 </table> 
                             </td>
+
+                            <td valign='top' colspan='1' style=' ".$border_bottom_photo." text-align: left;  '>
+                            </td>             
                         </tr>";
                     } 
                         
@@ -1228,10 +1229,11 @@ class Devis_functions
 
                     //si le tableau d'extension ou la photo existe j efface le border bottom :
                     $border_bottom = 'border-bottom: 1px #ccc solid;';
-                    if (!empty($ligne->tableau_extension) || !empty($ligne->ligne_image) || !empty($ligne->devl__note_client)) 
+                    if (!empty($ligne->tableau_extension) || intval($ligne->cmdl__image) == 1  || !empty($ligne->devl__note_client)) 
                     {
                         $border_bottom = '';
                     }
+                  
 
                         //debut du gerbage du html 
                         $balise_tr_ouvrante =
@@ -1287,7 +1289,6 @@ class Devis_functions
                             if ($ligne->devl__type == "REP") 
                             {
                                 $seconde_cellule_2 = "<td valign='top' style=' text-align: left; ".$border_extension." '>mise sous garantie du matériel réparé</td>";
-                                    
                             }
                             else 
                             { 

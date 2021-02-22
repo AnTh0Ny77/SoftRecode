@@ -84,6 +84,11 @@ if (!empty($_POST['search']))
                 //si la chaine fait une longueur 7 et qu'elle ne contient que des numérics
                 // case (strlen($_POST['search']) == 7 and ctype_digit($_POST['search'])):
                 //         echo 'recherche de commande : logueur 7 et digit';
+                //         $commande = $Cmd->GetById($_POST['search']);
+                //         if (!empty($_POST['search'])) 
+                //         {
+                                
+                //         }
                 //         break;
                 
                 //par default je recherche un client : 
