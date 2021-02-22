@@ -172,7 +172,7 @@ class Article extends Table
 			  $SQL_WHERE .= 'art_marque.am__marque    like(\'%'.$mots_filtre[$i].'%\') OR ';
 			  $SQL_WHERE .= 'keyword.kw__lib          like(\'%'.$mots_filtre[$i].'%\') ';
 			  $SQL_WHERE .= ') '.$opperateur;
-			}
+				}
 			$SQL_WHERE = substr($SQL_WHERE,0,-1*strlen($opperateur)); // supprimer le dernier opperateur.
 			$SQL_WHERE .= ') ';
 		  }
