@@ -1165,12 +1165,21 @@ class Devis_functions
                         $ligne_photo = "
                         <tr style='font-size: 95%; font-style: italic; padding-top: -10px;'>
 
-                            <td valign='top' colspan='5' style='  ".$border_bottom_photo." width: 80%; max-width: 80%;'>
-                              
-                               ".$ligne->devl__note_client."                         
+                            <td valign='top' colspan='5'  style=' ".$border_bottom_photo." width: 80%; max-width: 80%; '>
+                                <table>
+                                    <tr>
+                                        <td style='width: 150px; max-width: 150px;'>
+                                            
+                                        </td>
+                                        <td style='width: 450px; max-width: 450px; padding-top: -12px;'>
+                                            ".$ligne->devl__note_client." 
+                                        </td>
+                                    </tr>
+                                </table> 
                             </td>
 
-                            <td valign='top' colspan='1' style=' ".$border_bottom_photo." text-align: left;  '></td>
+                            <td valign='top' colspan='1' style=' ".$border_bottom_photo." text-align: left;  '>
+                            </td>             
                         </tr>";
                     } 
                     //si une photo est présente : 
@@ -1179,7 +1188,7 @@ class Devis_functions
                         $ligne_photo = "
                         <tr style='font-size: 95%; font-style: italic; padding-top: -10px;'>
 
-                            <td valign='top' colspan='5'  style=' ".$border_bottom_photo." width: 80%; max-width: 80%;'>
+                            <td valign='top' colspan='5'  style=' ".$border_bottom_photo." width: 80%; max-width: 80%; '>
                                 <table>
                                     <tr>
                                         <td style='width: 150px; max-width: 150px;'>
@@ -1187,7 +1196,7 @@ class Devis_functions
                                                 <img src='data:image/png;base64,".$ligne->ligne_image."'  width='100'/>
                                             </figure> 
                                         </td>
-                                        <td style='width: 350px; max-width: 350px;'>
+                                        <td style='width: 450px; max-width: 450px; padding-top: -12px;'>
                                             ".$ligne->devl__note_client." 
                                         </td>
                                     </tr>
@@ -1343,6 +1352,6 @@ class Devis_functions
                     <td style="text-align: right; ; padding-top: 4px; padding-bottom: 4px; width: ' .$lastW . '; max-width: '. $lastW .';">P.u € HT</td>
                 </tr> ';
                 echo $tete . $table;
-            
+              
     }
 }
