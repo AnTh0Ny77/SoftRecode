@@ -14,7 +14,7 @@ if (empty($_SESSION['user'])) {
 
    $user = $_SESSION['user'];
    //connexion et requetes :
-
+   
    $Database = new App\Database('devis');
    $Database->DbConnect();
    $Client = new App\Tables\Client($Database);
@@ -78,20 +78,20 @@ if (empty($_SESSION['user'])) {
       if (!empty($_POST['config'])) {
          $General->updateAll('client', $_POST['config'], 'client__memo_config', 'client__id', $creation_societe);
       }
-
+      
       $creation_totoro = $Client->getOne($creation_societe);
       $Totoro = new App\Totoro('euro');
       $Totoro->DbConnect();
       $ContactTotoro = new App\Tables\ContactTotoro($Totoro);
       $creation =  $ContactTotoro->insertSociete($creation_totoro);
-
+      
       $alertSuccess = $creation_societe;
       $date = date("Y-m-d H:i:s");
       $Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date, $creation_societe, ' création de societe: ');
-
+     
       //redirection vers la page de consultation : 
       $_SESSION['search_switch'] = $creation_societe;
-      header('location : search_switch');
+      header('location: search_switch');
    }
 
    // si une modif de client à été effectué : 

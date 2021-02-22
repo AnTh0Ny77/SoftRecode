@@ -4,13 +4,9 @@ require "./App/twigloader.php";
 session_start();
 require "./App/Methods/tools_functions.php"; // fonctions
 
-// Validation de connexion :
-if(empty($_SESSION['user'])) 
-  { header('location: login'); }
-
-// Validation de droits - si plus petit que 10 pas de droits sur cette page.
-if($_SESSION['user']->user__admin_acces < 10 )
-  { header('location: noAccess'); }
+//validation Login et droits
+if (empty($_SESSION['user']))                   header('location: login');
+if ($_SESSION['user']->user__admin_acces < 10 ) header('location: noAccess');
 
 // recup variable sess et get post
 $user = $_SESSION['user'];
@@ -30,29 +26,27 @@ $Article = new App\Tables\Article($Database);
 // rechreche de prefixe (:) pour savoir si c'est Modele et faire plus de recherche sur les complements...
 if(substr($art_filtre,0,1) == ":") // c'est bien un Modele
 {
-  $big_sql = TRUE;
-  $ArtModele = substr($art_filtre,1);
+	$big_sql = TRUE;
+	$ArtModele = substr($art_filtre,1);
 }
 // Requetes
 $ArtListe = $Article->get_catalogue_fmm($art_filtre);
 $CountListe = count($ArtListe);
 if($big_sql)
 {
-  $Art_ACC_CON_PID = $Article->getPARTS($art_filtre, $ArtModele);
-  $ArtACC = $Art_ACC_CON_PID['ACC'];
-  $ArtCON = $Art_ACC_CON_PID['CON'];
-  $ArtPID = $Art_ACC_CON_PID['PID'];
-  $CountACC = count($ArtACC);
-  $CountCON = count($ArtCON);
-  $CountPID = count($ArtPID);
+	$Art_ACC_CON_PID = $Article->getPARTS($art_filtre, $ArtModele);
+	$ArtACC = $Art_ACC_CON_PID['ACC'];
+	$ArtCON = $Art_ACC_CON_PID['CON'];
+	$ArtPID = $Art_ACC_CON_PID['PID'];
+	$CountACC = count($ArtACC);
+	$CountCON = count($ArtCON);
+	$CountPID = count($ArtPID);
 }
 // sous titre
 if ($art_filtre)
-  $txt_order = 'Tris par Famille et Modèles';
+	$txt_order = 'Tris par Famille et Modèles';
 else
-  $txt_order = 'Tris par Date de dernière modification';
-
-
+	$txt_order = 'Tris par Date de dernière modification';
 
 // Donnée transmise au template : 
 echo $twig->render('ArtCatalogueModele.twig',[

@@ -172,7 +172,7 @@ class Article extends Table
 			  $SQL_WHERE .= 'art_marque.am__marque    like(\'%'.$mots_filtre[$i].'%\') OR ';
 			  $SQL_WHERE .= 'keyword.kw__lib          like(\'%'.$mots_filtre[$i].'%\') ';
 			  $SQL_WHERE .= ') '.$opperateur;
-			}
+				}
 			$SQL_WHERE = substr($SQL_WHERE,0,-1*strlen($opperateur)); // supprimer le dernier opperateur.
 			$SQL_WHERE .= ') ';
 		  }
@@ -403,7 +403,7 @@ public function getModels()
 public function get_article_devis(int  $id_fmm) : stdClass 
 {
 	$request = $this->Db->Pdo->query(
-	'SELECT afmm__id , afmm__design_com 
+	'SELECT afmm__id , afmm__design_com , afmm__image
 	FROM art_fmm
 	WHERE afmm__id = '. $id_fmm.'');
 	$data = $request->fetch(PDO::FETCH_OBJ);
