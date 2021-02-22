@@ -1168,7 +1168,7 @@ class Devis_functions
                             <td valign='top' colspan='5'  style=' ".$border_bottom_photo." width: 80%; max-width: 80%; '>
                                 <table>
                                     <tr>
-                                        <td style='width: 150px; max-width: 150px;'>
+                                        <td style='width: 120px; max-width: 120px;'>
                                             
                                         </td>
                                         <td style='width: 450px; max-width: 450px; padding-top: -12px;'>
@@ -1191,7 +1191,7 @@ class Devis_functions
                             <td valign='top' colspan='5'  style=' ".$border_bottom_photo." width: 80%; max-width: 80%; '>
                                 <table>
                                     <tr>
-                                        <td style='width: 150px; max-width: 150px;'>
+                                        <td style='width: 120px; max-width: 120px; '>
                                             <figure class='image'>
                                                 <img src='data:image/png;base64,".$ligne->ligne_image."'  width='100'/>
                                             </figure> 

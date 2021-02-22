@@ -1,343 +1,267 @@
 {% extends 'layoutMain.twig' %}
-
-
-  {% block style %}
+{% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
-<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
 <link rel="stylesheet" href="public/css/dashboard.css">
-  {% endblock %}
- 
- 
-     {% block main %}
-     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">Administration Fiche de Travail N° {{cmd.devis__id}}</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-          </div>
-        </div>
+{% endblock %}
+{% block main %}
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">Administration Fiche de Travail N° {{cmd.devis__id}}</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group mr-2">
       </div>
-       <!-- 1ere ligne -->
-       <div class="d-flex flex-wrap flex-row justify-content-start">
-      
-        <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
-        
-        
-       
-
-
-       
-        <!--carte liste de Devis -->
-      <div class="col-5">
-        <div class="card shadow mb-4">
-          <!-- Card Header - -->
-         
-          
-          
-          <!-- Card Body -->
-          <div class="card-body">
-
-            <form action="adminFiche" method="POST">
-                <div class="form-group">
-                <input type='hidden' name='idAdminFiche' value='{{cmd.devis__id}}'>
-                    <label for="exampleInputEmail1">Code Commande Client</label>
-                    <input type="text" class="form-control" name="codeCommandeClient" value='{{cmd.cmd__code_cmd_client}}'>
-                    <small id="emailHelp" class="form-text text-muted">Maximum 100 caractères.</small>
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Commentaire Interne</label>
-                    <textarea class="form-control " name='comInterne' id="comInterne"  rows="5" cols="40">{{cmd.devis__note_interne}}</textarea>
-                </div>
-                
-                <div class="card-body d-flex flex-column">
-            
-                  <div class="my-3">
-                  <h5><span class="badge badge-info badge-pill">Facturation</span></h5>
-                      <div>
-                          <div class="mt-2 pt-2 ">
-                              <label for="exampleInputEmail1">Client : </label>   
-                          </div>
-                          <select class="selectpicker show-tick"  data-live-search="true" data-width="100%" id="clientSelect" name="clientfact" required> 
-                              {% if cmd %}
-                             
-                                  {% for client in clientList %}
-                                      {% if cmd.client__id == client.client__id  %}
-                                          <option value="{{client.client__id}}" selected>{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
-                                      {% else %}
-                                          <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
-                                      {% endif %}
-                                  {% endfor %}
-                              {% else %}
-                                  <option value="Aucun" selected>Aucun</option>
-                                      {% for client in clientList %}
-                                          <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
-                                      {% endfor %}
-                              {% endif %}
-                              
-                          </select>
-                      </div>
-                      <div>
-                          <div class="mt-2 pt-2 ">
-                              <label for="exampleInputEmail1">Contact : </label>   
-                          </div>
-                          <select class="selectpicker show-tick"  data-live-search="true" data-width="100%" name="contactSelect" id="contactSelect" required> 
-                              {% if  cmd %}
-                                  <option value="Aucun" >Aucun</option> 
-                                  {% for contact in contactList %} 
-                                      {% if cmd.devis__contact__id == contact.contact__id %}
-                                          <option value="{{contact.contact__id}}" selected >{{contact.contact__nom ~ " " ~ contact.contact__prenom ~ " " ~ contact.kw__lib}}</option>
-                                      {% else %}
-                                      <option value="{{contact.contact__id}}">{{contact.contact__nom ~ " " ~ contact.contact__prenom ~ " " ~ contact.kw__lib}}</option>
-                                      {% endif %}
-                                  {% endfor %}
-                              {% else %}
-                              <option value="Aucun" selected>Aucun</option> 
-                              {% endif %}
-                              
-                          </select>
-                      </div>
-                      <hr>
-                  </div>
-                 
-                  <div class="my-3">
-                      <h5><span class="badge badge-secondary badge-pill">Livraison</span></h5>
-                          <div>
-                              <div class="mt-1 pt-2 ">
-                                  <label for="exampleInputEmail1">Client :</label>   
-                              </div>
-                              <select class="selectpicker show-tick"  data-live-search="true" data-width="100%" name="clientLivr" id="clientLivraison" required> 
-                                  {% if cmd.devis__id_client_livraison and cmd.devis__id_client_livraison != cmd.client__id %}
-                                      
-                                      {% for client in clientList %}
-                                          {% if client.client__id == cmd.devis__id_client_livraison %}
-                                          <option value="{{client.client__id}}" selected>{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
-                                          {% else %}
-                                          <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
-                                          {% endif %} 
-                                      {% endfor %}
-                                  {% else %}
-                                          {% for client in clientList %}
-                                            {% if client.client__id == cmd.client__id  %}
-                                            <option value="{{client.client__id}}" selected>{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
-                                            {% else %}
-                                            <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
-                                            {% endif %}
-                                              
-                                          {% endfor %}
-                                  {% endif %}
-                                 
-                              </select>
-                          </div>
-                          <div>
-                              <div class="mt-2 pt-2 ">
-                                  <label for="exampleInputEmail1">Contact : </label>   
-                              </div>
-                              <select class="selectpicker show-tick"  data-live-search="true" data-width="100%" name="contactLivraison" id="contactLivraison" required> 
-                                  
-                                      <option value="Aucun" >Aucun</option>
-                                      {% for contactL in contactLivraison %}
-                                          {% if contactL.contact__id == cmd.devis__contact_livraison %}
-                                              <option value="{{contactL.contact__id}}" selected >{{contactL.contact__nom ~ " " ~ contactL.contact__prenom ~ " - " ~ contactL.kw__lib  }}</option>
-                                          {% else %}
-                                              <option value="{{contactL.contact__id}}">{{contactL.contact__nom ~ " " ~ contactL.contact__prenom ~ " - " ~ contactL.kw__lib  }}</option>
-                                          {% endif %}
-                                      {% endfor %}
-                                
-                                  
-                              </select>
-                          </div>
-                      </div>
-                 
-              </div>
-               <div class='modal-footer'>
-               <a class="btn btn-secondary" href="ficheTravail" role="button">retour à recherche</a>
-                {# <button type="button" class="btn btn-success" id="clickLivraison">Livraison</button> #}
-               <button class="btn btn-primary">Mettre à Jour</button>
-               </div>
-                
-            </form>
-           
-           
-          </div>
-         
-        </div>
-      </div>
-
-        <!--carte option -->
-        <div class="col-7 cardVisio" >
-          <div class="card shadow mb-4">
-            <!-- Card Header - -->
-           
-            <!-- Card Body -->
-            <div class="card-body" >
-              {% if cmd.devis__id_client_livraison and cmd.devis__id_client_livraison !=  cmd.client__id  %}
-              <div class='d-flex  justify-content-around'>
-
-              <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title"> facturé :<br><strong> {{ cmd.client__societe }} </strong></h5>
-                     <p class="card-text">{{ cmd.client__adr1 ~  " " ~ cmd.client__ville ~ " " ~ cmd.client__cp }}</p>
-                </div>
-              </div>
-
-              <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title"> Livré :<br><strong> {{ cmd.client__livraison_societe }}</strong></h5>
-                     <p class="card-text">{{ cmd.client__livraison__adr1 ~  " " ~ cmd.client__livraison_ville ~ " " ~ cmd.client__livraison_cp }}</p>
-                </div>
-              </div>
-
-            </div>
-            {% else %}
-             <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title"> Livré et facturé :<br><strong>{{ cmd.client__societe }}</strong></h5>
-                    <p class="card-text">{{ cmd.client__adr1 ~  " " ~ cmd.client__ville ~ " " ~  cmd.client__cp }}</p>
-                    
-                </div>
-              </div>
-
-            {% endif %}
-
-            <div class="d-flex flex-column mt-3">
-
-                <div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                        Code Commande Client: 
-                        <strong>
-                        {% if cmd.cmd__code_cmd_client %}
-                        {{ cmd.cmd__code_cmd_client }}
-                        
-                        {% else %}
-                        Non renseigné
-                        {% endif %}</strong>
-                        </li>
-                        <li class="list-group-item">
-                        Date du devis: <strong>{{cmd.devis__date_crea}}</strong>
-                        </li>
-                        <li class="list-group-item">
-                        Date de validation: <strong>{{cmd.cmd__date_cmd}}</strong>
-                        </li>
-                        <li class="list-group-item">
-                        Vendeur: <strong>{{cmd.log_nec}}</strong>
-                        </li>
-                        <li class="list-group-item">
-                        Commentaire Interne: <br>
-                        {% if cmd.devis__note_interne %}
-                        {{ cmd.devis__note_interne|raw }}
-                        {% else %}
-                        <strong>Non renseigné</strong>
-                        {% endif %}
-                        <hr>
-                        </li>
-                       
-                    </ul>
-                </div>
-
-                
-              <div class="card mt-5" >
-                <div class="card-body">
-                    <h5 class="card-title">Articles </h5>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                            <th scope="col">Prestation</th>
-                            <th scope="col">Quantité/Désignation</th>
-                            <th scope="col">Commentaire Interne</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for ligne in lignes %}
-                            <tr>
-                            <th scope="row">{{ ligne.prestaLib}}</th>
-                            <td><strong>{{ ligne.devl_quantite }}</strong> {{" X " ~ ligne.devl__designation}}</td>
-                            <td>{{ ligne.devis__note_interne|raw }}</td>
-                            
-                            </tr>
-                            {% endfor %}
-                            
-                            
-                        </tbody>
-                    </table>
-                     
-                </div>
-              </div>
-
-            </div>
-             
-
-
-              
-        </div>
-      </div>
-      </div>
-    </div>
-
-
-
-
-
-<!-- Modal  Livraison-->
-<div class="modal fade" id="modalLivraison" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Changer l'adresse de livraison</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-
-        <div class='mx-2'>
-
-          <table id="ClientTable" class="table  display " style="width:100%"> 
-                      <thead>
-                      <tr><th>Id</th><th>Nom</th><th>CP</th><th>Ville</th></tr>
-                      </thead>
-                       
-                      <tbody class="trClick">
-                      </tbody>
-          </table>
-        
-        </div>
-      
-      </div>
-      
-      <div class="modal-footer">
-      <form action="adminFiche" method="POST">
-        <input type='hidden' name='majIdFiche' value='{{cmd.devis__id}}'>
-        <input type="hidden" id="MajLivraison" name="MajLivraison">
-        <button  class="btn btn-success" id="buttonPost" disabled>valider</button>
-      </form>
-        
-        
-        
-      </div>
-    
     </div>
   </div>
-</div>
+  <!-- 1ere ligne -->
+  <div class="d-flex flex-wrap flex-row justify-content-start">
+    <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
+    <!--carte liste de Devis -->
+    <div class="col-5">
+      <div class="card shadow mb-4">
+        <div class="card-body">
+          <form action="adminFiche" method="POST">
+            <div class="form-group">
+              <input type='hidden' name='idAdminFiche' value='{{cmd.devis__id}}'>
+              <label for="exampleInputEmail1">Code Commande Client</label>
+              <input type="text" class="form-control" name="codeCommandeClient" value='{{cmd.cmd__code_cmd_client}}'>
+              <small id="emailHelp" class="form-text text-muted">Maximum 100 caractères.</small>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Commentaire Interne</label>
+              <textarea class="form-control " name='comInterne' id="comInterne" rows="5"
+                cols="40">{{cmd.devis__note_interne}}</textarea>
+            </div>
+            <div class="card-body d-flex flex-column">
+              <div class="my-1">
 
+                  
+                      <div class="col-7">
+                        <label ><h6>Client Facturation: </h6></label>
+                        {% if cmd.client__id > 10 %}
+                              <custom-search-client-admin url="Ajax_search_client_devis" list='plus-tard' target='clientFact' textCard="visioFact" select="contactSelect"></custom-search-client-admin>
+                        {% endif %}
+                         
+                      </div>   
+                      <div class="col-11 text-success  my-4 ">
+                        <h6 id="visioFact"><i class="fas fa-check"></i> (<b>{{cmd.client__id}}</b>) {{cmd.client__societe ~  " " ~  cmd.client__cp ~  " " ~ cmd.client__ville}}</h6>
+                        <input type="hidden" name="clientFact" id="clientFact" value="{{cmd.client__id}}" required>
+                      </div>                  
+                  
 
-    </main>
-     {% endblock %}
-     
-    
-     {% block script %}
-     <!-- Optional JavaScript -->
+                <div class="">
+                  <div class="mt-2 pt-2 mx-3">
+                    <label ><h6>Contact Facturation: </h6></label>
+                  </div>
+                  {% if cmd.client__id > 10 %}
+                          <select class="form-control col-9 mx-3"  name="contactSelect"
+                          id="contactSelect" required>
+                  {% else %}
+                          <select class="form-control col-9 mx-3 d-none"  name="contactSelect"
+                          id="contactSelect" required>
+                  {% endif %}
+                        
+                          {% if cmd %}
+                                <option value="Aucun">Aucun</option>
+                                      {% for contact in contactList %}
+                                            {% if cmd.devis__contact__id == contact.contact__id %}
+                                                <option value="{{contact.contact__id}}" selected>{{contact.contact__nom ~ " " ~
+                                                  contact.contact__prenom ~ " " ~ contact.kw__lib}}</option>
+                                            {% else %}
+                                                <option value="{{contact.contact__id}}">{{contact.contact__nom ~ " " ~ contact.contact__prenom ~ " "
+                                                  ~ contact.kw__lib}}</option>
+                                            {% endif %}
+                                      {% endfor %}
+                                {% else %}
+                                <option value="Aucun" selected>Aucun</option>
+                          {% endif %}
+                        </select>
+                </div>
+                <hr>
+              </div>
+              <div class="my-3">
+                <h5><span class="badge badge-secondary badge-pill">Livraison</span></h5>
+                <div>
+                  <div class="mt-1 pt-2 ">
+                    <label for="exampleInputEmail1">Client :</label>
+                  </div>
+                  <select class="selectpicker show-tick" data-live-search="true" data-width="100%" name="clientLivr"
+                    id="clientLivraison" required>
+                    {% if cmd.devis__id_client_livraison and cmd.devis__id_client_livraison != cmd.client__id %}
 
+                    {% for client in clientList %}
+                    {% if client.client__id == cmd.devis__id_client_livraison %}
+                    <option value="{{client.client__id}}" selected>{{ client.client__societe ~ ' (' ~ client.client__id
+                      ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                    {% else %}
+                    <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~
+                      client.client__cp ~ " " ~ client.client__ville}}</option>
+                    {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    {% for client in clientList %}
+                    {% if client.client__id == cmd.client__id %}
+                    <option value="{{client.client__id}}" selected>{{ client.client__societe ~ ' (' ~ client.client__id
+                      ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                    {% else %}
+                    <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~
+                      client.client__cp ~ " " ~ client.client__ville}}</option>
+                    {% endif %}
+
+                    {% endfor %}
+                    {% endif %}
+
+                  </select>
+                </div>
+                <div>
+                  <div class="mt-2 pt-2 ">
+                    <label for="exampleInputEmail1">Contact : </label>
+                  </div>
+                  <select class="selectpicker show-tick" data-live-search="true" data-width="100%"
+                    name="contactLivraison" id="contactLivraison" required>
+
+                    <option value="Aucun">Aucun</option>
+                    {% for contactL in contactLivraison %}
+                    {% if contactL.contact__id == cmd.devis__contact_livraison %}
+                    <option value="{{contactL.contact__id}}" selected>{{contactL.contact__nom ~ " " ~
+                      contactL.contact__prenom ~ " - " ~ contactL.kw__lib }}</option>
+                    {% else %}
+                    <option value="{{contactL.contact__id}}">{{contactL.contact__nom ~ " " ~ contactL.contact__prenom ~
+                      " - " ~ contactL.kw__lib }}</option>
+                    {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class='modal-footer'>
+              <a class="btn btn-secondary" href="ficheTravail" role="button">retour à recherche</a>
+              {# <button type="button" class="btn btn-success" id="clickLivraison">Livraison</button> #}
+              <button class="btn btn-primary">Mettre à Jour</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!--carte option -->
+    <div class="col-7 cardVisio">
+      <div class="card shadow mb-4">
+        <!-- Card Body -->
+        <div class="card-body">
+          {% if cmd.devis__id_client_livraison and cmd.devis__id_client_livraison != cmd.client__id %}
+          <div class='d-flex  justify-content-around'>
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title"> facturé :<br><strong> {{ cmd.client__societe }} </strong></h5>
+                <p class="card-text">{{ cmd.client__adr1 ~ " " ~ cmd.client__ville ~ " " ~ cmd.client__cp }}</p>
+              </div>
+            </div>
+            <div class="card" style="width: 18rem;">
+              <div class="card-body">
+                <h5 class="card-title"> Livré :<br><strong> {{ cmd.client__livraison_societe }}</strong></h5>
+                <p class="card-text">{{ cmd.client__livraison__adr1 ~ " " ~ cmd.client__livraison_ville ~ " " ~
+                  cmd.client__livraison_cp }}</p>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title"> Livré et facturé :<br><strong>{{ cmd.client__societe }}</strong></h5>
+              <p class="card-text">{{ cmd.client__adr1 ~ " " ~ cmd.client__ville ~ " " ~ cmd.client__cp }}</p>
+            </div>
+          </div>
+          {% endif %}
+          <div class="d-flex flex-column mt-3">
+            <div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                  Code Commande Client:
+                  <strong>
+                    {% if cmd.cmd__code_cmd_client %}
+                    {{ cmd.cmd__code_cmd_client }}
+
+                    {% else %}
+                    Non renseigné
+                    {% endif %}</strong>
+                </li>
+                <li class="list-group-item">
+                  Date du devis: <strong>{{cmd.devis__date_crea}}</strong>
+                </li>
+                <li class="list-group-item">
+                  Date de validation: <strong>{{cmd.cmd__date_cmd}}</strong>
+                </li>
+                <li class="list-group-item">
+                  Vendeur: <strong>{{cmd.log_nec}}</strong>
+                </li>
+                <li class="list-group-item">
+                  Commentaire Interne: <br>
+                  {% if cmd.devis__note_interne %}
+                  {{ cmd.devis__note_interne|raw }}
+                  {% else %}
+                  <strong>Non renseigné</strong>
+                  {% endif %}
+                  <hr>
+                </li>
+              </ul>
+            </div>
+            <div class="card mt-5">
+              <div class="card-body">
+                <h5 class="card-title">Articles </h5>
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Prestation</th>
+                      <th scope="col">Quantité/Désignation</th>
+                      <th scope="col">Commentaire Interne</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for ligne in lignes %}
+                    <tr>
+                      <th scope="row">{{ ligne.prestaLib}}</th>
+                      <td><strong>{{ ligne.devl_quantite }}</strong> {{" X " ~ ligne.devl__designation}}</td>
+                      <td>{{ ligne.devis__note_interne|raw }}</td>
+
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal  Livraison-->
+  <div class="modal fade" id="modalSelection" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}
+{% block script %}
+<!-- Optional JavaScript -->
 <!-- jQuery first, then Bootstrap JS -->
-<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
-<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
 <script type="text/javascript" src="public/js/administrationFiche.js"></script>
-
-
-
-     {% endblock %}
+{% endblock %}

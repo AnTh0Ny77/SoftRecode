@@ -1,0 +1,78 @@
+{% extends 'layoutLight.twig' %}
+
+
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+
+{% endblock %}
+{% block main %}
+<main role="main" class=" pt-3 px-4">
+        <div class="alert alert-warning" role="alert">
+               <b> les fonctionnalités de cette page sont actuellement en cours de developpement</b>
+        </div>
+        <div class="d-flex flex-wrap flex-row justify-content-between col-12">
+                {% if not commande %}
+                        <div class="alert alert-danger" role="alert">
+                                <b> Aucun numéro de commande ne correspond </b>
+                        </div>
+                {% else %}
+                        <div class="col-8">
+                                <!--client-->
+                                <div class="card shadow border my-2">
+                                        <div class="card-header text-primary d-flex flex-row justify-content-between">
+                                                <h4>N°: {{commande.devis__id}}</h4> 
+                                        </div>
+                                        <div class="card-body">
+                                                <div class="d-flex flex-row justify-content-between">
+                                                       carte body
+                                                </div>     
+                                        </div>
+                                </div>
+                                <div class="card shadow border my-2">
+                                        <div class="card-header text-primary d-flex flex-row justify-content-between">
+                                                card header
+                                        </div>
+                                        <div class="card-body">
+                                                <div class="d-flex flex-row justify-content-between">
+                                                       carte body
+                                                </div>     
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="col-4">
+                                {% if user.user__admin_acces > 40 %}
+                                        <div class="card shadow border my-2">
+                                                <div class="card-header text-primary d-flex flex-row justify-content-between">
+                                                        <h4>Administration</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                        <div class="d-flex flex-row justify-content-between">
+                                                                admin
+                                                        </div>     
+                                                </div>
+                                        </div>
+                                {% endif %}
+                        </div>
+               
+                {{ dump(commande) }}
+                {% endif %}
+        </div>
+</main>
+{% endblock %}
+
+{% block script %}
+<!-- jQuery first, then Bootstrap JS -->
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+         //initialization des tooltips 
+                $(function () 
+                {
+                        $('[data-toggle="tooltip"]').tooltip({ html: true })
+                })
+</script>
+
+{% endblock %}

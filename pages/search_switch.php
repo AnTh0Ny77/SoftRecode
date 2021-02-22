@@ -16,7 +16,6 @@ if (empty($_SESSION['user']))
 }
 
 //si une redirection arrive d'une autre page par le biais de la variable de session :
-
 if (!empty($_SESSION['search_switch'])) 
 {
         $_POST['search'] =  $_SESSION['search_switch'];
@@ -63,8 +62,7 @@ if (!empty($_POST['search']))
                                                 'contact_list' => $contact_list ,
                                                 'etendre_contact' =>  $extendre_contacts ,
                                                 'commandes_list' => $cmd_list
-                                        ]
-                                );
+                                        ]);
                         }
                         else 
                         {
@@ -75,21 +73,22 @@ if (!empty($_POST['search']))
                                         [
                                                 'user' => $_SESSION['user'],
                                                 'client_list' => $client_list 
-                                        ]
-                                );
+                                        ]);
                         }
 
                         break;
                 
                 //si la chaine fait une longueur 7 et qu'elle ne contient que des numérics
-                // case (strlen($_POST['search']) == 7 and ctype_digit($_POST['search'])):
-                //         echo 'recherche de commande : logueur 7 et digit';
-                //         $commande = $Cmd->GetById($_POST['search']);
-                //         if (!empty($_POST['search'])) 
-                //         {
-                                
-                //         }
-                //         break;
+                case (strlen($_POST['search']) == 7 and ctype_digit($_POST['search'])):
+                       
+                        $commande = $Cmd->GetById($_POST['search']);
+                                echo $twig->render(
+                                        'consult_commande.twig',
+                                        [
+                                                'user' => $_SESSION['user'],
+                                                'commande' => $commande 
+                                        ]);
+                        break;
                 
                 //par default je recherche un client : 
                 default:
@@ -100,8 +99,7 @@ if (!empty($_POST['search']))
                                 [
                                         'user' => $_SESSION['user'],
                                         'client_list' => $client_list 
-                                ]
-                        );
+                                ]);
                         break;
         }
 

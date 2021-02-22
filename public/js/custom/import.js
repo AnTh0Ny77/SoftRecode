@@ -9,6 +9,10 @@ customElements.define('custom-card-client', customCardClient );
 import {customSearchClient} from './search-input/childs/custom-search-client.js';
 customElements.define('custom-search-client', customSearchClient );
 
+//input de recherche client attribut :spécifique a la page d'administration des fiches mais reurtilisable: 
+import {customSearchClientAdmin} from './search-input/childs/custom-search-client-admin.js';
+customElements.define('custom-search-client-admin', customSearchClientAdmin );
+
 //formulaire de recherche utilisé globalement : layout 
 import { customSearchMenu } from './search-input/custom-search-menu.js';
 customElements.define('custom-search-menu', customSearchMenu);
