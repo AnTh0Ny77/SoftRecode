@@ -14,7 +14,7 @@ if (empty($_SESSION['user'])) {
 
    $user = $_SESSION['user'];
    //connexion et requetes :
-
+  
    $Database = new App\Database('devis');
    $Database->DbConnect();
    $Client = new App\Tables\Client($Database);
