@@ -45,6 +45,9 @@
                                                 <!--partie droite du body-card-->
                                                 <div class="col-6 d-flex flex-column ">
                                                         <h5><span class="text-muted font-italic"><small>TVA : </small></span><b>{{client.lib__tva}}</b></h5>
+                                                        {% if client.client__tva_intracom  %}
+                                                                <h5><span class="text-muted font-italic"><small>N° Intracom : </small></span><b>{{client.client__tva_intracom}}</b></h5>
+                                                        {% endif %}
                                                         <h5><span class="text-muted font-italic"><small>Vendeur : </small></span><b>{{client.prenom_vendeur ~ " " ~ client.nom_vendeur}}</b></h5>
                                                         <h5><span class="text-muted font-italic"><small>Commentaire : </small></span>{{client.client__comment|raw}}</h5>
                                                         <h5><span class="text-muted font-italic"><small>Configuration spéciale : </small></span>{{client.client__memo_config}}</h5>
