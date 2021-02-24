@@ -153,7 +153,8 @@ class Client extends Table
 
         $mots_filtre = str_word_count($filtre, 1, '0123456789');
 
-        switch ($nb_mots_filtre) {
+        switch ($nb_mots_filtre) 
+        {
             case  0:
                 $mode_filtre = false;
                 break;
@@ -165,8 +166,10 @@ class Client extends Table
 
 
         $operateur = "AND ";
-        $request = "SELECT  LPAD(client__id,6,0) as client__id, client__societe ,  client__ville , client__cp  , client__adr1
+        $request = "SELECT  LPAD(client__id,6,0) as client__id, client__societe ,  client__ville , client__cp  , client__adr1 , client__dt_last_modif , client__tel,
+        u.prenom as prenom_vendeur, u.nom as nom_vendeur 
         FROM client 
+        LEFT JOIN utilisateur as u ON u.id_utilisateur =  client__id_vendeur
         WHERE client__id  > 10 ";
 
         if ($mode_filtre) {

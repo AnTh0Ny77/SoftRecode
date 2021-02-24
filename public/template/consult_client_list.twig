@@ -12,16 +12,21 @@
 {% block main %}
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"> 
               {% if client_list %}
-              <div class="col-8">
+              <div class="col-10">
                 <ul class="list-group list-group-flush">
                         {% for client in client_list %}
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <li class="list-group-item d-flex justify-content-start align-items-center">
                                         <span class="mx-3">
                                                 <custom-form-button-mini method='POST' url='search_switch' name='search' value='{{client.client__id}}'
-                                                        logo='({{client.client__id}}) <b>{{client.client__societe}} {{client.client__cp ~ " " ~ client.client__ville}}</b>'>
+                                                        logo='({{client.client__id}}) <b>{{client.client__societe}} {{client.client__cp ~ " " ~ client.client__ville}} </b>'>
                                                 </custom-form-button-mini>      
-                                        </span>       
+                                        </span>  
+
+                                      
+                                        
+
                                 </li>
+                              
                         {% endfor %} 
                 </ul>
               </div>
