@@ -30,7 +30,11 @@ if (!empty($_POST['search']))
                 case (strlen($_POST['search']) == 6 and ctype_digit($_POST['search'])):
                         //je fais une recherche par id 
                         $client = $Client->search_client_devis($_POST['search']);
-                        
+                        foreach ($client as $client_results) 
+                        {
+                                $date_modif = new DateTime($client_results->client__dt_last_modif);
+                                $client_results->client__dt_last_modif = $date_modif->format('d/m/Y');
+                        }
                         //Si le résultat est bien unique : 
                         if (count($client) == 1) 
                         {
@@ -93,6 +97,11 @@ if (!empty($_POST['search']))
                 //par default je recherche un client : 
                 default:
                         $client_list = $Client->search_client_devis($_POST['search']);
+                        foreach ($client_list as $client) 
+                        {
+                                $date_modif = new DateTime($client->client__dt_last_modif);
+                                $client->client__dt_last_modif = $date_modif->format('d/m/Y');
+                        }
                         if (count($client_list) == 1) 
                         {
                                 $client = $Client->getOne($client_list[0]->client__id);

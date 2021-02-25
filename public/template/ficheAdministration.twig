@@ -98,7 +98,7 @@
                   {% if cmd.devis__id_client_livraison and cmd.devis__id_client_livraison != cmd.client__id  %}
                       <h6 id="visioLivraison"><i class="fas fa-check"></i> (<b>{{cmd.devis__id_client_livraison}}</b>) {{cmd.client__livraison_societe ~ " " ~
                         cmd.client__livraison_cp ~ " " ~ cmd.client__livraison_ville}}</h6>
-                      <input type="hidden" name="clientLivraison" id="clientLivraison" value="{{cmd.devis__id_client_livraison}}" required>
+                      <input type="hidden" name="clientLivr" id="clientLivraison" value="{{cmd.devis__id_client_livraison}}" required>
                   {% else %}
                       <h6 id="visioLivraison"><i class="fas fa-check"></i> (<b>{{cmd.client__id}}</b>) {{cmd.client__societe ~ " " ~
                         cmd.client__cp ~ " " ~ cmd.client__ville}}</h6>

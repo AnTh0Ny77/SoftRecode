@@ -12,19 +12,33 @@
 {% block main %}
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"> 
               {% if client_list %}
-              <div class="col-10">
+              <div class="col-12">
                 <ul class="list-group list-group-flush">
                         {% for client in client_list %}
                                 <li class="list-group-item d-flex justify-content-start align-items-center">
                                         <span class="mx-3">
                                                 <custom-form-button-mini method='POST' url='search_switch' name='search' value='{{client.client__id}}'
-                                                        logo='({{client.client__id}}) <b>{{client.client__societe}} {{client.client__cp ~ " " ~ client.client__ville}} </b>'>
+                                                logo='
+                                                <div class="d-flex flex-row ">({{client.client__id}}) <b>{{client.client__societe}} {{client.client__cp ~ " " ~ client.client__ville}} </b> <div class="d-flex flex-row ">
+                                                        {% if client.nom_vendeur %}
+                                                                <div class="mx-3">
+                                                                        <small><i>vendeur: </i></small> {{client.nom_vendeur ~ " " ~ client.prenom_vendeur}}
+                                                                </div>
+                                                        {% endif %}
+                                                        {% if client.client__tel %}
+                                                                <div class="mx-3">
+                                                                        <small><i>tel:</i></small> {{client.client__tel}}
+                                                                </div>   
+                                                        {% endif %}
+                                                        {% if client.client__dt_last_modif %}
+                                                                <div class="mx-3">
+                                                                        <small><i>dernière modif:</i></small> {{client.client__dt_last_modif}}
+                                                                </div>   
+                                                        {% endif %}
+                                                </div></div>'>
                                                 </custom-form-button-mini>      
                                         </span>  
-
-                                      
-                                        
-
+                                       
                                 </li>
                               
                         {% endfor %} 
