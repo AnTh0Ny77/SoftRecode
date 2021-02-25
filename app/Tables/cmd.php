@@ -39,7 +39,7 @@ class Cmd extends Table {
     t.contact__nom, t.contact__prenom, t.contact__email,
     t2.contact__nom as nom__livraison , t2.contact__prenom as prenom__livraison , t2.contact__civ as civ__Livraison , 
     t2.contact__email as mail__livraison , t2.contact__gsm as gsm__livraison , t2.contact__telephone as fixe__livraison, 
-    c.client__societe, c.client__adr1 , c.client__ville, c.client__cp, 
+    c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,  c.client__tel , 
     c2.client__societe as client__livraison_societe,
     c2.client__ville as client__livraison_ville,
     c2.client__cp as client__livraison_cp , 

@@ -6,7 +6,7 @@ class customCardClient extends customCard
         {
                 // toujours appeller super en premier dans le constructeur : 
                 super();
-                
+                let id_client = document.getElementById(super.value);
         }
 }
  
