@@ -45,9 +45,10 @@ if ($('#commentaire_client').length)
 
 let chekifitracom = function ()
 {
-   let intracom =  $('#intracom_input').val();
+   let intracom = $('#intracom_input').val();
+   let selected_option = $('#select_tva').children("option:selected").val();
 
-   if (intracom.length > 1 ) 
+    if (parseInt(selected_option) == 1 || intracom.length > 4 ) 
    {
         $('#div_intracom').removeClass('d-none');
         $('#intracom_input').prop('required', true);

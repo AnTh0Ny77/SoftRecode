@@ -228,11 +228,6 @@ if (empty($_SESSION['user']))
                 </table>  
             </table>
         </div> 
-
-
-    
-
-
     </page>
  <?php
  $content = ob_get_contents();

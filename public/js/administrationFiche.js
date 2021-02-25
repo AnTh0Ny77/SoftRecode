@@ -111,7 +111,10 @@ $('#clientLivraison').on('change', function()
         })
 })
 
-
+    $('#modalSelection').on('hidden.bs.modal', function (e) {
+        console.log('hey')
+        $('#list_suggest').html('');
+    })
 
 
 
