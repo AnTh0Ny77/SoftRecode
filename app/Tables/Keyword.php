@@ -58,6 +58,12 @@ public function getStat(){
   return $data;
 }
 
+public function get_etat(){
+  $request =$this->Db->Pdo->query('SELECT kw__type,   kw__lib , kw__value  FROM keyword WHERE kw__type= "stat"  AND kw__value <> "PBL"  ORDER BY kw__ordre ');
+  $data = $request->fetchAll(PDO::FETCH_OBJ);
+  return $data;
+}
+
 public function getEtat(){
   $request =$this->Db->Pdo->query('SELECT kw__type,  kw__lib , kw__value FROM keyword WHERE kw__type= "letat" ORDER BY  kw__ordre  ASC , kw__lib ASC');
   $data = $request->fetchAll(PDO::FETCH_OBJ);

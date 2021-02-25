@@ -1,6 +1,5 @@
 //import des customs éléments pret a etre employés :  
 
-
 //carte d'affichage du client passé en attribut value :
 import {customCardClient} from './card/childs/custom-card-client.js';
 customElements.define('custom-card-client', customCardClient );
@@ -28,6 +27,10 @@ customElements.define('custom-form-button-mini', customFormButtonMini);
 //bouton de creation de la list de contact supplémentaire :  
 import{customButtonListContact} from './button/custom-button-list-contact.js';
 customElements.define('custom-button-list-contact', customButtonListContact);
+
+//button d'update de l'etat s'une commande à partir d'un select : 
+import {customUpdateEtat} from "./button/custom-button-update-etat.js";
+customElements.define('custom-button-update-etat', customUpdateEtat);
 
 
 

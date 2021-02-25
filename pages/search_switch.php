@@ -6,6 +6,7 @@ $Database = new App\Database('devis');
 $Database->DbConnect();
 $Client = new \App\Tables\Client($Database);
 $Contact = new \App\Tables\Contact($Database);
+$Keyword = new \App\Tables\Keyword($Database);
 $Cmd = new \App\Tables\Cmd($Database);
 
 
@@ -84,13 +85,14 @@ if (!empty($_POST['search']))
                 
                 //si la chaine fait une longueur 7 et qu'elle ne contient que des numérics
                 case (strlen($_POST['search']) == 7 and ctype_digit($_POST['search'])):
-                       
+                        $etat_list = $Keyword->get_etat();
                         $commande = $Cmd->GetById($_POST['search']);
                                 echo $twig->render(
                                         'consult_commande.twig',
                                         [
                                                 'user' => $_SESSION['user'],
-                                                'commande' => $commande 
+                                                'commande' => $commande ,
+                                                'etat_list' => $etat_list
                                         ]);
                         break;
                 

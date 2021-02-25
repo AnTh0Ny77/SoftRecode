@@ -219,6 +219,9 @@
 
 		case '/SoftRecode/Ajax_search_client_devis';
 			require __DIR__ . '/pages/ajax/ajax_search_client_devis.php'; break;
+		
+		case '/SoftRecode/Ajax_update_etat';
+			require __DIR__ . '/pages/ajax/ajax_update_etat.php'; break;
 
 		case '/SoftRecode/ajaxLigneTransport';
 			require __DIR__ .'/pages/ajax/ajaxLigneTransport.php'; break;

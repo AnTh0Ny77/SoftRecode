@@ -340,9 +340,16 @@ ob_start();
                    
                  }
 
-               
+                if (!empty($item->cmdl__sous_ref)) 
+                {
+                   $background_color = 'background-color: #F1F1F1;';
+                }
+                else 
+                {
+                    $background_color ='';
+                }
 
-                echo "<tr style='font-size: 100%;>
+                echo "<tr style='font-size: 100%; ". $background_color."'>
                         <td style='border-bottom: 1px #ccc solid'> ". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois</td>
                         <td style='border-bottom: 1px #ccc solid; width: 55%;'> 
                             <br> <small>désignation :</small> <b>" . $item->devl__designation ."</b><br>"
@@ -381,7 +388,8 @@ try
      {
         $doc->output('O:\intranet\Auto_Print\FT\Ft_'.$command->devis__id.'.pdf' , 'F'); 
      }
-    
+     $doc->output('C:\Users\abizien\Documents/'.$command->devis__id.'.pdf' , 'F'); 
+
     if ($_SESSION['user']->user__devis_acces < 10 ) 
         {
             header('location: ficheTravail');

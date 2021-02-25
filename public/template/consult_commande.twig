@@ -1,6 +1,4 @@
 {% extends 'layoutLight.twig' %}
-
-
 {% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
@@ -26,7 +24,7 @@
                                         </div>
                                         <div class="card-body">
                                                 <div class="d-flex flex-row justify-content-between">
-                                                       carte body
+                                                      <h4 id="etat_commande">{{commande.kw__lib}}</h4>
                                                 </div>     
                                         </div>
                                 </div>
@@ -44,13 +42,27 @@
                         <div class="col-4">
                                 {% if user.user__admin_acces > 40 %}
                                         <div class="card shadow border my-2">
-                                                <div class="card-header text-primary d-flex flex-row justify-content-between">
-                                                        <h4>Administration</h4>
+                                                <div class="card-header text-danger d-flex flex-row justify-content-between">
+                                                        <h4>Administration <i class="fas fa-exclamation-circle"></i></h4>
                                                 </div>
                                                 <div class="card-body">
-                                                        <div class="d-flex flex-row justify-content-between">
-                                                                admin
-                                                        </div>     
+                                                                <div class="form-group col-11">
+                                                                        <label for="select_etat">Etat de la commande</label>
+                                                                                <select class="form-control" id="select_etat">
+                                                                                {% for etat in etat_list %}
+                                                                                        {% if commande.devis__etat ==  etat.kw__value %}
+                                                                                                <option value="{{etat.kw__value}}" selected>{{etat.kw__lib}}</option >
+                                                                                        {% else %}
+                                                                                                <option value="{{etat.kw__value}}">{{etat.kw__lib}}</option >
+                                                                                        {% endif %}
+                                                                                {% endfor %}
+                                                                                </select>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                <custom-button-update-etat url="Ajax_update_etat"  value="{{commande.devis__id}}" name="update" logo="valider" target="select_etat" modif="etat_commande">
+
+                                                                </custom-button-update-etat>
+                                                                </div>
                                                 </div>
                                         </div>
                                 {% endif %}
