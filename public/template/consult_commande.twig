@@ -24,33 +24,42 @@
                                                <i><h5 class="mx-2" id="etat_commande">{{commande.kw__lib}}</h5></i>       
                                         </div>
                                         <div class="card-body d-flex flex-row justify-content-between">
-                                                 <div class="d-flex flex-row justify-content-around">
-                                                         {% if commande.client__id != devis__id_client_livraison %} 
+                                                 <div class="d-flex flex-row justify-content-between col-7">
+                                                         {% if commande.client__id != commande.devis__id_client_livraison %} 
                                                          <div class="card" >
                                                                 <div class="card-header">
-                                                                       <i>facturé</i>
+                                                                       <i>Client facturé</i>
                                                                 </div>
                                                                 <div class="card-body">
                                                                                 <h5 class="card-title">({{commande.client__id}}) {{commande.client__societe}}</h5>
                                                                                 <h6 class="card-subtitle mb-2 text-muted"> {{commande.client__adr1 ~ " " ~ commande.client__cp ~ " " ~ commande.client__ville}}</h6>
                                                                                 <p class="card-text">{{commande.client__tel}}</p>
-                                                                        <custom-form-button-mini url="search_switch" method="POST" value="{{commande.client__id}}" name="search" logo="<i class='fal fa-file-search'></i>">
-                                                                        </custom-form-button-mini>
+                                                                        
                                                                 </div>
                                                          </div>
                                                          <div class="card" >
                                                                 <div class="card-header">
-                                                                       <i>Livré</i>
+                                                                       <i>Client livré</i>
                                                                 </div>
                                                                 <div class="card-body">
                                                                                 <h5 class="card-title">({{commande.client__id}}) {{commande.client__societe}}</h5>
                                                                                 <h6 class="card-subtitle mb-2 text-muted"> {{commande.client__adr1 ~ " " ~ commande.client__cp ~ " " ~ commande.client__ville}}</h6>
                                                                                 <p class="card-text">{{commande.client__tel}}</p>
-                                                                        <custom-form-button-mini url="search_switch" method="POST" value="{{commande.client__id}}" name="search" logo="<i class='fal fa-file-search'></i>">
-                                                                        </custom-form-button-mini>
                                                                 </div>
                                                          </div>
                                                          {% else %}
+                                                                <div class="card">
+                                                                        <div class="card-header">
+                                                                                <i>Client livré et facturé</i>
+                                                                        </div>
+                                                                        <div class="card-body">
+                                                                                <h5 class="card-title">({{commande.client__id}}) {{commande.client__societe}}</h5>
+                                                                                <h6 class="card-subtitle mb-2 text-muted"> {{commande.client__adr1 ~ " " ~ commande.client__cp ~ " " ~
+                                                                                        commande.client__ville}}</h6>
+                                                                                <p class="card-text">{{commande.client__tel}}</p>
+                                                                
+                                                                        </div>
+                                                                </div>
                                                          {% endif %}
                                                  </div>
                                                  <div>
