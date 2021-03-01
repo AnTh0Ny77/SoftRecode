@@ -32,7 +32,7 @@ class Cmd extends Table {
     cmd__note_interne as devis__note_interne,
     cmd__client__id_livr as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
-    cmd__nom_devis, cmd__modele_devis , 
+    cmd__nom_devis, cmd__modele_devis , cmd__date_fact , 
     cmd__date_cmd, cmd__date_envoi, cmd__code_cmd_client, cmd__tva, cmd__user__id_cmd, LPAD(cmd__id_facture ,7,0) as cmd__id_facture ,
     cmd__modele_facture, cmd__id_facture , cmd__date_fact, cmd__trans, cmd__mode_remise, cmd__report_xtend,
     k.kw__lib,
@@ -45,7 +45,8 @@ class Cmd extends Table {
     c2.client__cp as client__livraison_cp , 
     c2.client__adr1 as client__livraison__adr1 , 
     c2.client__adr2 as client__livraison__adr2 , c2.client__tel as telLivraion, 
-    u.log_nec , u.user__email_devis as email , u.nom as nomDevis , u.prenom as prenomDevis , 
+    u.log_nec , u.user__email_devis as email , u.nom as nomDevis , u.prenom as prenomDevis , u2.nom as nomCommande , u2.prenom as prenomCommande , 
+    u3.nom as nomFacture , u3.prenom as prenomFacture , 
     k3.kw__info as tva_Taux , k3.kw__value as tva_value
     FROM cmd
     LEFT JOIN contact as t ON  cmd__contact__id_fact = t.contact__id
@@ -55,6 +56,8 @@ class Cmd extends Table {
     LEFT JOIN keyword as k ON cmd__etat = k.kw__value AND  k.kw__type = 'stat'
     LEFT JOIN keyword as k3 ON cmd__tva = k3.kw__value AND k3.kw__type = 'tva'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
+    LEFT JOIN utilisateur as u2 ON cmd__user__id_cmd = u2.id_utilisateur
+    LEFT JOIN utilisateur as u3 ON cmd__user__id_fact = u3.id_utilisateur
     WHERE cmd__id = ". $id ."");
     $data = $request->fetch(PDO::FETCH_OBJ);
     return $data;
