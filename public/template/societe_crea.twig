@@ -108,12 +108,15 @@
                   {% endfor %}
                 </select>
               </div>
+             
               <div class="col-6 my-2 d-none" id="div_intracom">
                 <label for="mailContact"><i>N° Intracom * </i></label>
                 <input type="text" value='{{modif.client__tva_intracom}}' class="form-control" name="intracom_input"
                   id='intracom_input' maxlength="200">
               </div>
+             
             </div>
+            
             <div class="my-2">
               <label>Vendeurs</label>
               <div class="d-flex col-md-6">
@@ -143,8 +146,23 @@
                 <input class="form-control" value='{{modif.client__memo_config}}' id="config" name="config"
                   maxlength="100"></input>
               </div>
+
+
+
+
+
+              <div class=" mx-4 mb-4 custom-control custom-checkbox col-3">
+                {% if modif.client__bloque  == 1 %}
+                  <input type="checkbox" class="custom-control-input" id="ckeck_bloque" name="ckeck_bloque" value='1' checked>
+                {% else %}
+                  <input type="checkbox" class="custom-control-input" id="ckeck_bloque" name="ckeck_bloque" value='1'>
+                {% endif %}
+                
+                <label class="custom-control-label text-danger" for="ckeck_bloque"><b>Client bloqué</b></label>
+              </div>
               <div>
                 <div class="modal-footer justify-content-end">
+                 
                   <div>
                     <button type="submit" class="btn btn-success" id="">Modifier</button>
                   </div>

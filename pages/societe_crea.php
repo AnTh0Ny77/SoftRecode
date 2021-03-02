@@ -125,6 +125,15 @@ if (empty($_SESSION['user'])) {
       $General->updateAll('client', $_POST['intracom_input'], 'client__tva_intracom', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['commentaire_client'], 'client__comment', 'client__id', $_POST['modif__id']);
       $General->updateAll('client', $_POST['vendeur'], 'client__id_vendeur', 'client__id', $_POST['modif__id']);
+      
+      if (!empty($_POST['ckeck_bloque'])) 
+      {
+         $General->updateAll('client', 1 , 'client__bloque', 'client__id', $_POST['modif__id']);
+      }
+      else
+      {
+         $General->updateAll('client', 0 , 'client__bloque', 'client__id', $_POST['modif__id']);
+      }
 
       $pays = mb_strtoupper($_POST['input_pays'], 'UTF8');
       if ($pays === "FRANCE") {

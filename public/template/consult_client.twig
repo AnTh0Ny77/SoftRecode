@@ -21,7 +21,11 @@
                         <!--client-->
                         <div class="card shadow border my-2">
                                 <div class="card-header text-primary d-flex flex-row justify-content-between">
-                                        <h4>{{'(' ~ client.client__id ~ ')' ~ ' ' ~ client.client__societe}}</h4>
+                                        <h4>{{'(' ~ client.client__id ~ ')' ~ ' ' ~ client.client__societe}}
+                                        {% if client.client__bloque %}
+                                                <span class="mx-3 text-danger"><b>Client bloqué <i class="fas fa-exclamation"></i></b></span>
+                                        {% endif  %}
+                                        </h4>
                                         <custom-form-button method='POST' url='societe_crea' name='hidden_client' value='{{client.client__id}}'
                                                 logo='<i class="fal fa-file-edit"></i>' data-toggle="tooltip" data-placement="top" title="Modifier {{client.client__societe}}">
                                         </custom-form-button>
