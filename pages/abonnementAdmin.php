@@ -41,6 +41,8 @@ if (!empty($_SESSION['abn_admin'])) {
 if (!empty($_POST['hiddenId'])) {
 
   $abn = $Abonnement->getById($_POST['hiddenId']);
+  $date_anniv = date_create($abn->ab__date_anniv);
+  $abn->ab__date_anniv = date_format($date_anniv, 'd/m/Y');
   $cmd = $Cmd->GetById($abn->ab__cmd__id);
   $lignes = $Abonnement->getLigne($abn->ab__cmd__id);
   foreach ($lignes as $ligne) {
@@ -56,6 +58,8 @@ if (!empty($_POST['idAbnUpdate'])) {
 
   $update = $Abonnement->UpdateAbn($_POST['idAbnUpdate'], $_POST['actifAbn'],  $_POST['prestationAbn'],  $_POST['comAbnG'],  $_POST['moisAbn']);
   $abn = $Abonnement->getById($_POST['idAbnUpdate']);
+  $date_anniv = date_create($abn->ab__date_anniv);
+  $abn->ab__date_anniv = date_format($date_anniv, 'd/m/Y');
   $cmd = $Cmd->GetById($abn->ab__cmd__id);
   $lignes = $Abonnement->getLigne($abn->ab__cmd__id);
   foreach ($lignes as $ligne) {
@@ -80,6 +84,8 @@ if (!empty($_POST['idCmd'])) {
     $_POST['comAbn']
   );
   $abn = $Abonnement->getById($_POST['idCmd']);
+  $date_anniv = date_create($abn->ab__date_anniv);
+  $abn->ab__date_anniv = date_format($date_anniv, 'd/m/Y');
   $cmd = $Cmd->GetById($abn->ab__cmd__id);
   $lignes = $Abonnement->getLigne($abn->ab__cmd__id);
   foreach ($lignes as $ligne) {

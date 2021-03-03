@@ -190,9 +190,9 @@
                                                         <tr>
                                                                 <td class="align-middle">
                                                                         <b>{{ligne.devl__designation}} </b> <span class="mx-2"> <br>fmm: <b>{{ligne.famille__lib ~ " " ~ ligne. modele}}</b>
-                                                                                {% if cmdl__sous_ref %}
-                                                                                <br>
-                                                                                <h5 class="text-primary"><i>Sous-référence</i></h5>
+                                                                                {% if ligne.cmdl__sous_ref %}
+                                                                                
+                                                                                <h6 class="text-primary"><small><i>Sous-référence</i></small></h6>
                                                                                 {% endif %}
                                                                         </span>
                                                                 </td>
@@ -219,6 +219,26 @@
                                                                        <h5><b>{{ligne.devl_puht}}</b> € U.HT</h5> 
                                                                 </td>
                                                         </tr>
+                                                        {% if ligne.cmdl__garantie_option %}
+                                                                <tr >
+                                                                        <td class="align-middle">
+                                                                        <span class="mx-2">
+                                                                                Extensionde garantie à : 
+                                                                                <b>
+                                                                                        {{ligne.cmdl__garantie_option ~ ' mois' }}
+                                                                                </b>
+                                                                        </span>
+                                                                        </td>
+                                                                        <td class="align-middle"></td>
+                                                                        <td class="align-middle">
+                                                                        
+                                                                        </td>
+                                                                        <td class="align-middle">
+                                                                                <h5><b>{{ligne.cmdl__garantie_puht}}</b> € U.HT</h5>
+                                                                        </td>
+
+                                                                </tr>
+                                                        {% endif %}
                                                         {% endfor %}
                                                       </table>
                                         </div>

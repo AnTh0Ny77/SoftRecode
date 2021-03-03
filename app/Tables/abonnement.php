@@ -65,7 +65,7 @@ class Abonnement extends Table
     public function getById($id)
     {
         $request =$this->Db->Pdo->query("SELECT  ab__cmd__id, ab__client__id_fact,
-        ab__actif, ab__fact_periode,  ab__presta , ab__mois_engagement , ab__note ,
+        ab__actif, ab__fact_periode,  ab__presta , ab__mois_engagement , ab__note , ab__date_anniv ,
         k.kw__lib as prestaionAbn
         FROM abonnement
         LEFT JOIN keyword as k ON ab__presta = k.Kw__value AND k.kw__type = 'abt'

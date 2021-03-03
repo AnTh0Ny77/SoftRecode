@@ -24,6 +24,15 @@
         <button class="btn btn-link">Retourner à l'administration</button>
       </form>
     </div>
+    {% else %}
+    <div class="" role="">
+     
+      <form action="abonnementAdmin" method="POST">
+        <input type="hidden" name="hiddenId" value="{{cmd.devis__id}}">
+        <button class="btn btn-link">Retourner à l'administration</button>
+      </form>
+    </div>
+
     {% endif %}
   </div>
   <!-- 1ere ligne -->

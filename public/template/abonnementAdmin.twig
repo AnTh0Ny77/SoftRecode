@@ -54,7 +54,10 @@
 								</p>
 								{{cmd.client__adr1}}<br>
 								{{cmd.client__cp ~ " " ~ cmd.client__ville }}
-
+								<br>
+								Date anniversaire : <b>{{abn.ab__date_anniv}}</b>
+								<br>
+								Périodicité facturation : <b>{{abn.ab__fact_periode}} mois</b>
 							</div>
 						</div>
 						<div class="form-row col-10">
@@ -154,7 +157,8 @@
 							</th>
 							<th scope="col">{{ligne.abl__dt_debut}}</th>
 							<th scope="col">{{ligne.abl__sn}}
-								<i class="text-danger fas fa-times"></i>
+								<i class="text-danger fas fa-times"></i><br>
+								{{ligne.abl__prix_mois}} € HT/mois
 							</th>
 							<th scope="col">
 								<form action="adminMachine" method="POST">
@@ -179,7 +183,8 @@
 							</th>
 							<th scope="col">{{ligne.abl__dt_debut}}</th>
 							<th scope="col">{{ligne.abl__sn}}
-								<i class=" text-success fas fa-check"></i>
+								<i class=" text-success fas fa-check"></i><br>
+								{{ligne.abl__prix_mois}} € HT/mois
 							</th>
 							<th scope="col">
 								<div class="d-flex">
