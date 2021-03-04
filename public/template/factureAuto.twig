@@ -58,11 +58,8 @@
                           </form>
                           </td>
                           <td scope="col">N° : <b>{{ abn.ab__cmd__id}}</b><br>{{abn.prestaLib}}<br>
-                           {% if abn.ab__note  %}
-                          {{ abn.ab__note|raw}}
-                          {% else %}
-                          pas de commentaire
-                          {% endif %}
+                          Date anniversaire:  <b>{{abn.ab__date_anniv}}</b><br>
+                          Périodicité facturation: <b>{{abn.ab__fact_periode}}</b> mois
                           <br>
                          
                           </td>
