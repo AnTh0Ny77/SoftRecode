@@ -143,7 +143,7 @@ if (empty($_SESSION['user']))
                         <td style=" font-size: 80%; width: 100%;">
                             <br><br>
                             <small>New Eurocomputer-TVA FR33 397 934 068 Siret 397 934 068 00016 - APE9511Z - SAS au capital 38112.25 €<br>
-                            <strong>RECODE by Eurocomputer - 112 allée François Coli -06210 Mandelieu</strong></small>
+                            <strong>RECODE by Eurocomputer - 112 allée François Coli -06210 Mandelieu - (+33) 4 93 47 25 00</strong></small>
                         </td>
                     </tr>
                 </table>
