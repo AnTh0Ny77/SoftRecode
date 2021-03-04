@@ -78,4 +78,7 @@ chekifitracom();
             $('#intracom_input').prop('required', false);
         }
     })
+
+
+  
 })

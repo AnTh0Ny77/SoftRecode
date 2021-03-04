@@ -32,6 +32,12 @@ if (!empty($_POST['archiveID']))
 {
     
   $valid = $Cmd->getById($_POST['archiveID']);
+  //  4 activer une alert pour indiquer le bon fonctionnement du logiciel 
+  $relique = $Cmd->classicReliquat($_POST['archiveID']);
+
+  // alerte si un reliquat à été facturé : 
+  $alertReliquat = $Cmd->alertReliquat($_POST['archiveID']);
+
   $Cmd->updateStatus('NFT' , $valid->devis__id);
   $date = date("Y-m-d H:i:s");
   $updateCmd = $General->updateAll('cmd', $date , 'cmd__date_fact' , 'cmd__id' , $valid->devis__id);

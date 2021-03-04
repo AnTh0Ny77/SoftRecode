@@ -8,6 +8,7 @@ class customFormButtonMini extends customFormButton
                 // toujours appeller super en premier dans le constructeur : 
                 super();
                 this.test.setAttribute('class', 'btn btn-link  btn-rounded  mx-2');
+                
         }
 }
 

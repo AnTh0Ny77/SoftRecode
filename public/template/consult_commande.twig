@@ -1,9 +1,8 @@
 {% extends 'layoutLight.twig' %}
-
-
 {% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/css/dashboard.css">
 
 {% endblock %}
@@ -21,42 +20,260 @@
                         <div class="col-8">
                                 <!--client-->
                                 <div class="card shadow border my-2">
+                                        <div class="card-header text-primary d-flex flex-row justify-content-start">
+                                               <b><h3 class="mx-2">N°: {{commande.devis__id}}</h3></b>
+                                               <i><h5 class="mx-2" id="etat_commande">{{commande.kw__lib}}</h5></i>       
+                                        </div>
+                                        <div class="card-body d-flex flex-row justify-content-between">
+                                                 <div class="d-flex flex-row justify-content-between col-7">
+                                                         {% if commande.client__id != commande.devis__id_client_livraison %} 
+                                                         <div class="card" >
+                                                                <div class="card-header d-flex justify-content-between">
+                                                                       <i>Client facturé</i>
+                                                                       <custom-form-button-mini class="" url="DevisV2" method="POST" value="{{commande.client__id}}" name="create_devis" logo="<i class='fas fa-plus'></i>"  data-toggle="tooltip" data-placement="top" title="Nouveau devis">
+                                                                       </custom-form-button-mini>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                                <h5 class="card-title">({{commande.client__id}}) {{commande.client__societe}}</h5>
+                                                                                <h6 class="card-subtitle mb-2 text-muted"> {{commande.client__adr1 ~ " " ~ commande.client__cp ~ " " ~ commande.client__ville}}
+                                                                                       
+                                                                                </h6>
+                                                                                <p class="card-text">{{commande.client__tel}}  
+                                                                                </p>
+                                                                                
+                                                                </div>
+                                                         </div>
+                                                         <div class="card mx-2" >
+                                                                <div class="card-header d-flex justify-content-between">
+                                                                       <i>Client livré</i>
+                                                                       <custom-form-button-mini class="" url="DevisV2" method="POST" value="{{commande.devis__id_client_livraison}}" name="create_devis" logo="<i class='fas fa-plus'></i>"  data-toggle="tooltip" data-placement="top" title="Nouveau devis">
+                                                                       </custom-form-button-mini>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                                <h5 class="card-title">({{commande.devis__id_client_livraison}}) {{commande.client__livraison_societe}}</h5>
+                                                                                <h6 class="card-subtitle mb-2 text-muted"> {{commande.client__livraison__adr1 ~ " " ~ commande.client__livraison_cp ~ " " ~ commande.client__livraison_ville}}</h6>
+                                                                                <p class="card-text">{{commande.telLivraion}}</p>
+                                                                </div>
+                                                         </div>
+                                                         {% else %}
+                                                                <div class="card mx-2">
+                                                                        <div class="card-header d-flex justify-content-between">
+                                                                                <i>Client livré et facturé</i>
+                                                                                <custom-form-button-mini class="" url="DevisV2" method="POST" value="{{commande.client__id}}" name="create_devis" logo="<i class='fas fa-plus'></i>"  data-toggle="tooltip" data-placement="top" title="Nouveau devis">
+                                                                                </custom-form-button-mini>
+                                                                        </div>
+                                                                        <div class="card-body">
+                                                                                <h5 class="card-title">({{commande.client__id}}) {{commande.client__societe}}</h5>
+                                                                                <h6 class="card-subtitle mb-2 text-muted"> {{commande.client__adr1 ~ " " ~ commande.client__cp ~ " " ~
+                                                                                        commande.client__ville}}</h6>
+                                                                                <p class="card-text">{{commande.client__tel}}</p>
+                                                                        </div>
+                                                                </div>
+                                                         {% endif %}
+                                                 </div>
+                                                 <div>
+                                                        <div class=" mx-2 " >
+                                                            <h5>{{commande.cmd__nom_devis}} </h5>
+                                                                {% if commande.cmd__code_cmd_client %}
+                                                                        <h5>{{commande.cmd__code_cmd_client}} </h5>
+                                                                {% endif %}
+                                                        <h4 class="d-flex justify-content-between">
+                                                                {% if commande.devis__note_client %}
+                                                                        <input type="hidden" id="note_client" value="{{commande.devis__note_client}}">
+                                                                {% else %}
+                                                                        <input type="hidden" id="note_client" value="pas de commentaire client">
+                                                                {% endif %}
+                                                                {% if commande.devis__note_interne %}
+                                                                        <input type="hidden" id="note_interne" value="{{commande.devis__note_interne}}">
+                                                                {% else %}
+                                                                        <input type="hidden" id="note_interne" value="pas de commentaire Interne">
+                                                                {% endif %}
+                                                        
+                                                                <i class="fas fa-comments" id="tooltip_client"></i>
+                                                              
+                                                                <i class="far fa-comments" id="tooltip_interne" ></i>
+                                                        </h4>
+                                                        </div>
+                                                       
+                                                 </div>
+                                        </div>
+                                        <div>
+                                                <div class="mx-2">
+                                                        <table class="table table-striped">
+                                                                <tbody>
+                                                                  <tr>
+                                                                    <td>Devis fait le: <b>{{commande.devis__date_crea}}</b> par <b>{{ commande.prenomDevis ~ " " ~ commande.nomDevis }}</b></td>
+                                                                    <td>Commandé le: 
+                                                                            {% if commande.cmd__date_cmd %}
+                                                                                <b>{{commande.cmd__date_cmd}}</b> par <b>{{commande.prenomCommande ~ " " ~ commande.nomCommande}}</b>
+                                                                            {% else %}
+                                                                                <b>NC</b>
+                                                                            {% endif %}
+                                                                    </td>
+                                                                    <td>Facturé le:
+                                                                        {% if commande.cmd__date_fact %}
+                                                                                <b>{{commande.cmd__date_fact}}</b> par <b>{{commande.prenomFacture ~ " " ~ commande.nomFacture}}</b>
+                                                                        {% else %}
+                                                                                <b>NC</b>
+                                                                        {% endif %}
+                                                                    </td>
+                                                                  </tr>
+                                                                </tbody>
+                                                              </table>
+                                                </div>
+                                                
+                                        </div>
+                                </div>
+                                <div class="card shadow border my-2">
                                         <div class="card-header text-primary d-flex flex-row justify-content-between">
-                                                <h4>N°: {{commande.devis__id}}</h4> 
+                                               <h4>Documents <i class="fas fa-file-upload"></i></h4>
                                         </div>
                                         <div class="card-body">
-                                                <div class="d-flex flex-row justify-content-between">
-                                                       carte body
+                                                <div class="d-flex flex-row justify-content-around">
+                                                      <div>
+                                                                <a href="#" class="badge badge-link">
+                                                                        <i class="far fa-file-pdf fa-5x"></i>
+                                                                        <h5>devis</h5>
+                                                                </a>       
+                                                      </div>
+                                                      <div>
+                                                              {% if commande.devis__etat == 'CMD' or  commande.devis__etat == 'IMP' or  commande.devis__etat == 'VLD'  or  commande.devis__etat == 'VLA' %}
+                                                                        <a href="../../../../../../O:/intranet/Auto_Print/Archive/FT/Ft_3211372.pdf" target="_blank" class="badge badge-link">
+                                                                                <i class="far fa-file-pdf fa-5x"></i>
+                                                                                <h5>Fiche travail</h5>
+                                                                        </a>
+                                                                        
+                                                                {% else %}
+                                                                        <button class="btn btn-link disabled btn-sm">
+                                                                                <i class="far fa-file-pdf fa-3x"></i>
+                                                                                <h6>Fiche travail</h6>
+                                                                        </button>
+                                                                {% endif %}
+                                                      </div>
+                                                      <div>
+                                                                {% if   commande.devis__etat == 'IMP' or  commande.devis__etat == 'VLD'  or  commande.devis__etat == 'VLA' %}
+                                                                        <a href="../../../../../../O:/intranet/Auto_Print/Archive/FT/Ft_3211372.pdf" class="badge badge-link">
+                                                                                <i class="far fa-file-pdf fa-5x"></i>
+                                                                                <h5>Bon de livraison</h5>
+                                                                        </a>
+                                                                {% else %}
+                                                                        <button class="btn btn-link disabled btn-sm">
+                                                                                <i class="far fa-file-pdf fa-3x"></i>
+                                                                                <h6>Bonde livraison</h6>
+                                                                        </button>
+                                                                {% endif %}
+                                                      </div>
+                                                      <div>
+                                                        {% if    commande.devis__etat == 'VLD' or  commande.devis__etat == 'VLA' %}
+                                                                <a href="../../../../../../O:/intranet/Auto_Print/Archive/FT/Ft_3211372.pdf" class="badge badge-link">
+                                                                        <i class="far fa-file-pdf fa-5x"></i>
+                                                                        <h5>Facture</h5>
+                                                                </a>
+                                                        {% else %}
+                                                                <button class="btn btn-link disabled btn-sm">
+                                                                        <i class="far fa-file-pdf fa-3x"></i>
+                                                                        <h6>Facture</h6>
+                                                                </button>
+                                                        {% endif %}
+                                                      </div>
                                                 </div>     
                                         </div>
                                 </div>
                                 <div class="card shadow border my-2">
                                         <div class="card-header text-primary d-flex flex-row justify-content-between">
-                                                card header
+                                               <h4>Détails <i class="fas fa-file-search"></i></h4>
                                         </div>
                                         <div class="card-body">
-                                                <div class="d-flex flex-row justify-content-between">
-                                                       carte body
-                                                </div>     
+                                                <table class="table table-striped">
+                                                        <tbody>
+                                                        {% for ligne in lignes  %}
+                                                        <tr>
+                                                                <td class="align-middle">
+                                                                        <b>{{ligne.devl__designation}} </b> <span class="mx-2"> <br>fmm: <b>{{ligne.famille__lib ~ " " ~ ligne. modele}}</b>
+                                                                                {% if ligne.cmdl__sous_ref %}
+                                                                                
+                                                                                <h6 class="text-primary"><small><i>Sous-référence</i></small></h6>
+                                                                                {% endif %}
+                                                                        </span>
+                                                                </td>
+                                                                <td class="align-middle"><b>{{ligne.prestaLib}}<br>{{ligne.kw__lib}}</b></td>
+                                                                <td class="align-middle">
+                                                                        <table class="table  table-sm">
+                                                                                <thead>
+                                                                                  <tr>
+                                                                                    <th class="text-center">Cmd</th>
+                                                                                    <th class="text-center">Lvr</th>
+                                                                                    <th class="text-center">Fact</th>
+                                                                                  </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                  <tr>
+                                                                                    <th class="text-center" >{{ligne.devl_quantite}}</th>
+                                                                                    <th class="text-center">{{ligne.cmdl__qte_livr}}</th>
+                                                                                    <th class="text-center">{{ligne.cmdl__qte_fact}}</th>
+                                                                                  </tr>
+                                                                                </tbody>
+                                                                              </table>
+                                                                </td>
+                                                                <td class="align-middle">
+                                                                       <h5><b>{{ligne.devl_puht}}</b> € U.HT</h5> 
+                                                                </td>
+                                                        </tr>
+                                                        {% if ligne.cmdl__garantie_option %}
+                                                                <tr >
+                                                                        <td class="align-middle">
+                                                                        <span class="mx-2">
+                                                                                Extensionde garantie à : 
+                                                                                <b>
+                                                                                        {{ligne.cmdl__garantie_option ~ ' mois' }}
+                                                                                </b>
+                                                                        </span>
+                                                                        </td>
+                                                                        <td class="align-middle"></td>
+                                                                        <td class="align-middle">
+                                                                        
+                                                                        </td>
+                                                                        <td class="align-middle">
+                                                                                <h5><b>{{ligne.cmdl__garantie_puht}}</b> € U.HT</h5>
+                                                                        </td>
+
+                                                                </tr>
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                      </table>
                                         </div>
                                 </div>
                         </div>
                         <div class="col-4">
                                 {% if user.user__admin_acces > 40 %}
                                         <div class="card shadow border my-2">
-                                                <div class="card-header text-primary d-flex flex-row justify-content-between">
-                                                        <h4>Administration</h4>
+                                                <div class="card-header text-danger d-flex flex-row justify-content-between">
+                                                        <h3>Administration <i class="fas fa-exclamation-circle"></i></h3>
                                                 </div>
                                                 <div class="card-body">
-                                                        <div class="d-flex flex-row justify-content-between">
-                                                                admin
-                                                        </div>     
+                                                                <div class="form-group col-11">
+                                                                        <label for="select_etat">Etat de la commande</label>
+                                                                                <select class="form-control" id="select_etat">
+                                                                                {% for etat in etat_list %}
+                                                                                        {% if commande.devis__etat ==  etat.kw__value %}
+                                                                                                <option value="{{etat.kw__value}}" selected>{{etat.kw__lib}}</option >
+                                                                                        {% else %}
+                                                                                                <option value="{{etat.kw__value}}">{{etat.kw__lib}}</option >
+                                                                                        {% endif %}
+                                                                                {% endfor %}
+                                                                                </select>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                <custom-button-update-etat url="Ajax_update_etat"  value="{{commande.devis__id}}" name="update" logo="valider" target="select_etat" modif="etat_commande">
+
+                                                                </custom-button-update-etat>
+                                                                </div>
                                                 </div>
                                         </div>
                                 {% endif %}
                         </div>
                
-                {{ dump(commande) }}
+              
                 {% endif %}
         </div>
 </main>
@@ -67,12 +284,36 @@
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
 <script type="text/javascript">
          //initialization des tooltips 
                 $(function () 
                 {
                         $('[data-toggle="tooltip"]').tooltip({ html: true })
                 })
+
+        //init des jBox : 
+         let note_client = $('#note_client').val();
+         let note_interne = $('#note_interne').val();
+        
+         let jbox_client = new jBox('Tooltip',
+                        {
+                                width: 200,
+                                height: 200,
+                                attach: '#tooltip_client',
+                                content: note_client
+                        }
+                );
+        let jbox_interne = new jBox('Tooltip',
+                        {
+                                width: 200,
+                                height: 200,
+                                attach: '#tooltip_interne',
+                                content: note_interne
+                        }
+                );
+        
+        
 </script>
 
 {% endblock %}

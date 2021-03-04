@@ -63,17 +63,17 @@ class customSearchInput extends HTMLElement
                          XHR.send(formData);
                 }
 
-                 //definition des écouteur d'évenements : 
+                 
                  button.addEventListener('click', () =>
                  {
                         ajax_send(url ,this.callback_function);
                  });
                  input_search.addEventListener('keypress' , (e)=>
                  {
-                         //si la clef est un retour chariot : 
+                         
                         if(e.key == "Enter") 
                         {
-                                //annule la soumission du formulaire : 
+                               
                                 e.preventDefault();
                                 ajax_send(url ,this.callback_function);
                         }
