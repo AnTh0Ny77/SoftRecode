@@ -84,33 +84,33 @@ if (!empty($_POST['search']))
                         break;
                 
                 //si la chaine fait une longueur 7 et qu'elle ne contient que des numérics
-                // case (strlen($_POST['search']) == 7 and ctype_digit($_POST['search'])):
-                //         $etat_list = $Keyword->get_etat();
-                //         $commande = $Cmd->GetById($_POST['search']);
-                //         $lignes = $Cmd->devisLigne($_POST['search']);
-                //         //formatte les dates pour l'utilisateur : 
-                //         $date =  new DateTime($commande->devis__date_crea);
-                //         $commande->devis__date_crea =  $date->format('d/m/Y');
-                //         if (!empty($commande->cmd__date_cmd)) 
-                //         {
-                //                 $date =  new DateTime($commande->cmd__date_cmd);
-                //                 $commande->cmd__date_cmd =  $date->format('d/m/Y');
-                //         }
-                //         if (!empty($commande->cmd__date_fact)) 
-                //         {
-                //                 $date =  new DateTime($commande->cmd__date_fact);
-                //                 $commande->cmd__date_fact =  $date->format('d/m/Y');
-                //         }
+                case (strlen($_POST['search']) == 7 and ctype_digit($_POST['search'])):
+                        $etat_list = $Keyword->get_etat();
+                        $commande = $Cmd->GetById($_POST['search']);
+                        $lignes = $Cmd->devisLigne($_POST['search']);
+                        //formatte les dates pour l'utilisateur : 
+                        $date =  new DateTime($commande->devis__date_crea);
+                        $commande->devis__date_crea =  $date->format('d/m/Y');
+                        if (!empty($commande->cmd__date_cmd)) 
+                        {
+                                $date =  new DateTime($commande->cmd__date_cmd);
+                                $commande->cmd__date_cmd =  $date->format('d/m/Y');
+                        }
+                        if (!empty($commande->cmd__date_fact)) 
+                        {
+                                $date =  new DateTime($commande->cmd__date_fact);
+                                $commande->cmd__date_fact =  $date->format('d/m/Y');
+                        }
                         
-                //                 echo $twig->render(
-                //                         'consult_commande.twig',
-                //                         [
-                //                                 'user' => $_SESSION['user'],
-                //                                 'commande' => $commande ,
-                //                                 'etat_list' => $etat_list,
-                //                                 'lignes' => $lignes
-                //                         ]);
-                //         break;
+                                echo $twig->render(
+                                        'consult_commande.twig',
+                                        [
+                                                'user' => $_SESSION['user'],
+                                                'commande' => $commande ,
+                                                'etat_list' => $etat_list,
+                                                'lignes' => $lignes
+                                        ]);
+                        break;
                 
                 //par default je recherche un client : 
                 default:

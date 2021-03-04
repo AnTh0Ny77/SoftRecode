@@ -388,7 +388,8 @@ try
      {
         $doc->output('O:\intranet\Auto_Print\FT\Ft_'.$command->devis__id.'.pdf' , 'F'); 
      }
-     $doc->output('C:\Users\abizien\Documents/'.$command->devis__id.'.pdf' , 'F'); 
+
+    //  $doc->output('C:\Users\abizien\Documents/'.$command->devis__id.'.pdf' , 'F'); 
 
     if ($_SESSION['user']->user__devis_acces < 10 ) 
         {
