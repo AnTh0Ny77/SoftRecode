@@ -93,10 +93,12 @@ class Abonnement extends Table
         f.afmm__famille as famille,
         f.afmm__modele as modele,
         k.kw__lib as famille__lib,
-        a.am__marque as marque
+        a.am__marque as marque ,
+        k2.kw__info as info_presta
         FROM abonnement_ligne
         LEFT JOIN art_fmm as f ON afmm__id = abl__id__fmm
         LEFT JOIN keyword as k ON f.afmm__famille = k.kw__value AND k.kw__type = 'famil'
+        LEFT JOIN keyword as k2 ON k2.kw__value = abl__type_repair AND  ( k2.kw__type = 'abl' OR k2.kw__type = 'abm' OR k2.kw__type = 'abt')
         LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
         WHERE abl__cmd__id = ".$id."
         ORDER BY  abl__ligne ASC LIMIT 200 ");

@@ -53,6 +53,10 @@ if ($_SESSION['user']->user__facture_acces < 10 )
       {
          array_push($abonnement_facturable , $abn);
       }
+
+      //formatte les dates pour la liste en visu  
+      $dateFact = new DateTime( $abn->ab__date_anniv);
+      $abn->ab__date_anniv = $dateFact->format('d/m/Y'); 
     
    }
    
