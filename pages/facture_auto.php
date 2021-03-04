@@ -68,7 +68,7 @@ if ($_SESSION['user']->user__facture_acces < 10 )
     [
     'user'=>$user,
     'ABNList'=>$abonnement_liste, 
-    'arrayfacturable'=> $abonnement_facturable, 
+    'arrayfacturable'=> $arrayFacturable, 
     'date' => $date
     ]);
   

@@ -92,7 +92,6 @@ Yb      88"Yb  88""    dP__Yb    88
 			print 'descom : '.$descom.'<br>';
 			print 'blob_image : '.$maj_image.' - '.substr($blob_image,0,50).'<br>';
 			print 'nom_doc : '.$maj_doc.' - '.$nom_doc.'<br>';
-
 			$result = $Article->fmm_update($id_fmm, $famille, $marque, $modele, $blob_image, $nom_doc, $descom);
 		}
 		else 

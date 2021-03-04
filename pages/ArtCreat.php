@@ -14,8 +14,8 @@ if ($_SESSION['user']->user__admin_acces < 10 )
 	{ header('location: noAccess'); }
 
 // variables
-$choix_grp = TRUE;
-$GrpMarque = $GrpModele = $GrpPN = $Cancel = $action = FALSE;
+$choix_grp = TRUE; // choix du group (que choisir comme dreation ?)
+$GrpMarque = $GrpModele = $GrpPN = $Cancel = $action_modele = FALSE;
 $art_modif = FALSE;
 $art_creat = TRUE;
 
@@ -26,7 +26,17 @@ $GrpPN       = get_post('GrpPN', 2);
 $id_fmm      = get_post('id_fmm', 1, 'GETPOST');
 if($id_fmm) { $GrpModele = $art_modif= TRUE; $art_creat = FALSE; }
 if($GrpMarque OR $GrpModele OR $GrpPN) $choix_grp = FALSE;
-$Cancel    = get_post('Cancel', 2);
+$cat_marque = get_post('CatMarque', 2);
+$cat_modele = get_post('CatModele', 2);
+$cat_pn     = get_post('CatPn', 2);
+
+// redirection sur pages si demande
+if ($cat_marque)
+	header('location:ArtCatalogueMarque'); 
+if ($cat_modele)
+	header('location:ArtCatalogueModele'); 
+if ($cat_pn)
+	header('location:ArtCataloguePN'); 
 
 //Connexion sur la base
 $Database = new App\Database('devis');
@@ -34,14 +44,8 @@ $user = $_SESSION['user'];
 $Database->DbConnect();
 $Article = new App\Tables\Article($Database);
 
-if ($Cancel)
-{ 
-	header('location: catalogue'); 
-}
-
 if ($choix_grp) // pas encore de choix sur le groupe a créer / Modifier (Famille , PN, Marque ...)
-{
-	// Donnée transmise au template : 
+{  // Affichage de la page de choix
 	echo $twig->render('ArtChoix.twig',[
 		'user'       => $user
 		]);
@@ -53,26 +57,8 @@ if ($GrpModele)
 	$ArtFamille = $Article->getFAMILLE();
 	$ArtMarque  = $Article->getMARQUE();
 	$ArtFmm     = $Article->get_fmm_by_id($id_fmm);
-
-/*888888 88 888888 88""Yb 888888 
-	88   88   88   88__dP 88__   
-	88   88   88   88"Yb  88""   
-	88   88   88   88  Yb 88888*/
-	$P_titre = '
-	<main role="main" class="col-md-12 ml-sm-auto col-lg-10 pt-3 px-4">
-	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">';
-	if($art_modif)
-	{
-		$P_titre .= '<h1 class="h2">Modification de Modèle <i class="fad fa-user-edit"></i></h1>';
-		$action = 'Modif';
-	}
-	if($art_creat)
-	{
-		$P_titre .= '<h1 class="h2">Création de Modèle <i class="fad fa-robot"></i></h1>';
-		$action = 'Creat';
-	}
-	$P_titre .= '
-	</div>';
+	if($art_modif) $action_modele = 'Modif';
+	if($art_creat) $action_modele = 'Creat';
 
 	// test de tableau
 	//foreach($ArtFmm as $ID => $Line)
@@ -81,11 +67,10 @@ if ($GrpModele)
 	// Donnée transmise au template : 
 	echo $twig->render('ArtUpdateModele.twig',[
 	'user'       => $user,
-	'action'     => $action,
+	'action'     => $action_modele,
 	'ArtFamille' => $ArtFamille,
 	'ArtMarque'  => $ArtMarque,
 	'ArtFmm'     => $ArtFmm,
-	'P_titre'    => $P_titre,
 	'id_fmm'     => $id_fmm
 	]);
 }

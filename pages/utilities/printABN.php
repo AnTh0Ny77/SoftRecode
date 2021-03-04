@@ -17,12 +17,15 @@ if (empty($_SESSION['user']))
  {
     header('location: login');
  }
-
+ 
  // si une commande à été postée: 
  if (!empty($_POST['hiddenABN'])) 
  {
+    
     //decode  le json
+    
     $arrayABN = json_decode($_POST['hiddenABN']);
+   
     //texte de l'export: 
     $export = "";
     
@@ -114,26 +117,6 @@ if (empty($_SESSION['user']))
         //commence l'enregistrement pour le rendu pdf :  
         ob_start();
      ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
      <style type="text/css">
          .page_header{
@@ -350,6 +333,6 @@ if (empty($_SESSION['user']))
     $file = fopen("auto.csv", "w");
     fwrite($file , $export);
     fclose($file);
-    header('location: abonnement');
+   header('location: abonnement');
    
 }

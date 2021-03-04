@@ -332,16 +332,22 @@ Yb      88"Yb  88""    dP__Yb    88        dP__Yb  88"Yb    88              88""
  YboodP 88  Yb 888888 dP""""Yb   88       dP""""Yb 88  Yb   88   oooooooooo 88     88 YY 88 88 YY 8*/ 
 public function fmm_create($famille, $marque, $modele, $image, $doc, $descom)
 {
+	
 	/* exemple : INSERT INTO art_fmm (afmm__famille, afmm__marque, afmm__modele) VALUES ('btm', '14', 'dddd') */
+	if(!$descom) $descom = NULL; // remplace vide par NULL pour la table SQL
 	$request = $this->Db->Pdo->prepare("
-	INSERT INTO art_fmm (afmm__famille, afmm__marque, afmm__modele, afmm__image, afmm__doc, afmm__design_com) 
-	VALUES              (:famille,      :marque,      :modele,      :image,      :doc,      :descom)"); 
+	INSERT INTO art_fmm (afmm__famille, afmm__marque, afmm__modele, afmm__image, afmm__doc, afmm__design_com, afmm__dt_creat, afmm__id_user_creat, afmm__dt_modif, afmm__id_user_modif) 
+	VALUES              (:famille,      :marque,      :modele,      :image,      :doc,      :descom,          :dtcreat,       :idcreat,            :dtmodif,       :idmodif)"); 
 	$request->bindValue(":famille", $famille);
 	$request->bindValue(":marque",  $marque);
 	$request->bindValue(":modele",  $modele);
 	$request->bindValue(":image",   $image);
 	$request->bindValue(":doc",     $doc);
 	$request->bindValue(":descom",  $descom);
+	$request->bindValue(":dtcreat", date("Y-m-d H:i:s"));
+	$request->bindValue(":idcreat", $_SESSION['user']->id_utilisateur);
+	$request->bindValue(":dtmodif", date("Y-m-d H:i:s"));
+	$request->bindValue(":idmodif", $_SESSION['user']->id_utilisateur);
 	$request->execute();
 	$idFmm = $this->Db->Pdo->lastInsertId();
 	return $idFmm;
@@ -355,6 +361,7 @@ public function fmm_update($id_fmm, $famille, $marque, $modele, $image, $doc, $d
 {
 	// Update de tout sauf Image et doc (qui ne sont mises a jour que si il sont present.) (pour eviter d'ecraser l'existant)
 	// champs txt
+	if(!$descom) $descom = NULL; // remplace vide par NULL pour la table SQL
 	$request = $this->Db->Pdo->prepare("UPDATE art_fmm SET 
 	afmm__famille=:famille, afmm__marque=:marque, afmm__modele=:modele, afmm__design_com=:descom 
 	WHERE (afmm__id=:id_fmm) LIMIT 1");

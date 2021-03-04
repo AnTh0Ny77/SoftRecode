@@ -33,7 +33,15 @@
   88   88   88   88"Yb  88""
   88   88   88   88  Yb 88888#}
 
-{{ P_titre|raw }}
+<main role="main" class="col-md-12 ml-sm-auto pt-3 px-2">
+	<div class="col-11 d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+	{% if Modif %}
+		<h1 class="h2">Modification de Modèle <i class="fad fa-user-edit"></i></h1>
+	{% endif %}
+	{% if Creat %}
+		<h1 class="h2">Création de Modèle <i class="fad fa-robot"></i></h1>
+	{% endif %}
+	</div>
 
 {#""Yb 88      dP"Yb   dP""b8     .dP"Y8    db    88 .dP"Y8 88 888888 
 88__dP 88     dP   Yb dP   `"     `Ybo."   dPYb   88 `Ybo." 88 88__   
@@ -169,15 +177,13 @@
 <!-- Optional JavaScript -->
 <script type="text/javascript" src="public/js/devisFunction.js"></script> 
 
-<!-- jQuery first, then Bootstrap JS -->
-<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
-<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
-<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
-<script type="text/javascript" src="public/js/client.js"></script>
-<script type="text/javascript" src="public/js/client2.js"></script>
+<!-- JavaScript divers (garder l'ordre) -->
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script> <!-- jquery -->
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script> <!-- bootstrp et addon -->
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script> <!-- addon bootstrap select  -->
+<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script> <!-- editeur amelioré -->
 <script type="text/javascript" src="public/mdb/js/mdb.min.js"></script> <!-- MDB core JavaScript -->
-<script type="text/javascript" src="public/mdb/js/mdb-file-upload.min.js"></script>
+<script type="text/javascript" src="public/mdb/js/mdb-file-upload.min.js"></script> <!-- addon MDB pour upload -->
 <script>$('.file_upload').file_upload();</script> <!-- Pour le file_upload -->
 
 {% endblock %}
