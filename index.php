@@ -107,10 +107,6 @@
 
 		case '/SoftRecode/admin_contact';
 			require __DIR__ .'/pages/admin_contact.php'; break;
-
-		case '/SoftRecode/test';
-			require __DIR__ .'/pages/test.php'; break;
-
 			
 		//transport / fiches de travail->
 		case '/SoftRecode/transport';
@@ -161,21 +157,12 @@
 		
 		case '/SoftRecode/adminMachine';
 			require __DIR__ .'/pages/adminMachine.php'; break;
-		
-		case '/SoftRecode/factureAuto';
-			require __DIR__ .'/pages/factureAuto.php'; break;
-
-		case '/SoftRecode/archiveFacture';
-			require __DIR__ .'/pages/archiveFacture.php'; break;
 
 		case '/SoftRecode/facture_auto';
 		require __DIR__ .'/pages/facture_auto.php'; break;
 
 		case '/SoftRecode/archiveFacture';
 		require __DIR__ .'/pages/archiveFacture.php'; break;
-
-		case '/SoftRecode/avoir';
-			require __DIR__ .'/pages/avoir.php'; break;
 
 		//Ajax ::
 		case '/SoftRecode/AjaxSociete';
