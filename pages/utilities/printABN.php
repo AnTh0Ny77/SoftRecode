@@ -62,11 +62,19 @@ if (empty($_SESSION['user']))
         {
             $total += $key->abl__prix_mois * intval($ABN->ab__fact_periode)  ;
         }
-       
+        
+
+         //date du jour:
+         $date_periode_fin = new DateTime('NOW');
+         $date_periode_debut = new DateTime('NOW');
+         date_add ( $date_periode_fin , date_interval_create_from_date_string($ABN->ab__fact_periode. ' months') ) ;
+         
+
+
         $objectInsert = new stdClass;
         $objectInsert->idDevis = $temp;
         $objectInsert->prestation = $ABN->ab__presta;
-        $objectInsert->designation =  ' Facturation automatique  ' . $ABN->ab__fact_periode .' mois';
+        $objectInsert->designation =  ' Facturation pour la période du   ' . $date_periode_debut .' au ' . $date_periode_fin;
         $objectInsert->etat = 'NC';
         $objectInsert->garantie = '';
         $objectInsert->comClient = '';
