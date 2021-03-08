@@ -48,7 +48,7 @@
               {% if user.user__devis_acces > 0  %}
                 <div class="mx-4">
                   <button class="btn btn-link">
-                    <a href="abonnement"  >
+                    <a href="abonnement">
                       <i class="far fa-file-pdf fa-3x"></i>
                       <p>Abonnements</p>
                     </a>
@@ -57,10 +57,8 @@
               {% else %}
                 <div class="mx-4" data-toggle="tooltip" data-placement="top" title="Droits d'accès supplémentaires requis">
                   <button class="btn btn-link" disabled >
-                   
                       <i class="far fa-file-pdf fa-3x"></i>
                       <p>Abonnements</p>
-                   
                   </button>
                 </div>
               {% endif %}

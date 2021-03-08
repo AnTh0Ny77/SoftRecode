@@ -31,9 +31,11 @@
     {% if user.commandes_cours %}
     <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="commandes en cours">
       <a href="search_switch_notifs?id_user={{user.id_utilisateur}}&status=CMD">
-        <i class="fas fa-file-alt"></i> <span class="badge badge-primary">{{user.commandes_cours}}</span>
+        <span class="fa-stack" style="vertical-align: top;">
+          <i class="fal fa-file fa-stack-2x"></i>
+          <i class=" fa-stack-1x text-primary">{{user.commandes_cours}}</i>
+        </span>
       </a>
-      
         </button>
 		{% endif %}
   </div>
