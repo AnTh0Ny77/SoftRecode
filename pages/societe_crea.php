@@ -22,6 +22,8 @@ if (empty($_SESSION['user'])) {
    $User = new App\Tables\User($Database);
    $General = new App\Tables\General($Database);
    $Pisteur = new App\Tables\Pistage($Database);
+   $Stats = new App\Tables\Stats($Database);
+   $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
    $tva_list = $Keywords->getAllFromParam('tva');
    $user_list = $User->getAll();
    $alert = false;

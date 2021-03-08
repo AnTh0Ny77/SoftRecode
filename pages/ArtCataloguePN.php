@@ -27,6 +27,8 @@ if($_SESSION['user']->user__admin_acces < 10 )
 	$Database = new App\Database('devis');
 	$Database->DbConnect();
 	$Article = new App\Tables\Article($Database);
+	$Stats = new App\Tables\Stats($Database);
+ 	$_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
 // rechreche de prefixe (: ou !) pour savoir si c'est Modele po PN et faire plus de recherche sur les parts...
 if(substr($art_filtre,0,1) == ":" OR substr($art_filtre,0,1) == "!") // c'est bien un Modele ou PN en filtre
 	$big_sql = TRUE;

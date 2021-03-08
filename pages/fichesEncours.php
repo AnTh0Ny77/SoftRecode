@@ -24,6 +24,8 @@ session_start();
  $Contact = new \App\Tables\Contact($Database);
  $Cmd = new App\Tables\Cmd($Database);
  $User = new App\Tables\User($Database);
+ $Stats = new App\Tables\Stats($Database);
+ $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
 
 $vueFiltre = null;
 

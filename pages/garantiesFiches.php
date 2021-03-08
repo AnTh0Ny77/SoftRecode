@@ -27,6 +27,8 @@ session_start();
  $Cmd = new App\Tables\Cmd($Database);
  $General = new App\Tables\General($Database);
  $Article = new App\Tables\Article($Database);
+ $Stats = new App\Tables\Stats($Database);
+ $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
  
 
  $articleTypeList = $Article->getModels();

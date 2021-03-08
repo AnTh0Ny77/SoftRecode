@@ -43,6 +43,8 @@ $Database = new App\Database('devis');
 $user = $_SESSION['user'];
 $Database->DbConnect();
 $Article = new App\Tables\Article($Database);
+$Stats = new App\Tables\Stats($Database);
+ $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
 
 if ($choix_grp) // pas encore de choix sur le groupe a créer / Modifier (Famille , PN, Marque ...)
 {  // Affichage de la page de choix

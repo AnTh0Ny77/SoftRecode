@@ -21,6 +21,8 @@ $user = $_SESSION['user'];
  $Keywords = new App\Tables\Keyword($Database);
  $Contact = new App\Tables\Contact($Database);
  $General = new App\Tables\General($Database);
+ $Stats = new App\Tables\Stats($Database);
+ $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
  
  $keywordList = $Keywords->get2_icon();
 

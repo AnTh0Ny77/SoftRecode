@@ -28,6 +28,8 @@ session_start();
  $General = new App\Tables\General($Database);
  $Article = new App\Tables\Article($Database);
  $Pisteur = new App\Tables\Pistage($Database);
+ $Stats = new App\Tables\Stats($Database);
+ $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
 
 
  //date du jour:

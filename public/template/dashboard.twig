@@ -16,7 +16,7 @@
 
     <h1 class="h2">Tableau de bord <i class="fal fa-chart-network fa-lg fa-fw"></i></h1>
     
-   
+  
   </div>
   <!-- 1ere ligne -->
   <div class="d-flex flex-wrap flex-row justify-content-center">
@@ -25,54 +25,132 @@
         <div class=" shadow my-2">
           <div class="card-body">
             <div class="d-flex flex-row justify-content-around">
+           
+              {% if user.user__devis_acces > 0  %}
+                <div class="mx-4 ">
+                  <button class="btn btn-link">
+                    <a href="DevisV2" >
+                      <i class="far fa-file-edit fa-3x"></i>
+                      <p>Nouveau devis</p>
+                    </a>
+                  </button>
+                  
+                </div>
+              {% else %}
+                <div class="mx-4 " data-toggle="tooltip" data-placement="top" title="Droits d'accès supplémentaires requis">
+                  <button  class="btn btn-link " disabled >
+                    <i class="far fa-file-edit fa-3x"></i>
+                    <p>Nouveau devis</p>
+                  </button>
+                </div>
+              {% endif %}
+              
+              {% if user.user__devis_acces > 0  %}
+                <div class="mx-4">
+                  <button class="btn btn-link">
+                    <a href="abonnement"  >
+                      <i class="far fa-file-pdf fa-3x"></i>
+                      <p>Abonnements</p>
+                    </a>
+                  </button>
+                </div>
+              {% else %}
+                <div class="mx-4" data-toggle="tooltip" data-placement="top" title="Droits d'accès supplémentaires requis">
+                  <button class="btn btn-link" disabled >
+                   
+                      <i class="far fa-file-pdf fa-3x"></i>
+                      <p>Abonnements</p>
+                   
+                  </button>
+                </div>
+              {% endif %}
+              
               <div class="mx-4">
-                <a href="../../../../../../O:/intranet/Auto_Print/Archive/FT/Ft_3211372.pdf" target="_blank" class="badge badge-link">
-                 
-                  <i class="far fa-file-edit fa-5x"></i>
-                  <p>Nouveau devis</p>
-                </a>
+                <button class="btn btn-link">
+                  <a href="http://intranet/" target="_blank" >
+                    <i class="fas fa-recycle fa-3x"></i>
+                    <p>Intranet</p>
+                  </a>
+                </button>
+                
               </div>
+
+              {% if user.user__cmd_acces > 0  %}
+                <div class="mx-4">
+                  <button class="btn btn-link">
+                    <a href="fiches_garantie" >
+                      <i class="fal fa-layer-plus fa-3x"></i>
+                      <p>Fiche de garantie</p>
+                    </a>
+                  </button>
+                  
+                </div>
+              {% else %}
+              <div class="mx-4" data-toggle="tooltip" data-placement="top" title="Droits d'accès supplémentaires requis">
+                <button class="btn btn-link" disabled >
+                  
+                    <i class="fal fa-layer-plus fa-3x" ></i>
+                    <p>Fiche de garantie</p>
+                  
+                </button>  
+              </div>
+              {% endif %}
+              
               <div class="mx-4">
-                <a href="../../../../../../O:/intranet/Auto_Print/Archive/FT/Ft_3211372.pdf" target="_blank" class="badge badge-link">
-                  <i class="far fa-file-pdf fa-5x"></i>
-                  <p>Abonnements</p>
-                </a>
+                <button class="btn btn-link">
+                  <a href="admin_client" >
+                    <i class="fas fa-user-tie fa-3x"></i>
+                    <p>Nouveau client</p>
+                  </a>
+                </button>
+                
               </div>
-              <div class="mx-4">
-                <a href="../../../../../../O:/intranet/Auto_Print/Archive/FT/Ft_3211372.pdf" target="_blank" class="badge badge-link">
-                  <i class="fas fa-recycle fa-5x"></i>
-                  <p>Intranet</p>
-                </a>
+              
+                {% if user.user__facture_acces > 5 %}
+                <div class="mx-4">
+                <button class="btn btn-link">
+                  <a href="stat" >
+                    <i class="fas fa-chart-pie fa-3x"></i>
+                    <p>Statistiques</p>
+                  </a>
+                </button>
               </div>
-              <div class="mx-4">
-                <a href="../../../../../../O:/intranet/Auto_Print/Archive/FT/Ft_3211372.pdf" target="_blank" class="badge badge-link">
-                  <i class="fal fa-layer-plus fa-5x"></i>
-                  <p>Fiche de garantie</p>
-                </a>
+                {% else %}
+                <div class="mx-4" data-toggle="tooltip" data-placement="top" title="Droits d'accès supplémentaires requis">
+                <button class="btn btn-link" disabled >
+                    <i class="fas fa-chart-pie fa-3x"></i>
+                    <p>Statistiques</p>
+                </button>
               </div>
-              <div class="mx-4">
-                <a href="../../../../../../O:/intranet/Auto_Print/Archive/FT/Ft_3211372.pdf" target="_blank" class="badge badge-link">
-                  <i class="fas fa-user-tie fa-5x"></i>
-                  <p>Nouveau client</p>
-                </a>
+                {% endif %}
+
+                {% if user.user__facture_acces > 5 %}
+                <div class="mx-4">
+                <button class="btn btn-link">
+                  <a href="facture">
+                    <i class="fas fa-euro-sign fa-3x"></i>
+                    <p>Facturation</p>
+                  </a>
+                </button>
               </div>
-              <div class="mx-4">
-                <a href="../../../../../../O:/intranet/Auto_Print/Archive/FT/Ft_3211372.pdf" target="_blank" class="badge badge-link">
-                  <i class="fas fa-chart-pie fa-5x"></i>
-                  <p>Statistiques</p>
-                </a>
+                {% else %}
+                <div class="mx-4" data-toggle="tooltip" data-placement="top" title="Droits d'accès supplémentaires requis">
+                <button class="btn btn-link" disabled >
+                  <i class="fas fa-euro-sign fa-3x"></i>
+                    <p>facturation</p>
+                </button>
               </div>
+                {% endif %}
+                
+              
             </div>
             <!--List info personnel blabla-->
             <div class="my-5">
               <ul class="list-group">
                 <li class="list-group-item">
-                  <i class="fas fa-user-clock fa-2x"></i> 
-                  <span class="mx-5 text-primary">Infos relatives à l'utilisateur alertes fiche en cour etc ..;</span>
-                </li>
-                <li class="list-group-item">
                     <i class="fas fa-chart-bar fa-2x"></i>
-                    <span class="mx-5 text-primary">Infos relatives à Recode fiche en cours ( dernière semaine ? etc .. ) </span>
+                    <span class="mx-5 text-primary"><span class="mx-1 badge badge-info ">{{commandes_valides}}</span>  commandes en cours de préparation </span>
+                    <span class="mx-5 text-primary"><span class="mx-1 badge badge-primary ">{{devis_envoyes}}</span>  Devis envoyés les 15 derniers jours</span>
                 </li>
                 <li class="list-group-item">
                   <i class="fas fa-users fa-2x"></i>
@@ -90,6 +168,7 @@
                   <img src="public/img/google.png" style="width: 12rem;" >
                
                 <input type="search" class="form-control" name="q" />
+                <button class="mx-4 mt-1 btn  border shadow " type="submit">Recherche Google</button>
               </form>
             </div>
 
@@ -110,6 +189,7 @@
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/js/dashboard.js"></script>
 
 
 

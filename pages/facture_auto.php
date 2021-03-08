@@ -21,6 +21,8 @@ if ($_SESSION['user']->user__facture_acces < 10 )
  $Contact = new \App\Tables\Contact($Database);
  $Cmd = new App\Tables\Cmd($Database);
  $Abonnement = new App\Tables\Abonnement($Database);
+ $Stats = new App\Tables\Stats($Database);
+ $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
  
  
 //si une facturation auto a été demandée :

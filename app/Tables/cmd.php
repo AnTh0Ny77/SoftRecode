@@ -64,6 +64,38 @@ class Cmd extends Table {
   }
 
 
+  //si un jour quelqu'un se demande pourquoi y'a des allias pourris : changement de DB en plein dev .. goood luck 
+  public function get_user_status($id_user, $status_cmd)
+  {
+    $request =$this->Db->Pdo->query("SELECT
+    cmd__id ,
+    cmd__user__id_devis, 
+    cmd__date_devis,  
+    LPAD(cmd__client__id_fact ,6,0)  as client__id, 
+    cmd__contact__id_fact ,
+    cmd__etat,
+    cmd__nom_devis, cmd__modele_devis ,
+    cmd__date_cmd, cmd__date_envoi, cmd__code_cmd_client, cmd__tva, cmd__user__id_cmd, LPAD(cmd__id_facture ,7,0) as cmd__id_facture ,
+    cmd__modele_facture, cmd__id_facture , cmd__date_fact, cmd__trans, cmd__mode_remise,
+    k.kw__lib,
+    c.client__societe, c.client__adr1 , c.client__ville, c.client__cp,  c.client__tel , 
+    c2.client__societe as client__livraison_societe,
+    c2.client__ville as client__livraison_ville,
+    c2.client__cp as client__livraison_cp , 
+    c2.client__adr1 as client__livraison__adr1 , 
+    u.log_nec , u.user__email_devis as email , u.nom as nomDevis , u.prenom as prenomDevis 
+    FROM cmd
+    LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
+    LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
+    LEFT JOIN keyword as k ON cmd__etat = k.kw__value AND  k.kw__type = 'stat'
+    LEFT JOIN keyword as k3 ON cmd__tva = k3.kw__value AND k3.kw__type = 'tva'
+    LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
+    WHERE cmd__user__id_devis = '". $id_user ."' AND cmd__etat = '".$status_cmd."'");
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+  }
+
+
   //fonction qui retoune les commandes liés a un client ( ordre par date de devis + récentes) limite a passer en paramètre : 
   public function get_by_client_id($id_client , $limit)
   {

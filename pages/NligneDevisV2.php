@@ -22,8 +22,10 @@ session_start();
  $Devis = new App\Tables\Devis($Database);
  $Cmd = new App\Tables\Cmd($Database);
  $General = new App\Tables\General($Database);
+ $Stats = new App\Tables\Stats($Database);
+ 
  $Database->DbConnect();
-
+ $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
  
 //creation devis :
 if (!empty($_POST['clientSelect']) && empty($_POST['modifReturn'])) 

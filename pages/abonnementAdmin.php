@@ -25,7 +25,8 @@ $Contact = new \App\Tables\Contact($Database);
 $Cmd = new App\Tables\Cmd($Database);
 $General = new App\Tables\General($Database);
 $Abonnement = new App\Tables\Abonnement($Database);
-
+$Stats = new App\Tables\Stats($Database);
+$_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
 $prestaList = $Keyword->getPrestaABN();
 $moisList = $Keyword->getGaranties();
 

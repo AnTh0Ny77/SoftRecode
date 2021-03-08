@@ -28,6 +28,8 @@ session_start();
  $Cmd = new App\Tables\Cmd($Database);
  $Global = new App\Tables\General($Database);
  $Pisteur = new App\Tables\Pistage($Database);
+ $Stats = new App\Tables\Stats($Database);
+ $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
  $listOfStatus = $Keyword->getStat();
  $devisList = [];
 

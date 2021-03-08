@@ -43,6 +43,46 @@ public function devisVLD($com) {
   
 }
 
+public function get_devis_quizaine() 
+{ 
+    $date15 =  date('ymd', strtotime('-15 day'));
+    $request =$this->Db->Pdo->query("SELECT cmd__etat
+    
+    FROM cmd
+    WHERE cmd__etat = 'ATN' 
+    AND cmd__date_devis > ". $date15 ."
+    ORDER BY  cmd__etat DESC LIMIT 200 ");
+   
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $request->rowCount();
+  
+}
+
+public function get_commande_valide() 
+{ 
+    
+    $request =$this->Db->Pdo->query("SELECT cmd__etat
+    FROM cmd
+    WHERE cmd__etat = 'CMD' 
+    ORDER BY  cmd__etat DESC LIMIT 300 ");
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $request->rowCount();
+  
+}
+
+public function get_user_commnandes($user_id)
+{
+    $request =$this->Db->Pdo->query("SELECT cmd__id
+    FROM cmd
+    WHERE cmd__etat = 'CMD'
+    AND  cmd__user__id_devis = '".$user_id."'
+    ORDER BY  cmd__etat DESC LIMIT 500 ");
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $request->rowCount();
+}
+
+
+
 public function devisAll($com) { 
     $date15 =  date('ymd', strtotime('-15 day'));
     $request =$this->Db->Pdo->query("SELECT cmd__etat

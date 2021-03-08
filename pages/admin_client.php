@@ -20,9 +20,11 @@ $Keywords = new App\Tables\Keyword($Database);
 $Contact = new App\Tables\Contact($Database);
 $Article = new App\Tables\Article($Database);
 $General = new App\Tables\General($Database);
+$Stats = new App\Tables\Stats($Database);
+ 
 $Cmd = new App\Tables\Cmd($Database);
 $Database->DbConnect();
-
+$_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
 //listes  : 
 $clientList = $Client->get_client_devis();
 $modeleList = $Keywords->getModele();

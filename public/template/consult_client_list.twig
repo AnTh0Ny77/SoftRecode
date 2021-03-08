@@ -14,6 +14,7 @@
               {% if client_list %}
               <div class="col-12">
                 <ul class="list-group list-group-flush">
+                        
                         {% for client in client_list %}
                                 <li class="list-group-item d-flex justify-content-start align-items-center">
                                         <span class="mx-3">
@@ -38,6 +39,33 @@
                                                 </div></div>'>
                                                 </custom-form-button-mini>      
                                         </span>  
+                                       
+                                </li>
+                              
+                        {% endfor %} 
+                </ul>
+              </div>
+              {% elseif commande_list %}
+              <div class="col-12">
+                <ul class="list-group list-group-flush">
+                        
+                        {% for commande in commande_list %}
+                                <li class="list-group-item d-flex justify-content-start align-items-center">
+                                       <span class="mx-3">
+                                        <custom-form-button-mini method='POST' url='search_switch' name='search' value='{{commande.cmd__id}}'
+                                        logo='
+                                        <div class="d-flex flex-row ">N°{{commande.cmd__id}} -  <b>  {{ commande.client__societe}} {{commande.client__cp ~ " " ~ commande.client__ville}} </b> <div class="d-flex flex-row ">
+                                               
+                                                        <div class="mx-3">
+                                                                 {{commande.cmd__nom_devis}}
+                                                        </div>
+                                                        <div class="mx-3">
+                                                                <b>{{commande.cmd__date_devis}}</b>
+                                                       </div>
+                                               
+                                        </div></div>'>
+                                        </custom-form-button-mini>      
+                                </span>  
                                        
                                 </li>
                               

@@ -17,6 +17,8 @@ if (empty($_SESSION['user']) || empty($_POST['ValideCmd'])) {
   $Database = new App\Database('devis');
   $Devis = new App\Tables\Cmd($Database);
   $Database->DbConnect();
+  $Stats = new App\Tables\Stats($Database);
+ $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
 
   //recupere le devis:
   $devis = $Devis->GetById($_POST['ValideCmd']);

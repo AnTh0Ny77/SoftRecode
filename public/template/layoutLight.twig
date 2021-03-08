@@ -28,6 +28,14 @@
   <div>
     <a class="navbar-brand  mx-3 pr-2" href="dashboard">  <i class="fas fa-chart-network fa-lg" style="color: #228B22;"></i></a>
     <a class="navbar-brand  ml-5 pr-2" href="#">  {{ user.prenom ~  " " ~  user.nom ~ " " }}<i class="fas fa-user"></i></a> 
+    {% if user.commandes_cours %}
+    <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="commandes en cours">
+      <a href="search_switch_notifs?id_user={{user.id_utilisateur}}&status=CMD">
+        <i class="fas fa-file-alt"></i> <span class="badge badge-primary">{{user.commandes_cours}}</span>
+      </a>
+      
+        </button>
+		{% endif %}
   </div>
  
  

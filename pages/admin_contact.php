@@ -21,8 +21,10 @@ $Contact = new App\Tables\Contact($Database);
 $Article = new App\Tables\Article($Database);
 $General = new App\Tables\General($Database);
 $Cmd = new App\Tables\Cmd($Database);
-$Database->DbConnect();
+$Stats = new App\Tables\Stats($Database);
 
+$Database->DbConnect();
+$_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
 //listes  : 
 $modeleList = $Keywords->getModele();
 

@@ -21,6 +21,9 @@
 		//recherches :
 		case '/SoftRecode/search_switch';
 			require __DIR__ . '/pages/search_switch.php'; break;
+		//recherches :
+		case '/SoftRecode/search_switch_notifs'.$get_data;
+			require __DIR__ . '/pages/search_switch_notifs.php'; break;
 		
 		//login/unlog/no access->
 		case '/SoftRecode/login':

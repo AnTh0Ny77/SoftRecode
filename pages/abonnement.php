@@ -25,7 +25,8 @@ $Client = new App\Tables\Client($Database);
 $Contact = new \App\Tables\Contact($Database);
 $Cmd = new App\Tables\Cmd($Database);
 $Abonnement = new App\Tables\Abonnement($Database);
-
+$Stats = new App\Tables\Stats($Database);
+$_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
 
 
 $ABNList = $Abonnement->getAll();

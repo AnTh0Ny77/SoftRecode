@@ -133,11 +133,11 @@
                                                       <div>
                                                                 <a href="#" class="badge badge-link">
                                                                         <i class="far fa-file-pdf fa-5x"></i>
-                                                                        <h5>devis</h5>
+                                                                        <h5>Devis</h5>
                                                                 </a>       
                                                       </div>
                                                       <div>
-                                                              {% if commande.devis__etat == 'CMD' or  commande.devis__etat == 'IMP' or  commande.devis__etat == 'VLD'  or  commande.devis__etat == 'VLA' %}
+                                                              {% if ( commande.devis__etat == 'CMD' or  commande.devis__etat == 'IMP' or  commande.devis__etat == 'VLD'  or  commande.devis__etat == 'VLA' ) and user.user__prix_acces > 0 %}
                                                                         <a href="../../../../../../O:/intranet/Auto_Print/Archive/FT/Ft_3211372.pdf" target="_blank" class="badge badge-link">
                                                                                 <i class="far fa-file-pdf fa-5x"></i>
                                                                                 <h5>Fiche travail</h5>
@@ -151,7 +151,7 @@
                                                                 {% endif %}
                                                       </div>
                                                       <div>
-                                                                {% if   commande.devis__etat == 'IMP' or  commande.devis__etat == 'VLD'  or  commande.devis__etat == 'VLA' %}
+                                                                {% if  ( commande.devis__etat == 'IMP' or  commande.devis__etat == 'VLD'  or  commande.devis__etat == 'VLA' ) and user.user__prix_acces > 0  %}
                                                                         <a href="../../../../../../O:/intranet/Auto_Print/Archive/FT/Ft_3211372.pdf" class="badge badge-link">
                                                                                 <i class="far fa-file-pdf fa-5x"></i>
                                                                                 <h5>Bon de livraison</h5>
@@ -164,7 +164,7 @@
                                                                 {% endif %}
                                                       </div>
                                                       <div>
-                                                        {% if    commande.devis__etat == 'VLD' or  commande.devis__etat == 'VLA' %}
+                                                        {% if   ( commande.devis__etat == 'VLD' or  commande.devis__etat == 'VLA' ) and user.user__prix_acces > 0  %}
                                                                 <a href="../../../../../../O:/intranet/Auto_Print/Archive/FT/Ft_3211372.pdf" class="badge badge-link">
                                                                         <i class="far fa-file-pdf fa-5x"></i>
                                                                         <h5>Facture</h5>
@@ -216,7 +216,13 @@
                                                                               </table>
                                                                 </td>
                                                                 <td class="align-middle">
-                                                                       <h5><b>{{ligne.devl_puht}}</b> € U.HT</h5> 
+                                                                        {% if user.user__prix_acces > 0 %}
+                                                                                        <h5><b>{{ligne.devl_puht}}</b> € U.HT</h5> 
+                                                                        {% else %}
+                                                                                         <div class="alert alert-warning" role="alert">
+                                                                                                 droits insufisants (prix €)
+                                                                                        </div>
+                                                                       {% endif %}
                                                                 </td>
                                                         </tr>
                                                         {% if ligne.cmdl__garantie_option %}
@@ -234,12 +240,48 @@
                                                                         
                                                                         </td>
                                                                         <td class="align-middle">
-                                                                                <h5><b>{{ligne.cmdl__garantie_puht}}</b> € U.HT</h5>
+                                                                                {% if user.user__prix_acces < 0 %}
+                                                                                        <h5><b>{{ligne.cmdl__garantie_puht}}</b> € U.HT</h5> 
+                                                                                {% else %}
+                                                                                         <div class="alert alert-warning" role="alert">
+                                                                                                 droits insufisants (prix €)
+                                                                                        </div>
+                                                                                {% endif %}
+                                                                               
                                                                         </td>
 
                                                                 </tr>
                                                         {% endif %}
                                                         {% endfor %}
+                                                        <!--dernière ligne total de facture ou total estimé : -->
+                                                        <tr>
+                                                                <td class="align-middle">         
+                                                                       <h5>
+                                                                               {% if commande.devis__etat == 'VLD' or  commande.devis__etat == 'VLA'  %}
+
+                                                                                        <b>
+                                                                                                Total facturé : 
+                                                                                        </b>
+                                                                               {% else %}
+                                                                                        <b>
+                                                                                                Total estimé avant facturation :
+                                                                                        </b>
+                                                                               {% endif %}
+                                                                              
+                                                                        </h5>
+                                                                </td>
+                                                                <td class="align-middle"></td>
+                                                                <td class="align-middle"> 
+                                                                        <h5><small>Tva taux: </small> <b>{{totaux[1]}}</b> %</h5>
+                                                                        <h5><small>Tva Montant: </small> <b>{{totaux[2]}}</b> €</h5>
+                                                                </td>
+                                                                <td class="align-middle">
+                                                                        <h5>
+                                                                                <h5><small>Total HT: </small> <b>{{totaux[0]}}</b> €</h5>
+                                                                                <h5><small>Total TTC: </small> <b>{{totaux[3]}}</b> €</h5>
+                                                                        </h5>
+                                                                </td>
+                                                        </tr>
                                                       </table>
                                         </div>
                                 </div>

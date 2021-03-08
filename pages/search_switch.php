@@ -8,7 +8,10 @@ $Client = new \App\Tables\Client($Database);
 $Contact = new \App\Tables\Contact($Database);
 $Keyword = new \App\Tables\Keyword($Database);
 $Cmd = new \App\Tables\Cmd($Database);
-
+$Stats = new App\Tables\Stats($Database);
+$_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
+use App\Methods\Pdfunctions;
+use App\Methods\Devis_functions;
 
 //URL bloqué si pas de connexion :
 if (empty($_SESSION['user'])) 
@@ -88,6 +91,18 @@ if (!empty($_POST['search']))
                         $etat_list = $Keyword->get_etat();
                         $commande = $Cmd->GetById($_POST['search']);
                         $lignes = $Cmd->devisLigne($_POST['search']);
+
+                        if ($commande->devis__etat == 'VLD' || $commande->devis__etat == 'VLA') 
+                        {
+                                $totaux = Pdfunctions::totalFacturePDF($commande, $lignes );
+                        }
+                        else 
+                        {
+                                $totaux = Pdfunctions::totalFacturePRO($commande, $lignes );
+                        }
+                        
+
+
                         //formatte les dates pour l'utilisateur : 
                         $date =  new DateTime($commande->devis__date_crea);
                         $commande->devis__date_crea =  $date->format('d/m/Y');
@@ -108,7 +123,8 @@ if (!empty($_POST['search']))
                                                 'user' => $_SESSION['user'],
                                                 'commande' => $commande ,
                                                 'etat_list' => $etat_list,
-                                                'lignes' => $lignes
+                                                'lignes' => $lignes , 
+                                                'totaux' => $totaux
                                         ]);
                         break;
                 

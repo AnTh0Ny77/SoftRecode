@@ -176,12 +176,14 @@ class Client extends Table
             $request .=   $operateur . "( CONCAT('0000',client__id) LIKE '%" . $mots_filtre[0] . "%' 
         OR client__societe LIKE '%" . $mots_filtre[0] . "%' 
         OR client__ville LIKE '%" . $mots_filtre[0] . "%' 
+        OR u.nom LIKE '%" . $mots_filtre[0] . "%' 
         OR client__cp LIKE '%" . $mots_filtre[0] . "%') ";
 
             for ($i = 1; $i < $nb_mots_filtre; $i++) {
                 $request .=  $operateur . " ( client__id LIKE '%" . $mots_filtre[$i] . "%' 
         OR client__societe LIKE '%" . $mots_filtre[$i] . "%' 
         OR client__ville LIKE '%" . $mots_filtre[$i] . "%' 
+        OR u.nom LIKE '%" . $mots_filtre[$i] . "%' 
         OR client__cp LIKE '%" . $mots_filtre[$i] . "%') ";
             }
             $request .= "ORDER BY  client__societe ASC  LIMIT 30  ";
