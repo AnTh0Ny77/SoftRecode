@@ -26,6 +26,17 @@ if (!empty($_POST['idDevis']))
     //control de la tva intracom : 
     $devis_controle = $Cmd->GetById($_POST['idDevis']);
 
+    //control de la pretation du port :
+    $lignes = $Cmd->devisLigne($_POST['idDevis']);
+
+    foreach ($lignes as $ligne) 
+    {
+        if ($ligne->famille == 'SER' && $ligne->devl__type != 'VTE' ) 
+        {
+            $General->updateAll('cmd_ligne', 'VTE' , 'cmdl__prestation ', 'cmdl__id', $ligne->devl__id );
+        }
+    }
+
     $client_controle = $Client->getOne($devis_controle->client__id);
 
     if ($client_controle->client__tva == 1 &&  empty($client_controle->client__tva_intracom)) 
