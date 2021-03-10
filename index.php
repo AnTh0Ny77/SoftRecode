@@ -282,6 +282,9 @@
 		
 		case '/SoftRecode/printContrat';
 			require __DIR__ .'/pages/utilities/printContrat.php'; break;
+
+		
+		
 		
 		case '/SoftRecode/PRINTFORMAT';
 			require __DIR__ .'/pages/utilities/printFormat.php'; break;

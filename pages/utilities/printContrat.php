@@ -4,6 +4,7 @@ require "./vendor/autoload.php";
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Methods\Pdfunctions;
+use App\Methods\Abonnements_functions;
 
 
 session_start();
@@ -31,6 +32,11 @@ $abn = $Abonnement->getById($print_request);
 $abnLignes = $Abonnement->getLigneActives($print_request);
 
 $temp =   $Cmd->GetById($print_request);
+
+//imprime le contrat en double examplaires :
+Abonnements_functions::contrat_double_exemplaire($print_request);
+Abonnements_functions::piece_jointe($print_request);
+
 
 $clientView = $Client->getOne($temp->client__id);
 $societeLivraison = false;
@@ -234,8 +240,8 @@ try {
     ob_clean();
 
 
-    $doc->output('O:\intranet\Auto_Print\CT\CT'.$temp->devis__id.'.pdf', 'F');
-    // $doc->output('C:\laragon\www\SoftRecode\pages\utilities\abonnement.pdf', 'F');
+    // $doc->output('O:\intranet\Auto_Print\CT\CT'.$temp->devis__id.'.pdf', 'F');
+   
     //declarer la session pour s'en servir à l'impression:
     $_SESSION['abn_admin'] = $temp->devis__id;
     header('location: abonnementAdmin');
