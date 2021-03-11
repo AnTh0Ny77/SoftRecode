@@ -140,6 +140,11 @@
                                                                 </form> 
                                                       </div>
                                                       <div>
+                                                        <div class="alert alert-warning " role="alert">
+                                                                <b> l'accès au reste des documents est en cours de developpement </b>
+                                                         </div>
+                                                      </div>
+                                                      <!-- <div>
                                                               {% if ( commande.devis__etat == 'CMD' or  commande.devis__etat == 'IMP' or  commande.devis__etat == 'VLD'  or  commande.devis__etat == 'VLA' ) and user.user__prix_acces > 0 %}
                                                                         <a href="../../../../../../O:/intranet/Auto_Print/Archive/FT/Ft_3211372.pdf" target="_blank" class="badge badge-link">
                                                                                 <i class="far fa-file-pdf fa-5x"></i>
@@ -179,7 +184,8 @@
                                                                 </button>
                                                         {% endif %}
                                                       </div>
-                                                </div>     
+                                                      -->
+                                                </div>
                                         </div>
                                 </div>
                                 <div class="card shadow border my-2">
@@ -302,7 +308,7 @@
                                 </div>
                         </div>
                         <div class="col-4">
-                                {% if user.user__admin_acces > 40 %}
+                                {% if user.user__admin_acces > 50 %}
                                         <div class="card shadow border my-2">
                                                 <div class="card-header text-danger d-flex flex-row justify-content-between">
                                                         <h3>Administration <i class="fas fa-exclamation-circle"></i></h3>
