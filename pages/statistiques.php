@@ -53,6 +53,12 @@ if (empty($_POST['dateDebut']))
 if (empty($_POST['dateFin'])) 
 	$_POST['dateFin'] = date("Y-m-t");
 
+if (empty($_POST['client']))
+	$_POST['client'] = 'Tous';
+
+if (empty($_POST['vendeur']))
+	$_POST['vendeur'] = 'Tous';
+
 
 // recuperations des GET ou POST
 $date_debut     = get_post('dateDebut', 1, 'GETPOST');
