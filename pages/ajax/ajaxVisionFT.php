@@ -251,10 +251,10 @@ else {
 
                                 case 'IT':
                                     echo "<tr style='font-size: 95%;'>
-                                <td style='border-style: none; '> <button class='clickFT btn btn-danger mt-2 ' value='" . $item->devl__id . "''><i class='fas fa-print'></i></button></td>
-                                <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ffeded;'>" . $item->prestaLib . " <br> " . $item->kw__lib . " <br> " . $temp . " </td>
-                                <td style='border-bottom: 1px #ccc solid; background-color: #ffeded;'><small>désignation sur le devis:</small> <strong> " . $item->devl__designation . "</strong> "   . $item->devl__modele . " <br>" . $item->famille__lib . " " . $item->modele . " " . $item->marque . " <br>" . $item->devl__note_interne . " </td>
-                                <td style='border-bottom: 1px #ccc solid;  text-align: right; background-color: #ffeded; '><strong> "  . $item->devl_quantite . " </strong> </td>
+                                <td style='border-style: none; '> <button class='clickFT btn btn-info mt-2 ' value='" . $item->devl__id . "''><i class='fas fa-print'></i></button></td>
+                                <td style='border-bottom: 1px #ccc solid; text-align:left; background-color: #ADD8E6;'>" . $item->prestaLib . " <br> " . $item->kw__lib . " <br> " . $temp . " </td>
+                                <td style='border-bottom: 1px #ccc solid; background-color: #ADD8E6;'><small>désignation sur le devis:</small> <strong> " . $item->devl__designation . "</strong> "   . $item->devl__modele . " <br>" . $item->famille__lib . " " . $item->modele . " " . $item->marque . " <br>" . $item->devl__note_interne . " </td>
+                                <td style='border-bottom: 1px #ccc solid;  text-align: right; background-color: #ADD8E6; '><strong> "  . $item->devl_quantite . " </strong> </td>
                                 </tr>";
                                     break;
 

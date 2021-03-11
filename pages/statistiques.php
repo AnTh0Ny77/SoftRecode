@@ -47,6 +47,13 @@ $description_recherche = '';
 $client = 'Tous';
 $vendeur = 'Tous';
 
+if (empty($_POST['dateDebut'])) 
+	$_POST['dateDebut'] = date("Y-m-01");
+
+if (empty($_POST['dateFin'])) 
+	$_POST['dateFin'] = date("Y-m-t");
+
+
 // recuperations des GET ou POST
 $date_debut     = get_post('dateDebut', 1, 'GETPOST');
 $date_fin       = get_post('dateFin', 1, 'GETPOST');

@@ -131,10 +131,13 @@
                                         <div class="card-body">
                                                 <div class="d-flex flex-row justify-content-around">
                                                       <div>
-                                                                <a href="#" class="badge badge-link">
+                                                                <a href="#" class="badge badge-link" id="click_devis_pdf">
                                                                         <i class="far fa-file-pdf fa-5x"></i>
                                                                         <h5>Devis</h5>
-                                                                </a>       
+                                                                </a>   
+                                                                <form class=" " method="POST" action="voirDevis" target="_blank" id="form_pdf">
+                                                                        <input type="hidden" name="AjaxDevis" id="VoirDevis" value="{{commande.devis__id}}">
+                                                                </form> 
                                                       </div>
                                                       <div>
                                                               {% if ( commande.devis__etat == 'CMD' or  commande.devis__etat == 'IMP' or  commande.devis__etat == 'VLD'  or  commande.devis__etat == 'VLA' ) and user.user__prix_acces > 0 %}
@@ -267,7 +270,6 @@
                                                                                                 Total estimé avant facturation :
                                                                                         </b>
                                                                                {% endif %}
-                                                                              
                                                                         </h5>
                                                                 </td>
                                                                 <td class="align-middle"></td>
@@ -367,7 +369,11 @@
                                 content: note_interne
                         }
                 );
-        
+        $('#click_devis_pdf').on('click' , function(e)
+        {
+                e.preventDefault();
+                $('#form_pdf').submit();
+        })
         
 </script>
 
