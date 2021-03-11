@@ -272,13 +272,26 @@
                                                                 </td>
                                                                 <td class="align-middle"></td>
                                                                 <td class="align-middle"> 
-                                                                        <h5><small>Tva taux: </small> <b>{{totaux[1]}}</b> %</h5>
-                                                                        <h5><small>Tva Montant: </small> <b>{{totaux[2]}}</b> €</h5>
+                                                                        {% if user.user__prix_acces > 0 %}
+                                                                                <h5><small>Tva taux: </small> <b>{{totaux[1]}}</b> %</h5>
+                                                                                <h5><small>Tva Montant: </small> <b>{{totaux[2]}}</b> €</h5>
+                                                                        {% else %}
+                                                                                <div class="alert alert-warning" role="alert">
+                                                                                        droits insufisants (prix €)
+                                                                                </div>
+                                                                        {% endif %}
+                                                                        
                                                                 </td>
                                                                 <td class="align-middle">
                                                                         <h5>
-                                                                                <h5><small>Total HT: </small> <b>{{totaux[0]}}</b> €</h5>
-                                                                                <h5><small>Total TTC: </small> <b>{{totaux[3]}}</b> €</h5>
+                                                                                {% if user.user__prix_acces > 0 %}
+                                                                                        <h5><small>Total HT: </small> <b>{{totaux[0]}}</b> €</h5>
+                                                                                        <h5><small>Total TTC: </small> <b>{{totaux[3]}}</b> €</h5>
+                                                                                {% else %}
+                                                                                        <div class="alert alert-warning" role="alert">
+                                                                                                droits insufisants (prix €)
+                                                                                        </div>
+                                                                                {% endif %}    
                                                                         </h5>
                                                                 </td>
                                                         </tr>
