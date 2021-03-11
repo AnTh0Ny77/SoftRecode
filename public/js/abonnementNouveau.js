@@ -60,7 +60,7 @@ $(document).ready(function() {
                 onInit: function() 
                     { 
                         this.open(); 
-                        setTimeout(this.close() , 3);
+                        setTimeout(this.close() , 2);
                     }
             });
         }

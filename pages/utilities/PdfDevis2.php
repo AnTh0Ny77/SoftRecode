@@ -31,9 +31,9 @@ if (!empty($_POST['idDevis']))
 
     foreach ($lignes as $ligne) 
     {
-        if ($ligne->famille == 'SER' && $ligne->devl__type != 'VTE' ) 
+        if ($ligne->famille == 'SER' && $ligne->devl__type != 'PRT' ) 
         {
-            $General->updateAll('cmd_ligne', 'VTE' , 'cmdl__prestation ', 'cmdl__id', $ligne->devl__id );
+            $General->updateAll('cmd_ligne', 'PRT' , 'cmdl__prestation ', 'cmdl__id', $ligne->devl__id );
         }
     }
 

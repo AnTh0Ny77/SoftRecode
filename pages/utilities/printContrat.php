@@ -239,8 +239,12 @@ try {
     $doc->writeHTML($content);
     ob_clean();
 
-
-    // $doc->output('O:\intranet\Auto_Print\CT\CT'.$temp->devis__id.'.pdf', 'F');
+    for ($i=0; $i < 2; $i++) 
+    { 
+   
+        $doc->output('O:\intranet\Auto_Print\CT\CT'.$temp->devis__id.'n'.$i.'.pdf', 'F');
+    }
+   
    
     //declarer la session pour s'en servir à l'impression:
     $_SESSION['abn_admin'] = $temp->devis__id;

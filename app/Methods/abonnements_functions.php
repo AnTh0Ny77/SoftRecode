@@ -57,10 +57,17 @@ class Abonnements_functions
                         </style>
 
 
-                        <page backtop="10mm" backleft="10mm" backright="10mm" backbottom="10mm" footer="page">
+                        <page backtop="40mm" backleft="10mm" backright="10mm" backbottom="10mm" footer="page">
 
                                 <page_header>
-
+                                <table class="page_header" style="width: 100%;">
+                                        <tr>
+                                                <td style="text-align: left;  width: 50%"><img style=" width:65mm" src="public/img/recodeDevis.png" /></td>
+                                                <td style="text-align: left; width:50%">
+                                                <h3>REPARATION-LOCATION-VENTE</h3>imprimantes-lecteurs codes-barres<br><a style="color: green;">www.recode.fr</a><br><br>
+                                                </td>
+                                        </tr>     
+                                </table>
                                 </page_header>
                                 <page_footer>
 
@@ -413,14 +420,14 @@ class Abonnements_functions
 
                 <?php
                         $content = ob_get_contents();
-
+                        $num_ex = $i + 1 ;
                         try {
                                 $doc = new Html2Pdf('P', 'A4', 'fr');
                                 $doc->setDefaultFont('gothic');
                                 $doc->pdf->SetDisplayMode('fullpage');
                                 $doc->writeHTML($content);
                                 ob_clean();
-                                $doc->output('C:\laragon\www\SoftRecode/' . $temp->devis__id . '.pdf', 'F');
+                                $doc->output('O:\intranet\Auto_Print\CT\contrat'.$temp->devis__id.'.pdf', 'F');
                         } catch (Html2PdfException $e) {
                                 die($e);
                         }
@@ -466,10 +473,17 @@ class Abonnements_functions
                 </style>
 
 
-                <page backtop="10mm" backleft="10mm" backright="10mm" backbottom="10mm" footer="page">
+                <page backtop="40mm" backleft="10mm" backright="10mm" backbottom="10mm" footer="page">
 
                         <page_header>
-
+                                <table class="page_header" style="width: 100%;">
+                                        <tr>
+                                                <td style="text-align: left;  width: 50%"><img style=" width:65mm" src="public/img/recodeDevis.png" /></td>
+                                                <td style="text-align: left; width:50%">
+                                                <h3>REPARATION-LOCATION-VENTE</h3>imprimantes-lecteurs codes-barres<br><a style="color: green;">www.recode.fr</a><br><br>
+                                                </td>
+                                        </tr>     
+                                </table>
                         </page_header>
                         <page_footer>
 
@@ -528,7 +542,7 @@ class Abonnements_functions
                         ob_clean();
 
 
-                        $doc->output('C:\laragon\www\SoftRecode\piece_jointe.pdf', 'F');
+                        $doc->output('O:\intranet\Auto_Print\CT\CTP\piece_jointe_'.$temp->devis__id.'.pdf', 'F');
                 } catch (Html2PdfException $e) {
                         die($e);
                 }
