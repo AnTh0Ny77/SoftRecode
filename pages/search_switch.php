@@ -87,7 +87,7 @@ if (!empty($_POST['search']))
                         break;
                 
                 //si la chaine fait une longueur 7 et qu'elle ne contient que des numérics
-                case (strlen($_POST['search']) == 7 and ctype_digit($_POST['search'])):
+                case (strlen($_POST['search']) == 7 and ctype_digit($_POST['search']) and $Cmd->GetById($_POST['search'])):
                         $etat_list = $Keyword->get_etat();
                         $commande = $Cmd->GetById($_POST['search']);
                         $lignes = $Cmd->devisLigne($_POST['search']);
