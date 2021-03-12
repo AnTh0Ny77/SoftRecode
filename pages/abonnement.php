@@ -8,7 +8,7 @@ session_start();
 
 
 //URL bloqué si pas de connexion :
-if (empty($_SESSION['user'])) {
+if (empty($_SESSION['user']->id_utilisateur)) {
   header('location: login');
 }
 if ($_SESSION['user']->user__facture_acces  < 10) 

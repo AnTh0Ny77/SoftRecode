@@ -8,8 +8,8 @@ $Database->DbConnect();
 $General = new App\Tables\General($Database);
 $Cmd = new App\Tables\Cmd($Database);
 
-// utilisateur non-connecté :
-if (empty($_SESSION['user'])) 
+
+if (empty($_SESSION['user']->id_utilisateur)) 
 {
         header('location: login');
 } 

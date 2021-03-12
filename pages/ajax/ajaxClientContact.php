@@ -8,8 +8,8 @@ $Database->DbConnect();
 $Client = new App\Tables\Client($Database);
 $Contact = new App\Tables\Contact($Database);
 
-// si pas connecté on ne vole rien ici :
-if (empty($_SESSION['user'])) {
+
+if (empty($_SESSION['user']->id_utilisateur)) {
     echo 'no no no .... ';
  }
  else {

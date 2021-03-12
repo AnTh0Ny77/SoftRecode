@@ -14,7 +14,7 @@ use App\Methods\Pdfunctions;
 use App\Methods\Devis_functions;
 
 //URL bloqué si pas de connexion :
-if (empty($_SESSION['user'])) 
+if (empty($_SESSION['user']->id_utilisateur)) 
 {
         header('location: login');
 }

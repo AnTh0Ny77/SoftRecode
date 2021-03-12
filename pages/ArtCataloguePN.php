@@ -5,7 +5,7 @@ session_start();
 require "./App/Methods/tools_functions.php"; // fonctions
 
 // Validation de connexion :
-if(empty($_SESSION['user'])) 
+if(empty($_SESSION['user']->id_utilisateur)) 
 	{ header('location: login'); }
 
 // Validation de droits - si plus petit que 10 pas de droits sur cette page.

@@ -1,13 +1,13 @@
 <?php
  session_start();
  require "./App/twigloader.php";
- if (empty($_SESSION['user'])) 
+
+ if (empty($_SESSION['user']->id_utilisateur)) 
  {
-   header('location: login');
+    header('location: login');
  }
 
- $Database = new App\Database
- ('devis');
+ $Database = new App\Database('devis');
  $Database->DbConnect();
  $Stats = new App\Tables\Stats($Database);
  $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);

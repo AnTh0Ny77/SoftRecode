@@ -4,7 +4,7 @@
 
  session_start();
     //si une session est ouverte :
-    if (!empty($_SESSION['user'])) {
+    if (!empty($_SESSION['user']->id_utilisateur)) {
         header('location: dashboard');
     }
         
@@ -23,7 +23,6 @@
 
             // verification des concordances en base de donnée : 
                 $login  = $Users->login($_POST['login']);
-              
                 $hash = $_POST['pass'];
                 $verif = password_verify($hash, $login->password_user);
                 if ($login == true ) 

@@ -17,10 +17,7 @@ if (empty($_COOKIE['date_facture_cookies']))
     setcookie("date_facture_cookies", $date, time()+3600);
 }
 
-
-
-// si pas connecté on ne vole rien ici :
-if (empty($_SESSION['user'])) 
+if (empty($_SESSION['user']->id_utilisateur)) 
 {
     header('location: login');
 }

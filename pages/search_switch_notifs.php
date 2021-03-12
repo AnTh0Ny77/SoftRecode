@@ -13,7 +13,7 @@ $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user
 
 
 //URL bloqué si pas de connexion :
-if (empty($_SESSION['user'])) 
+if (empty($_SESSION['user']->id_utilisateur)) 
 {
         header('location: login');
 }

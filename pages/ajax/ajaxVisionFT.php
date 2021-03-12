@@ -10,8 +10,8 @@ $Client = new \App\Tables\Client($Database);
 $Contact = new \App\Tables\Contact($Database);
 $Keyword = new \App\Tables\Keyword($Database);
 $User = new \App\Tables\User($Database);
-// si pas connecté on ne vole rien ici :
-if (empty($_SESSION['user'])) {
+
+if (empty($_SESSION['user']->id_utilisateur)) {
     header('location: login');
 }
 //sinon exécution du programme:

@@ -7,8 +7,8 @@ $Database->DbConnect();
 $Cmd = new App\Tables\Stats($Database);
 $Users = new \App\Tables\User($Database);
 
-// si pas connecté on ne vole rien ici :
-if (empty($_SESSION['user'])) {
+
+if (empty($_SESSION['user']->id_utilisateur)) {
     header('location: dashboard');
  }
  else {

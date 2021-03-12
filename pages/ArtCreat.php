@@ -6,7 +6,7 @@ require "./App/Methods/tools_functions.php"; // fonctions
 
 
 //URL bloqué si pas de connexion :
-if (empty($_SESSION['user'])) 
+if (empty($_SESSION['user']->id_utilisateur)) 
 	{ header('location: login'); }
 
 //URL bloqué si pas de Droits

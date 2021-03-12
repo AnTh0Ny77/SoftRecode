@@ -18,7 +18,7 @@ oo     .d8P   888 . d8(  888    888 .  888  o.  )88b   888 .  888  888   888   8
                                                                          */
 
 //validation Login et droits
-if (empty($_SESSION['user']))                     header('location: login');
+if (empty($_SESSION['user']->id_utilisateur))                     header('location: login');
 if ($_SESSION['user']->user__facture_acces < 10 ) header('location: noAccess');
 
 //déclaration des instances nécéssaires :

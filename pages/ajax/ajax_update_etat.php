@@ -8,8 +8,8 @@ $General = new App\Tables\General($Database);
 $Cmd = new App\Tables\Cmd($Database);
 $Pistage = new App\Tables\Pistage($Database);
 
-// si pas connecté on ne vole rien ici :
-if (empty($_SESSION['user'])) 
+
+if (empty($_SESSION['user']->id_utilisateur)) 
 {
         header('location: login');
 } 
