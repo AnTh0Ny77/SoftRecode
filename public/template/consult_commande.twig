@@ -22,7 +22,14 @@
                                 <div class="card shadow border my-2">
                                         <div class="card-header text-primary d-flex flex-row justify-content-start">
                                                <b><h3 class="mx-2">N°: {{commande.devis__id}}</h3></b>
-                                               <i><h5 class="mx-2" id="etat_commande">{{commande.kw__lib}}</h5></i>       
+                                               <i><h5 class="mx-2" id="etat_commande">{{commande.kw__lib}}</h5></i>   
+                                               {%  if commande.devis__etat == 'ATN' %}  
+                                                        <custom-form-button-mini method='POST' url='DevisV2' name='modif' value='{{commande.devis__id}}'
+                                                                logo='<i class="far fa-edit"></i>' data-toggle="tooltip" data-placement="top"
+                                                                title="Modifier la commande: {{commande.devis__id}}">
+                                                        </custom-form-button-mini>
+                                               {% endif %}
+                                               
                                         </div>
                                         <div class="card-body d-flex flex-row justify-content-between">
                                                  <div class="d-flex flex-row justify-content-between col-7">
