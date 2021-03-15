@@ -218,6 +218,5 @@ else
 {
     $_SESSION['alertSaisie'] = 'PB';
     header('location: transport2');
-    
 }
  
