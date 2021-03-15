@@ -35,6 +35,8 @@ $UserClass = new App\Tables\User($Database);
 $Pisteur   = new App\Tables\Pistage($Database);
 $Stat      = new App\Tables\Stats($Database);
 
+
+
 //recupération des listes nécéssaires : 
 $clientList = $Client->getAll();
 $articleTypeList = $Article->getModels();

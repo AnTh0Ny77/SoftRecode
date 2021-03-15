@@ -276,7 +276,11 @@ if (!empty($_POST['devis']) && empty($_POST['boolModif']))
         $_POST['xtendP'] = [];
     }
     
-
+    //met a jour la designation automatique :  (Frank R ou autre admin)
+    if (!empty($_POST['checkDesignation'])) 
+    {
+        $General->updateAll('art_fmm' , $_POST['designation'] , 'afmm__design_com' , 'afmm__id' , $_POST['fmm']);
+    }
 
     $newLines = $Devis->insertLine(
     $_POST['devis'] , $_POST['presta'], $_POST['fmm'],
@@ -346,6 +350,13 @@ if (!empty($_POST['boolModif']) )
         {
             $_POST['xtendP'] = [];
         }
+         //met a jour la designation automatique :  (Frank R ou autre admin)
+        if (!empty($_POST['checkDesignation'])) 
+        {
+            $General->updateAll('art_fmm' , $_POST['designation'] , 'afmm__design_com' , 'afmm__id' , $_POST['fmm']);
+        }
+
+        
         $General->updateAll('cmd_ligne' , $_POST['presta'] , 'cmdl__prestation' , 'cmdl__id' , $_POST['boolModif']);
         $General->updateAll('cmd_ligne' , $_POST['fmm'] , 'cmdl__id__fmm' , 'cmdl__id' , $_POST['boolModif']);
         $General->updateAll('cmd_ligne' , $_POST['designation'] , 'cmdl__designation' , 'cmdl__id' , $_POST['boolModif']);

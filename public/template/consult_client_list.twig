@@ -13,64 +13,57 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"> 
               {% if client_list %}
               <div class="col-12">
-                <ul class="list-group list-group-flush">
-                        
-                        {% for client in client_list %}
-                                <li class="list-group-item d-flex justify-content-start align-items-center">
-                                        <span class="mx-3">
-                                                <custom-form-button-mini method='POST' url='search_switch' name='search' value='{{client.client__id}}'
-                                                logo='
-                                                <div class="d-flex flex-row ">({{client.client__id}}) <b>{{client.client__societe}} {{client.client__cp ~ " " ~ client.client__ville}} </b> <div class="d-flex flex-row ">
-                                                        {% if client.nom_vendeur %}
-                                                                <div class="mx-3">
-                                                                        <small><i>vendeur: </i></small> {{client.nom_vendeur ~ " " ~ client.prenom_vendeur}}
-                                                                </div>
-                                                        {% endif %}
-                                                        {% if client.client__tel %}
-                                                                <div class="mx-3">
-                                                                        <small><i>tel:</i></small> {{client.client__tel}}
-                                                                </div>   
-                                                        {% endif %}
-                                                        {% if client.client__dt_last_modif %}
-                                                                <div class="mx-3">
-                                                                        <small><i>dernière modif:</i></small> {{client.client__dt_last_modif}}
-                                                                </div>   
-                                                        {% endif %}
-                                                </div></div>'>
-                                                </custom-form-button-mini>      
-                                        </span>  
-                                       
-                                </li>
-                              
-                        {% endfor %} 
-                </ul>
+
+                      <table  class="table table-striped col-9">
+                        <thead>
+                                <tr>
+                                  <th scope="col"><h5>(ID)Société</h5></th>
+                                  <th scope="col" class="text-center"><h5>Vendeur</h5></th>
+                                  <th scope="col" class="text-center"><h5>Téléphone</h5></th>
+                                  <th scope="col" class="text-center"><h5>Dernière modif</h5></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {% for client in client_list %}
+                                        <tr>
+                                                <th > <custom-form-button-mini method='POST' url='search_switch' name='search' value='{{client.client__id}}'
+                                                        logo='
+                                                        <div class="d-flex flex-row ">({{client.client__id}}) <b>{{client.client__societe}} {{client.client__cp ~ " " ~ client.client__ville}} </b>        
+                                                        </div>'>
+                                                        </custom-form-button-mini></th>
+                                                <td class="text-center align-middle">{{client.nom_vendeur ~ " " ~ client.prenom_vendeur}}</td>
+                                                <td class="text-center align-middle">{{client.client__tel}}</td>
+                                                <td class="text-center align-middle">{{client.client__dt_last_modif}}</td>
+                                        </tr>
+                                {% endfor %}
+                              </tbody>
+                      </table>
               </div>
               {% elseif commande_list %}
               <div class="col-12">
-                <ul class="list-group list-group-flush">
-                        
-                        {% for commande in commande_list %}
-                                <li class="list-group-item d-flex justify-content-start align-items-center">
-                                       <span class="mx-3">
-                                        <custom-form-button-mini method='POST' url='search_switch' name='search' value='{{commande.cmd__id}}'
-                                        logo='
-                                        <div class="d-flex flex-row ">N°{{commande.cmd__id}} -  <b>  {{ commande.client__societe}} {{commande.client__cp ~ " " ~ commande.client__ville}} </b> <div class="d-flex flex-row ">
-                                               
-                                                        <div class="mx-3">
-                                                                 {{commande.cmd__nom_devis}}
-                                                        </div>
-                                                        <div class="mx-3">
-                                                                <b>{{commande.cmd__date_devis}}</b>
-                                                       </div>
-                                               
-                                        </div></div>'>
-                                        </custom-form-button-mini>      
-                                </span>  
-                                       
-                                </li>
-                              
-                        {% endfor %} 
-                </ul>
+                        <table  class="table table-striped col-9">
+                                <thead>
+                                        <tr>
+                                          <th scope="col" class="text-center"><h5>N°/Client/CP/Ville</h5></th>
+                                          <th scope="col" class="text-center"><h5>Titre Devis</h5></th>
+                                          <th scope="col" class="text-center"><h5>Date Devis</h5></th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {% for commande in commande_list %}
+                                                <tr>
+                                                        <th > <custom-form-button-mini method='POST' url='search_switch' name='search' value='{{commande.cmd__id}}'
+                                                                logo='
+                                                                <div class="d-flex flex-row ">N°{{commande.cmd__id}} -  <b>  {{ commande.client__societe}} {{commande.client__cp ~ " " ~ commande.client__ville}} </b>         
+                                                                </div>'>
+                                                                </custom-form-button-mini></th>
+                                                        <td class="text-center align-middle">{{commande.cmd__nom_devis}}</td>
+                                                        <td class="text-center align-middle">{{commande.cmd__date_devis}}</td>
+                                                        
+                                                </tr>
+                                        {% endfor %}
+                                      </tbody>
+                              </table>
               </div>
                 
               {% else %}
