@@ -293,6 +293,9 @@
 
 		case '/SoftRecode/stat';
 			require __DIR__ .'/pages/statistiques.php'; break;
+
+		case '/SoftRecode/restore';
+			require __DIR__ . '/pages/restore_fact.php';break;
 		
 		case '/SoftRecode/font';
 			require __DIR__ .'/vendor/tecnickcom/tcpdf/fonts/convertfont.php'; break;
