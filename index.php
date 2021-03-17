@@ -60,6 +60,9 @@
 		case '/SoftRecode/UserCreat';
 				require __DIR__ .'/pages/UserCreat.php'; break;
 
+		case '/SoftRecode/action_utilisateur';
+			require __DIR__ . '/pages/action_utilisateur.php';break;
+
 		//articles->
 		case '/SoftRecode/catalogue';
 			require __DIR__ .'/pages/ArtCataloguePN.php';break;

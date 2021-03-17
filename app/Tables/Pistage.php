@@ -28,5 +28,12 @@ class Pistage extends Table
    return true;
   }
 
+  public function get_last_pistes()
+  {
+    $request = $this->Db->Pdo->query('SELECT  * FROM pistage  ORDER BY pist__dt DESC LIMIT 50 ');
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+  }
+
 
 }
