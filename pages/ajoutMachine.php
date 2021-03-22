@@ -35,22 +35,22 @@ session_start();
  $duplicata = false ;
  $alert = false;
 
-
+      
 
 //appel de la page: 
-if (!empty($_POST['idCmd'])  )
+if(!empty($_POST['idCmd']))
 {
-  $valid = $Cmd->getById($_POST['idCmd']);
+    $valid = $Cmd->getById($_POST['idCmd']);
  
-  $verif = $Abonnement->getById($_POST['idCmd']);  
+    $verif = $Abonnement->getById($_POST['idCmd']);  
 
-  if ($verif->ab__presta == 'LOC') 
+if ($verif->ab__presta == 'LOC') 
   {
     $prestaList = $Keyword->getPrestaABL();
   }
   else
   {
-    $prestaList = $Keyword->getPrestaABM();
+        $prestaList = $Keyword->getPrestaABM();
   }
 
  

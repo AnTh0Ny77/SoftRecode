@@ -138,6 +138,7 @@ class General extends Table
 
   public function restore()
   {
+    ini_set('memory_limit', '-1');
     $request = $this->Db->Pdo->query("SELECT
     cmd__id as devis__id ,
     cmd__user__id_devis as devis__user__id ,
@@ -172,7 +173,7 @@ class General extends Table
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     LEFT JOIN utilisateur as u2 ON cmd__user__id_cmd = u2.id_utilisateur
     LEFT JOIN utilisateur as u3 ON cmd__user__id_fact = u3.id_utilisateur
-    WHERE cmd__etat = 'VLD' OR cmd__etat = 'VLA' AND cmd__id_facture IS NOT NULL");
+    WHERE cmd__id_facture = 4210930");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
   }

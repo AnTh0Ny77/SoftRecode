@@ -8,6 +8,7 @@
 <link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
 
 <link rel="stylesheet" href="public/css/dashboard.css">
+
 {% endblock %}
 
 
@@ -40,6 +41,11 @@
                                                         
                                                        <button class="btn btn-success">Rechercher <i class="fas fa-search"></i></button>
                                                 </div>
+                                                <textarea name="editor1" id="editor2" rows="10" cols="80">
+                                                       
+                                                    </textarea>
+                                                    
+                                                 
                                         </form>
                                 </div>
                         </div>
@@ -82,4 +88,14 @@
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/ckeditor/ckeditor.js"></script>
+<script>
+        // Replace the <textarea id="editor1"> with a CKEditor 4
+        // instance, using default configuration.
+        CKEDITOR.replace( 'editor2' ,
+        {
+                language: 'fr',
+               
+        } );
+    </script>
 {% endblock %}
