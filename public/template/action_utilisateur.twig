@@ -22,7 +22,7 @@
                                         <h5>Filtres <i class="far fa-filter"></i></h5>
                                 </div>
                                 <div class="card-body">
-                                        <form>
+                                        <form method="POST" action="action_utilisateur">
                                                 <div class="form-group">
                                                         <label for="select_user">Utilisateur</label>
                                                         <select class="form-control" id="select_user" name="select_user">
@@ -33,10 +33,13 @@
                                                         </select>
                                                 </div>
                                                 <div class="form-group">
-                                                        <label for="num_commande">N° de commande</label>
+                                                        <label for="num_commande">N° de commande ou de client</label>
                                                         <input class="form-control" type="text" name="num_commande" id="num_commande">
                                                 </div>
-                                              
+                                                <div class="form-group d-flex justify-content-end">
+                                                        
+                                                       <button class="btn btn-success">Rechercher <i class="fas fa-search"></i></button>
+                                                </div>
                                         </form>
                                 </div>
                         </div>
@@ -47,14 +50,26 @@
                                         <h5>Résultats <i class="fas fa-poll-h"></i></h5>
                                 </div>
                                 <div class="card-body">
-                                <ul class="list-group list-group-flush">
-                                        {% for piste in liste_piste %}
-                                                <li class=" list-group-item d-flex justify-content-between align-items-center">
-                                                       <p> {{piste.pist__text}} </p>
-                                                        <span class="badge badge-primary badge-pill">{{piste.pist__id__cmd}}</span>
-                                                </li>
-                                        {% endfor %}
-                                </ul>
+                                        <table class="table table-striped">
+                                                <thead>
+                                                  <tr>
+                                                    <th scope="col">Utilsateur</th>
+                                                    <th scope="col">Commande/Client</th>
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Action</th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                        {% for piste in liste_piste %}
+                                                                <tr>
+                                                                        <td>{{piste.prenom ~ " " ~ piste.nom}}</td>
+                                                                        <td>{{piste.pist__id__cmd}}</td>
+                                                                        <td>{{piste.pist__dt}}</td>
+                                                                        <td>{{piste.pist__text }}</td>
+                                                                </tr>
+                                                        {% endfor %}
+                                                </tbody>
+                                              </table>
                                 </div>
                         </div>
                 </div>

@@ -26,7 +26,7 @@ $Cmd = new App\Tables\Cmd($Database);
 
 $userList =$User->getAll();
 
-$liste_piste = $Pistage->get_last_pistes();
+$liste_piste = $Pistage->get_last_pistes();   
 
 
 
