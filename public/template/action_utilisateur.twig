@@ -26,15 +26,25 @@
                                                 <div class="form-group">
                                                         <label for="select_user">Utilisateur</label>
                                                         <select class="form-control" id="select_user" name="select_user">
-                                                                <option>Tous</option>
+                                                                <option value="0">Tous</option>
                                                                 {% for user in user_list %}
-                                                                        <option value="{{user.id_utilisateur}}">{{user.nom ~ " " ~ user.prenom}}</option>
+                                                                        {% if filtres[0] == user.id_utilisateur %}
+                                                                                <option value="{{user.id_utilisateur}}" selected>{{user.nom ~ " " ~ user.prenom}}</option>
+                                                                        {% else %}
+                                                                                <option value="{{user.id_utilisateur}}">{{user.nom ~ " " ~ user.prenom}}</option>
+                                                                        {% endif %}
+                                                                       
                                                                 {% endfor %}
                                                         </select>
                                                 </div>
                                                 <div class="form-group">
                                                         <label for="num_commande">N° de commande ou de client</label>
-                                                        <input class="form-control" type="text" name="num_commande" id="num_commande">
+                                                                {% if filtres[1]  %}
+                                                                        <input class="form-control" type="text" name="num_commande"  value="{{filtres[1]}}" id="num_commande">
+                                                                {% else %}
+                                                                        <input class="form-control" type="text" name="num_commande" id="num_commande">
+                                                                {% endif %}
+                                                        
                                                 </div>
                                                 <div class="form-group d-flex justify-content-end">
                                                         
