@@ -291,7 +291,7 @@
 		case '/SoftRecode/PRINTFORMAT';
 			require __DIR__ .'/pages/utilities/printFormat.php'; break;
 
-		case '/SoftRecode/stat';
+		case '/SoftRecode/stat'.$get_data;
 			require __DIR__ .'/pages/statistiques.php'; break;
 		
 		case '/SoftRecode/font';

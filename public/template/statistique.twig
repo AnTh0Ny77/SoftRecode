@@ -1,4 +1,5 @@
 {% extends 'layoutlight.twig' %}
+
 {% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
@@ -7,251 +8,118 @@
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
 <link rel="stylesheet" href="public/css/dashboard.css">
 {% endblock %}
+
 {% block main %}
 <main role="main" class="col-md-12 ml-sm-auto  pt-3 px-4">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        {% if  cmdSearch %}
-        <h1 class="h2">Statistiques prise de commandes <i class="fas fa-chart-pie"></i></h1>
-        
-        {% else %}
-        <h1 class="h2">Statistiques chiffre d'affaire facturé <i class="fas fa-chart-pie"></i></h1>
-        
-        {% endif %}
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group mr-2">
-            </div>
-        </div>
-    </div>
-    <!--  ligne -->
-    <div class="d-flex flex-wrap flex-row justify-content-start ">
-        <!--prtemière carte-->
-        <div class="col-4 d-flex justify-content-center h-100">
-            <div class="card shadow h-100 col-12">
-                <!-- Card Body -->
-                <div class="card-body">
-                    <form action="stat" method='POST' id="form_stat">
-                        {% if  cmdSearch %}
-                        <h5>Période date de validation</h5>
-                        {% else %}
-                        <h5>Période date de facturation</h5>
-                        {% endif %}
-                        
-                        <div class="d-flex justify-content-between my-3 col-12">
+	{# Titre #}
+	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+		<h1 class="h2">{{titre_stat}} <i class="fas fa-chart-pie"></i></h1>
+	</div>
 
-                            <div class="col-6">
-                                <label for="exampleInputEmail1">Du</label>
-                                <input type="date" class="form-control" name="dateDebut" value='{{DateDeb}}' required>
-                            </div>
-                            <div class="col-6">
-                                <label for="exampleInputEmail1">Au</label>
-                                <input type="date" class="form-control" name="dateFin" value='{{DateFin}}' required>
-                            </div>
-                        </div>
-                        <h5>Filtres</h5>
-                        <div class="d-flex flex-column my-4 col-12">
-                            <div class="col-6 mt-3 pt-2 ">
-                                <label for="exampleInputEmail1">Client : </label>
-                            </div>
-                            <select class="selectpicker show-tick border" data-live-search="true" data-width="100%"
-                                name="client" required>
-                                {% if clientSelect.client__id %}
-                                <option value="Tous">Tous</option>
-                                {% for client in clientList %}
-                                {% if clientSelect.client__id == client.client__id %}
-                                <option value="{{client.client__id}}" selected>{{ client.client__societe ~ ' (' ~
-                                    client.client__id ~ ') '}}</option>
-                                {% else %}
-                                <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~
-                                    client.client__id ~ ') '}}</option>
-                                {% endif %}
-                                {% endfor %}
-                                {% else %}
-                                <option value="Tous" selected>Tous</option>
-                                {% for client in clientList %}
-                                <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~
-                                    client.client__id ~ ') '}}</option>
-                                {% endfor %}
-                                {% endif %}
-                            </select>
-                            <div class="col-6 border-top pt-2  mt-3">
-                                <label for="exampleInputEmail1">Vendeur : </label>
-                            </div>
-                            <select class="selectpicker show-tick border" data-live-search="true" data-width="100%"
-                                name='vendeur' required>
-                                {% if vendeurSelect.id_utilisateur %}
-                                <option value="Tous">Tous</option>
-                                {% for vendeur in vendeurList %}
-                                {% if vendeurSelect.id_utilisateur == vendeur.id_utilisateur %}
-                                <option value="{{vendeur.id_utilisateur}}" selected>{{ vendeur.nom ~ ' ' ~
-                                    vendeur.prenom }}</option>
-                                {% else %}
-                                <option value="{{vendeur.id_utilisateur}}">{{ vendeur.nom ~ ' ' ~ vendeur.prenom }}
-                                </option>
-                                {% endif %}
-                                {% endfor %}
-                                {% else %}
-                                <option value="Tous" selected>Tous</option>
-                                {% for vendeur in vendeurList %}
-                                <option value="{{vendeur.id_utilisateur}}">{{ vendeur.nom ~ ' ' ~ vendeur.prenom }}
-                                </option>
-                                {% endfor %}
-                                {% endif %}
-                            </select>
-                        </div>
-                        <div class="modal-footer justify-content-between">
-                           
-                            <div class="mx-4">
-                                {% if cmdSearch %}
-                                <div class="custom-control custom-checkbox d-none" id="div_abonnement">
-                                {% else %}
-                                <div class="custom-control custom-checkbox" id="div_abonnement">
-                                {% endif %}
-                                    {% if abnSearch %}
-                                    <input type="checkbox" class="custom-control-input" id="exampleCheck1" name="checkAbn" checked>
-                                    {% else %}
-                                    <input type="checkbox" class="custom-control-input" id="exampleCheck1" name="checkAbn">
-                                    {% endif %}
-                                    <label class="custom-control-label" for="exampleCheck1">Inclure les facturations-auto</label>
-                                </div>
-                                <div class="custom-control custom-checkbox d-none ">
-                                    {% if cmdSearch %}
-                                    <input type="checkbox" class="custom-control-input" id="check_commande" name="check_commande" checked>
-                                    {% else %}
-                                    <input type="checkbox" class="custom-control-input" id="check_commande" name="check_commande">
-                                    {% endif %}
-                                    <label class="custom-control-label" for="check_commande">Inclure les commandes non-facturées</label>
-                                </div>
-                                {% if cmdSearch %}
-                                <div class="custom-control custom-checkbox ">
-                                    {% if chiffre_commandes_fact %}
-                                    <input type="checkbox" class="custom-control-input" id="check_commande_facture" name="check_commande_facture" checked>
-                                    {% else %}
-                                    <input type="checkbox" class="custom-control-input" id="check_commande_facture" name="check_commande_facture" >
-                                    {% endif %}
-                                    <label class="custom-control-label" for="check_commande_facture">Inclure les commandes deja facturées</label>
-                                   
-                                </div>
-                                <div class="custom-control custom-checkbox ">
-                                    {% if maintenance_location %}
-                                    <input type="checkbox" class="custom-control-input" id="check_maintenance" name="check_maintenance" checked>
-                                    {% else %}
-                                    <input type="checkbox" class="custom-control-input" id="check_maintenance" name="check_maintenance">
-                                    {% endif %}
-                                    <label class="custom-control-label" for="check_maintenance"> uniquement maintenance et location</label>
-                                </div>
-                                {% endif %}
-                                
-                            </div>
-                            <button type="submit" class="btn btn-success ">Valider</button>
-                        </div>
-                        <div class="d-flex flex-row justify-content-between">
-                        {% if cmdSearch %}
-                            <div class="custom-control custom-checkbox ">
-                                <button type='button' id="click_chiffre" class="btn btn-link"> voir les statistiques chiffre d'affaire</button>
-                            </div>
-                            {% else %}
-                            <div class="custom-control custom-checkbox">
-                                <div type='button' id="click_commande" class="btn  btn-link"> voir les statistiques prise de commandes</div>
-                            </div>
-                        {% endif %}
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="col-8 h-100">
-            {% if not alertDate %}
-                <div class="card-headder">
-                    <div class="alert alert-info" role="alert">
-                        <span  class="btn btn-lg btn-link"><i class="far fa-question-circle"></i></span>
-                        {{decription_recherche}}
-                      </div>
-                </div>
-                {% endif %}
-            <div class="card shadow mb-4 d-flex flex-row justify-content-start flex-wrap h-100">
-                
-                
-                <div class="col-3 my-4 mx-4">
-                    <h5 class="card-title">Résultats :</h5>
-                    {% if alertDate %}
-                        <div class="alert alert-danger" role="alert">
-                            <p> Aucun résultats pour les filtres selectionnés : </p>
-                            <b> Période du : </b>
-                            <h4> {{formatDebut}}</h4>
-                            <b> Au : </b>
-                            <h4> {{formatFin}}</h4>
-                            <b> Clients : </b>
-                            <h4>
-                                {% if clientSelect.client__id %}
-                                {{clientSelect.client__societe}}
-                                {% else %}
-                                Tous
-                                {% endif %}
-                            </h4>
-                            <b> Vendeurs : </b>
-                            <h4>
-                                {% if vendeurSelect.nom %}
-                                {{vendeurSelect.nom }}
-                                {% else %}
-                                Tous
-                                {% endif %}
-                            </h4>
-                        </div>
-                    {% else %}
-                   <div class="alert alert-success">
-                        <ul class="list-group list-group-flush">
-                            <p>
-                                Période du : <b>{{formatDebut}}</b><br>
-                                Au : <b>{{formatFin}}</b> 
-                            </p>
-                            <p>
-                                Clients : 
-                                    <b>
-                                        {% if clientSelect.client__id %}
-                                            {{clientSelect.client__societe}}
-                                        {% else %}
-                                            Tous
-                                        {% endif %}
-                                    </b>
-                                <br>
-                                Vendeur : 
-                                <b>
-                                    {% if vendeurSelect.nom %}
-                                        {{vendeurSelect.nom }}
-                                    {% else %}
-                                        Tous
-                                    {% endif %}
-                                </b>
-                            </p>
-                            <li class=" d-flex justify-content-between align-items-center">
-                                <b>T.HT </b> <h4><span class="badge badge-success badge-pill">{{resultHt ~ " ‎€"}}</span></h4>
-                            </li>
-                            <p>
-                                <b>{{NombreCmd}}</b> factures
-                            </p>
-                        </ul>
-                    </div>
-                    {% endif %}
-                </div>
-                <div class="col-7 my-4  d-flex flex column">
-                    <div>
-                        <input type="hidden" id="chartsResponse" value="{{arrayPresta}}">
-                    </div>
-                    <div id="chartsDiv1">
-                    </div>
-                </div>
-              
-                    <div class="col-3 my-4 mx-4">
+	<div class="d-flex flex-wrap flex-row justify-content-start ">
+		{# Carte Date et filtre (a gauche) #}
+		<div class="col-4 d-flex justify-content-center h-100">
+			<div class="card shadow h-100 col-12">
+				<div class="card-body">
+					<form action="stat" method='POST' id="form_stat">
+						<input type="hidden" name="{{type_tot}}">
+						<input type="hidden" value="{{date_debut}}" name="date_debut">
+						<input type="hidden" value="{{date_fin}}" name="date_fin">
+						<h5>Période</h5>
+						<div class="d-flex justify-content-between col-12">
+							<div class="col-6">
+								<label>Du</label>
+								<input type="date" class="form-control" name="date_debut" value='{{date_debut}}' required>
+							</div>
+							<div class="col-6">
+								<label>Au</label>
+								<input type="date" class="form-control" name="date_fin" value='{{date_fin}}' required>
+							</div>
+						</div>
+						<br>
+						<h5>Filtres</h5>
+						<div class="d-flex flex-column col-12">
+							{# <label>Client</label>
+							<select class="selectpicker show-tick border" data-live-search="true" data-width="100%" name="client" required>
+								<option value="Tous">Tous</option>
+								{% for client in clientList %}
+									{% set selected = '' %} {# Mise a blanc de l'option SELECTED # }
+									{% if clientSelect.client__id == client.client__id %} {% set selected = ' selected' %} {% endif %}
+									<option value="{{client.client__id}}"{{selected}}>{{client.client__societe}} ({{client.client__id}})</option>
+								{% endfor %}
+							</select>
+							<br> #}
+							<label>Vendeur</label>
+							<select class="selectpicker show-tick border" data-live-search="true" data-width="100%" name='vendeur' required>
+								<option value="Tous">Tous</option>
+								{% for vendeur in vendeurList %}
+									{% set selected = '' %} {# Mise a blanc de l'option SELECTED #}
+									{% if vendeurSelect.id_utilisateur == vendeur.id_utilisateur %} {% set selected = ' selected' %} {% endif %}
+									<option value="{{vendeur.id_utilisateur}}"{{selected}}>{{vendeur.nom}} {{vendeur.prenom}}</option>
+								{% endfor %}
+							</select>
+						</div>
+						<br>
+						<div class="d-flex flex-column col-12">
+							<button type="submit" class="btn btn-success ">Compter...</button>
+						</div>
+						<br>
+						<h5>Autres Chiffres</h5>
+						<div class="d-flex flex-column col-12">
+							<div class="h6 bg-sm"><a href="stat?CAS&date_debut={{date_debut}}&date_fin={{date_fin}}" data-toggle="tooltip" data-html="true" title="Prise de commandes validées sur la période SANS maintenance"><i class="fad fa-file-contract fa-lg"></i> Chiffre affaires Facturé de la période SANS Maintenance</a></div>
+							<div class="h6 bg-sm"><a href="stat?CSM&date_debut={{date_debut}}&date_fin={{date_fin}}" data-toggle="tooltip" data-html="true" title="Prise de commandes validées sur la période SANS maintenance"><i class="fad fa-file-contract fa-lg"></i> Commandes de la période SANS Maintenance</a></div>
+							<div class="h6 bg-sm"><a href="stat?CAM&date_debut={{date_debut}}&date_fin={{date_fin}}" data-toggle="tooltip" data-html="true" title="Prise de commandes validées sur la période AVEC maintenance (facturations automatique)"><i class="fad fa-file-contract fa-lg "></i> Commandes de la période AVEC Maintenance (Fact. Auto)</a></div>
+						</div>
+					</form>
+				</div>
+				{# Tuile bleu Information (Bas a Gauche) #}
+				<div class="card-headder">
+					<div class="alert alert-info" role="alert">
+						<span  class="btn btn-lg btn-link"><i class="far fa-question-circle"></i></span><br>
+						{{desc_stat}}
+					</div>
+				</div>
+			</div>
+		</div>
 
-                    </div>
-                    <div class="col-7 my-4 d-flex flex column">
-                        <input type="hidden" id="chartsVendeur" value="{{chartsVendeur}}">
-                        <div  id="CamVendeur">
-                        </div>
-                    </div>
-            </div>
-        </div>
-    </div>
+
+		<div class="col-8">
+			{# Tuile des Résulta de comptages #}
+			<div class="card shadow mb-4 d-flex flex-row justify-content-start flex-wrap h-100">
+				<div class="col-12 my-4">
+					<h5 class="card-title">Résultats :</h5>
+					{% if alertDate %}
+						<div class="alert alert-danger" role="alert">
+							<p> Aucun résultats pour les filtres selectionnés : </p>
+						</div>
+					{% else %}
+						<div class="alert alert-success" align=center>
+							Période du : <b>{{date_debut_fr}}</b> Au : <b>{{date_fin_fr}}</b>
+							 - Clients : <b>{% if clientSelect.client__id %}{{clientSelect.client__societe}}{% else %}Tous{% endif %}</b>
+							 - Vendeur : <b>{% if vendeurSelect.nom %}{{vendeurSelect.nom }}{% else %}Tous{% endif %}</b>
+							 - <b>{{nb_fiche}}</b> factures
+							<br>
+							<div class="h3"><span class="badge badge-success badge-pill">{{total_ca|number_format(2,',',' ')}} ‎€ HT</span></div>
+							<em>{{titre_stat}}</em>
+						</div>
+					{% endif %}
+				</div>
+				<div class="col-12 my-4  d-flex flex column">
+					<div>
+						<input type="hidden" id="chartsResponse" value="{{arrayPresta}}">
+					</div>
+					<div id="chartsDiv1" style="height: 400px;">
+					</div>
+				</div>
+
+				<div class="col-12 my-4 d-flex flex column">
+					<input type="hidden" id="chartsVendeur" value="{{chartsVendeur}}">
+					<div  id="CamVendeur" style="height: 400px;">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </main>
 {% endblock %}
 {% block script %}
