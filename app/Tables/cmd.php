@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Tables;
+
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Tables\Table;
@@ -11,17 +13,21 @@ use DateTime;
 use App\Tables\Client;
 use App\Tables\Contact;
 use App\Tables\User;
-class Cmd extends Table {
-  
+
+class Cmd extends Table
+{
+
   public Database $Db;
-  
-  public function __construct($db) {
+
+  public function __construct($db)
+  {
     $this->Db = $db;
   }
 
-//si un jour quelqu'un se demande pourquoi y'a des allias pourris : changement de DB en plein dev .. goood luck 
-  public function GetById($id){
-    $request =$this->Db->Pdo->query("SELECT
+  //si un jour quelqu'un se demande pourquoi y'a des allias pourris : changement de DB en plein dev .. goood luck 
+  public function GetById($id)
+  {
+    $request = $this->Db->Pdo->query("SELECT
     cmd__id as devis__id ,
     cmd__user__id_devis as devis__user__id ,
     cmd__date_devis as devis__date_crea, 
@@ -58,7 +64,7 @@ class Cmd extends Table {
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
     LEFT JOIN utilisateur as u2 ON cmd__user__id_cmd = u2.id_utilisateur
     LEFT JOIN utilisateur as u3 ON cmd__user__id_fact = u3.id_utilisateur
-    WHERE cmd__id = ". $id ."");
+    WHERE cmd__id = " . $id . "");
     $data = $request->fetch(PDO::FETCH_OBJ);
     return $data;
   }
@@ -67,7 +73,7 @@ class Cmd extends Table {
   //si un jour quelqu'un se demande pourquoi y'a des allias pourris : changement de DB en plein dev .. goood luck 
   public function get_user_status($id_user, $status_cmd)
   {
-    $request =$this->Db->Pdo->query("SELECT
+    $request = $this->Db->Pdo->query("SELECT
     cmd__id ,
     cmd__user__id_devis, 
     cmd__date_devis,  
@@ -90,14 +96,14 @@ class Cmd extends Table {
     LEFT JOIN keyword as k ON cmd__etat = k.kw__value AND  k.kw__type = 'stat'
     LEFT JOIN keyword as k3 ON cmd__tva = k3.kw__value AND k3.kw__type = 'tva'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
-    WHERE cmd__user__id_devis = '". $id_user ."' AND cmd__etat = '".$status_cmd."'");
+    WHERE cmd__user__id_devis = '" . $id_user . "' AND cmd__etat = '" . $status_cmd . "'");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
   }
 
 
   //fonction qui retoune les commandes liés a un client ( ordre par date de devis + récentes) limite a passer en paramètre : 
-  public function get_by_client_id($id_client , $limit)
+  public function get_by_client_id($id_client, $limit)
   {
     $request = $this->Db->Pdo->query("SELECT
     cmd__id , 
@@ -133,13 +139,14 @@ class Cmd extends Table {
     LEFT JOIN keyword as k ON cmd__etat = k.kw__value AND  k.kw__type = 'stat'
     LEFT JOIN keyword as k3 ON cmd__tva = k3.kw__value AND k3.kw__type = 'tva'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
-    WHERE cmd__client__id_fact = '". $id_client. "' AND cmd__etat <> 'PBL' ORDER BY cmd__date_devis DESC LIMIT ".$limit." ");
+    WHERE cmd__client__id_fact = '" . $id_client . "' AND cmd__etat <> 'PBL' ORDER BY cmd__date_devis DESC LIMIT " . $limit . " ");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
   }
 
-  public function getUserDevis($id){
-    $request =$this->Db->Pdo->query("SELECT 
+  public function getUserDevis($id)
+  {
+    $request = $this->Db->Pdo->query("SELECT 
     cmd__id as devis__id ,
     cmd__user__id_devis as devis__user__id ,
     cmd__date_devis as devis__date_crea, 
@@ -166,14 +173,15 @@ class Cmd extends Table {
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
     LEFT JOIN keyword as k ON cmd__etat = k.kw__value and k.kw__type = 'stat'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
-    WHERE  cmd__user__id_devis = '". $id ."'AND  cmd__etat = 'ATN' ORDER BY  devis__date_crea DESC , c.client__societe ASC LIMIT 200");
+    WHERE  cmd__user__id_devis = '" . $id . "'AND  cmd__etat = 'ATN' ORDER BY  devis__date_crea DESC , c.client__societe ASC LIMIT 200");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
   }
 
 
-  public function getAll(){
-    $request =$this->Db->Pdo->query("SELECT 
+  public function getAll()
+  {
+    $request = $this->Db->Pdo->query("SELECT 
     cmd__id as devis__id ,
     cmd__user__id_devis as devis__user__id ,
     cmd__date_devis as devis__date_crea, 
@@ -205,8 +213,9 @@ class Cmd extends Table {
     return $data;
   }
 
-  public function getAllDevis(){
-    $request =$this->Db->Pdo->query("SELECT 
+  public function getAllDevis()
+  {
+    $request = $this->Db->Pdo->query("SELECT 
     cmd__id as devis__id ,
     cmd__user__id_devis as devis__user__id ,
     cmd__date_devis as devis__date_crea, 
@@ -240,46 +249,56 @@ class Cmd extends Table {
   }
 
 
-  public function updateStatus($etat,$id){
+  public function updateStatus($etat, $id)
+  {
     $update = $this->Db->Pdo->prepare(
-    'UPDATE cmd
+      'UPDATE cmd
      SET cmd__etat=? 
-     WHERE cmd__id =?');
-    $update->execute([$etat,$id]);
+     WHERE cmd__id =?'
+    );
+    $update->execute([$etat, $id]);
   }
 
-  public function updateComInterne($com,$id){
+  public function updateComInterne($com, $id)
+  {
     $update = $this->Db->Pdo->prepare(
-    'UPDATE cmd
+      'UPDATE cmd
      SET cmd__note_interne=? 
-     WHERE cmd__id =?');
-    $update->execute([$com,$id]);
+     WHERE cmd__id =?'
+    );
+    $update->execute([$com, $id]);
   }
 
-  public function updateComInterneLigne($com,$id){
+  public function updateComInterneLigne($com, $id)
+  {
     $update = $this->Db->Pdo->prepare(
-    'UPDATE cmd_ligne
+      'UPDATE cmd_ligne
      SET cmdl__note_interne=? 
-     WHERE cmdl__id =?');
-    $update->execute([$com,$id]);
+     WHERE cmdl__id =?'
+    );
+    $update->execute([$com, $id]);
   }
 
-  public function updateDate($column , $date,  $id){
+  public function updateDate($column, $date,  $id)
+  {
     $update = $this->Db->Pdo->prepare(
-    'UPDATE cmd 
-     SET ' . $column. ' = ? 
+      'UPDATE cmd 
+     SET ' . $column . ' = ? 
      WHERE cmd__id =?    
-    ');
-    $update->execute([ $date , $id ]);
+    '
+    );
+    $update->execute([$date, $id]);
   }
 
-  public function updateAuthor($column , $author , $id){
+  public function updateAuthor($column, $author, $id)
+  {
     $update = $this->Db->Pdo->prepare(
-    'UPDATE cmd 
-     SET '. $column .' = ? 
+      'UPDATE cmd 
+     SET ' . $column . ' = ? 
      WHERE cmd__id = ? 
-    ');
-     $update->execute([ $author , $id ]);
+    '
+    );
+    $update->execute([$author, $id]);
   }
 
 
@@ -289,15 +308,16 @@ class Cmd extends Table {
       'UPDATE cmd 
        SET cmd__etat = "ARH"
        WHERE cmd__id = ? 
-      ');
-       $update->execute([$cmdId]);
+      '
+    );
+    $update->execute([$cmdId]);
   }
 
   public function test()
   {
     $request = $this->Db->Pdo->query("SELECT * FROM cmd WHERE cmd__etat = 'VLD' ");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
-    return $data ;
+    return $data;
   }
 
 
@@ -305,147 +325,151 @@ class Cmd extends Table {
   public function updateDatePlusOne($cmdId)
   {
     $check = $this->Db->Pdo->query(
-      'SELECT cmd__date_cmd + INTERVAL 1 DAY  as dateLivraison FROM cmd WHERE cmd__id = '.$cmdId.' ');
-    
+      'SELECT cmd__date_cmd + INTERVAL 1 DAY  as dateLivraison FROM cmd WHERE cmd__id = ' . $cmdId . ' '
+    );
+
     $results = $check->fetch(PDO::FETCH_OBJ);
     $update = $this->Db->Pdo->prepare(
       'UPDATE cmd 
        SET cmd__date_envoi =?
        WHERE cmd__id = ? 
-      ');
-       $update->execute([$results->dateLivraison ,$cmdId]);
-    
+      '
+    );
+    $update->execute([$results->dateLivraison, $cmdId]);
   }
 
   //met a jour les info relative au transport ainsi que la date et l'etat ( saisie )
-  public function updateTransport($trans , $poids , $paquet ,  $id , $imp , $date ){
+  public function updateTransport($trans, $poids, $paquet,  $id, $imp, $date)
+  {
 
 
     $check = $this->Db->Pdo->query(
-    'SELECT cmd__client__id_fact , cmd__client__id_livr FROM cmd WHERE cmd__id = '.$id.' 
-    ');
+      'SELECT cmd__client__id_fact , cmd__client__id_livr FROM cmd WHERE cmd__id = ' . $id . ' 
+    '
+    );
 
     $results = $check->fetch(PDO::FETCH_OBJ);
 
-    if (empty($results->cmd__client__id_livr)) 
-    {
-     $transfert =  $this->Db->Pdo->prepare(
-      'UPDATE cmd 
-       SET  cmd__client__id_livr = '.$results->cmd__client__id_fact.' 
-       WHERE cmd__id = '.$id.'
-      ');
+    if (empty($results->cmd__client__id_livr)) {
+      $transfert =  $this->Db->Pdo->prepare(
+        'UPDATE cmd 
+       SET  cmd__client__id_livr = ' . $results->cmd__client__id_fact . ' 
+       WHERE cmd__id = ' . $id . '
+      '
+      );
       $transfert->execute();
     }
 
     $check2 = $this->Db->Pdo->query(
-      'SELECT cmd__contact__id_fact , cmd__client__id_fact FROM cmd WHERE cmd__id = '.$id.' 
-      ');
-  
-      $results2 = $check2->fetch(PDO::FETCH_OBJ);
-  
-      if (!empty($results2->cmd__contact__id_fact)) 
-      {
-       $transfert2 =  $this->Db->Pdo->prepare(
+      'SELECT cmd__contact__id_fact , cmd__client__id_fact FROM cmd WHERE cmd__id = ' . $id . ' 
+      '
+    );
+
+    $results2 = $check2->fetch(PDO::FETCH_OBJ);
+
+    if (!empty($results2->cmd__contact__id_fact)) {
+      $transfert2 =  $this->Db->Pdo->prepare(
         'UPDATE cmd 
-         SET  cmd__contact__id_livr = '.$results2->cmd__contact__id_fact.' 
-         WHERE cmd__id = '.$id.'
-        ');
-        $transfert2->execute();
-      }
+         SET  cmd__contact__id_livr = ' . $results2->cmd__contact__id_fact . ' 
+         WHERE cmd__id = ' . $id . '
+        '
+      );
+      $transfert2->execute();
+    }
 
-    $data = 
-    [
-      $trans ,
-      $poids, 
-      $paquet , 
-      $imp ,
-      $date,
-      $id , 
+    $data =
+      [
+        $trans,
+        $poids,
+        $paquet,
+        $imp,
+        $date,
+        $id,
 
-    ];
+      ];
     $update = $this->Db->Pdo->prepare(
       'UPDATE cmd
        SET cmd__trans =? , cmd__trans_kg =? , cmd__trans_info =? , cmd__etat =? , cmd__date_envoi =?  
 
-       WHERE cmd__id = ? ');
-    
-    $update->execute($data);
+       WHERE cmd__id = ? '
+    );
 
+    $update->execute($data);
   }
 
   //met a jour un champs dans une ligne / prend une collones en second parametre
-  public function updateLigne($qte , $column,  $id )
+  public function updateLigne($qte, $column,  $id)
   {
-    $data = 
-    [
-      $qte,
-      $id ,
-    ];
+    $data =
+      [
+        $qte,
+        $id,
+      ];
 
     $update = $this->Db->Pdo->prepare(
       'UPDATE cmd_ligne 
-      SET '. $column .' = ?
+      SET ' . $column . ' = ?
       WHERE cmdl__id = ? '
     );
 
     $update->execute($data);
-
   }
 
   //met a jour les quantité et le prix (facturation)
-  public function updateLigneFTC($id, $qteCMD , $qteLVR, $qteFTC , $note_facture , $prix )
+  public function updateLigneFTC($id, $qteCMD, $qteLVR, $qteFTC, $note_facture, $prix)
   {
-    $data = 
-    [
-      $qteCMD,
-      $qteLVR,
-      $qteFTC,
-      $prix,
-      $note_facture,
-      $id
-    ];
+    $data =
+      [
+        $qteCMD,
+        $qteLVR,
+        $qteFTC,
+        $prix,
+        $note_facture,
+        $id
+      ];
 
     $update = $this->Db->Pdo->prepare(
       'UPDATE cmd_ligne
        SET cmdl__qte_cmd =? ,cmdl__qte_livr=? , cmdl__qte_fact=? , cmdl__puht =? , cmdl__note_facture=?
-       WHERE cmdl__id=? ');
-    
+       WHERE cmdl__id=? '
+    );
+
     $update->execute($data);
   }
 
 
-//retourne le devis lié à la ligne:
-public function returnDevis($idCmdl)
-{
-  $getD = $this->Db->Pdo->query("SELECT cmdl__cmd__id FROM cmd_ligne WHERE cmdl__id = ".$idCmdl."");
-  $id = $getD->fetch(PDO::FETCH_OBJ);
+  //retourne le devis lié à la ligne:
+  public function returnDevis($idCmdl)
+  {
+    $getD = $this->Db->Pdo->query("SELECT cmdl__cmd__id FROM cmd_ligne WHERE cmdl__id = " . $idCmdl . "");
+    $id = $getD->fetch(PDO::FETCH_OBJ);
 
 
-  $request =$this->Db->Pdo->query("SELECT
+    $request = $this->Db->Pdo->query("SELECT
     cmd__id as devis__id FROM cmd
-    WHERE cmd__id = ". $id->cmdl__cmd__id ."");
+    WHERE cmd__id = " . $id->cmdl__cmd__id . "");
     $data = $request->fetch(PDO::FETCH_OBJ);
     return $data;
+  }
 
-}
 
- 
-//met a jours les extensions de garantie pour la cmd passée en parametre
-  public function updateGarantie($mois, $prix , $comInterne , $qte,  $id , $ordre){
-    $data = 
-    [
-      $mois, 
-      floatval($prix) , 
-      $comInterne , 
-      $qte,
-      $id , 
-      $ordre
-    ];
+  //met a jours les extensions de garantie pour la cmd passée en parametre
+  public function updateGarantie($mois, $prix, $comInterne, $qte,  $id, $ordre)
+  {
+    $data =
+      [
+        $mois,
+        floatval($prix),
+        $comInterne,
+        $qte,
+        $id,
+        $ordre
+      ];
 
-  
 
-    $sql = 
-   "UPDATE cmd_ligne
+
+    $sql =
+      "UPDATE cmd_ligne
     SET  
     cmdl__garantie_option  =?,
     cmdl__garantie_puht = ?,
@@ -453,30 +477,29 @@ public function returnDevis($idCmdl)
     cmdl__qte_cmd = ?
     WHERE cmdl__cmd__id  = ?  
     AND  cmdl__ordre = ?";
-    
+
     $update = $this->Db->Pdo->prepare($sql);
     $update->execute($data);
   }
 
   public function update_garantie()
   {
-
   }
 
 
 
 
-//met a jour l'id client et l'id contact (facture)
-  public function updateClientContact($idClient , $idContact , $id)
+  //met a jour l'id client et l'id contact (facture)
+  public function updateClientContact($idClient, $idContact, $id)
   {
-    $data = 
-    [
-      $idClient ,
-      $idContact ,
-      $id
-    ];
-    $sql = 
-    "UPDATE cmd
+    $data =
+      [
+        $idClient,
+        $idContact,
+        $id
+      ];
+    $sql =
+      "UPDATE cmd
      SET 
      cmd__client__id_fact =?,
      cmd__contact__id_fact =?
@@ -494,882 +517,836 @@ public function returnDevis($idCmdl)
   //met a jour la quanbtité facturé dans une ligne de facture: 
   public function updateQuantiteFTC($cmd)
   {
-    $request =$this->Db->Pdo->query("SELECT
+    $request = $this->Db->Pdo->query("SELECT
     cmdl__id , cmdl__cmd__id, cmdl__qte_livr , cmdl__qte_fact
     FROM cmd_ligne 
-    WHERE cmdl__cmd__id = ". $cmd ."");
+    WHERE cmdl__cmd__id = " . $cmd . "");
     $arrayLigne = $request->fetchAll(PDO::FETCH_OBJ);
 
-    foreach ($arrayLigne as $ligne) 
-    {
-        if ($ligne->cmdl__qte_fact == null) 
-        {
-          $data = 
+    foreach ($arrayLigne as $ligne) {
+      if ($ligne->cmdl__qte_fact == null) {
+        $data =
           [
             $ligne->cmdl__qte_livr,
             $ligne->cmdl__id
           ];
-          
-          $updateFTC = 
-            "UPDATE cmd_ligne
+
+        $updateFTC =
+          "UPDATE cmd_ligne
             SET cmdl__qte_fact =?
             WHERE cmdl__id =? ";
-          
-          $update = $this->Db->Pdo->prepare($updateFTC);
-          $update->execute($data);
-        }  
+
+        $update = $this->Db->Pdo->prepare($updateFTC);
+        $update->execute($data);
+      }
     }
   }
 
 
-  
 
-// si un ecart est constaté dans les quantité génère des reliquats automatiquement: 
-public function classicReliquat($cmd)
-{
-  $lignes = $this->devisLigne($cmd);
- 
-  $NewLines = [];
-  foreach ($lignes as $ligne) 
+
+  // si un ecart est constaté dans les quantité génère des reliquats automatiquement: 
+  public function classicReliquat($cmd)
   {
-    
-    if ( intval($ligne->devl_quantite) > intval($ligne->cmdl__qte_fact)) 
-    {
-      $ligne->devl_quantite = intval($ligne->devl_quantite) - intval($ligne->cmdl__qte_fact);
-      array_push($NewLines, $ligne);
+    $lignes = $this->devisLigne($cmd);
+
+    $NewLines = [];
+    foreach ($lignes as $ligne) {
+
+      if (intval($ligne->devl_quantite) > intval($ligne->cmdl__qte_fact)) {
+        $ligne->devl_quantite = intval($ligne->devl_quantite) - intval($ligne->cmdl__qte_fact);
+        array_push($NewLines, $ligne);
+      }
     }
-  }
- 
-  
-  if (!empty($NewLines)) 
-  {
-   
-    $reliquat = $this->GetById($cmd);
 
-    $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd, cmd__date_devis, cmd__client__id_fact,
+
+    if (!empty($NewLines)) {
+
+      $reliquat = $this->GetById($cmd);
+
+      $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd, cmd__date_devis, cmd__client__id_fact,
       cmd__client__id_livr, cmd__contact__id_fact,  cmd__contact__id_livr,
       cmd__note_client, cmd__note_interne, cmd__code_cmd_client,
       cmd__etat, cmd__user__id_devis, cmd__user__id_cmd)
       VALUES (:cmd__date_cmd, :cmd__date_devis, :cmd__client__id_fact, :cmd__client__id_livr, :cmd__contact__id_fact, :cmd__contact__id_livr,
       :cmd__note_client, :cmd__note_interne, :cmd__code_cmd_client, :cmd__etat, :cmd__user__id_devis, :cmd__user__id_cmd)');
 
-    $date = date("Y-m-d H:i:s"); 
+      $date = date("Y-m-d H:i:s");
 
-    $code_cmd = 'RELIQUAT n°' . $reliquat->devis__id . "  " .  $reliquat->cmd__code_cmd_client;
+      $code_cmd = 'RELIQUAT n°' . $reliquat->devis__id . "  " .  $reliquat->cmd__code_cmd_client;
 
-    $request->bindValue(":cmd__date_cmd", $date);
-    $request->bindValue(":cmd__date_devis", $date);
-    $request->bindValue(":cmd__client__id_fact", $reliquat->client__id);
-    $request->bindValue(":cmd__client__id_livr", $reliquat->devis__id_client_livraison);
-    $request->bindValue(":cmd__contact__id_fact", $reliquat->devis__contact__id);
-    $request->bindValue(":cmd__contact__id_livr", $reliquat->devis__contact_livraison);
-    $request->bindValue(":cmd__note_client", $reliquat->devis__note_client);   
-    $request->bindValue(":cmd__note_interne", $reliquat->devis__note_interne);
-    $request->bindValue(":cmd__code_cmd_client", $code_cmd );
-    $request->bindValue(":cmd__etat", 'CMD');
-    $request->bindValue(":cmd__user__id_devis", $reliquat->devis__user__id );
-    $request->bindValue(":cmd__user__id_cmd", $reliquat->cmd__user__id_cmd );
-
-    
-    $request->execute();
-
-    
-    
-    $idReliquat = $this->Db->Pdo->lastInsertId();
-    $count = 0 ;
+      $request->bindValue(":cmd__date_cmd", $date);
+      $request->bindValue(":cmd__date_devis", $date);
+      $request->bindValue(":cmd__client__id_fact", $reliquat->client__id);
+      $request->bindValue(":cmd__client__id_livr", $reliquat->devis__id_client_livraison);
+      $request->bindValue(":cmd__contact__id_fact", $reliquat->devis__contact__id);
+      $request->bindValue(":cmd__contact__id_livr", $reliquat->devis__contact_livraison);
+      $request->bindValue(":cmd__note_client", $reliquat->devis__note_client);
+      $request->bindValue(":cmd__note_interne", $reliquat->devis__note_interne);
+      $request->bindValue(":cmd__code_cmd_client", $code_cmd);
+      $request->bindValue(":cmd__etat", 'CMD');
+      $request->bindValue(":cmd__user__id_devis", $reliquat->devis__user__id);
+      $request->bindValue(":cmd__user__id_cmd", $reliquat->cmd__user__id_cmd);
 
 
-    
-    foreach ($NewLines as $lines ) 
-    {
-      $count += 1;
-      $insertObject = new stdClass;
-      $insertObject->idDevis = $idReliquat;
-      $insertObject->prestation = $lines->devl__type;
-      $insertObject->designation = $lines->devl__designation;
-      $insertObject->etat = $lines->devl__etat;
-      $insertObject->garantie = $lines->devl__mois_garantie;
-      $insertObject->quantite = $lines->devl_quantite;
-      $insertObject->prix = $lines->devl_puht;
-      $insertObject->comInt = $lines->devl__note_interne;
-      $insertObject->comClient = $lines->devl__note_client;
-      $insertObject->idfmm = $lines->id__fmm;
-      $insertObject->extension = $lines->cmdl__garantie_option;
-      $insertObject->prixGarantie = $lines->cmdl__garantie_puht;
-
-      $createLine = $this->insertLineReliquat($insertObject);
-     
-    
-  }
-
-$command = $this->getById(intval($idReliquat));
-$commandLignes = $this->devisLigne($idReliquat);
-$Client = new Client($this->Db);
-$Contact = new Contact($this->Db);
-$User = new User($this->Db);
-$clientView = $Client->getOne($command->client__id);
-$user = $User->getByID($clientView->client__id_vendeur);
-$userCMD = $User->getByID($command->cmd__user__id_cmd);
-
-    $societeLivraison = false ;
-
-    if ($command->devis__id_client_livraison) 
-    {
-        $societeLivraison = $Client->getOne($command->devis__id_client_livraison);
-    }
-$dateTemp = new DateTime($command->cmd__date_cmd);
- //cree une variable pour la date de commande du devis
- $date_time = new DateTime( $command->cmd__date_cmd);
- //formate la date pour l'utilisateur:
- $formated_date = $date_time->format('d/m/Y');
- 
- ob_start();
-?>
-<style type="text/css">
-      strong{ color:#000;}
-      h3{ color:#666666;}
-      h2{ color:#3b3b3b;}
-      table{
-        font-size:13; font-style: normal; font-variant: normal; 
-       border-collapse:separate; 
-       border-spacing: 0 15px; 
-         }  
- </style>
-
-<page backtop="10mm" backleft="5mm" backright="5mm">
-     <table style="width: 100%;">
-         <tr>
-             <td style="text-align: left;  width: 50%"><img  style=" width:60mm" src="public/img/recodeDevis.png"/></td>
-             <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br>
-             <a>www.recode.fr</a><br><br>
-             <br></td>
-             </tr>
-             <tr>
-             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h4>Fiche De travail -  <?php echo $command->devis__id ?></h4>
-             <barcode dimension="1D" type="C128" label="none" value="<?php echo $command->devis__id ?>" style="width:40mm; height:8mm; color: #3b3b3b; font-size: 4mm"></barcode><br>
-
-            Commandé le : <strong><?php echo $formated_date ?></strong><br>
-            Commercial : <strong><?php
-                        if (!empty($user)) 
-                        {
-                            echo  $user->nom . ' '. $user->prenom ;
-                        } 
-                        else 
-                        {
-                            echo 'Non renseigné';
-                        }
-                    ?>
-                </strong> 
-                    <?php
-                        if (!empty($user->postefix)) 
-                        {
-                        echo ' (Tél: '. $user->postefix .')';
-                        } 
-
-                        
-                    ?>
-                     
-                
-                    <?php
-                        if (!empty($userCMD)) 
-                        {
-                            echo  '<br>Commandé par : <strong>'.$userCMD->nom . ' '. $userCMD->prenom .'</strong> ';
-                        } 
-                    ?>
-                
-                    <?php
-                        if (!empty($userCMD->postefix)) 
-                        {
-                        echo ' (Tél: '. $userCMD->postefix .')';
-                        } 
-
-                       
-                    ?> 
-                    </td>
-             <td style="text-align: left; width:50%"><strong><?php 
-              if ($societeLivraison) 
-              {
-
-                if ($command->devis__contact__id) {
-                    // si un contact est présent dans l'adresse de facturation :
-                    $contact = $Contact->getOne($command->devis__contact__id);
-                    echo "<small>facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom. "</small><strong><br>";
-                    echo Pdfunctions::showSociete($clientView) ." </strong> ";
-                    if (!empty($clientView->client__tel)) 
-                        {
-                           echo '<br> TEL : '.$clientView->client__tel.'';
-                        }  
-                
-                    if ($command->devis__contact_livraison) {
-                        //si un contact est présent dans l'adresse de livraison : 
-                        $contact2 = $Contact->getOne($command->devis__contact_livraison);
-                        echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
-                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-                        if (!empty($societeLivraison->client__tel)) 
-                        {
-                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
-                        }      
-                    }
-                    else {
-                        // si pas de contact de livraison : 
-                        echo "<br> <small>livraison :</small><strong><br>";
-                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-                        if (!empty($societeLivraison->client__tel)) 
-                        {
-                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
-                        }  
-                    } 
-                }
-
-                else {
-                    echo "<small>facturation :</small><strong><br>";
-                    echo Pdfunctions::showSociete($clientView) ." </strong>" ;
-                    if ($command->devis__contact_livraison) {
-                        $contact2 = $Contact->getOne($command->devis__contact_livraison);
-                        echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
-                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-                        if (!empty($societeLivraison->client__tel)) 
-                        {
-                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
-                        }  
-                    } else {
-                        echo "<br> <small>livraison :</small><strong><br>";
-                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-                        if (!empty($societeLivraison->client__tel)) 
-                        {
-                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
-                        } 
-                    }  
-                }  
-         } 
+      $request->execute();
 
 
 
-         else{
-            if ($command->devis__contact__id) {
-            $contact = $Contact->getOne($command->devis__contact__id);
-            echo "<small>livraison & facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."</small><strong><br>";
-            echo Pdfunctions::showSociete($clientView)  ."</strong>";
-            if (!empty($clientView->client__tel)) 
-            {
-               echo '<br> TEL : '.$clientView->client__tel.'';
-            }  
-            }
-            else{
-                echo "<small>livraison & facturation : </small><strong><br>";
-                echo Pdfunctions::showSociete($clientView)  ."</strong>";
-            if (!empty($clientView->client__tel)) 
-                {
-                   echo '<br>TEL : '.$clientView->client__tel.'';
-                }  
-            }
-
-         } 
-          
-         
-         
-         if ($command->cmd__code_cmd_client) 
-         {
-            echo "<br> Code cmd: " . $command->cmd__code_cmd_client ;
-         }
-         ?>
-         </strong>
-            </td>
-         </tr>
-     </table>
+      $idReliquat = $this->Db->Pdo->lastInsertId();
+      $count = 0;
 
 
-     <table CELLSPACING=0 style="width: 100%;  margin-top: 80px; ">
-             <tr style=" margin-top : 50px; background-color: #dedede;">
-                <td style="width: 22%; text-align: left;">Presta<br>Type<br>Gar.</td>
-                <td style="width: 60%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
-                <td style="text-align: center; width: 9%"><strong>CMD</strong></td>
-                <td style="text-align: center; width: 9%"><strong>Livré</strong></td>
-             </tr> 
-             <?php
-             foreach ($commandLignes as $item) {
-                if($item->cmdl__garantie_option > $item->devl__mois_garantie) 
-                {
-                  $temp = $item->cmdl__garantie_option ;
-                }
-                 else 
-                 { 
-                     if (!empty($item->devl__mois_garantie)) 
-                     {
-                        $temp = $item->devl__mois_garantie;
-                     }
-                     else
-                     {
-                        $temp = "";
-                     }
-                   
-                 }
 
-               
+      foreach ($NewLines as $lines) {
+        $count += 1;
+        $insertObject = new stdClass;
+        $insertObject->idDevis = $idReliquat;
+        $insertObject->prestation = $lines->devl__type;
+        $insertObject->designation = $lines->devl__designation;
+        $insertObject->etat = $lines->devl__etat;
+        $insertObject->garantie = $lines->devl__mois_garantie;
+        $insertObject->quantite = $lines->devl_quantite;
+        $insertObject->prix = $lines->devl_puht;
+        $insertObject->comInt = $lines->devl__note_interne;
+        $insertObject->comClient = $lines->devl__note_client;
+        $insertObject->idfmm = $lines->id__fmm;
+        $insertObject->extension = $lines->cmdl__garantie_option;
+        $insertObject->prixGarantie = $lines->cmdl__garantie_puht;
 
-                echo "<tr style='font-size: 100%;>
-                        <td style='border-bottom: 1px #ccc solid'> ". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois</td>
-                        <td style='border-bottom: 1px #ccc solid; width: 55%;'> 
-                            <br> <small>désignation :</small> <b>" . $item->devl__designation ."</b><br>"
-                            .$item->famille__lib. " " . $item->marque . " " .$item->modele. " ". $item->devl__modele  ." " .$item->devl__note_interne . 
-                        "</td>
-                         <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite. " </strong></td>
-                         <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
-                      </tr>";
-             }
-             ?>
-     </table> 
-     
-     <table style=" margin-top: 50px; width: 100%">
-             <tr style=" margin-top: 200px; width: 100%"><td><small>Commentaire:</small></td></tr>
-             <tr >
-             <td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%' > <?php echo  $command->devis__note_interne ?> </td>
-            </tr>
-     </table>
-
-
-     <div style=" width: 100%; position: absolute; bottom:1px">
-    
-   
-     <table CELLSPACING=0 style=" width: 100%;  ">
-        <tr style="background-color: #dedede;">
-                    <td style="text-align: center; width: 30%"><strong>Traitement en atelier </strong></td>
-                    <td style="text-align: center; width: 40%"><strong>Réceptionné par : </strong></td>
-                    <td style="text-align: center; width: 30%"><strong>POIDS</strong></td>
-        </tr> 
-        <tr>
-            <td style="border: 1px #ccc solid; height: 150px;">
-                
-            </td>
-            <td style="border: 1px #ccc solid; ">
-                <small><i>Nom/signature/tampon</i></small>
-            </td>
-            <td style="border: 1px #ccc solid; ">
-                
-            </td>
-        </tr>
-    </table>  
-    
-    </div>  
-
-</page>
-
-<?php
-$content = ob_get_contents();
-
-try 
-{
-    $doc = new Html2Pdf('P','A4','fr');
-    $doc->setDefaultFont('gothic');
-    $doc->pdf->SetDisplayMode('fullpage');
-    $doc->writeHTML($content);
-    ob_clean();
-    if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
-    {
-      $doc->output('O:\intranet\Auto_Print\FT\Ft_'.$command->devis__id.'.pdf' , 'F'); 
+        $createLine = $this->insertLineReliquat($insertObject);
       }
 
-    return $command->devis__id;
-} 
-catch (Html2PdfException $e) 
-{
-  die($e); 
-}
-  }
-}
+      $command = $this->getById(intval($idReliquat));
+      $commandLignes = $this->devisLigne($idReliquat);
+      $Client = new Client($this->Db);
+      $Contact = new Contact($this->Db);
+      $User = new User($this->Db);
+      $clientView = $Client->getOne($command->client__id);
+      $user = $User->getByID($clientView->client__id_vendeur);
+      $userCMD = $User->getByID($command->cmd__user__id_cmd);
+
+      $societeLivraison = false;
+
+      if ($command->devis__id_client_livraison) {
+        $societeLivraison = $Client->getOne($command->devis__id_client_livraison);
+      }
+      $dateTemp = new DateTime($command->cmd__date_cmd);
+      //cree une variable pour la date de commande du devis
+      $date_time = new DateTime($command->cmd__date_cmd);
+      //formate la date pour l'utilisateur:
+      $formated_date = $date_time->format('d/m/Y');
+
+      ob_start();
+?>
+      <style type="text/css">
+        strong {
+          color: #000;
+        }
+
+        h3 {
+          color: #666666;
+        }
+
+        h2 {
+          color: #3b3b3b;
+        }
+
+        table {
+          font-size: 13;
+          font-style: normal;
+          font-variant: normal;
+          border-collapse: separate;
+          border-spacing: 0 15px;
+        }
+      </style>
+
+      <page backtop="10mm" backleft="5mm" backright="5mm">
+        <table style="width: 100%;">
+          <tr>
+            <td style="text-align: left;  width: 50%"><img style=" width:60mm" src="public/img/recodeDevis.png" /></td>
+            <td style="text-align: left; width:50%">
+              <h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br>
+              <a>www.recode.fr</a><br><br>
+              <br>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: left;  width: 50% ; margin-left: 25%;">
+              <h4>Fiche De travail - <?php echo $command->devis__id ?></h4>
+              <barcode dimension="1D" type="C128" label="none" value="<?php echo $command->devis__id ?>" style="width:40mm; height:8mm; color: #3b3b3b; font-size: 4mm"></barcode><br>
+
+              Commandé le : <strong><?php echo $formated_date ?></strong><br>
+              Commercial : <strong><?php
+                                    if (!empty($user)) {
+                                      echo  $user->nom . ' ' . $user->prenom;
+                                    } else {
+                                      echo 'Non renseigné';
+                                    }
+                                    ?>
+              </strong>
+              <?php
+              if (!empty($user->postefix)) {
+                echo ' (Tél: ' . $user->postefix . ')';
+              }
+
+
+              ?>
+
+
+              <?php
+              if (!empty($userCMD)) {
+                echo  '<br>Commandé par : <strong>' . $userCMD->nom . ' ' . $userCMD->prenom . '</strong> ';
+              }
+              ?>
+
+              <?php
+              if (!empty($userCMD->postefix)) {
+                echo ' (Tél: ' . $userCMD->postefix . ')';
+              }
+
+
+              ?>
+            </td>
+            <td style="text-align: left; width:50%"><strong><?php
+                                                            if ($societeLivraison) {
+
+                                                              if ($command->devis__contact__id) {
+                                                                // si un contact est présent dans l'adresse de facturation :
+                                                                $contact = $Contact->getOne($command->devis__contact__id);
+                                                                echo "<small>facturation : " . $contact->contact__civ . " " . $contact->contact__nom . " " . $contact->contact__prenom . "</small><strong><br>";
+                                                                echo Pdfunctions::showSociete($clientView) . " </strong> ";
+                                                                if (!empty($clientView->client__tel)) {
+                                                                  echo '<br> TEL : ' . $clientView->client__tel . '';
+                                                                }
+
+                                                                if ($command->devis__contact_livraison) {
+                                                                  //si un contact est présent dans l'adresse de livraison : 
+                                                                  $contact2 = $Contact->getOne($command->devis__contact_livraison);
+                                                                  echo "<br> <small>livraison : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
+                                                                  echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                                                                  if (!empty($societeLivraison->client__tel)) {
+                                                                    echo '<br> TEL : ' . $societeLivraison->client__tel . '';
+                                                                  }
+                                                                } else {
+                                                                  // si pas de contact de livraison : 
+                                                                  echo "<br> <small>livraison :</small><strong><br>";
+                                                                  echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                                                                  if (!empty($societeLivraison->client__tel)) {
+                                                                    echo '<br> TEL : ' . $societeLivraison->client__tel . '';
+                                                                  }
+                                                                }
+                                                              } else {
+                                                                echo "<small>facturation :</small><strong><br>";
+                                                                echo Pdfunctions::showSociete($clientView) . " </strong>";
+                                                                if ($command->devis__contact_livraison) {
+                                                                  $contact2 = $Contact->getOne($command->devis__contact_livraison);
+                                                                  echo "<br> <small>livraison : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
+                                                                  echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                                                                  if (!empty($societeLivraison->client__tel)) {
+                                                                    echo '<br> TEL : ' . $societeLivraison->client__tel . '';
+                                                                  }
+                                                                } else {
+                                                                  echo "<br> <small>livraison :</small><strong><br>";
+                                                                  echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                                                                  if (!empty($societeLivraison->client__tel)) {
+                                                                    echo '<br> TEL : ' . $societeLivraison->client__tel . '';
+                                                                  }
+                                                                }
+                                                              }
+                                                            } else {
+                                                              if ($command->devis__contact__id) {
+                                                                $contact = $Contact->getOne($command->devis__contact__id);
+                                                                echo "<small>livraison & facturation : " . $contact->contact__civ . " " . $contact->contact__nom . " " . $contact->contact__prenom . "</small><strong><br>";
+                                                                echo Pdfunctions::showSociete($clientView)  . "</strong>";
+                                                                if (!empty($clientView->client__tel)) {
+                                                                  echo '<br> TEL : ' . $clientView->client__tel . '';
+                                                                }
+                                                              } else {
+                                                                echo "<small>livraison & facturation : </small><strong><br>";
+                                                                echo Pdfunctions::showSociete($clientView)  . "</strong>";
+                                                                if (!empty($clientView->client__tel)) {
+                                                                  echo '<br>TEL : ' . $clientView->client__tel . '';
+                                                                }
+                                                              }
+                                                            }
 
 
 
-// si un ecart est constaté dans les quantité génère des reliquats automatiquement: 
-public function FactureReliquat($cmd)
-{
-  $lignes = $this->devisLigne($cmd);
- 
-  $NewLines = [];
-  foreach ($lignes as $ligne) 
-  {
-    
-    if ( intval($ligne->cmdl__qte_livr) < intval($ligne->cmdl__qte_fact)) 
-    {
-      $ligne->devl_quantite = intval($ligne->cmdl__qte_fact) - intval($ligne->cmdl__qte_livr);
-      array_push($NewLines, $ligne);
+                                                            if ($command->cmd__code_cmd_client) {
+                                                              echo "<br> Code cmd: " . $command->cmd__code_cmd_client;
+                                                            }
+                                                            ?>
+              </strong>
+            </td>
+          </tr>
+        </table>
+
+
+        <table CELLSPACING=0 style="width: 100%;  margin-top: 80px; ">
+          <tr style=" margin-top : 50px; background-color: #dedede;">
+            <td style="width: 21%; text-align: left;">Presta<br>Type<br>Gar.</td>
+            <td style="width: 60%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
+            <td style="text-align: center; width: 7%"><strong>CMD</strong></td>
+            <td style="text-align: center; width: 7%"><strong>Dispo</strong></td>
+            <td style="text-align: center; width: 7%"><strong>Livré</strong></td>
+          </tr>
+          <?php
+          foreach ($commandLignes as $item) {
+            if ($item->cmdl__garantie_option > $item->devl__mois_garantie) {
+              $temp = $item->cmdl__garantie_option;
+            } else {
+              if (!empty($item->devl__mois_garantie)) {
+                $temp = $item->devl__mois_garantie;
+              } else {
+                $temp = "";
+              }
+            }
+
+            if (!empty($item->cmdl__sous_ref)) {
+              $background_color = 'background-color: #F1F1F1;';
+            } else {
+              $background_color = '';
+            }
+
+            echo "<tr style='font-size: 100%; " . $background_color . "'>
+                        <td style='border-bottom: 1px #ccc solid'> " . $item->prestaLib . " <br> " . $item->kw__lib . " <br> " . $temp . " mois</td>
+                        <td style='border-bottom: 1px #ccc solid; width: 55%;'> 
+                            <br> <small>désignation :</small> <b>" . $item->devl__designation . "</b><br>"
+              . $item->famille__lib . " " . $item->marque . " " . $item->modele . " " . $item->devl__modele  . " " . $item->devl__note_interne .
+              "</td>
+                         <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite . " </strong></td>
+                          <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
+                         <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
+                      </tr>";
+          }
+          ?>
+        </table>
+
+        <table style=" margin-top: 50px; width: 100%">
+          <tr style=" margin-top: 200px; width: 100%">
+            <td><small>Commentaire:</small></td>
+          </tr>
+          <tr>
+            <td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%'> <?php echo  $command->devis__note_interne ?> </td>
+          </tr>
+        </table>
+
+
+        <div style=" width: 100%; position: absolute; bottom:1px">
+
+
+          <table CELLSPACING=0 style=" width: 100%;  ">
+            <tr style="background-color: #dedede;">
+              <td style="text-align: center; width: 30%"><strong>Préparé par</strong></td>
+              <td style="text-align: center; width: 40%"><strong>Réceptionné par : </strong></td>
+              <td style="text-align: center; width: 30%"><strong>POIDS</strong></td>
+            </tr>
+            <tr>
+              <td style="border: 1px #ccc solid; height: 150px; text-align:center;">
+                <span style="margin-top: 65px; background-color: #dedede;"><strong>Controle qualité</strong></span>
+              </td>
+              <td style="border: 1px #ccc solid; ">
+                <small><i>Nom/signature/tampon</i></small>
+              </td>
+              <td style="border: 1px #ccc solid; ">
+              </td>
+            </tr>
+          </table>
+
+        </div>
+
+      </page>
+
+      <?php
+      $content = ob_get_contents();
+
+      try {
+        $doc = new Html2Pdf('P', 'A4', 'fr');
+        $doc->setDefaultFont('gothic');
+        $doc->pdf->SetDisplayMode('fullpage');
+        $doc->writeHTML($content);
+        ob_clean();
+        if ($_SERVER['HTTP_HOST'] != "localhost:8080") {
+          $doc->output('O:\intranet\Auto_Print\FT\Ft_' . $command->devis__id . '.pdf', 'F');
+        }
+
+        return $command->devis__id;
+      } catch (Html2PdfException $e) {
+        die($e);
+      }
     }
   }
- 
-  
-  if (!empty($NewLines)) 
-  {
-   
-    $reliquat = $this->GetById($cmd);
 
-    $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd, cmd__client__id_fact,
+
+
+  // si un ecart est constaté dans les quantité génère des reliquats automatiquement: 
+  public function FactureReliquat($cmd)
+  {
+    $lignes = $this->devisLigne($cmd);
+
+    $NewLines = [];
+    foreach ($lignes as $ligne) {
+
+      if (intval($ligne->cmdl__qte_livr) < intval($ligne->cmdl__qte_fact)) {
+        $ligne->devl_quantite = intval($ligne->cmdl__qte_fact) - intval($ligne->cmdl__qte_livr);
+        array_push($NewLines, $ligne);
+      }
+    }
+
+
+    if (!empty($NewLines)) {
+
+      $reliquat = $this->GetById($cmd);
+
+      $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd, cmd__client__id_fact,
       cmd__client__id_livr, cmd__contact__id_fact,  cmd__contact__id_livr,
       cmd__note_client, cmd__note_interne, cmd__code_cmd_client,
       cmd__etat, cmd__user__id_devis, cmd__user__id_cmd)
       VALUES (:cmd__date_cmd, :cmd__client__id_fact, :cmd__client__id_livr, :cmd__contact__id_fact, :cmd__contact__id_livr,
       :cmd__note_client, :cmd__note_interne, :cmd__code_cmd_client, :cmd__etat, :cmd__user__id_devis, :cmd__user__id_cmd)');
 
-      
-
-    $code_cmd = 'RELIQUAT déja facturé:  n°' . $reliquat->devis__id . "  " .  $reliquat->cmd__code_cmd_client;
-
-    $request->bindValue(":cmd__date_cmd", $reliquat->cmd__date_cmd);
-    $request->bindValue(":cmd__client__id_fact", 5 );
-    $request->bindValue(":cmd__client__id_livr", $reliquat->devis__id_client_livraison);
-    $request->bindValue(":cmd__contact__id_fact", $reliquat->devis__contact__id);
-    $request->bindValue(":cmd__contact__id_livr", $reliquat->devis__contact_livraison);
-    $request->bindValue(":cmd__note_client", $reliquat->devis__note_client);   
-    $request->bindValue(":cmd__note_interne", $reliquat->devis__note_interne);
-    $request->bindValue(":cmd__code_cmd_client", $code_cmd );
-    $request->bindValue(":cmd__etat", 'CMD');
-    $request->bindValue(":cmd__user__id_devis", $reliquat->devis__user__id );
-    $request->bindValue(":cmd__user__id_cmd", $reliquat->cmd__user__id_cmd );
-
-    
-    $request->execute();
-
-    
-    
-    $idReliquat = $this->Db->Pdo->lastInsertId();
-    $count = 0 ;
 
 
-    
-    foreach ($NewLines as $lines ) 
-    {
-      $count += 1;
-      $insertObject = new stdClass;
-      $insertObject->idDevis = $idReliquat;
-      $insertObject->prestation = $lines->devl__type;
-      $insertObject->designation = $lines->devl__designation;
-      $insertObject->etat = $lines->devl__etat;
-      $insertObject->garantie = $lines->devl__mois_garantie;
-      $insertObject->quantite = $lines->devl_quantite;
-      $insertObject->prix = $lines->devl_puht;
-      $insertObject->comClient = $lines->devl__note_client;
-      $insertObject->idfmm = $lines->id__fmm;
-      $insertObject->extension = $lines->cmdl__garantie_option;
-      $insertObject->prixGarantie = $lines->cmdl__garantie_puht;
+      $code_cmd = 'RELIQUAT déja facturé:  n°' . $reliquat->devis__id . "  " .  $reliquat->cmd__code_cmd_client;
 
-      $createLine = $this->insertLine($insertObject);
-     
-    
-  }
-$command = $this->getById(intval($idReliquat));
-$commandLignes = $this->devisLigne($idReliquat);
-$Client = new Client($this->Db);
-$Contact = new Contact($this->Db);
-$clientView = $Client->getOne($command->client__id);
-$User = new User($this->Db);
-$user = $User->getByID($clientView->client__id_vendeur);
-$userCMD = $User->getByID($command->cmd__user__id_cmd);
+      $request->bindValue(":cmd__date_cmd", $reliquat->cmd__date_cmd);
+      $request->bindValue(":cmd__client__id_fact", 5);
+      $request->bindValue(":cmd__client__id_livr", $reliquat->devis__id_client_livraison);
+      $request->bindValue(":cmd__contact__id_fact", $reliquat->devis__contact__id);
+      $request->bindValue(":cmd__contact__id_livr", $reliquat->devis__contact_livraison);
+      $request->bindValue(":cmd__note_client", $reliquat->devis__note_client);
+      $request->bindValue(":cmd__note_interne", $reliquat->devis__note_interne);
+      $request->bindValue(":cmd__code_cmd_client", $code_cmd);
+      $request->bindValue(":cmd__etat", 'CMD');
+      $request->bindValue(":cmd__user__id_devis", $reliquat->devis__user__id);
+      $request->bindValue(":cmd__user__id_cmd", $reliquat->cmd__user__id_cmd);
 
-    $societeLivraison = false ;
 
-    if ($command->devis__id_client_livraison) 
-    {
+      $request->execute();
+
+
+
+      $idReliquat = $this->Db->Pdo->lastInsertId();
+      $count = 0;
+
+
+
+      foreach ($NewLines as $lines) {
+        $count += 1;
+        $insertObject = new stdClass;
+        $insertObject->idDevis = $idReliquat;
+        $insertObject->prestation = $lines->devl__type;
+        $insertObject->designation = $lines->devl__designation;
+        $insertObject->etat = $lines->devl__etat;
+        $insertObject->garantie = $lines->devl__mois_garantie;
+        $insertObject->quantite = $lines->devl_quantite;
+        $insertObject->prix = $lines->devl_puht;
+        $insertObject->comClient = $lines->devl__note_client;
+        $insertObject->idfmm = $lines->id__fmm;
+        $insertObject->extension = $lines->cmdl__garantie_option;
+        $insertObject->prixGarantie = $lines->cmdl__garantie_puht;
+
+        $createLine = $this->insertLine($insertObject);
+      }
+      $command = $this->getById(intval($idReliquat));
+      $commandLignes = $this->devisLigne($idReliquat);
+      $Client = new Client($this->Db);
+      $Contact = new Contact($this->Db);
+      $clientView = $Client->getOne($command->client__id);
+      $User = new User($this->Db);
+      $user = $User->getByID($clientView->client__id_vendeur);
+      $userCMD = $User->getByID($command->cmd__user__id_cmd);
+
+      $societeLivraison = false;
+
+      if ($command->devis__id_client_livraison) {
         $societeLivraison = $Client->getOne($command->devis__id_client_livraison);
-    }
-$dateTemp = new DateTime($command->cmd__date_cmd);
- //cree une variable pour la date de commande du devis
- $date_time = new DateTime( $command->cmd__date_cmd);
- //formate la date pour l'utilisateur:
- $formated_date = $date_time->format('d/m/Y');
- ob_start();
-?>
-<style type="text/css">
-      strong{ color:#000;}
-      h3{ color:#666666;}
-      h2{ color:#3b3b3b;}
-      table{
-        font-size:13; font-style: normal; font-variant: normal; 
-       border-collapse:separate; 
-       border-spacing: 0 15px; 
-         }  
- </style>
+      }
+      $dateTemp = new DateTime($command->cmd__date_cmd);
+      //cree une variable pour la date de commande du devis
+      $date_time = new DateTime($command->cmd__date_cmd);
+      //formate la date pour l'utilisateur:
+      $formated_date = $date_time->format('d/m/Y');
+      ob_start();
+      ?>
+      <style type="text/css">
+        strong {
+          color: #000;
+        }
 
-<page backtop="10mm" backleft="5mm" backright="5mm">
-     <table style="width: 100%;">
-         <tr>
-             <td style="text-align: left;  width: 50%"><img  style=" width:60mm" src="public/img/recodeDevis.png"/></td>
-             <td style="text-align: left; width:50%"><h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br>
-             <a>www.recode.fr</a><br><br>
-             <br></td>
-             </tr>
-             <tr>
-             <td  style="text-align: left;  width: 50% ; margin-left: 25%;"><h4>Fiche De travail -  <?php echo $command->devis__id ?></h4>
-             <barcode dimension="1D" type="C128" label="none" value="<?php echo $command->devis__id ?>" style="width:40mm; height:8mm; color: #3b3b3b; font-size: 4mm"></barcode><br>
+        h3 {
+          color: #666666;
+        }
 
-            Commandé le : <strong><?php echo $formated_date ?></strong><br>
-            Commercial : <strong><?php
-                        if (!empty($user)) 
-                        {
-                            echo  $user->nom . ' '. $user->prenom ;
-                        } 
-                        else 
-                        {
-                            echo 'Non renseigné';
-                        }
-                    ?>
-                </strong> 
-                    <?php
-                        if (!empty($user->postefix)) 
-                        {
-                        echo ' (Tél: '. $user->postefix .')';
-                        } 
+        h2 {
+          color: #3b3b3b;
+        }
 
-                        
-                    ?>
-                     
-                
-                    <?php
-                        if (!empty($userCMD)) 
-                        {
-                            echo  '<br>Commandé par : <strong>'.$userCMD->nom . ' '. $userCMD->prenom .'</strong> ';
-                        } 
-                    ?>
-                
-                    <?php
-                        if (!empty($userCMD->postefix)) 
-                        {
-                        echo ' (Tél: '. $userCMD->postefix .')';
-                        } 
+        table {
+          font-size: 13;
+          font-style: normal;
+          font-variant: normal;
+          border-collapse: separate;
+          border-spacing: 0 15px;
+        }
+      </style>
 
-                       
-                    ?> 
-                    </td>
-             <td style="text-align: left; width:50%"><strong><?php 
-              if ($societeLivraison) 
-              {
-
-                if ($command->devis__contact__id) {
-                    // si un contact est présent dans l'adresse de facturation :
-                    $contact = $Contact->getOne($command->devis__contact__id);
-                    echo "<small>facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom. "</small><strong><br>";
-                    echo Pdfunctions::showSociete($clientView) ." </strong> ";
-                    if (!empty($clientView->client__tel)) 
-                        {
-                           echo '<br> TEL : '.$clientView->client__tel.'';
-                        }  
-                
-                    if ($command->devis__contact_livraison) {
-                        //si un contact est présent dans l'adresse de livraison : 
-                        $contact2 = $Contact->getOne($command->devis__contact_livraison);
-                        echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
-                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-                        if (!empty($societeLivraison->client__tel)) 
-                        {
-                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
-                        }      
-                    }
-                    else {
-                        // si pas de contact de livraison : 
-                        echo "<br> <small>livraison :</small><strong><br>";
-                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-                        if (!empty($societeLivraison->client__tel)) 
-                        {
-                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
-                        }  
-                    } 
-                }
-
-                else {
-                    echo "<small>facturation :</small><strong><br>";
-                    echo Pdfunctions::showSociete($clientView) ." </strong>" ;
-                    if ($command->devis__contact_livraison) {
-                        $contact2 = $Contact->getOne($command->devis__contact_livraison);
-                        echo "<br> <small>livraison : ".$contact2->contact__civ . " " . $contact2->contact__nom. " " . $contact2->contact__prenom."</small><strong><br>";
-                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-                        if (!empty($societeLivraison->client__tel)) 
-                        {
-                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
-                        }  
-                    } else {
-                        echo "<br> <small>livraison :</small><strong><br>";
-                        echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-                        if (!empty($societeLivraison->client__tel)) 
-                        {
-                           echo '<br> TEL : '.$societeLivraison->client__tel.'';
-                        } 
-                    }  
-                }  
-         } 
-
-
-
-         else{
-            if ($command->devis__contact__id) {
-            $contact = $Contact->getOne($command->devis__contact__id);
-            echo "<small>livraison & facturation : ". $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom."</small><strong><br>";
-            echo Pdfunctions::showSociete($clientView)  ."</strong>";
-            if (!empty($clientView->client__tel)) 
-            {
-               echo '<br> TEL : '.$clientView->client__tel.'';
-            }  
-            }
-            else{
-                echo "<small>livraison & facturation : </small><strong><br>";
-                echo Pdfunctions::showSociete($clientView)  ."</strong>";
-            if (!empty($clientView->client__tel)) 
-                {
-                   echo '<br>TEL : '.$clientView->client__tel.'';
-                }  
-            }
-
-         } 
-          
-         
-         
-         if ($command->cmd__code_cmd_client) 
-         {
-            echo "<br> Code cmd: " . $command->cmd__code_cmd_client ;
-         }
-         ?>
-         </strong>
+      <page backtop="10mm" backleft="5mm" backright="5mm">
+        <table style="width: 100%;">
+          <tr>
+            <td style="text-align: left;  width: 50%"><img style=" width:60mm" src="public/img/recodeDevis.png" /></td>
+            <td style="text-align: left; width:50%">
+              <h3>Reparation-Location-Vente</h3>imprimantes- lecteurs codes-barres<br>
+              <a>www.recode.fr</a><br><br>
+              <br>
             </td>
-         </tr>
-     </table>
+          </tr>
+          <tr>
+            <td style="text-align: left;  width: 50% ; margin-left: 25%;">
+              <h4>Fiche De travail - <?php echo $command->devis__id ?></h4>
+              <barcode dimension="1D" type="C128" label="none" value="<?php echo $command->devis__id ?>" style="width:40mm; height:8mm; color: #3b3b3b; font-size: 4mm"></barcode><br>
+
+              Commandé le : <strong><?php echo $formated_date ?></strong><br>
+              Commercial : <strong><?php
+                                    if (!empty($user)) {
+                                      echo  $user->nom . ' ' . $user->prenom;
+                                    } else {
+                                      echo 'Non renseigné';
+                                    }
+                                    ?>
+              </strong>
+              <?php
+              if (!empty($user->postefix)) {
+                echo ' (Tél: ' . $user->postefix . ')';
+              }
 
 
-     <table CELLSPACING=0 style="width: 100%;  margin-top: 80px; ">
-             <tr style=" margin-top : 50px; background-color: #dedede;">
-                <td style="width: 22%; text-align: left;">Presta<br>Type<br>Gar.</td>
-                <td style="width: 60%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
-                <td style="text-align: center; width: 9%"><strong>CMD</strong></td>
-                <td style="text-align: center; width: 9%"><strong>Livré</strong></td>
-             </tr> 
-             <?php
-             foreach ($commandLignes as $item) {
-                if($item->cmdl__garantie_option > $item->devl__mois_garantie) 
-                {
-                  $temp = $item->cmdl__garantie_option ;
-                }
-                 else 
-                 { 
-                     if (!empty($item->devl__mois_garantie)) 
-                     {
-                        $temp = $item->devl__mois_garantie;
-                     }
-                     else
-                     {
-                        $temp = "";
-                     }
-                   
-                 }
+              ?>
 
-               
 
-                echo "<tr style='font-size: 100%;>
-                        <td style='border-bottom: 1px #ccc solid'> ". $item->prestaLib." <br> " .$item->kw__lib ." <br> " . $temp ." mois</td>
+              <?php
+              if (!empty($userCMD)) {
+                echo  '<br>Commandé par : <strong>' . $userCMD->nom . ' ' . $userCMD->prenom . '</strong> ';
+              }
+              ?>
+
+              <?php
+              if (!empty($userCMD->postefix)) {
+                echo ' (Tél: ' . $userCMD->postefix . ')';
+              }
+
+
+              ?>
+            </td>
+            <td style="text-align: left; width:50%"><strong><?php
+                                                            if ($societeLivraison) {
+
+                                                              if ($command->devis__contact__id) {
+                                                                // si un contact est présent dans l'adresse de facturation :
+                                                                $contact = $Contact->getOne($command->devis__contact__id);
+                                                                echo "<small>facturation : " . $contact->contact__civ . " " . $contact->contact__nom . " " . $contact->contact__prenom . "</small><strong><br>";
+                                                                echo Pdfunctions::showSociete($clientView) . " </strong> ";
+                                                                if (!empty($clientView->client__tel)) {
+                                                                  echo '<br> TEL : ' . $clientView->client__tel . '';
+                                                                }
+
+                                                                if ($command->devis__contact_livraison) {
+                                                                  //si un contact est présent dans l'adresse de livraison : 
+                                                                  $contact2 = $Contact->getOne($command->devis__contact_livraison);
+                                                                  echo "<br> <small>livraison : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
+                                                                  echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                                                                  if (!empty($societeLivraison->client__tel)) {
+                                                                    echo '<br> TEL : ' . $societeLivraison->client__tel . '';
+                                                                  }
+                                                                } else {
+                                                                  // si pas de contact de livraison : 
+                                                                  echo "<br> <small>livraison :</small><strong><br>";
+                                                                  echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                                                                  if (!empty($societeLivraison->client__tel)) {
+                                                                    echo '<br> TEL : ' . $societeLivraison->client__tel . '';
+                                                                  }
+                                                                }
+                                                              } else {
+                                                                echo "<small>facturation :</small><strong><br>";
+                                                                echo Pdfunctions::showSociete($clientView) . " </strong>";
+                                                                if ($command->devis__contact_livraison) {
+                                                                  $contact2 = $Contact->getOne($command->devis__contact_livraison);
+                                                                  echo "<br> <small>livraison : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
+                                                                  echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                                                                  if (!empty($societeLivraison->client__tel)) {
+                                                                    echo '<br> TEL : ' . $societeLivraison->client__tel . '';
+                                                                  }
+                                                                } else {
+                                                                  echo "<br> <small>livraison :</small><strong><br>";
+                                                                  echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                                                                  if (!empty($societeLivraison->client__tel)) {
+                                                                    echo '<br> TEL : ' . $societeLivraison->client__tel . '';
+                                                                  }
+                                                                }
+                                                              }
+                                                            } else {
+                                                              if ($command->devis__contact__id) {
+                                                                $contact = $Contact->getOne($command->devis__contact__id);
+                                                                echo "<small>livraison & facturation : " . $contact->contact__civ . " " . $contact->contact__nom . " " . $contact->contact__prenom . "</small><strong><br>";
+                                                                echo Pdfunctions::showSociete($clientView)  . "</strong>";
+                                                                if (!empty($clientView->client__tel)) {
+                                                                  echo '<br> TEL : ' . $clientView->client__tel . '';
+                                                                }
+                                                              } else {
+                                                                echo "<small>livraison & facturation : </small><strong><br>";
+                                                                echo Pdfunctions::showSociete($clientView)  . "</strong>";
+                                                                if (!empty($clientView->client__tel)) {
+                                                                  echo '<br>TEL : ' . $clientView->client__tel . '';
+                                                                }
+                                                              }
+                                                            }
+
+
+
+                                                            if ($command->cmd__code_cmd_client) {
+                                                              echo "<br> Code cmd: " . $command->cmd__code_cmd_client;
+                                                            }
+                                                            ?>
+              </strong>
+            </td>
+          </tr>
+        </table>
+
+
+        <table CELLSPACING=0 style="width: 100%;  margin-top: 80px; ">
+          <tr style=" margin-top : 50px; background-color: #dedede;">
+            <td style="width: 22%; text-align: left;">Presta<br>Type<br>Gar.</td>
+            <td style="width: 60%; text-align: left">Ref Tech<br>Désignation Client<br>Complement techniques</td>
+            <td style="text-align: center; width: 9%"><strong>CMD</strong></td>
+            <td style="text-align: center; width: 9%"><strong>Livré</strong></td>
+          </tr>
+          <?php
+          foreach ($commandLignes as $item) {
+            if ($item->cmdl__garantie_option > $item->devl__mois_garantie) {
+              $temp = $item->cmdl__garantie_option;
+            } else {
+              if (!empty($item->devl__mois_garantie)) {
+                $temp = $item->devl__mois_garantie;
+              } else {
+                $temp = "";
+              }
+            }
+
+
+
+            echo "<tr style='font-size: 100%;>
+                        <td style='border-bottom: 1px #ccc solid'> " . $item->prestaLib . " <br> " . $item->kw__lib . " <br> " . $temp . " mois</td>
                         <td style='border-bottom: 1px #ccc solid; width: 55%;'> 
-                            <br> <small>désignation :</small> <b>" . $item->devl__designation ."</b><br>"
-                            .$item->famille__lib. " " . $item->marque . " " .$item->modele. " ". $item->devl__modele  ." " .$item->devl__note_interne . 
-                        "</td>
-                         <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite. " </strong></td>
+                            <br> <small>désignation :</small> <b>" . $item->devl__designation . "</b><br>"
+              . $item->famille__lib . " " . $item->marque . " " . $item->modele . " " . $item->devl__modele  . " " . $item->devl__note_interne .
+              "</td>
+                         <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite . " </strong></td>
                          <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
                       </tr>";
-             }
-             ?>
-     </table> 
-     
-     <table style=" margin-top: 50px; width: 100%">
-             <tr style=" margin-top: 200px; width: 100%"><td><small>Commentaire:</small></td></tr>
-             <tr >
-             <td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%' > <?php echo  $command->devis__note_interne ?> </td>
+          }
+          ?>
+        </table>
+
+        <table style=" margin-top: 50px; width: 100%">
+          <tr style=" margin-top: 200px; width: 100%">
+            <td><small>Commentaire:</small></td>
+          </tr>
+          <tr>
+            <td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%'> <?php echo  $command->devis__note_interne ?> </td>
+          </tr>
+        </table>
+
+
+        <div style=" width: 100%; position: absolute; bottom:1px">
+
+
+          <table CELLSPACING=0 style=" width: 100%;  ">
+            <tr style="background-color: #dedede;">
+              <td style="text-align: center; width: 30%"><strong>Traitement en atelier </strong></td>
+              <td style="text-align: center; width: 40%"><strong>Réceptionné par : </strong></td>
+              <td style="text-align: center; width: 30%"><strong>POIDS</strong></td>
             </tr>
-     </table>
+            <tr>
+              <td style="border: 1px #ccc solid; height: 150px;">
 
-
-     <div style=" width: 100%; position: absolute; bottom:1px">
-    
-   
-     <table CELLSPACING=0 style=" width: 100%;  ">
-        <tr style="background-color: #dedede;">
-                    <td style="text-align: center; width: 30%"><strong>Traitement en atelier </strong></td>
-                    <td style="text-align: center; width: 40%"><strong>Réceptionné par : </strong></td>
-                    <td style="text-align: center; width: 30%"><strong>POIDS</strong></td>
-        </tr> 
-        <tr>
-            <td style="border: 1px #ccc solid; height: 150px;">
-                
-            </td>
-            <td style="border: 1px #ccc solid; ">
+              </td>
+              <td style="border: 1px #ccc solid; ">
                 <small><i>Nom/signature/tampon</i></small>
-            </td>
-            <td style="border: 1px #ccc solid; ">
-                
-            </td>
-        </tr>
-    </table>  
-    
-    </div>  
+              </td>
+              <td style="border: 1px #ccc solid; ">
 
-</page>
+              </td>
+            </tr>
+          </table>
+
+        </div>
+
+      </page>
 
 <?php
-$content = ob_get_contents();
+      $content = ob_get_contents();
 
-try 
-{
-    $doc = new Html2Pdf('P','A4','fr');
-    $doc->setDefaultFont('gothic');
-    $doc->pdf->SetDisplayMode('fullpage');
-    $doc->writeHTML($content);
-    ob_clean();
-    if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
-    {
-      $doc->output('O:\intranet\Auto_Print\FT\Ft_'.$command->devis__id.'.pdf' , 'F'); 
+      try {
+        $doc = new Html2Pdf('P', 'A4', 'fr');
+        $doc->setDefaultFont('gothic');
+        $doc->pdf->SetDisplayMode('fullpage');
+        $doc->writeHTML($content);
+        ob_clean();
+        if ($_SERVER['HTTP_HOST'] != "localhost:8080") {
+          $doc->output('O:\intranet\Auto_Print\FT\Ft_' . $command->devis__id . '.pdf', 'F');
+        }
+      } catch (Html2PdfException $e) {
+        die($e);
+      }
     }
-} 
-catch (Html2PdfException $e) 
-{
-  die($e); 
-}
   }
-}
 
 
 
-// creer un nouvel avoir: 
-public function makeAvoir($facture)
-{
-  
-  $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd, cmd__client__id_fact,
+  // creer un nouvel avoir: 
+  public function makeAvoir($facture)
+  {
+
+    $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd, cmd__client__id_fact,
   cmd__client__id_livr, cmd__contact__id_fact,  cmd__contact__id_livr,
   cmd__note_client, cmd__note_interne, cmd__code_cmd_client,
   cmd__etat, cmd__user__id_devis, cmd__user__id_cmd)
   VALUES (:cmd__date_cmd, :cmd__client__id_fact, :cmd__client__id_livr, :cmd__contact__id_fact, :cmd__contact__id_livr,
   :cmd__note_client, :cmd__note_interne, :cmd__code_cmd_client, :cmd__etat, :cmd__user__id_devis, :cmd__user__id_cmd)');
 
-  $avoirId =  'Avoir Facture N°: '.$facture->cmd__id_facture . ' ' . $facture->cmd__code_cmd_client;
+    $avoirId =  'Avoir Facture N°: ' . $facture->cmd__id_facture . ' ' . $facture->cmd__code_cmd_client;
 
 
-  $request->bindValue(":cmd__date_cmd", $facture->cmd__date_cmd);
-  $request->bindValue(":cmd__client__id_fact", $facture->client__id);
-  $request->bindValue(":cmd__client__id_livr", $facture->devis__id_client_livraison);
-  $request->bindValue(":cmd__contact__id_fact", $facture->devis__contact__id);
-  $request->bindValue(":cmd__contact__id_livr", $facture->devis__contact_livraison);
-  $request->bindValue(":cmd__note_client", $facture->devis__note_client);   
-  $request->bindValue(":cmd__note_interne", $facture->devis__note_interne);
-  $request->bindValue(":cmd__code_cmd_client",  $avoirId );
-  $request->bindValue(":cmd__etat", 'CMD');
-  $request->bindValue(":cmd__user__id_devis", $facture->devis__user__id );
-  $request->bindValue(":cmd__user__id_cmd", $facture->cmd__user__id_cmd );
-  $request->execute();
+    $request->bindValue(":cmd__date_cmd", $facture->cmd__date_cmd);
+    $request->bindValue(":cmd__client__id_fact", $facture->client__id);
+    $request->bindValue(":cmd__client__id_livr", $facture->devis__id_client_livraison);
+    $request->bindValue(":cmd__contact__id_fact", $facture->devis__contact__id);
+    $request->bindValue(":cmd__contact__id_livr", $facture->devis__contact_livraison);
+    $request->bindValue(":cmd__note_client", $facture->devis__note_client);
+    $request->bindValue(":cmd__note_interne", $facture->devis__note_interne);
+    $request->bindValue(":cmd__code_cmd_client",  $avoirId);
+    $request->bindValue(":cmd__etat", 'CMD');
+    $request->bindValue(":cmd__user__id_devis", $facture->devis__user__id);
+    $request->bindValue(":cmd__user__id_cmd", $facture->cmd__user__id_cmd);
+    $request->execute();
 
-  $idfacture = $this->Db->Pdo->lastInsertId();
+    $idfacture = $this->Db->Pdo->lastInsertId();
 
-  return $idfacture;
-}
+    return $idfacture;
+  }
 
-public function duplicate_devis($devis)
-{
+  public function duplicate_devis($devis)
+  {
 
-  $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_devis, cmd__client__id_fact,
+    $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_devis, cmd__client__id_fact,
   cmd__client__id_livr, cmd__contact__id_fact,  cmd__contact__id_livr,
   cmd__note_client, cmd__note_interne, cmd__code_cmd_client, cmd__tva ,
   cmd__etat, cmd__user__id_devis)
   VALUES (:cmd__date_devis, :cmd__client__id_fact, :cmd__client__id_livr, :cmd__contact__id_fact, :cmd__contact__id_livr,
   :cmd__note_client, :cmd__note_interne, :cmd__code_cmd_client, :cmd__tva, :cmd__etat, :cmd__user__id_devis)');
 
-  $request->bindValue(":cmd__date_devis", $devis->devis__date_crea);
-  $request->bindValue(":cmd__client__id_fact", $devis->client__id);
-  $request->bindValue(":cmd__client__id_livr", $devis->devis__id_client_livraison);
-  $request->bindValue(":cmd__contact__id_fact", $devis->devis__contact__id);
-  $request->bindValue(":cmd__contact__id_livr", $devis->devis__contact_livraison);
-  $request->bindValue(":cmd__note_client", $devis->devis__note_client);   
-  $request->bindValue(":cmd__note_interne", $devis->devis__note_interne);
-  $request->bindValue(":cmd__code_cmd_client",  $devis->cmd__code_cmd_client);
-  $request->bindValue(":cmd__tva", $devis->cmd__tva);
-  $request->bindValue(":cmd__etat", 'ATN');
-  $request->bindValue(":cmd__user__id_devis",$devis->devis__user__id);
-  $request->execute();
+    $request->bindValue(":cmd__date_devis", $devis->devis__date_crea);
+    $request->bindValue(":cmd__client__id_fact", $devis->client__id);
+    $request->bindValue(":cmd__client__id_livr", $devis->devis__id_client_livraison);
+    $request->bindValue(":cmd__contact__id_fact", $devis->devis__contact__id);
+    $request->bindValue(":cmd__contact__id_livr", $devis->devis__contact_livraison);
+    $request->bindValue(":cmd__note_client", $devis->devis__note_client);
+    $request->bindValue(":cmd__note_interne", $devis->devis__note_interne);
+    $request->bindValue(":cmd__code_cmd_client",  $devis->cmd__code_cmd_client);
+    $request->bindValue(":cmd__tva", $devis->cmd__tva);
+    $request->bindValue(":cmd__etat", 'ATN');
+    $request->bindValue(":cmd__user__id_devis", $devis->devis__user__id);
+    $request->execute();
 
-  $id_new_devis = $this->Db->Pdo->lastInsertId();
+    $id_new_devis = $this->Db->Pdo->lastInsertId();
 
-  return $id_new_devis;
+    return $id_new_devis;
+  }
 
-}
-
-public function duplicate_extension_garantie($tableau_extension , $ligne__id )
-{
-  $request = $this->Db->Pdo->prepare('INSERT INTO cmd_garantie ( cmdg__id__cmdl , cmdg__type ,
+  public function duplicate_extension_garantie($tableau_extension, $ligne__id)
+  {
+    $request = $this->Db->Pdo->prepare('INSERT INTO cmd_garantie ( cmdg__id__cmdl , cmdg__type ,
    cmdg__prix , cmdg__prix_barre , cmdg__ordre )
   VALUES (:cmdg__id__cmdl , :cmdg__type ,
    :cmdg__prix , :cmdg__prix_barre , :cmdg__ordre )');
 
-$verifOrdre = $this->Db->Pdo->query(
-  'SELECT MAX(cmdg__ordre) as maxOrdre from cmd_garantie WHERE cmdg__id__cmdl = '.$ligne__id.' ');
+    $verifOrdre = $this->Db->Pdo->query(
+      'SELECT MAX(cmdg__ordre) as maxOrdre from cmd_garantie WHERE cmdg__id__cmdl = ' . $ligne__id . ' '
+    );
 
-$ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
-$ordreMax = $ordreMax->maxOrdre + 1 ;
+    $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
+    $ordreMax = $ordreMax->maxOrdre + 1;
 
-  $request->bindValue(":cmdg__id__cmdl",$ligne__id);
-  $request->bindValue(":cmdg__type", intval($tableau_extension['devg__type']) );
-  $request->bindValue(":cmdg__prix", $tableau_extension['devg__prix']);
-  $request->bindValue(":cmdg__prix_barre", $tableau_extension['cmdg__prix_barre']);
-  $request->bindValue(":cmdg__ordre", $ordreMax);
-  $request->execute();
+    $request->bindValue(":cmdg__id__cmdl", $ligne__id);
+    $request->bindValue(":cmdg__type", intval($tableau_extension['devg__type']));
+    $request->bindValue(":cmdg__prix", $tableau_extension['devg__prix']);
+    $request->bindValue(":cmdg__prix_barre", $tableau_extension['cmdg__prix_barre']);
+    $request->bindValue(":cmdg__ordre", $ordreMax);
+    $request->execute();
 
-  $id_extension = $this->Db->Pdo->lastInsertId();
+    $id_extension = $this->Db->Pdo->lastInsertId();
 
-  return $id_extension;
-}
+    return $id_extension;
+  }
 
 
-// creer un nouvel avoir: 2 eme param = garantie ou retour , 3eme = client : echange reliquat et co (id) , id du tech qui edite la fiche :
-public function makeRetour($facture ,$type , $client , $user)
-{
-  $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd, cmd__client__id_fact,
+  // creer un nouvel avoir: 2 eme param = garantie ou retour , 3eme = client : echange reliquat et co (id) , id du tech qui edite la fiche :
+  public function makeRetour($facture, $type, $client, $user)
+  {
+    $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd, cmd__client__id_fact,
   cmd__client__id_livr, cmd__contact__id_fact,  cmd__contact__id_livr,
   cmd__note_client, cmd__note_interne, cmd__code_cmd_client,
   cmd__etat, cmd__user__id_devis, cmd__user__id_cmd)
   VALUES (:cmd__date_cmd, :cmd__client__id_fact, :cmd__client__id_livr, :cmd__contact__id_fact, :cmd__contact__id_livr,
   :cmd__note_client, :cmd__note_interne, :cmd__code_cmd_client, :cmd__etat, :cmd__user__id_devis, :cmd__user__id_cmd)');
 
-  $avoirId =  $type . ' commande :  ' . $facture->devis__id;
+    $avoirId =  $type . ' commande :  ' . $facture->devis__id;
 
 
-  $request->bindValue(":cmd__date_cmd", $facture->cmd__date_cmd);
-  $request->bindValue(":cmd__client__id_fact", $client);
-  $request->bindValue(":cmd__client__id_livr", $facture->devis__id_client_livraison);
-  $request->bindValue(":cmd__contact__id_fact", null);
-  $request->bindValue(":cmd__contact__id_livr", $facture->devis__contact_livraison);
-  $request->bindValue(":cmd__note_client", $facture->devis__note_client);   
-  $request->bindValue(":cmd__note_interne", $facture->devis__note_interne);
-  $request->bindValue(":cmd__code_cmd_client",  $avoirId );
-  $request->bindValue(":cmd__etat", 'CMD');
-  $request->bindValue(":cmd__user__id_devis", $facture->devis__user__id );
-  $request->bindValue(":cmd__user__id_cmd", $user );
-  $request->execute();
-  $idfacture = $this->Db->Pdo->lastInsertId();
-  return $idfacture;
-}
+    $request->bindValue(":cmd__date_cmd", $facture->cmd__date_cmd);
+    $request->bindValue(":cmd__client__id_fact", $client);
+    $request->bindValue(":cmd__client__id_livr", $facture->devis__id_client_livraison);
+    $request->bindValue(":cmd__contact__id_fact", null);
+    $request->bindValue(":cmd__contact__id_livr", $facture->devis__contact_livraison);
+    $request->bindValue(":cmd__note_client", $facture->devis__note_client);
+    $request->bindValue(":cmd__note_interne", $facture->devis__note_interne);
+    $request->bindValue(":cmd__code_cmd_client",  $avoirId);
+    $request->bindValue(":cmd__etat", 'CMD');
+    $request->bindValue(":cmd__user__id_devis", $facture->devis__user__id);
+    $request->bindValue(":cmd__user__id_cmd", $user);
+    $request->execute();
+    $idfacture = $this->Db->Pdo->lastInsertId();
+    return $idfacture;
+  }
 
 
 
 
-//insère une ligne dans un devis :
-public function insertLine($object){
-  $requestLigne =  $this->Db->Pdo->prepare(
-    'INSERT INTO  cmd_ligne (
+  //insère une ligne dans un devis :
+  public function insertLine($object)
+  {
+    $requestLigne =  $this->Db->Pdo->prepare(
+      'INSERT INTO  cmd_ligne (
      cmdl__cmd__id, cmdl__prestation,  cmdl__designation ,
      cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  ,  
      cmdl__puht , cmdl__note_client  ,  cmdl__ordre , cmdl__id__fmm , cmdl__garantie_option , cmdl__garantie_puht , cmdl__qte_livr)
      VALUES (
      :devl__devis__id, :devl__type,  :devl__designation,
      :devl__etat, :devl__mois_garantie , :devl_quantite,  
-     :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm , :cmdl__garantie_option , :cmdl__garantie_puht , :cmdl__qte_livr)');
+     :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm , :cmdl__garantie_option , :cmdl__garantie_puht , :cmdl__qte_livr)'
+    );
 
 
     $verifOrdre = $this->Db->Pdo->query(
-      'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne WHERE cmdl__cmd__id = '.$object->idDevis.' ');
+      'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne WHERE cmdl__cmd__id = ' . $object->idDevis . ' '
+    );
 
     $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
-    
-    
-    
-    $ordreMax = $ordreMax->maxOrdre + 1 ;
+
+
+
+    $ordreMax = $ordreMax->maxOrdre + 1;
 
     $requestLigne->bindValue(":devl__devis__id", $object->idDevis);
     $requestLigne->bindValue(":devl__type", $object->prestation);
@@ -1384,32 +1361,35 @@ public function insertLine($object){
     $requestLigne->bindValue(":cmdl__garantie_option", $object->extension);
     $requestLigne->bindValue(":cmdl__garantie_puht", floatVal($object->prixGarantie));
     $requestLigne->bindValue(":cmdl__qte_livr", intval($object->quantite));
-    $requestLigne->execute();  
-    
-    return $requestLigne;
-}
+    $requestLigne->execute();
 
-//insère une ligne dans un devis :
-public function insertLineDevis($object){
-  $requestLigne =  $this->Db->Pdo->prepare(
-    'INSERT INTO  cmd_ligne (
+    return $requestLigne;
+  }
+
+  //insère une ligne dans un devis :
+  public function insertLineDevis($object)
+  {
+    $requestLigne =  $this->Db->Pdo->prepare(
+      'INSERT INTO  cmd_ligne (
      cmdl__cmd__id, cmdl__prestation,  cmdl__designation ,
      cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  ,  
      cmdl__puht , cmdl__note_client  ,  cmdl__ordre , cmdl__id__fmm ,  cmdl__qte_livr)
      VALUES (
      :devl__devis__id, :devl__type,  :devl__designation,
      :devl__etat, :devl__mois_garantie , :devl_quantite,  
-     :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm , :cmdl__qte_livr)');
+     :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm , :cmdl__qte_livr)'
+    );
 
 
     $verifOrdre = $this->Db->Pdo->query(
-      'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne WHERE cmdl__cmd__id = '.$object->idDevis.' ');
+      'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne WHERE cmdl__cmd__id = ' . $object->idDevis . ' '
+    );
 
     $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
-    
-    
-    
-    $ordreMax = $ordreMax->maxOrdre + 1 ;
+
+
+
+    $ordreMax = $ordreMax->maxOrdre + 1;
 
     $requestLigne->bindValue(":devl__devis__id", $object->idDevis);
     $requestLigne->bindValue(":devl__type", $object->prestation);
@@ -1422,34 +1402,37 @@ public function insertLineDevis($object){
     $requestLigne->bindValue(":devl__ordre", $ordreMax);
     $requestLigne->bindValue(":id__fmm", $object->idfmm);
     $requestLigne->bindValue(":cmdl__qte_livr", intval($object->quantite));
-    $requestLigne->execute();  
-    
+    $requestLigne->execute();
+
     return $requestLigne;
-}
+  }
 
 
 
-//insère une ligne dans un devis :
-public function insertLineReliquat($object){
-  $requestLigne =  $this->Db->Pdo->prepare(
-    'INSERT INTO  cmd_ligne (
+  //insère une ligne dans un devis :
+  public function insertLineReliquat($object)
+  {
+    $requestLigne =  $this->Db->Pdo->prepare(
+      'INSERT INTO  cmd_ligne (
      cmdl__cmd__id, cmdl__prestation,  cmdl__designation ,
      cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  ,  
      cmdl__puht , cmdl__note_client  ,  cmdl__ordre , cmdl__id__fmm , cmdl__garantie_option , cmdl__garantie_puht , cmdl__qte_livr , cmdl__note_interne)
      VALUES (
      :devl__devis__id, :devl__type,  :devl__designation,
      :devl__etat, :devl__mois_garantie , :devl_quantite,  
-     :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm , :cmdl__garantie_option , :cmdl__garantie_puht , :cmdl__qte_livr , :cmdl__note_interne)');
+     :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm , :cmdl__garantie_option , :cmdl__garantie_puht , :cmdl__qte_livr , :cmdl__note_interne)'
+    );
 
 
     $verifOrdre = $this->Db->Pdo->query(
-      'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne WHERE cmdl__cmd__id = '.$object->idDevis.' ');
+      'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne WHERE cmdl__cmd__id = ' . $object->idDevis . ' '
+    );
 
     $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
-    
-    
-    
-    $ordreMax = $ordreMax->maxOrdre + 1 ;
+
+
+
+    $ordreMax = $ordreMax->maxOrdre + 1;
 
     $requestLigne->bindValue(":devl__devis__id", $object->idDevis);
     $requestLigne->bindValue(":devl__type", $object->prestation);
@@ -1467,31 +1450,33 @@ public function insertLineReliquat($object){
     $requestLigne->bindValue(":cmdl__garantie_option", $object->extension);
     $requestLigne->bindValue(":cmdl__garantie_puht", floatVal($object->prixGarantie));
     $requestLigne->bindValue(":cmdl__qte_livr", intval($object->quantite));
-    $requestLigne->execute();  
-    
-    return $requestLigne;
-}
+    $requestLigne->execute();
 
-//insère une ligne dans un devis :
-public function insert_ligne_duplicata($cmdId, $object)
-{
-  $requestLigne =  $this->Db->Pdo->prepare(
-    'INSERT INTO  cmd_ligne (
+    return $requestLigne;
+  }
+
+  //insère une ligne dans un devis :
+  public function insert_ligne_duplicata($cmdId, $object)
+  {
+    $requestLigne =  $this->Db->Pdo->prepare(
+      'INSERT INTO  cmd_ligne (
      cmdl__cmd__id, cmdl__prestation,  cmdl__designation ,
      cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  ,  
      cmdl__puht , cmdl__note_client  ,  cmdl__ordre , cmdl__id__fmm , cmdl__note_interne , cmdl__etat_masque , cmdl__image , cmdl__actif )
      VALUES (
      :devl__devis__id, :devl__type,  :devl__designation,
      :devl__etat, :devl__mois_garantie , :devl_quantite,  
-     :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm ,  :cmdl__note_interne , :cmdl__etat_masque , :cmdl__image , :cmdl__actif )');
+     :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm ,  :cmdl__note_interne , :cmdl__etat_masque , :cmdl__image , :cmdl__actif )'
+    );
 
 
     $verifOrdre = $this->Db->Pdo->query(
-      'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne WHERE cmdl__cmd__id = '.$cmdId.' ');
+      'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne WHERE cmdl__cmd__id = ' . $cmdId . ' '
+    );
 
     $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
-    
-    $ordreMax = $ordreMax->maxOrdre + 1 ;
+
+    $ordreMax = $ordreMax->maxOrdre + 1;
 
     $requestLigne->bindValue(":devl__devis__id", $cmdId);
     $requestLigne->bindValue(":devl__type", $object->devl__type);
@@ -1503,21 +1488,22 @@ public function insert_ligne_duplicata($cmdId, $object)
     $requestLigne->bindValue(":devl__note_client", $object->devl__note_client);
     $requestLigne->bindValue(":devl__ordre", $ordreMax);
     $requestLigne->bindValue(":id__fmm", $object->id__fmm);
-   
+
     $requestLigne->bindValue(":cmdl__note_interne", $object->devl__note_interne);
     $requestLigne->bindValue(":cmdl__etat_masque", $object->cmdl__etat_masque);
     $requestLigne->bindValue(":cmdl__image", $object->cmdl__image);
     $requestLigne->bindValue(":cmdl__actif", $object->cmdl__actif);
-    
-    $requestLigne->execute();  
+
+    $requestLigne->execute();
 
     $id_ligne = $this->Db->Pdo->lastInsertId();
     return $id_ligne;
-}
+  }
 
-//recupère les lignes liées à un devis:
-public function devisLigne($id){
-  $request =$this->Db->Pdo->query("SELECT
+  //recupère les lignes liées à un devis:
+  public function devisLigne($id)
+  {
+    $request = $this->Db->Pdo->query("SELECT
   cmdl__cmd__id,
   cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
   cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
@@ -1540,29 +1526,27 @@ public function devisLigne($id){
   LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
   LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
   LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
-  WHERE cmdl__cmd__id = ". $id ."
+  WHERE cmdl__cmd__id = " . $id . "
   ORDER BY devl__ordre ");
- 
-  $data = $request->fetchAll(PDO::FETCH_OBJ);
-  foreach ($data as $ligne) 
-  {
-    if (!empty($ligne->ligne_image)) 
-    {
-      $ligne->ligne_image = base64_encode($ligne->ligne_image);
+
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    foreach ($data as $ligne) {
+      if (!empty($ligne->ligne_image)) {
+        $ligne->ligne_image = base64_encode($ligne->ligne_image);
+      }
     }
+    return $data;
   }
-  return $data;
-}
 
 
 
 
 
 
-//recupere les ligne et leur attribue leur filles : 
-public function devisLigne_sous_ref($id)
-{
-  $request =$this->Db->Pdo->query("SELECT
+  //recupere les ligne et leur attribue leur filles : 
+  public function devisLigne_sous_ref($id)
+  {
+    $request = $this->Db->Pdo->query("SELECT
   cmdl__cmd__id,
   cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
   cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
@@ -1585,56 +1569,48 @@ public function devisLigne_sous_ref($id)
   LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
   LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
   LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
-  WHERE cmdl__cmd__id = ". $id ." 
+  WHERE cmdl__cmd__id = " . $id . " 
   ORDER BY devl__ordre ");
- 
-  $data = $request->fetchAll(PDO::FETCH_OBJ);
-  $array_filles = [];
- 
-  foreach ($data as $k=> $ligne) 
-  {
-    $ligne->sous_ref = [];
-    //encode image en base 64 
-    if (!empty($ligne->ligne_image)) 
-    {
-      $ligne->ligne_image = base64_encode($ligne->ligne_image);
-    }
-    //reporte les lignes filles dans un tableau a part : 
-    if (!empty($ligne->cmdl__sous_ref)) 
-    {
-      array_push($array_filles , $ligne);
-      unset($data[$k]);
-    }
 
-  }
-   
- 
-   
-  foreach ($array_filles as $filles) 
-  {
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    $array_filles = [];
 
-    foreach ($data as $mere) 
-    {
-      
-      if ($filles->cmdl__sous_ref == $mere->devl__id) 
-      {
-        array_push($mere->sous_ref , $filles);
-        // var_dump($filles->cmdl__sous_ref ,$mere->devl__id );
+    foreach ($data as $k => $ligne) {
+      $ligne->sous_ref = [];
+      //encode image en base 64 
+      if (!empty($ligne->ligne_image)) {
+        $ligne->ligne_image = base64_encode($ligne->ligne_image);
+      }
+      //reporte les lignes filles dans un tableau a part : 
+      if (!empty($ligne->cmdl__sous_ref)) {
+        array_push($array_filles, $ligne);
+        unset($data[$k]);
       }
     }
-   
+
+
+
+    foreach ($array_filles as $filles) {
+
+      foreach ($data as $mere) {
+
+        if ($filles->cmdl__sous_ref == $mere->devl__id) {
+          array_push($mere->sous_ref, $filles);
+          // var_dump($filles->cmdl__sous_ref ,$mere->devl__id );
+        }
+      }
+    }
+
+    return $data;
   }
- 
-  return $data;
-}
 
 
 
 
-//recupere les ligne et leur attribue leur filles : 
-public function devisLigne_sous_ref_actif($id)
-{
-  $request =$this->Db->Pdo->query("SELECT
+  //recupere les ligne et leur attribue leur filles : 
+  public function devisLigne_sous_ref_actif($id)
+  {
+    $request = $this->Db->Pdo->query("SELECT
   cmdl__cmd__id,
   cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
   cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
@@ -1657,51 +1633,43 @@ public function devisLigne_sous_ref_actif($id)
   LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
   LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
   LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
-  WHERE cmdl__cmd__id = ". $id ." AND cmdl__actif > 0
+  WHERE cmdl__cmd__id = " . $id . " AND cmdl__actif > 0
   ORDER BY devl__ordre ");
- 
-  $data = $request->fetchAll(PDO::FETCH_OBJ);
-  $array_filles = [];
-  foreach ($data as $k=> $ligne) 
-  {
-    $ligne->sous_ref = [];
-    //encode image en base 64 
-    if (!empty($ligne->ligne_image)) 
-    {
-      $ligne->ligne_image = base64_encode($ligne->ligne_image);
-    }
-    //reporte les lignes filles dans un tableau a part : 
-    if (!empty($ligne->cmdl__sous_ref)) 
-    {
-      array_push($array_filles , $ligne);
-      unset($data[$k]);
-    }
 
-  }
-
-  foreach ($array_filles as $filles) 
-  {
-
-    foreach ($data as $mere) 
-    {
-      
-      if ($filles->cmdl__sous_ref == $mere->devl__id) 
-      {
-        array_push($mere->sous_ref , $filles);
-        // var_dump($filles->cmdl__sous_ref ,$mere->devl__id );
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    $array_filles = [];
+    foreach ($data as $k => $ligne) {
+      $ligne->sous_ref = [];
+      //encode image en base 64 
+      if (!empty($ligne->ligne_image)) {
+        $ligne->ligne_image = base64_encode($ligne->ligne_image);
+      }
+      //reporte les lignes filles dans un tableau a part : 
+      if (!empty($ligne->cmdl__sous_ref)) {
+        array_push($array_filles, $ligne);
+        unset($data[$k]);
       }
     }
-   
+
+    foreach ($array_filles as $filles) {
+
+      foreach ($data as $mere) {
+
+        if ($filles->cmdl__sous_ref == $mere->devl__id) {
+          array_push($mere->sous_ref, $filles);
+          // var_dump($filles->cmdl__sous_ref ,$mere->devl__id );
+        }
+      }
+    }
+
+    return $data;
   }
- 
-  return $data;
-}
 
 
-//recupère les lignes liées à un devis:
-public function devisLigne_actif($id)
-{
-  $request =$this->Db->Pdo->query("SELECT
+  //recupère les lignes liées à un devis:
+  public function devisLigne_actif($id)
+  {
+    $request = $this->Db->Pdo->query("SELECT
   cmdl__cmd__id,
   cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
   cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
@@ -1724,62 +1692,60 @@ public function devisLigne_actif($id)
   LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
   LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
   LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
-  WHERE cmdl__cmd__id = ". $id ." AND cmdl__actif > 0 AND cmdl__sous_ref IS NULL
+  WHERE cmdl__cmd__id = " . $id . " AND cmdl__actif > 0 AND cmdl__sous_ref IS NULL
   ORDER BY devl__ordre ");
- 
-  $data = $request->fetchAll(PDO::FETCH_OBJ);
-  foreach ($data as $ligne) 
-  {
-    if (!empty($ligne->ligne_image)) 
-    {
-      $ligne->ligne_image = base64_encode($ligne->ligne_image);
+
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    foreach ($data as $ligne) {
+      if (!empty($ligne->ligne_image)) {
+        $ligne->ligne_image = base64_encode($ligne->ligne_image);
+      }
     }
+
+    return $data;
   }
- 
-  return $data;
-}
 
-//supprime une ligne innactive 
-public function delete_ligne_inactif($id)
-{
-  $request = "DELETE FROM cmd_ligne WHERE  cmdl__cmd__id = '".$id."' AND  cmdl__actif < 1 ";
-  $update = $this->Db->Pdo->prepare($request);
-  $update->execute();
-  return true;
-}
-
-//efface les ligne filles d'une ligne inactive
-public function delete_ligne_inactif_filles($id)
-{
-  $request =$this->Db->Pdo->query("SELECT cmdl__id , cmdl__cmd__id  FROM cmd_ligne 
-  WHERE cmdl__cmd__id = ". $id ." AND  cmdl__actif < 1 
-  ORDER BY cmdl__id ");
-  $data = $request->fetchAll(PDO::FETCH_OBJ);
-  foreach ($data as $ligne) 
+  //supprime une ligne innactive 
+  public function delete_ligne_inactif($id)
   {
-    $request = "DELETE FROM cmd_ligne WHERE cmdl__cmd__id = ". $id ."  AND cmdl__sous_ref = '".$ligne->cmdl__id."'";
+    $request = "DELETE FROM cmd_ligne WHERE  cmdl__cmd__id = '" . $id . "' AND  cmdl__actif < 1 ";
     $update = $this->Db->Pdo->prepare($request);
     $update->execute();
+    return true;
   }
-  return true;
-}
-//met à jour les extension de garantie des filles : 
-public function update_filles_extensions($mere)
-{ 
-    
-      $data = [ $mere->cmdl__garantie_option ,  $mere->cmdl__cmd__id , $mere->devl__id  ];
-      $request = "UPDATE cmd_ligne SET cmdl__garantie_option = ? , cmdl__garantie_puht = 00.0   WHERE cmdl__cmd__id = ?  AND cmdl__sous_ref = ? AND cmdl__sous_garantie = 1";
+
+  //efface les ligne filles d'une ligne inactive
+  public function delete_ligne_inactif_filles($id)
+  {
+    $request = $this->Db->Pdo->query("SELECT cmdl__id , cmdl__cmd__id  FROM cmd_ligne 
+  WHERE cmdl__cmd__id = " . $id . " AND  cmdl__actif < 1 
+  ORDER BY cmdl__id ");
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    foreach ($data as $ligne) {
+      $request = "DELETE FROM cmd_ligne WHERE cmdl__cmd__id = " . $id . "  AND cmdl__sous_ref = '" . $ligne->cmdl__id . "'";
       $update = $this->Db->Pdo->prepare($request);
-      $update->execute($data);
-      return true ; 
-}
+      $update->execute();
+    }
+    return true;
+  }
+  //met à jour les extension de garantie des filles : 
+  public function update_filles_extensions($mere)
+  {
+
+    $data = [$mere->cmdl__garantie_option,  $mere->cmdl__cmd__id, $mere->devl__id];
+    $request = "UPDATE cmd_ligne SET cmdl__garantie_option = ? , cmdl__garantie_puht = 00.0   WHERE cmdl__cmd__id = ?  AND cmdl__sous_ref = ? AND cmdl__sous_garantie = 1";
+    $update = $this->Db->Pdo->prepare($request);
+    $update->execute($data);
+    return true;
+  }
 
 
 
 
-//recupère les lignes liées à un devis:
-public function devisLigneFacturee($id){
-  $request =$this->Db->Pdo->query("SELECT
+  //recupère les lignes liées à un devis:
+  public function devisLigneFacturee($id)
+  {
+    $request = $this->Db->Pdo->query("SELECT
   cmdl__cmd__id,
   cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
   cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
@@ -1801,42 +1767,39 @@ public function devisLigneFacturee($id){
   LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
   LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
   LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
-  WHERE cmdl__cmd__id = ". $id ." AND cmdl__qte_fact > 0 
+  WHERE cmdl__cmd__id = " . $id . " AND cmdl__qte_fact > 0 
   ORDER BY devl__ordre ");
- 
-  $data = $request->fetchAll(PDO::FETCH_OBJ);
-  return $data;
-}
 
-//recupere le numero de compte du plan comptable pour chaque ligne passée en parametre:
-public function getCompta($ligne , $cmd)
-{
- 
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+  }
+
+  //recupere le numero de compte du plan comptable pour chaque ligne passée en parametre:
+  public function getCompta($ligne, $cmd)
+  {
+
     $arrayResponse = [];
     $request = $this->Db->Pdo->query("SELECT * FROM compta
-    WHERE cpt__tva_kw = ".$cmd->tva_value." AND cpt__pres_kw = '".$ligne->devl__type."' ");
-    
-    $data = $request->fetch(PDO::FETCH_OBJ);
-    
-    array_push($arrayResponse , $data);
+    WHERE cpt__tva_kw = " . $cmd->tva_value . " AND cpt__pres_kw = '" . $ligne->devl__type . "' ");
 
-    if (!empty($ligne->cmdl__garantie_puht) && intval($ligne->cmdl__garantie_puht) > 0 ) 
-    {
+    $data = $request->fetch(PDO::FETCH_OBJ);
+
+    array_push($arrayResponse, $data);
+
+    if (!empty($ligne->cmdl__garantie_puht) && intval($ligne->cmdl__garantie_puht) > 0) {
       $request = $this->Db->Pdo->query("SELECT * FROM compta
-      WHERE cpt__tva_kw = ".$cmd->tva_value." AND cpt__pres_kw = 'EXG' ");
+      WHERE cpt__tva_kw = " . $cmd->tva_value . " AND cpt__pres_kw = 'EXG' ");
       $data = $request->fetch(PDO::FETCH_OBJ);
-      array_push($arrayResponse , $data);
+      array_push($arrayResponse, $data);
     }
     return $arrayResponse;
-  
-  
-}
+  }
 
 
-//recupère les lignes liées à un devis id_ligne:
-public function devisLigneId ($id)
-{
-  $request =$this->Db->Pdo->query("SELECT
+  //recupère les lignes liées à un devis id_ligne:
+  public function devisLigneId($id)
+  {
+    $request = $this->Db->Pdo->query("SELECT
   cmdl__cmd__id,
   cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
   cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
@@ -1858,18 +1821,18 @@ public function devisLigneId ($id)
   LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
   LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
   LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
-  WHERE cmdl__id = ". $id ."
+  WHERE cmdl__id = " . $id . "
   ORDER BY devl__ordre ");
- 
-  $data = $request->fetch(PDO::FETCH_OBJ);
-  return $data;
-}
 
-//attribut les lignes avoirées
-public function makeAvoirLigne($id , $avoirId , $qte)
-{
-  $requestLigne =  $this->Db->Pdo->prepare(
-    'INSERT INTO  cmd_ligne (
+    $data = $request->fetch(PDO::FETCH_OBJ);
+    return $data;
+  }
+
+  //attribut les lignes avoirées
+  public function makeAvoirLigne($id, $avoirId, $qte)
+  {
+    $requestLigne =  $this->Db->Pdo->prepare(
+      'INSERT INTO  cmd_ligne (
      cmdl__cmd__id, cmdl__prestation, cmdl__pn, cmdl__designation,
      cmdl__etat, cmdl__garantie_base, cmdl__qte_cmd,
      cmdl__puht, cmdl__note_client, cmdl__note_interne, cmdl__ordre, cmdl__id__fmm,
@@ -1879,74 +1842,73 @@ public function makeAvoirLigne($id , $avoirId , $qte)
      cmdl__puht, cmdl__note_client, cmdl__note_interne, cmdl__ordre, cmdl__id__fmm,
      cmdl__qte_fact, cmdl__prix_barre, cmdl__note_facture, cmdl__garantie_option, cmdl__garantie_puht
      FROM cmd_ligne
-     WHERE cmdl__id = '.$id.'');
-   $requestLigne->execute();
-   $idLigne = $this->Db->Pdo->lastInsertId();
+     WHERE cmdl__id = ' . $id . ''
+    );
+    $requestLigne->execute();
+    $idLigne = $this->Db->Pdo->lastInsertId();
 
-   $data = 
-    [
-      $avoirId,
-      intval($qte),
-      $idLigne
-    ];
-          
-  $updateNewLines = 
-        "UPDATE cmd_ligne
+    $data =
+      [
+        $avoirId,
+        intval($qte),
+        $idLigne
+      ];
+
+    $updateNewLines =
+      "UPDATE cmd_ligne
          SET cmdl__cmd__id =? , cmdl__qte_fact = ? 
          WHERE cmdl__id =? ";
-          
-  $update = $this->Db->Pdo->prepare($updateNewLines);
-  $update->execute($data);
-  return $idLigne;
-}
 
-
-
-//inverse les prix pour chaque ligne: 
-public function reversePrice($idLigne)
-{
-  $ligne = $this->devisLigneId($idLigne);
-
-  if (!empty($ligne->cmdl__garantie_puht) && floatval($ligne->cmdl__garantie_puht) > 0 )
-  {
-    $reverse = $ligne->cmdl__garantie_puht *-1;
-    $data = [ $reverse , $idLigne];
-    $updateNewLines = 
-    "UPDATE cmd_ligne
-     SET cmdl__garantie_puht =?
-     WHERE cmdl__id =? ";
-     $update = $this->Db->Pdo->prepare($updateNewLines);
-     $update->execute($data);
+    $update = $this->Db->Pdo->prepare($updateNewLines);
+    $update->execute($data);
+    return $idLigne;
   }
 
-    $reversePrice = $ligne->devl_puht *-1;
-    $dataPrice = [ $reversePrice , $idLigne];
-    $updateNewPrice = 
-    "UPDATE cmd_ligne
+
+
+  //inverse les prix pour chaque ligne: 
+  public function reversePrice($idLigne)
+  {
+    $ligne = $this->devisLigneId($idLigne);
+
+    if (!empty($ligne->cmdl__garantie_puht) && floatval($ligne->cmdl__garantie_puht) > 0) {
+      $reverse = $ligne->cmdl__garantie_puht * -1;
+      $data = [$reverse, $idLigne];
+      $updateNewLines =
+        "UPDATE cmd_ligne
+     SET cmdl__garantie_puht =?
+     WHERE cmdl__id =? ";
+      $update = $this->Db->Pdo->prepare($updateNewLines);
+      $update->execute($data);
+    }
+
+    $reversePrice = $ligne->devl_puht * -1;
+    $dataPrice = [$reversePrice, $idLigne];
+    $updateNewPrice =
+      "UPDATE cmd_ligne
      SET cmdl__puht =?
      WHERE cmdl__id =? ";
-     $updateReverse = $this->Db->Pdo->prepare($updateNewPrice);
-     $updateReverse->execute($dataPrice);
-}
+    $updateReverse = $this->Db->Pdo->prepare($updateNewPrice);
+    $updateReverse->execute($dataPrice);
+  }
 
   // met a jour le status de la commande et le munero de facture:
   public function commande2facture($cmd)
   {
     //recup le dernier numero de facture: 
-    $lastFact= $this->Db->Pdo->query('SELECT MAX(cmd__id_facture) as lastFact from cmd ');
+    $lastFact = $this->Db->Pdo->query('SELECT MAX(cmd__id_facture) as lastFact from cmd ');
     $lastFTC = $lastFact->fetch(PDO::FETCH_OBJ);
 
     $newfact = $lastFTC->lastFact + 1;
 
-    $data = 
-    [
-      $newfact
-      ,
-      $cmd
-    ];
+    $data =
+      [
+        $newfact,
+        $cmd
+      ];
 
-    $sql = 
-    "UPDATE cmd
+    $sql =
+      "UPDATE cmd
      SET 
      cmd__id_facture =? ,
      cmd__etat = 'VLD'
@@ -1954,14 +1916,14 @@ public function reversePrice($idLigne)
 
     $update = $this->Db->Pdo->prepare($sql);
     $update->execute($data);
-
   }
 
- 
+
 
   //recupère tous les status VLD
-  public function getFromStatus(){
-    $request =$this->Db->Pdo->query("SELECT 
+  public function getFromStatus()
+  {
+    $request = $this->Db->Pdo->query("SELECT 
     cmd__id as devis__id ,
     cmd__user__id_devis as devis__user__id ,
     cmd__date_devis as devis__date_crea, 
@@ -1996,7 +1958,7 @@ public function reversePrice($idLigne)
 
   public function getCMD()
   {
-    $request =$this->Db->Pdo->query("SELECT DISTINCT 
+    $request = $this->Db->Pdo->query("SELECT DISTINCT 
       cmd__id as devis__id ,
       cmd__user__id_devis as devis__user__id ,
       cmd__date_devis as devis__date_crea, 
@@ -2028,14 +1990,15 @@ public function reversePrice($idLigne)
       LEFT JOIN cmd_ligne as l ON l.cmdl__cmd__id = cmd__id 
       WHERE cmd__etat = 'CMD'  
       ORDER BY  cmd__date_devis DESC , c.client__societe ASC  LIMIT 200 ");
-      $data = $request->fetchAll(PDO::FETCH_OBJ);
-      return $data;
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
   }
 
 
   //recupére tous les status cmd
-  public function getFromStatusCMD(){
-    $request =$this->Db->Pdo->query("SELECT 
+  public function getFromStatusCMD()
+  {
+    $request = $this->Db->Pdo->query("SELECT 
     cmd__id as devis__id ,
     cmd__user__id_devis as devis__user__id ,
     cmd__date_devis as devis__date_crea, 
@@ -2089,10 +2052,10 @@ public function reversePrice($idLigne)
   //recupere toute les lignes de cmd entre 2 id cmd 
   public function ligneXport($start, $end)
   {
-    $request =$this->Db->Pdo->query("SELECT
+    $request = $this->Db->Pdo->query("SELECT
       cmd__id
       FROM cmd 
-      WHERE cmd__id_facture BETWEEN ".$start." AND ".$end."
+      WHERE cmd__id_facture BETWEEN " . $start . " AND " . $end . "
       ORDER BY cmd__id_facture ASC ");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
@@ -2102,18 +2065,18 @@ public function reversePrice($idLigne)
   public function exportFinal($array)
   {
     $response = [];
-    foreach ($array as  $value)
-    {
+    foreach ($array as  $value) {
       $temp = $this->devisLigneFacturee($value->cmd__id);
-      array_push($response , $temp);
+      array_push($response, $temp);
     }
     return $response;
   }
 
 
   //prend le status en CHAR de 3 en parametre et renvoi tous les devis:
-  public function getFromStatusAll($status){
-    $request =$this->Db->Pdo->query("SELECT 
+  public function getFromStatusAll($status)
+  {
+    $request = $this->Db->Pdo->query("SELECT 
     cmd__id as devis__id ,
     cmd__user__id_devis as devis__user__id ,
     cmd__date_devis as devis__date_crea, 
@@ -2140,37 +2103,46 @@ public function reversePrice($idLigne)
     LEFT JOIN client as c2 ON cmd__client__id_livr = c2.client__id
     LEFT JOIN keyword as k ON cmd__etat = k.kw__value AND  k.kw__type = 'stat'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
-    WHERE cmd__etat = '".$status."'    
+    WHERE cmd__etat = '" . $status . "'    
     ORDER BY  cmd__id_facture DESC , c.client__societe ASC  LIMIT 200 ");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
   }
 
-  
 
- 
+
+
 
 
   //crée un nouveau devis:
   public function insertOne(
-    $date , $user, $client , $livraison, $contact, $comClient,
-    $comInterne, $etat, $modele , $arrayOfObject , $contact_livraison , $titreDevis )
-    {
+    $date,
+    $user,
+    $client,
+    $livraison,
+    $contact,
+    $comClient,
+    $comInterne,
+    $etat,
+    $modele,
+    $arrayOfObject,
+    $contact_livraison,
+    $titreDevis
+  ) {
 
 
-      if ( preg_match('/style="width:[^\"]*"/',$comClient)) 
-    {
-      
-      preg_match('/style="width:[^\"]*"/',$comClient ,$matches);
+    if (preg_match('/style="width:[^\"]*"/', $comClient)) {
+
+      preg_match('/style="width:[^\"]*"/', $comClient, $matches);
       $matches[0] = ' ' .  $matches[0];
-      $chaine = preg_replace('/img/',  'img' .  $matches[0] . ' ' , $comClient  );
+      $chaine = preg_replace('/img/',  'img' .  $matches[0] . ' ', $comClient);
       $comClient = $chaine;
     }
 
 
 
     $request = $this->Db->Pdo->prepare(
-       'INSERT INTO cmd (
+      'INSERT INTO cmd (
         cmd__date_devis , cmd__user__id_devis, cmd__client__id_fact ,
         cmd__client__id_livr, cmd__contact__id_fact,
         cmd__note_client, cmd__note_interne,
@@ -2179,24 +2151,27 @@ public function reversePrice($idLigne)
         :devis__date_crea, :devis__user__id, :devis__client__id, 
         :devis__id_client_livraison, :devis__contact__id, 
         :devis__note_client, :devis__note_interne, :devis__etat ,
-        :devis__modele , :devis__id_contact_livraison, :nom_devis)');
+        :devis__modele , :devis__id_contact_livraison, :nom_devis)'
+    );
 
 
     $requestLigne =  $this->Db->Pdo->prepare(
-       'INSERT INTO  cmd_ligne (
+      'INSERT INTO  cmd_ligne (
         cmdl__cmd__id, cmdl__prestation, cmdl__pn , cmdl__designation ,
         cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  , cmdl__prix_barre , 
         cmdl__puht , cmdl__note_client  , cmdl__note_interne  , cmdl__ordre , cmdl__id__fmm)
         VALUES (
         :devl__devis__id, :devl__type, :devl__modele, :devl__designation,
         :devl__etat, :devl__mois_garantie , :devl_quantite, :devl__prix_barre, 
-        :devl_puht , :devl__note_client , :devl__note_interne , :devl__ordre , :id__fmm)');
+        :devl_puht , :devl__note_client , :devl__note_interne , :devl__ordre , :id__fmm)'
+    );
 
     $requestGarantie =  $this->Db->Pdo->prepare(
-       'INSERT INTO  cmd_garantie ( 
+      'INSERT INTO  cmd_garantie ( 
         cmdg__id__cmdl , cmdg__type , cmdg__prix  , cmdg__ordre )
         VALUES (
-        :devg__id__devl , :devg__type , :devg__prix, :devg__ordre )');
+        :devg__id__devl , :devg__type , :devg__prix, :devg__ordre )'
+    );
 
     $request->bindValue(":devis__date_crea", $date);
     $request->bindValue(":devis__user__id", $user);
@@ -2211,95 +2186,102 @@ public function reversePrice($idLigne)
     $request->bindValue(":nom_devis", $titreDevis);
     $request->execute();
     $idDevis = $this->Db->Pdo->lastInsertId();
-    $count = 0 ;
-    foreach ($arrayOfObject as $object){
-      
-        $verify = $this->Db->Pdo->query('
-        SELECT  afmm__famille FROM art_fmm WHERE afmm__id = '.  $object->id__fmm .'');
-        $response  = $verify->fetch(PDO::FETCH_OBJ);
-        $count+= 1 ;
-        $requestLigne->bindValue(":devl__devis__id", $idDevis);
-        $requestLigne->bindValue(":devl__type", $object->prestation);
-        $requestLigne->bindValue(":devl__modele", $object->pn);
-        $requestLigne->bindValue(":devl__designation", $object->designation);
-        $requestLigne->bindValue(":id__fmm", $object->id__fmm);
+    $count = 0;
+    foreach ($arrayOfObject as $object) {
 
-
-        
-        if ($response->afmm__famille == 'SER') {
-          $requestLigne->bindValue(":devl__mois_garantie", intval( 0 ));
-          $requestLigne->bindValue(":devl__etat",'NC.');
-        }
-        else {
-          $requestLigne->bindValue(":devl__etat", $object->etat);
-          $requestLigne->bindValue(":devl__mois_garantie", intval($object->garantie));
-        }
-
-        if ( preg_match('/style="width:[^\"]*"/', $object->comClient)) 
-        { 
-          preg_match('/style="width:[^\"]*"/', $object->comClient ,$matches);
-          $matches[0] = ' ' .  $matches[0];
-          $chaine = preg_replace('/img/',  'img' .  $matches[0] . ' ' , $object->comClient  );
-          $object->comClient = $chaine;
-        }
-        
-        $requestLigne->bindValue(":devl_quantite", $object->quantite);
-        $requestLigne->bindValue(":devl__prix_barre", floatval($object->prixBarre));
-        $requestLigne->bindValue(":devl_puht", floatval($object->prix));
-        $requestLigne->bindValue(":devl__note_client", $object->comClient);
-        $requestLigne->bindValue(":devl__note_interne", $object->comInterne);
-        $requestLigne->bindValue(":devl__ordre", $object->id);
-        $requestLigne->execute();  
-        $idLigne = $this->Db->Pdo->lastInsertId();
-        $count2 = 0;  
-        foreach($object->xtend as $xtend){
-            $count2+= 1 ;
-            $requestGarantie->bindValue(":devg__id__devl", $idLigne);
-            $requestGarantie->bindValue("devg__type", $xtend[0]);
-            $requestGarantie->bindValue("devg__prix", floatval($xtend[1]));
-            $requestGarantie->bindValue("devg__ordre", $count2);
-            $requestGarantie->execute();
-        }
-    } 
-   return $idDevis;
-}
-
-
-//efface une ligne : 
-public function deleteLine($id , $cmdid)
-{
-  $request = "DELETE FROM cmd_ligne WHERE cmdl__id ='".$id."' AND cmdl__cmd__id = '".$cmdid."'";
-  $update = $this->Db->Pdo->prepare($request);
-  $update->execute();
-  return true;
-  
-}
+      $verify = $this->Db->Pdo->query('
+        SELECT  afmm__famille FROM art_fmm WHERE afmm__id = ' .  $object->id__fmm . '');
+      $response  = $verify->fetch(PDO::FETCH_OBJ);
+      $count += 1;
+      $requestLigne->bindValue(":devl__devis__id", $idDevis);
+      $requestLigne->bindValue(":devl__type", $object->prestation);
+      $requestLigne->bindValue(":devl__modele", $object->pn);
+      $requestLigne->bindValue(":devl__designation", $object->designation);
+      $requestLigne->bindValue(":id__fmm", $object->id__fmm);
 
 
 
-//efface et remplace le devis: 
-public function modify(
-    $id , $date , $user, $client , $livraison,  $contact, $comClient,
-    $comInterne, $etat, $modele , $arrayOfObject , $contact_livraison , $titreDevis)
-    {
+      if ($response->afmm__famille == 'SER') {
+        $requestLigne->bindValue(":devl__mois_garantie", intval(0));
+        $requestLigne->bindValue(":devl__etat", 'NC.');
+      } else {
+        $requestLigne->bindValue(":devl__etat", $object->etat);
+        $requestLigne->bindValue(":devl__mois_garantie", intval($object->garantie));
+      }
+
+      if (preg_match('/style="width:[^\"]*"/', $object->comClient)) {
+        preg_match('/style="width:[^\"]*"/', $object->comClient, $matches);
+        $matches[0] = ' ' .  $matches[0];
+        $chaine = preg_replace('/img/',  'img' .  $matches[0] . ' ', $object->comClient);
+        $object->comClient = $chaine;
+      }
+
+      $requestLigne->bindValue(":devl_quantite", $object->quantite);
+      $requestLigne->bindValue(":devl__prix_barre", floatval($object->prixBarre));
+      $requestLigne->bindValue(":devl_puht", floatval($object->prix));
+      $requestLigne->bindValue(":devl__note_client", $object->comClient);
+      $requestLigne->bindValue(":devl__note_interne", $object->comInterne);
+      $requestLigne->bindValue(":devl__ordre", $object->id);
+      $requestLigne->execute();
+      $idLigne = $this->Db->Pdo->lastInsertId();
+      $count2 = 0;
+      foreach ($object->xtend as $xtend) {
+        $count2 += 1;
+        $requestGarantie->bindValue(":devg__id__devl", $idLigne);
+        $requestGarantie->bindValue("devg__type", $xtend[0]);
+        $requestGarantie->bindValue("devg__prix", floatval($xtend[1]));
+        $requestGarantie->bindValue("devg__ordre", $count2);
+        $requestGarantie->execute();
+      }
+    }
+    return $idDevis;
+  }
+
+
+  //efface une ligne : 
+  public function deleteLine($id, $cmdid)
+  {
+    $request = "DELETE FROM cmd_ligne WHERE cmdl__id ='" . $id . "' AND cmdl__cmd__id = '" . $cmdid . "'";
+    $update = $this->Db->Pdo->prepare($request);
+    $update->execute();
+    return true;
+  }
+
+
+
+  //efface et remplace le devis: 
+  public function modify(
+    $id,
+    $date,
+    $user,
+    $client,
+    $livraison,
+    $contact,
+    $comClient,
+    $comInterne,
+    $etat,
+    $modele,
+    $arrayOfObject,
+    $contact_livraison,
+    $titreDevis
+  ) {
 
     $delete = $this->Db->Pdo->prepare(
-    'DELETE  from cmd
-     WHERE cmd__id =  :cmd__id');
+      'DELETE  from cmd
+     WHERE cmd__id =  :cmd__id'
+    );
 
-    if ( preg_match('/style="width:[^\"]*"/',$comClient)) 
-    {
+    if (preg_match('/style="width:[^\"]*"/', $comClient)) {
 
-      preg_match('/style="width:[^\"]*"/',$comClient ,$matches);
+      preg_match('/style="width:[^\"]*"/', $comClient, $matches);
       $matches[0] = ' ' .  $matches[0];
-      $chaine = preg_replace('/img/',  'img' .  $matches[0] . ' ' , $comClient  );
+      $chaine = preg_replace('/img/',  'img' .  $matches[0] . ' ', $comClient);
       $comClient = $chaine;
-
     }
 
 
     $request = $this->Db->Pdo->prepare(
-     'INSERT INTO cmd (
+      'INSERT INTO cmd (
       cmd__id, cmd__date_devis , cmd__user__id_devis, cmd__client__id_fact ,
       cmd__client__id_livr,  cmd__contact__id_fact,
       cmd__note_client, cmd__note_interne,
@@ -2308,27 +2290,30 @@ public function modify(
       :cmd__id , :devis__date_crea, :devis__user__id, :devis__client__id, 
       :devis__id_client_livraison,  :devis__contact__id, 
       :devis__note_client, :devis__note_interne, :devis__etat ,
-      :devis__modele , :devis__id_contact_livraison , :nomDevis)');
+      :devis__modele , :devis__id_contact_livraison , :nomDevis)'
+    );
 
     $requestLigne =  $this->Db->Pdo->prepare(
-     'INSERT INTO  cmd_ligne (
+      'INSERT INTO  cmd_ligne (
       cmdl__cmd__id, cmdl__prestation, cmdl__pn , cmdl__designation ,
       cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  , cmdl__prix_barre , 
       cmdl__puht , cmdl__note_client  , cmdl__note_interne  , cmdl__ordre , cmdl__id__fmm)
       VALUES (
       :devl__devis__id, :devl__type, :devl__modele, :devl__designation,
       :devl__etat, :devl__mois_garantie , :devl_quantite, :devl__prix_barre, 
-      :devl_puht , :devl__note_client , :devl__note_interne , :devl__ordre , :id__fmm)');
+      :devl_puht , :devl__note_client , :devl__note_interne , :devl__ordre , :id__fmm)'
+    );
 
     $requestGarantie =  $this->Db->Pdo->prepare(
-     'INSERT INTO  cmd_garantie ( 
+      'INSERT INTO  cmd_garantie ( 
       cmdg__id__cmdl , cmdg__type , cmdg__prix  , cmdg__ordre )
       VALUES (
-      :devg__id__devl , :devg__type , :devg__prix, :devg__ordre )');
+      :devg__id__devl , :devg__type , :devg__prix, :devg__ordre )'
+    );
 
     $delete->bindValue(":cmd__id", $id);
     $delete->execute();
-    $request->bindValue(":cmd__id", $id);   
+    $request->bindValue(":cmd__id", $id);
     $request->bindValue(":devis__date_crea", $date);
     $request->bindValue(":devis__user__id", $user);
     $request->bindValue(":devis__client__id", $client);
@@ -2338,72 +2323,70 @@ public function modify(
     $request->bindValue(":devis__note_interne", $comInterne);
     $request->bindValue(":devis__etat", $etat);
     $request->bindValue(":devis__modele", $modele);
-    $request->bindValue(":devis__id_contact_livraison",$contact_livraison);
+    $request->bindValue(":devis__id_contact_livraison", $contact_livraison);
     $request->bindValue(":nomDevis", $titreDevis);
     $request->execute();
     $idDevis = $this->Db->Pdo->lastInsertId();
-    $count = 0 ;
-    foreach ($arrayOfObject as $object){
-        $verify = $this->Db->Pdo->query('
-        SELECT  afmm__famille FROM art_fmm WHERE afmm__id = '.  $object->id__fmm .'');
-        $respnse =  $verify->fetch(PDO::FETCH_OBJ);
-        
-        $count+= 1 ;
-        $requestLigne->bindValue(":devl__devis__id", $idDevis);
-        $requestLigne->bindValue(":devl__type", $object->prestation);
-        $requestLigne->bindValue(":devl__modele", $object->pn);
-        $requestLigne->bindValue(":id__fmm", $object->id__fmm);
-        $requestLigne->bindValue(":devl__designation", $object->designation);
-        
-        if ($respnse->afmm__famille == 'SER') {
-          $requestLigne->bindValue(":devl__mois_garantie", intval( 0 ));
-          $requestLigne->bindValue(":devl__etat",'NC.');
-        }
-        else {
-          $requestLigne->bindValue(":devl__etat", $object->etat);
-          $requestLigne->bindValue(":devl__mois_garantie", intval($object->garantie));
-        }
+    $count = 0;
+    foreach ($arrayOfObject as $object) {
+      $verify = $this->Db->Pdo->query('
+        SELECT  afmm__famille FROM art_fmm WHERE afmm__id = ' .  $object->id__fmm . '');
+      $respnse =  $verify->fetch(PDO::FETCH_OBJ);
+
+      $count += 1;
+      $requestLigne->bindValue(":devl__devis__id", $idDevis);
+      $requestLigne->bindValue(":devl__type", $object->prestation);
+      $requestLigne->bindValue(":devl__modele", $object->pn);
+      $requestLigne->bindValue(":id__fmm", $object->id__fmm);
+      $requestLigne->bindValue(":devl__designation", $object->designation);
+
+      if ($respnse->afmm__famille == 'SER') {
+        $requestLigne->bindValue(":devl__mois_garantie", intval(0));
+        $requestLigne->bindValue(":devl__etat", 'NC.');
+      } else {
+        $requestLigne->bindValue(":devl__etat", $object->etat);
+        $requestLigne->bindValue(":devl__mois_garantie", intval($object->garantie));
+      }
 
 
-        if ( preg_match('/style="width:[^\"]*"/', $object->comClient)) 
-        {
-          
-          preg_match('/style="width:[^\"]*"/', $object->comClient ,$matches);
-          $matches[0] = ' ' .  $matches[0];
-          $chaine = preg_replace('/img/',  'img' .  $matches[0] . ' ' , $object->comClient  );
-          $object->comClient = $chaine;
-    
-        }
+      if (preg_match('/style="width:[^\"]*"/', $object->comClient)) {
+
+        preg_match('/style="width:[^\"]*"/', $object->comClient, $matches);
+        $matches[0] = ' ' .  $matches[0];
+        $chaine = preg_replace('/img/',  'img' .  $matches[0] . ' ', $object->comClient);
+        $object->comClient = $chaine;
+      }
 
 
 
-        $requestLigne->bindValue(":devl_quantite", $object->quantite);
-        $requestLigne->bindValue(":devl__prix_barre", floatval($object->prixBarre));
-        $requestLigne->bindValue(":devl_puht", floatval($object->prix));
-        $requestLigne->bindValue(":devl__note_client", $object->comClient);
-        $requestLigne->bindValue(":devl__note_interne", $object->comInterne);
-        $requestLigne->bindValue(":devl__ordre", $object->id);
-        $requestLigne->execute();  
-        $idLigne = $this->Db->Pdo->lastInsertId();
-        $count2 = 0;  
-        foreach($object->xtend as $xtend){
-            $count2+= 1 ;
-            $requestGarantie->bindValue(":devg__id__devl", $idLigne);
-            $requestGarantie->bindValue("devg__type", $xtend[0]);
-            $requestGarantie->bindValue("devg__prix", floatval($xtend[1]));
-            $requestGarantie->bindValue("devg__ordre", $count2);
-            $requestGarantie->execute();
-        }
-    } 
-    return $idDevis;
+      $requestLigne->bindValue(":devl_quantite", $object->quantite);
+      $requestLigne->bindValue(":devl__prix_barre", floatval($object->prixBarre));
+      $requestLigne->bindValue(":devl_puht", floatval($object->prix));
+      $requestLigne->bindValue(":devl__note_client", $object->comClient);
+      $requestLigne->bindValue(":devl__note_interne", $object->comInterne);
+      $requestLigne->bindValue(":devl__ordre", $object->id);
+      $requestLigne->execute();
+      $idLigne = $this->Db->Pdo->lastInsertId();
+      $count2 = 0;
+      foreach ($object->xtend as $xtend) {
+        $count2 += 1;
+        $requestGarantie->bindValue(":devg__id__devl", $idLigne);
+        $requestGarantie->bindValue("devg__type", $xtend[0]);
+        $requestGarantie->bindValue("devg__prix", floatval($xtend[1]));
+        $requestGarantie->bindValue("devg__ordre", $count2);
+        $requestGarantie->execute();
+      }
     }
+    return $idDevis;
+  }
 
-    
-    
 
 
-    public function devisLigneUnit($id){
-      $request =$this->Db->Pdo->query("SELECT
+
+
+  public function devisLigneUnit($id)
+  {
+    $request = $this->Db->Pdo->query("SELECT
       cmdl__cmd__id,
       cmdl__id as devl__id ,cmdl__prestation as  devl__type, 
       cmdl__pn as devl__modele,  cmdl__designation as devl__designation,
@@ -2425,36 +2408,40 @@ public function modify(
       LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
       LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
       LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
-      WHERE cmdl__id = ". $id ."
+      WHERE cmdl__id = " . $id . "
       ORDER BY devl__ordre ");
-     
-      $data = $request->fetch(PDO::FETCH_OBJ);
-      return $data;
-    }
 
-    public function xtenGarantie($id){
-      $request =$this->Db->Pdo->query("SELECT 
+    $data = $request->fetch(PDO::FETCH_OBJ);
+    return $data;
+  }
+
+  public function xtenGarantie($id)
+  {
+    $request = $this->Db->Pdo->query("SELECT 
       cmdg__id as devg__id,  LPAD(cmdg__type ,2,0)  as  devg__type, cmdg__prix as  devg__prix , cmdg__prix_barre , cmdg__id__cmdl
       FROM cmd_garantie  
-      WHERE cmdg__id__cmdl = ". $id ."");
-      $data = $request->fetchAll(PDO::FETCH_ASSOC);
-      return $data;
+      WHERE cmdg__id__cmdl = " . $id . "");
+    $data = $request->fetchAll(PDO::FETCH_ASSOC);
+    return $data;
+  }
+
+  public function magicRequestStatus($string, $status)
+  {
+
+    $filtre = str_replace("-", ' ', $string);
+    $filtre = str_replace("'", ' ', $filtre);
+    $nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+    $mots_filtre = str_word_count($filtre, 1, '0123456789');
+
+    if ($nb_mots_filtre > 0) {
+      $mode_filtre = true;
+    } else {
+      $mode_filtre = false;
     }
 
-    public function magicRequestStatus($string , $status){
+    $operateur = 'AND ';
 
-      $filtre = str_replace("-" , ' ', $string);
-      $filtre = str_replace("'" , ' ' , $filtre);
-      $nb_mots_filtre = str_word_count($filtre , 0 , "0123456789");
-      $mots_filtre = str_word_count($filtre, 1 ,'0123456789');
-
-      if ($nb_mots_filtre > 0 ) {
-        $mode_filtre = true ;
-      }else { $mode_filtre = false ;}
-
-      $operateur = 'AND ';
-
-      $request = "SELECT DISTINCT 
+    $request = "SELECT DISTINCT 
       cmd__id as devis__id ,
       cmd__user__id_devis as devis__user__id ,
       cmd__date_devis as devis__date_crea, 
@@ -2483,50 +2470,52 @@ public function modify(
       LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
       LEFT JOIN cmd_ligne as l ON l.cmdl__cmd__id = cmd__id ";
 
-      if ($mode_filtre) {
-       $request .=  "WHERE ( cmd__id = '".$mots_filtre[0]."' 
-        OR cmd__nom_devis LIKE '%".$mots_filtre[0]."%' 
-        OR u.prenom LIKE '%".$mots_filtre[0]."%' 
-        OR l.cmdl__designation LIKE '%".$mots_filtre[0]."%'
-        OR l.cmdl__pn LIKE '%".$mots_filtre[0]."%' 
-        OR c.client__societe LIKE '%".$mots_filtre[0]."%' 
-        OR c.client__id = '".$mots_filtre[0]."' ) ";
+    if ($mode_filtre) {
+      $request .=  "WHERE ( cmd__id = '" . $mots_filtre[0] . "' 
+        OR cmd__nom_devis LIKE '%" . $mots_filtre[0] . "%' 
+        OR u.prenom LIKE '%" . $mots_filtre[0] . "%' 
+        OR l.cmdl__designation LIKE '%" . $mots_filtre[0] . "%'
+        OR l.cmdl__pn LIKE '%" . $mots_filtre[0] . "%' 
+        OR c.client__societe LIKE '%" . $mots_filtre[0] . "%' 
+        OR c.client__id = '" . $mots_filtre[0] . "' ) ";
 
-       for ($i=1; $i < $nb_mots_filtre ; $i++) { 
-          $request .=  $operateur. " ( cmd__id = '".$mots_filtre[$i]."' 
-          OR cmd__nom_devis LIKE '%".$mots_filtre[$i]."%' 
-          OR u.prenom LIKE '%".$mots_filtre[$i]."%' 
-          OR l.cmdl__designation LIKE '%".$mots_filtre[$i]."%'
-          OR l.cmdl__pn LIKE '%".$mots_filtre[$i]."%' 
-          OR c.client__societe LIKE '%".$mots_filtre[$i]."%' 
-          OR c.client__id = '".$mots_filtre[$i]."' ) ";
-       }
-       $request .= "AND ( cmd__etat = '".$status."' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+      for ($i = 1; $i < $nb_mots_filtre; $i++) {
+        $request .=  $operateur . " ( cmd__id = '" . $mots_filtre[$i] . "' 
+          OR cmd__nom_devis LIKE '%" . $mots_filtre[$i] . "%' 
+          OR u.prenom LIKE '%" . $mots_filtre[$i] . "%' 
+          OR l.cmdl__designation LIKE '%" . $mots_filtre[$i] . "%'
+          OR l.cmdl__pn LIKE '%" . $mots_filtre[$i] . "%' 
+          OR c.client__societe LIKE '%" . $mots_filtre[$i] . "%' 
+          OR c.client__id = '" . $mots_filtre[$i] . "' ) ";
       }
-      else {
-        $request .= "AND ( cmd__etat = '".$status."' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
-      }
-      
-      $send = $this->Db->Pdo->query($request);
-      $data = $send->fetchAll(PDO::FETCH_OBJ);
-      return $data;
+      $request .= "AND ( cmd__etat = '" . $status . "' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+    } else {
+      $request .= "AND ( cmd__etat = '" . $status . "' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
     }
 
+    $send = $this->Db->Pdo->query($request);
+    $data = $send->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+  }
 
-    public function magicRequest($string){
 
-      $filtre = str_replace("-" , ' ', $string);
-      $filtre = str_replace("'" , ' ' , $filtre);
-      $nb_mots_filtre = str_word_count($filtre , 0 , "0123456789");
-      $mots_filtre = str_word_count($filtre, 1 ,'0123456789');
+  public function magicRequest($string)
+  {
 
-      if ($nb_mots_filtre > 0 ) {
-        $mode_filtre = true ;
-      }else { $mode_filtre = false ;}
+    $filtre = str_replace("-", ' ', $string);
+    $filtre = str_replace("'", ' ', $filtre);
+    $nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+    $mots_filtre = str_word_count($filtre, 1, '0123456789');
 
-      $operateur = 'AND ';
+    if ($nb_mots_filtre > 0) {
+      $mode_filtre = true;
+    } else {
+      $mode_filtre = false;
+    }
 
-      $request = "SELECT DISTINCT 
+    $operateur = 'AND ';
+
+    $request = "SELECT DISTINCT 
       cmd__id as devis__id ,
       cmd__user__id_devis as devis__user__id ,
       cmd__date_devis as devis__date_crea, 
@@ -2555,52 +2544,54 @@ public function modify(
       LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
       LEFT JOIN cmd_ligne as l ON l.cmdl__cmd__id = cmd__id ";
 
-      if ($mode_filtre) {
-       $request .=  "WHERE ( cmd__id = '".$mots_filtre[0]."' 
-        OR cmd__nom_devis LIKE '%".$mots_filtre[0]."%' 
-        OR u.prenom LIKE '%".$mots_filtre[0]."%' 
-        OR l.cmdl__designation LIKE '%".$mots_filtre[0]."%'
-        OR l.cmdl__pn LIKE '%".$mots_filtre[0]."%' 
-        OR c.client__societe LIKE '%".$mots_filtre[0]."%' 
-        OR c.client__id = '".$mots_filtre[0]."' ) ";
+    if ($mode_filtre) {
+      $request .=  "WHERE ( cmd__id = '" . $mots_filtre[0] . "' 
+        OR cmd__nom_devis LIKE '%" . $mots_filtre[0] . "%' 
+        OR u.prenom LIKE '%" . $mots_filtre[0] . "%' 
+        OR l.cmdl__designation LIKE '%" . $mots_filtre[0] . "%'
+        OR l.cmdl__pn LIKE '%" . $mots_filtre[0] . "%' 
+        OR c.client__societe LIKE '%" . $mots_filtre[0] . "%' 
+        OR c.client__id = '" . $mots_filtre[0] . "' ) ";
 
-       for ($i=1; $i < $nb_mots_filtre ; $i++) { 
-          $request .=  $operateur. " ( cmd__id = '".$mots_filtre[$i]."' 
-          OR cmd__nom_devis LIKE '%".$mots_filtre[$i]."%' 
-          OR u.prenom LIKE '%".$mots_filtre[$i]."%' 
-          OR l.cmdl__designation LIKE '%".$mots_filtre[$i]."%'
-          OR l.cmdl__pn LIKE '%".$mots_filtre[$i]."%' 
-          OR c.client__societe LIKE '%".$mots_filtre[$i]."%' 
-          OR c.client__id = '".$mots_filtre[$i]."' ) ";
-       }
-        $request .= "ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
+      for ($i = 1; $i < $nb_mots_filtre; $i++) {
+        $request .=  $operateur . " ( cmd__id = '" . $mots_filtre[$i] . "' 
+          OR cmd__nom_devis LIKE '%" . $mots_filtre[$i] . "%' 
+          OR u.prenom LIKE '%" . $mots_filtre[$i] . "%' 
+          OR l.cmdl__designation LIKE '%" . $mots_filtre[$i] . "%'
+          OR l.cmdl__pn LIKE '%" . $mots_filtre[$i] . "%' 
+          OR c.client__societe LIKE '%" . $mots_filtre[$i] . "%' 
+          OR c.client__id = '" . $mots_filtre[$i] . "' ) ";
       }
-      else {
-        $request.=  "ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
-      }
-      
-      $send = $this->Db->Pdo->query($request);
-      $data = $send->fetchAll(PDO::FETCH_OBJ);
-      return $data;
+      $request .= "ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
+    } else {
+      $request .=  "ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
     }
 
+    $send = $this->Db->Pdo->query($request);
+    $data = $send->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+  }
 
 
 
-    public function magicRequestUserCMD($string , $user){
 
-      $filtre = str_replace("-" , ' ', $string);
-      $filtre = str_replace("'" , ' ' , $filtre);
-      $nb_mots_filtre = str_word_count($filtre , 0 , "0123456789");
-      $mots_filtre = str_word_count($filtre, 1 ,'0123456789');
+  public function magicRequestUserCMD($string, $user)
+  {
 
-      if ($nb_mots_filtre > 0 ) {
-        $mode_filtre = true ;
-      }else { $mode_filtre = false ;}
+    $filtre = str_replace("-", ' ', $string);
+    $filtre = str_replace("'", ' ', $filtre);
+    $nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+    $mots_filtre = str_word_count($filtre, 1, '0123456789');
 
-      $operateur = 'AND ';
+    if ($nb_mots_filtre > 0) {
+      $mode_filtre = true;
+    } else {
+      $mode_filtre = false;
+    }
 
-      $request = "SELECT DISTINCT 
+    $operateur = 'AND ';
+
+    $request = "SELECT DISTINCT 
       cmd__id as devis__id ,
       cmd__user__id_devis as devis__user__id ,
       cmd__date_devis as devis__date_crea, 
@@ -2628,53 +2619,55 @@ public function modify(
       LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
       LEFT JOIN cmd_ligne as l ON l.cmdl__cmd__id = cmd__id ";
 
-      if ($mode_filtre) {
-       $request .=  "WHERE ( cmd__id = '".$mots_filtre[0]."' 
-        OR cmd__nom_devis LIKE '%".$mots_filtre[0]."%' 
-        OR u.prenom LIKE '%".$mots_filtre[0]."%' 
-        OR l.cmdl__designation LIKE '%".$mots_filtre[0]."%'
-        OR l.cmdl__pn LIKE '%".$mots_filtre[0]."%' 
-        OR c.client__societe LIKE '%".$mots_filtre[0]."%' 
-        OR c.client__id = '".$mots_filtre[0]."' ) ";
+    if ($mode_filtre) {
+      $request .=  "WHERE ( cmd__id = '" . $mots_filtre[0] . "' 
+        OR cmd__nom_devis LIKE '%" . $mots_filtre[0] . "%' 
+        OR u.prenom LIKE '%" . $mots_filtre[0] . "%' 
+        OR l.cmdl__designation LIKE '%" . $mots_filtre[0] . "%'
+        OR l.cmdl__pn LIKE '%" . $mots_filtre[0] . "%' 
+        OR c.client__societe LIKE '%" . $mots_filtre[0] . "%' 
+        OR c.client__id = '" . $mots_filtre[0] . "' ) ";
 
-       for ($i=1; $i < $nb_mots_filtre ; $i++) { 
-          $request .=  $operateur. " ( cmd__id = '".$mots_filtre[$i]."' 
-          OR cmd__nom_devis LIKE '%".$mots_filtre[$i]."%' 
-          OR u.prenom LIKE '%".$mots_filtre[$i]."%' 
-          OR l.cmdl__designation LIKE '%".$mots_filtre[$i]."%'
-          OR l.cmdl__pn LIKE '%".$mots_filtre[$i]."%' 
-          OR c.client__societe LIKE '%".$mots_filtre[$i]."%' 
-          OR c.client__id = '".$mots_filtre[$i]."' ) ";
-       }
-        $request .= " AND  ( cmd__etat = 'CMD' )  AND cmd__user__id_devis = '". $user. "'  ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
+      for ($i = 1; $i < $nb_mots_filtre; $i++) {
+        $request .=  $operateur . " ( cmd__id = '" . $mots_filtre[$i] . "' 
+          OR cmd__nom_devis LIKE '%" . $mots_filtre[$i] . "%' 
+          OR u.prenom LIKE '%" . $mots_filtre[$i] . "%' 
+          OR l.cmdl__designation LIKE '%" . $mots_filtre[$i] . "%'
+          OR l.cmdl__pn LIKE '%" . $mots_filtre[$i] . "%' 
+          OR c.client__societe LIKE '%" . $mots_filtre[$i] . "%' 
+          OR c.client__id = '" . $mots_filtre[$i] . "' ) ";
       }
-      else {
-        $request.=  " AND   ( cmd__etat = 'CMD' )  AND   cmd__user__id_devis = '". $user. "' ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
-      }
-      
-      $send = $this->Db->Pdo->query($request);
-      $data = $send->fetchAll(PDO::FETCH_OBJ);
-      return $data;
+      $request .= " AND  ( cmd__etat = 'CMD' )  AND cmd__user__id_devis = '" . $user . "'  ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
+    } else {
+      $request .=  " AND   ( cmd__etat = 'CMD' )  AND   cmd__user__id_devis = '" . $user . "' ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
     }
 
+    $send = $this->Db->Pdo->query($request);
+    $data = $send->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+  }
 
 
 
 
-    public function magicRequestUser($string , $user){
 
-      $filtre = str_replace("-" , ' ', $string);
-      $filtre = str_replace("'" , ' ' , $filtre);
-      $nb_mots_filtre = str_word_count($filtre , 0 , "0123456789");
-      $mots_filtre = str_word_count($filtre, 1 ,'0123456789');
+  public function magicRequestUser($string, $user)
+  {
 
-      if ($nb_mots_filtre > 0 ) {
-        $mode_filtre = true ;
-      }else { $mode_filtre = false ;}
+    $filtre = str_replace("-", ' ', $string);
+    $filtre = str_replace("'", ' ', $filtre);
+    $nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+    $mots_filtre = str_word_count($filtre, 1, '0123456789');
 
-      $operateur = 'AND ';
+    if ($nb_mots_filtre > 0) {
+      $mode_filtre = true;
+    } else {
+      $mode_filtre = false;
+    }
 
-      $request = "SELECT DISTINCT 
+    $operateur = 'AND ';
+
+    $request = "SELECT DISTINCT 
       cmd__id as devis__id ,
       cmd__user__id_devis as devis__user__id ,
       cmd__date_devis as devis__date_crea, 
@@ -2702,37 +2695,33 @@ public function modify(
       LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
       LEFT JOIN cmd_ligne as l ON l.cmdl__cmd__id = cmd__id ";
 
-      if ($mode_filtre) 
-      {
-       $request .=  "WHERE ( cmd__id = '".$mots_filtre[0]."' 
-        OR cmd__nom_devis LIKE '%".$mots_filtre[0]."%' 
-        OR u.prenom LIKE '%".$mots_filtre[0]."%' 
-        OR l.cmdl__designation LIKE '%".$mots_filtre[0]."%'
-        OR l.cmdl__pn LIKE '%".$mots_filtre[0]."%' 
-        OR c.client__societe LIKE '%".$mots_filtre[0]."%' 
-        OR c.client__id = '".$mots_filtre[0]."' ) ";
+    if ($mode_filtre) {
+      $request .=  "WHERE ( cmd__id = '" . $mots_filtre[0] . "' 
+        OR cmd__nom_devis LIKE '%" . $mots_filtre[0] . "%' 
+        OR u.prenom LIKE '%" . $mots_filtre[0] . "%' 
+        OR l.cmdl__designation LIKE '%" . $mots_filtre[0] . "%'
+        OR l.cmdl__pn LIKE '%" . $mots_filtre[0] . "%' 
+        OR c.client__societe LIKE '%" . $mots_filtre[0] . "%' 
+        OR c.client__id = '" . $mots_filtre[0] . "' ) ";
 
-       for ($i=1; $i < $nb_mots_filtre ; $i++) { 
-          $request .=  $operateur. " ( cmd__id = '".$mots_filtre[$i]."' 
-          OR cmd__nom_devis LIKE '%".$mots_filtre[$i]."%' 
-          OR u.prenom LIKE '%".$mots_filtre[$i]."%' 
-          OR l.cmdl__designation LIKE '%".$mots_filtre[$i]."%'
-          OR l.cmdl__pn LIKE '%".$mots_filtre[$i]."%' 
-          OR c.client__societe LIKE '%".$mots_filtre[$i]."%' 
-          OR c.client__id = '".$mots_filtre[$i]."' ) ";
-       }
-        $request .= "AND ( cmd__user__id_devis = '".$user."' ) ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
+      for ($i = 1; $i < $nb_mots_filtre; $i++) {
+        $request .=  $operateur . " ( cmd__id = '" . $mots_filtre[$i] . "' 
+          OR cmd__nom_devis LIKE '%" . $mots_filtre[$i] . "%' 
+          OR u.prenom LIKE '%" . $mots_filtre[$i] . "%' 
+          OR l.cmdl__designation LIKE '%" . $mots_filtre[$i] . "%'
+          OR l.cmdl__pn LIKE '%" . $mots_filtre[$i] . "%' 
+          OR c.client__societe LIKE '%" . $mots_filtre[$i] . "%' 
+          OR c.client__id = '" . $mots_filtre[$i] . "' ) ";
       }
-      else 
-      {
-        $request.=  "AND ( cmd__user__id_devis = '".$user."' ) ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
-      }
-      
-      $send = $this->Db->Pdo->query($request);
-      $data = $send->fetchAll(PDO::FETCH_OBJ);
-      return $data;
+      $request .= "AND ( cmd__user__id_devis = '" . $user . "' ) ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
+    } else {
+      $request .=  "AND ( cmd__user__id_devis = '" . $user . "' ) ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
     }
 
+    $send = $this->Db->Pdo->query($request);
+    $data = $send->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+  }
 
 
 
@@ -2740,20 +2729,24 @@ public function modify(
 
 
 
-    public function magicRequestCMD($string){
 
-      $filtre = str_replace("-" , ' ', $string);
-      $filtre = str_replace("'" , ' ' , $filtre);
-      $nb_mots_filtre = str_word_count($filtre , 0 , "0123456789");
-      $mots_filtre = str_word_count($filtre, 1 ,'0123456789');
+  public function magicRequestCMD($string)
+  {
 
-      if ($nb_mots_filtre > 0 ) {
-        $mode_filtre = true ;
-      }else { $mode_filtre = false ;}
+    $filtre = str_replace("-", ' ', $string);
+    $filtre = str_replace("'", ' ', $filtre);
+    $nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+    $mots_filtre = str_word_count($filtre, 1, '0123456789');
 
-      $operateur = 'AND ';
+    if ($nb_mots_filtre > 0) {
+      $mode_filtre = true;
+    } else {
+      $mode_filtre = false;
+    }
 
-      $request = "SELECT DISTINCT 
+    $operateur = 'AND ';
+
+    $request = "SELECT DISTINCT 
       cmd__id as devis__id ,
       cmd__user__id_devis as devis__user__id ,
       cmd__date_devis as devis__date_crea, 
@@ -2782,49 +2775,50 @@ public function modify(
       LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
       LEFT JOIN cmd_ligne as l ON l.cmdl__cmd__id = cmd__id ";
 
-      if ($mode_filtre) {
-       $request .=  "WHERE ( cmd__id = '".$mots_filtre[0]."' 
-        OR cmd__nom_devis LIKE '%".$mots_filtre[0]."%' 
-        OR u.prenom LIKE '%".$mots_filtre[0]."%' 
-        OR l.cmdl__designation LIKE '%".$mots_filtre[0]."%'
-        OR l.cmdl__pn LIKE '%".$mots_filtre[0]."%' 
-        OR c.client__societe LIKE '%".$mots_filtre[0]."%' 
-        OR c.client__id = '".$mots_filtre[0]."' ) ";
+    if ($mode_filtre) {
+      $request .=  "WHERE ( cmd__id = '" . $mots_filtre[0] . "' 
+        OR cmd__nom_devis LIKE '%" . $mots_filtre[0] . "%' 
+        OR u.prenom LIKE '%" . $mots_filtre[0] . "%' 
+        OR l.cmdl__designation LIKE '%" . $mots_filtre[0] . "%'
+        OR l.cmdl__pn LIKE '%" . $mots_filtre[0] . "%' 
+        OR c.client__societe LIKE '%" . $mots_filtre[0] . "%' 
+        OR c.client__id = '" . $mots_filtre[0] . "' ) ";
 
-       for ($i=1; $i < $nb_mots_filtre ; $i++) { 
-          $request .=  $operateur. " ( cmd__id = '".$mots_filtre[$i]."' 
-          OR cmd__nom_devis LIKE '%".$mots_filtre[$i]."%' 
-          OR u.prenom LIKE '%".$mots_filtre[$i]."%' 
-          OR l.cmdl__designation LIKE '%".$mots_filtre[$i]."%'
-          OR l.cmdl__pn LIKE '%".$mots_filtre[$i]."%' 
-          OR c.client__societe LIKE '%".$mots_filtre[$i]."%' 
-          OR c.client__id = '".$mots_filtre[$i]."' ) ";
-       }
-       $request .= "AND ( cmd__etat = 'CMD' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+      for ($i = 1; $i < $nb_mots_filtre; $i++) {
+        $request .=  $operateur . " ( cmd__id = '" . $mots_filtre[$i] . "' 
+          OR cmd__nom_devis LIKE '%" . $mots_filtre[$i] . "%' 
+          OR u.prenom LIKE '%" . $mots_filtre[$i] . "%' 
+          OR l.cmdl__designation LIKE '%" . $mots_filtre[$i] . "%'
+          OR l.cmdl__pn LIKE '%" . $mots_filtre[$i] . "%' 
+          OR c.client__societe LIKE '%" . $mots_filtre[$i] . "%' 
+          OR c.client__id = '" . $mots_filtre[$i] . "' ) ";
       }
-      else {
-        $request.=   "AND ( cmd__etat = 'CMD' OR cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
-      }
-      
-      $send = $this->Db->Pdo->query($request);
-      $data = $send->fetchAll(PDO::FETCH_OBJ);
-      return $data;
+      $request .= "AND ( cmd__etat = 'CMD' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+    } else {
+      $request .=   "AND ( cmd__etat = 'CMD' OR cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
     }
 
+    $send = $this->Db->Pdo->query($request);
+    $data = $send->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+  }
 
-    public function magicRequestFunnyBunny($string , $session  )
-    {
 
-      if (!empty($string)) {
-        
-      $filtre = str_replace("-" , ' ', $string);
-      $filtre = str_replace("'" , ' ' , $filtre);
-      $nb_mots_filtre = str_word_count($filtre , 0 , "0123456789");
-      $mots_filtre = str_word_count($filtre, 1 ,'0123456789');
+  public function magicRequestFunnyBunny($string, $session)
+  {
 
-      if ($nb_mots_filtre > 0 ) {
-        $mode_filtre = true ;
-      }else { $mode_filtre = false ;}
+    if (!empty($string)) {
+
+      $filtre = str_replace("-", ' ', $string);
+      $filtre = str_replace("'", ' ', $filtre);
+      $nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+      $mots_filtre = str_word_count($filtre, 1, '0123456789');
+
+      if ($nb_mots_filtre > 0) {
+        $mode_filtre = true;
+      } else {
+        $mode_filtre = false;
+      }
 
       $operateur = 'AND ';
 
@@ -2860,59 +2854,45 @@ public function modify(
       LEFT JOIN cmd_ligne as l ON l.cmdl__cmd__id = cmd__id ";
 
       if ($mode_filtre) {
-       $request .=  "WHERE ( cmd__id = '".$mots_filtre[0]."' 
-        OR u.prenom LIKE '%".$mots_filtre[0]."%' 
-        OR u.nom LIKE '%".$mots_filtre[0]."%' 
-        OR l.cmdl__designation LIKE '%".$mots_filtre[0]."%'
-        OR l.cmdl__pn LIKE '%".$mots_filtre[0]."%' 
-        OR c.client__societe LIKE '%".$mots_filtre[0]."%' 
-        OR c.client__id = '".$mots_filtre[0]."' ) ";
+        $request .=  "WHERE ( cmd__id = '" . $mots_filtre[0] . "' 
+        OR u.prenom LIKE '%" . $mots_filtre[0] . "%' 
+        OR u.nom LIKE '%" . $mots_filtre[0] . "%' 
+        OR l.cmdl__designation LIKE '%" . $mots_filtre[0] . "%'
+        OR l.cmdl__pn LIKE '%" . $mots_filtre[0] . "%' 
+        OR c.client__societe LIKE '%" . $mots_filtre[0] . "%' 
+        OR c.client__id = '" . $mots_filtre[0] . "' ) ";
 
-       for ($i=1; $i < $nb_mots_filtre ; $i++) { 
-          $request .=  $operateur. " ( cmd__id = '".$mots_filtre[$i]."' 
-          OR u.prenom LIKE '%".$mots_filtre[0]."%' 
-          OR u.nom LIKE '%".$mots_filtre[0]."%' 
-          OR l.cmdl__designation LIKE '%".$mots_filtre[$i]."%'
-          OR l.cmdl__pn LIKE '%".$mots_filtre[$i]."%' 
-          OR c.client__societe LIKE '%".$mots_filtre[$i]."%'
-          OR c.client__id = '".$mots_filtre[$i]."' ) ";
-       }
-        if ($session == 'ALL' ) 
-        {
+        for ($i = 1; $i < $nb_mots_filtre; $i++) {
+          $request .=  $operateur . " ( cmd__id = '" . $mots_filtre[$i] . "' 
+          OR u.prenom LIKE '%" . $mots_filtre[0] . "%' 
+          OR u.nom LIKE '%" . $mots_filtre[0] . "%' 
+          OR l.cmdl__designation LIKE '%" . $mots_filtre[$i] . "%'
+          OR l.cmdl__pn LIKE '%" . $mots_filtre[$i] . "%' 
+          OR c.client__societe LIKE '%" . $mots_filtre[$i] . "%'
+          OR c.client__id = '" . $mots_filtre[$i] . "' ) ";
+        }
+        if ($session == 'ALL') {
           $request .= "AND ( cmd__etat = 'CMD' OR cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
-        }
-        elseif ($session == 'FT') 
-        {
+        } elseif ($session == 'FT') {
           $request .= "AND ( cmd__etat = 'CMD' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+        } elseif ($session == 'BL') {
+          $request .= "AND ( cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
         }
-        elseif ($session == 'BL') 
-        {
+      } else {
+        if ($session == 'ALL') {
+          $request .= "AND ( cmd__etat = 'CMD' OR cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+        } elseif ($session == 'FT') {
+          $request .= "AND ( cmd__etat = 'CMD' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+        } elseif ($session == 'BL') {
           $request .= "AND ( cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
         }
       }
-      else 
-      {
-        if ($session == 'ALL' ) 
-        {
-          $request .= "AND ( cmd__etat = 'CMD' OR cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
-        }
-        elseif ($session == 'FT') 
-        {
-          $request .= "AND ( cmd__etat = 'CMD' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
-        }
-        elseif ($session == 'BL') 
-        {
-          $request .= "AND ( cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
-        }
-      }
-      
+
       $send = $this->Db->Pdo->query($request);
       $data = $send->fetchAll(PDO::FETCH_OBJ);
       return $data;
-      }
-
-      else{
-        $request = "SELECT 
+    } else {
+      $request = "SELECT 
         cmd__id as devis__id ,
         cmd__user__id_devis as devis__user__id ,
         cmd__date_devis as devis__date_crea, 
@@ -2940,95 +2920,74 @@ public function modify(
         LEFT JOIN keyword as k ON cmd__etat = k.kw__value AND  k.kw__type = 'stat'
         LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur ";
 
-        if ($session == 'ALL' ) 
-        {
-          $request .= "WHERE  ( cmd__etat = 'CMD' OR cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
-        }
-        elseif ($session == 'FT') 
-        {
-          $request .= "WHERE ( cmd__etat = 'CMD' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 400  ";
-        }
-        elseif ($session == 'BL') 
-        {
-          $request .= "WHERE ( cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 400  ";
-        }
-
-      
-        $send = $this->Db->Pdo->query($request);
-        $data = $send->fetchAll(PDO::FETCH_OBJ);
-        return $data;
-
+      if ($session == 'ALL') {
+        $request .= "WHERE  ( cmd__etat = 'CMD' OR cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 200  ";
+      } elseif ($session == 'FT') {
+        $request .= "WHERE ( cmd__etat = 'CMD' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 400  ";
+      } elseif ($session == 'BL') {
+        $request .= "WHERE ( cmd__etat = 'IMP' ) ORDER BY  cmd__date_cmd DESC ,  c.client__societe ASC LIMIT 400  ";
       }
 
+
+      $send = $this->Db->Pdo->query($request);
+      $data = $send->fetchAll(PDO::FETCH_OBJ);
+      return $data;
     }
+  }
 
 
 
-    public function alertReliquat( $Cmd)  
-    {
-      $lignes = $this->devisLigne($Cmd);
+  public function alertReliquat($Cmd)
+  {
+    $lignes = $this->devisLigne($Cmd);
 
-      $results = [];
+    $results = [];
 
-        foreach ($lignes as $ligne) 
-        {
-          if ( intval($ligne->devl_quantite) > intval($ligne->cmdl__qte_fact) ) 
-          {
-            $ligne->devl_quantite = intval($ligne->devl_quantite) - intval($ligne->cmdl__qte_fact);
-            array_push($results, $ligne);
-          }
-        }
-
-        if (!empty($results)) 
-        {
-          return true;
-        }
-        else return false; 
-    }
-
-
-
-    public function  update_ordre_sous_ref( ?iterable $tableau_ligne) : void 
-    {
-      //tableau qui contiendra les sous références provisoirement : 
-      $tableau_sous_ref = [];
-      //parcours le tableau de ligne donné en parmètrres : 
-      foreach ($tableau_ligne as $key=> $ligne) 
-      {
-            if (!empty($ligne->cmdl__sous_ref)) 
-            {
-              //je place la sous-ref dans le tableau provisoire :
-              array_push($tableau_sous_ref , $ligne);
-              //je la detruit dans ce tableau passé en paramètre : 
-              unset($tableau_ligne[$key]);
-            }
+    foreach ($lignes as $ligne) {
+      if (intval($ligne->devl_quantite) > intval($ligne->cmdl__qte_fact)) {
+        $ligne->devl_quantite = intval($ligne->devl_quantite) - intval($ligne->cmdl__qte_fact);
+        array_push($results, $ligne);
       }
-    
-      //une fois le premier tri terminé je boucle une deuxième fois afin de déterminer les ordres : 
-      $count = 0 ; 
-      foreach ($tableau_ligne as $key=> $ligne) 
-      {         
-                $count += 1 ;
-                $data_ligne = [$count, $ligne->devl__id ]; 
-                $sql_update_ligne = $this->Db->Pdo->prepare('UPDATE cmd_ligne SET cmdl__ordre = ? WHERE cmdl__id = ?');
-                $sql_update_ligne->execute($data_ligne);
-                //je parcours le tableau de sous-références: 
-                foreach ($tableau_sous_ref as $sous_ref) 
-                { 
-                      //l'id sous ref de la sous_ref est égal à l'id de la mère : 
-                      if ($sous_ref->cmdl__sous_ref == $ligne->devl__id) 
-                      {
-                        $count += 1 ;
-                        $data = [$count, $sous_ref->devl__id];
-                        $sql_update = $this->Db->Pdo->prepare('UPDATE cmd_ligne SET cmdl__ordre = ? WHERE cmdl__id = ?');
-                        $sql_update->execute($data);
-                      }
-                }
-      }
-      
     }
-    
+
+    if (!empty($results)) {
+      return true;
+    } else return false;
+  }
 
 
 
+  public function  update_ordre_sous_ref(?iterable $tableau_ligne): void
+  {
+    //tableau qui contiendra les sous références provisoirement : 
+    $tableau_sous_ref = [];
+    //parcours le tableau de ligne donné en parmètrres : 
+    foreach ($tableau_ligne as $key => $ligne) {
+      if (!empty($ligne->cmdl__sous_ref)) {
+        //je place la sous-ref dans le tableau provisoire :
+        array_push($tableau_sous_ref, $ligne);
+        //je la detruit dans ce tableau passé en paramètre : 
+        unset($tableau_ligne[$key]);
+      }
+    }
+
+    //une fois le premier tri terminé je boucle une deuxième fois afin de déterminer les ordres : 
+    $count = 0;
+    foreach ($tableau_ligne as $key => $ligne) {
+      $count += 1;
+      $data_ligne = [$count, $ligne->devl__id];
+      $sql_update_ligne = $this->Db->Pdo->prepare('UPDATE cmd_ligne SET cmdl__ordre = ? WHERE cmdl__id = ?');
+      $sql_update_ligne->execute($data_ligne);
+      //je parcours le tableau de sous-références: 
+      foreach ($tableau_sous_ref as $sous_ref) {
+        //l'id sous ref de la sous_ref est égal à l'id de la mère : 
+        if ($sous_ref->cmdl__sous_ref == $ligne->devl__id) {
+          $count += 1;
+          $data = [$count, $sous_ref->devl__id];
+          $sql_update = $this->Db->Pdo->prepare('UPDATE cmd_ligne SET cmdl__ordre = ? WHERE cmdl__id = ?');
+          $sql_update->execute($data);
+        }
+      }
+    }
+  }
 }

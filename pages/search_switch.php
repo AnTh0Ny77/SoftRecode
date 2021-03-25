@@ -9,6 +9,7 @@ $Contact = new \App\Tables\Contact($Database);
 $Keyword = new \App\Tables\Keyword($Database);
 $Cmd = new \App\Tables\Cmd($Database);
 $Stats = new App\Tables\Stats($Database);
+$Pistage = new App\Tables\Pistage($Database);
 $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
 use App\Methods\Pdfunctions;
 use App\Methods\Devis_functions;
@@ -90,6 +91,7 @@ if (!empty($_POST['search']))
                 case (strlen($_POST['search']) == 7 and ctype_digit($_POST['search']) and $Cmd->GetById($_POST['search'])):
                         $etat_list = $Keyword->get_etat();
                         $commande = $Cmd->GetById($_POST['search']);
+                        $liste_actions = $Pistage->get_pist_by_id($_POST['search']);
                         $lignes = $Cmd->devisLigne($_POST['search']);
 
                         if ($commande->devis__etat == 'VLD' || $commande->devis__etat == 'VLA') 
@@ -124,7 +126,8 @@ if (!empty($_POST['search']))
                                                 'commande' => $commande ,
                                                 'etat_list' => $etat_list,
                                                 'lignes' => $lignes , 
-                                                'totaux' => $totaux
+                                                'totaux' => $totaux ,
+                                                'liste_action' => $liste_actions
                                         ]);
                         break;
                 

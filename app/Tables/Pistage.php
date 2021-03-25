@@ -16,7 +16,7 @@ class Pistage extends Table
     $this->Db = $db;
   }
 
-  public function addPiste($user, $dateTime , $cmd , $action)
+  public function addPiste($user, $dateTime , $cmd , $action) : bool
   {
     $request = $this->Db->Pdo->prepare('INSERT INTO pistage (pist__id__user , pist__dt , pist__id__cmd , pist__text )
     VALUES (:user, :dt, :cmd, :texte )');
@@ -26,6 +26,57 @@ class Pistage extends Table
    $request->bindValue(":texte", $action);
    $request->execute();
    return true;
+  }
+
+  public function get_last_pistes() : array 
+  {
+    $request = $this->Db->Pdo->query('SELECT  pist__id__user ,  pist__dt , pist__id__cmd , pist__text , u.nom , u.prenom  FROM pistage  
+    LEFT JOIN utilisateur as u ON u.id_utilisateur =  pist__id__user
+    ORDER BY pist__dt DESC LIMIT 50 ');
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+  }
+
+  public function get_pist_by_id($id) : array 
+  {
+    $request = $this->Db->Pdo->query("SELECT  pist__id__user ,  pist__dt , pist__id__cmd , pist__text , u.nom , u.prenom  FROM pistage  
+    LEFT JOIN utilisateur as u ON u.id_utilisateur =  pist__id__user
+    WHERE pist__id__cmd = '".$id."'
+    ORDER BY pist__dt DESC LIMIT 25");
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+  }
+
+  public function get_pistes_filtres(array $array_filter) : array 
+  {
+    $sql_clause = ' WHERE ';
+    $count = 0 ;
+    foreach ($array_filter as $filter) 
+    {
+        $count ++;
+          if ($count > 1 ) 
+          {
+                $sql_clause .= ' AND ';
+          }
+          switch($filter) 
+          {
+              case (strlen($filter) == 2 and ctype_digit($filter)):
+                  //c'est un id user: 
+                  $sql_clause .= ' pist__id__user = ' . $filter . ' ';
+                  break;
+
+              case (strlen($filter) > 2 and ctype_digit($filter)):
+                  //c'est un client ou une commande : 
+                  $sql_clause .= '  pist__id__cmd = ' . $filter . ' ';
+                  break;
+          }
+    }
+    $request = $this->Db->Pdo->query("SELECT  pist__id__user ,  pist__dt , pist__id__cmd , pist__text , u.nom , u.prenom  FROM pistage  
+    LEFT JOIN utilisateur as u ON u.id_utilisateur =  pist__id__user
+    ". $sql_clause."
+    ORDER BY pist__dt DESC LIMIT 25");
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
   }
 
 

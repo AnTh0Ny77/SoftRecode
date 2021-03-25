@@ -35,8 +35,6 @@ if (!empty($_GET['id_user']))
                         'commande_list' => $cmd_list
                 ]
         );
-      
-
 }
 else
 {

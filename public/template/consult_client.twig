@@ -209,12 +209,12 @@
                                                                                         logo='<i class="far fa-search"></i>' data-toggle="tooltip" data-placement="top"
                                                                                         title="Consulter la commande: {{commande.cmd__id}}">
                                                                                 </custom-form-button-mini> 
-                                                                                <custom-form-button-mini method='POST' url='DevisV2' name='modif' value='{{commande.cmd__id}}'
+                                                                                <custom-form-button-mini method='POST' url='DevisV2' name='DupliquerDevis' value='{{commande.cmd__id}}'
                                                                                         logo='<i class="far fa-copy"></i>' data-toggle="tooltip" data-placement="top"
                                                                                         title="Dupliquer la commande: {{commande.cmd__id}}">
                                                                                 </custom-form-button-mini>
                                                                                 {% if commande.cmd__etat == 'ATN' %}
-                                                                                <custom-form-button-mini method='POST' url='DevisV2' name='DupliquerDevis' value='{{commande.cmd__id}}'
+                                                                                <custom-form-button-mini method='POST' url='DevisV2' name='modif' value='{{commande.cmd__id}}'
                                                                                         logo='<i class="far fa-edit"></i>' data-toggle="tooltip" data-placement="top"
                                                                                         title="Modifier la commande: {{commande.cmd__id}}">
                                                                                 </custom-form-button-mini>

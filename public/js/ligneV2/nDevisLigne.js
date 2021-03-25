@@ -11,8 +11,9 @@ $(document).ready(function()
     //init du commentaire Client global : 
     if ($('#comClient').length) 
     {
-        ClassicEditor       
-        .create( document.querySelector( '#comClient' ) ,{
+       
+            ClassicEditor       
+            .create( document.querySelector( '#comClient' ) ,{
             fontColor: 
             {
                 colors: 
@@ -48,6 +49,8 @@ $(document).ready(function()
              {
                  console.error( error );
              });     
+        
+        
     }
 
 

@@ -60,6 +60,9 @@
 		case '/SoftRecode/UserCreat';
 				require __DIR__ .'/pages/UserCreat.php'; break;
 
+		case '/SoftRecode/action_utilisateur';
+			require __DIR__ . '/pages/action_utilisateur.php';break;
+
 		//articles->
 		case '/SoftRecode/catalogue';
 			require __DIR__ .'/pages/ArtCataloguePN.php';break;
@@ -293,6 +296,9 @@
 
 		case '/SoftRecode/stat'.$get_data;
 			require __DIR__ .'/pages/statistiques.php'; break;
+
+		case '/SoftRecode/restore';
+			require __DIR__ . '/pages/restore_fact.php';break;
 		
 		case '/SoftRecode/font';
 			require __DIR__ .'/vendor/tecnickcom/tcpdf/fonts/convertfont.php'; break;

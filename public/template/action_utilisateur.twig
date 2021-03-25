@@ -1,0 +1,112 @@
+{% extends 'layoutLight.twig' %}
+
+
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="public/css/dashboard.css">
+
+{% endblock %}
+
+
+{% block main %}
+
+
+<main role="main" class=" pt-3 px-4">
+        <div class="d-flex flex-row">
+                <div class="col-4">
+                        <div class="card shadow  my-2 ">
+                                <div class="card-header text-primary d-flex flex-row justify-content-start">
+                                        <h5>Filtres <i class="far fa-filter"></i></h5>
+                                </div>
+                                <div class="card-body">
+                                        <form method="POST" action="action_utilisateur">
+                                                <div class="form-group">
+                                                        <label for="select_user">Utilisateur</label>
+                                                        <select class="form-control" id="select_user" name="select_user">
+                                                                <option value="0">Tous</option>
+                                                                {% for user in user_list %}
+                                                                        {% if filtres[0] == user.id_utilisateur %}
+                                                                                <option value="{{user.id_utilisateur}}" selected>{{user.nom ~ " " ~ user.prenom}}</option>
+                                                                        {% else %}
+                                                                                <option value="{{user.id_utilisateur}}">{{user.nom ~ " " ~ user.prenom}}</option>
+                                                                        {% endif %}
+                                                                       
+                                                                {% endfor %}
+                                                        </select>
+                                                </div>
+                                                <div class="form-group">
+                                                        <label for="num_commande">N° de commande ou de client</label>
+                                                                {% if filtres[1]  %}
+                                                                        <input class="form-control" type="text" name="num_commande"  value="{{filtres[1]}}" id="num_commande">
+                                                                {% else %}
+                                                                        <input class="form-control" type="text" name="num_commande" id="num_commande">
+                                                                {% endif %}
+                                                        
+                                                </div>
+                                                <div class="form-group d-flex justify-content-end">
+                                                        
+                                                       <button class="btn btn-success">Rechercher <i class="fas fa-search"></i></button>
+                                                </div>
+                                                <textarea name="editor1" id="editor2" rows="10" cols="80">
+                                                       
+                                                    </textarea>
+                                                    
+                                                 
+                                        </form>
+                                </div>
+                        </div>
+                </div>
+                <div class="col-8">
+                        <div class="card shadow  my-2 ">
+                                <div class="card-header text-primary d-flex flex-row justify-content-start">
+                                        <h5>Résultats <i class="fas fa-poll-h"></i></h5>
+                                </div>
+                                <div class="card-body">
+                                        <table class="table table-striped">
+                                                <thead>
+                                                  <tr>
+                                                    <th scope="col">Utilsateur</th>
+                                                    <th scope="col">Commande/Client</th>
+                                                    <th scope="col">Date</th>
+                                                    <th scope="col">Action</th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                        {% for piste in liste_piste %}
+                                                                <tr>
+                                                                        <td>{{piste.prenom ~ " " ~ piste.nom}}</td>
+                                                                        <td>{{piste.pist__id__cmd}}</td>
+                                                                        <td>{{piste.pist__dt}}</td>
+                                                                        <td>{{piste.pist__text }}</td>
+                                                                </tr>
+                                                        {% endfor %}
+                                                </tbody>
+                                              </table>
+                                </div>
+                        </div>
+                </div>
+        </div>
+</main>
+{% endblock %}
+
+{% block script %}
+<!-- jQuery first, then Bootstrap JS -->
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/ckeditor/ckeditor.js"></script>
+<script>
+        // Replace the <textarea id="editor1"> with a CKEditor 4
+        // instance, using default configuration.
+        CKEDITOR.replace( 'editor2' ,
+        {
+                language: 'fr',
+                removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source' ,
+                removeButtons : 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript'
+        } );
+    </script>
+{% endblock %}

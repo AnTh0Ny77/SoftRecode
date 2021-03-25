@@ -19,10 +19,10 @@ $Pisteur = new App\Tables\Pistage($Database);
 if (empty($_SESSION['user'])) 
 {
     header('location: login');
- }
+}
 
 
-  var_dump($_POST);
+ 
  
 //date du jour:
 $date = date("Y-m-d H:i:s");
@@ -218,6 +218,5 @@ else
 {
     $_SESSION['alertSaisie'] = 'PB';
     header('location: transport2');
-    
 }
  

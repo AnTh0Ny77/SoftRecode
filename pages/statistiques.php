@@ -35,6 +35,8 @@ $UserClass = new App\Tables\User($Database);
 // $Stat      = new App\Tables\Stats($Database);
 
 
+
+
 //recupération des listes nécéssaires : 
 // $clientList       = $Client->getAll();      // pas pour le moment
 $clientList = FALSE;

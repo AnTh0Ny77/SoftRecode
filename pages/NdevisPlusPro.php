@@ -107,8 +107,7 @@ if (!empty($_POST['create_devis']))
         null,
         null
     );
-    $_POST['modif'] = $idDevis;
-   
+    $_POST['modif'] = $idDevis; 
 }
 
 //traitement de la modification 

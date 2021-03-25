@@ -68,14 +68,30 @@
                             </div>
                         </div>
                         <div class="d-flex flex-row justify-content-between col-12 my-4">
-                            <div class="col-12 ">
-                                    <label for="referenceS"><b>Désignation sur le devis/facture:</b></label>
-                                    {% if modif.cmdl__designation %}
-                                      <input type="text" class="form-control" name="designation" id="designation" value="{{modif.cmdl__designation}}"  text="{{modif.cmdl__designation}}" required>
-                                    {% else %}
-                                      <input type="text" class="form-control" name="designation" id="designation" required>
-                                    {% endif %}     
+                            {% if user.user__devis_acces > 30  %}
+                            <div class="col-10 ">
+                                <label for="referenceS"><b>Désignation sur le devis/facture:</b></label>
+                                {% if modif.cmdl__designation %}
+                                  <input type="text" class="form-control" name="designation" id="designation" value="{{modif.cmdl__designation}}"  text="{{modif.cmdl__designation}}" required>
+                                {% else %}
+                                  <input type="text" class="form-control" name="designation" id="designation" required>
+                                {% endif %}     
                             </div>
+                            <div class="custom-control custom-checkbox mt-4 ">
+                                <input type="checkbox" class="custom-control-input" id="checkDesignation" name='checkDesignation' value='ok'>
+                                <label class="custom-control-label" for="checkDesignation">Désignation par défault</label>
+                            </div>
+                            {% else %}
+                            <div class="col-12 ">
+                                <label for="referenceS"><b>Désignation sur le devis/facture:</b></label>
+                                {% if modif.cmdl__designation %}
+                                  <input type="text" class="form-control" name="designation" id="designation" value="{{modif.cmdl__designation}}"  text="{{modif.cmdl__designation}}" required>
+                                {% else %}
+                                  <input type="text" class="form-control" name="designation" id="designation" required>
+                                {% endif %}     
+                            </div>
+                            {% endif %}
+                            
                         </div>
                     <div class="d-flex justify-content-between col-12 my-4">
                         <div class="col-3">
@@ -260,9 +276,6 @@
                                 </div>
                                 
                 </form> 
-                                
-                                 
-              
             </div>
                 
         </div>
@@ -714,7 +727,7 @@
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
-<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+ <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script> 
 <script type="text/javascript" src="public/js/ligneV2/nDevisLigne.js"></script>
 <script type="text/javascript" src="public/js/ligneV2/scenario.js"></script>
 <script type="text/javascript" src="public/js/ligneV2/sous_ref.js"></script>
