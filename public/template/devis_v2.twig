@@ -429,25 +429,28 @@
 <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
-
-
 <script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
-<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+{# <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script> #}
 <script  type="text/javascript" src="public/js/NdevisPlusPro.js"></script>
 <script  type="text/javascript" src="public/js/devis_version2.js"></script>
-{# <script type="text/javascript" src="public/ckeditor/ckeditor.js"></script> #}
-<script>
-        // Replace the <textarea id="editor1"> with a CKEditor 4
-        // instance, using default configuration.
-        //CKEDITOR.replace( 'globalComClient' ,
-        //{
-        //        language: 'fr',
-        //        removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools'
-        //} );
-	//CKEDITOR.replace( 'globalComInt' ,
-        //{
-        //        language: 'fr',
-        //        removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools'
-        //} );
-    </script>
+<script type="text/javascript" src="public/ckeditor/ckeditor.js"></script>
+
+			<script>
+				// instance, using default configuration.
+				CKEDITOR.config.height = '5em';
+				CKEDITOR.replace( 'globalComClient' ,
+				{
+					language: 'fr',
+					removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor' ,
+					removeButtons : 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
+				});
+				
+				CKEDITOR.replace( 'globalComInt' ,
+				{
+					language: 'fr',
+					removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor' ,
+					removeButtons : 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
+				});
+				
+			</script>
 {% endblock %}
