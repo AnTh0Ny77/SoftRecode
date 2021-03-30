@@ -125,6 +125,9 @@
 
 		case '/SoftRecode/commande';
 			require __DIR__ .'/pages/commandValid.php'; break;
+
+		case '/SoftRecode/validation_devis';
+			require __DIR__ .'/pages/validation_devis_v2.php'; break;
 		
 		case '/SoftRecode/ficheTravail';
 			require __DIR__ .'/pages/ficheT.php'; break;

@@ -39,29 +39,20 @@
           <!-- Card Body -->
           <div class="card-body">
             <div class="chart-area d-flex justify-content-center">
-
-
-                
-
                 <form class="d-flex flex-column" method="POST" action="modifyForms">
-
-
                     <div class="d-flex justify-content-start">
-
                         <div class="input-group mb-3 mx-2">
                             <div class="input-group-prepend ">
                               <span class="input-group-text" >ID*</span>
                             </div>
                             <input type="text"class="form-control" name="idUser" value="{{ sujet.id_utilisateur}}" required>
                           </div>
-    
                           <div class="input-group mb-3 mx-2">
                             <div class="input-group-prepend">
                               <span class="input-group-text">Login*</span>
                             </div>
                             <input type="text" class="form-control" name="loginUser" value="{{ sujet.login }}" required>
                           </div>
-    
                           <div class="input-group mb-3 mx-2">
                             <div class="input-group-prepend">
                               <span class="input-group-text">Date</span>
