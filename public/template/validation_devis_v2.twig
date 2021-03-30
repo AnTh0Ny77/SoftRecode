@@ -85,16 +85,43 @@
                                                 </div>
                                         </div>
                                 </div>
+                                
                         </div>
-                <!--commentaiire-->     
+               <!--commentaiire-->
+                <div class="col-md-5">
+                        <div class="card shadow mb-4 h-100">
+                                <!-- Card Header - -->
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Commentaire Client et interne <i
+                                                        class="fal fa-comment-dots"></i>
+                                        </h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                        <div class="chart-pie pt-2 pb-2 d-flex flex-row   mb-1 justify-content-between">
+                                                <div class=" mb-0 font-weight-bold text-muted col-10">
+                                                        {% if devis.devis__note_client %}
+                                                                {{devis.devis__note_client|raw}}
+                                                        {% else %}
+                                                                Pas de commentaire client
+                                                        {% endif %}
+                                                        <br>
+                                                        <br>
+                                                        <div>
+                                                                Commentaire interne :
+                                                                <textarea class="form-control " id="commentaireInterneValid" placeholder="Commentaire Interne...."
+                                                                rows="2" cols="40">{{devis.devis__note_interne}}</textarea>
+                                                        </div>
+                                                        <div class="mt-2">
+                                                                <label for="codeClient">Code commande Client</label>
+                                                                <input type="text" id="codeClient" class="form-control">
+                                                        </div>
+                                                </div>
+                                        <div>
+                                </div>
+                        </div>
+                </div>
         </div>
-
-  
- 
-    
- 
-   
-    
 </main>
 {% endblock %}
 {% block script %}
