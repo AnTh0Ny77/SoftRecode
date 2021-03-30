@@ -1,0 +1,105 @@
+{% extends 'layoutLight.twig' %}
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+{% endblock %}
+{% block main %}
+<main role="main" class="col-12 pt-3 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                <h1 class="h2"> Validation du devis N°: <b>{{devis.devis__id}}</b></h1>
+                {# <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group mr-2">
+                                {% if user.user__facture_acces > 10 %}
+                                                <button id="FTCADMIN" type="button" class="btn btn-danger  btn-lg mx-2">Facturation Direct</button>
+                                {% endif %}
+                                {% if user.user__facture_acces > 10 %}
+                                                <button id="AVRADMIN" type="button" class="btn btn-primary  btn-lg mx-2">Avoir Direct</button>
+                                {% endif %}
+                                <button id="SendCmd" type="button" class="btn btn-success  btn-lg mx-2" disabled>Valider le devis</button>
+                        </div>
+                </div> #}
+        </div>
+        <!-- 1ere ligne -->
+        <div class="d-flex flex-wrap flex-row justify-content-start">
+                <!-- Societe -->
+                        <div class="col-md-6">
+                                <div class="card shadow  h-100">
+                                        <!-- Card Header - -->
+                                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between ">
+                                                <h6 class="m-0 font-weight-bold text-primary">Societe et Contact <i class="fal fa-building"></i></h6>
+                                        </div>
+                                <!-- Card Body -->
+                                <div class="card-body  ">
+                                        <div class="chart-pie pt-2 pb-2 d-flex flex-row   mb-1 justify-content-between">
+                                                <div class=" col-6 ">
+                                                        <div class="card-header">
+                                                                <h5> Facturation <i class="fas fa-euro-sign"></i></h5>
+                                                        </div>
+                                                        <div class="my-3">
+                                                                        <b>
+                                                                                {{devis.client__societe ~ " (" ~ devis.client__id ~ ')'}}<br>
+                                                                                {{devis.client__adr1}}<br>
+                                                                                {{devis.client__ville ~ " " ~ devis.client__cp }}
+                                                                        </b><br>
+                                                                        Contact : <br>
+                                                                        {% if devis.devis__contact__id %}
+                                                                                <b>{{ devis.contact__civ ~ " " ~ devis.contact__nom ~ " " ~ devis.contact__prenom}}</b><br>
+                                                                        {% else %}
+                                                                                <b>Non Renseigné</b>
+                                                                        {% endif %}
+                                                        </div>
+                                                </div>
+
+                                                <div class=" col-6 ">
+                                                        <div class="card-header">
+                                                                <h5> Livraison <i class="fas fa-truck"></i></h5>
+                                                        </div>
+                                                        <div class="my-3">
+                                                                <b>
+                                                                {% if devis.devis__id_client_livraison %}
+                                                                        {{devis.client__livraison_societe ~ " (" ~ devis.devis__id_client_livraison ~ ')'}}<br>
+                                                                        {{devis.client__livraison__adr1}}<br>
+                                                                        {{devis.client__livraison_ville ~ " " ~ devis.client__livraison_cp }}
+                                                                        </b><br>
+                                                                        Contact : <br>
+                                                                        {% if devis.devis__contact_livraison %}
+                                                                                <b>{{ devis.civ__Livraison ~ " " ~ devis.nom__livraison ~ " " ~ devis.prenom__livraison}}</b><br>
+                                                                        {% else %}
+                                                                                <b>Non Renseigné</b>
+                                                                        {% endif %}
+
+                                                                        {% else %}
+                                                                                {{devis.client__societe ~ " (" ~ devis.client__id ~ ')'}}<br>
+                                                                                {{devis.client__adr1}}<br>
+                                                                                {{devis.client__ville ~ " " ~ devis.client__cp }}</b><br>
+                                                                        Contact : <br>
+                                                                        {% if devis.devis__contact__id %}
+                                                                                <b>{{ devis.contact__civ ~ " " ~ devis.contact__nom ~ " " ~ devis.contact__prenom}}</b><br>
+                                                                        {% else %}
+                                                                        <b>Non Renseigné</b>
+                                                                        {% endif %}
+                                                                {% endif %}
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </div>
+                        </div>
+                <!--commentaiire-->     
+        </div>
+
+  
+ 
+    
+ 
+   
+    
+</main>
+{% endblock %}
+{% block script %}
+<!-- jQuery first, then Bootstrap JS -->
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+{% endblock %}
