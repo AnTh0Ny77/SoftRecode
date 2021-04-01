@@ -120,7 +120,7 @@ if ($CAS)
 	$desc_stat   = 'Chiffre d\'affaire (somme CA des fiches) facturé (date de fact.) sans maintenance (Etat des fiches VLD)  sur la période';
 	$type_tot    = 'CAS';
 	$cmd_date    = "cmd__date_fact ";
-	$cmd_etat    = "AND cmd__etat = 'VLD' ";
+	$cmd_etat    = "AND cmd__etat = 'VLD' OR cmd__etat = 'VLA' ";
 	// le tableau de data
 	$T_sql       = $sql_select_tab.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat.$sql_groupby.$sql_order;
 	$T_request   = $Database->Pdo->query($T_sql);

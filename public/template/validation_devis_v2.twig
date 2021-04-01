@@ -9,7 +9,7 @@
 <main role="main" class="col-12 pt-3 px-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
                 <h1 class="h2"> Validation du devis N°: <b>{{devis.devis__id}}</b></h1>
-                {# <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group mr-2">
                                 {% if user.user__facture_acces > 10 %}
                                                 <button id="FTCADMIN" type="button" class="btn btn-danger  btn-lg mx-2">Facturation Direct</button>
@@ -19,80 +19,86 @@
                                 {% endif %}
                                 <button id="SendCmd" type="button" class="btn btn-success  btn-lg mx-2" disabled>Valider le devis</button>
                         </div>
-                </div> #}
+                </div>
         </div>
         <!-- 1ere ligne -->
-        <div class="d-flex flex-wrap flex-row justify-content-start">
+        <div class="d-flex flex-row justify-content-start">
                 <!-- Societe -->
-                        <div class="col-md-6">
+                        <div class="col-6">
                                 <div class="card shadow  h-100">
-                                        <!-- Card Header - -->
-                                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between ">
-                                                <h6 class="m-0 font-weight-bold text-primary">Societe et Contact <i class="fal fa-building"></i></h6>
-                                        </div>
-                                <!-- Card Body -->
-                                <div class="card-body  ">
-                                        <div class="chart-pie pt-2 pb-2 d-flex flex-row   mb-1 justify-content-between">
-                                                <div class=" col-6 ">
-                                                        <div class="card-header">
-                                                                <h5> Facturation <i class="fas fa-euro-sign"></i></h5>
+                                                <!-- Card Header - -->
+                                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between ">
+                                                        <h6 class="m-0 font-weight-bold text-primary">Societe et Contact <i class="fal fa-building"></i></h6>
+                                                </div>
+                                        <!-- Card Body -->
+                                        <div class="card-body  ">
+                                                <div class="chart-pie pt-2 pb-2 d-flex flex-row   mb-1 justify-content-between">
+                                                        <div class=" col-6 ">
+                                                                <div class="card-header">
+                                                                        <h5> Facturation <i class="fas fa-euro-sign"></i></h5>
+                                                                </div>
+                                                                <div class="my-3">
+                                                                                <b>
+                                                                                        <span class="text-primary">
+                                                                                                {{devis.client__societe ~ " (" ~ devis.client__id ~ ')'}}
+                                                                                        </span><br>
+                                                                                        {{devis.client__adr1}}<br>
+                                                                                        {{devis.client__ville ~ " " ~ devis.client__cp }}
+                                                                                </b><br>
+                                                                                Contact : <br>
+                                                                                {% if devis.devis__contact__id %}
+                                                                                        <b>{{ devis.contact__civ ~ " " ~ devis.contact__nom ~ " " ~ devis.contact__prenom}}</b><br>
+                                                                                {% else %}
+                                                                                        <b>Non Renseigné</b>
+                                                                                {% endif %}
+                                                                </div>
                                                         </div>
-                                                        <div class="my-3">
+                                                        <div class=" col-6 ">
+                                                                <div class="card-header">
+                                                                        <h5> Livraison <i class="fas fa-truck"></i></h5>
+                                                                </div>
+                                                                <div class="my-3">
                                                                         <b>
-                                                                                {{devis.client__societe ~ " (" ~ devis.client__id ~ ')'}}<br>
-                                                                                {{devis.client__adr1}}<br>
-                                                                                {{devis.client__ville ~ " " ~ devis.client__cp }}
-                                                                        </b><br>
-                                                                        Contact : <br>
-                                                                        {% if devis.devis__contact__id %}
-                                                                                <b>{{ devis.contact__civ ~ " " ~ devis.contact__nom ~ " " ~ devis.contact__prenom}}</b><br>
-                                                                        {% else %}
+                                                                        {% if devis.devis__id_client_livraison %}
+                                                                                <span class="text-primary">
+                                                                                        {{devis.client__livraison_societe ~ " (" ~ devis.devis__id_client_livraison ~ ')'}}
+                                                                                </span><br>
+                                                                                {{devis.client__livraison__adr1}}<br>
+                                                                                {{devis.client__livraison_ville ~ " " ~ devis.client__livraison_cp }}
+                                                                                </b><br>
+                                                                                Contact : <br>
+                                                                                {% if devis.devis__contact_livraison %}
+                                                                                        <b>{{ devis.civ__Livraison ~ " " ~ devis.nom__livraison ~ " " ~ devis.prenom__livraison}}</b><br>
+                                                                                {% else %}
+                                                                                        <b>Non Renseigné</b>
+                                                                                {% endif %}
+
+                                                                                {% else %}
+                                                                                <span class="text-primary">
+                                                                                        {{devis.client__societe ~ " (" ~ devis.client__id ~ ')'}}
+                                                                                </span>
+                                                                                       <br>
+                                                                                        {{devis.client__adr1}}<br>
+                                                                                        {{devis.client__ville ~ " " ~ devis.client__cp }}</b><br>
+                                                                                Contact : <br>
+                                                                                {% if devis.devis__contact__id %}
+                                                                                        <b>{{ devis.contact__civ ~ " " ~ devis.contact__nom ~ " " ~ devis.contact__prenom}}</b><br>
+                                                                                {% else %}
                                                                                 <b>Non Renseigné</b>
+                                                                                {% endif %}
                                                                         {% endif %}
+                                                                </div>
                                                         </div>
                                                 </div>
-
-                                                <div class=" col-6 ">
-                                                        <div class="card-header">
-                                                                <h5> Livraison <i class="fas fa-truck"></i></h5>
-                                                        </div>
-                                                        <div class="my-3">
-                                                                <b>
-                                                                {% if devis.devis__id_client_livraison %}
-                                                                        {{devis.client__livraison_societe ~ " (" ~ devis.devis__id_client_livraison ~ ')'}}<br>
-                                                                        {{devis.client__livraison__adr1}}<br>
-                                                                        {{devis.client__livraison_ville ~ " " ~ devis.client__livraison_cp }}
-                                                                        </b><br>
-                                                                        Contact : <br>
-                                                                        {% if devis.devis__contact_livraison %}
-                                                                                <b>{{ devis.civ__Livraison ~ " " ~ devis.nom__livraison ~ " " ~ devis.prenom__livraison}}</b><br>
-                                                                        {% else %}
-                                                                                <b>Non Renseigné</b>
-                                                                        {% endif %}
-
-                                                                        {% else %}
-                                                                                {{devis.client__societe ~ " (" ~ devis.client__id ~ ')'}}<br>
-                                                                                {{devis.client__adr1}}<br>
-                                                                                {{devis.client__ville ~ " " ~ devis.client__cp }}</b><br>
-                                                                        Contact : <br>
-                                                                        {% if devis.devis__contact__id %}
-                                                                                <b>{{ devis.contact__civ ~ " " ~ devis.contact__nom ~ " " ~ devis.contact__prenom}}</b><br>
-                                                                        {% else %}
-                                                                        <b>Non Renseigné</b>
-                                                                        {% endif %}
-                                                                {% endif %}
-                                                        </div>
-                                                </div>
-                                        </div>
+                                        </div>    
                                 </div>
-                                
                         </div>
-               <!--commentaiire-->
-                <div class="col-md-5">
+               <!--commentaire-->
+                <div class="col-5">
                         <div class="card shadow mb-4 h-100">
                                 <!-- Card Header - -->
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">Commentaire Client et interne <i
+                                        <h6 class="m-0 font-weight-bold text-primary">Commentaire interne et code commande <i
                                                         class="fal fa-comment-dots"></i>
                                         </h6>
                                 </div>
@@ -100,16 +106,9 @@
                                 <div class="card-body">
                                         <div class="chart-pie pt-2 pb-2 d-flex flex-row   mb-1 justify-content-between">
                                                 <div class=" mb-0 font-weight-bold text-muted col-10">
-                                                        {% if devis.devis__note_client %}
-                                                                {{devis.devis__note_client|raw}}
-                                                        {% else %}
-                                                                Pas de commentaire client
-                                                        {% endif %}
-                                                        <br>
-                                                        <br>
                                                         <div>
                                                                 Commentaire interne :
-                                                                <textarea class="form-control " id="commentaireInterneValid" placeholder="Commentaire Interne...."
+                                                                <textarea class="form-control editor" id="commentaireInterneValid" placeholder="Commentaire Interne...."
                                                                 rows="2" cols="40">{{devis.devis__note_interne}}</textarea>
                                                         </div>
                                                         <div class="mt-2">
@@ -117,9 +116,79 @@
                                                                 <input type="text" id="codeClient" class="form-control">
                                                         </div>
                                                 </div>
-                                        <div>
+                                        </div>
                                 </div>
                         </div>
+                </div>
+        </div>
+        <!-- 2eme ligne -->
+        <div class="d-flex flex-wrap flex-row justify-content-start mt-3">
+                <div class="col-md-11">
+                        <div class=" d-flex flex-row flex-wrap w-100">
+                                {% for ligne in devisLigne %}
+                                        <div class="col-3 mt-1">
+                                                <div class="card shadow h-100">
+                                                        <div class="card-header">
+                                                                <h6 class="m-0 font-weight-bold text-primary">
+                                                                        {{ligne.prestaLib ~ " "}} <i><small>{{ " " ~ ligne.kw__lib}}</small></i>
+                                                                </h6>
+                                                        </div>
+                                                        <div class="card-body ">
+                                                                <h6 class="card-title text-bold" style="height: 4rem;">
+                                                                        <b class="text-primary">
+                                                                                <i>
+                                                                                        {{ligne.devl_quantite }}
+                                                                                </i>
+                                                                        </b>
+                                                                        X
+                                                                        <strong class="font-italic" >
+                                                                                
+                                                                                        {{  ligne.devl__designation}}
+                                                                               
+                                                                               
+                                                                        </strong>
+                                                                </h6>
+                                                                <div class="d-flex flex-column ">
+                                                                        <div class="form-check form-check-inline">
+                                                                                {% if ligne.devl__prix_barre %}
+                                                                                        <div class="border rounded border-danger px-3 ">
+                                                                                                {% for xtend in ligne.devl__prix_barre %}
+                                                                                                <input type="hidden" class="radioCmdP" value="{{xtend.devg__prix}}">
+                                                                                                <input class="form-check-input mx-1 radioCmd " name="radio_group{{ligne.devl__id}}" id="{{ligne.devl__ordre}}" type="radio" value="{{xtend.devg__type}}">
+                                                                                                <label class="form-check-label" for="{{xtend.devg__id}}">
+                                                                                                <strong> {{xtend.devg__type}} Mois.</strong>
+                                                                                                </label>
+                                                                                                {% if loop.last %}
+                                                                                                        <input type="hidden" class="radioCmdP" value="{{null}}">
+                                                                                                        <input class="form-check-input mx-1 radioCmd" name="radio_group{{ligne.devl__id}}" id="{{ligne.devl__ordre}}" type="radio" value="{{null}}">
+                                                                                                        <label class="form-check-label" for="{{xtend.devg__id}}">
+                                                                                                                <strong>Aucunes </strong>
+                                                                                                        </label>
+                                                                                                {% endif %}
+                                                                                        {% endfor %}
+                                                                                        </div>  
+                                                                                {% else %}
+                                                                                        <div class="px-3 my-2">
+                                                                                                <label class="form-check-label">
+                                                                                                        <strong>Pas d'extensions</strong>
+                                                                                                </label>   
+                                                                                        </div>
+                                                                                        
+                                                                                {% endif %}       
+                                                                        </div>                                                                                       
+                                                                        <div class="">
+                                                                                Commentaire interne :
+                                                                                <textarea class="form-control editor" id="{{ligne.devl__id}}"
+                                                                                        placeholder="Commentaire Interne...." rows="2"
+                                                                                        cols="40">{{ligne.devl__note_interne}}
+                                                                                </textarea>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
+                                                </div>
+                                        </div>                
+                                {% endfor %}
+                        </div>   
                 </div>
         </div>
 </main>
@@ -129,4 +198,6 @@
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="public/js/validation_devis.js"></script>
 {% endblock %}
