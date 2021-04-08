@@ -136,14 +136,15 @@ $(document).ready(function() {
             }
             
            //commentaire interne pour chaque ligne:
-           if (parseInt(arrayCommentaires[index].name) == parseInt(arrayOfItem[index].devl__ordre) ) {
-            arrayOfItem[index].devl__note_interne = arrayCommentaires[index].getData();
+           if (parseInt(arrayCommentaires[index].name) == parseInt(arrayOfItem[index].devl__ordre) ) 
+           {
+                arrayOfItem[index].devl__note_interne = arrayCommentaires[index].getData();
            }
 
            //quantite pour chaque ligne:
-           if (parseInt(nodeQuantité[index].id) == parseInt(arrayOfItem[index].devl__id)) {
-            arrayOfItem[index].devl_quantite = parseInt(nodeQuantité[index].value);
-           
+           if (parseInt(nodeQuantité[index].id) == parseInt(arrayOfItem[index].devl__id)) 
+           {
+                arrayOfItem[index].devl_quantite = parseInt(nodeQuantité[index].value);
            }           
       }
       $('#arrayLigneDeCommande').val(JSON.stringify(arrayOfItem));

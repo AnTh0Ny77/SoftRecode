@@ -480,7 +480,7 @@ idUtilisateur = $('#idUtilisateur').val();
             },
             success: function (data) 
             {
-                console.log(data);
+              
                 dataSet = JSON.parse(data);
                 checkradio(dataSet);
                 $('#loaderPdf').hide();

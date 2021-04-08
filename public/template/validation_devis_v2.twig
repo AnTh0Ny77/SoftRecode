@@ -12,15 +12,18 @@
                 <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group mr-2">
                                 {% if user.user__facture_acces > 10 %}
-                                                <button id="FTCADMIN"  type="button" class="btn btn-danger  btn-lg mx-2 post_form">Facturation Direct</button>
+                                                <button id="FTCADMIN" value="FTCADMIN"  type="button" class="btn btn-danger  btn-lg mx-2 post_form" disabled>Facturation Direct</button>
                                 {% endif %}
                                 {% if user.user__facture_acces > 10 %}
-                                                <button id="AVRADMIN" type="button" class="btn btn-primary  btn-lg mx-2 post_form">Avoir Direct</button>
+                                                <button id="AVRADMIN" value="AVRADMIN" type="button" class="btn btn-primary  btn-lg mx-2 post_form" disabled>Avoir Direct</button>
                                 {% endif %}
-                                <button id="VLDDEVIS" type="button" class="btn btn-success  btn-lg mx-2 post_form" disabled>Valider le devis</button>
+                                <button id="VLDDEVIS" value="VLDDEVIS" type="button" class="btn btn-success  btn-lg mx-2 post_form" disabled>Valider le devis</button>
                         </div>
                 </div>
         </div>
+<form action="validation_module" method="POST" id="form_validation">
+
+        <input type="hidden" name="nature_demande" id="nature_demande" value="VLDDEVIS">
         <!-- 1ere ligne -->
         <div class="d-flex flex-row justify-content-start">
                 <!-- Societe -->
@@ -142,27 +145,24 @@
                                                                         </b>
                                                                         X
                                                                         <strong class="font-italic" >
-                                                                                
-                                                                                        {{  ligne.devl__designation}}
-                                                                               
-                                                                               
+                                                                                        {{  ligne.devl__designation}}          
                                                                         </strong>
                                                                 </h6>
                                                                 <div class="d-flex flex-column ">
                                                                         <div class="form-check form-check-inline">
                                                                                 {% if ligne.devl__prix_barre %}
-                                                                                        <div class="border rounded border-danger px-3 ">
+                                                                                        <div class="border rounded border-danger px-3 article">
                                                                                                 {% for xtend in ligne.devl__prix_barre %}
                                                                                                         <input type="hidden" class="radioCmdP" value="{{xtend.devg__prix}}">
-                                                                                                        <input class="form-check-input mx-1 radioCmd " name="radio_group{{ligne.devl__id}}" id="{{ligne.devl__ordre}}" type="radio" value="{{xtend.devg__type}}">
+                                                                                                        <input class="form-check-input mx-1 radioCmd " name="{{ligne.devl__id}}" id="{{ligne.devl__ordre}}" type="radio" value="{{xtend.devg__type}}">
                                                                                                         <label class="form-check-label" for="{{xtend.devg__id}}">
-                                                                                                        <strong> {{xtend.devg__type}} Mois.</strong>
+                                                                                                        <strong> {{xtend.devg__type}}Mois.</strong>
                                                                                                         </label>
                                                                                                         {% if loop.last %}
                                                                                                                 <input type="hidden" class="radioCmdP" value="{{null}}">
-                                                                                                                <input class="form-check-input mx-1 radioCmd" name="radio_group{{ligne.devl__id}}" id="{{ligne.devl__ordre}}" type="radio" value="{{null}}">
+                                                                                                                <input class="form-check-input mx-1 radioCmd" name="{{ligne.devl__id}}" id="{{ligne.devl__ordre}}" type="radio" value="00">
                                                                                                                 <label class="form-check-label" for="{{xtend.devg__id}}">
-                                                                                                                        <strong>Aucunes </strong>
+                                                                                                                        <strong>Aucunes</strong>
                                                                                                                 </label>
                                                                                                         {% endif %}
                                                                                                 {% endfor %}
@@ -190,6 +190,7 @@
                         </div>   
                 </div>
         </div>
+</form>
 </main>
 {% endblock %}
 {% block script %}
