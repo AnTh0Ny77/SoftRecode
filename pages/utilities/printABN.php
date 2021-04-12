@@ -70,9 +70,11 @@ if (empty($_SESSION['user']))
          //date du jour:
          $date_periode_fin = new DateTime('NOW');
          $date_periode_debut = new DateTime('NOW');
-         date_add ( $date_periode_fin , date_interval_create_from_date_string($ABN->ab__fact_periode. ' months') ) ;
-         
-
+         $interval = $ABN->ab__fact_periode -1 ;
+         date_add ( $date_periode_fin , date_interval_create_from_date_string($interval . ' months') ) ;
+         $date_periode_debut =  date_format($date_periode_debut , '01/m/Y');
+         $date_periode_fin =  date_format($date_periode_fin , 't/m/Y');
+       
 
         $objectInsert = new stdClass;
         $objectInsert->idDevis = $temp;
@@ -315,11 +317,11 @@ if (empty($_SESSION['user']))
          ob_clean();
          $numFact = '0000000' . $temp->cmd__id_facture ;
          $numFact = substr($numFact , -7 );
-         if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
-        {
-            $doc->output('F:\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
-        }
-        $doc->output('O:\intranet\Auto_Print\FC/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
+        //  if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
+        // {
+        //     $doc->output('F:\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
+        // }
+        // $doc->output('O:\intranet\Auto_Print\FC/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
        
      
         
