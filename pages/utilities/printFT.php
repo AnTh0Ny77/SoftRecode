@@ -41,37 +41,37 @@ if (!empty($_POST['devisCommande'])) {
     $Command->updateDate('cmd__date_cmd', $date, $_POST['devisCommande']);
     $Command->updateAuthor('cmd__user__id_cmd', $_SESSION['user']->id_utilisateur, $_POST['devisCommande']);
     //recupere le json contenant les lignes avec les extensions pré-choisies: 
-    if (!empty($_POST['arrayLigneDeCommande'])) {
-        $validLignes = json_decode($_POST['arrayLigneDeCommande']);
+    // if (!empty($_POST['arrayLigneDeCommande'])) {
+    //     $validLignes = json_decode($_POST['arrayLigneDeCommande']);
 
 
 
-        //je met a jour les extension de garanties choisies ainsi que les commentaires et quantités (meme si ça n'a aucun sens) :  
-        foreach ($validLignes as $lignes) {
+    //     //je met a jour les extension de garanties choisies ainsi que les commentaires et quantités (meme si ça n'a aucun sens) :  
+    //     foreach ($validLignes as $lignes) {
 
-            if (!empty($lignes->devl__prix_barre[0])) {
-                $Command->updateGarantie(
-                    $lignes->devl__prix_barre[0],
-                    $lignes->devl__prix_barre[1],
-                    $lignes->devl__note_interne,
-                    $lignes->devl_quantite,
-                    $lignes->cmdl__cmd__id,
-                    $lignes->devl__ordre
-                );
-            } else {
-                $Global->updateAll('cmd_ligne', $lignes->devl__note_interne, 'cmdl__note_interne', 'cmdl__id', $lignes->devl__id);
-                $Global->updateAll('cmd_ligne', $lignes->devl_quantite, 'cmdl__qte_cmd', 'cmdl__id', $lignes->devl__id);
-            }
-        }
-    }
+    //         if (!empty($lignes->devl__prix_barre[0])) {
+    //             $Command->updateGarantie(
+    //                 $lignes->devl__prix_barre[0],
+    //                 $lignes->devl__prix_barre[1],
+    //                 $lignes->devl__note_interne,
+    //                 $lignes->devl_quantite,
+    //                 $lignes->cmdl__cmd__id,
+    //                 $lignes->devl__ordre
+    //             );
+    //         } else {
+    //             $Global->updateAll('cmd_ligne', $lignes->devl__note_interne, 'cmdl__note_interne', 'cmdl__id', $lignes->devl__id);
+    //             $Global->updateAll('cmd_ligne', $lignes->devl_quantite, 'cmdl__qte_cmd', 'cmdl__id', $lignes->devl__id);
+    //         }
+    //     }
+    // }
     //si un code commande à été mis a jour durant la validation : 
-    if (!empty($_POST['code_cmd'])) {
-        $Global->updateAll('cmd', $_POST['code_cmd'], 'cmd__code_cmd_client', 'cmd__id', $_POST['devisCommande']);
-    }
+    // if (!empty($_POST['code_cmd'])) {
+    //     $Global->updateAll('cmd', $_POST['code_cmd'], 'cmd__code_cmd_client', 'cmd__id', $_POST['devisCommande']);
+    // }
     //si le commentaire interne global a été mis a jour pendant la creation de commande : 
-    if (!empty($_POST['ComInterCommande'])) {
-        $Global->updateAll('cmd', $_POST['ComInterCommande'], 'cmd__note_interne', 'cmd__id', $_POST['devisCommande']);
-    }
+    // if (!empty($_POST['ComInterCommande'])) {
+    //     $Global->updateAll('cmd', $_POST['ComInterCommande'], 'cmd__note_interne', 'cmd__id', $_POST['devisCommande']);
+    // }
     //contient l'id du devis pour l'imprssion de la fiche de travail : client2.js
     $print_request = $_POST['devisCommande'];
 }

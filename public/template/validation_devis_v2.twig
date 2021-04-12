@@ -22,8 +22,10 @@
                 </div>
         </div>
 <form action="validation_module" method="POST" id="form_validation">
-
+        <input type="hidden" name="id_devis" value="{{devis.devis__id}}">
         <input type="hidden" name="nature_demande" id="nature_demande" value="VLDDEVIS">
+        <input type="hidden" name="tableau_garantie" id="tableau_garantie">
+        <input type="hidden" name="tableau_commentaires" id="tableau_commentaires">
         <!-- 1ere ligne -->
         <div class="d-flex flex-row justify-content-start">
                 <!-- Societe -->
@@ -116,7 +118,7 @@
                                                         </div>
                                                         <div class="mt-2">
                                                                 <label for="codeClient">Code commande Client</label>
-                                                                <input type="text" id="codeClient" class="form-control">
+                                                                <input type="text" id="codeClient" name="code_commande_client" class="form-control">
                                                         </div>
                                                 </div>
                                         </div>

@@ -109,6 +109,9 @@
 
 		case '/SoftRecode/ligneDevisV2';
 			require __DIR__ .'/pages/NligneDevisV2.php'; break;
+		
+		case '/SoftRecode/validation_module';
+			require __DIR__ .'/pages/module_validation.php'; break;
 
 		case '/SoftRecode/admin_client';
 			require __DIR__ .'/pages/admin_client.php'; break;

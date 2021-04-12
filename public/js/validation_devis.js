@@ -51,31 +51,23 @@ $(document).ready(function()
 		}
 
 		// boucle sur les commentaires et crée un tableau id /valeur : 
-		for (let index = 0; index < $('.editor').length; index++) 
-		{
-		      
-			var id_editor = $('.editor')[index].id;
-			
-			CKEDITOR.instances.id_editor
-			let data = CKEDITOR.instances.id_editor;
-			
-			console.log(data);
-			
-			let objet_commentaire = 
+		for (var i  in CKEDITOR.instances) 
 			{
-				id : $('.editor')[index].id,
-				valeur : 'ntm'
+				let data = CKEDITOR.instances[i].getData();
+				let objet_commentaire = 
+					{
+						id : CKEDITOR.instances[i].name,
+						valeur : data
+					}
+	 
+				tableau_des_commentaires.push(objet_commentaire)
 			}
-
-			tableau_des_commentaires.push(objet_commentaire)
-		}
-
-
-
-		console.log(tableau_des_garanties);
-		console.log(tableau_des_commentaires);
-	       
-		//$('#form_validation').submit();
+		
+		//stringifie le contenu et le transmet au input respectifs 
+		$('#tableau_commentaires').val(JSON.stringify(tableau_des_commentaires));
+		$('#tableau_garantie').val(JSON.stringify(tableau_des_garanties));
+		//poste le formulaire
+		$('#form_validation').submit();
 	})
 
 })
