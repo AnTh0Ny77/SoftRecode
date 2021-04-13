@@ -142,15 +142,17 @@
                                                                 <h6 class="card-title text-bold" style="height: 4rem;">
                                                                         <b class="text-primary">
                                                                                 <i>
-                                                                                        {{ligne.devl_quantite }}
+                                                                                        <custom-button value="{{ligne.devl__id}}" target="{{ligne.devl_quantite}}"></custom-button>
                                                                                 </i>
                                                                         </b>
-                                                                        X
+                                                                        
                                                                         <strong class="font-italic" >
                                                                                         {{  ligne.devl__designation}}          
                                                                         </strong>
                                                                 </h6>
+                                                               
                                                                 <div class="d-flex flex-column ">
+                                                                        
                                                                         <div class="form-check form-check-inline">
                                                                                 {% if ligne.devl__prix_barre %}
                                                                                         <div class="border rounded border-danger px-3 article">
@@ -202,4 +204,5 @@
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="public/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="public/js/validation_devis.js"></script>
+<script type="text/javascript" src="public/js/custom/button/custom-button-quantite.js"></script>
 {% endblock %}

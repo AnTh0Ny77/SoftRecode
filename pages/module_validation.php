@@ -26,7 +26,7 @@ switch ($_POST['nature_demande'])
                                         
                                         $General->updateAll('cmd_ligne', $value->valeur , 'cmdl__garantie_option' , 'cmdl__id' , $value->id);
                                       
-                                        $General->updateAll('cmd_ligne', $garantie->cmdg__prix_barre , 'cmdl__garantie_puht' , 'cmdl__id' ,$value->id);
+                                        $General->updateAll('cmd_ligne', $garantie->cmdg__prix , 'cmdl__garantie_puht' , 'cmdl__id' ,$value->id);
                              }  
                        }
                 }
