@@ -18,6 +18,11 @@ if (empty($_SESSION['user']))
     header('location: login');
  }
 
+
+if (!empty($_SESSION['AvoirValide'])) {
+    $_POST['PRINTADMINAVOIR'] = $_SESSION['AvoirValide'];
+    $_SESSION['AvoirValide'] = "";
+}
  
 //si un Avoir global à été posté 
  if (!empty($_POST['PRINTADMINAVOIR'])) 

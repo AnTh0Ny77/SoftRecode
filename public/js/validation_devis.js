@@ -22,6 +22,9 @@ $(document).ready(function()
 		if ($('.article').length  == $('input:radio:checked').length)  $('.post_form').removeAttr('Disabled') ;                     
 	})
 
+	//rend disponible les boutons si pas d'extension : 
+	if ($('.border-danger').length == 0 ) $('.post_form').removeAttr('Disabled');
+
        
 	//fonction du post du formulaire vers le module : 
 	$('.post_form').on('click', function()

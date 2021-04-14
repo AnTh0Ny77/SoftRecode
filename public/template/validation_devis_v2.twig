@@ -189,7 +189,57 @@
                                                                 </div>
                                                         </div>
                                                 </div>
-                                        </div>                
+                                        </div>
+                                        {% if ligne.sous_ref %}
+                                                {% for sous_ref in ligne.sous_ref %}
+                                                        <div class="col-3 mt-1">
+                                                                <div class="card shadow h-100">
+                                                                        <div class="card-header">
+                                                                                <h6 class="m-0 font-weight-bold text-primary">
+                                                                                        {{sous_ref.prestaLib ~ " "}} <i><small>{{ " " ~ sous_ref.kw__lib}}</small></i>
+                                                                                </h6>
+                                                                        </div>
+                                                                        <div class="card-body ">
+                                                                                <h6 class="card-title text-bold" style="height: 4rem;">
+                                                                                        <b class="text-primary">
+                                                                                                <i>
+                                                                                                        <custom-button value="{{sous_ref.devl__id}}"
+                                                                                                                target="{{sous_ref.devl_quantite}}"></custom-button>
+                                                                                                </i>
+                                                                                        </b>
+                                                        
+                                                                                        <strong class="font-italic">
+                                                                                                {{ sous_ref.devl__designation}}
+                                                                                        </strong>
+                                                                                </h6>
+                                                        
+                                                                                <div class="d-flex flex-column ">
+                                                        
+                                                                                        <div class="form-check form-check-inline">
+                                                                                        
+                                                                                                <div class="px-3 my-2">
+                                                                                                        <label class="form-check-label">
+                                                                                                        {% if sous_ref.cmdl__sous_garantie == 0 %}
+                                                                                                                <i>garantie non étendue</i><br><br>
+                                                                                                                {% else %}
+                                                                                                                <i>garantie étendue</i><br><br>
+                                                                                                        {% endif %}
+                                                                                                        </label>
+                                                                                                </div>
+                                                                                        
+                                                                                        </div>
+                                                                                        <div class="">
+                                                                                                Commentaire interne :
+                                                                                                <textarea class="form-control editor" id="{{sous_ref.devl__id}}"
+                                                                                                        placeholder="Commentaire Interne...." rows="2" cols="40">{{sous_ref.devl__note_interne}}
+                                                                                                </textarea>
+                                                                                        </div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
+                                                {% endfor  %}
+                                        {% endif %}
                                 {% endfor %}
                         </div>   
                 </div>
