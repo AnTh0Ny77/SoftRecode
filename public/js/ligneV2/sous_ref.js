@@ -93,7 +93,7 @@ $(document).ready(function()
     let delete_form = function()
     {
         $('#input_id_ref').val('');
-        editor_sous_ref.setData('');
+        CKEDITOR.instances.com_sous_ref.setData('');
         $('#designation_sous_ref').val('');
     }
     //efface le formulaire de modification :
@@ -103,7 +103,8 @@ $(document).ready(function()
         $('#input_modif_sous_ref_cmd').val('');
         $('#quantite_modif_sous_ref').val(1);
         $('#designation_modif_sous_ref').val('');
-        editor_modif_sous_ref.setData('');
+       
+        CKEDITOR.instances.com_modif_sous_ref.setData('');
         $('#modif_sous_ref_garantie').prop('checked', false);
     }
     //vide les inputs en cas de fermeture du modal :
@@ -134,7 +135,8 @@ $(document).ready(function()
                     $('#input_modif_sous_ref_cmd').val(dataSet.cmdl__cmd__id);
                     $('#quantite_modif_sous_ref').val(dataSet.devl_quantite);
                     $('#designation_modif_sous_ref').val(dataSet.devl__designation);
-                    editor_modif_sous_ref.setData(dataSet.devl__note_interne);
+                    // editor_modif_sous_ref.setData(dataSet.devl__note_interne);
+                    CKEDITOR.instances.com_modif_sous_ref.setData(dataSet.devl__note_interne);
                     let sous_garantie = parseInt(dataSet.cmdl__sous_garantie);
                     if (sous_garantie === 1 ) 
                     {
@@ -163,93 +165,23 @@ $(document).ready(function()
     //init de commentaire de modificationde sous ref : 
     if ($('#com_modif_sous_ref').length) 
     {
-        ClassicEditor       
-        .create( document.querySelector( '#com_modif_sous_ref' ) ,{
-            fontColor: 
-            {
-                colors: 
-                [
-                    {
-                        color: 'black',
-                        label: 'Black'
-                    },
-                    {
-                        color: 'red',
-                        label: 'Red'
-                    },
-                    {
-                        color: 'DarkGreen',
-                        label: 'Green'
-                    },
-                    {
-                        color: 'Gold',
-                        label: 'Yellow'
-                    },
-                    {
-                        color: 'Blue',
-                        label: 'Blue',
-                    },
-                ]
-            },
-            toolbar: 
-            [
-                'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , 'fontColor'
-            ]
-             })
-             .then( newEditor => 
-                {
-                    editor_modif_sous_ref = newEditor
-                } )
-             .catch( error =>
-             {
-                 console.error( error );
-             });     
+        CKEDITOR.replace( 'com_modif_sous_ref' ,
+		{
+			language: 'fr',
+			removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor' ,
+			removeButtons : 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
+		});
     }
 
     //init du commentaire interne sous-ref : 
     if ($('#com_sous_ref').length) 
     {
-        ClassicEditor       
-        .create( document.querySelector( '#com_sous_ref' ) ,{
-            fontColor: 
-            {
-                colors: 
-                [
-                    {
-                        color: 'black',
-                        label: 'Black'
-                    },
-                    {
-                        color: 'red',
-                        label: 'Red'
-                    },
-                    {
-                        color: 'DarkGreen',
-                        label: 'Green'
-                    },
-                    {
-                        color: 'Gold',
-                        label: 'Yellow'
-                    },
-                    {
-                        color: 'Blue',
-                        label: 'Blue',
-                    },
-                ]
-            },
-            toolbar: 
-            [
-                'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , 'fontColor'
-            ]
-             })
-             .then( newEditor => 
-                {
-                    editor_sous_ref = newEditor;
-                } )
-             .catch( error =>
-             {
-                 console.error( error );
-             });     
+        CKEDITOR.replace( 'com_sous_ref' ,
+		{
+			language: 'fr',
+			removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor' ,
+			removeButtons : 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
+		});
     }
 
 })

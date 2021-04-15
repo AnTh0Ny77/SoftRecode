@@ -76,8 +76,8 @@ switch ($_POST['nature_demande'])
                                 $General->updateAll('cmd_ligne', $value->valeur, 'cmdl__note_interne', 'cmdl__id', $value->id);
                                 $ligne = $Devis->selecOneLine($value->id);
                                 $General->updateAll('cmd_ligne', $ligne->cmdl__qte_cmd, 'cmdl__qte_cmd', 'cmdl__id', $value->id);
-                                $General->updateAll('cmd_ligne', $ligne->cmdl__qte_livr, 'cmdl__qte_cmd', 'cmdl__id', $value->id);
-                                $General->updateAll('cmd_ligne', $ligne->cmdl__qte_fact, 'cmdl__qte_cmd', 'cmdl__id', $value->id);
+                                $General->updateAll('cmd_ligne', $ligne->cmdl__qte_cmd, 'cmdl__qte_livr', 'cmdl__id', $value->id);
+                               
                         }
                 }
                 //recupère le tableau de ligne à jour : 
@@ -123,11 +123,11 @@ switch ($_POST['nature_demande'])
                         if ($value->id == 'commentaireInterneValid') {
                                 $General->updateAll('cmd', $value->valeur, 'cmd__note_interne', 'cmd__id', $_POST['id_devis']);
                         } else {
+                               
                                 $General->updateAll('cmd_ligne', $value->valeur, 'cmdl__note_interne', 'cmdl__id', $value->id);
                                 $ligne = $Devis->selecOneLine($value->id);
+                               
                                 $General->updateAll('cmd_ligne', $ligne->cmdl__qte_cmd, 'cmdl__qte_cmd', 'cmdl__id', $value->id);
-                                $General->updateAll('cmd_ligne', $ligne->cmdl__qte_livr, 'cmdl__qte_cmd', 'cmdl__id', $value->id);
-                                $General->updateAll('cmd_ligne', $ligne->cmdl__qte_fact, 'cmdl__qte_cmd', 'cmdl__id', $value->id);
                         }
                 }
                 //recupère le tableau de ligne à jour : 

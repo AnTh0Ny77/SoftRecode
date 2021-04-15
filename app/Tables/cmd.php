@@ -1871,7 +1871,7 @@ class Cmd extends Table
   {
     $ligne = $this->devisLigneId($idLigne);
 
-    if (!empty($ligne->cmdl__garantie_puht) && floatval($ligne->cmdl__garantie_puht) > 0) {
+    if (!empty($ligne->cmdl__garantie_puht)) {
       $reverse = $ligne->cmdl__garantie_puht * -1;
       $data = [$reverse, $idLigne];
       $updateNewLines =

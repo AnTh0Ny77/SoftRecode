@@ -14,127 +14,135 @@
      {% block main %}
      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">Abonnement <i class="far fa-calendar-alt"></i></h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-          </div>
-        </div>
+	<h1 class="h2">Abonnement <i class="far fa-calendar-alt"></i></h1>
+	<div class="btn-toolbar mb-2 mb-md-0">
+	  <div class="btn-group mr-2">
+	  </div>
+	</div>
       </div>
        <!-- 1ere ligne -->
        <div class="d-flex flex-wrap flex-row justify-content-start">
-        <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
-        <input type="hidden" id="minFact" value="{{minFact.cmd__id_facture}}">
+	<input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
+	<input type="hidden" id="minFact" value="{{minFact.cmd__id_facture}}">
     <!--carte liste de Devis -->
       <div class="col-6">
-        <div class="card shadow mb-4">
-          <!-- Card Header - -->
-          <div class="my-2 mx-4 d-flex justify-content-between"> 
-            <div>
-            <h6 class="m-0 font-weight-bold text-primary">Selection Abonnement <i class="fas fa-tools"></i> 
-            </h6>
-          </div>
-            <form action="abonnementAdmin" method="POST">
-              <input type="hidden" id="hiddenId" name="hiddenId"> 
-              <div class="">
-                  <button class="btn btn-success mt-2">Administrer</button>
-              </div >
-          </form>
-          </div>
-          
-          <!-- Card Body -->
-          <div class="card-body">
-            <div class="chart-area">
-              <table id="ficheTable" class=" display table " style="width:100%"> <thead class="thead-dark" > 
-                <tr> 
-                  <th>Numéro</th> 
-                  <th>Date</th>
-                  <th>N°/Date</th>
-                  <th>Client</th>
-                 
-                 
-              </tr>
-              </thead> 
-               <tbody id="">
-                {% for devis in devisList %}
-                <tr class="trClick">
-                  <td>{{devis.devis__id}}</td>
-                  <td> {{ devis.cmd__date_cmd}}</td>
-                  <td > {{ "N°: " ~ devis.devis__id}} <br>  <div data-toggle="tooltip" data-placement="top" title="Date de commande">{{ devis.devis__date_crea}} </div>
-                  {% if devis.devis__note_client.ab__actif == 0 %}
-                  Inactif <i class=" text-danger fas fa-times"></i>
-                  {% else %}
-                  Actif <i class="text-success fas fa-check"></i>
-                  {% endif %}
-                 
-                  </td>
-                  <td> <b>{{  devis.client__societe  }} </b>{{"(" ~ devis.client__id ~ ")" }} 
-                    {% if devis.devis__note_client.ab__actif == 1 %}
+	<div class="card shadow mb-4">
+	  <!-- Card Header - -->
+	  <div class="my-2 mx-4 d-flex justify-content-between"> 
+	    <div>
+	    <h6 class="m-0 font-weight-bold text-primary">Selection Abonnement <i class="fas fa-tools"></i> 
+	    </h6>
+	  </div>
+	    <form action="abonnementAdmin" method="POST">
+	      <input type="hidden" id="hiddenId" name="hiddenId"> 
+	      <div class="">
+		  <button class="btn btn-success mt-2">Administrer</button>
+	      </div >
+	  </form>
+	  </div>
+	  
+	  <!-- Card Body -->
+	  <div class="card-body">
+	    <div class="chart-area">
+	      <table id="ficheTable" class=" display table " style="width:100%"> <thead class="thead-dark" > 
+		<tr> 
+		  <th>Numéro</th> 
+		  <th>Date</th>
+		  <th>N°/Date</th>
+		  <th>Client</th>
+		 
+		 
+	      </tr>
+	      </thead> 
+	       <tbody id="">
+		{% for devis in devisList %}
+		<tr class="trClick">
+		  <td>{{devis.devis__id}}</td>
+		  <td> {{ devis.cmd__date_cmd}}</td>
+		  <td > {{ "N°: " ~ devis.devis__id}} <br>  <div data-toggle="tooltip" data-placement="top" title="Date de commande">{{ devis.devis__date_crea}} </div>
+		  {% if devis.devis__note_client.ab__actif == 0 %}
+		  Inactif <i class=" text-danger fas fa-times"></i>
+		  {% else %}
+		  Actif <i class="text-success fas fa-check"></i>
+		  {% endif %}
+		 
+		  </td>
+		  <td> <b>{{  devis.client__societe  }} </b>{{"(" ~ devis.client__id ~ ")" }} 
+		    {% if devis.devis__note_client.ab__actif == 1 %}
 
-                    <span class="text-primary">{{devis.devis__note_interne}} Machines actives</span>
-                    {% endif %}
-                    <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}  
-                   
-                    <br>
-                    {{devis.log_nec}}
-                  </td>              
-                </tr>
-                {% endfor %}
-               </tbody>
-             </table>
-               
-            </div>  
-            <div class="card-body" >
-              
-           </div>
-          </div>
-        </div>
+		    <span class="text-success">{{devis.devis__note_interne}} Machines actives</span>
+		    {% endif %}
+		   
+		    <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}} 
+		   
+		    {% if devis.devis__note_client.ab__presta == 'LOC'%}
+				<span class="text-danger">Location</span>
+		    {% else %}
+		    		<span class="text-primary">Maintenance</span>
+		    {% endif %}
+		    
+		    
+		    <br>
+		    {{devis.log_nec}}
+		  </td>              
+		</tr>
+		{% endfor %}
+	       </tbody>
+	     </table>
+	       
+	    </div>  
+	    <div class="card-body" >
+	      
+	   </div>
+	  </div>
+	</div>
       </div>
-        <!--carte option -->
-        <div class="col-6 cardVisio" >
-          <div class="card shadow mb-4">
-            <!-- Card Header - -->
-            <div class="my-2 mx-4"> 
-                <h6 class="m-0 font-weight-bold text-primary"> Facturation Automatique <i class="fas fa-file-export"></i>
-                </h6>    
-            </div>
-            <!-- Card Body -->
-            <div class="card-body" >
-              <form action="facture_auto" method="POST">
-                <div class="d-flex justify-content-around">
-                      <div class="col-4">
-                        <label for="exampleFormControlSelect1">Mois</label>
-                        <select class="form-control" id="exampleFormControlSelect1" name="trimestre">
-                          <option value="01">Janvier</option>
-                          <option value="02">Fevrier</option>
-                          <option value="03">Mars</option>
-                          <option value="04">Avril</option>
-                          <option value="05">Mai</option>
-                          <option value="06">Juin</option>
-                          <option value="07">Juillet</option>
-                          <option value="08">Aout</option>
-                          <option value="09">Septembre</option>
-                          <option value="10">Octobre</option>
-                          <option value="11">Novembre</option>
-                          <option value="12">Decembre</option>
-                        </select>
-                      </div>
+	<!--carte option -->
+	<div class="col-6 cardVisio" >
+	  <div class="card shadow mb-4">
+	    <!-- Card Header - -->
+	    <div class="my-2 mx-4"> 
+		<h6 class="m-0 font-weight-bold text-primary"> Facturation Automatique <i class="fas fa-file-export"></i>
+		</h6>    
+	    </div>
+	    <!-- Card Body -->
+	    <div class="card-body" >
+	      <form action="facture_auto" method="POST">
+		<div class="d-flex justify-content-around">
+		      <div class="col-4">
+			<label for="exampleFormControlSelect1">Mois</label>
+			<select class="form-control" id="exampleFormControlSelect1" name="trimestre">
+			  <option value="01">Janvier</option>
+			  <option value="02">Fevrier</option>
+			  <option value="03">Mars</option>
+			  <option value="04">Avril</option>
+			  <option value="05">Mai</option>
+			  <option value="06">Juin</option>
+			  <option value="07">Juillet</option>
+			  <option value="08">Aout</option>
+			  <option value="09">Septembre</option>
+			  <option value="10">Octobre</option>
+			  <option value="11">Novembre</option>
+			  <option value="12">Decembre</option>
+			</select>
+		      </div>
 
-                      <div class="col-4">
-                        <label for="exampleFormControlSelect1">Année</label>
-                        <select class="form-control" id="exampleFormControlSelect1" name="anneAuto">
-                          {% for i in 2021..2050 %}
-                          <option value="{{i}}">{{i}}</option>
-                          {% endfor %}
-                        </select>
-                      </div>
-                </div>
+		      <div class="col-4">
+			<label for="exampleFormControlSelect1">Année</label>
+			<select class="form-control" id="exampleFormControlSelect1" name="anneAuto">
+			  {% for i in 2021..2050 %}
+			  <option value="{{i}}">{{i}}</option>
+			  {% endfor %}
+			</select>
+		      </div>
+		</div>
 
 
-                    <div class="modal-footer mt-5">
-                        <button class="btn btn-success">Visualiser <i class="far fa-eye"></i></button>
-                    </div >
-              </form>
-             </div>
+		    <div class="modal-footer mt-5">
+			<button class="btn btn-success">Visualiser <i class="far fa-eye"></i></button>
+		    </div >
+	      </form>
+	     </div>
       </div>
       </div>
     </div>

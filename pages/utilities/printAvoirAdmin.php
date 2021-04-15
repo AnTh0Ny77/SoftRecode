@@ -244,6 +244,7 @@ if (!empty($_SESSION['AvoirValide'])) {
                    foreach($arrayOfDevisLigne as $value=>$obj){
                            array_push( $arrayPrice, floatval(floatval($obj->devl_puht)*intval($obj->devl_quantite)));
                            $obj->devl_puht = abs($obj->devl_puht);
+                           $obj->cmdl__garantie_puht = abs($obj->cmdl__garantie_puht);
                    };   
                   
                    echo Pdfunctions::magicLineFTC($arrayOfDevisLigne , $temp);     

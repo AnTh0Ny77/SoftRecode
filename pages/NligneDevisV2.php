@@ -238,6 +238,7 @@ if (!empty($_POST['input_id_ref']) && !empty($_POST['select_sous_ref']) && !empt
         $General->updateAll('cmd_ligne' , 1 , 'cmdl__sous_garantie' , 'cmdl__id' , $daugther_line);
    }
    $idDevis = $mother_line->cmdl__cmd__id;
+  
 }
 
 //modification de sous référence :
@@ -256,6 +257,7 @@ if (!empty($_POST['input_modif_sous_ref']) && !empty($_POST['input_modif_sous_re
         $General->updateAll('cmd_ligne', 0 , 'cmdl__sous_garantie', 'cmdl__id', $_POST['input_modif_sous_ref']);
     }
     $idDevis = $_POST['input_modif_sous_ref_cmd'];
+    
 }    
 
 
