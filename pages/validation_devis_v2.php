@@ -6,6 +6,7 @@ session_start();
 if ($_SESSION['user']->user__devis_acces < 10) {
   header('location: noAccess');
 }
+
 //URL bloqué si pas de connexion :
 if (empty($_SESSION['user']->id_utilisateur) || empty($_POST['ValideCmd'])) {
   header('location: login');
