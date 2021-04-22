@@ -46,6 +46,7 @@ $(document).ready(function()
                         $('#search_client').toggleClass('d-none');
                         $('#card_form').toggleClass('d-none');
                         $('#hidden_client').val(this.value);
+                        $("#container_forms").submit();
                         //requete ajax secondaire recupère les infos clients principal : 
                         $.ajax(
                             {
