@@ -80,7 +80,7 @@ if (empty($_SESSION['user']))
         $objectInsert->idDevis = $temp;
         $objectInsert->prestation = $ABN->ab__presta;
         $objectInsert->designation =  ' Facturation pour la période du   ' . $date_periode_debut .' au ' . $date_periode_fin;
-        $objectInsert->etat = 'NC';
+        $objectInsert->etat = 'NC.';
         $objectInsert->garantie = '';
         $objectInsert->comClient = '';
         $objectInsert->quantite = 1;

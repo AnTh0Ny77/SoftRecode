@@ -38,15 +38,16 @@ $(document).ready(function()
                     //fonction sur le click pour chaque nouvelle option:
                     $('.click_option').on('click' , function()
                     {
-                       
-                        $('#search_list li').remove();
-                        $('#client_input').val('');
-                        $('#card_client').toggleClass('d-none');
-                        $('#container_forms').toggleClass('d-none');
-                        $('#search_client').toggleClass('d-none');
-                        $('#card_form').toggleClass('d-none');
                         $('#hidden_client').val(this.value);
                         $("#container_forms").submit();
+                        // $('#search_list li').remove();
+                        // $('#client_input').val('');
+                       
+                        // $('#card_client').toggleClass('d-none');
+                        // $('#container_forms').toggleClass('d-none');
+                        // $('#search_client').toggleClass('d-none');
+                        // $('#card_form').toggleClass('d-none');
+                        
                         //requete ajax secondaire recupère les infos clients principal : 
                         $.ajax(
                             {

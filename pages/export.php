@@ -59,9 +59,13 @@ if (!empty($_POST['exportStart']) && !empty($_POST['exportEnd']))
     $Keyword->majMarqueur($_POST['exportEnd']);
     
     $txt = '';
+    
     foreach ($getAllLines as $key => $value) 
     {
-        $commande = $Cmd->GetById($value[0]->cmdl__cmd__id);
+
+        if (!empty($value)) 
+        {
+             $commande = $Cmd->GetById($value[0]->cmdl__cmd__id);
         $devisDate = date_create($commande->cmd__date_fact);
         $interval = new DateInterval('P30D');
         $date = date_format($devisDate, 'd/m/Y');
@@ -98,29 +102,32 @@ VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571101
         }
        
         foreach ($value as $test) 
-        {
-           
+        {    
             if (floatval($test->devl_puht) != 00.00 ) 
             {
                 $compta = $Cmd->getCompta($test , $commande);
-            
-            $txt.= 'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.'; ;'.$test->devl__type .' '.$test->cmdl__qte_fact.' '.$test->famille.';'.$compta[0]->cpt__compte_quadra.'; ;'.number_format($test->devl_puht * $test->cmdl__qte_fact , 2 , ',' ,' ').'
+               
+             if (!empty($compta[0])) 
+             {
+                $txt.= 'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.'; ;'.$test->devl__type .' '.$test->cmdl__qte_fact.' '.$test->famille.';'.$compta[0]->cpt__compte_quadra.'; ;'.number_format($test->devl_puht * $test->cmdl__qte_fact , 2 , ',' ,' ').'
 ';
+             }  
+         
             if (!empty($compta[1])) 
             {
                
                 $txt.= 'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.'; ;EXT'.$test->cmdl__qte_fact.' '.$test->famille.';'.$compta[1]->cpt__compte_quadra.'; ;'.number_format($test->cmdl__garantie_puht * $test->cmdl__qte_fact, 2, ',' , ' ').'
 ';
             }
-            }
-           
-            
+            }    
         }
         
     }
     $file = fopen("O:\intranet\Compta/export_".$_POST['exportStart']."_".$_POST['exportEnd'].".csv", "w");
     fwrite($file , $txt);
     fclose($file);
+        }
+     
     
 }
  

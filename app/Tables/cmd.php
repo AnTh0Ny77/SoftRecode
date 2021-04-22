@@ -1778,9 +1778,10 @@ class Cmd extends Table
   public function getCompta($ligne, $cmd)
   {
 
+   
     $arrayResponse = [];
     $request = $this->Db->Pdo->query("SELECT * FROM compta
-    WHERE cpt__tva_kw = " . $cmd->tva_value . " AND cpt__pres_kw = '" . $ligne->devl__type . "' ");
+    WHERE cpt__tva_kw = " . $cmd->tva_value . " AND cpt__pres_kw = '" . $ligne->devl__type . "' AND  cpt__letat_kw = '".$ligne->devl__etat."' ");
 
     $data = $request->fetch(PDO::FETCH_OBJ);
 

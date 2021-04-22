@@ -79,7 +79,7 @@ if(!empty($_POST['json_array']) && !empty($_POST['hidden_client']) && !empty($_P
     $objectInsert->idDevis = $retour;
     $objectInsert->prestation = $ligne->typ;
     $objectInsert->designation = $ligne->design;
-    $objectInsert->etat = 'NC';
+    $objectInsert->etat = 'NC.';
     $objectInsert->garantie = '';
     $objectInsert->comClient = '';
     $objectInsert->quantite = $ligne->qte;
