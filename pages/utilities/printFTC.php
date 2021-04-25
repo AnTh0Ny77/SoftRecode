@@ -1,6 +1,18 @@
 <?php
 require "./vendor/autoload.php";
 
+
+//mailer : 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+require './vendor/phpmailer/phpmailer/src/Exception.php';
+require './vendor/phpmailer/phpmailer/src/PHPMailer.php';
+require './vendor/phpmailer/phpmailer/src/SMTP.php';
+
+
+
+
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Methods\Pdfunctions;
@@ -316,12 +328,72 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
                 ob_clean();
                 $numFact = '0000000' . $temp->cmd__id_facture ;
                 $numFact = substr($numFact , -7 );
-                if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
-                {
-                    $doc->output('F:/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
-                
-                }
-                $doc->output('O:\intranet\Auto_Print\FC/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
+                // if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
+                // {
+                //     $doc->output('F:/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
+
+                // }
+                // $doc->output('O:\intranet\Auto_Print\FC/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
+
+
+              
+                    //Instantiation and passing `true` enables exceptions
+                    $mail = new PHPMailer(true);
+
+
+
+                    try {
+                        //Server settings
+                        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+                        $mail->isSMTP();                                            //Send using SMTP
+                        $mail->Host       = 'mail01.one2net.net';                     //Set the SMTP server to send through
+                        $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+                        $mail->Username   = 'compta@recode.fr';                     //SMTP username
+                        $mail->Password   = 'dxa85N#Q';                               //SMTP password
+                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;         //Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+                        $mail->Port       = 465;                                    //TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+
+                        //Recipients
+                        $mail->setFrom('compta@recode.fr', 'Comptabilité');
+
+
+                        $mail->addAddress('anthonybs.pro@gmail.com', 'Anthony');     //Add a recipient
+                        // $mail->addAddress('ellen@example.com');               //Name is optional
+                        // $mail->addReplyTo('info@example.com', 'Information');
+                        // $mail->addCC('cc@example.com');
+                        // $mail->addBCC('bcc@example.com');
+
+                        //Attachments
+                        //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
+
+                        //Content
+                        $mail->isHTML(true);                                  //Set email format to HTML
+                        $mail->Subject = 'Votre facture N°' . $numFact . '';
+                        $mail->Body    = 'Vous trouverez ci-joint votre facture N°' . $numFact . '';
+                       
+                        $mail->send();
+                    die();
+                        echo 'Message has been sent';
+                    } 
+                    catch (Exception $e) 
+                    {
+                        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                        die();
+                    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 
                 $_SESSION["facture"] =  ' BL n°: '. $temp->devis__id . ' Facturé n°: '. $numFact ;
                 header('location: facture');
