@@ -39,236 +39,247 @@
     <!-- Societe -->
     <div class="col-md-8">
       <div class="card shadow mb-4 h-100">
-        <!-- Card Body -->
-        <div class="card-body  ">
-          {% if alert %}
-          <div class="alert alert-warning" role="alert">
-            La societe n'existe pas
-          </div>
-          {% endif %}
-          {% if modif %}
-          <form id="" method="POST" action="">
-            <input type='hidden' name='modif__id' value='{{modif.client__id}}'>
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="inputState">Nom societe</label>
-                <input type="text" class="form-control" value='{{modif.client__societe}}' name="nom_societe"
-                  id="nom_societe" maxlength="50" required>
-              </div>
-              <div class="form-group col-md-4">
-                <label for="inputCiv">Ville</label>
-                <input type="text" class="form-control" value='{{modif.client__ville}}' name="ville" id="ville"
-                  maxlength="50" required>
-              </div>
-              <div class="form-group col-md-2">
-                <label for="inputCiv">CP</label>
-                <input type="text" class="form-control" value='{{modif.client__cp}}' name="code_postal" id="code_postal"
-                  maxlength="10" required>
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="inputCity">adresse 1</label>
-                <input type="text" class="form-control" value='{{modif.client__adr1}}' name="adresse_1" id="adresse_1"
-                  maxlength="150" required>
-              </div>
-              <div class="form-group col-md-6">
-                <label for="inputCity">adresse 2</label>
-                <input type="text" class="form-control" value='{{modif.client__adr2}}' name="adresse_2" maxlength="150"
-                  id="">
-              </div>
-            </div>
-            <div class="form-row">
-              <div class="form-group col-md-3">
-                <label for="inputZip">Telephone</label>
-                <input type="tel" class="form-control" value='{{modif.client__tel}}' name="telephone" maxlength="25"
-                  id="telephone">
-              </div>
-              <div class="form-group col-md-3">
-                <label for="inputZip">Fax </label>
-                <input type="tel" class="form-control" name="fax" value='{{modif.client__fax}}' maxlength="25" id="fax">
-              </div>
-              <div class="form-group col-md-5">
-                <label for="input_pays">Pays </label>
-                <input type="text" class="form-control" name="input_pays" value='{{modif.client__pays}}' maxlength="25"
-                  id="input_pays">
-              </div>
-            </div>
-            <div class="my-2 ">
-              <label for="select_tva">Tva</label>
-              <div class="d-flex col-md-6 ">
-                <select class="selectpicker show-tick border" data-live-search="true" data-width="100%" id="select_tva"
-                  name="select_tva" required>
-                  {% for tva in tva_list %}
-                  {% if modif.client__tva == tva.kw__value %}
-                  <option value="{{tva.kw__value}}" selected>{{tva.kw__lib}}</option>
-                  {% else %}
-                  <option value="{{tva.kw__value}}">{{tva.kw__lib}}</option>
-                  {% endif %}
-                  {% endfor %}
-                </select>
-              </div>
-             
-              <div class="col-6 my-2 d-none" id="div_intracom">
-                <label for="mailContact"><i>N° Intracom * </i></label>
-                <input type="text" value='{{modif.client__tva_intracom}}' class="form-control" name="intracom_input"
-                  id='intracom_input' maxlength="200">
-              </div>
-             
-            </div>
-            
-            <div class="my-2">
-              <label>Vendeurs</label>
-              <div class="d-flex col-md-6">
-                <select class="selectpicker show-tick border" data-live-search="true" data-width="100%" name="vendeur"
-                  required>
-                  {% for users in user_list %}
-                  {% if modif.client__id_vendeur == users.id_utilisateur %}
-                  <option value="{{users.id_utilisateur}}" selected>{{users.prenom ~ " " ~ users.nom}}</option>
-                  {% else %}
-                  <option value="{{users.id_utilisateur}}">{{users.prenom ~ " " ~ users.nom}}</option>
-                  {% endif %}
-                  {% endfor %}
-                </select>
-              </div>
-            </div>
-        </div>
-        <div>
-          <div class="mx-2 mb-4 col-8 ">
-            <label for="commentaire_client">Commentaires</label>
-            <textarea class="CKE" id="commentaire_client" value='{{modif.client__comment}}' name="commentaire_client"
-              placeholder="Commentaire interne...."></textarea>
-          </div>
-          <div>
-            <div>
-              <div class="mx-2 mb-4 col-8 ">
-                <label for="config">Configuration spéciale</label>
-                <input class="form-control" value='{{modif.client__memo_config}}' id="config" name="config"
-                  maxlength="100"></input>
-              </div>
+	<!-- Card Body -->
+	<div class="card-body  ">
+	  {% if alert %}
+	  <div class="alert alert-warning" role="alert">
+	    La societe n'existe pas
+	  </div>
+	  {% endif %}
+	  {% if modif %}
+	  <form id="" method="POST" action="">
+	    <input type='hidden' name='modif__id' value='{{modif.client__id}}'>
+	    <div class="form-row">
+	      <div class="form-group col-md-6">
+		<label for="inputState">Nom societe</label>
+		<input type="text" class="form-control" value='{{modif.client__societe}}' name="nom_societe"
+		  id="nom_societe" maxlength="50" required>
+	      </div>
+	      <div class="form-group col-md-4">
+		<label for="inputCiv">Ville</label>
+		<input type="text" class="form-control" value='{{modif.client__ville}}' name="ville" id="ville"
+		  maxlength="50" required>
+	      </div>
+	      <div class="form-group col-md-2">
+		<label for="inputCiv">CP</label>
+		<input type="text" class="form-control" value='{{modif.client__cp}}' name="code_postal" id="code_postal"
+		  maxlength="10" required>
+	      </div>
+	    </div>
+	    <div class="form-row">
+	      <div class="form-group col-md-6">
+		<label for="inputCity">adresse 1</label>
+		<input type="text" class="form-control" value='{{modif.client__adr1}}' name="adresse_1" id="adresse_1"
+		  maxlength="150" required>
+	      </div>
+	      <div class="form-group col-md-6">
+		<label for="inputCity">adresse 2</label>
+		<input type="text" class="form-control" value='{{modif.client__adr2}}' name="adresse_2" maxlength="150"
+		  id="">
+	      </div>
+	    </div>
+	    <div class="form-row">
+	      <div class="form-group col-md-3">
+		<label for="inputZip">Telephone</label>
+		<input type="tel" class="form-control" value='{{modif.client__tel}}' name="telephone" maxlength="25"
+		  id="telephone">
+	      </div>
+	      <div class="form-group col-md-3">
+		<label for="inputZip">Fax </label>
+		<input type="tel" class="form-control" name="fax" value='{{modif.client__fax}}' maxlength="25" id="fax">
+	      </div>
+	      <div class="form-group col-md-5">
+		<label for="input_pays">Pays </label>
+		<input type="text" class="form-control" name="input_pays" value='{{modif.client__pays}}' maxlength="25"
+		  id="input_pays">
+	      </div>
+	    </div>
+	    <div class="my-2 ">
+	      <label for="select_tva">Tva</label>
+	      <div class="d-flex col-md-6 ">
+		<select class="selectpicker show-tick border" data-live-search="true" data-width="100%" id="select_tva"
+		  name="select_tva" required>
+		  {% for tva in tva_list %}
+		  {% if modif.client__tva == tva.kw__value %}
+		  <option value="{{tva.kw__value}}" selected>{{tva.kw__lib}}</option>
+		  {% else %}
+		  <option value="{{tva.kw__value}}">{{tva.kw__lib}}</option>
+		  {% endif %}
+		  {% endfor %}
+		</select>
+	      </div>
+	     
+	      <div class="col-6 my-2 d-none" id="div_intracom">
+		<label for="mailContact"><i>N° Intracom * </i></label>
+		<input type="text" value='{{modif.client__tva_intracom}}' class="form-control" name="intracom_input"
+		  id='intracom_input' maxlength="200">
+	      </div>
+	     
+	    </div>
+	    
+	    <div class="my-2">
+	      <label>Vendeurs</label>
+	      <div class="d-flex col-md-6">
+		<select class="selectpicker show-tick border" data-live-search="true" data-width="100%" name="vendeur"
+		  required>
+		  {% for users in user_list %}
+		  {% if modif.client__id_vendeur == users.id_utilisateur %}
+		  <option value="{{users.id_utilisateur}}" selected>{{users.prenom ~ " " ~ users.nom}}</option>
+		  {% else %}
+		  <option value="{{users.id_utilisateur}}">{{users.prenom ~ " " ~ users.nom}}</option>
+		  {% endif %}
+		  {% endfor %}
+		</select>
+	      </div>
+	    </div>
+	</div>
+	<div>
+	  <div class="mx-2 mb-4 col-8 ">
+	    <label for="commentaire_client">Commentaires</label>
+	    <textarea class="CKE" id="commentaire_client" value='{{modif.client__comment}}' name="commentaire_client"
+	      placeholder="Commentaire interne...."></textarea>
+	  </div>
+	  <div>
+		<div class="d-flex flex-row justify-content-around">
+				<div class="mx-2 mb-4 col-6 ">
+					<label for="config">Configuration spéciale</label>
+					<input class="form-control" value='{{modif.client__memo_config}}' id="config" name="config"
+					maxlength="100"></input>
+				</div>
 
+				<div class="mx-2 mb-4 col-4 ">
+					<label for="facturation_auto">Mail si facturation automatique</label>
+					<input class="form-control" type="email" value='{{facturation_auto.contact__email}}' id="facturation_auto" name="facturation_auto"
+					maxlength="100"></input>
+				</div>
+		</div>
+	      <div class=" mx-4 mb-4 custom-control custom-checkbox col-3">
+		{% if modif.client__bloque  == 1 %}
+		  <input type="checkbox" class="custom-control-input" id="ckeck_bloque" name="ckeck_bloque" value='1' checked>
+		{% else %}
+		  <input type="checkbox" class="custom-control-input" id="ckeck_bloque" name="ckeck_bloque" value='1'>
+		{% endif %}
+		
+		<label class="custom-control-label text-danger" for="ckeck_bloque"><b>Client bloqué</b></label>
+	      </div>
+	      <div>
+		<div class="modal-footer justify-content-end">
+		 
+		  <div>
+		    <button type="submit" class="btn btn-success" id="">Modifier</button>
+		  </div>
+		  <div>
+		  </div>
+		</div>
+		</form>
+		{% else %}
+		<form id="" method="POST" action="">
+		  <div class="form-row">
+		    <div class="form-group col-md-6">
+		      <label for="inputState">Nom societe</label>
+		      <input type="text" class="form-control" name="nom_societe" id="nom_societe" maxlength="50"
+			required>
+		    </div>
+		    <div class="form-group col-md-4">
+		      <label for="inputCiv">Ville</label>
+		      <input type="text" class="form-control" name="ville" id="ville" maxlength="50" required>
+		    </div>
+		    <div class="form-group col-md-2">
+		      <label for="inputCiv">CP</label>
+		      <input type="text" class="form-control" name="code_postal" id="code_postal" maxlength="10"
+			required>
+		    </div>
+		  </div>
+		  <div class="form-row">
+		    <div class="form-group col-md-6">
+		      <label for="inputCity">adresse 1</label>
+		      <input type="text" class="form-control" name="adresse_1" id="adresse_1" maxlength="150" required>
+		    </div>
+		    <div class="form-group col-md-6">
+		      <label for="inputCity">adresse 2</label>
+		      <input type="text" class="form-control" name="adresse_2" maxlength="150" id="">
+		    </div>
+		  </div>
+		  <div class="form-row">
+		    <div class="form-group col-md-3">
+		      <label for="inputZip">Telephone</label>
+		      <input type="tel" class="form-control" name="telephone" maxlength="25" id="telephone">
+		    </div>
+		    <div class="form-group col-md-3">
+		      <label for="inputZip">Fax </label>
+		      <input type="tel" class="form-control" name="fax" maxlength="25" id="fax">
+		    </div>
+		    <div class="form-group col-md-5">
+		      <label for="input_pays">Pays </label>
+		      <input type="text" class="form-control" name="input_pays" maxlength="25" id="input_pays">
+		    </div>
+		  </div>
+		  <div class="my-2 ">
+		    <label for="select_tva">Tva</label>
+		    <div class="d-flex col-md-6 ">
+		      <select class="selectpicker show-tick border" data-live-search="true" data-width="100%"
+			id="select_tva" name="select_tva" required>
+			{% for tva in tva_list %}
+			<option value="{{tva.kw__value}}">{{tva.kw__lib}}</option>
+			{% endfor %}
+		      </select>
+		    </div>
+		    <div class="col-6 my-2 d-none" id="div_intracom">
+		      <label for="mailContact"><i>N° Intracom * </i></label>
+		      <input type="text" class="form-control" name="intracom_input" id='intracom_input' maxlength="200">
+		    </div>
+		  </div>
+		  <div class="my-2">
+		    <label>Vendeurs</label>
+		    <div class="d-flex col-md-6">
+		      <select class="selectpicker show-tick border" data-live-search="true" data-width="100%"
+			name="vendeur" required>
+			{% for users in user_list %}
+			{% if user.id_utilisateur == users.id_utilisateur %}
+			<option value="{{users.id_utilisateur}}" selected>{{users.prenom ~ " " ~ users.nom}}</option>
+			{% else %}
+			<option value="{{users.id_utilisateur}}">{{users.prenom ~ " " ~ users.nom}}</option>
+			{% endif %}
+			{% endfor %}
+		      </select>
+		    </div>
+		  </div>
+	      </div>
+	      <div>
+		<div class="mx-2 mb-4 col-8 ">
+		  <label>Commentaires</label>
+		  <textarea class="CKE" id="commentaire_client" name="commentaire_client"
+		    placeholder="Commentaire interne...."></textarea>
+		</div>
+		<div>
+		  <div>
+		   <div class="d-flex flex-row justify-content-around">
+				<div class="mx-2 mb-4 col-6 ">
+					<label for="config">Configuration spéciale</label>
+					<input class="form-control" value='' id="config" name="config"
+					maxlength="100"></input>
+				</div>
 
-
-
-
-              <div class=" mx-4 mb-4 custom-control custom-checkbox col-3">
-                {% if modif.client__bloque  == 1 %}
-                  <input type="checkbox" class="custom-control-input" id="ckeck_bloque" name="ckeck_bloque" value='1' checked>
-                {% else %}
-                  <input type="checkbox" class="custom-control-input" id="ckeck_bloque" name="ckeck_bloque" value='1'>
-                {% endif %}
-                
-                <label class="custom-control-label text-danger" for="ckeck_bloque"><b>Client bloqué</b></label>
-              </div>
-              <div>
-                <div class="modal-footer justify-content-end">
-                 
-                  <div>
-                    <button type="submit" class="btn btn-success" id="">Modifier</button>
-                  </div>
-                  <div>
-                  </div>
-                </div>
-                </form>
-                {% else %}
-                <form id="" method="POST" action="">
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <label for="inputState">Nom societe</label>
-                      <input type="text" class="form-control" name="nom_societe" id="nom_societe" maxlength="50"
-                        required>
-                    </div>
-                    <div class="form-group col-md-4">
-                      <label for="inputCiv">Ville</label>
-                      <input type="text" class="form-control" name="ville" id="ville" maxlength="50" required>
-                    </div>
-                    <div class="form-group col-md-2">
-                      <label for="inputCiv">CP</label>
-                      <input type="text" class="form-control" name="code_postal" id="code_postal" maxlength="10"
-                        required>
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group col-md-6">
-                      <label for="inputCity">adresse 1</label>
-                      <input type="text" class="form-control" name="adresse_1" id="adresse_1" maxlength="150" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label for="inputCity">adresse 2</label>
-                      <input type="text" class="form-control" name="adresse_2" maxlength="150" id="">
-                    </div>
-                  </div>
-                  <div class="form-row">
-                    <div class="form-group col-md-3">
-                      <label for="inputZip">Telephone</label>
-                      <input type="tel" class="form-control" name="telephone" maxlength="25" id="telephone">
-                    </div>
-                    <div class="form-group col-md-3">
-                      <label for="inputZip">Fax </label>
-                      <input type="tel" class="form-control" name="fax" maxlength="25" id="fax">
-                    </div>
-                    <div class="form-group col-md-5">
-                      <label for="input_pays">Pays </label>
-                      <input type="text" class="form-control" name="input_pays" maxlength="25" id="input_pays">
-                    </div>
-                  </div>
-                  <div class="my-2 ">
-                    <label for="select_tva">Tva</label>
-                    <div class="d-flex col-md-6 ">
-                      <select class="selectpicker show-tick border" data-live-search="true" data-width="100%"
-                        id="select_tva" name="select_tva" required>
-                        {% for tva in tva_list %}
-                        <option value="{{tva.kw__value}}">{{tva.kw__lib}}</option>
-                        {% endfor %}
-                      </select>
-                    </div>
-                    <div class="col-6 my-2 d-none" id="div_intracom">
-                      <label for="mailContact"><i>N° Intracom * </i></label>
-                      <input type="text" class="form-control" name="intracom_input" id='intracom_input' maxlength="200">
-                    </div>
-                  </div>
-                  <div class="my-2">
-                    <label>Vendeurs</label>
-                    <div class="d-flex col-md-6">
-                      <select class="selectpicker show-tick border" data-live-search="true" data-width="100%"
-                        name="vendeur" required>
-                        {% for users in user_list %}
-                        {% if user.id_utilisateur == users.id_utilisateur %}
-                        <option value="{{users.id_utilisateur}}" selected>{{users.prenom ~ " " ~ users.nom}}</option>
-                        {% else %}
-                        <option value="{{users.id_utilisateur}}">{{users.prenom ~ " " ~ users.nom}}</option>
-                        {% endif %}
-                        {% endfor %}
-                      </select>
-                    </div>
-                  </div>
-              </div>
-              <div>
-                <div class="mx-2 mb-4 col-8 ">
-                  <label>Commentaires</label>
-                  <textarea class="CKE" id="commentaire_client" name="commentaire_client"
-                    placeholder="Commentaire interne...."></textarea>
-                </div>
-                <div>
-                  <div>
-                    <div class="mx-2 mb-4 col-8 ">
-                      <label for="config">Configuration spéciale</label>
-                      <input class="form-control" id="config" name="config" maxlength="100"></input>
-                    </div>
-                    <div>
-                      <div class="modal-footer justify-content-end">
-                        <div>
-                          <button type="submit" class="btn btn-success" id="postContact">Creer</button>
-                        </div>
-                        <div>
-                        </div>
-                      </div>
-                      </form>
-                      {% endif %}
-                    </div>
-                  </div>
-                </div>
-              </div>
+				<div class="mx-2 mb-4 col-4 ">
+					<label for="facturation_auto">Mail si facturation automatique</label>
+					<input class="form-control" type="email" value='' id="facturation_auto" name="facturation_auto"
+					maxlength="100"></input>
+				</div>
+		</div>
+		    <div>
+		      <div class="modal-footer justify-content-end">
+			<div>
+			  <button type="submit" class="btn btn-success" id="postContact">Creer</button>
+			</div>
+			<div>
+			</div>
+		      </div>
+		      </form>
+		      {% endif %}
+		    </div>
+		  </div>
+		</div>
+	      </div>
 </main>
 {% endblock %}
 

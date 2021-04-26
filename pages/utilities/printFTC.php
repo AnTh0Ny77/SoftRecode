@@ -335,66 +335,38 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
                 // }
                 // $doc->output('O:\intranet\Auto_Print\FC/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
 
-
-              
                     //Instantiation and passing `true` enables exceptions
                     $mail = new PHPMailer(true);
-
-
-
                     try {
                         //Server settings
-                        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
-                        $mail->isSMTP();                                            //Send using SMTP
-                        $mail->Host       = 'mail01.one2net.net';                     //Set the SMTP server to send through
-                        $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-                        $mail->Username   = 'compta@recode.fr';                     //SMTP username
-                        $mail->Password   = 'dxa85N#Q';                               //SMTP password
-                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;         //Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
-                        $mail->Port       = 465;                                    //TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
-
+                        $doc->output(__DIR__.'/facture_mail/'.$numFact.'.pdf' , 'F');
+                        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      
+                        $mail->isSMTP();                                           
+                        $mail->Host       = 'mail01.one2net.net';                     
+                        $mail->SMTPAuth   = true;                                   
+                        $mail->Username   = 'compta@recode.fr';                    
+                        $mail->Password   = 'dxa85N#Q';                               
+                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;         
+                        $mail->Port       = 465;                                    
                         //Recipients
-                        $mail->setFrom('compta@recode.fr', 'Comptabilité');
-
-
-                        $mail->addAddress('anthonybs.pro@gmail.com', 'Anthony');     //Add a recipient
-                        // $mail->addAddress('ellen@example.com');               //Name is optional
-                        // $mail->addReplyTo('info@example.com', 'Information');
-                        // $mail->addCC('cc@example.com');
-                        // $mail->addBCC('bcc@example.com');
-
+                        $mail->setFrom('compta@recode.fr', 'Comptabilite');
+                        $mail->addAddress('anthonybs.pro@gmail.com', 'Anthony');    
                         //Attachments
-                        //$mail->addAttachment('/tmp/image.jpg', 'new.jpg');    //Optional name
-
+                        $mail->addAttachment(__DIR__.'/facture_mail/'.$numFact.'.pdf');    
                         //Content
-                        $mail->isHTML(true);                                  //Set email format to HTML
-                        $mail->Subject = 'Votre facture N°' . $numFact . '';
-                        $mail->Body    = 'Vous trouverez ci-joint votre facture N°' . $numFact . '';
-                       
+                        $mail->isHTML(true);                                  
+                        $mail->Subject = 'Votre facture N:' . $numFact . '';
+                        $mail->Body    = 'Vous trouverez ci-joint votre facture N:' . $numFact . '';
                         $mail->send();
-                    die();
-                        echo 'Message has been sent';
+                        $deleted = unlink(__DIR__.'/facture_mail/'.$numFact.'.pdf');
                     } 
                     catch (Exception $e) 
                     {
                         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                        die();
+                     
                     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-                
                 $_SESSION["facture"] =  ' BL n°: '. $temp->devis__id . ' Facturé n°: '. $numFact ;
                 header('location: facture');
                 

@@ -22,6 +22,7 @@ if (empty($_SESSION['user']->id_utilisateur)) {
    $User = new App\Tables\User($Database);
    $General = new App\Tables\General($Database);
    $Pisteur = new App\Tables\Pistage($Database);
+   $Contact = new App\Tables\Contact($Database);
    $Stats = new App\Tables\Stats($Database);
    $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
    $tva_list = $Keywords->getAllFromParam('tva');
@@ -30,9 +31,11 @@ if (empty($_SESSION['user']->id_utilisateur)) {
    $alertSuccess = false;
    $alertModif = false;
    $modif = false;
+   $facturation_auto = false ;
 
    if (!empty($_POST['hidden_client'])) {
       $modif = $Client->getOne($_POST['hidden_client']);
+      $facturation_auto = $Contact->get_facturation_auto($_POST['hidden_client']);
    }
 
    //si une creatin de client a eu lieu : 
@@ -79,6 +82,10 @@ if (empty($_SESSION['user']->id_utilisateur)) {
 
       if (!empty($_POST['config'])) {
          $General->updateAll('client', $_POST['config'], 'client__memo_config', 'client__id', $creation_societe);
+      }
+      if (!empty($_POST['facturation_auto'])) 
+      {
+         $Contact->update_facturation_auto($_POST['facturation_auto'], $creation_societe);
       }
       
       $creation_totoro = $Client->getOne($creation_societe);
@@ -160,6 +167,9 @@ if (empty($_SESSION['user']->id_utilisateur)) {
       $ContactTotoro->updateAll('client', $_POST['intracom_input'],                     'tva',        'id_client', $_POST['modif__id']);
       $ContactTotoro->updateAll('client', $_POST['vendeur'],                            'id_vendeur', 'id_client', $_POST['modif__id']);
 
+      $Contact->update_facturation_auto($_POST['facturation_auto'], $_POST['modif__id']);
+      $facturation_auto = $Contact->get_facturation_auto($_POST['modif__id']);
+
       $date = date("Y-m-d H:i:s");
       $Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date, $_POST['modif__id'], ' modification de societe: ');
       $alertModif = true;
@@ -169,8 +179,6 @@ if (empty($_SESSION['user']->id_utilisateur)) {
       
    }
 
-   
-
    // Donnée transmise au template : 
    echo $twig->render('societe_crea.twig', [
       'user' => $user,
@@ -179,6 +187,7 @@ if (empty($_SESSION['user']->id_utilisateur)) {
       'alert_modif' => $alertModif,
       'tva_list' => $tva_list,
       'user_list' => $user_list,
-      'modif' => $modif
+      'modif' => $modif,
+      'facturation_auto' => $facturation_auto
    ]);
 }
