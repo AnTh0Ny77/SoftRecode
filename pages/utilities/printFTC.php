@@ -143,6 +143,8 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
             $Keyword = new \App\Tables\Keyword($Database);
             $garanties = $Keyword->getGaranties();
 
+            $facturation_auto = $Contact->get_facturation_auto($temp->client__id);
+
             //Debut de l'enregistrement: 
             ob_start();
             ?>
@@ -304,6 +306,11 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
             echo $temp->devis__note_client;
             }
 
+            if(!empty($facturation_auto))
+            {
+                echo '<br>Facture envoyée par mail à : '. $facturation_auto->contact__email . ' le ' . $formate; 
+            }
+
             ?>
             </div>
 
@@ -333,39 +340,41 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
                 //     $doc->output('F:/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
 
                 // }
-                // $doc->output('O:\intranet\Auto_Print\FC/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
 
+                if (!empty($facturation_auto)) 
+                {
                     //Instantiation and passing `true` enables exceptions
                     $mail = new PHPMailer(true);
                     try {
                         //Server settings
-                        $doc->output(__DIR__.'/facture_mail/'.$numFact.'.pdf' , 'F');
-                        $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      
-                        $mail->isSMTP();                                           
-                        $mail->Host       = 'mail01.one2net.net';                     
-                        $mail->SMTPAuth   = true;                                   
-                        $mail->Username   = 'compta@recode.fr';                    
-                        $mail->Password   = 'dxa85N#Q';                               
-                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;         
-                        $mail->Port       = 465;                                    
+                        $doc->output(__DIR__ . '/facture_mail/' . $numFact . '.pdf', 'F');
+                        $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+                        $mail->isSMTP();
+                        $mail->Host       = 'mail01.one2net.net';
+                        $mail->SMTPAuth   = true;
+                        $mail->Username   = 'compta@recode.fr';
+                        $mail->Password   = 'dxa85N#Q';
+                        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                        $mail->Port       = 465;
                         //Recipients
-                        $mail->setFrom('compta@recode.fr', 'Comptabilite');
-                        $mail->addAddress('anthonybs.pro@gmail.com', 'Anthony');    
+                        $mail->setFrom('compta@recode.fr', 'Facture');
+                        $mail->addAddress($facturation_auto->contact__email , '');
                         //Attachments
-                        $mail->addAttachment(__DIR__.'/facture_mail/'.$numFact.'.pdf');    
+                        $mail->addAttachment(__DIR__ . '/facture_mail/' . $numFact . '.pdf');
                         //Content
-                        $mail->isHTML(true);                                  
+                        $mail->isHTML(true);
                         $mail->Subject = 'Votre facture N:' . $numFact . '';
                         $mail->Body    = 'Vous trouverez ci-joint votre facture N:' . $numFact . '';
                         $mail->send();
-                        $deleted = unlink(__DIR__.'/facture_mail/'.$numFact.'.pdf');
-                    } 
-                    catch (Exception $e) 
-                    {
+                        $deleted = unlink(__DIR__ . '/facture_mail/' . $numFact . '.pdf');
+                    } catch (Exception $e) {
                         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-                     
                     }
-
+                }
+                else
+                {
+                    $doc->output('O:\intranet\Auto_Print\FC/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
+                }
 
                 $_SESSION["facture"] =  ' BL n°: '. $temp->devis__id . ' Facturé n°: '. $numFact ;
                 header('location: facture');
