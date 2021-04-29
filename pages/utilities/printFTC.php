@@ -335,11 +335,11 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
                 ob_clean();
                 $numFact = '0000000' . $temp->cmd__id_facture ;
                 $numFact = substr($numFact , -7 );
-                // if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
-                // {
-                //     $doc->output('F:/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
+                if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
+                {
+                    $doc->output('F:/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
 
-                // }
+                }
 
                 if (!empty($facturation_auto)) 
                 {
