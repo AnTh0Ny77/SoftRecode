@@ -77,7 +77,7 @@ switch ($_POST['nature_demande'])
                                 $ligne = $Devis->selecOneLine($value->id);
                                 $General->updateAll('cmd_ligne', $ligne->cmdl__qte_cmd, 'cmdl__qte_cmd', 'cmdl__id', $value->id);
                                 $General->updateAll('cmd_ligne', $ligne->cmdl__qte_cmd, 'cmdl__qte_livr', 'cmdl__id', $value->id);
-                               
+                                $General->updateAll('cmd_ligne', $ligne->cmdl__qte_cmd, 'cmdl__qte_fact', 'cmdl__id', $value->id);
                         }
                 }
                 //recupère le tableau de ligne à jour : 

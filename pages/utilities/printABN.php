@@ -74,6 +74,8 @@ if (empty($_SESSION['user']))
          date_add ( $date_periode_fin , date_interval_create_from_date_string($interval . ' months') ) ;
          $date_periode_debut =  date_format($date_periode_debut , '01/m/Y');
          $date_periode_fin =  date_format($date_periode_fin , 't/m/Y');
+
+         
        
 
         $objectInsert = new stdClass;
