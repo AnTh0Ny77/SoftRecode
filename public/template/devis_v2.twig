@@ -433,21 +433,21 @@
 <script type="text/javascript" src="public/ckeditor/ckeditor.js"></script>
 
 			<script>
-				// instance, using default configuration.
+				//instance, using default configuration.
 				CKEDITOR.config.height = '5em';
 				CKEDITOR.replace( 'globalComClient' ,
 				{
 					language: 'fr',
-					removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor' ,
+					removePlugins: 'justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor' ,
 					removeButtons : 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
 				});
 				
-				CKEDITOR.replace( 'globalComInt' ,
+				
+				CKEDITOR.replace( 'globalComInt',
 				{
 					language: 'fr',
-					removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor' ,
+					removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor',
 					removeButtons : 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
-				});
-				
+				});	
 			</script>
 {% endblock %}
