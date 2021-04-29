@@ -1787,7 +1787,7 @@ class Cmd extends Table
 
     array_push($arrayResponse, $data);
 
-    if (!empty($ligne->cmdl__garantie_puht) && intval($ligne->cmdl__garantie_puht) != 0) {
+    if ($ligne->cmdl__garantie_puht != null && intval($ligne->cmdl__garantie_puht) != 0) {
       $request = $this->Db->Pdo->query("SELECT * FROM compta
       WHERE cpt__tva_kw = " . $cmd->tva_value . " AND cpt__pres_kw = 'EXG' ");
       $data = $request->fetch(PDO::FETCH_OBJ);
