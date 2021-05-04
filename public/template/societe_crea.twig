@@ -10,7 +10,7 @@
 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
     {% if modif %}
-    <h1 class="h2">Modification</h1>
+    <h1 class="h2">Modification client: {{modif.client__id}}</h1>
     {% else %}
     <h1 class="h2">Creation de Societe</h1>
     {% endif %}
@@ -285,14 +285,42 @@
 
 
 	      <!-- carte des contacts -->
-	      <div class="card shadow col-4">
-			<div class="card-header">
+	      {% if modif %}
+		<div class="card shadow col-4">
+			<div class="card-header bg-white ">
 				<h5 class="text-primary">Contacts</h5>
 			</div>
 			<div class="card-body">
+				<table>
 
+				
+				{% if contact_list %}
+				<ul class="list-group list-group-flush">
+					{% for contact in contact_list %}
+					
+						{% if contact.contact__fonction != 'FAC' %}
+							
+								<li class="list-group-item ">
+									<custom-form-button-mini method='POST' url='contactCrea' name='contact_select' value='{{contact.contact__id}}'
+										logo='{{ '<b>' ~ contact.contact__nom ~ ' ' ~ contact.contact__nom ~ '</b> - ' ~ contact.kw__lib }}'>
+									</custom-form-button-mini>
+								</li>
+								
+							
+						{% endif %}
+				
+					{% endfor %}
+				</ul>
+				{% else %}
+					<div class="alert alert-info mt-2" role="alert">
+						<h5>Aucun n'existe pour cette societe </h5>
+					</div>
+				{% endif %}
+		
 			</div>
-	      </div>
+		</div>
+	      {% endif %}
+	      
 	     
 </main>
 {% endblock %}

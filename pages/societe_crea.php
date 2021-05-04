@@ -32,10 +32,12 @@ if (empty($_SESSION['user']->id_utilisateur)) {
    $alertModif = false;
    $modif = false;
    $facturation_auto = false ;
+   $contact_list = false ; 
 
    if (!empty($_POST['hidden_client'])) {
       $modif = $Client->getOne($_POST['hidden_client']);
       $facturation_auto = $Contact->get_facturation_auto($_POST['hidden_client']);
+      $contact_list = $Contact->getFromLiaison($_POST['hidden_client']);
    }
 
    //si une creatin de client a eu lieu : 
@@ -179,6 +181,7 @@ if (empty($_SESSION['user']->id_utilisateur)) {
       
    }
 
+   
    // Donnée transmise au template : 
    echo $twig->render('societe_crea.twig', [
       'user' => $user,
@@ -188,6 +191,7 @@ if (empty($_SESSION['user']->id_utilisateur)) {
       'tva_list' => $tva_list,
       'user_list' => $user_list,
       'modif' => $modif,
-      'facturation_auto' => $facturation_auto
+      'facturation_auto' => $facturation_auto,
+      'contact_list' => $contact_list
    ]);
 }

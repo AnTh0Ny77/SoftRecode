@@ -8,10 +8,7 @@
 {% endblock %}
 {% block main %}
 <main role="main" class=" pt-3 px-4">
-  <div id="loading">
-    <div class="lds-hourglass">
-    </div>
-  </div>
+ 
   <div class="d-flex justify-content-start flex-column mb-5 border-bottom">
     <h2>Fiche de garantie</h2>
   </div>
@@ -24,9 +21,9 @@
         <ul id="search_list" class="list-group">
         </ul>
       </div>
-      <div class="container">
+      <div class="container ">
         <!--carte client select -->
-        <div class="card bg-light mb-3 d-none" id="card_client">
+        <div class="card  mb-3 d-none" id="card_client">
           <div class="card-header">
             <button type="button" class="close" aria-label="Close" id="client_button">
               <span aria-hidden="true">&times;</span>
@@ -73,7 +70,7 @@
         </form>
       </div>
     </div>
-    <div id="div_article" class='my-1  col-4'>
+    <div id="div_article" class='my-1  col-6'>
       <form id='form_article'>
       </form>
     </div>
@@ -133,13 +130,8 @@
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
-<script>
-  jQuery(document).ready(function () {
-    jQuery('#loading').fadeOut(50);
-  });
-</script>
 <script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
-<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+<script type="text/javascript" src="public/ckeditor/ckeditor.js"></script>
 
 <script type="text/javascript" src="public/js/fiches_garanties_2.js"></script>
 

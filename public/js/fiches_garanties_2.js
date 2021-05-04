@@ -155,7 +155,7 @@ $(document).ready(function()
            {
                text_variable = 'Retour:'
            } 
-           let new_line = '<div class=" shadow card my-3 px-4 py-4 d-flex flex-row justify-content-around"><div >'+ text_variable  +'</div> <div class="mx-3">'+ tableau_article[index].qte + ' X <b class="mx-3">' + tableau_article[index].design +'</b></div><div> <button type="button" class=" btn btn-danger btn-sm click_article" value="'+index+'"><i class="far fa-times"></i></button></div>  </div>';
+            let new_line = '<div class=" mb-2 card shadow bg-light  px-4 py-4 d-flex flex-row justify-content-around"><div class="text-primary" >'+ text_variable  +'</div> <div class="mx-3">'+ tableau_article[index].qte + ' X <b class="mx-3">' + tableau_article[index].design +'</b></div><div> <button type="button" class=" btn btn-danger btn-sm click_article" value="'+index+'"><i class="far fa-times"></i></button></div>  </div>';
           
            $("#form_article").append(new_line);
         
@@ -233,44 +233,13 @@ $(document).ready(function()
        
 
      //innit de l'éditeur de texte de la zone de commentaire: 
-     ClassicEditor       
-     .create( document.querySelector( '#commentaire_interne' ),
-     {
-         fontColor: 
-         {
-             colors: 
-             [
-                 {
-                     color: 'black',
-                     label: 'Black'
-                 },
-                 {
-                     color: 'red',
-                     label: 'Red'
-                 },
-                 {
-                     color: 'DarkGreen',
-                     label: 'Green'
-                 },
-                 {
-                     color: 'Gold',
-                     label: 'Yellow'
-                 },
-                 {
-                     color: 'Blue',
-                     label: 'Blue',
-                 },
-             ]
-         },
-         toolbar: 
-         [
-             'heading', '|',  'bold', 'italic', 'bulletedList', 'numberedList' , 'link', '|', 'undo' , 'redo' , 'fontColor'
-         ]
-          })
-          .catch( error =>
-          {
-              console.error( error );
-          });     
+    CKEDITOR.config.height = '5em';
+    CKEDITOR.replace('commentaire_interne',
+        {
+            language: 'fr',
+            removePlugins: 'justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor',
+            removeButtons: 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
+        });
 })
     
     
