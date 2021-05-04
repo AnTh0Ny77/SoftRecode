@@ -262,9 +262,9 @@ class Abonnement extends Table
                             // echo($abn->ab__fact_periode . ' fact tous les  <br>');
                             // echo($multiple_fact_periode   . '   mois de prélevemnt  <br> ');
                             // echo($mois . ' mois actuell <br> ');
-                            
+                          
                             // si  le mois anniv + lecart en mois entre les echeance est egal au mois demandé :   
-                            $sql_condition .='OR MONTH(ab__date_anniv) + '. $multiple_fact_periode .' =   '.$mois.' ';
+                            $sql_condition .='OR '. $multiple_fact_periode .' =   '.$mois.' ';
                         } 
                         //a l'inverse on depasse le mois 12 donc on cherche l'année suivante en aditionnant le mois recherché a 12 pour mois: 13-14 etc:  
                         else 
