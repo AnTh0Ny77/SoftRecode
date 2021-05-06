@@ -97,7 +97,6 @@ public function update_facturation_auto($mail, $id_client)
             $update->execute();
        }
 
-
         $request = $this->Db->Pdo->prepare('INSERT INTO ' .$this->Table."(contact__fonction , contact__civ , contact__nom, contact__prenom , contact__telephone, contact__fax, contact__email )
         VALUES (:fonction, :civilite, :nom, :prenom, :tel, :fax, :mail)");
         $requestLiaison = $this->Db->Pdo->prepare('INSERT INTO liaison_client_contact(liaison__client__id, liaison__contact__id) VALUES (:idClient, :idContact)');

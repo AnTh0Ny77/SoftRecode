@@ -175,8 +175,9 @@ if (empty($_SESSION['user']->id_utilisateur)) {
       $ContactTotoro->updateAll('client', $_POST['intracom_input'],                     'tva',        'id_client', $_POST['modif__id']);
       $ContactTotoro->updateAll('client', $_POST['vendeur'],                            'id_vendeur', 'id_client', $_POST['modif__id']);
 
-      $Contact->update_facturation_auto($_POST['facturation_auto'], $_POST['modif__id']);
-      $facturation_auto = $Contact->get_facturation_auto($_POST['modif__id']);
+      // $Contact->update_facturation_auto($_POST['facturation_auto'], $_POST['modif__id']);
+
+      // $facturation_auto = $Contact->get_facturation_auto($_POST['modif__id']);
 
       $date = date("Y-m-d H:i:s");
       $Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date, $_POST['modif__id'], ' modification de societe: ');
