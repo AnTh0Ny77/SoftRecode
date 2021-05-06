@@ -227,6 +227,7 @@ $('#postContact').on('click' , function()
                     },
                     success: function(data)
                     {
+                        console.log(data);
                        dataSet = JSON.parse(data);
                        id_contact = parseInt(dataSet);
                        deleteInput();

@@ -87,7 +87,13 @@ if (empty($_SESSION['user']->id_utilisateur)) {
       }
       if (!empty($_POST['facturation_auto'])) 
       {
-         $Contact->update_facturation_auto($_POST['facturation_auto'], $creation_societe);
+         $contact = $Contact->update_facturation_auto($_POST['facturation_auto'], $creation_societe);
+         $Totoro = new App\Totoro('euro');
+         $Totoro->DbConnect();
+         $ContactTotoro = new App\Tables\ContactTotoro($Totoro);
+         $ContactTotoro->updateAll('crm_contact' , 'FAC' , 'interet_contact' , 'id_contact' , $contact);
+         $ContactTotoro->updateAll('crm_contact' , 'Facturation automatique ' , 'nom' , 'id_contact' , $contact);
+         $ContactTotoro->updateAll('crm_contact' , $_POST['facturation_auto'] , 'email' , 'id_contact' , $contact);
       }
       
       $creation_totoro = $Client->getOne($creation_societe);
