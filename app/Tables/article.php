@@ -401,6 +401,7 @@ public function getModels()
 	FROM art_fmm
 	INNER JOIN art_marque as m ON afmm__marque = m.am__id
 	INNER JOIN keyword as k on afmm__famille = k.kw__value 
+	WHERE afmm__actif > 0 
 	order by k.kw__ordre ASC, afmm__modele ASC');
 	$data = $request->fetchAll(PDO::FETCH_OBJ);
 	return $data ; 
