@@ -319,11 +319,11 @@ if (empty($_SESSION['user']))
          ob_clean();
          $numFact = '0000000' . $temp->cmd__id_facture ;
          $numFact = substr($numFact , -7 );
-        //  if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
-        // {
-        //     $doc->output('F:\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
-        // }
-        // $doc->output('O:\intranet\Auto_Print\FC/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
+         if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
+        {
+            $doc->output('F:\F'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
+        }
+        $doc->output('O:\intranet\Auto_Print\FC/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
        
      
         
