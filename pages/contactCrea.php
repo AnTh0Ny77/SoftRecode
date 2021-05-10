@@ -38,10 +38,10 @@ $user = $_SESSION['user'];
      $verif = $Client->getOne($_POST['sociteContact']);
      if (!empty($verif)) 
      {
-       
+      
+      
       $Database = null;
       $Totoro = new App\Totoro('euro');
-      
       $Totoro->DbConnect();
      
       $Database = new App\Database('devis');

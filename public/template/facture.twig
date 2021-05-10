@@ -1,245 +1,241 @@
-{% extends 'layoutMain.twig' %}
-
-
-  {% block style %}
+{% extends 'layoutlight.twig' %}
+	{% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
 <link rel="stylesheet" href="public/css/dashboard.css">
-  {% endblock %}
- 
- 
-     {% block main %}
-     <main role="main" class="col-md-10 ml-sm-auto col-lg-10 pt-3 px-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">Factures <i class="fad fa-euro-sign"></i></h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-          </div>
-        </div>
-      </div>
-      
-      
-       <!-- 1ere ligne -->
-       <div class="d-flex flex-wrap flex-row justify-content-start">
-      
-        <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
-        
-        <div class="col-5">
-          {% if alertFacture %}
-          <div class="alert alert-success" role="alert">
-           <h5>{{alertFacture}}</h5>
-           {% if alertRelique %}
-           <p>le reliquat N° : {{alertRelique}} a été généré </p>
-           {% endif %}
-          </div>
-          {% endif  %}
-          {% if alertArchive %}
-          <div class="alert alert-secondary" role="alert">
-           <h5> Commande n° {{alertArchive}} archivée</h5>
-          </div>
-          {% endif  %}
-          {% if visuelFiche %}
-          <div class="alert alert-warning" role="alert">
-           <h5> cette commande est :  {{visuelFiche}}  </h5>
-          </div>
-          {% endif  %}
-          
-       
+	{% endblock %}
+		 {% block main %}
+		 <main role="main" class="container-fluid my-3">
+			<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+				<h1 class="h2">Factures <i class="fad fa-euro-sign"></i></h1>
+				<div class="btn-toolbar mb-2 mb-md-0">
+					<div class="btn-group mr-2">
+					</div>
+				</div>
+			</div>
+			
+			
+			 <!-- 1ere ligne -->
+			 <div class="d-flex flex-wrap flex-row justify-content-start">
+			
+				<input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
+				
+				<div class="col-5">
+					{% if alertFacture %}
+					<div class="alert alert-success" role="alert">
+					 <h5>{{alertFacture}}</h5>
+					 {% if alertRelique %}
+					 <p>le reliquat N° : {{alertRelique}} a été généré </p>
+					 {% endif %}
+					</div>
+					{% endif  %}
+					{% if alertArchive %}
+					<div class="alert alert-secondary" role="alert">
+					 <h5> Commande n° {{alertArchive}} archivée</h5>
+					</div>
+					{% endif  %}
+					{% if visuelFiche %}
+					<div class="alert alert-warning" role="alert">
+					 <h5> cette commande est :  {{visuelFiche}}  </h5>
+					</div>
+					{% endif  %}
+					
+			 
 
-       
-        <!--carte liste de Devis -->
-      
-        <div class="card shadow mb-4">
-          <!-- Card Header - -->
-          <div class="my-2 mx-4"> 
-            
-            <h6 class="m-0 font-weight-bold text-primary">Selection <i class="far fa-mouse-pointer"> </i> 
-                <small class="ml-3"> {{  " " ~ NbDevis }} Commandes expédiées</small>
-                <a data-toggle="tooltip" data-placement="top" title="Afficher toutes les fiches" href="" class="btn btn-link"><i class="fas fa-search-plus"></i></a>
-            </h6>
-                   
-          </div>
-          
-          <div class="card-header d-flex flex-row align-items-center justify-content-between">
-            <div class="d-flex flex-column">
-                <div>
-                  <form class="form-inline" action="facture" method="POST" >
-                    <input  type="hidden" name="recherche-fiche" value="search" >
-                    {% if champRecherche %}
-                    <input class="form-control mr-2" type="search" name="rechercheF" placeholder="Recherche" aria-label="Search" value="{{champRecherche}}" autofocus>
-                    {% else %}
-                    <input class="form-control mr-2" type="search" name="rechercheF" placeholder="Recherche" aria-label="Search" autofocus>
-                    {% endif %}
-                   
-                    <button class="btn btn-outline-primary  " type="submit"><i class="fal fa-bullseye-arrow"></i></button>
-                  </form>
-                 </div>
-               </div>
-            </div>
-          <!-- Card Body -->
-          <div class="card-body">
-            <div class="chart-area">
-              <table id="factureTable" class=" display table " style="width:100%"> <thead class="thead-dark" > 
-                <tr> 
-                  <th>Numéro</th> 
-                  <th>Date</th>
-                  <th>N°/Date</th>
-                  <th>Client</th>
-                 
-              </tr>
-              </thead> 
-               <tbody id="">
-                {% for devis in devisList %}
-                <tr class="trClick">
-                  <td>{{devis.devis__id}}</td>
-                  <td> {{ devis.cmd__date_cmd}}</td>
-                  <td > {{ "N°: " ~ devis.devis__id}} <br>  <div data-toggle="tooltip" data-placement="top" title="Date de commande"> <i class="far fa-check-circle"></i> {{ devis.devis__date_crea}} </div>
-                    {% if devis.cmd__date_envoi  %} 
-                    <div data-toggle="tooltip" data-placement="top" title="Date d'envoi prévue"> <i class="far fa-truck"></i> {{devis.cmd__date_envoi}}   </div>
-                    {% endif %}
-                  </td>
-                  {% if devis.cmd__nom_devis %}
-                  <td> 
-                  <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }} <br> {{devis.cmd__nom_devis}} </td>
-                  {% else  %}
-                  <td> <b>{{  devis.client__societe  }} </b>{{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td>
-                  {% endif %}
-                  
-                   
-                  
-                    
-                </tr>
-                {% endfor %}
-               </tbody>
-             </table>
-           </div>
-           
-          </div>
-         
-        </div>
-      </div>
+			 
+				<!--carte liste de Devis -->
+			
+				<div class="card shadow mb-4">
+					<!-- Card Header - -->
+					<div class="my-2 mx-4"> 
+						
+						<h6 class="m-0 font-weight-bold text-primary">Selection <i class="far fa-mouse-pointer"> </i> 
+								<small class="ml-3"> {{  " " ~ NbDevis }} Commandes expédiées</small>
+								<a data-toggle="tooltip" data-placement="top" title="Afficher toutes les fiches" href="" class="btn btn-link"><i class="fas fa-search-plus"></i></a>
+						</h6>
+									 
+					</div>
+					
+					<div class="card-header d-flex flex-row align-items-center justify-content-between">
+						<div class="d-flex flex-column">
+								<div>
+									<form class="form-inline" action="facture" method="POST" >
+										<input  type="hidden" name="recherche-fiche" value="search" >
+										{% if champRecherche %}
+										<input class="form-control mr-2" type="search" name="rechercheF" placeholder="Recherche" aria-label="Search" value="{{champRecherche}}" autofocus>
+										{% else %}
+										<input class="form-control mr-2" type="search" name="rechercheF" placeholder="Recherche" aria-label="Search" autofocus>
+										{% endif %}
+									 
+										<button class="btn btn-outline-primary  " type="submit"><i class="fal fa-bullseye-arrow"></i></button>
+									</form>
+								 </div>
+							 </div>
+						</div>
+					<!-- Card Body -->
+					<div class="card-body">
+						<div class="chart-area">
+							<table id="factureTable" class=" display table " style="width:100%"> <thead class="thead-dark" > 
+								<tr> 
+									<th>Numéro</th> 
+									<th>Date</th>
+									<th>N°/Date</th>
+									<th>Client</th>
+								 
+							</tr>
+							</thead> 
+							 <tbody id="">
+								{% for devis in devisList %}
+								<tr class="trClick">
+									<td>{{devis.devis__id}}</td>
+									<td> {{ devis.cmd__date_cmd}}</td>
+									<td > {{ "N°: " ~ devis.devis__id}} <br>  <div data-toggle="tooltip" data-placement="top" title="Date de commande"> <i class="far fa-check-circle"></i> {{ devis.devis__date_crea}} </div>
+										{% if devis.cmd__date_envoi  %} 
+										<div data-toggle="tooltip" data-placement="top" title="Date d'envoi prévue"> <i class="far fa-truck"></i> {{devis.cmd__date_envoi}}   </div>
+										{% endif %}
+									</td>
+									{% if devis.cmd__nom_devis %}
+									<td> 
+									<b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }} <br> {{devis.cmd__nom_devis}} </td>
+									{% else  %}
+									<td> <b>{{  devis.client__societe  }} </b>{{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td>
+									{% endif %}
+									
+									 
+									
+										
+								</tr>
+								{% endfor %}
+							 </tbody>
+						 </table>
+					 </div>
+					 
+					</div>
+				 
+				</div>
+			</div>
 
-        <!--carte option -->
-        <div class="col-7 cardVisio" >
-          <div class="card shadow mb-4">
-            <!-- Card Header - -->
-           
-            <!-- Card Body -->
-            <div class="card-body" >
+				<!--carte option -->
+				<div class="col-7 cardVisio" >
+					<div class="card shadow mb-4">
+						<!-- Card Header - -->
+					 
+						<!-- Card Body -->
+						<div class="card-body" >
 
 
-              <div id="loaderFacture">
-                <div class="  d-flex  flex-column  justify-content-center align-items-center ">
-                  <div class="spinner-border text-primary "  role="status">
-                  </div>
-                  <div> 
-                    <h5 class="text-primary">chargement de la commande ...</h5>
-                  </div> 
-               </div>  
-              </div>
+							<div id="loaderFacture">
+								<div class="  d-flex  flex-column  justify-content-center align-items-center ">
+									<div class="spinner-border text-primary "  role="status">
+									</div>
+									<div> 
+										<h5 class="text-primary">chargement de la commande ...</h5>
+									</div> 
+							 </div>  
+							</div>
 
 
-              <div id="iframeFacture" class="border-0" src="" width="100%" >
-              </div>
-        </div>
-      </div>
-      </div>
-    </div>
+							<div id="iframeFacture" class="border-0" src="" width="100%" >
+							</div>
+				</div>
+			</div>
+			</div>
+		</div>
 
 
 
 
  {#███╗   ███╗ ██████╗ ██████╗  █████╗ ██╗     ███████╗
-  ████╗ ████║██╔═══██╗██╔══██╗██╔══██╗██║     ██╔════╝
-  ██╔████╔██║██║   ██║██║  ██║███████║██║     ███████╗
-  ██║╚██╔╝██║██║   ██║██║  ██║██╔══██║██║     ╚════██║
-  ██║ ╚═╝ ██║╚██████╔╝██████╔╝██║  ██║███████╗███████║
-  ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝#}
+	████╗ ████║██╔═══██╗██╔══██╗██╔══██╗██║     ██╔════╝
+	██╔████╔██║██║   ██║██║  ██║███████║██║     ███████╗
+	██║╚██╔╝██║██║   ██║██║  ██║██╔══██║██║     ╚════██║
+	██║ ╚═╝ ██║╚██████╔╝██████╔╝██║  ██║███████╗███████║
+	╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝#}
 
 
 
 
 {# MODAL changement de contact et d'adresse de livraison #}
-  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalContact">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+	<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalContact">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
 
-    {#modal header#}
-     <div class="modal-header">
-        <h5 class="modal-title" id="titreClient">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-
-
-    {# modal body form#}
-    <div>
+		{#modal header#}
+		 <div class="modal-header">
+				<h5 class="modal-title" id="titreClient">Modal title</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+		</div>
 
 
-    {# partie supérieure du modal #}
+		{# modal body form#}
+		<div>
+
+
+		{# partie supérieure du modal #}
 <div class="d-flex my-2 mx-2 justify-content-between">
 
-      {# contenu de la facturation deja en place#}
-  <div class='card px-2 py-2'>
-      <h4><span class="badge badge-secondary">Société Facturée:</span><h4>
-      <h5 id='clientName'></h5>
-      <p id='textClient'></p>
-      </div>
+			{# contenu de la facturation deja en place#}
+	<div class='card px-2 py-2'>
+			<h4><span class="badge badge-secondary">Société Facturée:</span><h4>
+			<h5 id='clientName'></h5>
+			<p id='textClient'></p>
+			</div>
 
 
-      {#contenu du changement de contact #}
-      <form action="facture" method="POST" class="col-9">
-          <div class="d-flex justify-content-start col-12 ">
-            <div class=' px-2 py-2 col-12'>
-              <h4><span class="badge badge-secondary">Contact:</span><h4>
-                <select class="selectpicker show-tick  form-control" id="selectContact" name="selectContact"> 
-                </select>
+			{#contenu du changement de contact #}
+			<form action="facture" method="POST" class="col-9">
+					<div class="d-flex justify-content-start col-12 ">
+						<div class=' px-2 py-2 col-12'>
+							<h4><span class="badge badge-secondary">Contact:</span><h4>
+								<select class="selectpicker show-tick  form-control" id="selectContact" name="selectContact"> 
+								</select>
 
-                <div class="d-flex justify-content-around mt-5">
-                    <!-- <div data-toggle="tooltip" data-placement="top" title="Créer une nouvelle société">
-                      <button type="button" class="btn btn-primary" id="buttonModalSociete"><i class="fas fa-building"></i></button>
-                    </div> -->
-                    <!-- <div data-toggle="tooltip" data-placement="top" title="Créer un nouveau contact pour la société selectionné">
-                      <button type="button" class="btn btn-primary" id="buttonModalContact"><i class="fas fa-id-card"></i></button>
-                    </div> -->
-                    <div>
-                      <input type="hidden" id="postCmd" name="postCmd" value="">
-                      <input type="hidden" id="postSociety" name="postSociety" value="">
-                      <button type="submit" class="btn btn-success">Valider</button>
-                    </div> 
-                </div>
-            </div>
-          </div>  
-      </form>
-    
+								<div class="d-flex justify-content-around mt-5">
+										<!-- <div data-toggle="tooltip" data-placement="top" title="Créer une nouvelle société">
+											<button type="button" class="btn btn-primary" id="buttonModalSociete"><i class="fas fa-building"></i></button>
+										</div> -->
+										<!-- <div data-toggle="tooltip" data-placement="top" title="Créer un nouveau contact pour la société selectionné">
+											<button type="button" class="btn btn-primary" id="buttonModalContact"><i class="fas fa-id-card"></i></button>
+										</div> -->
+										<div>
+											<input type="hidden" id="postCmd" name="postCmd" value="">
+											<input type="hidden" id="postSociety" name="postSociety" value="">
+											<button type="submit" class="btn btn-success">Valider</button>
+										</div> 
+								</div>
+						</div>
+					</div>  
+			</form>
+		
 </div>  
 <hr>
-  {# fin de partie superieure#}
-  </div>
+	{# fin de partie superieure#}
+	</div>
 
-  <div class='px-2 py-2'>
-    <h4><span class="badge badge-secondary">Changer Societe:</span><h4>
-    {# table societe #}
-  </div>
+	<div class='px-2 py-2'>
+		<h4><span class="badge badge-secondary">Changer Societe:</span><h4>
+		{# table societe #}
+	</div>
 
-  <div class='mx-2'>
+	<div class='mx-2'>
 
-  <table id="factureClient" class="table  display " style="width:100%"> 
-              <thead>
-              <tr><th>Id</th><th>Nom</th><th>CP</th><th>Ville</th></tr>
-              </thead>
-               
-              <tbody class="trClick">
-              </tbody>
-  </table>
+	<table id="factureClient" class="table  display " style="width:100%"> 
+							<thead>
+							<tr><th>Id</th><th>Nom</th><th>CP</th><th>Ville</th></tr>
+							</thead>
+							 
+							<tbody class="trClick">
+							</tbody>
+	</table>
 
 </div>
 
-  </div>
+	</div>
 </div>
 </div>
 
@@ -248,405 +244,405 @@
 
 {# modal de creation de societe #}
 <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalSociete">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="titreClient">Création de société</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-      </div>
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="titreClient">Création de société</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+			</div>
 
 
 
-      <div class="modal-body">
-        <form  method="POST" action="facture">
-          <input type="hidden" name="nouveauClientId" id="nouveauClientId">
-          <div class="form-row">
-            <div class="form-group col-md-8">
-              <label for="inputEmail4">Société*</label>
-              <input type="text" class="form-control text-uppercase"   name="societe" required >
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputAddress">Adresse</label>
-            <input type="text" class="form-control"   name="adr1" >
-          </div>
-          <div class="form-group">
-            
-            <input type="text" class="form-control"  name="adr2">
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-2">
-              <label for="inputZip">CP*</label>
-              <input type="text" class="form-control"   name="cp" required >
-            </div>
-            <div class="form-group col-md-6">
-              <label for="inputCity">Ville*</label>
-              <input type="text" class="form-control"  name="ville" required >
-            </div>
-            <div class="form-group col-md-4">
-              <label for="pays">Pays*</label>
-              <select class="custom-select mr-sm-2"  name="pays">
-                <option value="france" selected>France</option>
-                <option value="autre" >autre</option>
-              </select>
-            </div>
-          </div>
-      </div>
+			<div class="modal-body">
+				<form  method="POST" action="facture">
+					<input type="hidden" name="nouveauClientId" id="nouveauClientId">
+					<div class="form-row">
+						<div class="form-group col-md-8">
+							<label for="inputEmail4">Société*</label>
+							<input type="text" class="form-control text-uppercase"   name="societe" required >
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="inputAddress">Adresse</label>
+						<input type="text" class="form-control"   name="adr1" >
+					</div>
+					<div class="form-group">
+						
+						<input type="text" class="form-control"  name="adr2">
+					</div>
+					<div class="form-row">
+						<div class="form-group col-md-2">
+							<label for="inputZip">CP*</label>
+							<input type="text" class="form-control"   name="cp" required >
+						</div>
+						<div class="form-group col-md-6">
+							<label for="inputCity">Ville*</label>
+							<input type="text" class="form-control"  name="ville" required >
+						</div>
+						<div class="form-group col-md-4">
+							<label for="pays">Pays*</label>
+							<select class="custom-select mr-sm-2"  name="pays">
+								<option value="france" selected>France</option>
+								<option value="autre" >autre</option>
+							</select>
+						</div>
+					</div>
+			</div>
 
-      <div class="modal-footer justify-content-end ">
-        <div>
-          <button   class="btn btn-primary">Valider</button>
-        </div>
-      </div>
-    </form>
-    </div>
-  </div>
+			<div class="modal-footer justify-content-end ">
+				<div>
+					<button   class="btn btn-primary">Valider</button>
+				</div>
+			</div>
+		</form>
+		</div>
+	</div>
 </div>   
 
 
 {# modal de creation de contact #}
 
 <div class="modal fade " tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalContactCrea">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <form class="px-3 py-3" action="facture" method="POST">
-        <input type="hidden" name="contactCreaPost" id="contactCreaPost">
-        <input type="hidden" name="idCmdContactCrea" id="idCmdContactCrea">
-        <div class="modal-header">
-          <h5 class="modal-title" id="titleCreaContact" >Création de contact</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div> 
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<form class="px-3 py-3" action="facture" method="POST">
+				<input type="hidden" name="contactCreaPost" id="contactCreaPost">
+				<input type="hidden" name="idCmdContactCrea" id="idCmdContactCrea">
+				<div class="modal-header">
+					<h5 class="modal-title" id="titleCreaContact" >Création de contact</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div> 
 
 
-        <div class="form-row mt-4">
-          <div class="form-group col-md-6">
-            <label for="inputState">Fonction *</label>
-            <select  class="form-control" name="fonctionContact" required>
-             
-              {% for keyword in keywordList %}
-              <option value={{keyword.kw__value}}>{{keyword.kw__lib}}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="form-group col-md-6">
-            <label for="inputCiv">Civilité</label>
-            <select  class="form-control" name="civiliteContact" required>
-              <option  selected>...</option>
-              <option value="M.">Mr</option>
-              <option value="Mme">Mme</option>
-            </select>
-          </div>
-          
-        </div>
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label for="inputCity">Nom</label>
-            <input type="text" class="form-control" name="nomContact" required>
-          </div>
-          <div class="form-group col-md-6">
-            <label for="inputCity">Prenom</label>
-            <input type="text" class="form-control" name="prenomContact">
-          </div>
-        </div>
+				<div class="form-row mt-4">
+					<div class="form-group col-md-6">
+						<label for="inputState">Fonction *</label>
+						<select  class="form-control" name="fonctionContact" required>
+						 
+							{% for keyword in keywordList %}
+							<option value={{keyword.kw__value}}>{{keyword.kw__lib}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="inputCiv">Civilité</label>
+						<select  class="form-control" name="civiliteContact" required>
+							<option  selected>...</option>
+							<option value="M.">Mr</option>
+							<option value="Mme">Mme</option>
+						</select>
+					</div>
+					
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="inputCity">Nom</label>
+						<input type="text" class="form-control" name="nomContact" required>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="inputCity">Prenom</label>
+						<input type="text" class="form-control" name="prenomContact">
+					</div>
+				</div>
 
-        <div class="form-row">
-          <div class="form-group col-md-3">
-            <label for="inputZip">Telephone</label>
-            <input type="text" class="form-control" name="telContact">
-          </div>
-          <div class="form-group col-md-3">
-            <label for="inputZip">Fax </label>
-            <input type="text" class="form-control"name="faxContact">
-          </div>
-          <div class="form-group col-md-6">
-            <label for="inputCity">Mail</label>
-            <input type="email" class="form-control"name="mailContact">
-          </div>
-        </div>
-        <div class="modal-footer justify-content-end ">
-          <div>
-            <button  class="btn btn-primary" id="postContact">Valider</button>
-          </div>
-        </div>
-    </div>
-   
+				<div class="form-row">
+					<div class="form-group col-md-3">
+						<label for="inputZip">Telephone</label>
+						<input type="text" class="form-control" name="telContact">
+					</div>
+					<div class="form-group col-md-3">
+						<label for="inputZip">Fax </label>
+						<input type="text" class="form-control"name="faxContact">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="inputCity">Mail</label>
+						<input type="email" class="form-control"name="mailContact">
+					</div>
+				</div>
+				<div class="modal-footer justify-content-end ">
+					<div>
+						<button  class="btn btn-primary" id="postContact">Valider</button>
+					</div>
+				</div>
+		</div>
+	 
 
-    </form>
-    </div>
-  </div>
+		</form>
+		</div>
+	</div>
 </div>   
 
 
 {# MODAL de lignes  #}
-  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalLigne">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="titreLigne"></h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
+	<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="modalLigne">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+						<h5 class="modal-title" id="titreLigne"></h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+				</div>
 
-        <form action="facture" method="POST">
-          <input type="hidden" id="idCMDL" name="idCMDL" value="">
-        <div class='d-flex justify-content-between py-3 px-3 border-bottom'>
-           
-            <div class="">
-              <div class="text-center">
-              <h4><span class="badge badge-secondary">Quantité commandée:</span><h4>
-              </div>
-                <div class="d-flex py-3 px-2 justify-content-around">
-                  <button  type='button' class="btn btn-primary rounded-circle " id="minusCMD">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                    <input type="text" id="qteCMD" name="qteCMD" class="form-control bg-dark text-white font-weight-bold text-center w-25" readonly/>
-                  <button type='button' class="btn btn-primary rounded-circle " id="plusCMD">
-                    <i class="fas fa-plus"></i>
-                  </button>
-                </div>
-            </div>
+				<form action="facture" method="POST">
+					<input type="hidden" id="idCMDL" name="idCMDL" value="">
+				<div class='d-flex justify-content-between py-3 px-3 border-bottom'>
+					 
+						<div class="">
+							<div class="text-center">
+							<h4><span class="badge badge-secondary">Quantité commandée:</span><h4>
+							</div>
+								<div class="d-flex py-3 px-2 justify-content-around">
+									<button  type='button' class="btn btn-primary rounded-circle " id="minusCMD">
+										<i class="fas fa-minus"></i>
+									</button>
+										<input type="text" id="qteCMD" name="qteCMD" class="form-control bg-dark text-white font-weight-bold text-center w-25" readonly/>
+									<button type='button' class="btn btn-primary rounded-circle " id="plusCMD">
+										<i class="fas fa-plus"></i>
+									</button>
+								</div>
+						</div>
 
-            <div>
-             <div class="text-center">
-              <h4><span class="badge badge-secondary">Quantité livrée:</span><h4>
-              </div>
-                <div class="d-flex py-3 px-2 justify-content-around">
-                  <button type='button' class="btn btn-secondary rounded-circle" id="minusLVR">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                    <input type="text" id="qteLVR" name="qteLVR" class="form-control bg-dark text-white font-weight-bold text-center w-25" value="0" readonly/>
-                  <button type='button' class="btn btn-secondary rounded-circle" id="plusLVR">
-                    <i class="fas fa-plus"></i>
-                  </button>
-                </div>
-            </div>
+						<div>
+						 <div class="text-center">
+							<h4><span class="badge badge-secondary">Quantité livrée:</span><h4>
+							</div>
+								<div class="d-flex py-3 px-2 justify-content-around">
+									<button type='button' class="btn btn-secondary rounded-circle" id="minusLVR">
+										<i class="fas fa-minus"></i>
+									</button>
+										<input type="text" id="qteLVR" name="qteLVR" class="form-control bg-dark text-white font-weight-bold text-center w-25" value="0" readonly/>
+									<button type='button' class="btn btn-secondary rounded-circle" id="plusLVR">
+										<i class="fas fa-plus"></i>
+									</button>
+								</div>
+						</div>
 
-            <div>
-            <div class="text-center">
-              <h4><span class="badge badge-secondary">Quantité facturée:</span><h4>
-              </div>
-                <div class="d-flex py-3 px-2 justify-content-around">
-                  <button type='button' class="btn btn-success rounded-circle" id="minusFTC">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                    <input type="text" id="qteFTC" name="qteFTC" class="form-control bg-dark text-white font-weight-bold text-center w-25" value="" readonly>
-                  <button type='button' class="btn btn-success rounded-circle" id="plusFTC">
-                    <i class="fas fa-plus"></i> 
-                  </button>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="d-flex justify-content-between py-2 px-3 pb-3 border-bottom">
-            <div class="col-11">
-              <h4><span class="badge badge-secondary">Désignation</span></h4><br>
-                <input class="form-control col-10 " type="text" name="designationLigne" id="designationLigne">
-          </div>
-        </div>
+						<div>
+						<div class="text-center">
+							<h4><span class="badge badge-secondary">Quantité facturée:</span><h4>
+							</div>
+								<div class="d-flex py-3 px-2 justify-content-around">
+									<button type='button' class="btn btn-success rounded-circle" id="minusFTC">
+										<i class="fas fa-minus"></i>
+									</button>
+										<input type="text" id="qteFTC" name="qteFTC" class="form-control bg-dark text-white font-weight-bold text-center w-25" value="" readonly>
+									<button type='button' class="btn btn-success rounded-circle" id="plusFTC">
+										<i class="fas fa-plus"></i> 
+									</button>
+								</div>
+						</div>
+				</div>
 
 
-
-        <div class="d-flex justify-content-around my-3 py-3 px-3">
-          <div class="col-3">
-              <h4><span class="badge badge-secondary">Prix hors-taxes:</span><h4>
-              <input type="text" id="prixLigne" name="prixLigne" class="form-control bg-dark text-white font-weight-bold text-right" />
-          </div>
-          <div>
-            <textarea class="form-control " name="comFacture" id="comFacture"  placeholder="Commentaire Facture...." rows="2" cols="40"></textarea>
-          </div>
-          
-        </div>
-        <div class="modal-footer">
-          <div class="mb-1 align-self-end d-flex justify-content-end">
-            <button class="btn btn-success btn-lg  ">Valider</button>
-        </div>
-        </div>
-      </form>
-      </div>
-    </div> 
-  </div>
+				<div class="d-flex justify-content-between py-2 px-3 pb-3 border-bottom">
+						<div class="col-11">
+							<h4><span class="badge badge-secondary">Désignation</span></h4><br>
+								<input class="form-control col-10 " type="text" name="designationLigne" id="designationLigne">
+					</div>
+				</div>
 
 
 
-
-  {# Modal TVA / commentaire / Code CMD #}
-
-  <div class="modal fade" tabindex="-1" role="dialog"  aria-hidden="true" id="modalTVA">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="titreTVA"></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form action='facture' method='POST'>
-          <div class="d-flex justify-content-around">
-              <input type="hidden" name="hiddenTVA" id="hiddenTVA">
-              <div class="col-5 mx-3 my-3">
-                <h4><span class="badge badge-secondary">TVA:</span></h4>
-
-                  <select id="selectTVA" name="selectTVA" class="custom-select">
-                    {% for tva in tvaList %}  
-                    <option value="{{tva.kw__value}}">{{tva.kw__info ~ " % " ~ tva.kw__lib}}</option>
-                    {% endfor %}
-                  </select >
-                  
-              </div>
-              <div class="col-6 mx-3 my-3">
-                <h4><span class="badge badge-secondary">Code CMD client:</span></h4>
-                <input class="form-control" type="text" name="codeCmdTVA" id="codeCmdTVA">
-              </div >
-          </div>
-          <hr class="mx-3">
-          <div class=" mx-3 my-3">
-            <h4><span class="badge badge-secondary">Commentaire Client</span></h4>
-
-            <textarea class="form-control " name="comTVA" id="comTVA"  placeholder="Commentaire client...." rows="2" cols="40"></textarea>
-          </div>
-          <div class="d-flex justify-content-end mx-3 my-3">
-          <button class="btn btn-success">Valider</button>
-          </div>
-       </form>
-      </div>
-    </div>
-  </div>
-
-
-
-  {# modal d'ajout de ligne supplémentaire #}
-
-  <div class="modal fade" tabindex="-1" role="dialog"  aria-hidden="true" id="modalItem">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="titreItem"></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
+				<div class="d-flex justify-content-around my-3 py-3 px-3">
+					<div class="col-3">
+							<h4><span class="badge badge-secondary">Prix hors-taxes:</span><h4>
+							<input type="text" id="prixLigne" name="prixLigne" class="form-control bg-dark text-white font-weight-bold text-right" />
+					</div>
+					<div>
+						<textarea class="form-control " name="comFacture" id="comFacture"  placeholder="Commentaire Facture...." rows="2" cols="40"></textarea>
+					</div>
+					
+				</div>
+				<div class="modal-footer">
+					<div class="mb-1 align-self-end d-flex justify-content-end">
+						<button class="btn btn-success btn-lg  ">Valider</button>
+				</div>
+				</div>
+			</form>
+			</div>
+		</div> 
+	</div>
 
 
 
 
+	{# Modal TVA / commentaire / Code CMD #}
+
+	<div class="modal fade" tabindex="-1" role="dialog"  aria-hidden="true" id="modalTVA">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="titreTVA"></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form action='facture' method='POST'>
+					<div class="d-flex justify-content-around">
+							<input type="hidden" name="hiddenTVA" id="hiddenTVA">
+							<div class="col-5 mx-3 my-3">
+								<h4><span class="badge badge-secondary">TVA:</span></h4>
+
+									<select id="selectTVA" name="selectTVA" class="custom-select">
+										{% for tva in tvaList %}  
+										<option value="{{tva.kw__value}}">{{tva.kw__info ~ " % " ~ tva.kw__lib}}</option>
+										{% endfor %}
+									</select >
+									
+							</div>
+							<div class="col-6 mx-3 my-3">
+								<h4><span class="badge badge-secondary">Code CMD client:</span></h4>
+								<input class="form-control" type="text" name="codeCmdTVA" id="codeCmdTVA">
+							</div >
+					</div>
+					<hr class="mx-3">
+					<div class=" mx-3 my-3">
+						<h4><span class="badge badge-secondary">Commentaire Client</span></h4>
+
+						<textarea class="form-control " name="comTVA" id="comTVA"  placeholder="Commentaire client...." rows="2" cols="40"></textarea>
+					</div>
+					<div class="d-flex justify-content-end mx-3 my-3">
+					<button class="btn btn-success">Valider</button>
+					</div>
+			 </form>
+			</div>
+		</div>
+	</div>
 
 
-        <div class="modal-body">
-          <form action="facture" method="POST">
-          <input type="hidden" name="idDevisAddLigne" id="idDevisAddLigne">
-          <div class="form-row border-bottom mb-3 pb-3 ">
+
+	{# modal d'ajout de ligne supplémentaire #}
+
+	<div class="modal fade" tabindex="-1" role="dialog"  aria-hidden="true" id="modalItem">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="titreItem"></h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
 
 
 
-            <div class="d-flex flex-row col-12 justify-content-between mb-3">
-
-
-            <div class="col-md-3 ">
-              <label for="prestationChoix">Prestation:</label>
-              <select class="selectpicker" id="prestationChoix" name="prestationChoix">
-                {% for presta in prestaList %}
-                  <option class=""  value={{presta.kw__value}}>{{presta.kw__lib}}</option>
-                  {% endfor %}
-              </select>
-            </div>
-            <div class="col-8">
-              <label for="choixDesignation">Modèle:</label>
-              <select class="selectpicker col-12" id="choixDesignation" name="choixDesignation" data-live-search="true">
-                <option class="optionSelect modelSelect" value="">..</option>
-                {% for article in articleList %} 
-                  <option class="optionSelect modelSelect" value={{article.afmm__id}}>{{article.afmm__modele   ~ " " ~ article.famille ~ " " ~ article.Marque }}</option>
-                  {% endfor %}
-              </select> 
-            </div>
 
 
 
-            </div> 
-              <div class=" col-12" id="choixRef">
-                <div class="col-12  ">
-                  <div class="col-12">
-                    <label for="referenceS">Désignation sur le devis/facture: </label>
-                  <input type="text" class="form-control mx-3"  aria-label="Username" aria-describedby="basic-addon1" id='referenceS' name="referenceS" required>
-                </div>
-                </div>
-              </div>
-            </div>
+				<div class="modal-body">
+					<form action="facture" method="POST">
+					<input type="hidden" name="idDevisAddLigne" id="idDevisAddLigne">
+					<div class="form-row border-bottom mb-3 pb-3 ">
 
 
-        <div class="form-row align-items-center  d-flex justify-content-between mt-4">
-          <div class="col-4">
-            <label class="ml-3" for="etatRow">Etat</label>
-            <select class="selectpicker col-12" id="etatSelect" name="etatSelect">
-              {% for etat in etatList %}
-              <option   value="{{etat.kw__value}}" >{{etat.kw__lib}}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="col-4">
-            <label for="validationCustom04">Garantie/mois</label>
-            <select class="selectpicker" id="garantieSelect"  name="garantieSelect">
-              {% for garantie in garantiesList %}
-              <option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}}</option>
-              {% endfor %}
-            </select>
-          </div>
-          
-          <div class="col-1">
-            <label for="validationCustom04">Quantité</label>
-            <input type="number" class="form-control" value="1" id="quantiteLigne" name="quantiteLigne" required >
-          </div>
-          <div class="col-2">
-            <label for="validationCustom04">Prix € H.T</label>
-            <input class="form-control" type="text"  id="prixLigne" name="prixLigne" required>
-          </div>
-        </div>
-        <hr>
-        <div class="form-row mt-2 form-row align-items-center  d-flex justify-content-start">
-            <div class=" col-12" id="commentaire" >
-              <div class="col-12 mt-3 mb-2 d-flex justify-content-between">
-                <div class="col-6">
-                  <label for="comClient">Commentaire</label>
-                <textarea class="form-control" id="comClientLigne" name="comClientLigne" placeholder="Commentaire client...." rows="4"></textarea>
-                </div> 
-                <div class="col-6 d-flex flex-row">
-                 <div>
-                  <label for="extensionGarantie">extension de garantie/mois</label>
-                  <select class="selectpicker" id="extensionGarantie" name="extensionGarantie" >
-                    {% for garantie in garantiesList %}
-                    <option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}} </option>
-                    {% endfor %}
-                  </select>
-                </div>
-                <div class="col-4 mt-4">
-                  <input class="form-control" type="text" name="prixGarantie" id="prixGarantie" placeholder="€ HT">
-                </div> 
-                </div>
-                
-              </div>
-              <div class="modal-footer mt-4">
-              <button class="btn btn-success"> valider</button>
-            </div>
-            </div>
-          </div>
-        </form>
-        </div>
-      </div>
-    </div>
-  </div>
-   
 
-    </main>
-     {% endblock %}
-     
-    
-     {% block script %}
-     <!-- Optional JavaScript -->
+						<div class="d-flex flex-row col-12 justify-content-between mb-3">
+
+
+						<div class="col-md-3 ">
+							<label for="prestationChoix">Prestation:</label>
+							<select class="selectpicker" id="prestationChoix" name="prestationChoix">
+								{% for presta in prestaList %}
+									<option class=""  value={{presta.kw__value}}>{{presta.kw__lib}}</option>
+									{% endfor %}
+							</select>
+						</div>
+						<div class="col-8">
+							<label for="choixDesignation">Modèle:</label>
+							<select class="selectpicker col-12" id="choixDesignation" name="choixDesignation" data-live-search="true">
+								<option class="optionSelect modelSelect" value="">..</option>
+								{% for article in articleList %} 
+									<option class="optionSelect modelSelect" value={{article.afmm__id}}>{{article.afmm__modele   ~ " " ~ article.famille ~ " " ~ article.Marque }}</option>
+									{% endfor %}
+							</select> 
+						</div>
+
+
+
+						</div> 
+							<div class=" col-12" id="choixRef">
+								<div class="col-12  ">
+									<div class="col-12">
+										<label for="referenceS">Désignation sur le devis/facture: </label>
+									<input type="text" class="form-control mx-3"  aria-label="Username" aria-describedby="basic-addon1" id='referenceS' name="referenceS" required>
+								</div>
+								</div>
+							</div>
+						</div>
+
+
+				<div class="form-row align-items-center  d-flex justify-content-between mt-4">
+					<div class="col-4">
+						<label class="ml-3" for="etatRow">Etat</label>
+						<select class="selectpicker col-12" id="etatSelect" name="etatSelect">
+							{% for etat in etatList %}
+							<option   value="{{etat.kw__value}}" >{{etat.kw__lib}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="col-4">
+						<label for="validationCustom04">Garantie/mois</label>
+						<select class="selectpicker" id="garantieSelect"  name="garantieSelect">
+							{% for garantie in garantiesList %}
+							<option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					
+					<div class="col-1">
+						<label for="validationCustom04">Quantité</label>
+						<input type="number" class="form-control" value="1" id="quantiteLigne" name="quantiteLigne" required >
+					</div>
+					<div class="col-2">
+						<label for="validationCustom04">Prix € H.T</label>
+						<input class="form-control" type="text"  id="prixLigne" name="prixLigne" required>
+					</div>
+				</div>
+				<hr>
+				<div class="form-row mt-2 form-row align-items-center  d-flex justify-content-start">
+						<div class=" col-12" id="commentaire" >
+							<div class="col-12 mt-3 mb-2 d-flex justify-content-between">
+								<div class="col-6">
+									<label for="comClient">Commentaire</label>
+								<textarea class="form-control" id="comClientLigne" name="comClientLigne" placeholder="Commentaire client...." rows="4"></textarea>
+								</div> 
+								<div class="col-6 d-flex flex-row">
+								 <div>
+									<label for="extensionGarantie">extension de garantie/mois</label>
+									<select class="selectpicker" id="extensionGarantie" name="extensionGarantie" >
+										{% for garantie in garantiesList %}
+										<option   value="{{garantie.kw__value}}" >{{garantie.kw__lib}} </option>
+										{% endfor %}
+									</select>
+								</div>
+								<div class="col-4 mt-4">
+									<input class="form-control" type="text" name="prixGarantie" id="prixGarantie" placeholder="€ HT">
+								</div> 
+								</div>
+								
+							</div>
+							<div class="modal-footer mt-4">
+							<button class="btn btn-success"> valider</button>
+						</div>
+						</div>
+					</div>
+				</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	 
+
+		</main>
+		 {% endblock %}
+		 
+		
+		 {% block script %}
+		 <!-- Optional JavaScript -->
 
 <!-- jQuery first, then Bootstrap JS -->
 <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
@@ -656,4 +652,4 @@
 <script type="text/javascript" src="public/js/facture.js"></script>
 
 
-     {% endblock %}
+		 {% endblock %}

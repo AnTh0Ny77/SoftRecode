@@ -1,83 +1,74 @@
-{% extends 'layoutMain.twig' %}
+{% extends 'layoutlight.twig' %}
 
 
-  {% block style %}
+	{% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
 <link rel="stylesheet" href="public/css/dashboard.css">
 {% endblock %}
- 
- 
 {% block main %}
-     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-       
-          <form method="POST" action="fichesEnCours">
-            <div class="form-inline my-3">
-              
-                <div class="mr-5">
+		 <main role="main" class="container">
+			 
+					<form method="POST" action="fichesEnCours">
+						<div class="form-inline my-3">
+								<div class="mr-5">
 
-                  {% if vueFiltre %}
-                  <input type="search"  class="form-control" placeholder="filtre" name="filtre" value="{{vueFiltre}}">
-                  {% else %}
-                  <input type="search"  class="form-control" placeholder="filtre" name="filtre">
-                  {% endif %}
-                  
-                </div>
+									{% if vueFiltre %}
+									<input type="search"  class="form-control" placeholder="filtre" name="filtre" value="{{vueFiltre}}">
+									{% else %}
+									<input type="search"  class="form-control" placeholder="filtre" name="filtre">
+									{% endif %}
+									
+								</div>
+								<button type="submit" class="btn btn-success ml-5">Recherche <i class="fas fa-search"></i></button>
+								<button type="button" class="btn btn-warning ml-5" id="printButton"><i class="fas fa-print"></i></button>
+						</div >
+				 </form>
+			 
+				<table class="table table-hover mt-4">
+						<thead>
+							<tr>
+								<th scope="col">Numéro/Vendeur / Date</th>
+							 
+								<th scope="col">Société/Ville</th>
+								<th scope="col">Info</th>
+							</tr>
+						</thead>
+						<tbody>     
+										{% for devis in devisList %}
+										<tr>
+												<td scope="row">N° {{devis.devis__id}} <br><p class="text-primary">{{devis.nomDevis ~ " " ~ devis.prenomDevis}}</p> Commandé par {{devis.nomCMD ~ " " ~  devis.prenomCMD}}<br>
+												Le:  {{ devis.devis__date_crea}} 
+												<td> 
+													{% if devis.devis__id_client_livraison and devis.devis__id_client_livraison !=  devis.client__id  %}
+													Livraison : <br>
+													<b>{{  devis. client__livraison_societe  }} </b> {{"(" ~ devis.devis__id_client_livraison ~ ")" }} <br>{{ devis.client__livraison_cp ~ " " ~ " " ~  devis.client__livraison_ville }} <br><br>
+													Facturation : <br>
+													<b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }}  </td>
+													{% else %}
+													Facturation & Livraison: <br>
+													<b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }}  </td>
+													{% endif %}
 
-               
-                
-                <button type="submit" class="btn btn-success ml-5">Recherche <i class="fas fa-search"></i></button>
-                <button type="button" class="btn btn-warning ml-5" id="printButton"><i class="fas fa-print"></i></button>
-
-            </div >
-         </form>
-       
-        <table class="table table-hover mt-4">
-            <thead>
-              <tr>
-                <th scope="col">Numéro/Vendeur / Date</th>
-               
-                <th scope="col">Société/Ville</th>
-                <th scope="col">Info</th>
-              </tr>
-            </thead>
-            <tbody>     
-                    {% for devis in devisList %}
-                    <tr>
-                        <td scope="row">N° {{devis.devis__id}} <br><p class="text-primary">{{devis.nomDevis ~ " " ~ devis.prenomDevis}}</p> Commandé par {{devis.nomCMD ~ " " ~  devis.prenomCMD}}<br>
-                        Le:  {{ devis.devis__date_crea}} 
-                        <td> 
-                          {% if devis.devis__id_client_livraison and devis.devis__id_client_livraison !=  devis.client__id  %}
-                          Livraison : <br>
-                          <b>{{  devis. client__livraison_societe  }} </b> {{"(" ~ devis.devis__id_client_livraison ~ ")" }} <br>{{ devis.client__livraison_cp ~ " " ~ " " ~  devis.client__livraison_ville }} <br><br>
-                          Facturation : <br>
-                          <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }}  </td>
-                          {% else %}
-                          Facturation & Livraison: <br>
-                          <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }}  </td>
-                          {% endif %}
-
-                        <td >
-                         
-                          {% for item in devis.cmd__note_client %}
-                          <div class="border-bottom">
-                          <strong>{{item.devl_quantite }}</strong> X {{ item.devl__designation}}  <br>
-                          {{item.famille__lib ~ " " ~ item.modele ~ " " ~ item.marque }}
-                          
-                          {{item.devl__note_interne|raw}}
-                          </div>
-
-
-                          {% endfor %}
-                          
-                        </td>
-                    </tr>
-                    {% endfor %}
-            </tbody>
-        </table>
-    </main>
+												<td >
+					
+													{% for item in devis.cmd__note_client %}
+													<div class="border-bottom">
+													<strong>{{item.devl_quantite }}</strong> X {{ item.devl__designation}}  <br>
+													{{item.famille__lib ~ " " ~ item.modele ~ " " ~ item.marque }}
+													
+													{{item.devl__note_interne|raw}}
+													</div>
+													{% endfor %}
+													
+												</td>
+										</tr>
+										{% endfor %}
+						</tbody>
+				</table>
+		</main>
 {% endblock %}
 
 

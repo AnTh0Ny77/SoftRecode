@@ -24,42 +24,41 @@
 
 <!--NavBar--> 
 <nav class="navbar navbar-light navbar-large  sticky-top bg-white flex-md-nowrap p-0 shadow">
-  
-  <div>
-    <a class="navbar-brand  mx-3 pr-2" href="dashboard">  <i class="fas fa-chart-network fa-lg" style="color: #228B22;"></i></a>
-    <a class="navbar-brand  ml-5 pr-2" href="#">  {{ user.prenom ~  " " ~  user.nom ~ " " }}<i class="fas fa-user"></i></a> 
-    {% if user.commandes_cours %}
-    <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="commandes en cours">
-      <a href="search_switch_notifs?id_user={{user.id_utilisateur}}&status=CMD">
-        <span class="fa-stack" style="vertical-align: top;">
-          <i class="fal fa-file fa-stack-2x"></i>
-          <i class=" fa-stack-1x text-primary">{{user.commandes_cours}}</i>
-        </span>
-      </a>
-        </button>
-		{% endif %}
-  </div>
- 
- 
-  <div class="d-flex flex-row ">
-    <custom-search-menu method="POST" url='search_switch'></custom-search-menu>
-    <ul class="navbar-nav px-3">
-      <li class="nav-item text-nowrap">
-        <a class="nav-link" href="unlog">Se deconnecter <i class="fad fa-sign-out"></i></a>
-      </li>
-    </ul>
-  </div>
-  
+	
+	<div>
+		<a class="navbar-brand  mx-3 pr-2" href="dashboard">  <i class="fas fa-chart-network fa-lg" style="color: #228B22;"></i></a>
+		
+		<a class="navbar-brand  ml-5 pr-2" href="#">  {{ user.prenom ~  " " ~  user.nom ~ " " }}<i class="fas fa-user"></i></a> 
+		{% if user.commandes_cours %}
+			<button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="commandes en cours">
+				<a href="search_switch_notifs?id_user={{user.id_utilisateur}}&status=CMD">
+					<span class="fa-stack" style="vertical-align: top;">
+						<i class="fal fa-file fa-stack-2x"></i>
+						<i class=" fa-stack-1x text-primary">{{user.commandes_cours}}</i>
+					</span>
+				</a>
+			</button>
+		{% endif %}	
+	</div>
+	<div class="d-flex flex-row ">
+		<custom-search-menu method="POST" url='search_switch'></custom-search-menu>
+		<ul class="navbar-nav px-3">
+			<li class="nav-item text-nowrap">
+				<a class="nav-link" href="unlog">Se deconnecter <i class="fad fa-sign-out"></i></a>
+			</li>
+		</ul>
+	</div>
+	
 </nav>
 
 <!--end navbar-->
 <div class="container-fluid ">
  
-   
-    <!--Block -->
-    {% block main  %}
-    {% endblock %}
-  
+	 
+		<!--Block -->
+		{% block main  %}
+		{% endblock %}
+	
 </div>
 
 
@@ -67,5 +66,8 @@
 {% block script  %}
 {% endblock %}
 <script type="module" src="public/js/custom/import.js"></script>
+<script type="text/javascript">
+	
+</script>
 </body>
 </html>

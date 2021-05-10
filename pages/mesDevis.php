@@ -4,10 +4,13 @@ require "./App/twigloader.php";
 session_start();
 
  //URL bloqué si pas de connexion :
+ 
  if (empty($_SESSION['user']->id_utilisateur)) 
  {
     header('location: login');
  }
+ 
+
  if ($_SESSION['user']->user__devis_acces < 10 ) 
  {
    header('location: noAccess');

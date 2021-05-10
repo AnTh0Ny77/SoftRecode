@@ -1,274 +1,270 @@
 {% extends 'layoutMain.twig' %}
 
 
-  {% block style %}
-  <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+	{% block style %}
+	<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
 <link rel="stylesheet" href="public/css/dashboard.css">
-  {% endblock %}
+	{% endblock %}
  
  
-     {% block main %}
-     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <h1 class="h2">Mes Devis <i class="fal fa-file-search"></i></h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-          </div>
-        </div>
-      </div>
-      <input type="hidden" name="printrequest" id="printrequest" value="{{print_request}}">
-       <!-- 1ere ligne -->
-       <div class="d-flex flex-wrap flex-row justify-content-start">
-      
-        <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
-        <!-- Modal -->
-        <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Status <i class="fas fa-tasks"></i></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <form action="mesDevis" method="POST">
-              <div class="modal-body">
-                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+		 {% block main %}
+		 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+			<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+				<h1 class="h2">Mes Devis <i class="fal fa-file-search"></i></h1>
+				<div class="btn-toolbar mb-2 mb-md-0">
+					<div class="btn-group mr-2">
+					</div>
+				</div>
+			</div>
+			<input type="hidden" name="printrequest" id="printrequest" value="{{print_request}}">
+			 <!-- 1ere ligne -->
+			 <div class="d-flex flex-wrap flex-row justify-content-start">
+			
+				<input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
+				<!-- Modal -->
+				<div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Status <i class="fas fa-tasks"></i></h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<form action="mesDevis" method="POST">
+							<div class="modal-body">
+								<div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
 
-                  <select class="selectpicker" id="selectStatus" name="statusRadio" >
-                    {% for status in listOfStatus %}
-                    {% if   status.keyword__lib != 'Commande'%}
-                        <option class="optionSelect modelSelect" value={{status.kw__value}}>{{status.kw__lib }}</option>
-                    {% endif %}
-                    {% endfor %}
-                  </select> 
-                    <input type="hidden" name="ValiderDevis" id="ValiderDevis" value="">
-                  </div>
-              </div>
-              <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Valider</button>
-              </form>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-       
-        <!--carte liste de Devis -->
-      <div class="col-6">
-        <div class="card shadow mb-4">
-          <!-- Card Header - -->
-          <div class="my-2 mx-4">
-            <h6 class="m-0 font-weight-bold text-primary">Selection <i class="far fa-mouse-pointer"> </i> <small class="ml-3"> {{  " " ~ NbDevis }} devis</small></h6>
-          </div>
-
-          <div class="card-header d-flex flex-row align-items-center justify-content-between">
-            
-            <div class="d-flex flex-column">
-                <div>
-                  <form class="form-inline" action="mesDevis" method="POST">
-                    {% if recherche %}
-                    <input class="form-control mr-2" type="search" name="rechercheP" value="{{recherche}}" placeholder="Recherche" aria-label="Search">
-                    {% else %}
-                    <input class="form-control mr-2" type="search" name="rechercheP" placeholder="Recherche" aria-label="Search">
-                    {% endif %}
-                    <button class="btn btn-outline-primary  " type="submit"><i class="fal fa-bullseye-arrow"></i></button>
-                  </form>
-                 </div>
-               
-            </div>
-           
-            
-            <div class=" ">
-             
-              
-              <div class="d-flex flex-row justify-content-around" >
-                
-                <div>
-                  <a class="btn btn btn-sm btn-link mx-2" href="DevisV2">Nouveau Devis</a>
-                </div>
-                {# {% if user.user__devis_acces >= 15 %}
-                <div>
-                  <form action="mesDevis" method="POST"> 
-                      <input type="hidden" value="{{ AllDevis }}" name="MyDevis">
-                      <button type="submit" class="btn btn-sm btn-link">{{ AllDevis }}</button>
-                  </form>
-                </div>
-                {% endif %} #}
-               
-
-                
-              </div>
-              
-            </div>
-          </div>
-          <!-- Card Body -->
-          <div class="card-body">
-            <div class="chart-area">
-              <table id="MyDevis" class=" display table  " style="width:100%"> <thead class="thead-dark" > 
-                <tr> 
-                  <th>Numéro</th> 
-                  <th>Date</th>
-                  <th>N°/Date</th>
-                  <th>Client</th>
-                  <th>Etat</th>
-              </tr>
-              </thead> 
-               <tbody id="DevisBody">
-                {% for devis in devisList %}
-                
-                
-                <tr class="trClick">
-                  <td>{{devis.devis__id}}</td>
-                  <td>{{ devis.devis__date_crea}}</td>
-                  <td> {{ "N°: " ~ devis.devis__id}} <br> {{ devis.devis__date_crea}}</td>
-                  {% if devis.cmd__nom_devis %}
-                  <td> 
-                  <b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }} <br> {{devis.cmd__nom_devis}} </td>
-                  {% else  %}
-                  <td> <b>{{  devis.client__societe  }} </b>{{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td>
-                  {% endif %}
-                  <td>
-                    {% if devis.devis__etat == 'ATN'  %}
-                    Envoyé <i class="fas fa-hourglass" style="color:#cc9900;"></i> 
-                    <br> {{ devis.log_nec  }} 
-                    <br>
-                    <div class="d-flex justify-content-around">
-                      <div class="" data-toggle="tooltip" data-placement="top" title="Commander le devis">
-                        <form method="POST" action="validation_devis">
-                            <input type="hidden" value="{{devis.devis__id}}" name="ValideCmd">
-                            <button type="submit" class="badge badge-success"><i class="fas fa-thumbs-up"></i></button>                      
-                        </form> 
-                      </div>
-                      <div class="" data-toggle="tooltip" data-placement="top" title="Refuser le devis">
-                        <form method="POST" action="mesDevis">
-                          <input type="hidden" value="{{devis.devis__id}}" name="ValiderDevis">
-                          <input type="hidden" value="RFS" name="statusRadio">
-                          <button type="submit" class="badge badge-danger"><i class="fas fa-thumbs-down"></i></button>                      
-                        </form> 
-                    </div>
-                </div>
-                    </td>
-                    {% elseif devis.devis__etat == 'CMD' %}
-                   Valide <i class="fas fa-shopping-basket" style="color:DodgerBlue;"></i> 
-                    <br> En cours de préparation<br>
-                      <div class="" data-toggle="tooltip" data-placement="top" title="Fiche de travail">
-                        <form method="POST" action="ficheTravail">
-                            <input type="hidden" value="id-fiche" name="recherche-fiche">
-                            <input type="hidden" value="{{devis.devis__id}}" name="rechercheF">
-                            <button type="submit" class="badge badge-primary"><i class="fas fa-tools"></i></button>                      
-                        </form> 
-                      </div>
-                    </td>
-                    {% elseif devis.devis__etat == 'IMP' %}
-                   Expédié <i class="fas fa-print" style="color: Coral;"></i> 
-                    <br>
-                    <div class="d-flex justify-content-around">
-                      <div class="" data-toggle="tooltip" data-placement="top" title="Fiche de travail">
-                        <form method="POST" action="ficheTravail">
-                            <input type="hidden" value="id-fiche" name="recherche-fiche">
-                            <input type="hidden" value="{{devis.devis__id}}" name="rechercheF">
-                            <button type="submit" class="badge badge-primary"><i class="fas fa-tools"></i></button>                      
-                        </form> 
-                      </div>
-                      <div class="" data-toggle="tooltip" data-placement="top" title="Bon de livraison">
-                        <form method="POST" action="ficheTravail">
-                            <input type="hidden" value="id-fiche" name="recherche-fiche">
-                            <input type="hidden" value="{{devis.devis__id}}" name="rechercheF">
-                            <button type="submit" class="badge badge-info"><i class="fas fa-print"></i></button>                      
-                        </form> 
-                      </div>
-                      </div>
-                    </td>
-                    {% elseif devis.devis__etat == 'RFS' %}
-                    {{ devis.kw__lib}} <i class="fas fa-trash" style="color:#ff0000;"></i> <br> {{ devis.log_nec  }}
-                    <br>
-                    <div class="" data-toggle="tooltip" data-placement="top" title="Rétablir">
-                      <form method="POST" action="mesDevis">
-                          <input type="hidden" value="{{devis.devis__id}}" name="ValiderDevis">
-                          <input type="hidden" value="ATN" name="statusRadio">
-                          <button type="submit" class="badge badge-warning"><i class="fal fa-backward"></i></button>                      
-                      </form> 
-                    </div>
-                    </td>
-                    {% elseif devis.devis__etat == 'VLD' %}
-                    Facturé <i class="fas fa-check-square" style="color: limegreen;"></i> <br> {{ devis.log_nec  }}</td>
-                    {% endif %}
-                </tr>
-                
-                {% endfor %}
-               </tbody>
-             </table>
-           </div>
-           
-          </div>
-         
-        </div>
-      </div>
-
-        <!--carte option -->
-        <div class="col-6 cardVisio" >
-          <div class="card shadow mb-4">
-            <!-- Card Header - -->
-            <div class="my-2 mx-4">
-              <h6 class="m-0 font-weight-bold text-primary">Devis <i class="far fa-eye"></i></h6>
-            </div>
-            <div class="card-header py-3 px-5 d-flex flex-row align-items-center justify-content-between">
-              
-               
-                <!-- <div class=" ">
-                  <button type="button" class="btn btn-link   btn-sm  multiButton"  data-toggle="modal" data-target="#statusModal" disabled>Statuer</button>
-                </div> -->
-               
-                
-                <form class=" " method="POST" action="voirDevis" target="_blank">
-                  <input type="hidden" name="AjaxDevis" id="VoirDevis" value="">
-                <button type="submit" class="btn btn-link   btn-sm  multiButton" disabled>PDF</button>
-                 </form>
-                <form class=" " action="DevisV2" method="POST" id="formModif">
-                  <input type="hidden" name="modif" id="ModifierDevis" value="">
-                <button type="submit" class="btn btn-link btn-sm    multiButton" disabled>Modifier</button>
-                </form>
-                <form class=" " action="DevisV2" method="POST">
-                  <input type="hidden" name="DupliquerDevis" id="DupliquerDevis" value="">
-                <button type="submit" class="btn btn-link  btn-sm  multiButton" disabled>Dupliquer</button>
-                </form>
-            </div>
-            <!-- Card Body -->
-            <div class="card-body" >
+									<select class="selectpicker" id="selectStatus" name="statusRadio" >
+										{% for status in listOfStatus %}
+										{% if   status.keyword__lib != 'Commande'%}
+												<option class="optionSelect modelSelect" value={{status.kw__value}}>{{status.kw__lib }}</option>
+										{% endif %}
+										{% endfor %}
+									</select> 
+										<input type="hidden" name="ValiderDevis" id="ValiderDevis" value="">
+									</div>
+							</div>
+							<div class="modal-footer">
+								<button type="submit" class="btn btn-primary">Valider</button>
+							</form>
+							</div>
+						</div>
+					</div>
+				</div>
 
 
-              <div id="loaderPdf">
-                <div class="  d-flex  flex-column  justify-content-center align-items-center ">
-                  <div class="spinner-border text-primary "  role="status">
-                  </div>
-                  <div> 
-                    <h5 class="text-primary">chargement du devis ...</h5>
-                  </div> 
-               </div>  
-              </div>
+			 
+				<!--carte liste de Devis -->
+			<div class="col-6">
+				<div class="card shadow mb-4">
+					<!-- Card Header - -->
+					<div class="my-2 mx-4">
+						<h6 class="m-0 font-weight-bold text-primary">Selection <i class="far fa-mouse-pointer"> </i> <small class="ml-3"> {{  " " ~ NbDevis }} devis</small></h6>
+					</div>
+
+					<div class="card-header d-flex flex-row align-items-center justify-content-between">
+						
+						<div class="d-flex flex-column">
+								<div>
+									<form class="form-inline" action="mesDevis" method="POST">
+										{% if recherche %}
+										<input class="form-control mr-2" type="search" name="rechercheP" value="{{recherche}}" placeholder="Recherche" aria-label="Search">
+										{% else %}
+										<input class="form-control mr-2" type="search" name="rechercheP" placeholder="Recherche" aria-label="Search">
+										{% endif %}
+										<button class="btn btn-outline-primary  " type="submit"><i class="fal fa-bullseye-arrow"></i></button>
+									</form>
+								 </div>
+							 
+						</div>
+					 
+						
+						<div class=" ">
+						 
+							
+							<div class="d-flex flex-row justify-content-around" >
+								
+								<div>
+									<a class="btn btn btn-sm btn-link mx-2" href="DevisV2">Nouveau Devis</a>
+								</div>
+								{# {% if user.user__devis_acces >= 15 %}
+								<div>
+									<form action="mesDevis" method="POST"> 
+											<input type="hidden" value="{{ AllDevis }}" name="MyDevis">
+											<button type="submit" class="btn btn-sm btn-link">{{ AllDevis }}</button>
+									</form>
+								</div>
+								{% endif %} #}
+							 
+
+								
+							</div>
+							
+						</div>
+					</div>
+					<!-- Card Body -->
+					<div class="card-body">
+						<div class="chart-area">
+							<table id="MyDevis" class=" display table  " style="width:100%"> <thead class="thead-dark" > 
+								<tr> 
+									<th>Numéro</th> 
+									<th>Date</th>
+									<th>N°/Date</th>
+									<th>Client</th>
+									<th>Etat</th>
+							</tr>
+							</thead> 
+							 <tbody id="DevisBody">
+								{% for devis in devisList %}
+								
+								
+								<tr class="trClick">
+									<td>{{devis.devis__id}}</td>
+									<td>{{ devis.devis__date_crea}}</td>
+									<td> {{ "N°: " ~ devis.devis__id}} <br> {{ devis.devis__date_crea}}</td>
+									{% if devis.cmd__nom_devis %}
+									<td> 
+									<b>{{  devis.client__societe  }} </b> {{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville }} <br> {{devis.cmd__nom_devis}} </td>
+									{% else  %}
+									<td> <b>{{  devis.client__societe  }} </b>{{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td>
+									{% endif %}
+									<td>
+										{% if devis.devis__etat == 'ATN'  %}
+										Envoyé <i class="fas fa-hourglass" style="color:#cc9900;"></i> 
+										<br> {{ devis.log_nec  }} 
+										<br>
+										<div class="d-flex justify-content-around">
+											<div class="" data-toggle="tooltip" data-placement="top" title="Commander le devis">
+												<form method="POST" action="validation_devis">
+														<input type="hidden" value="{{devis.devis__id}}" name="ValideCmd">
+														<button type="submit" class="badge badge-success"><i class="fas fa-thumbs-up"></i></button>                      
+												</form> 
+											</div>
+											<div class="" data-toggle="tooltip" data-placement="top" title="Refuser le devis">
+												<form method="POST" action="mesDevis">
+													<input type="hidden" value="{{devis.devis__id}}" name="ValiderDevis">
+													<input type="hidden" value="RFS" name="statusRadio">
+													<button type="submit" class="badge badge-danger"><i class="fas fa-thumbs-down"></i></button>                      
+												</form> 
+										</div>
+								</div>
+										</td>
+										{% elseif devis.devis__etat == 'CMD' %}
+									 Valide <i class="fas fa-shopping-basket" style="color:DodgerBlue;"></i> 
+										<br> En cours de préparation<br>
+											<div class="" data-toggle="tooltip" data-placement="top" title="Fiche de travail">
+												<form method="POST" action="ficheTravail">
+														<input type="hidden" value="id-fiche" name="recherche-fiche">
+														<input type="hidden" value="{{devis.devis__id}}" name="rechercheF">
+														<button type="submit" class="badge badge-primary"><i class="fas fa-tools"></i></button>                      
+												</form> 
+											</div>
+										</td>
+										{% elseif devis.devis__etat == 'IMP' %}
+									 Expédié <i class="fas fa-print" style="color: Coral;"></i> 
+										<br>
+										<div class="d-flex justify-content-around">
+											<div class="" data-toggle="tooltip" data-placement="top" title="Fiche de travail">
+												<form method="POST" action="ficheTravail">
+														<input type="hidden" value="id-fiche" name="recherche-fiche">
+														<input type="hidden" value="{{devis.devis__id}}" name="rechercheF">
+														<button type="submit" class="badge badge-primary"><i class="fas fa-tools"></i></button>                      
+												</form> 
+											</div>
+											<div class="" data-toggle="tooltip" data-placement="top" title="Bon de livraison">
+												<form method="POST" action="ficheTravail">
+														<input type="hidden" value="id-fiche" name="recherche-fiche">
+														<input type="hidden" value="{{devis.devis__id}}" name="rechercheF">
+														<button type="submit" class="badge badge-info"><i class="fas fa-print"></i></button>                      
+												</form> 
+											</div>
+											</div>
+										</td>
+										{% elseif devis.devis__etat == 'RFS' %}
+										{{ devis.kw__lib}} <i class="fas fa-trash" style="color:#ff0000;"></i> <br> {{ devis.log_nec  }}
+										<br>
+										<div class="" data-toggle="tooltip" data-placement="top" title="Rétablir">
+											<form method="POST" action="mesDevis">
+													<input type="hidden" value="{{devis.devis__id}}" name="ValiderDevis">
+													<input type="hidden" value="ATN" name="statusRadio">
+													<button type="submit" class="badge badge-warning"><i class="fal fa-backward"></i></button>                      
+											</form> 
+										</div>
+										</td>
+										{% elseif devis.devis__etat == 'VLD' %}
+										Facturé <i class="fas fa-check-square" style="color: limegreen;"></i> <br> {{ devis.log_nec  }}</td>
+										{% endif %}
+								</tr>
+								
+								{% endfor %}
+							 </tbody>
+						 </table>
+					 </div>
+					 
+					</div>
+				 
+				</div>
+			</div>
+
+				<!--carte option -->
+				<div class="col-6 cardVisio" >
+					<div class="card shadow mb-4">
+						<!-- Card Header - -->
+						<div class="my-2 mx-4">
+							<h6 class="m-0 font-weight-bold text-primary">Devis <i class="far fa-eye"></i></h6>
+						</div>
+						<div class="card-header py-3 px-5 d-flex flex-row align-items-center justify-content-between">
+							
+							 
+								<!-- <div class=" ">
+									<button type="button" class="btn btn-link   btn-sm  multiButton"  data-toggle="modal" data-target="#statusModal" disabled>Statuer</button>
+								</div> -->
+							 
+								
+								<form class=" " method="POST" action="voirDevis" target="_blank">
+									<input type="hidden" name="AjaxDevis" id="VoirDevis" value="">
+								<button type="submit" class="btn btn-link   btn-sm  multiButton" disabled>PDF</button>
+								 </form>
+								<form class=" " action="DevisV2" method="POST" id="formModif">
+									<input type="hidden" name="modif" id="ModifierDevis" value="">
+								<button type="submit" class="btn btn-link btn-sm    multiButton" disabled>Modifier</button>
+								</form>
+								<form class=" " action="DevisV2" method="POST">
+									<input type="hidden" name="DupliquerDevis" id="DupliquerDevis" value="">
+								<button type="submit" class="btn btn-link  btn-sm  multiButton" disabled>Dupliquer</button>
+								</form>
+						</div>
+						<!-- Card Body -->
+						<div class="card-body" >
 
 
-              <iframe id="iframeDevis" class="border-0" src="" width="100%" height="1070px">
-              </iframe>
+							<div id="loaderPdf">
+								<div class="  d-flex  flex-column  justify-content-center align-items-center ">
+									<div class="spinner-border text-primary "  role="status">
+									</div>
+							 </div>  
+							</div>
 
-        </div>
 
-       
+							<iframe id="iframeDevis" class="border-0" src="" width="100%" height="1070px">
+							</iframe>
 
-       
-      </div>
-      </div>
-    </main>
-     {% endblock %}
-     
-    
-     {% block script %}
-     <!-- Optional JavaScript -->
+				</div>
+
+	
+			 
+			</div>
+			</div>
+		</main>
+		 {% endblock %}
+		 
+		
+		 {% block script %}
+		 <!-- Optional JavaScript -->
 <script  type="text/javascript" src="public/js/devisFunction.js"></script> 
 <!-- jQuery first, then Bootstrap JS -->
 <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
@@ -277,4 +273,4 @@
 <script  type="text/javascript" src="public/js/client.js"></script>
 <script  type="text/javascript" src="public/js/client2.js"></script>
 
-     {% endblock %}
+		 {% endblock %}
