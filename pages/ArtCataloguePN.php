@@ -9,7 +9,7 @@ if(empty($_SESSION['user']->id_utilisateur))
 	{ header('location: login'); }
 
 // Validation de droits - si plus petit que 10 pas de droits sur cette page.
-if($_SESSION['user']->user__admin_acces < 10 )
+if($_SESSION['user']->user__cmd_acces < 10 )
 	{ header('location: noAccess'); }
 
 // Récup de variables (Session et post get)

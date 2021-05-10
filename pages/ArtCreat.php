@@ -10,7 +10,7 @@ if (empty($_SESSION['user']->id_utilisateur))
 	{ header('location: login'); }
 
 //URL bloqué si pas de Droits
-if ($_SESSION['user']->user__admin_acces < 10 ) 
+if ($_SESSION['user']->user__cmd_acces < 10 ) 
 	{ header('location: noAccess'); }
 
 // variables

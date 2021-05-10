@@ -6,7 +6,7 @@ require "./App/Methods/tools_functions.php"; // fonctions
 
 //validation Login et droits
 if (empty($_SESSION['user']->id_utilisateur))                   header('location: login');
-if ($_SESSION['user']->user__admin_acces < 10 ) header('location: noAccess');
+if ($_SESSION['user']->user__cmd_acces < 10 ) header('location: noAccess');
 
 // recup variable sess et get post
 $user = $_SESSION['user'];
