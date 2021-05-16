@@ -1,8 +1,8 @@
 <?php
 require "./vendor/autoload.php";
 require "./App/twigloader.php";
-
 use App\Methods\Pdfunctions;
+
 
 session_start();
 
@@ -72,23 +72,30 @@ if (!empty($_POST['idAbnUpdate'])) {
 
 //si une mise à jour de ligne à été effectuée : 
 if (!empty($_POST['idCmd'])) {
-  $update = $Abonnement->UpdateMachine(
-    $_POST['idCmd'],
-    $_POST['numL'],
-    $_POST['date'],
-    $_POST['actif'],
-    $_POST['fmm'],
-    $_POST['designation'],
-    $_POST['sn'],
-    $_POST['prestation'],
-    floatval($_POST['prix']),
-    $_POST['comAbn']
-  );
+
+ 
+    $update = $Abonnement->UpdateMachine(
+      $_POST['idCmd'],
+      $_POST['numL'],
+      $_POST['date'],
+      $_POST['actif'],
+      $_POST['fmm'],
+      $_POST['designation'],
+      $_POST['sn'],
+      $_POST['prestation'],
+      floatval($_POST['prix']),
+      $_POST['comAbn']
+    );
+  
+  
   $abn = $Abonnement->getById($_POST['idCmd']);
   $date_anniv = date_create($abn->ab__date_anniv);
   $abn->ab__date_anniv = date_format($date_anniv, 'd/m/Y');
   $cmd = $Cmd->GetById($abn->ab__cmd__id);
   $lignes = $Abonnement->getLigne($abn->ab__cmd__id);
+
+  
+
   foreach ($lignes as $ligne) {
     $devisDate = date_create($ligne->abl__dt_debut);
     $date = date_format($devisDate, 'd/m/Y');
@@ -99,6 +106,9 @@ if (!empty($_POST['idCmd'])) {
 if (empty($_POST['hiddenId']) && empty($_POST['idAbnUpdate']) && empty($_POST['idCmd'])) {
   header('location: abonnement');
 }
+
+$totaux = Pdfunctions::total_abn_periodique($cmd, $lignes);
+$total_ht = number_format($totaux[0], 2, ',', ' ');
 
 
 // Donnée transmise au template : 
@@ -111,6 +121,8 @@ echo $twig->render(
     'cmd' => $cmd,
     'abn' => $abn,
     'lignes' => $lignes,
-    'alert_impression' => $alert_impression
+    'alert_impression' => $alert_impression ,
+    'total_ht' => $total_ht 
+    
   ]
 );

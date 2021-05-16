@@ -8,11 +8,11 @@ session_start();
  //URL bloqué si pas de connexion :
  if (empty($_SESSION['user']->id_utilisateur)) 
  {
-    header('location: login');
+		header('location: login');
  }
  if ($_SESSION['user']->user__facture_acces  < 10 ) 
  {
-   header('location: noAccess');
+	 header('location: noAccess');
  }
 
  //déclaration des instances nécéssaires :
@@ -34,43 +34,36 @@ session_start();
  $modeleList = $Article->getModels();
  $duplicata = false ;
  $alert = false;
+$verif_sn = false;
 
-      
 
 //appel de la page: 
-if(!empty($_POST['idCmd']))
-{
-    $valid = $Cmd->getById($_POST['idCmd']);
- 
-    $verif = $Abonnement->getById($_POST['idCmd']);  
+if (!empty($_POST['idCmd'])) {
+	$valid = $Cmd->getById($_POST['idCmd']);
 
-if ($verif->ab__presta == 'LOC') 
-  {
-    $prestaList = $Keyword->getPrestaABL();
-  }
-  else
-  {
-        $prestaList = $Keyword->getPrestaABM();
-  }
+	$verif = $Abonnement->getById($_POST['idCmd']);
 
- 
+	if ($verif->ab__presta == 'LOC') {
+		$prestaList = $Keyword->getPrestaABL();
+	} else {
+		$prestaList = $Keyword->getPrestaABM();
+	}
 }
-
 if (!empty($_POST['idCMD'])) 
 {
-  $valid = $Cmd->getById($_POST['idCMD']);
-  $verif = $Abonnement->getById($_POST['idCMD']);
+	$valid = $Cmd->getById($_POST['idCMD']);
+	$verif = $Abonnement->getById($_POST['idCMD']);
 
-  if ($verif->ab__presta == 'LOC') 
-  {
-    $prestaList = $Keyword->getPrestaABL();
-  }
-  else
-  {
-    $prestaList = $Keyword->getPrestaABM();
-  }
+	if ($verif->ab__presta == 'LOC') 
+	{
+		$prestaList = $Keyword->getPrestaABL();
+	}
+	else
+	{
+		$prestaList = $Keyword->getPrestaABM();
+	}
 
-  $duplicata = $Abonnement->getOneLigne($_POST['idCMD'] ,$_POST['numLigne']);
+	$duplicata = $Abonnement->getOneLigne($_POST['idCMD'] ,$_POST['numLigne']);
 
 }
 
@@ -78,39 +71,53 @@ if (!empty($_POST['idCMD']))
 
 
 // si une machine à été ajoutée: 
-  if (!empty($_POST['idCmdM']) && !empty($_POST['sn'])) 
-  {
-    
-  $valid = $Cmd->getById($_POST['idCmdM']);
-  $verif = $Abonnement->getById($_POST['idCmdM']);  
-  $ligneMax = $Abonnement->returnMax($_POST['idCmdM']);
-  if (!empty($ligneMax)) 
-  {
-   $count = $ligneMax->ligne + 1 ;
-  }
-  else 
-  {
-    $count = 1 ;
-  }
+	if (!empty($_POST['idCmdM']) && !empty($_POST['sn'])) 
+	{
+	$verif_sn = $Abonnement->verify_sn($_POST['sn'], $_POST['idCmdM']);
+	$valid = $Cmd->getById($_POST['idCmdM']);
+	$verif = $Abonnement->getById($_POST['idCmdM']);
+	$ligneMax = $Abonnement->returnMax($_POST['idCmdM']);
+	if (!empty($ligneMax)) {
+		$count = $ligneMax->ligne + 1;
+	} else {
+		$count = 1;
+	}
+	
+		if (empty($verif_sn)) 
+		{
 
-  $ligne = $Abonnement->insertMachine(
-  $_POST['idCmdM'] , $count , $_POST['date'] ,  $_POST['fmm'] ,  $_POST['designation'] ,  $_POST['sn'] , $_POST['prestation'] , floatval($_POST['prix']) , $_POST['comAbn'] );
-  $alert = true ;
-  }
-  
+			
 
-      
-    // Donnée transmise au template : 
-  echo $twig->render('ajoutMachine.twig',
-  [
-  'user'=>$user,
-  'prestaList'=> $prestaList,
-  'moisList' => $moisList,
-  'alert' => $alert ,
-  'cmd' => $valid, 
-  'modeleList' => $modeleList, 
-  'duplicata' => $duplicata
-  ]);
+			$ligne = $Abonnement->insertMachine(
+				$_POST['idCmdM'],
+				$count,
+				$_POST['date'],
+				$_POST['fmm'],
+				$_POST['designation'],
+				$_POST['sn'],
+				$_POST['prestation'],
+				floatval($_POST['prix']),
+				$_POST['comAbn']
+			);
+			$alert = true;
+		}
+	
+	}
+	
+
+			
+		// Donnée transmise au template : 
+	echo $twig->render('ajoutMachine.twig',
+	[
+	'user'=>$user,
+	'prestaList'=> $prestaList,
+	'moisList' => $moisList,
+	'alert' => $alert ,
+	'cmd' => $valid, 
+	'modeleList' => $modeleList, 
+	'duplicata' => $duplicata,
+	'verif_sn' => $verif_sn
+	]);
  
  
-  
+	

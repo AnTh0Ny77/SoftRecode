@@ -113,7 +113,7 @@ $dateTemp = new DateTime($command->cmd__date_cmd);
 //cree une variable pour la date de commande du devis
 $date_time = new DateTime($command->cmd__date_cmd);
 //formate la date pour l'utilisateur:
-$formated_date = $date_time->format('d/m/Y');
+$formated_date = $date_time->format('d/m/Y H:i');
 //debut de la génération du contenu html : 
 ob_start();
 ?>
@@ -318,7 +318,9 @@ ob_start();
                         <td style='border-bottom: 1px #ccc solid; width: 55%;'> 
                             <br> <small>désignation :</small> <b>" . $item->devl__designation . "</b><br>"
                 . $item->famille__lib . " " . $item->marque . " " . $item->modele . " " . $item->devl__modele  . " " . $item->devl__note_interne .
-                "</td>
+                "<br><span>
+                                ".$ligne->devl__note_client."
+                </span></td>
                          <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite . " </strong></td>
                           <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
                          <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>

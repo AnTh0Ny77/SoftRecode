@@ -25,6 +25,13 @@
       </form>
     </div>
     {% else %}
+    
+    {% if  verif_sn %}
+      <div class="alert alert-warning" role="alert">
+       
+        Le numero de série {{verif_sn.abl__sn}} existe déja pour ce contrat  ! 
+      </div>
+    {% endif  %}
     <div class="" role="">
      
       <form action="abonnementAdmin" method="POST">

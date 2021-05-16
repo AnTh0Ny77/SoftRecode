@@ -146,6 +146,17 @@ class Abonnement extends Table
         return $data;
     }
 
+    public function verify_sn($sn , $cmd_id)
+    {
+        $request = $this->Db->Pdo->query("SELECT 
+        abl__sn
+        FROM abonnement_ligne
+        WHERE  ( abl__sn = '".$sn."'  )  AND ( abl__cmd__id = '". $cmd_id."' ) 
+        ");
+        $data = $request->fetch(PDO::FETCH_OBJ);
+        return $data;
+    }
+
     public function returnMax($cmd)
     {
         $verifOrdre = $this->Db->Pdo->query(
@@ -215,6 +226,9 @@ class Abonnement extends Table
         $data = $request->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }
+
+    
+
 
 
     public function getActif()
