@@ -66,9 +66,10 @@
 						<br>
 						<h5>Autres Chiffres</h5>
 						<div class="d-flex flex-column col-12">
-							<div class="h6 bg-sm"><a href="stat?CAS&date_debut={{date_debut}}&date_fin={{date_fin}}" data-toggle="tooltip" data-html="true" title="Prise de commandes validées sur la période SANS maintenance"><i class="fad fa-file-contract fa-lg"></i> Chiffre affaires Facturé de la période SANS Maintenance</a></div>
-							<div class="h6 bg-sm"><a href="stat?CSM&date_debut={{date_debut}}&date_fin={{date_fin}}" data-toggle="tooltip" data-html="true" title="Prise de commandes validées sur la période SANS maintenance"><i class="fad fa-file-contract fa-lg"></i> Commandes de la période SANS Maintenance</a></div>
-							<div class="h6 bg-sm"><a href="stat?CAM&date_debut={{date_debut}}&date_fin={{date_fin}}" data-toggle="tooltip" data-html="true" title="Prise de commandes validées sur la période AVEC maintenance (facturations automatique)"><i class="fad fa-file-contract fa-lg "></i> Commandes de la période AVEC Maintenance (Fact. Auto)</a></div>
+							<div class="h6 bg-sm"><a href="stat?CAM&date_debut={{date_debut}}&date_fin={{date_fin}}" data-toggle="tooltip" data-html="true"><i class="fad fa-file-contract fa-lg"></i> Chiffre affaires Facturé de la période AVEC Abonnements</a></div>
+							<div class="h6 bg-sm"><a href="stat?CAS&date_debut={{date_debut}}&date_fin={{date_fin}}" data-toggle="tooltip" data-html="true"><i class="fad fa-file-contract fa-lg"></i> Chiffre affaires Facturé de la période SANS Abonnements</a></div>
+							<div class="h6 bg-sm"><a href="stat?COS&date_debut={{date_debut}}&date_fin={{date_fin}}" data-toggle="tooltip" data-html="true"><i class="fad fa-file-contract fa-lg"></i> Commandes signées de la période</a></div>
+							<div class="h6 bg-sm"><a href="stat?VOL&date_debut={{date_debut}}&date_fin={{date_fin}}" data-toggle="tooltip" data-html="true"><i class="fad fa-file-contract fa-lg"></i> Commandes en attende de prod (entre Signées et Non Fact)</a></div> 
 						</div>
 					</form>
 				</div>
@@ -77,6 +78,9 @@
 					<div class="alert alert-info" role="alert">
 						<span  class="btn btn-lg btn-link"><i class="far fa-question-circle"></i></span><br>
 						{{desc_stat}}
+						<br>
+						<span  class="btn btn-lg"><i class="far fa-database"></i></span><br>
+						{{sql_stat}}
 					</div>
 				</div>
 			</div>
@@ -87,10 +91,10 @@
 			{# Tuile des Résulta de comptages #}
 			<div class="card shadow mb-4 d-flex flex-row justify-content-start flex-wrap h-100">
 				<div class="col-12 my-4">
-					<h5 class="card-title">Résultats :</h5>
+					<h4 class="card-title">Résultats :</h4>
 					{% if alertDate %}
-						<div class="alert alert-danger" role="alert">
-							<p> Aucun résultats pour les filtres selectionnés : </p>
+						<div class="alert alert-warning" role="alert">
+							<div class="h3"> Aucun résultats pour les filtres selectionnés : </div>
 						</div>
 					{% else %}
 						<div class="alert alert-success" align=center>
@@ -102,20 +106,32 @@
 							<div class="h3"><span class="badge badge-success badge-pill">{{total_ca|number_format(2,',',' ')}} ‎€ HT</span></div>
 							<em>{{titre_stat}}</em>
 						</div>
-					{% endif %}
-				</div>
-				<div class="col-12 my-4  d-flex flex column">
-					<div>
-						<input type="hidden" id="chartsResponse" value="{{arrayPresta}}">
-					</div>
-					<div id="chartsDiv1" style="height: 400px;">
-					</div>
-				</div>
+						<div class="h3">Détail par Préstations, Etats</div>
+						<div class="col-6">
+						<table class="table table-striped table-sm">
+							<thead>
+								<tr>
+									<th>Préstaions</th>
+									<th>Etat</th>
+									<th>CA ht</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for data in t_data %}
+								<tr>
+									<td>{{data.presta}}</td>
+									<td>{{data.etat}}</td>
+									<td align=right>{{data.total_fiche|number_format(2,',',' ')}}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+						</div>
+						<div class="col-6">
+						</div>
 
-				<div class="col-12 my-4 d-flex flex column">
-					<input type="hidden" id="chartsVendeur" value="{{chartsVendeur}}">
-					<div  id="CamVendeur" style="height: 400px;">
-					</div>
+					{% endif %}
+
 				</div>
 			</div>
 		</div>
@@ -127,7 +143,6 @@
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
-<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
-<script src="https://www.gstatic.com/charts/loader.js"></script>
+<!-- <script src="https://www.gstatic.com/charts/loader.js"></script> -->
 <script type="text/javascript" src="public/js/statistique.js"></script>
 {% endblock %}

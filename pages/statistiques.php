@@ -35,8 +35,6 @@ $UserClass = new App\Tables\User($Database);
 // $Stat      = new App\Tables\Stats($Database);
 
 
-
-
 //recupération des listes nécéssaires : 
 // $clientList       = $Client->getAll();      // pas pour le moment
 $clientList = FALSE;
@@ -47,7 +45,7 @@ $vendeurList      = $UserClass->getCommerciaux();
 //declaration des variables diverses : 
 $alertDate = $resultHt = $NombreCmd = $chartsResponses = $chartsVendeur = $arrayPresta = FALSE;
 $chiffre_cmd_fact = $maintenance_location = $cmdSearch = $abnSearch = FALSE;
-$desc_stat = $type_tot = $titre_stat = '';
+$desc_stat = $type_tot = $titre_stat = $SQL_stat = '';
 $client = $vendeur = 'Tous';
 $total_ca = $nb_fiche = 0;
 
@@ -56,13 +54,13 @@ $date_debut     = get_post('date_debut', 1, 'GETPOST');
 $date_fin       = get_post('date_fin', 1, 'GETPOST');
 $id_client      = get_post('id_client', 1, 'GETPOST');
 $id_vendeur     = get_post('id_vendeur', 1, 'GETPOST');
-$CSM            = get_post('CSM', 2, 'GETPOST'); // Commandes Sans Maintenance
-$CAM            = get_post('CAM', 2, 'GETPOST'); // Commandes Avec Maintenances
+$COS            = get_post('COS', 2, 'GETPOST'); // Commandes Sans Maintenance
+$CAS            = get_post('CAS', 2, 'GETPOST'); // Commandes Avec Maintenances
 $MNT            = get_post('MNT', 2, 'GETPOST'); // Maintenance
-$CAS            = get_post('CAS', 2, 'GETPOST'); // CA SANS Maintenance
-$CAM            = get_post('CAM', 2, 'GETPOST'); // CA AVEC Maintenance
-if(!$CSM AND !$CAM AND !$MNT AND !$CAS AND !$CAM) // si rien de precisé je choisi par def CAS (ca Sans maintenace)
-	$CAS = TRUE;
+$CAM            = get_post('CAM', 2, 'GETPOST'); // CA SANS Maintenance
+$VOL            = get_post('VOL', 2, 'GETPOST'); // Volant d'activitée
+if(!$COS AND !$CAS AND !$MNT AND !$CAM AND !$VOL) // si rien de precisé je choisi par def CAS (ca Sans maintenace)
+	$CAM = TRUE;
 
 // dates par default 
 $date = new DateTime();
@@ -72,14 +70,6 @@ if(!$date_fin)   $date_fin   = $date->format('Y-m-t');
 // Date format calendrier
 $date_debut_fr = date_format(date_create($date_debut),'d/m/Y');
 $date_fin_fr   = date_format(date_create($date_fin)  ,'d/m/Y');
-
-// Type de comptage
-if ($CAM) 
-	$abnSearch            = TRUE;   // abonnement inclue (Fact Auto)
-if ($CSM OR $CAM) 
-	$cmdSearch            = TRUE;   // comptage sur les cmd signés
-if ($MNT) 
-	$maintenance_location = TRUE;   // inclue maint et loc
 
 // filtres client / vendeur
 if ($id_client)
@@ -98,31 +88,57 @@ avec les extentions de garanties séparé.
 la base de select est la meme, le groupement aussi, le where change en fonctions
 des type de demandes.
 
+pour info : le BETWEEN doit etre utilisé avec 23:59:59 ou sans precision d'heure pour la limite de fin  
+il faut ajouter un jour a la date ($date_fin_plus_un = date("Y-m-d", strtotime($Date.'+ 1 days'));)
+****************************************************************************** 
+Exemple de requette
+SELECT
+	sum(cmdl__qte_fact * cmdl__puht) + IFNULL(SUM(cmdl__qte_fact * cmdl__garantie_puht),0) AS total_fiche,
+	cmdl__prestation,
+	cmdl__etat
+FROM
+	cmd
+LEFT JOIN cmd_ligne ON cmd_ligne.cmdl__cmd__id = cmd.cmd__id
+WHERE
+	cmd__date_fact BETWEEN '2021-04-01 00:00:00'
+AND '2021-04-30 23:59:59'
+AND cmd__etat IN ('VLD', 'VLA')
+GROUP BY
+	cmdl__prestation,
+	cmdl__etat
+ORDER BY
+	cmdl__prestation,
+	cmdl__etat
 ****************************************************************************** */
 
 // Base commune pour creation requette
-$sql_select_tab  = "SELECT SUM(cmd_ligne.cmdl__puht * cmd_ligne.cmdl__qte_fact) AS total_fiche, cmdl__prestation, cmdl__etat FROM cmd ";
+$sql_select_tabF  = "SELECT sum(cmdl__qte_fact*cmdl__puht) + IFNULL(SUM(cmdl__qte_fact * cmdl__garantie_puht),0) AS total_fiche, ";
+$sql_select_tabF .= "key_presta.kw__lib AS presta, key_etat.kw__lib AS etat FROM cmd ";
+$sql_select_tabC  = "SELECT sum(cmdl__qte_cmd*cmdl__puht) + IFNULL(SUM(cmdl__qte_cmd * cmdl__garantie_puht),0) AS total_fiche, ";
+$sql_select_tabC .= "key_presta.kw__lib AS presta, key_etat.kw__lib AS etat FROM cmd ";
 $sql_select_ct   = "SELECT count(cmd.cmd__id) AS nb_fiche FROM cmd ";
 $sql_select_join = "LEFT JOIN cmd_ligne ON cmd_ligne.cmdl__cmd__id = cmd.cmd__id ";
+$sql_select_join.= "INNER JOIN keyword AS key_etat    ON cmd_ligne.cmdl__etat = key_etat.kw__value AND key_etat.kw__type = 'letat' ";
+$sql_select_join.= "INNER JOIN keyword AS key_presta ON cmd_ligne.cmdl__prestation = key_presta.kw__value AND key_presta.kw__type = 'pres' ";
 $sql_where       = "WHERE ";
 $sql_where_dt    = "BETWEEN '".$date_debut." 00:00:00' AND '".$date_fin." 23:59:59' ";
 $sql_groupby     = "GROUP BY cmdl__prestation, cmdl__etat ";
-$sql_order       = "ORDER BY cmdl__prestation, cmdl__etat ";
+$sql_order       = "ORDER BY key_presta.kw__ordre, cmdl__etat ";
 
 
-/*8""b8    db        .dP"Y8    db    88b 88 .dP"Y8     8b    d8    db    88 88b 88 888888
-dP   `"   dPYb       `Ybo."   dPYb   88Yb88 `Ybo."     88b  d88   dPYb   88 88Yb88   88
-Yb       dP__Yb      o.`Y8b  dP__Yb  88 Y88 o.`Y8b     88YbdP88  dP__Yb  88 88 Y88   88
- YboodP dP""""Yb     8bodP' dP""""Yb 88  Y8 8bodP'     88 YY 88 dP""""Yb 88 88  Y8   */
-if ($CAS)
+//  dP""b8    db           db    Yb    dP 888888  dP""b8        db    88""Yb  dP"Yb  
+// dP   `"   dPYb         dPYb    Yb  dP  88__   dP   `"       dPYb   88__dP dP   Yb 
+// Yb       dP__Yb       dP__Yb    YbdP   88""   Yb           dP__Yb  88""Yb Yb   dP 
+//  YboodP dP""""Yb     dP""""Yb    YP    888888  YboodP     dP""""Yb 88oodP  YbodP  
+if ($CAM)
 {
-	$titre_stat  = 'Chiffre d\'affaire facturé sans maintenance';
-	$desc_stat   = 'Chiffre d\'affaire (somme CA des fiches) facturé (date de fact.) sans maintenance (Etat des fiches VLD)  sur la période';
-	$type_tot    = 'CAS';
+	$titre_stat  = 'Chiffre d\'affaire facturé Avec Abonnements (Maint et Loc)';
+	$desc_stat   = 'Chiffre d\'affaire (somme CA des fiches) facturé (date de fact.) Avec maintenance (Etat des fiches VLD & VLA) sur la période (prenant en compte les avoirs) (Ce chiffre doit etre le meme que le CA en compta)';
+	$type_tot    = 'CAM';
 	$cmd_date    = "cmd__date_fact ";
-	$cmd_etat    = "AND cmd__etat = 'VLD' OR cmd__etat = 'VLA' ";
+	$cmd_etat    = "AND cmd__etat IN ('VLD','VLA') ";
 	// le tableau de data
-	$T_sql       = $sql_select_tab.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat.$sql_groupby.$sql_order;
+	$T_sql       = $sql_select_tabF.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat.$sql_groupby.$sql_order;
 	$T_request   = $Database->Pdo->query($T_sql);
 	$T_data      = $T_request->fetchAll(PDO::FETCH_ASSOC);
 	// le compmtage de fiche
@@ -132,36 +148,78 @@ if ($CAS)
 	$nb_fiche    = $C_data['nb_fiche'];
 	// Somme du total_ca
 	for ($i=0; $i<=count($T_data)-1; $i++) $total_ca += $T_data[$i]['total_fiche'];
-	// debug
-	// print_r($C_sql); print_r($C_data);
 }
 
- /*""b8  dP"Yb  8b    d8 8b    d8    db    88b 88 8888b.  888888 .dP"Y8     .dP"Y8    db    88b 88 .dP"Y8     8b    d8    db    88 88b 88 888888
-dP   `" dP   Yb 88b  d88 88b  d88   dPYb   88Yb88  8I  Yb 88__   `Ybo."     `Ybo."   dPYb   88Yb88 `Ybo."     88b  d88   dPYb   88 88Yb88   88
-Yb      Yb   dP 88YbdP88 88YbdP88  dP__Yb  88 Y88  8I  dY 88""   o.`Y8b     o.`Y8b  dP__Yb  88 Y88 o.`Y8b     88YbdP88  dP__Yb  88 88 Y88   88
- YboodP  YbodP  88 YY 88 88 YY 88 dP""""Yb 88  Y8 8888Y"  888888 8bodP'     8bodP' dP""""Yb 88  Y8 8bodP'     88 YY 88 dP""""Yb 88 88  Y8   */
-if ($CSM)
+//  dP""b8    db        .dP"Y8    db    88b 88 .dP"Y8        db    88""Yb  dP"Yb 
+// dP   `"   dPYb       `Ybo."   dPYb   88Yb88 `Ybo."       dPYb   88__dP dP   Yb
+// Yb       dP__Yb      o.`Y8b  dP__Yb  88 Y88 o.`Y8b      dP__Yb  88""Yb Yb   dP
+//  YboodP dP""""Yb     8bodP' dP""""Yb 88  Y8 8bodP'     dP""""Yb 88oodP  YbodP 
+if ($CAS)
+ {
+	 $titre_stat  = 'Chiffre d\'affaire facturé sans Abonnement (Maint et Loc) (Fact Automatique)';
+	 $desc_stat   = 'Chiffre d\'affaire (somme CA des fiches) facturé (date de fact.) sans maintenance (Etat des fiches VLD) sur la période';
+	 $type_tot    = 'CAS';
+	 $cmd_date    = "cmd__date_fact ";
+	 $cmd_etat    = "AND cmd__etat IN ('VLD') ";
+	 // le tableau de data
+	 $T_sql       = $sql_select_tabF.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat.$sql_groupby.$sql_order;
+	 $T_request   = $Database->Pdo->query($T_sql);
+	 $T_data      = $T_request->fetchAll(PDO::FETCH_ASSOC);
+	 // le compmtage de fiche
+	 $C_sql       = $sql_select_ct.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat;
+	 $C_request   = $Database->Pdo->query($C_sql);
+	 $C_data      = $C_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
+	 $nb_fiche    = $C_data['nb_fiche'];
+	 // Somme du total_ca
+	 for ($i=0; $i<=count($T_data)-1; $i++) $total_ca += $T_data[$i]['total_fiche'];
+}
+
+//  dp""b8  dP"Yb  8b    d8 8b    d8    db    88b 88 8888b.  888888 .dP"Y8
+// dP   `" dP   Yb 88b  d88 88b  d88   dPYb   88Yb88  8I  Yb 88__   `Ybo."
+// Yb      Yb   dP 88YbdP88 88YbdP88  dP__Yb  88 Y88  8I  dY 88""   o.`Y8b
+//  YboodP  YbodP  88 YY 88 88 YY 88 dP""""Yb 88  Y8 8888Y"  888888 8bodP'
+if ($COS)
 {
-	$titre_stat  = 'Commandes signés sans maintenance';
-	$desc_stat   = 'Somme CA des fiches signées (date de cmd.) sans maintenance (Etat des fiches CMD, ARH, VLD) sur la période';
-	$type_tot    = 'CSM';
+	$titre_stat  = 'Commandes signées en attente de depart ou deja expédiées';
+	$desc_stat   = 'Somme CA des fiches signées (date de cmd.) (Etat des fiches CMD, IMP, VLD) sur la période';
+	$type_tot    = 'COS';
 	$cmd_date    = "cmd__date_cmd ";
-	$cmd_etat    = "AND cmd__etat IN ('VLD','CMD','ARH') ";
+	$cmd_etat    = "AND cmd__etat IN ('VLD','CMD','IMP') ";
 	// le tableau de data
-	$T_sql       = $sql_select_tab.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat.$sql_groupby.$sql_order;
+	$T_sql       = $sql_select_tabC.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat.$sql_groupby.$sql_order;
 	$T_request   = $Database->Pdo->query($T_sql);
 	$T_data      = $T_request->fetchAll(PDO::FETCH_ASSOC);
+	// Somme du total_ca
+	for ($i=0; $i<=count($T_data)-1; $i++) $total_ca += $T_data[$i]['total_fiche'];
 	// le compmtage de fiche
 	$C_sql       = $sql_select_ct.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat;
 	$C_request   = $Database->Pdo->query($C_sql);
 	$C_data      = $C_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
 	$nb_fiche    = $C_data['nb_fiche'];
-	// Somme du total_ca
-	for ($i=0; $i<=count($T_data)-1; $i++) $total_ca += $T_data[$i]['total_fiche'];
-	// debug
-	// print_r($C_sql); print_r($C_data);
 }
 
+// Yb    dP  dP"Yb  88        db    88b 88 888888     
+//  Yb  dP  dP   Yb 88       dPYb   88Yb88   88       
+//   YbdP   Yb   dP 88  .o  dP__Yb  88 Y88   88       
+//    YP     YbodP  88ood8 dP""""Yb 88  Y8   88       
+if ($VOL)
+{
+	$titre_stat  = 'Commandes en production (volant activitée) (pas de date)';
+	$desc_stat   = 'Somme CA des fiches signées et non fact. (Etat des fiches CMD, IMP) (Pas de periode)';
+	$type_tot    = 'VOL';
+	$cmd_etat    = "cmd__etat IN ('CMD','IMP') ";
+	// le tableau de data
+	$T_sql       = $sql_select_tabC.$sql_select_join.$sql_where.$cmd_etat.$sql_groupby.$sql_order;
+	$T_request   = $Database->Pdo->query($T_sql);
+	$T_data      = $T_request->fetchAll(PDO::FETCH_ASSOC);
+	// Somme du total_ca
+	for ($i=0; $i<=count($T_data)-1; $i++) $total_ca += $T_data[$i]['total_fiche'];
+	// le compmtage de fiche
+	$C_sql       = $sql_select_ct.$sql_select_join.$sql_where.$cmd_etat;
+	$C_request   = $Database->Pdo->query($C_sql);
+	$C_data      = $C_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
+	$nb_fiche    = $C_data['nb_fiche'];
+}
 
 // Donnée transmise au template : 
 echo $twig->render('statistique.twig',
@@ -176,6 +234,8 @@ echo $twig->render('statistique.twig',
 'type_tot'         => $type_tot,
 'titre_stat'       => $titre_stat,
 'desc_stat'        => $desc_stat,
+'sql_stat'         => $T_sql,
+'t_data'           => $T_data,
 
 'vendeurList'    => $vendeurList, 
 'vendeurSelect'  => $vendeur,
