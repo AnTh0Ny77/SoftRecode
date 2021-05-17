@@ -27,12 +27,10 @@ body {
   .sidebar
    {
     position: fixed;
-    
-   
     top: 5;
     bottom: 0;
     left: 0;
-    z-index: 2000; /* Behind the navbar */
+    z-index: 850; /* Behind the navbar */
     padding: 0;
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
     overflow-x: hidden; /* Disable horizontal scroll */
@@ -100,9 +98,7 @@ body {
   .navbar{
     margin-left: 15%;
   }
-  
-  
-  
+
   .form-control-dark {
     color: #fff;
     background-color: rgba(255, 255, 255, .1);
@@ -255,3 +251,27 @@ body {
     transform:  rotateX(360deg) ;
    
 }
+
+
+.dropdown-content 
+{
+    display: none;
+    position: absolute;
+    top: 0px; left: 70px;
+    background-color: #333;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 2080 ;
+}
+
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+ 
+}
+
+.dropdown-content a:hover {background-color: #999d;}
+.dropdown:hover .dropdown-content {display: block;}

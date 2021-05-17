@@ -29,7 +29,7 @@ class customSearchMenu extends HTMLElement
                 //definition du boutton : 
                 const button = document.createElement('button');
                 button.setAttribute('type', 'button');
-                button.setAttribute('class', 'btn btn-primary btn-primary btn-sm btn-rounded mx-2');
+                button.setAttribute('class', 'btn btn-primary btn-success btn-sm btn-rounded mx-2');
                 button.innerHTML = '<i class="fas fa-search"></i>';
                 formRow.append(button);
 

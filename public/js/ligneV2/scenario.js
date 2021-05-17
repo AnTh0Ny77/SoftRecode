@@ -82,6 +82,7 @@ $(document).ready(function()
                     $('#etatRow option[value="NEU"]').prop('selected', true);
                   }
                 $('#etatRow option[value="OCC"]').prop('selected', true);
+                $('#etatRow option[value="NC."]').prop('disabled', 'disabled');
                 $('#etatRow option[value="NC."]').addClass('bg-dark');
                 break;
 

@@ -63,7 +63,7 @@ $garanties = $Keyword->getGaranties();
 <page_header>
      <table class="page_header" style="width: 100%;">
          <tr>
-             <td style="text-align: left;  width: 50%"><img  style=" width:65mm;" src="..\..\public\img\recodeDevis.png"/></td>
+             <td style="text-align: left;  width: 50%"><img  style=" width:65mm;" src="..\..\public\img\recodeDevistel.png"/></td>
              <td style="text-align: left; width:50%"><h3>REPARATION-LOCATION-VENTE</h3>imprimantes-lecteurs codes-barres<br><a style="color: green;">www.recode.fr</a><br><br></td>
          </tr>
          <tr>

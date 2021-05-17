@@ -6,7 +6,6 @@ use App\Methods\Pdfunctions;
 
 session_start();
 
-
 //URL bloqué si pas de connexion :
 if (empty($_SESSION['user']->id_utilisateur)) {
   header('location: login');

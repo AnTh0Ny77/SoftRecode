@@ -36,7 +36,7 @@ class Cmd extends Table
     cmd__etat as devis__etat, 
     cmd__note_client as  devis__note_client ,
     cmd__note_interne as devis__note_interne,
-    cmd__client__id_livr as devis__id_client_livraison ,
+    LPAD(cmd__client__id_livr , 6,0 ) as devis__id_client_livraison ,
     cmd__contact__id_livr as  devis__contact_livraison , 
     cmd__nom_devis, cmd__modele_devis , cmd__date_fact , 
     cmd__date_cmd, cmd__date_envoi, cmd__code_cmd_client, cmd__tva, cmd__user__id_cmd, LPAD(cmd__id_facture ,7,0) as cmd__id_facture ,

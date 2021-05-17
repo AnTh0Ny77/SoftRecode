@@ -37,7 +37,6 @@ public function insertOne($fonction , $civilite, $nom , $prenom, $tel, $gsm , $f
 
 public function insertSociete($client_sossuke)
 {
-	 
 		$request = $this->Db->Pdo->prepare('INSERT INTO client 
 		(id_client , famille  , nsoc , adr1 , adr2 , cp ,  ville , date_crea , tel , code_tva ,  id_vendeur , tva  )
 		 VALUES (:id_client, :famille, :nsoc, :adr1, :adr2, :cp, :ville, :date_crea, :tel, :code_tva, :id_vendeur, :tva )');
@@ -54,7 +53,6 @@ public function insertSociete($client_sossuke)
 		$request->bindValue(":code_tva", $client_sossuke->client__tva);
 		$request->bindValue(":id_vendeur",$client_sossuke->client__id_vendeur);
 		$request->bindValue(":tva", $client_sossuke->client__tva_intracom);
-
 		$request->execute();
 		$idSociete = $this->Db->Pdo->lastInsertId();
 		return $idSociete;
@@ -107,8 +105,6 @@ public function totoro_delete_contact_facturation_and_update($mail, $id_client)
 		$requestLiaison->bindValue(':idContact', $idContact);
 		$requestLiaison->execute();
 		return $idContact;
-
-
 	}
 	else
 	{
