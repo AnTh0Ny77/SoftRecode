@@ -38,9 +38,12 @@
 	<!--end navbar-->
 
 <!--SideBar-->
-	<nav class="  d-md-block bg-dark shadow sidebar" id="sideBare">
-		<div class="sidebar-sticky ">
-			<table class="table table-hover table-dark mt-5">
+	<div class="d-flex">
+
+	
+		
+		<div class="bg-dark" id="side-container">
+			<table class="table table-hover table-dark  table-side-nav" style="width: 50px;">
 				<tr>
 					<td class="border-0">
 						<a class="nav-link text-white" href="dashboard">
@@ -63,76 +66,181 @@
 						<span data-feather="file"></span>
 						<i class="fad fa-shopping-cart fa-lg fa-fw text-primary"></i> 
 					</a>
-						<div class="dropdown-content text-light">
-							<a href="#">Link 1</a>
-							<a href="#">Link 2</a>
-							<a href="#">Link 3</a>
-					     	</div>
+					<div class="dropdown-content bg-dark text-white rounded-right">
+						<b>
+						<div class="card-header text-center">
+							<h4>Devis</h4>
+						</div>
+							<a href="mesDevis"><i class="fal fa-file-search fa-fw"></i> Recherche</a>
+							<a href="DevisV2"><i class="fal fa-file-edit fa-fw"></i> Nouveau devis</a>
+								
+						</b>
+					</div>
+						
 					</td>
 				</tr>
 				<tr>
-					<td class="nav-item">
+					<td class="dropdown">
 					<a class="nav-link text-white" data-toggle="collapse" href="#menu_client" role="button" aria-expanded="false" aria-controls="colFT">
 						<span data-feather="file"></span>
 						<i class="fas fa-user-tag fa-lg fa-fw text-warning" ></i> 
 					</a>
+					<div class="dropdown-content bg-dark text-white rounded-right">
+						<b>
+							<div class="card-header text-center">
+								<h4>Clients</h4>
+							</div>
+							<a href="admin_client">
+								<i class="far fa-building"></i> Creer/Modifier Client
+							</a>
+							<a class="nav-link" href="admin_contact">
+								<i class="fas fa-tools"></i> Creer/Modifier Contact
+							</a>
+					
+						</b>
+					</div>
 					</td>
 				</tr>
 				<tr>
-					<td class="nav-item">
+					<td class="dropdown">
 					<a class="nav-link text-white" data-toggle="collapse" href="#colFT" role="button" aria-expanded="false" aria-controls="colFT">
 						<span data-feather="file"></span>
 						<i class="far fa-tools fa-lg fa-fw text-info"></i> 
 					</a>
+					<div class="dropdown-content bg-dark text-white rounded-right">
+						<b>
+							<div class="card-header text-center">
+								<h4>Fiches de travail</h4>
+							</div>
+							<a href="ficheTravail">
+								<i class="fal fa-file-search fa-fw"></i> Recherche
+							</a>
+							<a class="nav-link" href="fiches_garantie">
+								<i class="fas fa-pencil-alt"></i> Fiches de garantie
+							</a>
+							<a class="nav-link" href="transport">
+								<i class="far fa-truck-couch fa-fw"></i> Saisie Transport
+							</a>
+							<a class="nav-link " href="fichesEnCours">
+								<i class="far fa-list-alt"></i> Détails fiches en cours
+							</a>
+					
+						</b>
+					</div>
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td class="dropdown">
 						<a class="nav-link text-white" data-toggle="collapse" href="#collapseFacture" role="button" aria-expanded="false" aria-controls="collapseExample">
 							<span data-feather="file"></span>
 							<i class="fad fa-euro-sign fa-lg fa-fw text-light"></i> 
 						</a>
+						<div class="dropdown-content bg-dark text-white rounded-right">
+							<b>
+								<div class="card-header text-center">
+									<h4>Factures</h4>
+								</div>
+								<a class="nav-link" href="facture">
+									<i class="fal fa-file-search fa-fw"></i> Facturation
+								</a>
+								<a class="nav-link" href="export">
+									<i class="fas fa-cloud-download-alt"></i> Export
+								</a>
+								<a class="nav-link " href="stat">
+									<i class="fas fa-chart-pie"></i> Statistiques
+								</a>
+							</b>
+						</div>
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td class="dropdown">
 						<a class="nav-link text-white"data-toggle="collapse" href="#collapseAbonnement" role="button" aria-expanded="false" aria-controls="collapseAbonnement">
 							<span data-feather="file"></span>
 							<i class="fas fa-sync fa-lg fa-fw text-success"></i> 
 						</a>
+						<div class="dropdown-content bg-dark text-white rounded-right">
+							<b>
+								<div class="card-header text-center">
+									<h4>Abonnements</h4>
+								</div>
+								<a class="nav-link " href="abonnement">
+									<i class="far fa-calendar-alt"></i> Administration abonnements
+								</a>
+								<a class="nav-link " href="abonnementNouveau">
+									<i class="far fa-calendar-alt"></i> Creer abonnement
+								</a>
+							</b>
+						</div>
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td class="dropdown">
 					<a class="nav-link text-white"data-toggle="collapse" href="#collapseTicket" role="button" aria-expanded="false" aria-controls="collapseTicket">
 						<span data-feather="file"></span>
 						<i class="fad fa-clipboard-list-check fa-lg fa-fw text-primary" ></i> 
 					</a>
+					<div class="dropdown-content bg-dark text-white rounded-right">
+						<b>
+							<div class="card-header text-center">
+								<h4>Tickets</h4>
+							</div>
+							<a class="nav-link " href="tickets">
+								<i class="fad fa-clipboard-check fa-fw"></i> Consultation
+							</a>
+						</b>
+					</div>
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td class="dropdown">
 					<a class="nav-link text-white"data-toggle="collapse" href="#collapseMatos" role="button" aria-expanded="false" aria-controls="collapseMatos">
 						<span data-feather="file"></span>
 						<i class="fad fa-user-robot fa-lg fa-fw text-light"></i> 
 					</a>
+					<div class="dropdown-content bg-dark rounded-right">
+						<b>
+							<div class="card-header text-center">
+								<h4>Matériel</h4>
+							</div>
+							<a class="nav-link " href="ArtCatalogueModele">
+								<i class="fad fa-clipboard-check fa-fw"></i> Catalogue
+							</a>
+						</b>
+					</div>
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td class="dropdown">
 					<a class="nav-link text-white"data-toggle="collapse" href="#collapseAdmin" role="button" aria-expanded="false" aria-controls="collapseAdmin">
 						<span data-feather="file"></span>
 						<i class="fad fa-users-cog fa-lg fa-fw text-warning"></i> 
 					</a>
+					<div class="dropdown-content bg-dark rounded-right">
+						<b>
+							<div class="card-header text-center">
+								<h4>Admin</h4>
+							</div>
+							<a class="nav-link " href="utilisateurs">
+								<span data-feather="file"></span>
+								<i class="fal fa-user-tag fa-fw"></i> Utilisateurs
+							</a>
+							<a class="nav-link" href="action_utilisateur">
+								<span data-feather="file"></span>
+								<i class="far fa-user-secret"></i> Historique actions
+							</a>
+						</b>
+					</div>
 					</td>
 				</tr>
 			</table>
 		</div>
-	</nav>
+			
+	
 
 	{% block main  %}
 	{% endblock %}
-
+</div>
 
 {% block script %}
 {% endblock %}
