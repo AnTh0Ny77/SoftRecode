@@ -359,14 +359,16 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
                         //Recipients
                         $mail->setFrom('compta@recode.fr', 'Facture');
                         $mail->addAddress($facturation_auto->contact__email , '');
+                        $mail->addBCC('crm@recode.fr');
                         //Attachments
                         $mail->addAttachment(__DIR__ . '/facture_mail/' . $numFact . '.pdf');
                         //Content
                         $mail->isHTML(true);
-                        $mail->Subject = 'Votre facture N:' . $numFact . '';
-                        $mail->Body    = 'Vous trouverez ci-joint votre facture N:' . $numFact . '';
+                        $mail->Subject = 'Votre facture RECODE N:' . $numFact . '';
+                        $mail->Body    = 'Vous trouverez ci-joint votre facture N:' . $numFact . ' de votre commande N: ' . $temp->devis__id. '';
                         $mail->send();
                         $deleted = unlink(__DIR__ . '/facture_mail/' . $numFact . '.pdf');
+                        $doc->output('O:\intranet\Auto_Print\FC/' . $numFact . 'F-' . $temp->devis__id . 'D-' . $temp->client__id . 'C.pdf', 'F');
                     } catch (Exception $e) {
                         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
                     }

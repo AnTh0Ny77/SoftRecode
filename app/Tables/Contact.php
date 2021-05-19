@@ -101,7 +101,7 @@ public function update_facturation_auto($mail, $id_client)
        VALUES (:fonction, :civilite, :nom, :prenom, :tel, :fax, :mail)");
        $requestLiaison = $this->Db->Pdo->prepare('INSERT INTO liaison_client_contact(liaison__client__id, liaison__contact__id) VALUES (:idClient, :idContact)');
        $request->bindValue(":fonction", 'FAC');
-       $request->bindValue(":civilite",'');
+       $request->bindValue(":civilite",null);
        $request->bindValue(":nom", 'Facturation');
        $request->bindValue(":prenom", 'Automatique');
        $request->bindValue(":tel", null);
