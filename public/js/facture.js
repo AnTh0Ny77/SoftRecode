@@ -53,8 +53,7 @@ ClassicEditor
             console.error( error );
             });   
 
-            
-
+        
 
             ClassicEditor
             .create( document.querySelector( '#comClientLigne' ) , 
@@ -228,9 +227,6 @@ ClassicEditor
     error: function (err) {
     console.log('error: ' + err);}
     })
-
-
-   
 
 
 

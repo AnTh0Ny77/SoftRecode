@@ -42,22 +42,38 @@
 
 	
 		
-		<div class="bg-dark" id="side-container">
+		<div class="bg-dark  " id="side-container">
 			<table class="table table-hover table-dark  table-side-nav" style="width: 50px;">
 				<tr>
-					<td class="border-0">
+					<td class="dropdown border-0">
 						<a class="nav-link text-white" href="dashboard">
 						<span data-feather="file"></span>
 						<i class="fal fa-chart-network text-success fa-lg fa-fw"></i>  
 						</a>
+						<div class="dropdown-content bg-dark text-white rounded-right">
+							<b>
+							<div class="card-header text-center">
+								<h5>Dashboard</h5>
+							</div>
+								<a href="dashboard"><i class="fal fa-chart-network fa-lg fa-fw"></i>  Dashboard</a>	
+							</b>
+						</div>
 					</td>
 				</tr>
 				<tr>
-					<td>
-						<a class="nav-link text-white" href="http://intranet/">
+					<td class="dropdown">
+						<a class="nav-link text-white" href="http://intranet/" target="_blank">
 						<span data-feather="file"></span>
 						<i class="fad fa-recycle fa-lg fa-fw text-info"></i>  
 						</a>
+						<div class="dropdown-content bg-dark text-white rounded-right">
+							<b>
+							<div class="card-header text-center">
+								<h5>Intranet</h5>
+							</div>
+								<a href="http://intranet/" target="_blank"><i class="fad fa-recycle fa-lg fa-fw "></i>  Intranet</a>	
+							</b>
+						</div>
 					</td>
 				</tr>
 				<tr>
@@ -69,7 +85,7 @@
 					<div class="dropdown-content bg-dark text-white rounded-right">
 						<b>
 						<div class="card-header text-center">
-							<h4>Devis</h4>
+							<h5>Devis</h5>
 						</div>
 							<a href="mesDevis"><i class="fal fa-file-search fa-fw"></i> Recherche</a>
 							<a href="DevisV2"><i class="fal fa-file-edit fa-fw"></i> Nouveau devis</a>
@@ -88,7 +104,7 @@
 					<div class="dropdown-content bg-dark text-white rounded-right">
 						<b>
 							<div class="card-header text-center">
-								<h4>Clients</h4>
+								<h5>Clients</h5>
 							</div>
 							<a href="admin_client">
 								<i class="far fa-building"></i> Creer/Modifier Client
@@ -103,14 +119,14 @@
 				</tr>
 				<tr>
 					<td class="dropdown">
-					<a class="nav-link text-white" data-toggle="collapse" href="#colFT" role="button" aria-expanded="false" aria-controls="colFT">
+					<a class="nav-link text-white"  href="transport"  aria-expanded="false">
 						<span data-feather="file"></span>
 						<i class="far fa-tools fa-lg fa-fw text-info"></i> 
 					</a>
 					<div class="dropdown-content bg-dark text-white rounded-right">
 						<b>
 							<div class="card-header text-center">
-								<h4>Fiches de travail</h4>
+								<h5>Fiches de travail</h5>
 							</div>
 							<a href="ficheTravail">
 								<i class="fal fa-file-search fa-fw"></i> Recherche
@@ -138,7 +154,7 @@
 						<div class="dropdown-content bg-dark text-white rounded-right">
 							<b>
 								<div class="card-header text-center">
-									<h4>Factures</h4>
+									<h5>Factures</h5>
 								</div>
 								<a class="nav-link" href="facture">
 									<i class="fal fa-file-search fa-fw"></i> Facturation
@@ -162,7 +178,7 @@
 						<div class="dropdown-content bg-dark text-white rounded-right">
 							<b>
 								<div class="card-header text-center">
-									<h4>Abonnements</h4>
+									<h5>Abonnements</h5>
 								</div>
 								<a class="nav-link " href="abonnement">
 									<i class="far fa-calendar-alt"></i> Administration abonnements
@@ -183,7 +199,7 @@
 					<div class="dropdown-content bg-dark text-white rounded-right">
 						<b>
 							<div class="card-header text-center">
-								<h4>Tickets</h4>
+								<h5>Tickets</h5>
 							</div>
 							<a class="nav-link " href="tickets">
 								<i class="fad fa-clipboard-check fa-fw"></i> Consultation
@@ -201,7 +217,7 @@
 					<div class="dropdown-content bg-dark rounded-right">
 						<b>
 							<div class="card-header text-center">
-								<h4>Matériel</h4>
+								<h5>Matériel</h5>
 							</div>
 							<a class="nav-link " href="ArtCatalogueModele">
 								<i class="fad fa-clipboard-check fa-fw"></i> Catalogue
@@ -219,7 +235,7 @@
 					<div class="dropdown-content bg-dark rounded-right">
 						<b>
 							<div class="card-header text-center">
-								<h4>Admin</h4>
+								<h5>Admin</h5>
 							</div>
 							<a class="nav-link " href="utilisateurs">
 								<span data-feather="file"></span>
