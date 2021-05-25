@@ -279,12 +279,8 @@
 		  </div>
 		</div>
 		</div>
-	      </div>
-	      
-	      
-
-
-	      <!-- carte des contacts -->
+	    </div>
+	    <!-- carte des contacts -->
 	      {% if modif %}
 		<div class="card shadow col-4">
 			<div class="card-header bg-white ">
@@ -301,14 +297,22 @@
 						{% if contact.contact__fonction != 'FAC' %}
 							
 								<li class="list-group-item ">
-									<custom-form-button-mini method='POST' url='contactCrea' name='contact_select' value='{{contact.contact__id}}'
-										logo='{{ '<b>' ~ contact.contact__nom ~ ' ' ~ contact.contact__nom ~ '</b> - ' ~ contact.kw__lib }}'>
-									</custom-form-button-mini>
+									<div class="d-flex">
+										<div class="">
+											{{ contact.contact__civ ~ " "  ~  contact.contact__nom ~ ' ' ~ contact.contact__nom  ~ " " ~ contact.kw__lib}}
+								
+										</div>
+										<div class="">
+											<form method="POST" action="contactCrea" >
+												<input type="hidden" name="contact_select" value='{{contact.contact__id}}'>
+												<button class="btn btn-link"> <i class="fal fa-user-edit"></i></button>
+											</form>
+										</div>
+									</div>						
 								</li>
 								
 							
 						{% endif %}
-				
 					{% endfor %}
 				</ul>
 				{% else %}

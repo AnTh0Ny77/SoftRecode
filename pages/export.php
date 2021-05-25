@@ -4,7 +4,6 @@ require "./App/twigloader.php";
 use App\Methods\Pdfunctions;
 session_start();
 
-
  //URL bloqué si pas de connexion :
  if (empty($_SESSION['user']->id_utilisateur)) 
  {
@@ -27,14 +26,11 @@ session_start();
  $Article = new App\Tables\Article($Database);
  $Stats = new App\Tables\Stats($Database);
  $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
- 
-
  $articleTypeList = $Article->getModels();
  $prestaList = $Keyword->getPresta();
  $keywordList = $Keyword->get2_icon();
  $tvaList = $Keyword->getAllFromParam('tva');
  $marqueur = $Keyword->getExport();
-
  $marqueur = intval($marqueur->kw__lib);
  $maxFact = $Cmd->getMaxFacture();
  $minFact = $Cmd->getMinFacture();
@@ -62,7 +58,6 @@ if (!empty($_POST['exportStart']) && !empty($_POST['exportEnd']))
     
     foreach ($getAllLines as $key => $value) 
     {
-
         if (!empty($value)) 
         {
              $commande = $Cmd->GetById($value[0]->cmdl__cmd__id);
@@ -121,7 +116,6 @@ VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571101
             }
             }    
         }
-        
     }
     $file = fopen("O:\intranet\Compta/export_".$_POST['exportStart']."_".$_POST['exportEnd'].".csv", "w");
     fwrite($file , $txt);
