@@ -26,9 +26,19 @@
                                                 <span class="mx-3 text-danger"><b>Client bloqué <i class="fas fa-exclamation"></i></b></span>
                                         {% endif  %}
                                         </h4>
-                                        <custom-form-button method='POST' url='societe_crea' name='hidden_client' value='{{client.client__id}}'
-                                                logo='<i class="fal fa-file-edit"></i>' data-toggle="tooltip" data-placement="top" title="Modifier {{client.client__societe}}">
-                                        </custom-form-button>
+                                        <div class="d-flex">
+                                                <custom-form-button method='POST' url='societe_crea' name='hidden_client' value='{{client.client__id}}'
+                                                        logo='<i class="fal fa-file-edit"></i>' data-toggle="tooltip" data-placement="top" title="Modifier {{client.client__societe}}">
+                                                </custom-form-button>
+                                                <a target="_blank" class="btn btn-primary mx-2" href="http://intranet/tel_prise_03.php?id_client={{client.client__id}}" data-toggle="tooltip" data-placement="top" title="Consulter {{client.client__societe}} sur l'intranet">
+                                                        <i class="fas fa-network-wired"  ></i>
+                                                </a>
+                                                <a target="_blank" class="btn btn-primary mx-1" href="http://intranet/crm_visu.php?id_client={{client.client__id}}" data-toggle="tooltip"
+                                                        data-placement="top" title="Consulter {{client.client__societe}} sur le CRM">
+                                                        <i class="far fa-solar-system"></i>
+                                                </a>
+                                        </div>
+                                      
                                 </div>
                                 <div class="card-body">
                                         <div class="d-flex flex-row justify-content-between">
@@ -205,6 +215,10 @@
                                                                 </td>
                                                                 <td>
                                                                         <div class="d-flex flex-row">
+                                                                                <a target="_blank" class="btn btn-link mx-1" href="http://intranet/tel_prise_04s.php?id_cmd={{commande.cmd__id}}" data-toggle="tooltip"
+                                                                                        data-placement="top" title="Consulter la commande: {{commande.cmd__id}} sur l'intranet">
+                                                                                        <i class="fas fa-network-wired"></i>
+                                                                                </a>
                                                                                 <custom-form-button-mini method='POST' url='search_switch' name='search' value='{{commande.cmd__id}}'
                                                                                         logo='<i class="far fa-search"></i>' data-toggle="tooltip" data-placement="top"
                                                                                         title="Consulter la commande: {{commande.cmd__id}}">
@@ -218,6 +232,7 @@
                                                                                         logo='<i class="far fa-edit"></i>' data-toggle="tooltip" data-placement="top"
                                                                                         title="Modifier la commande: {{commande.cmd__id}}">
                                                                                 </custom-form-button-mini>
+                                                                                
                                                                                 {% endif %}
 
                                                                         </div>

@@ -298,14 +298,15 @@
 							
 								<li class="list-group-item ">
 									<div class="d-flex">
-										<div class="">
-											{{ contact.contact__civ ~ " "  ~  contact.contact__nom ~ ' ' ~ contact.contact__nom  ~ " " ~ contact.kw__lib}}
-								
+										<div class=" mt-3">
+											<b>
+												{{ contact.contact__civ ~ " "  ~  contact.contact__nom ~ ' ' ~ contact.contact__nom  ~ " " ~ contact.kw__lib}}
+											</b>
 										</div>
-										<div class="">
+										<div class="mt-1">
 											<form method="POST" action="contactCrea" >
 												<input type="hidden" name="contact_select" value='{{contact.contact__id}}'>
-												<button class="btn btn-link"> <i class="fal fa-user-edit"></i></button>
+												<button class="btn btn-link btn-lg"> <i class="fal fa-user-edit"></i></button>
 											</form>
 										</div>
 									</div>						
