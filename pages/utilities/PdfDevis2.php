@@ -29,13 +29,13 @@ if (!empty($_POST['idDevis']))
     //control de la pretation du port :
     $lignes = $Cmd->devisLigne($_POST['idDevis']);
 
-    foreach ($lignes as $ligne) 
-    {
-        if ($ligne->famille == 'SER' && $ligne->devl__type != 'PRT' ) 
-        {
-            $General->updateAll('cmd_ligne', 'PRT' , 'cmdl__prestation ', 'cmdl__id', $ligne->devl__id );
-        }
-    }
+    // foreach ($lignes as $ligne) 
+    // {
+    //     if ( $ligne->devl__type != 'PRT' ) 
+    //     {
+    //         $General->updateAll('cmd_ligne', 'PRT' , 'cmdl__prestation ', 'cmdl__id', $ligne->devl__id );
+    //     }
+    // }
 
     $client_controle = $Client->getOne($devis_controle->client__id);
 
