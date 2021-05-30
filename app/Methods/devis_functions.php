@@ -960,8 +960,7 @@ class Devis_functions
 			// variable $xtend déclaré pour chaque tableau d'extension de garanties : 
 			$xtend =  $ligne->tableau_extension;
 			// si il ne s'agit pas d'un service pour sur chaque tableau d'extension du tableau des extensions de  garantie : 
-            if ($ligne->famille != 'SER') 
-            {
+        
                 foreach($xtend as $array) 
                 {
 					//sur chaque valeur du tableau des garantie dans keyword : 
@@ -981,7 +980,7 @@ class Devis_functions
 							unset($value);
 						}
 					}    
-				} 
+				 
 			}
 		}
 

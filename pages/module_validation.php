@@ -9,7 +9,7 @@ $Cmd = new App\Tables\Cmd($Database);
 $Devis =new App\Tables\Devis($Database);
 $General = new App\Tables\General($Database);
 $tableau_garantie = json_decode($_POST['tableau_garantie']);
-$tableau_commantaire = json_decode($_POST['tableau_commentaires']);
+//$tableau_commantaire = json_decode($_POST['tableau_commentaires']);
 
 switch ($_POST['nature_demande']) 
 {
@@ -32,21 +32,21 @@ switch ($_POST['nature_demande'])
                 }
 
                 //met à jour les commentaires / quantites  : 
-                foreach($tableau_commantaire as $value) 
-                {
-                        //différence commentaire global et commentaire de ligne : 
-                        if ($value->id == 'commentaireInterneValid') 
-                        {
-                                $General->updateAll('cmd', $value->valeur , 'cmd__note_interne' , 'cmd__id' ,$_POST['id_devis']);
-                        }
-                        else 
-                        {
-                                $General->updateAll('cmd_ligne', $value->valeur , 'cmdl__note_interne' , 'cmdl__id' ,$value->id); 
-                                $ligne = $Devis->selecOneLine($value->id);   
-                                $General->updateAll('cmd_ligne', $ligne->cmdl__qte_cmd , 'cmdl__qte_cmd' , 'cmdl__id' ,$value->id);
-                        }         
+                // foreach($tableau_commantaire as $value) 
+                // {
+                //         //différence commentaire global et commentaire de ligne : 
+                //         if ($value->id == 'commentaireInterneValid') 
+                //         {
+                //                 $General->updateAll('cmd', $value->valeur , 'cmd__note_interne' , 'cmd__id' ,$_POST['id_devis']);
+                //         }
+                //         else 
+                //         {
+                //                 $General->updateAll('cmd_ligne', $value->valeur , 'cmdl__note_interne' , 'cmdl__id' ,$value->id); 
+                //                 $ligne = $Devis->selecOneLine($value->id);   
+                //                 $General->updateAll('cmd_ligne', $ligne->cmdl__qte_cmd , 'cmdl__qte_cmd' , 'cmdl__id' ,$value->id);
+                //         }         
                        
-                }
+                // }
                 $General->updateAll('cmd', $_POST['code_commande_client'] , 'cmd__code_cmd_client' , 'cmd__id' ,$_POST['id_devis']);
                 $General->updateAll('cmd', 'ATN' , 'cmd__etat' , 'cmd__id' ,$_POST['id_devis']);
                 $_SESSION['creaFiche'] = $_POST['id_devis'];
@@ -68,18 +68,18 @@ switch ($_POST['nature_demande'])
                 }
 
                 //met à jour les commentaires / quantites  : 
-                foreach ($tableau_commantaire as $value) {
-                        //différence commentaire global et commentaire de ligne : 
-                        if ($value->id == 'commentaireInterneValid') {
-                                $General->updateAll('cmd', $value->valeur, 'cmd__note_interne', 'cmd__id', $_POST['id_devis']);
-                        } else {
-                                $General->updateAll('cmd_ligne', $value->valeur, 'cmdl__note_interne', 'cmdl__id', $value->id);
-                                $ligne = $Devis->selecOneLine($value->id);
-                                $General->updateAll('cmd_ligne', $ligne->cmdl__qte_cmd, 'cmdl__qte_cmd', 'cmdl__id', $value->id);
-                                $General->updateAll('cmd_ligne', $ligne->cmdl__qte_cmd, 'cmdl__qte_livr', 'cmdl__id', $value->id);
-                                $General->updateAll('cmd_ligne', $ligne->cmdl__qte_cmd, 'cmdl__qte_fact', 'cmdl__id', $value->id);
-                        }
-                }
+                // foreach ($tableau_commantaire as $value) {
+                //         //différence commentaire global et commentaire de ligne : 
+                //         if ($value->id == 'commentaireInterneValid') {
+                //                 $General->updateAll('cmd', $value->valeur, 'cmd__note_interne', 'cmd__id', $_POST['id_devis']);
+                //         } else {
+                //                 $General->updateAll('cmd_ligne', $value->valeur, 'cmdl__note_interne', 'cmdl__id', $value->id);
+                //                 $ligne = $Devis->selecOneLine($value->id);
+                //                 $General->updateAll('cmd_ligne', $ligne->cmdl__qte_cmd, 'cmdl__qte_cmd', 'cmdl__id', $value->id);
+                //                 $General->updateAll('cmd_ligne', $ligne->cmdl__qte_cmd, 'cmdl__qte_livr', 'cmdl__id', $value->id);
+                //                 $General->updateAll('cmd_ligne', $ligne->cmdl__qte_cmd, 'cmdl__qte_fact', 'cmdl__id', $value->id);
+                //         }
+                // }
                 //recupère le tableau de ligne à jour : 
                 $commandLignes = $Cmd->devisLigne($_POST['id_devis']);
 
@@ -118,18 +118,18 @@ switch ($_POST['nature_demande'])
                 }
 
                 //met à jour les commentaires / quantites  : 
-                foreach ($tableau_commantaire as $value) {
-                        //différence commentaire global et commentaire de ligne : 
-                        if ($value->id == 'commentaireInterneValid') {
-                                $General->updateAll('cmd', $value->valeur, 'cmd__note_interne', 'cmd__id', $_POST['id_devis']);
-                        } else {
+                // foreach ($tableau_commantaire as $value) {
+                //         //différence commentaire global et commentaire de ligne : 
+                //         if ($value->id == 'commentaireInterneValid') {
+                //                 $General->updateAll('cmd', $value->valeur, 'cmd__note_interne', 'cmd__id', $_POST['id_devis']);
+                //         } else {
                                
-                                $General->updateAll('cmd_ligne', $value->valeur, 'cmdl__note_interne', 'cmdl__id', $value->id);
-                                $ligne = $Devis->selecOneLine($value->id);
+                //                 $General->updateAll('cmd_ligne', $value->valeur, 'cmdl__note_interne', 'cmdl__id', $value->id);
+                //                 $ligne = $Devis->selecOneLine($value->id);
                                
-                                $General->updateAll('cmd_ligne', $ligne->cmdl__qte_cmd, 'cmdl__qte_cmd', 'cmdl__id', $value->id);
-                        }
-                }
+                //                 $General->updateAll('cmd_ligne', $ligne->cmdl__qte_cmd, 'cmdl__qte_cmd', 'cmdl__id', $value->id);
+                //         }
+                // }
                 //recupère le tableau de ligne à jour : 
                 $commandLignes = $Cmd->devisLigne($_POST['id_devis']);
 

@@ -318,7 +318,7 @@ ob_start();
 							<br> <small>désignation :</small> <b>" . $item->devl__designation . "</b><br>"
 				. $item->famille__lib . " " . $item->marque . " " . $item->modele . " " . $item->devl__modele  . " " . $item->devl__note_interne .
 				"<br><span>
-								".$ligne->devl__note_client."  ".$ligne->devl__note_interne. "
+								".$ligne->devl__note_client."   
 				</span></td>
 						 <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite . " </strong></td>
 						  <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>

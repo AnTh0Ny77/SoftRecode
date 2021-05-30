@@ -25,7 +25,7 @@
         <input type="hidden" name="id_devis" value="{{devis.devis__id}}">
         <input type="hidden" name="nature_demande" id="nature_demande" value="VLDDEVIS">
         <input type="hidden" name="tableau_garantie" id="tableau_garantie">
-        <input type="hidden" name="tableau_commentaires" id="tableau_commentaires">
+        <!-- <input type="hidden" name="tableau_commentaires" id="tableau_commentaires"> -->
         <!-- 1ere ligne -->
         <div class="d-flex flex-row justify-content-start">
                 <!-- Societe -->
@@ -179,12 +179,25 @@
                                                                                         </div>          
                                                                                 {% endif %}       
                                                                         </div>                                                                                       
-                                                                        <div class="">
-                                                                                Commentaire interne :
-                                                                                <textarea class="form-control editor" id="{{ligne.devl__id}}"
+                                                                        <div class="border-top">
+                                                                               <div class="d-flex justify-content-around my-3">
+                                                                                       <div>
+                                                                                              <button class="btn btn-block btn-link btn-lg data-toggle='tooltip' data-placement='top' title='Désactiver la ligne'">
+                                                                                                <i class="far fa-comment-dots fa-2x"></i>
+                                                                                              </button>
+                                                                                       </div>
+                                                                                       <div>
+                                                                                        <button class="btn btn-block btn-link btn-lg data-toggle='tooltip' data-placement='top' title='Désactiver la ligne'">
+                                                                                                <i class="far fa-tools fa-2x"></i>
+                                                                                        </button>
+                                                                                       
+                                                                                       </div>
+
+                                                                               </div>
+                                                                                <!-- <textarea class="form-control editor" id="{{ligne.devl__id}}"
                                                                                         placeholder="Commentaire Interne...." rows="2"
                                                                                         cols="40">{{ligne.devl__note_interne}}
-                                                                                </textarea>
+                                                                                </textarea> -->
                                                                         </div>
                                                                 </div>
                                                         </div>
@@ -228,11 +241,11 @@
                                                                                                 </div>
                                                                                         
                                                                                         </div>
-                                                                                        <div class="">
-                                                                                                Commentaire interne :
+                                                                                        <div class="modal footer">
+                                                                                                <!-- Commentaire interne :
                                                                                                 <textarea class="form-control editor" id="{{sous_ref.devl__id}}"
                                                                                                         placeholder="Commentaire Interne...." rows="2" cols="40">{{sous_ref.devl__note_interne}}
-                                                                                                </textarea>
+                                                                                                </textarea> -->
                                                                                         </div>
                                                                                 </div>
                                                                         </div>
@@ -251,7 +264,8 @@
 <!-- jQuery first, then Bootstrap JS -->
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>^
+<script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="public/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="public/js/validation_devis.js"></script>
 <script type="text/javascript" src="public/js/custom/button/custom-button-quantite.js"></script>

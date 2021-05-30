@@ -1,17 +1,22 @@
 $(document).ready(function() 
 {
-	CKEDITOR.config.height = '5em';
-	$(function()
-	{
-	      $('.editor').each(function()
-	      {
-			CKEDITOR.replace( this.id ,
-			{
-				language: 'fr',
-				removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor',
-				removeButtons : 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule,Styles,Strike'
-			});
-	      })  
+	// CKEDITOR.config.height = '5em';
+	// $(function()
+	// {
+	//       $('.editor').each(function()
+	//       {
+	// 		CKEDITOR.replace( this.id ,
+	// 		{
+	// 			language: 'fr',
+	// 			removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor',
+	// 			removeButtons : 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule,Styles,Strike'
+	// 		});
+	//       })  
+	// })
+
+	//initialization des tooltips 
+	$(function () {
+		$('[data-toggle="tooltip"]').tooltip({ html: true })
 	})
 
 	//supprime le border rouge quand on sélectionne la radio box : 
@@ -54,20 +59,20 @@ $(document).ready(function()
 		}
 
 		// boucle sur les commentaires et crée un tableau id /valeur : 
-		for (var i  in CKEDITOR.instances) 
-			{
-				let data = CKEDITOR.instances[i].getData();
-				let objet_commentaire = 
-					{
-						id : CKEDITOR.instances[i].name,
-						valeur : data
-					}
+		// for (var i  in CKEDITOR.instances) 
+		// 	{
+		// 		let data = CKEDITOR.instances[i].getData();
+		// 		let objet_commentaire = 
+		// 			{
+		// 				id : CKEDITOR.instances[i].name,
+		// 				valeur : data
+		// 			}
 	 
-				tableau_des_commentaires.push(objet_commentaire)
-			}
+		// 		tableau_des_commentaires.push(objet_commentaire)
+		// 	}
 		
 		//stringifie le contenu et le transmet au input respectifs 
-		$('#tableau_commentaires').val(JSON.stringify(tableau_des_commentaires));
+		// $('#tableau_commentaires').val(JSON.stringify(tableau_des_commentaires));
 		$('#tableau_garantie').val(JSON.stringify(tableau_des_garanties));
 		//poste le formulaire
 		$('#form_validation').submit();
