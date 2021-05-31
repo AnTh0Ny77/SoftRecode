@@ -3,9 +3,28 @@
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/css/dashboard.css">
 {% endblock %}
 {% block main %}
+
+
+{% if alerte_aux_gogols %}
+        <div class="container-fluid my-3 col-11 container-body ">
+                <div class="d-flex justify-content-center">
+                        <div class="alert alert-danger col-10 text-center rounded alert_perso">
+                                <h1>
+                                        {{alerte_aux_gogols}}<br>
+                                        N°: <b>{{devis.devis__id}}</b>
+                                </h1>
+                                <form method="POST" action="ligneDevisV2">
+                                        <input type="hidden" name="return_from_validation" value="{{devis.devis__id}}">
+                                        <button class="btn btn-secondary btn-lg">Modifier</button>
+                                </form>
+                        </div>
+                </div>
+        </div>
+{% else %}
 <main role="main" class="container-fluid my-3 col-11 container-body">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
                 <h1 class="h2"> Validation du devis N°: <b>{{devis.devis__id}}</b></h1>
@@ -17,7 +36,11 @@
                                 {% if user.user__facture_acces > 10 %}
                                                 <button id="AVRADMIN" value="AVRADMIN" type="button" class="btn btn-primary  btn-lg mx-2 post_form" disabled>Avoir Direct</button>
                                 {% endif %}
-                                <button id="VLDDEVIS" value="VLDDEVIS" type="button" class="btn btn-success  btn-lg mx-2 post_form" disabled>Valider le devis</button>
+                                <form method="POST" action="ligneDevisV2">
+                                        <input type="hidden" name="return_from_validation" value="{{devis.devis__id}}">
+                                        <button class="btn btn-secondary btn-lg">Modifier</button>
+                                </form>
+                                <button id="VLDDEVIS" value="VLDDEVIS" type="button" class="btn btn-success  btn-lg mx-2 post_form" disabled>Valider </button>
                         </div>
                 </div>
         </div>
@@ -110,7 +133,7 @@
                                 <!-- Card Body -->
                                 <div class="card-body">
                                         <div class="chart-pie pt-2 pb-2 d-flex flex-row   mb-1 justify-content-between">
-                                                <div class=" mb-0 font-weight-bold text-muted col-10">
+                                                <div class=" mb-0 font-weight-bold text-muted col-12">
                                                         <div>
                                                                 Commentaire interne :
                                                                 <textarea class="form-control editor" id="commentaireInterneValid" placeholder="Commentaire Interne...."
@@ -182,15 +205,28 @@
                                                                         <div class="border-top">
                                                                                <div class="d-flex justify-content-around my-3">
                                                                                        <div>
-                                                                                              <button class="btn btn-block btn-link btn-lg data-toggle='tooltip' data-placement='top' title='Désactiver la ligne'">
-                                                                                                <i class="far fa-comment-dots fa-2x"></i>
-                                                                                              </button>
+                                                                                               {% if ligne.devl__note_client %}
+                                                                                                        <button type="button" class="btn btn-block btn-link btn-lg jBoxModal_client" id="{{ligne.devl__id}}_client"  value="{{ligne.devl__id}}">
+                                                                                                                <i class="far fa-comment-dots fa-2x"></i>
+                                                                                                        </button>
+                                                                                               {% else %}
+                                                                                                        <button type="button" class="btn btn-block btn-link btn-lg" disabled >
+                                                                                                                <i class="far fa-comment-dots fa-2x"></i>
+                                                                                                        </button>
+                                                                                               {% endif %}
+                                                                                              
                                                                                        </div>
                                                                                        <div>
-                                                                                        <button class="btn btn-block btn-link btn-lg data-toggle='tooltip' data-placement='top' title='Désactiver la ligne'">
-                                                                                                <i class="far fa-tools fa-2x"></i>
-                                                                                        </button>
-                                                                                       
+                                                                                               {% if ligne.devl__note_interne %}
+                                                                                                        <button type="button" class="btn btn-block btn-link btn-lg jBoxModal_interne"  id="{{ligne.devl__id}}_interne" value="{{ligne.devl__id}}">
+                                                                                                                <i class="far fa-tools fa-2x"></i>
+                                                                                                        </button>
+                                                                                               {% else %}
+                                                                                                        <button type="button" class="btn btn-block btn-link btn-lg" disabled>
+                                                                                                                <i class="far fa-tools fa-2x"></i>
+                                                                                                        </button>
+                                                                                               {% endif %}
+                                                                                                
                                                                                        </div>
 
                                                                                </div>
@@ -259,6 +295,8 @@
         </div>
 </form>
 </main>
+{% endif %}
+
 {% endblock %}
 {% block script %}
 <!-- jQuery first, then Bootstrap JS -->
