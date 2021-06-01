@@ -12,10 +12,7 @@ $(document).ready(function()
     CKEDITOR.config.height = '5em';
     //init du commentaire Client global : 
     if ($('#comClient').length) 
-    {
-	
-	     
-		
+    {	
 		CKEDITOR.replace( 'comClient' ,
 		{
 			language: 'fr',
@@ -130,7 +127,8 @@ $('#fmm').on('change', function()
 			height: 300,
 			attach: attach,
 			title: 'Commentaire Interne',
-			content: dataSet.devl__note_interne
+			content: dataSet.devl__note_interne,
+			addClass: 'wrapper_tooltips'
 		    });
 		    
 		} 
@@ -174,7 +172,8 @@ for (let y = 0; y < arrayBoxClient.length; y++)
 		      height: 300,
 		      attach: attach,
 		      title: 'Commentaire Client',
-		      content: dataSet.devl__note_client
+		      content: dataSet.devl__note_client,
+			  addClass: 'wrapper_tooltips'
 		  });
 		  
 	      } 

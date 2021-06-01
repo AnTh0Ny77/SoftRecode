@@ -136,6 +136,11 @@ if (!empty($_SESSION['alert_intracom']))
     $alert_intracom = true;
 }
 
+if (!empty($_POST['return_from_validation'])) 
+{
+    $idDevis = $_POST['return_from_validation'];
+}
+
 
 
 //descend une ligne : 

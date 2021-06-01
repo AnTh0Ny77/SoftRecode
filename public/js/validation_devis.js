@@ -1,23 +1,95 @@
 $(document).ready(function() 
 {
 	// CKEDITOR.config.height = '5em';
-	// $(function()
-	// {
-	//       $('.editor').each(function()
-	//       {
-	// 		CKEDITOR.replace( this.id ,
-	// 		{
-	// 			language: 'fr',
-	// 			removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor',
-	// 			removeButtons : 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule,Styles,Strike'
-	// 		});
-	//       })  
-	// })
+	$(function()
+	{
+	      $('.editor').each(function()
+	      {
+			CKEDITOR.replace( this.id ,
+			{
+				language: 'fr',
+				removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor',
+				removeButtons : 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule,Styles,Strike'
+			});
+	      })  
+	})
 
 	//initialization des tooltips 
 	$(function () {
 		$('[data-toggle="tooltip"]').tooltip({ html: true })
 	})
+
+
+	 //array de tous les elements jboxModal client:
+	 arrayBox  = $('.jBoxModal_client');
+	 //parcours  le tableau jboxModal pour le commentaire interne et client : 
+	 for (let index = 0; index < arrayBox.length; index++) 
+	 {
+		 let attach = '#' + arrayBox[index].value;
+   
+	   $.ajax(
+	   {
+	   type: 'post',
+	   url: "AjaxLigneFT",
+	   data : 
+		   {"AjaxLigneFT" : arrayBox[index].value
+		   },    
+	   success: function(data)
+	   {	  
+			dataSet = JSON.parse(data); 
+			   new jBox('Tooltip', 
+			   {
+			   width: 300,
+			   height: 300,
+			   attach: attach + '_client',
+			   title: 'Commentaire client ',
+			   content: dataSet.devl__note_client,
+			   addClass: 'wrapper_tooltips'
+			   });
+			   
+	   },
+	   error: function (err) 
+	   {
+		   console.log('error: ' + err);
+	   }
+	   })  
+	 }
+
+	 //array de tous les elements jboxModal interne:
+	 arrayBox  = $('.jBoxModal_interne');
+	 //parcours  le tableau jboxModal pour le commentaire interne et client : 
+	 for (let index = 0; index < arrayBox.length; index++) 
+	 {
+		 let attach = '#' + arrayBox[index].value;
+   
+	   $.ajax(
+	   {
+	   type: 'post',
+	   url: "AjaxLigneFT",
+	   data : 
+		   {"AjaxLigneFT" : arrayBox[index].value
+		   },    
+	   success: function(data)
+	   {  
+		   dataSet = JSON.parse(data);  
+
+			   new jBox('Tooltip', 
+			   {
+			   width: 300,
+			   height: 300,
+			   attach: attach + '_interne',
+			   title: 'Commentaire interne ',
+			   content: dataSet.devl__note_interne,
+			   addClass: 'wrapper_tooltips',
+			   pointer: false
+			   });	    
+	   },
+	   error: function (err) 
+	   {
+		   console.log('error: ' + err);
+	   }
+	   })  
+	 }
 
 	//supprime le border rouge quand on sélectionne la radio box : 
 	$('.radioCmd').on('click' , function()
