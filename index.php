@@ -82,6 +82,9 @@
 		case '/SoftRecode/TicketVisu';
 			require __DIR__ .'/pages/TicketVisu.php'; break;
 
+		case '/SoftRecode/create-pn-first';
+			require __DIR__ . '/pages/pn_create.php'; break;
+			
 		//devis-> 
 		case '/SoftRecode/nouveauDevis';
 			require __DIR__ .'/pages/nouveauDevis.php';break;

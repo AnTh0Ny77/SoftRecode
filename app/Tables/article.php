@@ -309,6 +309,21 @@ class Article extends Table
 	return array('ACC'=>$TA_ACC, 'CON'=>$TA_CON, 'PID'=>$TA_PID);
   }
 
+  public function get_pn_byID($pn_name)
+  {
+	  	//compare le champs input dénué de caractère spéciaux et en majuscules : 
+	  	$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_name);
+		$pn_court = strtoupper($pn_court);
+
+		$SQL = 'SELECT apn__pn, apn__afmm__id, apn__desc_short, apn__desc_long , apn__id_user_modif , m.afmm__id , m.afmm__modele , m.afmm__famille
+		FROM art_pn 
+		LEFT JOIN art_fmm as m ON  apn__afmm__id = m.afmm__id 
+		WHERE apn__pn = "'. $pn_court .'"  ORDER BY apn__pn ';
+		$request = $this->Db->Pdo->query($SQL);
+		$data = $request->fetch(PDO::FETCH_OBJ);
+		return $data;
+  }
+
   public function getFAMILLE()
   { /* Liste des famille dans keyword.famil */
 	$SQL = 'SELECT kw__value, kw__lib, kw__lib_uk, kw__info

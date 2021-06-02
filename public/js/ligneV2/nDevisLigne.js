@@ -128,7 +128,8 @@ $('#fmm').on('change', function()
 			attach: attach,
 			title: 'Commentaire Interne',
 			content: dataSet.devl__note_interne,
-			addClass: 'wrapper_tooltips'
+			addClass: 'wrapper_tooltips' , 
+				pointer: false
 		    });
 		    
 		} 
@@ -173,7 +174,8 @@ for (let y = 0; y < arrayBoxClient.length; y++)
 		      attach: attach,
 		      title: 'Commentaire Client',
 		      content: dataSet.devl__note_client,
-			  addClass: 'wrapper_tooltips'
+			  addClass: 'wrapper_tooltips',
+			  pointer: false
 		  });
 		  
 	      } 

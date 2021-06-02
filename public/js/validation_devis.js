@@ -44,7 +44,8 @@ $(document).ready(function()
 			   attach: attach + '_client',
 			   title: 'Commentaire client ',
 			   content: dataSet.devl__note_client,
-			   addClass: 'wrapper_tooltips'
+			   addClass: 'wrapper_tooltips',
+				pointer: false
 			   });
 			   
 	   },
