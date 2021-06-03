@@ -109,21 +109,17 @@
                                                                 {% if commande.cmd__code_cmd_client %}
                                                                         <h5>{{commande.cmd__code_cmd_client}} </h5>
                                                                 {% endif %}
-                                                        <h4 class="d-flex justify-content-between">
-                                                                {% if commande.devis__note_client %}
-                                                                        <input type="hidden" id="note_client" value="{{commande.devis__note_client}}">
-                                                                        <i class="fas fa-comments" id="tooltip_client"></i>
-                                                                {% endif %}
-                                                                {% if commande.devis__note_interne %}
-                                                                        <input type="hidden" id="note_interne" value="{{commande.devis__note_interne}}">
-                                                                        <i class="far fa-comments" id="tooltip_interne"></i>
-                                                               
-                                                                {% endif %}
-                                                        
-                                                               
-                                                              
-                                                               
-                                                        </h4>
+                                                                <h4 class="d-flex justify-content-between">
+                                                                        {% if commande.devis__note_client %}
+                                                                                <input type="hidden" id="note_client" value="{{commande.devis__note_client}}">
+                                                                                <i class="fas fa-comments" id="tooltip_client"></i>
+                                                                        {% endif %}
+                                                                        {% if commande.devis__note_interne %}
+                                                                                <input type="hidden" id="note_interne" value="{{commande.devis__note_interne}}">
+                                                                                <i class="far fa-comments" id="tooltip_interne"></i>
+                                                                
+                                                                        {% endif %}        
+                                                                </h4>
                                                         </div>
                                                        
                                                  </div>
