@@ -47,6 +47,7 @@ switch ($_POST['nature_demande'])
                 //         }         
                        
                 // }
+                $General->updateAll('cmd', $_POST['commentaire_interne_post'] , 'cmd__note_interne' , 'cmd__id' ,$_POST['id_devis']);
                 $General->updateAll('cmd', $_POST['code_commande_client'] , 'cmd__code_cmd_client' , 'cmd__id' ,$_POST['id_devis']);
                 $General->updateAll('cmd', 'ATN' , 'cmd__etat' , 'cmd__id' ,$_POST['id_devis']);
                 $_SESSION['creaFiche'] = $_POST['id_devis'];
@@ -98,6 +99,7 @@ switch ($_POST['nature_demande'])
                 $General->updateAll('cmd', $date, 'cmd__date_cmd', 'cmd__id',$_POST['id_devis']);
                 $General->updateAll('cmd', $date, 'cmd__date_envoi', 'cmd__id',$_POST['id_devis']);
                 //code commande 
+                $General->updateAll('cmd', $_POST['commentaire_interne_post'] , 'cmd__note_interne' , 'cmd__id' ,$_POST['id_devis']);
                 $General->updateAll('cmd', $_POST['code_commande_client'], 'cmd__code_cmd_client', 'cmd__id', $_POST['id_devis']);
                 $_SESSION['factureEtoile'] = $_POST['id_devis'];
                 header('location: printFTC');
@@ -148,6 +150,7 @@ switch ($_POST['nature_demande'])
                 $General->updateAll('cmd', $date, 'cmd__date_cmd', 'cmd__id',$_POST['id_devis']);
                 $General->updateAll('cmd', $date, 'cmd__date_envoi', 'cmd__id',$_POST['id_devis']);
                 //code commande 
+                $General->updateAll('cmd', $_POST['commentaire_interne_post'] , 'cmd__note_interne' , 'cmd__id' ,$_POST['id_devis']);
                 $General->updateAll('cmd', $_POST['code_commande_client'], 'cmd__code_cmd_client', 'cmd__id', $_POST['id_devis']);
                 $_SESSION['AvoirValide'] = $_POST['id_devis'];
                 header('location: PRINTADMINAVOIR');

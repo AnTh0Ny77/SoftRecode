@@ -17,7 +17,8 @@ $(document).ready(function()
                 { 
                     dataSet = JSON.parse(data);
                     $('#select_sous_ref').selectpicker('val' , dataSet.id__fmm);
-                    console.log(dataSet);
+                    $('#quantite_sous_ref').val( dataSet.devl_quantite);
+                   
                 },
                 error: function (err) 
                 {
@@ -133,7 +134,7 @@ $(document).ready(function()
                     $('#select_modif_sous_ref').selectpicker('val' , dataSet.id__fmm);
                     $('#input_modif_sous_ref').val(dataSet.devl__id);
                     $('#input_modif_sous_ref_cmd').val(dataSet.cmdl__cmd__id);
-                    $('#quantite_modif_sous_ref').val(dataSet.devl_quantite);
+                    $('#quantite_modif_sous_ref').val(parseInt(dataSet.devl_quantite));
                     $('#designation_modif_sous_ref').val(dataSet.devl__designation);
                     // editor_modif_sous_ref.setData(dataSet.devl__note_interne);
                     CKEDITOR.instances.com_modif_sous_ref.setData(dataSet.devl__note_interne);

@@ -93,7 +93,6 @@ class Article extends Table
 	art_fmm.afmm__image as FMM_Image, art_fmm.afmm__doc as FMM_Doc,
 	art_pn.apn__image as PN_Image, 	art_pn.apn__doc as PN_Doc
 	FROM art_pn
-	INNER JOIN art_fmm ON art_pn.apn__afmm__id = art_fmm.afmm__id
 	INNER JOIN art_marque ON art_fmm.afmm__marque = art_marque.am__id
 	INNER JOIN keyword ON art_fmm.afmm__famille = keyword.kw__value and keyword.kw__type = \'famil\' '.
 	$SQL_WHERE.$SQL_ORDER; // LIMIT 0,50
@@ -250,7 +249,6 @@ class Article extends Table
 	art_pn.apn__image as PN_Image, art_pn.apn__doc as PN_Doc, art_parts.apa__pa2_info as Parts_Info
 	FROM art_parts
 	INNER JOIN art_pn ON art_parts.apa__pn = art_pn.apn__pn
-	INNER JOIN art_fmm ON art_pn.apn__afmm__id = art_fmm.afmm__id
 	INNER JOIN art_marque ON art_fmm.afmm__marque = art_marque.am__id
 	INNER JOIN keyword ON art_fmm.afmm__famille = keyword.kw__value and keyword.kw__type = \'famil\' '.
 	$SQL_WHERE.
@@ -315,13 +313,27 @@ class Article extends Table
 	  	$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_name);
 		$pn_court = strtoupper($pn_court);
 
-		$SQL = 'SELECT apn__pn, apn__afmm__id, apn__desc_short, apn__desc_long , apn__id_user_modif , m.afmm__id , m.afmm__modele , m.afmm__famille
+		$SQL = 'SELECT apn__pn,  apn__desc_short, apn__desc_long , apn__id_user_modif
 		FROM art_pn 
-		LEFT JOIN art_fmm as m ON  apn__afmm__id = m.afmm__id 
 		WHERE apn__pn = "'. $pn_court .'"  ORDER BY apn__pn ';
 		$request = $this->Db->Pdo->query($SQL);
 		$data = $request->fetch(PDO::FETCH_OBJ);
 		return $data;
+  }
+
+  public function insert_pn($pn, $pn_long)
+  {
+		
+		$request = $this->Db->Pdo->prepare("
+		INSERT INTO art_pn  (apn__pn,		art__pn_long,	 	apn__id_user_modif, 	apn__date_modif) 
+		VALUES              (:apn__pn,      :art__pn_long,      :apn__id_user_modif,	:apn__date_modif)"); 
+		$request->bindValue(":apn__pn", $pn);
+		$request->bindValue(":art__pn_long",  $marque);
+		$request->bindValue(":apn__id_user_modif",  $modele);
+		$request->bindValue(":apn__date_modif",   date("Y-m-d H:i:s"));
+		$request->execute();
+		$idFmm = $this->Db->Pdo->lastInsertId();
+		return $idFmm;
   }
 
   public function getFAMILLE()
@@ -340,6 +352,8 @@ class Article extends Table
 	$data = $request->fetchAll(PDO::FETCH_OBJ);
 	return $data;
   }
+
+
 
  /*""b8 88""Yb 888888    db    888888        db    88""Yb 888888            888888 8b    d8 8b    d8 
 dP   `" 88__dP 88__     dPYb     88         dPYb   88__dP   88              88__   88b  d88 88b  d88 
@@ -453,16 +467,7 @@ public function get_fmm_by_id(int $id_fmm)
 	return $data;
 }
 
-public function getPn($id)
-{
-	$request = $this->Db->Pdo->query(
-	'SELECT  apn__pn , apn__afmm__id  , apn__desc_short , apn__pn_long
-	FROM art_pn
-	WHERE apn__afmm__id = '.$id.' 
-	ORDER BY apn__pn ASC ');
-	$data = $request->fetchAll(PDO::FETCH_OBJ);
-	return $data ; 
-}
+
 
 }
 

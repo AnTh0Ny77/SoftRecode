@@ -22,6 +22,7 @@ switch ($_SERVER['REQUEST_URI'])
 		//première partie creation et recherche de pn  : 
 		$pn_id = false ;
 
+		//si une cretaion de pn à eu lieu : 
 		if (!empty($_POST['recherche_pn'])) 
 		{
 		   $verify_if_exist = $Article->get_pn_byID($_POST['recherche_pn']);
@@ -35,6 +36,8 @@ switch ($_SERVER['REQUEST_URI'])
 			   //je crée le pn et je vais vers la page suivante : 
 		   }
 		}
+
+		//si une mofif de pn à eu lieu 
 
 		// Donnée transmise au template : 
 		echo $twig->render(
