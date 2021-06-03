@@ -48,8 +48,15 @@
                                                                 </div>
                                                                 <div class="card-body">
                                                                                 <h5 class="card-title">({{commande.client__id}}) {{commande.client__societe}}</h5>
-                                                                                <h6 class="card-subtitle mb-2 text-muted"> {{commande.client__adr1 ~ " " ~ commande.client__cp ~ " " ~ commande.client__ville}}
+                                                                                <h6 class="card-subtitle mb-2 text-muted"> {{commande.client__adr1 }}  <br> {{ commande.client__adr2 }} <br> 
+
+                                                                                        {{ commande.client__cp ~ " " ~ commande.client__ville}}
                                                                                        
+                                                                                        {% if commande.client__pays %}
+                                                                                                <br>
+                                                                                                {{commande.client__pays}}
+                                                                                        {% endif %}
+                                                                                      
                                                                                 </h6>
                                                                                 <p class="card-text">{{commande.client__tel}}  
                                                                                 </p>
@@ -64,7 +71,14 @@
                                                                 </div>
                                                                 <div class="card-body">
                                                                                 <h5 class="card-title">({{commande.devis__id_client_livraison}}) {{commande.client__livraison_societe}}</h5>
-                                                                                <h6 class="card-subtitle mb-2 text-muted"> {{commande.client__livraison__adr1 ~ " " ~ commande.client__livraison_cp ~ " " ~ commande.client__livraison_ville}}</h6>
+                                                                                <h6 class="card-subtitle mb-2 text-muted"> {{commande.client__livraison__adr1}} <br> {{commande.client__livraison__adr2  }}<br>
+                                                                                        {{commande.client__livraison_cp ~ " " ~ commande.client__livraison_ville}}
+                                                                                                {% if commande. client__pays_livraison %}
+                                                                                        <br>
+                                                                                                {{commande. client__pays_livraison}}
+                                                                                        {% endif %}
+
+                                                                                </h6>
                                                                                 <p class="card-text">{{commande.telLivraion}}</p>
                                                                 </div>
                                                          </div>
@@ -77,8 +91,13 @@
                                                                         </div>
                                                                         <div class="card-body">
                                                                                 <h5 class="card-title">({{commande.client__id}}) {{commande.client__societe}}</h5>
-                                                                                <h6 class="card-subtitle mb-2 text-muted"> {{commande.client__adr1 ~ " " ~ commande.client__cp ~ " " ~
-                                                                                        commande.client__ville}}</h6>
+                                                                                <h6 class="card-subtitle mb-2 text-muted"> {{commande.client__adr1 }} <br> {{ commande.client__adr2 }} <br> {{ commande.client__cp ~ " " ~
+                                                                                        commande.client__ville}}
+                                                                                        {% if commande.client__pays %}
+                                                                                        <br>
+                                                                                        {{commande.client__pays}}
+                                                                                        {% endif %}
+                                                                                </h6>
                                                                                 <p class="card-text">{{commande.client__tel}}</p>
                                                                         </div>
                                                                 </div>
@@ -151,14 +170,10 @@
                                                                         <input type="hidden" name="AjaxDevis" id="VoirDevis" value="{{commande.devis__id}}">
                                                                 </form> 
                                                       </div>
+                                                      
                                                       <div>
-                                                        <div class="alert alert-warning " role="alert">
-                                                                <b> l'accès au reste des documents est en cours de developpement </b>
-                                                         </div>
-                                                      </div>
-                                                      <!-- <div>
                                                               {% if ( commande.devis__etat == 'CMD' or  commande.devis__etat == 'IMP' or  commande.devis__etat == 'VLD'  or  commande.devis__etat == 'VLA' ) and user.user__prix_acces > 0 %}
-                                                                        <a href="../../../../../../O:/intranet/Auto_Print/Archive/FT/Ft_3211372.pdf" target="_blank" class="badge badge-link">
+                                                                        <a href="public\archive_pdf\FT\Ft_{{commande.devis__id}}.pdf" target="_blank" class="badge badge-link">
                                                                                 <i class="far fa-file-pdf fa-5x"></i>
                                                                                 <h5>Fiche travail</h5>
                                                                         </a>
@@ -172,7 +187,7 @@
                                                       </div>
                                                       <div>
                                                                 {% if  ( commande.devis__etat == 'IMP' or  commande.devis__etat == 'VLD'  or  commande.devis__etat == 'VLA' ) and user.user__prix_acces > 0  %}
-                                                                        <a href="../../../../../../O:/intranet/Auto_Print/Archive/FT/Ft_3211372.pdf" class="badge badge-link">
+                                                                        <a href="public\archive_pdf\BL\BL_{{commande.devis__id}}.pdf" class="badge badge-link" target="_blank">
                                                                                 <i class="far fa-file-pdf fa-5x"></i>
                                                                                 <h5>Bon de livraison</h5>
                                                                         </a>
@@ -185,7 +200,7 @@
                                                       </div>
                                                       <div>
                                                         {% if   ( commande.devis__etat == 'VLD' or  commande.devis__etat == 'VLA' ) and user.user__prix_acces > 0  %}
-                                                                <a href="../../../../../../O:/intranet/Auto_Print/Archive/FT/Ft_3211372.pdf" class="badge badge-link">
+                                                                <a href="public\archive_pdf\FC\{{commande.cmd__id_facture}}F-{{commande.devis__id}}-{{commande.client__id}}C.pdf"  target="_blank" class="badge badge-link">
                                                                         <i class="far fa-file-pdf fa-5x"></i>
                                                                         <h5>Facture</h5>
                                                                 </a>
@@ -196,7 +211,7 @@
                                                                 </button>
                                                         {% endif %}
                                                       </div>
-                                                      -->
+                                                
                                                 </div>
                                         </div>
                                 </div>
