@@ -331,7 +331,7 @@ ob_start();
 			<td><small>Commentaire:</small></td>
 		</tr>
 		<tr>
-			<td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%'> <?php echo  $command->devis__note_interne ?> </td>
+			<td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%'> <?php echo  $command->devis__note_interne  . " " .  $command->devis__note_client ; ?> </td>
 		</tr>
 	</table>
 
