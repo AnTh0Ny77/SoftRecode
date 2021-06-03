@@ -13,11 +13,19 @@ public static function showSociete($object)
 	if ($object->client__adr2) {
 		$text = $object->client__societe . " (" . $object->client__id . ")<br>".
 		$object->client__adr1 . "<br>". $object->client__adr2 . "<br>" . $object->client__cp . " " . $object->client__ville ;
+		if (!empty($object->client__pays)) 
+		{
+			$text .= "<br>" . strtoupper ($object->client__pays) ; 
+		}
 		return $text ;
 	}
 	else {
 		$text = $object->client__societe . " (" . $object->client__id . ")<br>".
 		$object->client__adr1 . "<br>". $object->client__cp . " " . $object->client__ville ;
+		if (!empty($object->client__pays)) 
+		{
+			$text .= "<br>" . strtoupper ($object->client__pays) ; 
+		}
 		return $text ;
 	}
    
@@ -31,12 +39,20 @@ public static function showSocieteFacture($object , $contact)
 		{
 			$text = $object->client__societe . " (" . $object->client__id . ")<br>".  $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom . '<br>' . 
 			$object->client__adr1 . "<br>". $object->client__adr2 . "<br>" . $object->client__cp . " " . $object->client__ville ;
+			if (!empty($object->client__pays)) 
+			{
+			$text .= "<br>" . strtoupper ($object->client__pays) ; 
+			}
 			return $text ;
 		}
 		else 
 		{
 			$text = $object->client__societe . " (" . $object->client__id . ")<br>".  $contact->contact__civ . " " . $contact->contact__nom. " " . $contact->contact__prenom . '<br>' .
 			$object->client__adr1 . "<br>". $object->client__cp . " " . $object->client__ville ;
+			if (!empty($object->client__pays)) 
+			{
+			$text .= "<br>" . strtoupper ($object->client__pays) ; 
+			}
 			return $text ;
 		}
 	}
@@ -46,12 +62,20 @@ public static function showSocieteFacture($object , $contact)
 		{
 			$text = $object->client__societe . " (" . $object->client__id . ")<br>" .
 			$object->client__adr1 . "<br>". $object->client__adr2 . "<br>" . $object->client__cp . " " . $object->client__ville ;
+			if (!empty($object->client__pays)) 
+			{
+			$text .= "<br>" . strtoupper ($object->client__pays) ; 
+			}
 			return $text ;
 		}
 		else 
 		{
 			$text = $object->client__societe . " (" . $object->client__id . ")<br>".  
 			$object->client__adr1 . "<br>". $object->client__cp . " " . $object->client__ville ;
+			if (!empty($object->client__pays)) 
+			{
+			$text .= "<br>" . strtoupper ($object->client__pays) ; 
+			}
 			return $text ;
 		}
 	}
