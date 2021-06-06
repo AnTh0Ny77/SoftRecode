@@ -25,6 +25,7 @@ $Stats = new App\Tables\Stats($Database);
 $Cmd = new App\Tables\Cmd($Database);
 $Database->DbConnect();
 $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
+$_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
 //listes  : 
 $clientList = $Client->get_client_devis();
 $modeleList = $Keywords->getModele();

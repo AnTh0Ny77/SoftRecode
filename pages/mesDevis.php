@@ -33,6 +33,7 @@ session_start();
  $Pisteur = new App\Tables\Pistage($Database);
  $Stats = new App\Tables\Stats($Database);
  $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
+$_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
  $listOfStatus = $Keyword->getStat();
  $devisList = [];
 

@@ -25,6 +25,7 @@ session_start();
  $Cmd = new App\Tables\Cmd($Database);
  $Stats = new App\Tables\Stats($Database);
  $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
+$_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
  
 //par défault le champ de recherche est égal a null:
  $champRecherche = null;

@@ -23,6 +23,7 @@ $Cmd = new App\Tables\Cmd($Database);
 $User = new App\Tables\User($Database);
 $Stats = new App\Tables\Stats($Database);
 $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
+$_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
 $vueFiltre = null;
 //nombre des fiches dans la liste 
 

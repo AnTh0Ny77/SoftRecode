@@ -24,6 +24,7 @@ $Database->DbConnect();
 $Article = new App\Tables\Article($Database);
 $Stats = new App\Tables\Stats($Database);
  $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
+$_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
 
 // rechreche de prefixe (:) pour savoir si c'est Modele et faire plus de recherche sur les complements...
 if(substr($art_filtre,0,1) == ":") // c'est bien un Modele

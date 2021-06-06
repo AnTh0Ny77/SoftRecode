@@ -15,6 +15,16 @@
 	<nav class="navbar navbar-light bg-dark text-white  navbar-large  sticky-top flex-md-nowrap p-0 shadow">
 		<div>
 			<a class="navbar-brand text-light  ml-2 pr-2" href="#"><i class="fas fa-user text-success"></i>  {{ user.prenom ~  " " ~  user.nom ~ " " }} </a> 
+			{% if user.devis_cours %}
+			<button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="devis envoyés">
+				<a href="search_switch_notifs?id_user={{user.id_utilisateur}}&status=ATN">
+					<span class="fa-stack text-primary" style="vertical-align: top;">
+						<i class="fal fa-file fa-stack-2x"></i>
+						<i class=" fa-stack-1x text-primary">{{user.devis_cours}}</i>
+					</span>
+				</a>
+			</button>
+			{% endif %}
 			{% if user.commandes_cours %}
 				<button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="commandes en cours">
 					<a href="search_switch_notifs?id_user={{user.id_utilisateur}}&status=CMD">
@@ -25,6 +35,7 @@
 					</a>
 				</button>	 
 			{% endif %}
+			
 		</div>
 		<div class="d-flex flex-row ">
 			<custom-search-menu method="POST" class="my-auto" url='search_switch'></custom-search-menu>

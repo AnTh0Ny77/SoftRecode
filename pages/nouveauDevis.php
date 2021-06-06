@@ -23,6 +23,7 @@ session_start();
  $Article = new App\Tables\Article($Database);
  $Stats = new App\Tables\Stats($Database);
  $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
+$_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
  
  $Cmd = new App\Tables\Cmd($Database);
  

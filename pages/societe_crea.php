@@ -25,6 +25,7 @@ if (empty($_SESSION['user']->id_utilisateur)) {
 	$Contact = new App\Tables\Contact($Database);
 	$Stats = new App\Tables\Stats($Database);
 	$_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
+	$_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
 	$tva_list = $Keywords->getAllFromParam('tva');
 	$user_list = $User->getAll();
 	$alert = false;

@@ -17,6 +17,7 @@ unset($_SESSION['ModifierDevis']);
  $Database->DbConnect();
  $Stats = new App\Tables\Stats($Database);
  $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
+   $_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
  $user= $_SESSION['user'];
  $devisList = $Devis->getFromStatus();
  foreach ($devisList as $devis) {

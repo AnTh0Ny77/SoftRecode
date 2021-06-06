@@ -23,6 +23,7 @@ if ($_SESSION['user']->user__facture_acces < 10 )
  $Abonnement = new App\Tables\Abonnement($Database);
  $Stats = new App\Tables\Stats($Database);
  $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
+$_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
  
  
 //si une facturation auto a été demandée :
