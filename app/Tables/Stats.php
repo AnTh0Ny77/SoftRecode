@@ -81,6 +81,18 @@ public function get_user_commnandes($user_id)
     return $request->rowCount();
 }
 
+public function get_user_devis($user_id)
+{
+        $request = $this->Db->Pdo->query("SELECT cmd__id
+    FROM cmd
+    WHERE cmd__etat = 'ATN'
+    AND  cmd__user__id_devis = '" . $user_id . "'
+    ORDER BY  cmd__etat DESC LIMIT 500 ");
+        $data = $request->fetchAll(PDO::FETCH_OBJ);
+        return $request->rowCount();
+}
+
+
 
 
 public function devisAll($com) { 
