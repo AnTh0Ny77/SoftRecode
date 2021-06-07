@@ -84,6 +84,12 @@
 
 		case '/SoftRecode/create-pn-first';
 			require __DIR__ . '/pages/pn_create.php'; break;
+		
+		case '/SoftRecode/create-pn-second';
+			require __DIR__ . '/pages/pn_create.php'; break;
+		
+		case '/SoftRecode/create-pn-third';
+			require __DIR__ . '/pages/pn_create.php'; break;
 			
 		//devis-> 
 		case '/SoftRecode/nouveauDevis';

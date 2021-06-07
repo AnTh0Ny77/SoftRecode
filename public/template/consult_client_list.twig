@@ -10,7 +10,7 @@
  
  
 {% block main %}
-        <main role="main" class="container-fluid my-3 col-11 container-body"> 
+        <main role="main" class="container my-3 col-11 container-body"> 
               {% if client_list %}
               <div class="col-12">
 
@@ -40,26 +40,34 @@
                       </table>
               </div>
               {% elseif commande_list %}
-              <div class="col-12">
-                        <table  class="table table-striped col-9">
+              <div class="d-flex justify-content-center">
+                        <table  class="table table-striped col-8">
                                 <thead>
                                         <tr>
                                           <th scope="col" class="text-center"><h5>N°/Client/CP/Ville</h5></th>
-                                          <th scope="col" class="text-center"><h5>Titre Devis</h5></th>
+                                          <th scope="col" class="text-center"><h5>Titre</h5></th>
                                           <th scope="col" class="text-center"><h5>Date Devis</h5></th>
                                         </tr>
                                       </thead>
                                       <tbody>
                                         {% for commande in commande_list %}
                                                 <tr>
-                                                        <th > <custom-form-button-mini method='POST' url='search_switch' name='search' value='{{commande.cmd__id}}'
-                                                                logo='
-                                                                <div class="d-flex flex-row ">N°{{commande.cmd__id}} -  <b>  {{ commande.client__societe}} {{commande.client__cp ~ " " ~ commande.client__ville}} </b>         
-                                                                </div>'>
-                                                                </custom-form-button-mini></th>
+                                                        <td class="text-center align-middle"> 
+                                                                <div class="d-flex text-center align-middle">
+                                                                        <custom-form-button-mini method='POST' url='search_switch' name='search' value='{{commande.cmd__id}}'
+                                                                        logo='
+                                                                        <div class="d-flex flex-row "><i class="fas fa-search-plus fa-2x"></i></b>         
+                                                                        </div>'>
+                                                                        </custom-form-button-mini>
+                                                                        <h4>{{commande.cmd__id}}</h4>
+                                                                        <h5 class="mx-3 text-muted ">
+                                                                                {{     " ("  ~ commande.client__id ~ ")  " ~ commande.client__societe ~ " -  " ~  commande.client__cp ~ " - " ~ commande.client__ville  }}
+                                                                        </h5>
+                                                                </div>
+                                                               
+                                                        </td>
                                                         <td class="text-center align-middle">{{commande.cmd__nom_devis}}</td>
                                                         <td class="text-center align-middle">{{commande.cmd__date_devis}}</td>
-                                                        
                                                 </tr>
                                         {% endfor %}
                                       </tbody>

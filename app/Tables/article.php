@@ -313,23 +313,24 @@ class Article extends Table
 	  	$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_name);
 		$pn_court = strtoupper($pn_court);
 
-		$SQL = 'SELECT apn__pn,  apn__desc_short, apn__desc_long , apn__id_user_modif
+		$SQL = 'SELECT apn__pn , apn__pn_long,  apn__desc_short, apn__desc_long , apn__id_user_modif
 		FROM art_pn 
-		WHERE apn__pn = "'. $pn_court .'"  ORDER BY apn__pn ';
+		WHERE apn__pn = "'. $pn_court .'"';
 		$request = $this->Db->Pdo->query($SQL);
 		$data = $request->fetch(PDO::FETCH_OBJ);
 		return $data;
   }
 
-  public function insert_pn($pn, $pn_long)
+  public function insert_pn($pn, $pn_long , $id_user)
   {
+		$pn = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn);
 		
 		$request = $this->Db->Pdo->prepare("
-		INSERT INTO art_pn  (apn__pn,		art__pn_long,	 	apn__id_user_modif, 	apn__date_modif) 
-		VALUES              (:apn__pn,      :art__pn_long,      :apn__id_user_modif,	:apn__date_modif)"); 
+		INSERT INTO art_pn  (apn__pn,		apn__pn_long,	 	apn__id_user_modif, 	apn__date_modif) 
+		VALUES              (:apn__pn,      :apn__pn_long,      :apn__id_user_modif,	:apn__date_modif)"); 
 		$request->bindValue(":apn__pn", $pn);
-		$request->bindValue(":art__pn_long",  $marque);
-		$request->bindValue(":apn__id_user_modif",  $modele);
+		$request->bindValue(":apn__pn_long",  $pn_long);
+		$request->bindValue(":apn__id_user_modif",  $id_user);
 		$request->bindValue(":apn__date_modif",   date("Y-m-d H:i:s"));
 		$request->execute();
 		$idFmm = $this->Db->Pdo->lastInsertId();

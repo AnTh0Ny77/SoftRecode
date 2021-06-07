@@ -26,18 +26,21 @@ switch ($_SERVER['REQUEST_URI'])
 		if (!empty($_POST['recherche_pn'])) 
 		{
 		   $verify_if_exist = $Article->get_pn_byID($_POST['recherche_pn']);
-		  
+		   
 		   if (!empty($verify_if_exist)) 
 		   {
 				$pn_id =  $verify_if_exist;
+				
 		   }
 		   else 
 		   {
-			   //je crée le pn et je vais vers la page suivante : 
+			
+			   	$pn__id =  $Article->insert_pn($_POST['recherche_pn'] , $_POST['recherche_pn'] ,$_SESSION['user']->id_utilisateur );
+				$_SESSION['pn_id'] = $_POST['recherche_pn']; 	
+				header('location: create-pn-second');
+				break;
 		   }
 		}
-
-		//si une mofif de pn à eu lieu 
 
 		// Donnée transmise au template : 
 		echo $twig->render(
@@ -49,12 +52,47 @@ switch ($_SERVER['REQUEST_URI'])
 		);
 		break;
 
+
+
+
 	case "/SoftRecode/create-pn-second":
-		//deuxième partie recherche de modèle ou absence ( necessite un id de pn dans le poste ) : 
-		break;
+
+		if (!empty($_SESSION['pn_id'])) 
+		{	
+			$pn_id = $_SESSION['pn_id'];
+			$pn = $Article->get_pn_byID($pn_id);
+			$model_list = $Article->getModels();
+
+			echo $twig->render(
+				'pn/create_pn_second.twig',
+				[
+					'user' => $_SESSION['user'],
+					'pn_id' => $pn_id , 
+					'model_list' => $model_list ,
+					'pn' => $pn
+				]
+			);
+			break;	
+		}
+		
+		
+		
 
 	case "/SoftRecode/create-pn-third":
-		//troisème partie -> formulaire + activation du pn ( necessite un id de pn dans le poste ) / redirection vers le catalogue : 
-		break;
+		
+
+		if (empty($_POST['id_pn']))  header('location: create-pn-second');
+	
+
+		$pn = $Article->get_pn_byID($_POST['id_pn']);
+		echo $twig->render(
+			'pn/create_pn_third.twig',
+			[
+				'user' => $_SESSION['user'],
+				'pn' => $pn
+				
+			]
+		);
+		break;	
 	
 }
