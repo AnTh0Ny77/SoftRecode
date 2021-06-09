@@ -321,6 +321,39 @@ class Article extends Table
 		return $data;
   }
 
+  public function find_by_liaison(string $pn_id )
+  {
+		//compare le champs input dénué de caractère spéciaux et en majuscules : 
+		$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_id);
+		$pn_court = strtoupper($pn_court);
+
+		$SQL = 'SELECT *
+		FROM liaison_fmm_pn 
+		WHERE id__pn = "' . $pn_court . '"';
+		$request = $this->Db->Pdo->query($SQL);
+		$data = $request->fetchAll(PDO::FETCH_OBJ);
+		return $data;
+  }
+
+  public function insert_liaison_pn_fmm(array $tableau_modele , string $pn__id) : bool
+  {
+	 
+		$request = 'DELETE FROM liaison_fmm_pn WHERE  id__pn = "' . $pn__id . '" ';
+		$update = $this->Db->Pdo->prepare($request);
+		$update->execute();
+		
+		foreach ($tableau_modele as $modele_id) 
+		{
+			$request = $this->Db->Pdo->prepare("
+			INSERT INTO liaison_fmm_pn  (id__fmm,		id__pn) 
+			VALUES              (:id__fmm,      :id__pn)");
+			$request->bindValue(":id__fmm", $modele_id);
+			$request->bindValue(":id__pn",  $pn__id);
+			$request->execute();
+		}
+		return true;
+  }
+
   public function insert_pn($pn, $pn_long , $id_user)
   {
 		$pn = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn);

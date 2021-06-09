@@ -83,9 +83,13 @@ switch ($_POST['nature_demande'])
                 // }
                 //recupère le tableau de ligne à jour : 
                 $commandLignes = $Cmd->devisLigne($_POST['id_devis']);
+               
 
                 //met a jour les extensions de garanties des lignes fillles : 
                 foreach ($commandLignes as $ligne) {
+                        $General->updateAll('cmd_ligne', $ligne->devl_quantite, 'cmdl__qte_cmd', 'cmdl__id', $ligne->devl__id);
+                        $General->updateAll('cmd_ligne', $ligne->devl_quantite, 'cmdl__qte_livr', 'cmdl__id', $ligne->devl__id);
+                        $General->updateAll('cmd_ligne', $ligne->devl_quantite, 'cmdl__qte_fact', 'cmdl__id', $ligne->devl__id);
                         //je met a jour les ligne filles qui ont le droit de bénéficier de l'extension de garantie de la mère : 
                         if (!empty($ligne->cmdl__garantie_option)) {
                                 $update = $Cmd->update_filles_extensions($ligne);
@@ -134,9 +138,12 @@ switch ($_POST['nature_demande'])
                 // }
                 //recupère le tableau de ligne à jour : 
                 $commandLignes = $Cmd->devisLigne($_POST['id_devis']);
-
+                
                 //met a jour les extensions de garanties des lignes fillles : 
                 foreach ($commandLignes as $ligne) {
+                        $General->updateAll('cmd_ligne', $ligne->devl_quantite, 'cmdl__qte_cmd', 'cmdl__id', $ligne->devl__id);
+                        $General->updateAll('cmd_ligne', $ligne->devl_quantite, 'cmdl__qte_livr', 'cmdl__id', $ligne->devl__id);
+                        $General->updateAll('cmd_ligne', $ligne->devl_quantite, 'cmdl__qte_fact', 'cmdl__id', $ligne->devl__id);
                         //je met a jour les ligne filles qui ont le droit de bénéficier de l'extension de garantie de la mère : 
                         if (!empty($ligne->cmdl__garantie_option)) {
                                 $update = $Cmd->update_filles_extensions($ligne);

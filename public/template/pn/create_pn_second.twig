@@ -12,6 +12,7 @@
 
 
 <main role="main" class="container-fluid my-3 col-11 container-body">
+    <input type="hidden" id="relation" value="{{model_relation}}">
     <div class="d-flex justify-content-start">
         <div class="bs-stepper col-11">
             <div class="bs-stepper-header" role="tablist">
@@ -109,6 +110,25 @@
             $('#model_array').val(JSON.stringify(select));
             console.log(JSON.stringify(select))
         })
+
+         let relation =  $('#relation').val(); 
+        
+         relation = JSON.parse(relation);
+         let select_start = [];
+        relation.forEach(models => 
+
+           {
+                for (var option of document.getElementById('select_multiple').options) {
+                    if (option.value == models.id__fmm) 
+                    {
+                        option.defaultSelected = true;
+                        select_start.push(option.value)
+                        $('#model_array').val(JSON.stringify(select_start));
+                    } 
+                }
+            }
+
+        )
 
 </script>
 {% endblock %}

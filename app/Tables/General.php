@@ -32,6 +32,20 @@ class General extends Table
 
   }
 
+  public function findBy(string $table , string $field , $search ,int $limit , ?string $order ) : array 
+  {
+    $SQL = 'SELECT * 
+		FROM '. $table. '
+		WHERE ? =  ? 
+    LIMIT ? 
+    ORDER BY ? 
+    ';
+    $request = $this->Db->Pdo->prepare($SQL);
+    $request->execute(array($field ,$search , $limit  , $order));
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+  }
+
  public function replaceSpecialChar($str) {
     $ch0 = array( 
             "œ"=>"oe",

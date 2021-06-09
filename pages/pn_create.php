@@ -8,6 +8,7 @@ $Keyword = new \App\Tables\Keyword($Database);
 $Cmd = new \App\Tables\Cmd($Database);
 $Pistage = new App\Tables\Pistage($Database);
 $Article = new App\Tables\Article($Database);
+$General = new App\Tables\General($Database);
 
 //URL bloqué si pas de connexion :
 if (empty($_SESSION['user']->id_utilisateur)) {
@@ -60,8 +61,12 @@ switch ($_SERVER['REQUEST_URI'])
 		if (!empty($_SESSION['pn_id'])) 
 		{	
 			$pn_id = $_SESSION['pn_id'];
+			$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_id);
+			
 			$pn = $Article->get_pn_byID($pn_id);
 			$model_list = $Article->getModels();
+			$model_relation = $Article->find_by_liaison($pn_court);
+			$model_relation = json_encode($model_relation);
 
 			echo $twig->render(
 				'pn/create_pn_second.twig',
@@ -69,6 +74,7 @@ switch ($_SERVER['REQUEST_URI'])
 					'user' => $_SESSION['user'],
 					'pn_id' => $pn_id , 
 					'model_list' => $model_list ,
+					'model_relation' => $model_relation, 
 					'pn' => $pn
 				]
 			);
@@ -82,9 +88,17 @@ switch ($_SERVER['REQUEST_URI'])
 		
 
 		if (empty($_POST['id_pn']))  header('location: create-pn-second');
+
+		if (!empty($_POST['model_array'])) 
+		{
+			
+			$tableau_modele = json_decode($_POST['model_array']);
+			$update_models = $Article->insert_liaison_pn_fmm($tableau_modele , $_POST['id_pn'] ) ;
+		}
 	
 
 		$pn = $Article->get_pn_byID($_POST['id_pn']);
+
 		echo $twig->render(
 			'pn/create_pn_third.twig',
 			[
