@@ -58,6 +58,11 @@ switch ($_SERVER['REQUEST_URI'])
 
 	case "/SoftRecode/create-pn-second":
 
+		if (!empty($_POST['retour_pn'])) 
+		{
+			$_SESSION['pn_id'] = $_POST['retour_pn'];
+		}
+
 		if (!empty($_SESSION['pn_id'])) 
 		{	
 			$pn_id = $_SESSION['pn_id'];
@@ -94,6 +99,20 @@ switch ($_SERVER['REQUEST_URI'])
 			
 			$tableau_modele = json_decode($_POST['model_array']);
 			$update_models = $Article->insert_liaison_pn_fmm($tableau_modele , $_POST['id_pn'] ) ;
+		}
+
+		//si une validation de pn à été posqté 
+		if (!empty($_POST['pn_id'])) 
+		{
+			$date = date("Y-m-d H:i:s");
+			$General->updateAll('art_pn' , $_POST['desc-courte'], 'apn__desc_short' , 'apn__pn', $_POST['pn_id'] );
+			$General->updateAll('art_pn', $_POST['desc-longue'], 'apn__desc_long', 'apn__pn', $_POST['pn_id']);
+			$General->updateAll('art_pn', $_SESSION['user']->id_utilisateur, 'apn__id_user_modif', 'apn__pn', $_POST['pn_id']);
+			$General->updateAll('art_pn', $date, 'apn__date_modif', 'apn__pn', $_POST['pn_id']);
+			$General->updateAll('art_pn', 1 , 'apn_actif', 'apn__pn', $_POST['pn_id']);
+
+			header('location: ArtCataloguePN');
+			break;
 		}
 	
 
