@@ -34,7 +34,7 @@ if($_SESSION['user']->user__cmd_acces < 10 )
 if(substr($art_filtre,0,1) == ":" OR substr($art_filtre,0,1) == "!") // c'est bien un Modele ou PN en filtre
 	$big_sql = TRUE;
 // Requetes
-	$ArtListe = $Article->getART($art_filtre);
+	$ArtListe = null;
 	$CountListe = count($ArtListe);
 
 if (isset($_POST['link_pn'])) // c'est bien un PN que je cherche mais il me faut son Modele pour les accessoir conso, pieces 

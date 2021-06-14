@@ -45,65 +45,42 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 {# Tableau #}
 		<div class="card-body">
 			<div class="chart-area">
-				{# Boucle de 4 pour : 0->Articles de base les 1->ACC , 2->CON , 3->PID #}
-				{% for i in 0..3 %}
-					{% if i == 0 %} {# ArtListe#}
-						{% set CountX = CountListe %}
-						{% set CountParts = CountACC + CountCON + CountPID %}
-						{% set TblColor = '' %}
-						{% set ArtX = ArtListe %}
-					{% endif %}
-					{% if i == 1 %} {# ACC - Accessoire et option #}
-						{% set Titre = 'Accessoires / Options' %}
-						{% set CountX = CountACC %}
-						{% set TblColor = 'table-info' %}
-						{% set ArtX = ArtACC %}
-					{% endif %}
-					{% if i == 2 %} {# CON - Consommable #}
-						{% set Titre = 'Consommables' %}
-						{% set CountX = CountCON %}
-						{% set TblColor = 'table-warning' %}
-						{% set ArtX = ArtCON %}
-					{% endif %}
-					{% if i == 3 %} {# PID - Pièces Détachées #}
-						{% set Titre = 'Pièces détachées' %}
-						{% set CountX = CountPID %}
-						{% set TblColor = 'table-active' %}
-						{% set ArtX = ArtPID %}
-					{% endif %}
-					{% if CountX > 0 %}
-					<table class="table {{TblColor}}">
-						{% if i == 0 %} 
-							<div class="h5">{{CountListe}} Références (PN) {% if CountParts > 0 %}& {{CountParts}} références connexes{% endif %}</div>
-						{% else %}
-							<div class="h5">{{CountX}} {{Titre}}</div>
-						{% endif %}
-						<tbody>
-							{% for Art in ArtX %}
-							<form method="post" action="ArtCataloguePN">
-							<input type="hidden" name="filtre_famille" value=",{{Art.Famille}}">
-							<input type="hidden" name="filtre_marque"  value=";{{Art.Marque}}">
-							<input type="hidden" name="filtre_modele"  value=":{{Art.Modele}}">
-							<input type="hidden" name="filtre_pn"      value="!{{Art.PN}}">
-							<tr>
-								<td align=left><div class="h7"><button type="submit" name="link_pn" class="btn btn-link text-dark py-0 px-0"><b>{{Art.PN}}</b></button></div>
-								<button type="submit" name="link_famille" class="btn btn-link py-0 px-0 ">{{Art.Famille}}</button> -
-								<button type="submit" name="link_marque"  class="btn btn-link py-0 px-0 ">{{Art.Marque}}</button> -
-								<button type="submit" name="link_modele"  class="btn btn-link py-0 px-0 ">{{Art.Modele}}</button>
-								<br>{{Art.Info}}</td>
-								<td align=center>{{Art.Image|raw}}</td>
-								<td align=center>{% if Art.Doc %}<a href="{{Art.Doc}}" target="_blank"><i class="fad fa-file-pdf fa-lg" style="--fa-primary-color: orangered;"></i></a>{% endif %}<br><br>
-								<i class="fal fa-cubes fa-lg"></i></td>
-							</tr>
-							</form>
-							{% endfor %}
-						</tbody>
-					</table>
-					{% endif %}
-				{% endfor %}
-				{% if CountListe == 0 %}
-					<div class="h5">Aucun résultat pour votre recherche.</div>
-				{% endif %}
+				<table class="table table-striped">
+					
+					<tbody>
+
+						{% for pn in pn_list  %}
+						
+						<tr>
+							<th> 
+								{% if pn.apn_actif > 0  %}
+								<i class="fad fa-toggle-on fa-lg mx-2 mt-2" style="color: green;"></i>
+								{% else %}
+									<i class="fad fa-toggle-off fa-lg mx-2 mt-2" style="color: rgb(224, 13, 6);"></i>
+								{% endif %}
+								{{pn.apn__pn_long}}
+							
+							</th>
+							<td>{{pn.apn__desc_short|raw}}</td>
+							<td>
+								{% if pn.apn__image  %}<figure class="image" ><img src="data:image/jpeg;base64,{{ pn.apn__image|raw}}" width=90></figure>{% endif %}
+							</td>
+							<td>
+								{{pn.nom ~  " " ~ pn.prenom }} <br>	
+								
+								
+							</td>
+							<td>
+								<form method="POST" action="create-pn-third">
+									<input type="hidden" name="id_pn" value="{{pn.apn__pn}}">
+									<button class="btn btn-primary btn-sm">Modifier</button>
+								</form>
+						    </td>
+						  </tr>
+						{% endfor %}
+					</tbody>
+				</table>
+
 			</div>
 		</div>
 

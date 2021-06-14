@@ -130,6 +130,17 @@ class Article extends Table
 	return $TA;
   }
 
+  public function select_all_pn()
+  {
+		$SQL = 'SELECT a.* , u.prenom , u.nom 
+		FROM art_pn as a  
+		LEFT JOIN utilisateur as u on  u.id_utilisateur = a.apn__id_user_modif
+		ORDER BY apn__date_modif DESC LIMIT 50';
+		$request = $this->Db->Pdo->query($SQL);
+		$data = $request->fetchAll(PDO::FETCH_OBJ);
+		return $data;
+  }
+
   public function get_catalogue_fmm($filtre=FALSE)
   { /* nouvelle tables article (composé de art_fmm, art_marque) */
 	$SQL_WHERE = $SQL_GROUPBY = $SQL_ORDER = '';
@@ -313,8 +324,9 @@ class Article extends Table
 	  	$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_name);
 		$pn_court = strtoupper($pn_court);
 
-		$SQL = 'SELECT apn__pn , apn__pn_long,  apn__desc_short, apn__desc_long , apn__id_user_modif
-		FROM art_pn 
+		$SQL = 'SELECT a.* , u.prenom , u.nom 
+		FROM art_pn as a  
+		LEFT JOIN utilisateur as u on  u.id_utilisateur = apn__id_user_modif
 		WHERE apn__pn = "'. $pn_court .'"';
 		$request = $this->Db->Pdo->query($SQL);
 		$data = $request->fetch(PDO::FETCH_OBJ);

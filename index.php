@@ -68,7 +68,7 @@
 			require __DIR__ .'/pages/ArtCataloguePN.php';break;
 
 		case '/SoftRecode/ArtCataloguePN';
-			require __DIR__ .'/pages/ArtCataloguePN.php';break;
+			require __DIR__ .'/pages/catalogue_pn.php';break;
 
 		case '/SoftRecode/ArtCatalogueModele';
 			require __DIR__ .'/pages/ArtCatalogueModele.php';break;

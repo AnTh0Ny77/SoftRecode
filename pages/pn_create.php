@@ -92,7 +92,7 @@ switch ($_SERVER['REQUEST_URI'])
 	case "/SoftRecode/create-pn-third":
 		
 
-		if (empty($_POST['id_pn']))  header('location: create-pn-second');
+		// if (empty($_POST['id_pn']))  header('location: create-pn-second');
 
 		if (!empty($_POST['model_array'])) 
 		{
@@ -104,19 +104,34 @@ switch ($_SERVER['REQUEST_URI'])
 		//si une validation de pn à été posqté 
 		if (!empty($_POST['pn_id'])) 
 		{
+		
 			$date = date("Y-m-d H:i:s");
 			$General->updateAll('art_pn' , $_POST['desc-courte'], 'apn__desc_short' , 'apn__pn', $_POST['pn_id'] );
 			$General->updateAll('art_pn', $_POST['desc-longue'], 'apn__desc_long', 'apn__pn', $_POST['pn_id']);
 			$General->updateAll('art_pn', $_SESSION['user']->id_utilisateur, 'apn__id_user_modif', 'apn__pn', $_POST['pn_id']);
 			$General->updateAll('art_pn', $date, 'apn__date_modif', 'apn__pn', $_POST['pn_id']);
+			
+				if (!empty($_FILES['modele_image']['tmp_name']))
+				{
+					$blob_image = file_get_contents($_FILES['modele_image']['tmp_name']);
+					$General->updateAll('art_pn', $blob_image, 'apn__image', 'apn__pn', $_POST['pn_id']);
+				}
+				
 			$General->updateAll('art_pn', 1 , 'apn_actif', 'apn__pn', $_POST['pn_id']);
-
 			header('location: ArtCataloguePN');
 			break;
 		}
 	
+		if (!empty($_POST['id_pn']))
+		{
+			$pn = $Article->get_pn_byID($_POST['id_pn']);
+		}
+		else
+		{
+			$pn = $Article->get_pn_byID($_POST['pn_id']);
+		}
 
-		$pn = $Article->get_pn_byID($_POST['id_pn']);
+		$pn->apn__image = base64_encode($pn->apn__image);
 
 		echo $twig->render(
 			'pn/create_pn_third.twig',

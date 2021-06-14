@@ -25,9 +25,6 @@ session_start();
  $Contact = new \App\Tables\Contact($Database);
  $Cmd = new App\Tables\Cmd($Database);
 
-
-
- 
 //par défault le champ de recherche est égal a null:
  $champRecherche = null;
  
