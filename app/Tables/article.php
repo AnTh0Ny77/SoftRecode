@@ -318,6 +318,26 @@ class Article extends Table
 	return array('ACC'=>$TA_ACC, 'CON'=>$TA_CON, 'PID'=>$TA_PID);
   }
 
+  public function get_pn_from_liaison(string $fmm_id): array
+  {
+		$SQL = 'SELECT *
+		FROM liaison_fmm_pn WHERE id__fmm = '. $fmm_id .' ORDER BY id__pn';
+		$request = $this->Db->Pdo->query($SQL);
+		$data = $request->fetchAll(PDO::FETCH_OBJ);
+		return $data;
+  }
+
+  public function get_line_pn_and_return_liaison_list($id_ligne)
+  {
+		$SQL = 'SELECT c.cmdl__id__fmm , c.cmdl__pn , l.id__pn
+		FROM cmd_ligne as c 
+		LEFT JOIN liaison_fmm_pn as l  ON c.cmdl__id__fmm = l.id__fmm
+		WHERE cmdl__id = ' . $id_ligne . ' ORDER BY id__pn';
+		$request = $this->Db->Pdo->query($SQL);
+		$data = $request->fetchAll(PDO::FETCH_OBJ);
+		return $data;
+  }
+
   public function get_pn_byID($pn_name)
   {
 	  	//compare le champs input dénué de caractère spéciaux et en majuscules : 

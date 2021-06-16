@@ -14,7 +14,8 @@ if (empty($_SESSION['user']->id_utilisateur)) {
 
     // requete table client:
         if (!empty($_POST['AjaxPn'])){
-            $pnList = json_encode($Article->getPn($_POST['AjaxPn']));
+            $pnList = json_encode($Article->get_pn_from_liaison($_POST['AjaxPn']));
+            
             echo $pnList;
             
         }

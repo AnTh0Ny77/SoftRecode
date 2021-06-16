@@ -324,6 +324,15 @@ if (!empty($_POST['devis']) && empty($_POST['boolModif']))
     {
         $General->updateAll('cmd_ligne' ,1  , 'cmdl__actif' , 'cmdl__id' , $newLines);
     }
+    //gere le pn : 
+    if ($_POST['pn_select'] != '0') 
+    {
+        $General->updateAll('cmd_ligne', $_POST['pn_select'], 'cmdl__pn', 'cmdl__id', $newLines);
+    } 
+    else 
+    {
+        $General->updateAll('cmd_ligne', null , 'cmdl__pn', 'cmdl__id', $newLines);
+    }
 
     //extension de garanties : 
     foreach ($_POST['xtendP'] as $key => $value) 
@@ -375,6 +384,16 @@ if (!empty($_POST['boolModif']) )
         $General->updateAll('cmd_ligne' , floatval($_POST['prix']) , 'cmdl__puht' , 'cmdl__id' , $_POST['boolModif']);
         $General->updateAll('cmd_ligne' , $_POST['commentaire'] , 'cmdl__note_client' , 'cmdl__id' , $_POST['boolModif']);
         $General->updateAll('cmd_ligne' , $_POST['interne'] , 'cmdl__note_interne' , 'cmdl__id' , $_POST['boolModif']);
+
+        if ($_POST['pn_select'] != '0' ) 
+        {
+            $General->updateAll('cmd_ligne', $_POST['pn_select'] , 'cmdl__pn', 'cmdl__id', $_POST['boolModif']);
+        }
+        else 
+        {
+            $General->updateAll('cmd_ligne', null , 'cmdl__pn', 'cmdl__id', $_POST['boolModif']);
+        }
+
         //affichage de l'état : 
         if(!empty($_POST['checkEtat'])) 
         {

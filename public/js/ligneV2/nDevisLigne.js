@@ -21,6 +21,90 @@ $(document).ready(function()
 		});				    
     }
 
+	let get_pn_and_refresh = function()
+	{
+		let modele = $('#fmm').children("option:selected").val();
+		$.ajax(
+			{
+				type: 'post',
+				url: "AjaxPn",
+				data:
+				{
+					"AjaxPn": modele
+				},
+				success: function (data) {
+
+					dataSet = JSON.parse(data);
+					
+
+					if ( dataSet.length > 0 )
+					{
+						
+						$('#wrapper-pn').removeClass('d-none');
+						$('#pn-select').find('option').remove();
+						$('#pn-select').selectpicker('refresh');
+						$("#pn-select").append(new Option('Non spécifié', '0'))
+						for (let index = 0; index < dataSet.length; index++)
+						{
+							$("#pn-select").append(new Option(dataSet[index].id__pn, dataSet[index].id__pn))	
+						}
+						
+						$('#pn-select').selectpicker('refresh')
+						$('#pn-select').selectpicker('val', '0');
+					}
+					else
+					{
+						$('#pn-select').find('option').remove();
+						$("#pn-select").append(new Option('Non spécifié', '0'))
+						$('#pn-select').selectpicker('refresh')
+						$('#pn-select').selectpicker('val', '0');
+						$('#wrapper-pn').addClass('d-none');
+					}
+
+				},
+				error: function (err) {
+					console.log('error: ', err);
+				}
+			})
+
+	}
+
+	let get_pn_line_and_refresh = function()
+	{
+		let id_ligne = $('#boolModif').val();
+		$.ajax(
+			{
+				type: 'post',
+				url: "Ajax-pn-ligne",
+				data:
+				{
+					"ligneID": id_ligne
+				},
+				success: function (data) {
+
+					dataSet = JSON.parse(data);
+					console.log(dataSet);
+					if (dataSet.length > 0) 
+					{
+
+					}
+					else 
+					{
+					
+					}
+
+				},
+				error: function (err) {
+					console.log('error: ', err);
+				}
+			})
+		
+	}
+
+	if ($('#boolModif').length > 0 )
+	{
+		get_pn_line_and_refresh();
+	}
 
     if ($('#comInterne').length) 
     {
@@ -45,7 +129,9 @@ $(document).ready(function()
 //selection de l'article dans le select ( Ajax recupère la désignation commerciale si existante)
 $('#fmm').on('change', function()
 {
+
     var selectedArticle = $(this).children("option:selected").text();
+	get_pn_and_refresh();
     var id_fmm = $(this).children("option:selected").val();
 	$.ajax(
 	    {
@@ -59,7 +145,7 @@ $('#fmm').on('change', function()
 		{
 		    
 		    dataSet = JSON.parse(data); 
-		    console.log(dataSet);
+		    
 		    if (dataSet.afmm__design_com != null) 
 		    {
 			$("#designation").val(dataSet.afmm__design_com);

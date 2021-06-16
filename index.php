@@ -224,6 +224,9 @@
 		case '/SoftRecode/AjaxPn';
 			require __DIR__ .'/pages/ajax/ajaxPn.php'; break;
 
+		case '/SoftRecode/Ajax-pn-ligne';
+			require __DIR__ . '/pages/ajax/ajax_line_pn_list.php';break;	
+
 		case '/SoftRecode/Ajax_search_client';
 			require __DIR__ .'/pages/ajax/ajax_search_client.php'; break;
 
