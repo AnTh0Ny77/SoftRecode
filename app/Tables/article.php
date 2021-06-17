@@ -327,15 +327,24 @@ class Article extends Table
 		return $data;
   }
 
-  public function get_line_pn_and_return_liaison_list($id_ligne)
+  public function get_line_pn_and_return_liaison_list($id_ligne) : array 
   {
-		$SQL = 'SELECT c.cmdl__id__fmm , c.cmdl__pn , l.id__pn
+	  	$response = [] ; 
+		$SQL = 'SELECT c.cmdl__id__fmm , c.cmdl__pn 
 		FROM cmd_ligne as c 
-		LEFT JOIN liaison_fmm_pn as l  ON c.cmdl__id__fmm = l.id__fmm
-		WHERE cmdl__id = ' . $id_ligne . ' ORDER BY id__pn';
+		WHERE cmdl__id = ' . $id_ligne . '';
+		$request = $this->Db->Pdo->query($SQL);
+		$ligne = $request->fetch(PDO::FETCH_OBJ);
+
+		$SQL = 'SELECT * 
+		FROM liaison_fmm_pn 
+		WHERE id__fmm = ' . $ligne->cmdl__id__fmm . ' ';
 		$request = $this->Db->Pdo->query($SQL);
 		$data = $request->fetchAll(PDO::FETCH_OBJ);
-		return $data;
+
+		array_push($response , $ligne ); 
+		array_push($response , $data );
+		return $response;
   }
 
   public function get_pn_byID($pn_name)

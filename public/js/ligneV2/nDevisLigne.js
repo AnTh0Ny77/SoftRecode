@@ -72,7 +72,7 @@ $(document).ready(function()
 	let get_pn_line_and_refresh = function()
 	{
 		let id_ligne = $('#boolModif').val();
-		$.ajax(
+			$.ajax(
 			{
 				type: 'post',
 				url: "Ajax-pn-ligne",
@@ -80,25 +80,38 @@ $(document).ready(function()
 				{
 					"ligneID": id_ligne
 				},
-				success: function (data) {
-
+				success: function (data) 
+				{
 					dataSet = JSON.parse(data);
 					console.log(dataSet);
-					if (dataSet.length > 0) 
+					if (dataSet[1].length > 0) 
 					{
+						$('#wrapper-pn').removeClass('d-none');
+						$('#pn-select').find('option').remove();
+						$('#pn-select').selectpicker('refresh');
+						$("#pn-select").append(new Option('Non spécifié', '0'))
 
-					}
-					else 
-					{
-					
-					}
+						for (let index = 0; index < dataSet[1].length; index++)
+						{
+								$("#pn-select").append(new Option(dataSet[1][index].id__pn, dataSet[1][index].id__pn))	
 
+						}
+						$('#pn-select').selectpicker('refresh');	
+						if (dataSet[0].cmdl__pn != null )
+						{
+								$('#pn-select').selectpicker('val', dataSet[0].cmdl__pn);
+						}
+						else 
+						{
+								$('#pn-select').selectpicker('val', '0');
+						}
+								
+					}
 				},
 				error: function (err) {
 					console.log('error: ', err);
 				}
 			})
-		
 	}
 
 	if ($('#boolModif').length > 0 )

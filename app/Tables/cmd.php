@@ -2563,9 +2563,9 @@ class Cmd extends Table
           OR c.client__societe LIKE '%" . $mots_filtre[$i] . "%' 
           OR c.client__id = '" . $mots_filtre[$i] . "' ) ";
       }
-      $request .= "ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
+      $request .= " AND  ( cmd__etat != 'PBL' )  ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
     } else {
-      $request .=  "ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
+      $request .=  " AND  ( cmd__etat != 'PBL' )  ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
     }
 
     $send = $this->Db->Pdo->query($request);
@@ -2714,9 +2714,9 @@ class Cmd extends Table
           OR c.client__societe LIKE '%" . $mots_filtre[$i] . "%' 
           OR c.client__id = '" . $mots_filtre[$i] . "' ) ";
       }
-      $request .= "AND ( cmd__user__id_devis = '" . $user . "' ) ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
+      $request .= " AND  ( cmd__etat != 'PBL' )  AND ( cmd__user__id_devis = '" . $user . "' ) ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
     } else {
-      $request .=  "AND ( cmd__user__id_devis = '" . $user . "' ) ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
+      $request .=  "  AND  ( cmd__etat != 'PBL' )  AND ( cmd__user__id_devis = '" . $user . "' ) ORDER BY  cmd__date_devis DESC ,  c.client__societe ASC LIMIT 200  ";
     }
 
     $send = $this->Db->Pdo->query($request);
