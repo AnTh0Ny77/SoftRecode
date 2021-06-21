@@ -1519,10 +1519,12 @@ class Cmd extends Table
   k2.kw__lib as prestaLib,
   k3.kw__info as groupe_famille,
   k3.kw__lib as famille__lib,
-  a.am__marque as marque
+  a.am__marque as marque ,
+  p.apn__pn_long, p.apn__image
   FROM cmd_ligne 
   LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
   LEFT JOIN keyword as k2 ON cmdl__prestation = k2.kw__value AND k2.kw__type = 'pres'
+  LEFT JOIN art_pn as p ON cmdl__pn = p.apn__pn
   LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
   LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
   LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
@@ -1530,10 +1532,13 @@ class Cmd extends Table
   ORDER BY devl__ordre ");
 
     $data = $request->fetchAll(PDO::FETCH_OBJ);
-    foreach ($data as $ligne) {
-      if (!empty($ligne->ligne_image)) {
-        $ligne->ligne_image = base64_encode($ligne->ligne_image);
-      }
+    foreach ($data as $ligne) 
+    {
+        if (!empty($ligne->ligne_image)) 
+          $ligne->ligne_image = base64_encode($ligne->ligne_image);
+
+        if (!empty($ligne->apn__image)) 
+          $ligne->apn__image = base64_encode($ligne->apn__image);
     }
     return $data;
   }
@@ -1561,12 +1566,14 @@ class Cmd extends Table
   f.afmm__modele as modele, f.afmm__image as ligne_image , 
   k2.kw__lib as prestaLib,
   k3.kw__info as groupe_famille,
+  p.apn__pn_long, p.apn__image, 
   k3.kw__lib as famille__lib,
   a.am__marque as marque
   FROM cmd_ligne 
   LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
   LEFT JOIN keyword as k2 ON cmdl__prestation = k2.kw__value AND k2.kw__type = 'pres'
   LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
+  LEFT JOIN art_pn as p ON cmdl__pn = p.apn__pn
   LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
   LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
   WHERE cmdl__cmd__id = " . $id . " 
@@ -1685,11 +1692,13 @@ class Cmd extends Table
   k2.kw__lib as prestaLib,
   k3.kw__info as groupe_famille,
   k3.kw__lib as famille__lib,
-  a.am__marque as marque
+  a.am__marque as marque, 
+  p.apn__pn_long, p.apn__image
   FROM cmd_ligne 
   LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
   LEFT JOIN keyword as k2 ON cmdl__prestation = k2.kw__value AND k2.kw__type = 'pres'
   LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
+  LEFT JOIN art_pn as p ON cmdl__pn = p.apn__pn
   LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
   LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
   WHERE cmdl__cmd__id = " . $id . " AND cmdl__actif > 0 AND cmdl__sous_ref IS NULL

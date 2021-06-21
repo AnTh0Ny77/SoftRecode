@@ -177,8 +177,12 @@
                                 <label class="custom-control-label" for="checkImage">Inclure image <i id="hover_image" class="fas fa-image-polaroid d-none"></i></label>
                             </div>
                         {% endif %}
+                            <div class="custom-control custom-checkbox d-none" id="div_pn">
+                                <input type="checkbox" class="custom-control-input" id="checkImagePn" name='checkImagePn' value='ok'>
+                                <label class="custom-control-label" for="checkImagePn">Inclure image pn <i id="hover_image_pn" class="fas fa-image-polaroid d-none"></i></label>
+                            </div>
                         {% if modif.cmdl__actif <  1 and modif  %}
-                            <div class="custom-control custom-checkbox ">
+                            <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="checkactif" name='checkactif' value='ok' checked>
                                 <label class="custom-control-label" for="checkactif" >Inactif</label>
                             </div>
@@ -308,13 +312,19 @@
                             <i class="fas fa-toggle-off"></i>
                         </button>
                     {% endif %}
-                        <span class="badge badge-secondary">{{ligne.prestaLib}}</span> <b> Quantité : 
+                        <span class="badge badge-secondary">{{ligne.prestaLib}} </span> <b> Quantité : 
                         
                         <custom-button value="{{ligne.devl__id}}" target="{{ligne.devl_quantite}}"></custom-button>
                        </b> 
                     </h5>
                     <h5 class="card-subtitle  text-muted mb-1" >
                         {{ ligne.devl__designation}}
+
+                        {% if ligne.devl__modele %}
+                            <br>
+                           PN:  <b>{{ ligne.apn__pn_long}}</b>
+                        {% endif %}
+
                     </h5>
                     <div class="d-flex flex-row">
                      {% if ligne.devl__note_client %}
@@ -464,6 +474,11 @@
                                 </h5>
                                 <h5 class="card-subtitle  text-muted mb-1" >
                                     {{  sous_ref.devl__designation}}
+
+                                        {% if sous_ref.devl__modele %}
+                                                <br>
+                                            PN:  <b>{{ sous_ref.apn__pn_long}}</b>
+                                    {% endif %}
                                 </h5>
                                 <div class="d-flex flex-row">
                                     <div class="mx-1 text-primary">

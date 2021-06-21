@@ -93,7 +93,8 @@ $(document).ready(function()
 
 						for (let index = 0; index < dataSet[1].length; index++)
 						{
-								$("#pn-select").append(new Option(dataSet[1][index].id__pn, dataSet[1][index].id__pn))	
+						
+								$("#pn-select").append(new Option(dataSet[1][index].apn__pn_long, dataSet[1][index].id__pn))	
 
 						}
 						$('#pn-select').selectpicker('refresh');	
@@ -113,6 +114,48 @@ $(document).ready(function()
 				}
 			})
 	}
+
+	//check quand un changement à lieu sur le select du pn si une photo est disponible :  
+
+	let check_pn_photo = function()
+	{
+		$("#pn-select").on('change' , function()
+		{
+			
+			var id_pn = $(this).children("option:selected").val();
+			if (id_pn && id_pn != '0') 
+			{
+				$.ajax(
+					{
+						type: 'post',
+						url: "Ajax-pn-id",
+						data:
+						{
+							"pn_id": id_pn
+						},
+						success: function (data) 
+						{
+							console.log(data);
+							dataSet = JSON.parse(data);
+							
+							if(dataSet.apn__image != null ) 
+							{
+								$('#div_pn').removeClass('d-none');			
+							}
+							else 
+							{
+								$('#div_pn').addClass('d-none');	
+							}
+						},
+						error: function (err) {
+							console.log('error: ', err);
+						}
+					})
+			}
+		})
+	}
+
+	check_pn_photo();
 
 	if ($('#boolModif').length > 0 )
 	{

@@ -330,21 +330,45 @@ class Article extends Table
   public function get_line_pn_and_return_liaison_list($id_ligne) : array 
   {
 	  	$response = [] ; 
-		$SQL = 'SELECT c.cmdl__id__fmm , c.cmdl__pn 
+		$SQL = 'SELECT c.cmdl__id__fmm , c.cmdl__pn  
 		FROM cmd_ligne as c 
 		WHERE cmdl__id = ' . $id_ligne . '';
 		$request = $this->Db->Pdo->query($SQL);
 		$ligne = $request->fetch(PDO::FETCH_OBJ);
 
-		$SQL = 'SELECT * 
-		FROM liaison_fmm_pn 
+		$SQL = 'SELECT l.* , p.apn__pn_long , p.apn__image
+		FROM liaison_fmm_pn as l 
+		LEFT JOIN art_pn as p ON p.apn__pn = l.id__pn
 		WHERE id__fmm = ' . $ligne->cmdl__id__fmm . ' ';
 		$request = $this->Db->Pdo->query($SQL);
 		$data = $request->fetchAll(PDO::FETCH_OBJ);
 
+		foreach ($data as $value) 
+		{
+			if (!empty($value->apn__image)) 
+			{
+				$value->apn__image = base64_encode($value->apn__image);
+			}
+			
+		}
+
 		array_push($response , $ligne ); 
 		array_push($response , $data );
 		return $response;
+  }
+
+  public function get_pn($pn_name)
+  {
+		$SQL = 'SELECT a.* 
+		FROM art_pn as a  
+		WHERE apn__pn = "'. $pn_name .'"';
+		$request = $this->Db->Pdo->query($SQL);
+		$data = $request->fetch(PDO::FETCH_OBJ);
+
+		if (!empty($data->apn__image))
+			$data->apn__image = base64_encode($data->apn__image);
+
+		return $data;
   }
 
   public function get_pn_byID($pn_name)
@@ -359,7 +383,12 @@ class Article extends Table
 		WHERE apn__pn = "'. $pn_court .'"';
 		$request = $this->Db->Pdo->query($SQL);
 		$data = $request->fetch(PDO::FETCH_OBJ);
+
+		if (!empty($data->apn__image))
+				$data->apn__image = base64_encode($data->apn__image);
+				
 		return $data;
+
   }
 
   public function find_by_liaison(string $pn_id )
