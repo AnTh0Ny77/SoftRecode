@@ -172,6 +172,13 @@
                                                                         <strong class="font-italic" >
                                                                                         {{  ligne.devl__designation}}          
                                                                         </strong>
+                                                                        {% if ligne.devl__modele %}
+                                                                                <br>
+                                                                                <strong class="font-bold">
+                                                                                PN:    {{ ligne.apn__pn_long}}
+                                                                                </strong>
+                                                                                
+                                                                        {% endif %}
                                                                 </h6>
                                                                
                                                                 <div class="d-flex flex-column ">
@@ -260,6 +267,13 @@
                                                                                         <strong class="font-italic">
                                                                                                 {{ sous_ref.devl__designation}}
                                                                                         </strong>
+                                                                                        {% if sous_ref.devl__modele %}
+                                                                                        <br>
+                                                                                        <strong class="font-bold">
+                                                                                                PN: {{ sous_ref.apn__pn_long}}
+                                                                                        </strong>
+                                                                                        
+                                                                                        {% endif %}
                                                                                 </h6>
                                                         
                                                                                 <div class="d-flex flex-column ">

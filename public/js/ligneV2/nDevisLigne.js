@@ -155,7 +155,7 @@ $(document).ready(function()
 		})
 	}
 
-	check_pn_photo();
+	// check_pn_photo();
 
 	if ($('#boolModif').length > 0 )
 	{

@@ -177,10 +177,10 @@
                                 <label class="custom-control-label" for="checkImage">Inclure image <i id="hover_image" class="fas fa-image-polaroid d-none"></i></label>
                             </div>
                         {% endif %}
-                            <div class="custom-control custom-checkbox d-none" id="div_pn">
+                            <!-- <div class="custom-control custom-checkbox d-none" id="div_pn">
                                 <input type="checkbox" class="custom-control-input" id="checkImagePn" name='checkImagePn' value='ok'>
                                 <label class="custom-control-label" for="checkImagePn">Inclure image pn <i id="hover_image_pn" class="fas fa-image-polaroid d-none"></i></label>
-                            </div>
+                            </div> -->
                         {% if modif.cmdl__actif <  1 and modif  %}
                             <div class="custom-control custom-checkbox">
                                 <input type="checkbox" class="custom-control-input" id="checkactif" name='checkactif' value='ok' checked>
@@ -645,6 +645,13 @@
                                 {% endfor %}
                             </select> 
                         </div>
+                        <div class="d-none mt-2 form-group" id="wrapper-pn-sr">
+                            <label for="pn-select-sr"><b>PN :</b></label>
+                            <select class="  border selectpicker col-12" data-live-search="true" data-size="10" data-width="100%"
+                                name="pn_select-sr" id="pn-select-sr">
+                                <option class="optionSelect " value="0">Non spécifié</option>
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label><b>Désignation sur le devis/facture:</b></label>
                               <input type="text" class="form-control"  id="designation_sous_ref" name="designation_sous_ref" required>
@@ -697,6 +704,13 @@
                                         <option class="optionSelect modelSelect" value={{article.afmm__id}}>{{article.afmm__modele   ~ " " ~ article.famille ~ " " ~ article.Marque }}</option>
                                 {% endfor %}
                             </select> 
+                        </div>
+                        <div class="d-none mt-2 form-group" id="wrapper-pn-sr-m">
+                            <label for="pn-select-sr-m"><b>PN :</b></label>
+                            <select class="  border selectpicker col-12" data-live-search="true" data-size="10" data-width="100%"
+                                name="pn_select-sr-m" id="pn-select-sr-m">
+                                <option class="optionSelect " value="0">Non spécifié</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label><b>Désignation sur le devis/facture:</b></label>

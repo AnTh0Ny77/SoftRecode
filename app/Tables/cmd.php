@@ -1633,11 +1633,13 @@ class Cmd extends Table
   k2.kw__lib as prestaLib,
   k3.kw__info as groupe_famille,
   k3.kw__lib as famille__lib,
-  a.am__marque as marque
+  a.am__marque as marque,
+  p.apn__pn_long, p.apn__image
   FROM cmd_ligne 
   LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
   LEFT JOIN keyword as k2 ON cmdl__prestation = k2.kw__value AND k2.kw__type = 'pres'
   LEFT JOIN art_fmm as f ON afmm__id = cmdl__id__fmm
+  LEFT JOIN art_pn as p ON cmdl__pn = p.apn__pn
   LEFT JOIN keyword as k3 ON f.afmm__famille = k3.kw__value AND k3.kw__type = 'famil'
   LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
   WHERE cmdl__cmd__id = " . $id . " AND cmdl__actif > 0

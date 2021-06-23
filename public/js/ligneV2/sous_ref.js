@@ -18,7 +18,7 @@ $(document).ready(function()
                     dataSet = JSON.parse(data);
                     $('#select_sous_ref').selectpicker('val' , dataSet.id__fmm);
                     $('#quantite_sous_ref').val( dataSet.devl_quantite);
-                   
+                    get_pn_sousRef_and_refresh();
                 },
                 error: function (err) 
                 {
@@ -51,6 +51,7 @@ $(document).ready(function()
                         $("#designation_sous_ref").val(selectedArticle);
                     }
 
+                    get_pn_sousRef_and_refresh();
                 },
                 error: function (err) {
                     $("#designation_sous_ref").val(selectedArticle);
@@ -82,7 +83,7 @@ $(document).ready(function()
                     else {
                         $("#designation_modif_sous_ref").val(selectedArticle);
                     }
-
+                    get_pn_sousRef_M_and_refresh();
                 },
                 error: function (err) {
                     $("#designation_modif_sous_ref").val(selectedArticle);
@@ -131,6 +132,7 @@ $(document).ready(function()
                 {
                     //prérempli les champs avec les infos récupérées
                     dataSet = JSON.parse(data);
+                  
                     $('#select_modif_sous_ref').selectpicker('val' , dataSet.id__fmm);
                     $('#input_modif_sous_ref').val(dataSet.devl__id);
                     $('#input_modif_sous_ref_cmd').val(dataSet.cmdl__cmd__id);
@@ -144,6 +146,9 @@ $(document).ready(function()
                         $('#modif_sous_ref_garantie').prop('checked', true);
                     }
                     else $('#modif_sous_ref_garantie').prop('checked', false );
+
+
+                    get_pn_line_sr_and_refresh(id_ligne);
                  
                 },
                 error: function (err) 
@@ -154,6 +159,139 @@ $(document).ready(function()
 
         $('#modal_modif_sous_ref').modal('show');
     })
+
+
+    let get_pn_sousRef_and_refresh = function () {
+        let modele = $('#select_sous_ref').children("option:selected").val();
+        $.ajax(
+            {
+                type: 'post',
+                url: "AjaxPn",
+                data:
+                {
+                    "AjaxPn": modele
+                },
+                success: function (data) {
+
+                    dataSet = JSON.parse(data);
+
+
+                    if (dataSet.length > 0) {
+
+                        $('#wrapper-pn-sr').removeClass('d-none');
+                        $('#pn-select-sr').find('option').remove();
+                        $('#pn-select-sr').selectpicker('refresh');
+                        $("#pn-select-sr").append(new Option('Non spécifié', '0'))
+                        for (let index = 0; index < dataSet.length; index++) {
+                            $("#pn-select-sr").append(new Option(dataSet[index].id__pn, dataSet[index].id__pn))
+                        }
+
+                        $('#pn-select-sr').selectpicker('refresh')
+                        $('#pn-select-sr').selectpicker('val', '0');
+                    }
+                    else {
+                        $('#pn-select-sr').find('option').remove();
+                        $("#pn-select-sr").append(new Option('Non spécifié', '0'))
+                        $('#pn-select-sr').selectpicker('refresh')
+                        $('#pn-select-sr').selectpicker('val', '0');
+                        $('#wrapper-pn-sr').addClass('d-none');
+                    }
+
+                },
+                error: function (err) {
+                    console.log('error: ', err);
+                }
+            })
+
+    }
+
+
+    let get_pn_sousRef_M_and_refresh = function () {
+        let modele = $('#select_modif_sous_ref').children("option:selected").val();
+        $.ajax(
+            {
+                type: 'post',
+                url: "AjaxPn",
+                data:
+                {
+                    "AjaxPn": modele
+                },
+                success: function (data) {
+
+                    console.log(data)
+                    dataSet = JSON.parse(data);
+
+
+                    if (dataSet.length > 0) {
+
+                        $('#wrapper-pn-sr-m').removeClass('d-none');
+                        $('#pn-select-sr-m').find('option').remove();
+                        $('#pn-select-sr-m').selectpicker('refresh');
+                        $("#pn-select-sr-m").append(new Option('Non spécifié', '0'))
+                        for (let index = 0; index < dataSet.length; index++) {
+                            $("#pn-select-sr-m").append(new Option(dataSet[index].id__pn, dataSet[index].id__pn))
+                        }
+
+                        $('#pn-select-sr-m').selectpicker('refresh')
+                        $('#pn-select-sr-m').selectpicker('val', '0');
+                    }
+                    else {
+                        $('#pn-select-sr-m').find('option').remove();
+                        $("#pn-select-sr-m").append(new Option('Non spécifié', '0'))
+                        $('#pn-select-sr-m').selectpicker('refresh')
+                        $('#pn-select-sr-m').selectpicker('val', '0');
+                        $('#wrapper-pn-sr-m').addClass('d-none');
+                    }
+
+                },
+                error: function (err) {
+                    console.log('error: ', err);
+                }
+            })
+
+    }
+
+    //ouverture du modal de modif : pn 
+    let get_pn_line_sr_and_refresh = function (idLigne) {
+        let id_ligne = idLigne
+       
+        $.ajax(
+            {
+                type: 'post',
+                url: "Ajax-pn-ligne",
+                data:
+                {
+                    "ligneID": id_ligne
+                },
+                success: function (data) {
+                    dataSet = JSON.parse(data);
+                    console.log(dataSet);
+                    if (dataSet[1].length > 0) {
+                        $('#wrapper-pn-sr-m').removeClass('d-none');
+                        $('#pn-select-sr-m').find('option').remove();
+                        $('#pn-select-sr-m').selectpicker('refresh');
+                        $("#pn-select-sr-m").append(new Option('Non spécifié', '0'))
+
+                        for (let index = 0; index < dataSet[1].length; index++) {
+
+                            $("#pn-select-sr-m").append(new Option(dataSet[1][index].apn__pn_long, dataSet[1][index].id__pn))
+
+                        }
+                        $('#pn-select-sr-m').selectpicker('refresh');
+                        if (dataSet[0].cmdl__pn != null) {
+                            $('#pn-select-sr-m').selectpicker('val', dataSet[0].cmdl__pn);
+                        }
+                        else {
+                            $('#pn-select-sr-m').selectpicker('val', '0');
+                        }
+
+                    }
+                },
+                error: function (err) {
+                    console.log('error: ', err);
+                }
+            })
+    }
 
     //fermeture du modal de modif 
     $('#close_modal_modif_sous_ref').on('click' ,function()

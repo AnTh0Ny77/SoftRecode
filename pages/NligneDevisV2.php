@@ -243,6 +243,16 @@ if (!empty($_POST['input_id_ref']) && !empty($_POST['select_sous_ref']) && !empt
    {
         $General->updateAll('cmd_ligne' , 1 , 'cmdl__sous_garantie' , 'cmdl__id' , $daugther_line);
    }
+
+   if ($_POST['pn_select-sr']!= '0') 
+   {
+        $General->updateAll('cmd_ligne', $_POST['pn_select-sr'], 'cmdl__pn', 'cmdl__id', $daugther_line);
+   }
+   else 
+   {
+        $General->updateAll('cmd_ligne', null, 'cmdl__pn', 'cmdl__id', $daugther_line);
+   }
+  
    $idDevis = $mother_line->cmdl__cmd__id;
   
 }
@@ -261,6 +271,15 @@ if (!empty($_POST['input_modif_sous_ref']) && !empty($_POST['input_modif_sous_re
     else 
     {
         $General->updateAll('cmd_ligne', 0 , 'cmdl__sous_garantie', 'cmdl__id', $_POST['input_modif_sous_ref']);
+    }
+
+    if ($_POST['pn_select-sr-m']!= '0') 
+    {
+        $General->updateAll('cmd_ligne', $_POST['pn_select-sr-m'], 'cmdl__pn', 'cmdl__id', $_POST['input_modif_sous_ref']);
+    }
+    else 
+    {
+        $General->updateAll('cmd_ligne', null, 'cmdl__pn', 'cmdl__id', $_POST['input_modif_sous_ref']);
     }
     $idDevis = $_POST['input_modif_sous_ref_cmd'];
     

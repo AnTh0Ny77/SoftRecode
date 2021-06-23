@@ -138,6 +138,10 @@
 		case '/SoftRecode/commande';
 			require __DIR__ .'/pages/commandValid.php'; break;
 
+		case '/SoftRecode/etiquettes';
+			require __DIR__ . '/pages/etiquettes.php';break;
+			
+
 		case '/SoftRecode/validation_devis';
 			require __DIR__ .'/pages/validation_devis_v2.php'; break;
 		
