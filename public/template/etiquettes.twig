@@ -13,6 +13,136 @@
         <h1 class="h2"> Demande d'étiquettes</b></h1>
     </div>
 
+    <div class="container">
+        <form action="etiquettes" method="POST">
+            <div class="my-3">
+                
+                    <label for="client"><b>Client *</b></label>
+                    <select class="border selectpicker"  data-live-search="true"  data-width="100%" name="client" id='client' required>
+                        {% for client in client_list %}
+                        
+                        <option class="optionSelect modelSelect" value={{client.client__id}}>{{client.client__societe ~ " " ~ client.client__ville ~ " "
+                            ~ client.client__cp }}</option>
+                        {% endfor %}
+                    </select>
+            </div>
+            <div class="my-3">
+            
+                <label for="model"><b>Modele *</b></label>
+                <select class="border selectpicker" data-live-search="true" data-width="100%" name="modele" id='modele' required>
+                    {% for article in article_list %}
+                    
+                    <option class="optionSelect modelSelect" value={{article.afmm__id}}>{{article.afmm__modele ~ " " ~ article.famille ~ " "
+                        ~ article.Marque }}
+                    </option>
+                   
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="my-3">
+            
+                <label for="Thermique"><b>Thermique *</b></label>
+                <select class="border selectpicker" data-live-search="true" data-width="100%" name="Thermique" id='Thermique' required>
+                    
+                    <option class="optionSelect modelSelect" value="transfert-t">
+                        Transfert Thermique 
+                    </option>
+                    <option class="optionSelect modelSelect" value="direct-t">
+                        Direct Thermique
+                    </option>
+            
+                    
+                </select>
+            </div>
+            <div class="my-3">
+                <label for="matiere"><b>Matière *</b></label>
+                <select class="border selectpicker" data-live-search="true" data-width="100%" name="matiere" id='matiere' required>
+            
+                    <option class="optionSelect modelSelect" value="transfert-t">
+                        Papier
+                    </option>
+                    <option class="optionSelect modelSelect" value="direct-t">
+                        Synthétique
+                    </option>
+                </select>
+            </div>
+            <div class="my-3">
+                <div class="d-flex my-3">
+                    <div class="col-6 my-3">
+                        <label for="Thermique"><b>Longueur en millimètre *</b></label>
+                        <input type="number" step="0.01" name="longueur" required>
+                    </div>
+                    <div class="col-6 my-3">
+                        <label for="Thermique"><b>Hauteur en millimètre *</b></label>
+                        <input type="number" step="0.01" name="hauteur" required>
+                    </div>
+                </div>
+            </div>
+          
+            <div class="my-3 d-flex">
+                <div class="col-6 my-3">
+                    <label for="matiere-ruban"><b>Matière Ruban *</b></label>
+                    <select class="border selectpicker" data-live-search="true" data-width="100%" name="matiere-ruban" id='matiere-ruban' required>
+                    
+                        <option class="optionSelect modelSelect" value="Cire">
+                            Cire
+                        </option>
+                        <option class="optionSelect modelSelect" value="Cire-R">
+                            Cire Résine
+                        </option>
+                        <option class="optionSelect modelSelect" value="Résine">
+                            Résine
+                        </option>
+                    </select>
+                </div>
+                <div class="col-6 my-3">
+                    <label for="Colle"><b>Colle *</b></label>
+                    <select class="border selectpicker" data-live-search="true" data-width="100%" name="colle" id='colle' required>
+                
+                        <option class="optionSelect modelSelect" value="permanent">
+                            Permanent
+                        </option>
+                        <option class="optionSelect modelSelect" value="Repositionnable">
+                            Repositionnable
+                        </option>
+                        <option class="optionSelect modelSelect" value="Sans">
+                            Sans
+                        </option>
+                    </select>
+                </div>
+                
+            </div>
+            <div class="my-3 d-flex">
+                
+                <div class="col-12 my-3">
+                    <div class="alert alert-info" role="alert">
+                        <i class="fas fa-info"></i> Le champs de texte doit etre utilisé pour spécifier : <br>
+                        Les utilisations spécifiques ou les spécification de forme - couleur ou autres en cas d'exeptions
+                    
+                    </div>
+                    <label for="Text"><b>Utilisation/Spécification</b></label>
+                    <textarea class="editor"  rows="2" name="text" id="text">
+
+                    </textarea>
+                </div>
+            </div>
+            <div class="my-3 d-flex">
+                <div class="col-12 my-3">
+                    <div class="alert alert-warning" role="alert">
+                        <i class="far fa-exclamation-triangle"></i> Aprés la validation la demande est automatiquement envoyée par
+                        e-mail et ne sera plus modifiable
+                    </div>
+                    <button class="btn btn-block btn-success">
+                        Envoyer
+                    </button>
+                
+                
+                </div>
+            </div>
+        </form>
+
+    </div>
+    
    
 </main>
 
@@ -24,5 +154,15 @@
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>^
 <script type="text/javascript" src="public/ckeditor/ckeditor.js"></script>
+<script>
+    $('.editor').each(function () {
+            CKEDITOR.replace(this.id,
+                {
+                    language: 'fr',
+                    removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor',
+                    removeButtons: 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule,Styles,Strike'
+                });
+        })
+</script>
 
 {% endblock %}
