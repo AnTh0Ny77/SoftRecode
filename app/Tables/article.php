@@ -418,7 +418,7 @@ class Article extends Table
 			INSERT INTO liaison_fmm_pn  (id__fmm,		id__pn) 
 			VALUES              (:id__fmm,      :id__pn)");
 			$request->bindValue(":id__fmm", $modele_id);
-			$request->bindValue(":id__pn",  $pn__id);
+			$request->bindValue(":id__pn",  strtoupper($pn__id));
 			$request->execute();
 		}
 		return true;
@@ -431,8 +431,8 @@ class Article extends Table
 		$request = $this->Db->Pdo->prepare("
 		INSERT INTO art_pn  (apn__pn,		apn__pn_long,	 	apn__id_user_modif, 	apn__date_modif) 
 		VALUES              (:apn__pn,      :apn__pn_long,      :apn__id_user_modif,	:apn__date_modif)"); 
-		$request->bindValue(":apn__pn", $pn);
-		$request->bindValue(":apn__pn_long",  $pn_long);
+		$request->bindValue(":apn__pn", strtoupper($pn));
+		$request->bindValue(":apn__pn_long",  strtoupper($pn_long));
 		$request->bindValue(":apn__id_user_modif",  $id_user);
 		$request->bindValue(":apn__date_modif",   date("Y-m-d H:i:s"));
 		$request->execute();
