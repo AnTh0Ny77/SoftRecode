@@ -44,35 +44,91 @@ if (empty($_SESSION['user']->id_utilisateur)) {
     
 
    
-    if (!empty($_POST['client']) && !empty($_POST['modele']) && !empty($_POST['matiere']) && !empty($_POST['Thermique']) &&  !empty($_POST['matiere'])) 
+    if (!empty($_POST['client']) && !empty($_POST['modele']) && !empty($_POST['matiere']) && !empty($_POST['Thermique']) &&  !empty($_POST['matiere-ruban'])) 
     {
+
+        $client = $Client->getOne($_POST['client']);
+
+
+        $modele = $Article->get_article_devis(intval($_POST['modele']));
+
+        $longueur = floatval($_POST['longueur']);
+        $hauteur = floatval($_POST['hauteur']);
+
+        $content = '
+        <ul>
+            <li>
+                    client N°: '. $_POST['client'] . '<br> ' . $client->client__societe . '<br> ' . $client->client__cp . ' ' .  $client->client__ville . '
+            </li>
+
+
+            <li>
+                    Modele :  ' . $modele->kw__lib.' '. $modele->afmm__modele .' ' . $modele->am__marque. '
+            </li>
+
+
+            <li>
+                    Matiere : '. $_POST['matiere'].'
+            </li>
+
+
+            <li>
+                    Thermique :  '. $_POST['Thermique'].'
+            </li>
+
+
+            <li>
+                    Longueur en millimetre :   '.$longueur.'<br>
+                    Hauteur en millimetre  :    '.$hauteur.'
+            </li>
+
+
+            <li> 
+                    Matiere-ruban :  '.$_POST['matiere-ruban'].'
+            </li>
+
+
+            <li> 
+                    Colle : '.$_POST['colle'].'
+            </li>
+
+
+            <li>
+                    Specifications : '.$_POST['text'].'
+            </li>
+
+
+            <li>
+                    Envoye par : ' . $_SESSION['user']->nom . '
+            </li>
+        </ul>';
         //Instantiation and passing `true` enables exceptions
         $mail = new PHPMailer(true);
         try {
             //Server settings
-            $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+            $mail->SMTPDebug = false;
             $mail->isSMTP();
             $mail->Host       = 'mail01.one2net.net';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'anthony.bizien@recode.fr';
-            $mail->Password   = '3Tr9cFG8';
+            $mail->Username   = 'crm@recode.fr';
+            $mail->Password   = '@_YeaJL4';
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = 465;
             //Recipients
-            $mail->setFrom('etiquette@recode.fr', 'Etiquettes');
-            $mail->addAddress('francois.buineau@recode.fr', '');
-            $mail->addBCC('crm@recode.fr');
+            $mail->setFrom('crm@recode.fr', 'Etiquettes');
+            $mail->addAddress('demande.etiquette@recode.fr', '');
             //Content
             $mail->isHTML(true);
 
-             $mail->Subject = 'Demande d\' étiquette de ' . $_SESSION['user']->nom . '';
-             $mail->Body    = '
-             ';
+             $mail->Subject = 'Demande d etiquette de ' . $_SESSION['user']->nom . '';
+             $mail->Body    =  $content;
             $mail->send();
 
         } catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
         }
+
+        $alert = 'Votre demande d \' étiquettes à bien été transmise par mail à : demande.etiquette@recode.fr !   '; 
     }
 
 

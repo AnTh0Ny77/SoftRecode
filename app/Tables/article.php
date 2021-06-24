@@ -541,11 +541,13 @@ public function getModels()
 }
 
 //recupère la désignation commerciale pour les suggestions aux commerciaux lors des devis : 
-public function get_article_devis(int  $id_fmm) : stdClass 
+public function get_article_devis(int  $id_fmm) 
 {
 	$request = $this->Db->Pdo->query(
-	'SELECT afmm__id , afmm__design_com , afmm__image
-	FROM art_fmm
+	'SELECT a.afmm__id , a.afmm__design_com , a.afmm__image , k.kw__lib , a.afmm__modele , m.am__marque 
+	FROM art_fmm as a
+	LEFT JOIN art_marque as m ON a.afmm__marque = m.am__id
+	LEFT JOIN keyword as k on  ( a.afmm__famille = k.kw__value AND  k.kw__type = "famil" ) 
 	WHERE afmm__id = '. $id_fmm.'');
 	$data = $request->fetch(PDO::FETCH_OBJ);
 	return $data;
@@ -556,7 +558,7 @@ public function get_fmm_by_id(int $id_fmm)
 {	
 	if ($id_fmm)
 	{ // je fait la lacture si il y a un ID FMM
-		$sql     = "SELECT * FROM art_fmm WHERE afmm__id = ".$id_fmm;
+		$sql     = "SELECT * FROM art_fmm WHERE afmm__id = ".$id_fmm ;
 		$request = $this->Db->Pdo->query($sql);
 		$data    = $request->fetch(PDO::FETCH_OBJ);
 		if (isset($data->afmm__image))

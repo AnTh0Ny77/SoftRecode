@@ -12,6 +12,12 @@
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
         <h1 class="h2"> Demande d'étiquettes</b></h1>
     </div>
+    {% if alert %}
+    <div class="alert alert-success" role="alert">
+      {{alert}}
+    </div>
+    {% endif %}
+    
 
     <div class="container">
         <form action="etiquettes" method="POST">
@@ -44,10 +50,10 @@
                 <label for="Thermique"><b>Thermique *</b></label>
                 <select class="border selectpicker" data-live-search="true" data-width="100%" name="Thermique" id='Thermique' required>
                     
-                    <option class="optionSelect modelSelect" value="transfert-t">
+                    <option class="optionSelect modelSelect" value="transfert-thermique">
                         Transfert Thermique 
                     </option>
-                    <option class="optionSelect modelSelect" value="direct-t">
+                    <option class="optionSelect modelSelect" value="direct-thermique">
                         Direct Thermique
                     </option>
             
@@ -58,10 +64,10 @@
                 <label for="matiere"><b>Matière *</b></label>
                 <select class="border selectpicker" data-live-search="true" data-width="100%" name="matiere" id='matiere' required>
             
-                    <option class="optionSelect modelSelect" value="transfert-t">
+                    <option class="optionSelect modelSelect" value="Papier">
                         Papier
                     </option>
-                    <option class="optionSelect modelSelect" value="direct-t">
+                    <option class="optionSelect modelSelect" value="Synthétique">
                         Synthétique
                     </option>
                 </select>
@@ -87,7 +93,7 @@
                         <option class="optionSelect modelSelect" value="Cire">
                             Cire
                         </option>
-                        <option class="optionSelect modelSelect" value="Cire-R">
+                        <option class="optionSelect modelSelect" value="Cire-Résine">
                             Cire Résine
                         </option>
                         <option class="optionSelect modelSelect" value="Résine">
@@ -120,7 +126,7 @@
                         Les utilisations spécifiques ou les spécification de forme - couleur ou autres en cas d'exeptions
                     
                     </div>
-                    <label for="Text"><b>Utilisation/Spécification</b></label>
+                    <label for="Text"><b>Utilisation/Spécifications</b></label>
                     <textarea class="editor"  rows="2" name="text" id="text">
 
                     </textarea>
