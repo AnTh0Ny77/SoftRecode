@@ -35,7 +35,7 @@
 !bin/console
 !bin/symfony_requirements
 /vendor/
-
+/public/archive_pdf/
 # Assets and user uploads
 /web/bundles/
 /web/uploads/
