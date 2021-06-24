@@ -58,7 +58,7 @@ if (empty($_SESSION['user']->id_utilisateur)) {
         $content = '
         <ul>
             <li>
-                    client N°: '. $_POST['client'] . '<br> ' . $client->client__societe . '<br> ' . $client->client__cp . ' ' .  $client->client__ville . '
+                    client N : '. $_POST['client'] . '<br> ' . $client->client__societe . '<br> ' . $client->client__cp . ' ' .  $client->client__ville . '
             </li>
 
 
@@ -78,7 +78,7 @@ if (empty($_SESSION['user']->id_utilisateur)) {
 
 
             <li>
-                    Longueur en millimetre :   '.$longueur.'<br>
+                    largeur en millimetre :   '.$longueur.'<br>
                     Hauteur en millimetre  :    '.$hauteur.'
             </li>
 
