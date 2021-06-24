@@ -92,6 +92,7 @@ let addOne = function(table,count,prestation,designation,comClient, comInterne ,
     table.row.add(row).draw( false );
     row = [];
     $('#referenceS').val(designation);
+<<<<<<< HEAD
    
 }
 
@@ -272,3 +273,8 @@ let checkTableRows = function(subject){
 
 
     
+=======
+    count ++; 
+    
+}
+>>>>>>> master

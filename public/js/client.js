@@ -551,10 +551,19 @@ idUtilisateur = $('#idUtilisateur').val();
 
 
 
+<<<<<<< HEAD
      
 // fonction select to text : devis fonction
         selectToText($('#choixDesignation'),$('#referenceS'));
         selectToText($('#UPchoixDesignation'),$('#UPreferenceS'));
+=======
+        // Programme d'ajout de ligne dans le devis : 
+        //traitement du formulaire : 
+        $('#choixDesignation option').on('click', function(){
+            $('#referenceS').val($(this).text());
+        });
+        
+>>>>>>> master
         // extension de garantie : 
         let xtendMois ; 
         let xtendPrix;
@@ -595,11 +604,13 @@ idUtilisateur = $('#idUtilisateur').val();
                 .addClass('list-group-item col-4 d-flex justify-content-between align-items-center').appendTo(ul);
                 let  i =  $('<i></i>').addClass('fal fa-trash-alt btn btn-link deleteParent').val(index).appendTo(li);
             }
+           
         })
       
 // on check l'existance de l'objet au format jSon correspondant pour savoir si le programme exécute une modification de Devis existant  : 
 // ensuite on prérempli la datatable avec les données : 
         counter = 1 ;
+<<<<<<< HEAD
         if ($('#AncienDevis').val()) {
             jsonDataAncienDevis =  JSON.parse($('#AncienDevis').val())
         if (jsonDataAncienDevis != false) {
@@ -650,6 +661,26 @@ idUtilisateur = $('#idUtilisateur').val();
                 focus: false
             } );
             $('#alertLine').addClass('invisible');
+=======
+        $("#addRow").on('click', function(){
+            addOne(
+                devisTable,
+                counter,
+                $("#prestationChoix").val(),
+                $("#referenceS").val(),
+                $("#comClient").val(),
+                $("#comInterne").val(),
+                $("#etatRow").val(),
+                $("#garantieRow").val(),
+                xtendArray,
+                $("#quantiteRow").val(),
+                $("#prixRow").val(),
+                $("#barrePrice").val()
+                );
+            xtendArray = [];
+        });
+        
+>>>>>>> master
            
         })
         
