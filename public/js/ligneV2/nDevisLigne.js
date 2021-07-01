@@ -331,6 +331,9 @@ for (let y = 0; y < arrayBoxClient.length; y++)
   })  
 }
     
+
+
+
     //post le formulaire d'ajout de port automatique : 
     $('.click-port').on('click' , function()
     {
