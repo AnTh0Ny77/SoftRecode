@@ -388,7 +388,6 @@ class Article extends Table
 				$data->apn__image = base64_encode($data->apn__image);
 				
 		return $data;
-
   }
 
   public function find_by_liaison(string $pn_id )
@@ -456,8 +455,6 @@ class Article extends Table
 	$data = $request->fetchAll(PDO::FETCH_OBJ);
 	return $data;
   }
-
-
 
  /*""b8 88""Yb 888888    db    888888        db    88""Yb 888888            888888 8b    d8 8b    d8 
 dP   `" 88__dP 88__     dPYb     88         dPYb   88__dP   88              88__   88b  d88 88b  d88 

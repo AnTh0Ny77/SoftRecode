@@ -90,7 +90,7 @@ class Devis_functions
                     }
                     else
                     {
-                        $prix =  "offert"; 
+                        $prix =  "offert";
                     } 
                     //quantite 
                     $quantité = $ligne->devl_quantite;

@@ -53,7 +53,15 @@ if (empty($_SESSION['user']->id_utilisateur)) {
         $modele = $Article->get_article_devis(intval($_POST['modele']));
 
         $longueur = floatval($_POST['longueur']);
-        $hauteur = floatval($_POST['hauteur']);
+        if (!empty($_POST['hauteur'])) 
+        {
+                $hauteur = floatval($_POST['hauteur']);
+        }
+        else 
+        {
+                $hauteur = 'papier continue';
+        }
+       
 
         $content = '
         <ul>
