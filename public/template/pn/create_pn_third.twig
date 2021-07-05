@@ -9,9 +9,6 @@
 <link rel="stylesheet" href="public/css/stepper.css">
 {% endblock %}
 {% block main %}
-
-
-
 <main role="main" class="container-fluid my-3 col-11 container-body">
     <div class="d-flex justify-content-start">
         <div class="bs-stepper col-11">
@@ -65,10 +62,12 @@
                 </div>
                 <form  enctype="multipart/form-data" action="create-pn-third" method="POST" class="mt-3"  >
                     <input type="hidden" name="pn_id" value="{{pn.apn__pn}}">
-                    <div class="mt-4">
-                        <div class="col-8 my-3 container">
-                            <label for="desc_courte" class="form-label">Nom du PN</label>
-                            <input class="form-control" type="text" value="{{pn.apn__pn_long}}" placeholder="Disabled input" aria-label="Disabled input example" disabled readonly>
+                    <input class="form-control" type="hidden" value="{{pn.apn__pn_long}}" placeholder="Disabled input" aria-label="Disabled input example" disabled readonly>
+                
+                    <div class=" mt-3 text-muted " role="alert">
+                   
+                        <div>
+                            <h3> <i class="fas fa-lock-alt fa-lg"></i> {{pn.apn__pn_long}}</h3><br>
                         </div>
                     </div>
                     <div class="d-flex col-12">
@@ -82,8 +81,8 @@
                         </div>
                         <div class="col-2">
                             <div class="form-control-lg mt-3">
-                                {% if pn.apn__image %}
-                                        <div align=center><img src="data:image/jpeg;base64,{{pn.apn__image|raw}}" width=110></div>
+                                {% if pn.apn__image %} 
+                                        <div align=center><img src="data:image/jpeg;base64,{{pn.apn__image|raw}}" width=110 /></div>
                                     {% else %}
                                         <div align=center><img src="public/img/nophoto.png" width=110></div>
                                 {% endif %}
