@@ -353,7 +353,7 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
                         $mail->Host       = 'mail01.one2net.net';
                         $mail->SMTPAuth   = true;
                         $mail->Username   = 'compta@recode.fr';
-                        $mail->Password   = 'dxa85N#Q';
+                        $mail->Password   = 'P5d@n84G34*Me-Yp';
                         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
                         $mail->Port       = 465;
                         //Recipients
