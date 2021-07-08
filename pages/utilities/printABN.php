@@ -76,9 +76,6 @@ if (empty($_SESSION['user']))
          $date_periode_debut =  date_format($date_periode_debut , '01/m/Y');
          $date_periode_fin =  date_format($date_periode_fin , 't/m/Y');
 
-         
-       
-
         $objectInsert = new stdClass;
         $objectInsert->idDevis = $temp;
         $objectInsert->prestation = $ABN->ab__presta;
