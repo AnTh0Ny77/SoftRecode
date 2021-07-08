@@ -343,6 +343,8 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
 
                 if (!empty($facturation_auto)) 
                 {
+                    $config_json = file_get_contents("vendor/config/security.json");
+                    $config_json = json_decode($config_json);
                     //Instantiation and passing `true` enables exceptions
                     $mail = new PHPMailer(true);
                     try {
@@ -352,8 +354,8 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
                         $mail->isSMTP();
                         $mail->Host       = 'mail01.one2net.net';
                         $mail->SMTPAuth   = true;
-                        $mail->Username   = 'compta@recode.fr';
-                        $mail->Password   = 'dxa85N#Q';
+                        $mail->Username   = $config_json->mail_adress->compta;
+                        $mail->Password   = $config_json->mail_pass->compta;
                         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
                         $mail->Port       = 465;
                         //Recipients
