@@ -22,7 +22,6 @@ if (empty($_SESSION['user']->id_utilisateur)) {
     }
 
     $user = $_SESSION['user'];
-   
     //connexion et requetes :
     $Database = new App\Database('devis');
     $Database->DbConnect();
@@ -37,26 +36,19 @@ if (empty($_SESSION['user']->id_utilisateur)) {
     $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
     $_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
     $clientList = $Client->get_client_devis();
-    $articleList = $Article->getModels();
-
+    $articleList =  $Article->find_models('afmm__famille' , 'ITH');
     $alert = false;
     $alertSuccess = false;
+    $config_json = file_get_contents("vendor/config/security.json");
+    $config_json = json_decode($config_json);
 
-
-
-    
-    
-
-   
     if (!empty($_POST['client']) && !empty($_POST['modele']) && !empty($_POST['matiere']) && !empty($_POST['Thermique']) &&  !empty($_POST['matiere-ruban'])) 
     {
 
         $client = $Client->getOne($_POST['client']);
-
-
         $modele = $Article->get_article_devis(intval($_POST['modele']));
-
         $longueur = floatval($_POST['longueur']);
+
         if (!empty($_POST['hauteur'])) 
         {
                 $hauteur = floatval($_POST['hauteur']);
@@ -66,7 +58,6 @@ if (empty($_SESSION['user']->id_utilisateur)) {
                 $hauteur = 'papier continue';
         }
        
-
         $content = '
         <ul>
             <li>
@@ -122,8 +113,8 @@ if (empty($_SESSION['user']->id_utilisateur)) {
             $mail->isSMTP();
             $mail->Host       = 'mail01.one2net.net';
             $mail->SMTPAuth   = true;
-            $mail->Username   = 'crm@recode.fr';
-            $mail->Password   = '@_YeaJL4';
+            $mail->Username   = $config_json->mail_adress->crm;
+            $mail->Password   = $config_json->mail_pass->crm;
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
             $mail->Port       = 465;
             //Recipients
@@ -142,8 +133,6 @@ if (empty($_SESSION['user']->id_utilisateur)) {
 
         $alert = 'Votre demande d \' étiquettes à bien été transmise par mail à : demande.etiquette@recode.fr !   '; 
     }
-
-
 
     // Donnée transmise au template : 
     echo $twig->render('etiquettes.twig', [

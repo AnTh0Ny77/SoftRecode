@@ -537,6 +537,21 @@ public function getModels()
 	return $data ; 
 }
 
+
+public function find_models( string $find_by , string  $value) : array
+{
+	$request = $this->Db->Pdo->query(
+	'SELECT afmm__id , afmm__modele, k.kw__lib as famille , m.am__marque as Marque
+	FROM art_fmm
+	INNER JOIN art_marque as m ON afmm__marque = m.am__id
+	INNER JOIN keyword as k on afmm__famille = k.kw__value 
+	WHERE afmm__actif > 0 AND ( '. $find_by .' = "'. $value .'"  ) 
+	order by k.kw__ordre ASC, afmm__modele ASC');
+	$data = $request->fetchAll(PDO::FETCH_OBJ);
+	return $data ; 
+	
+}
+
 //recupère la désignation commerciale pour les suggestions aux commerciaux lors des devis : 
 public function get_article_devis(int  $id_fmm) 
 {
