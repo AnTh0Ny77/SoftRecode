@@ -27,7 +27,7 @@
                     <select class="border selectpicker"  data-live-search="true"  data-width="100%" name="client" id='client' required>
                         {% for client in client_list %}
                         
-                        <option class="optionSelect modelSelect" value={{client.client__id}}>{{client.client__societe ~ " " ~ client.client__ville ~ " "
+                        <option class="optionSelect modelSelect" value={{client.client__id}}>{{client.client__id ~ " " ~  client.client__societe ~ " " ~ client.client__ville ~ " "
                             ~ client.client__cp }}</option>
                         {% endfor %}
                     </select>
@@ -110,6 +110,9 @@
                         </option>
                         <option class="optionSelect modelSelect" value="Résine">
                             Résine
+                        </option>
+                        <option class="optionSelect modelSelect" value="Sans">
+                            Sans
                         </option>
                     </select>
                 </div>
