@@ -27,7 +27,7 @@
                     <select class="border selectpicker"  data-live-search="true"  data-width="100%" name="client" id='client' required>
                         {% for client in client_list %}
                         
-                        <option class="optionSelect modelSelect" value={{client.client__id}}>{{client.client__societe ~ " " ~ client.client__ville ~ " "
+                        <option class="optionSelect modelSelect" value={{client.client__id}}>{{client.client__id ~ " " ~  client.client__societe ~ " " ~ client.client__ville ~ " "
                             ~ client.client__cp }}</option>
                         {% endfor %}
                     </select>
@@ -73,14 +73,26 @@
                 </select>
             </div>
             <div class="my-3">
+                <label for="type" ><b>Type *</b></label>
+                <select class="border selectpicker" data-live-search="true" data-width="100%" name="type" id='type' required>
+            
+                    <option class="optionSelect modelSelect" value="discontinu" selected>
+                        Papier discontinu (étiquette)
+                    </option>
+                    <option class="optionSelect modelSelect" value="continu">
+                        Papier continu
+                    </option>
+                </select>
+            </div>
+            <div class="my-3">
                 <div class="d-flex my-3">
                     <div class="col-6 my-3">
                         <label for="Thermique"><b>Largeur en millimètre *</b></label>
                         <input type="number" step="0.01" name="longueur" required>
                     </div>
                     <div class="col-6 my-3">
-                        <label for="Thermique"><b>Hauteur en millimètre *</b></label>
-                        <input type="number" step="0.01" name="hauteur" required>
+                        <label for="Thermique" id="label_hauteur"><b>Hauteur en millimètre *</b></label>
+                        <input type="number" step="0.01" name="hauteur" id="hauteur" required>
                     </div>
                 </div>
             </div>
@@ -98,6 +110,9 @@
                         </option>
                         <option class="optionSelect modelSelect" value="Résine">
                             Résine
+                        </option>
+                        <option class="optionSelect modelSelect" value="Sans">
+                            Sans
                         </option>
                     </select>
                 </div>
@@ -168,6 +183,22 @@
                     removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor',
                     removeButtons: 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule,Styles,Strike'
                 });
+        })
+
+        $("#type").on('change', function()
+        {
+            var type_papier = $(this).children("option:selected").val();
+
+            if(type_papier == 'continue')
+            {
+                $('#hauteur').removeAttr('required');
+                $('#label_hauteur').html('Hauteur en millimètre ')
+            }
+            else 
+            {
+                $('#label_hauteur').html('Hauteur en millimètre *')
+                $('#hauteur').attr('required' , true );
+            }
         })
 </script>
 
