@@ -33,10 +33,11 @@ $abnLignes = $Abonnement->getLigneActives($print_request);
 
 $temp =   $Cmd->GetById($print_request);
 
-//imprime le contrat en double examplaires :
-Abonnements_functions::contrat_double_exemplaire($print_request);
-Abonnements_functions::piece_jointe($print_request);
 
+//imprime le contrat en double examplaires :
+Abonnements_functions::contrat_double_exemplaire($print_request , $abn->ab__presta);
+Abonnements_functions::piece_jointe($print_request);
+die();
 
 $clientView = $Client->getOne($temp->client__id);
 $societeLivraison = false;

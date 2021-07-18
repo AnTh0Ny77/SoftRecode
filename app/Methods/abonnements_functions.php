@@ -14,7 +14,7 @@ use App\Methods\Pdfunctions;
 
 class Abonnements_functions
 {
-        public static function contrat_double_exemplaire($id_commande)
+        public static function contrat_double_exemplaire($id_commande, $presta)
         {
                 $Database = new Database('devis');
                 $Database->DbConnect();
@@ -57,27 +57,58 @@ class Abonnements_functions
                         </style>
 
 
-                        <page backtop="40mm" backleft="10mm" backright="10mm" backbottom="10mm" footer="page">
+                        <page backtop="40mm" backleft="10mm" backright="10mm" backbottom="30mm" footer="page">
 
                                 <page_header>
-                                <table class="page_header" style="width: 100%;">
-                                        <tr>
-                                                <td style="text-align: left;  width: 50%"><img style=" width:65mm" src="public/img/recodeDevis.png" /></td>
-                                                <td style="text-align: left; width:50%">
-                                                <h3>REPARATION-LOCATION-VENTE</h3>imprimantes-lecteurs codes-barres<br><a style="color: green;">www.recode.fr</a><br><br>
-                                                </td>
-                                        </tr>     
-                                </table>
+                                        <table class="page_header" style="width: 100%;">
+                                                <tr>
+                                                        <td style="text-align: left;  width: 50%"><img style=" width:65mm" src="public/img/recodeDevis.png" /></td>
+                                                        <td style="text-align: left; width:50%">
+                                                                <h3>REPARATION-LOCATION-VENTE</h3>imprimantes-lecteurs codes-barres<br><a style="color: green;">www.recode.fr</a><br><br>
+                                                        </td>
+                                                </tr>
+                                        </table>
                                 </page_header>
                                 <page_footer>
+                                        <table class="page_footer" style="text-align: center; margin: auto; font-size: 85%; ">
+                                                <tr>
+                                                        <td style="text-align: left; ">
+                                                                TVA: FR33 397 934 068<br>
+                                                                Siret 397 934 068 00016 - APE 9511Z<br>
+                                                                SAS au capital 38112.25 €
+                                                        </td>
 
+
+                                                        <td style="text-align: right; ">
+                                                                BPMED NICE ENTREPRISE<br>
+                                                                <strong>IBAN : </strong>FR76 1460 7003 6569 0218 9841 804<br>
+                                                                <strong>BIC : </strong>CCBPFRPPMAR
+                                                        </td>
+                                                </tr>
+
+                                                <tr>
+
+                                                        <td style=" font-size: 100%; width: 100%; text-align: center; " colspan=2><br><br>
+                                                                <strong>RECODE by eurocomputer - 112 allée François Coli - 06210 Mandelieu - +33 4 93 47 25 00 - contact@recode.fr<br>
+                                                                        Ateliers en France - 25 ans d'expertise - Matériels neufs & reconditionnés </strong>
+                                                        </td>
+                                                </tr>
+                                        </table>
                                 </page_footer>
-                                <table class="page_header" style="width: 100%;">
+                                <table class="page_header" style="width: 100%; font-size: 85%;">
                                         <tr>
                                                 <td style="text-align: center;  width: 100%">
                                                         <h4>
-                                                                CONTRAT DE LOCATION<br>
-                                                                DE MATERIEL INFORMATIQUE
+                                                                <?php
+                                                                if ($presta == 'MNT') {
+                                                                        echo 'CONTRAT DE MAINTENANCE<br>
+                                                                DE MATERIEL INFORMATIQUE';
+                                                                } else {
+                                                                        echo 'CONTRAT DE LOCATION<br>
+                                                                        DE MATERIEL INFORMATIQUE';
+                                                                }
+                                                                ?>
+
                                                         </h4>
                                                         <h4>
                                                                 CONDITIONS GENERALES
@@ -222,12 +253,12 @@ class Abonnements_functions
                                                                 égale au loyer précédemment fixé ou pouvant être déterminée aux conditions particulières, de
                                                                 plus le preneur supportera les frais consécutifs à cette restitution tardive.<br>
 
-                                                                5.2. Dans le cas où EUROCOMPUTER prend à sa charge la maintenance des matériels, pendant
+                                                                5.2. Dans le cas où RECODE prend à sa charge la maintenance des matériels, pendant
                                                                 la période de location, conformément aux conditions particulières, les dépannages sont réalisés
                                                                 aux conditions suivantes :<br>
-                                                                A) Le client a l'obligation d'appeler EUROCOMPUTER au tel : 04.93.47.25.00,
+                                                                A) Le client a l'obligation d'appeler RECODE au tel : 04.93.47.25.00,
                                                                 fax : 04.93.47.01.16 en cas d'incident sur le matériel désigné aux conditions particulières.<br>
-                                                                B) EUROCOMPUTER sera à ce moment, seul juge des moyens à mettre en œuvre, pour réaliser
+                                                                B) RECODE sera à ce moment, seul juge des moyens à mettre en œuvre, pour réaliser
                                                                 toute réparation dans les meilleurs délais et conditions, elle pourra être amenée à procéder, au
                                                                 remplacement du matériel par échange du matériel défectueux, par un matériel opérationnel,<br>
                                                                 et/ou fournir son service technique sur le site du client, pour mener à bien le dépannage.
@@ -318,7 +349,7 @@ class Abonnements_functions
                                                         <p style=" font-size: 85%;">
                                                                 Le contrat est conclu et accepté irrévocablement par les parties dès sa signature. Sauf condition
                                                                 expresse prévue aux conditions particulières, la durée minimale est de 12 mois. Le service de
-                                                                location NEC n'est pas résiliable en cours de période, il pourra être résilié par le client à la fin de
+                                                                location RECODE n'est pas résiliable en cours de période, il pourra être résilié par le client à la fin de
                                                                 chaque période, par lettre recommandée avec AR, avec un préavis de 3 mois, avant la date de
                                                                 renouvellement.
                                                                 En cas d'annulation du contrat signifiée avant son terme, le locataire sera redevable envers le
@@ -420,14 +451,15 @@ class Abonnements_functions
 
                 <?php
                         $content = ob_get_contents();
-                        $num_ex = $i + 1 ;
+                        $num_ex = $i + 1;
                         try {
                                 $doc = new Html2Pdf('P', 'A4', 'fr');
                                 $doc->setDefaultFont('gothic');
                                 $doc->pdf->SetDisplayMode('fullpage');
                                 $doc->writeHTML($content);
                                 ob_clean();
-                                $doc->output('O:\intranet\Auto_Print\CT\contrat'.$temp->devis__id.'.pdf', 'F');
+                                // $doc->output('O:\intranet\Auto_Print\CT\contrat' . $temp->devis__id . '.pdf', 'F');
+                                $doc->output(__DIR__ . '' . $temp->devis__id . '.pdf', 'F');
                         } catch (Html2PdfException $e) {
                                 die($e);
                         }
@@ -480,9 +512,9 @@ class Abonnements_functions
                                         <tr>
                                                 <td style="text-align: left;  width: 50%"><img style=" width:65mm" src="public/img/recodeDevis.png" /></td>
                                                 <td style="text-align: left; width:50%">
-                                                <h3>REPARATION-LOCATION-VENTE</h3>imprimantes-lecteurs codes-barres<br><a style="color: green;">www.recode.fr</a><br><br>
+                                                        <h3>REPARATION-LOCATION-VENTE</h3>imprimantes-lecteurs codes-barres<br><a style="color: green;">www.recode.fr</a><br><br>
                                                 </td>
-                                        </tr>     
+                                        </tr>
                                 </table>
                         </page_header>
                         <page_footer>
@@ -542,7 +574,7 @@ class Abonnements_functions
                         ob_clean();
 
 
-                        $doc->output('O:\intranet\Auto_Print\CT\CTP\piece_jointe_'.$temp->devis__id.'.pdf', 'F');
+                        $doc->output('O:\intranet\Auto_Print\CT\CTP\piece_jointe_' . $temp->devis__id . '.pdf', 'F');
                 } catch (Html2PdfException $e) {
                         die($e);
                 }
