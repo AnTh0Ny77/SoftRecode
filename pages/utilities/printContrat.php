@@ -213,7 +213,6 @@ ob_start();
                 <br>
                 <br>
                 <br>
-                <hr>
             </td>
             <td style="text-align: center;  width: 50%; padding-top: 7px; padding-bottom: 5px; padding-left:6px;">
                 <b>CLIENT : </b>
@@ -227,7 +226,6 @@ ob_start();
                 <br>
                 <br>
                 <br>
-                <hr>
             </td>
         </tr>
     </table>

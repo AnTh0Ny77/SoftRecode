@@ -303,21 +303,6 @@ class Devis_functions
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public static function remise_devis_ligne_pdf($array_ligne,$report)
     {
                 // variables des tailles de cellules afin de pouvoir regler la largeur de la table facilement :

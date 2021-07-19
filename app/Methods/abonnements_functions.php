@@ -257,9 +257,9 @@ class Abonnements_functions
                                                                 5.2. Dans le cas où RECODE prend à sa charge la maintenance des matériels, pendant
                                                                 la période de location, conformément aux conditions particulières, les dépannages sont réalisés
                                                                 aux conditions suivantes :<br>
-                                                                A) Le client a l'obligation d'appeler RECODE au tel : 04.93.47.25.00,
+                                                                A) Le client a l'obligation d'appeler RECODE BY EUROCOMPUTEUR au tel : 04.93.47.25.00,
                                                                 fax : 04.93.47.01.16 en cas d'incident sur le matériel désigné aux conditions particulières.<br>
-                                                                B) RECODE sera à ce moment, seul juge des moyens à mettre en œuvre, pour réaliser
+                                                                B) RECODE BY EUROCOMPUTEUR sera à ce moment, seul juge des moyens à mettre en œuvre, pour réaliser
                                                                 toute réparation dans les meilleurs délais et conditions, elle pourra être amenée à procéder, au
                                                                 remplacement du matériel par échange du matériel défectueux, par un matériel opérationnel,<br>
                                                                 et/ou fournir son service technique sur le site du client, pour mener à bien le dépannage.
@@ -350,7 +350,7 @@ class Abonnements_functions
                                                         <p style=" font-size: 85%;">
                                                                 Le contrat est conclu et accepté irrévocablement par les parties dès sa signature. Sauf condition
                                                                 expresse prévue aux conditions particulières, la durée minimale est de 12 mois. Le service de
-                                                                location RECODE n'est pas résiliable en cours de période, il pourra être résilié par le client à la fin de
+                                                                location RECODE BY EUROCOMPUTEUR n'est pas résiliable en cours de période, il pourra être résilié par le client à la fin de
                                                                 chaque période, par lettre recommandée avec AR, avec un préavis de 3 mois, avant la date de
                                                                 renouvellement.
                                                                 En cas d'annulation du contrat signifiée avant son terme, le locataire sera redevable envers le
@@ -701,7 +701,7 @@ class Abonnements_functions
                                                         <h6>ARTICLE 6 : EXCLUSIONS.</h6>
                                                         <p style=" font-size: 85%;">
                                                         Le service de garantie Recode by Eurocomputer exclut toutes les pannes liées aux transports, aux modifications de l'équipement non
-                                                        acceptées par Recode by Eurcomputer , à une utilisation impropre du matériel , au défaut de fourniture de l'environnement
+                                                        acceptées par Recode by Eurocomputer , à une utilisation impropre du matériel , au défaut de fourniture de l'environnement
                                                         convenable prescrit par le constructeur, connexion, branchement électrique, climatisation, utilisation de consommables compatibles,
                                                         incidents liés à l’utilisation d’étiquettes adhésives, aux accidents liés aux catastrophes naturelles, bris de machines, dégâts des
                                                         eaux, incendie, vol, foudre, explosion, vandalisme , conséquences nucléaires , les risques majeurs, ainsi que la peinture ou le
