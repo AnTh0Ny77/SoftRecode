@@ -35,9 +35,17 @@ $temp =   $Cmd->GetById($print_request);
 
 
 //imprime le contrat en double examplaires :
-Abonnements_functions::contrat_double_exemplaire($print_request , $abn->ab__presta);
+if ($abn->ab__presta =! 'MNT') 
+{
+    Abonnements_functions::contrat_double_exemplaire_location($print_request , $abn->ab__presta);
+}
+else 
+{
+    Abonnements_functions::contrat_double_exemplaire_maintenace($print_request , $abn->ab__presta);
+}
+
 Abonnements_functions::piece_jointe($print_request);
-die();
+
 
 $clientView = $Client->getOne($temp->client__id);
 $societeLivraison = false;
@@ -122,20 +130,32 @@ ob_start();
         </table>
     </page_header>
     <page_footer>
+                                <hr>
+                                        <table class="page_footer" style="text-align: center; margin: auto; font-size: 85%; ">
+                                                <tr>
+                                                        <td style="text-align: left; ">
+                                                                TVA: FR33 397 934 068<br>
+                                                                Siret 397 934 068 00016 - APE 9511Z<br>
+                                                                SAS au capital 38112.25 €
+                                                        </td>
 
 
+                                                        <td style="text-align: right; ">
+                                                                BPMED NICE ENTREPRISE<br>
+                                                                <strong>IBAN : </strong>FR76 1460 7003 6569 0218 9841 804<br>
+                                                                <strong>BIC : </strong>CCBPFRPPMAR
+                                                        </td>
+                                                </tr>
 
-        <table style="text-align: center; margin: auto; ">
-            <tr>
+                                                <tr>
 
-                <td style=" font-size: 100%; width: 100%; text-align: center; " colspan=2><br><br>
-                    <strong>RECODE by eurocomputer - 112 allée François Coli - 06210 Mandelieu - +33 4 93 47 25 00 - contact@recode.fr<br>
-                        Ateliers en France - 25 ans d'expertise - Matériels neufs & reconditionnés </strong>
-                </td>
-            </tr>
-        </table>
-
-    </page_footer>
+                                                        <td style=" font-size: 100%; width: 100%; text-align: center; " colspan=2><br><br>
+                                                                <strong>RECODE by eurocomputer - 112 allée François Coli - 06210 Mandelieu - +33 4 93 47 25 00 - contact@recode.fr<br>
+                                                                        Ateliers en France - 25 ans d'expertise - Matériels neufs & reconditionnés </strong>
+                                                        </td>
+                                                </tr>
+                                        </table>
+                                </page_footer>
     <div style="margin-top: 5px;">
         <table CELLSPACING=0 style="margin-top: 10px; width:100%">
             <?php
@@ -211,22 +231,7 @@ ob_start();
             </td>
         </tr>
     </table>
-    <table style=" margin: auto;  width: 100%;">
-        <tr>
-            <td style="text-align: left; width: 50%;">
-                TVA: FR33 397 934 068<br>
-                Siret 397 934 068 00016 - APE 9511Z<br>
-                SAS au capital 38112.25 €
-            </td>
-
-
-            <td style="text-align: right; width: 50%;">
-                BPMED NICE ENTREPRISE<br>
-                <strong>IBAN : </strong>FR76 1460 7003 6569 0218 9841 804<br>
-                <strong>BIC : </strong>CCBPFRPPMAR
-            </td>
-        </tr>
-    </table>
+    
 </page>
 
 
