@@ -289,10 +289,10 @@ public static function magicLine($arrayLigne){
 		}
 		else {
 			if (is_int(intval($array['devg__type'])/12) ) {
-				$secondCell2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12)." ans </td>";
+				$secondCell2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12). " ans hotline et ateliers en France</td>";
 			}
 			else {
-				$secondCell2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie</td>";
+				$secondCell2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW. "; text-align: left;  ;'> extension de garantie hotline et ateliers en France</td>";
 			}
 				
 		}     
@@ -312,10 +312,10 @@ public static function magicLine($arrayLigne){
 		else 
 		{
 			if (is_int(intval($array['devg__type'])/12) ) {
-				$secondCell2 = "<td valign='top' style=' border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12)." ans </td>";
+				$secondCell2 = "<td valign='top' style=' border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12). " ans hotline et ateliers en France</td>";
 			}
 			else {
-				$secondCell2 = "<td valign='top' style='border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie</td>";
+				$secondCell2 = "<td valign='top' style='border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW. "; text-align: left;  ;'> extension de garantie hotline et ateliers en France</td>";
 			}
 		}
 
@@ -585,7 +585,7 @@ public static function totalCon($lignes , $garantieArray , $prixTotal , $tva , $
 			}
 		}
 
-		$marqueurPresta = ' <input type="checkbox"> garantie standard';
+		$marqueurPresta = ' <input type="checkbox"> garantie 6/12 mois';
 		$marqueurType = '';
 		foreach ($lignes  as $ligne) {
 			 if ($ligne->devl__type == 'REP') {
@@ -723,7 +723,7 @@ public static function magicXtend($lignes, $garantiesArray , $prixTotal , $tva )
 		}
 	}
 
-   $marqueurPresta = ' <input type="checkbox"> garantie standard';
+   $marqueurPresta = ' <input type="checkbox"> garantie 6/12 mois';
    $marqueurType = '';
    foreach ($lignes  as $ligne) {
 		if ($ligne->devl__type == 'REP') {
