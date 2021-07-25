@@ -42,7 +42,7 @@ class Devis_functions
                         $firstPadding = '15px';
                     }else 
                     {
-                        $firstPadding = '0px';
+                        $firstPadding = '15px';
                     }
 
                    
@@ -146,16 +146,16 @@ class Devis_functions
                             if ($ligne->devl__type == "REP") 
                             {
                                 $seconde_cellule_2 = 
-                                "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW.";  text-align: left;  '>mise sous garantie du matériel réparé</td>";
+                                "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW. ";  text-align: left;  '>mise sous garantie du matériel réparé, hotline et ateliers en France</td>";
                             }
                             else 
                             {
                                 if (is_int(intval($array['devg__type'])/12) ) 
                                 {
-                                    $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12)." ans </td>";
+                                    $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12)." ans hotline et ateliers en France</td>";
                                 }
                                 else {
-                                    $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie</td>";
+                                    $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW. "; text-align: left;  ;'> extension de garantie hotline et ateliers en France</td>";
                                 }       
                             }     
                             $troisieme_cellule_2 =  "<td valign='top' style=' width: ".$thirdW."; max-width: ".$thirdW."; text-align: left; '></td>";
@@ -185,11 +185,11 @@ class Devis_functions
                                 {
                                     if (is_int(intval($array['devg__type'])/12) ) 
                                     {
-                                        $seconde_cellule_2 = "<td valign='top' style=' border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12)." ans </td>";
+                                        $seconde_cellule_2 = "<td valign='top' style=' border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12). " ans hotline et ateliers en France </td>";
                                     }
                                     else 
                                     {
-                                        $seconde_cellule_2 = "<td valign='top' style='border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie</td>";
+                                        $seconde_cellule_2 = "<td valign='top' style='border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW. "; text-align: left;  ;'> extension de garantie hotline et ateliers en France</td>";
                                     }
                                 }
                     
@@ -466,10 +466,10 @@ class Devis_functions
                                             {
                                                 if (is_int(intval($array['devg__type'])/12) ) 
                                                 {
-                                                    $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12)." ans </td>";
+                                                    $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12). " ans hotline et ateliers en France</td>";
                                                 }
                                                 else {
-                                                    $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie</td>";
+                                                    $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW. "; text-align: left;  ;'> extension de garantie hotline et ateliers en France</td>";
                                                 }       
                                             }     
                                             $troisieme_cellule_2 =  "<td valign='top' style=' width: ".$thirdW."; max-width: ".$thirdW."; text-align: left; '></td>";
@@ -521,10 +521,10 @@ class Devis_functions
                                                     {
                                                         if (is_int(intval($array['devg__type'])/12) ) 
                                                         {
-                                                            $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12)." ans </td>";
+                                                            $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12). " ans hotline et ateliers en France </td>";
                                                         }
                                                         else {
-                                                            $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie</td>";
+                                                            $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW. "; text-align: left;  ;'> extension de garantie hotline et ateliers en France</td>";
                                                         }       
                                                     }     
                                                     $troisieme_cellule_2 =  "<td valign='top' style=' width: ".$thirdW."; max-width: ".$thirdW."; text-align: left; '></td>";
@@ -562,11 +562,11 @@ class Devis_functions
                                                     {
                                                         if (is_int(intval($array['devg__type'])/12) ) 
                                                         {
-                                                            $seconde_cellule_2 = "<td valign='top' style=' border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12)." ans </td>";
+                                                            $seconde_cellule_2 = "<td valign='top' style=' border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12). " ans hotline et ateliers en France</td>";
                                                         }
                                                         else 
                                                         {
-                                                            $seconde_cellule_2 = "<td valign='top' style='border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left; padding-bottom:10px ;'> extension de garantie</td>";
+                                                            $seconde_cellule_2 = "<td valign='top' style='border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW. "; text-align: left; padding-bottom:10px ;'> extension de garantie hotline et ateliers en France</td>";
                                                         }
                                                     }
                                         
@@ -703,10 +703,10 @@ class Devis_functions
                                                 {
                                                     if (is_int(intval($array['devg__type'])/12) ) 
                                                     {
-                                                        $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12)." ans </td>";
+                                                        $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12). " ans hotline et ateliers en France</td>";
                                                     }
                                                     else {
-                                                        $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie</td>";
+                                                        $seconde_cellule_2 = "<td valign='top' style=' width: ".$secondW."; max-width: ".$secondW. "; text-align: left;  ;'> extension de garantie hotline et ateliers en France</td>";
                                                     }       
                                                 }     
                                                 $troisieme_cellule_2 =  "<td valign='top' style=' width: ".$thirdW."; max-width: ".$thirdW."; text-align: left; '></td>";
@@ -744,11 +744,11 @@ class Devis_functions
                                                 {
                                                     if (is_int(intval($array['devg__type'])/12) ) 
                                                     {
-                                                        $seconde_cellule_2 = "<td valign='top' style=' border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12)." ans </td>";
+                                                        $seconde_cellule_2 = "<td valign='top' style=' border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12). " ans hotline et ateliers en France</td>";
                                                     }
                                                     else 
                                                     {
-                                                        $seconde_cellule_2 = "<td valign='top' style='border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie</td>";
+                                                        $seconde_cellule_2 = "<td valign='top' style='border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW. "; text-align: left;  ;'> extension de garantie hotline et ateliers en France</td>";
                                                     }
                                                 }
                                     
@@ -969,7 +969,7 @@ class Devis_functions
 			}
 		}
 
-		$marqueurPresta = ' <input type="checkbox"> garantie standard';
+		$marqueurPresta = ' <input type="checkbox"> garantie 06/12 mois';
 		$marqueurType = '';
         foreach ($lignes  as $ligne) 
         {
@@ -1132,7 +1132,7 @@ class Devis_functions
                     } 
                     else 
                     {
-                        $firstPadding = '0px';
+                        $firstPadding = '15px';
                     }
 
                     //gestion de la désignation en fonction de la présence de photo ou de commentaire :
@@ -1287,11 +1287,11 @@ class Devis_functions
                             { 
                                 if (is_int(intval($array['devg__type']) / 12 )) 
                                 {
-                                    $seconde_cellule_2 = "<td valign='top' style='  text-align: left;  ".$border_extension."'> extension de garantie à " . intval($array['devg__type'] / 12) . " ans </td>";
+                                    $seconde_cellule_2 = "<td valign='top' style='  text-align: left;  ".$border_extension."'> extension de garantie à " . intval($array['devg__type'] / 12) . " ans - Hotline & ateliers en France</td>";
                                 }
                                 else
                                 {
-                                    $seconde_cellule_2 = "<td valign='top' style=' text-align: left;  ".$border_extension."'> extension de garantie</td>";
+                                    $seconde_cellule_2 = "<td valign='top' style=' text-align: left;  ".$border_extension. "'> extension de garantie - Hotline & ateliers en France</td>";
                                 }
                                 
                             }
@@ -1325,6 +1325,10 @@ class Devis_functions
                 if ($countGarantie  == 0) 
                 {
                     $stringGarantie = '';
+                }
+                if ($countEtat == 0)
+                {
+                    $stringEtat = '';
                 }
                 $tete =
                 '<tr style=" margin-top : 50px;  background-color: #dedede; ">
