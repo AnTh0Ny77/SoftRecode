@@ -76,10 +76,10 @@ if (empty($_SESSION['user']->id_utilisateur)) {
                         <td style="text-align: left;  width: 50%"><img style=" width:65mm" src="public/img/recodeDevistel.png" />
                         </td>
                         <td style="text-align: left; width:50%">
-                            <h3 >REPARATION-LOCATION-VENTE</h3><img style=" width:65mm;" src="public/img/baniere.jpg" />
+                            <h3>REPARATION-LOCATION-VENTE</h3><img style=" width:65mm;" src="public/img/baniere.jpg" />
                             <br>
-                            <br>
-                            <a style="color: green;">www.recode.fr</a>
+                            Votre partenaire traçabilité<br>
+                            <a href="https://www.recode.fr/" target="_blank" style="color: green;">www.recode.fr</a>
                             <br>
                             <br>
                         </td>

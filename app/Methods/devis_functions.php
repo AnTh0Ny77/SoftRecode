@@ -969,7 +969,7 @@ class Devis_functions
 			}
 		}
 
-		$marqueurPresta = ' <input type="checkbox"> garantie 6/12 mois';
+		$marqueurPresta = ' <input type="checkbox"> garantie 06/12 mois';
 		$marqueurType = '';
         foreach ($lignes  as $ligne) 
         {
