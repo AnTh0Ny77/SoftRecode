@@ -24,7 +24,6 @@ if(empty($_SESSION['user']))
 if (!empty($_POST['PrintFormat'])) 
 {
     
-    
     // 3 enregistrer la facture au format pdf dans un folder 
     $temp = $Cmd->GetById($_POST['PrintFormat']);
 

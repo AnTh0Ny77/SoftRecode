@@ -212,15 +212,14 @@ $('#fmm').on('change', function()
 		    }
 		    if (dataSet.afmm__image != null || dataSet.afmm__image.length == 0 ) 
 		    {
-			$('#hover_image').removeClass('d-none');
-			let html = '<img src="data:image/png;base64,' + dataSet.afmm__image + '" width="270" />';
-			jbox_image.setContent(html);    
+				$('#hover_image').removeClass('d-none');
+				let html = '<img src="data:image/png;base64,' + dataSet.afmm__image + '" width="270" />';
+				jbox_image.setContent(html);    
 		    }
 		    else
 		    {
-			$('#hover_image').addClass('d-none');
-			
-		       
+				$('#hover_image').addClass('d-none');
+
 		    }
 		    
 		},
@@ -331,6 +330,9 @@ for (let y = 0; y < arrayBoxClient.length; y++)
   })  
 }
     
+
+
+
     //post le formulaire d'ajout de port automatique : 
     $('.click-port').on('click' , function()
     {

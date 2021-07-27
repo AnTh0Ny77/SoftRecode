@@ -55,6 +55,7 @@ if (empty($_SESSION['user']))
         $temp = $Cmd->makeRetour($objectInsert , '' , $ABN->ab__client__id_fact , $_SESSION['user']->id_utilisateur );
         $update = $General->updateAll('cmd','ABF','cmd__etat','cmd__id',$temp);
         $update = $General->updateAll('cmd',' ','cmd__code_cmd_client','cmd__id',$temp);
+        
         $General->updateAll('cmd', $date , 'cmd__date_fact' , 'cmd__id', $temp );
         $General->updateAll('cmd', $date , 'cmd__date_devis' , 'cmd__id', $temp );
         $General->updateAll('cmd', $_SESSION['user']->id_utilisateur , 'cmd__user__id_fact' , 'cmd__id', $temp );
@@ -74,9 +75,6 @@ if (empty($_SESSION['user']))
          date_add ( $date_periode_fin , date_interval_create_from_date_string($interval . ' months') ) ;
          $date_periode_debut =  date_format($date_periode_debut , '01/m/Y');
          $date_periode_fin =  date_format($date_periode_fin , 't/m/Y');
-
-         
-       
 
         $objectInsert = new stdClass;
         $objectInsert->idDevis = $temp;
@@ -98,6 +96,11 @@ if (empty($_SESSION['user']))
         //recupere les variable: 
         $temp = $Cmd->GetById($temp);
         $clientView = $Client->getOne($temp->client__id);
+
+        $update_tva = $General->updateAll('cmd', $clientView->client__tva , 'cmd__tva' , 'cmd__id', $temp->devis__id );
+        $temp = $Cmd->GetById($temp);
+
+
         $societeLivraison = false ;
         //si une societe de livraison existe : 
 

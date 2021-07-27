@@ -117,7 +117,7 @@ switch ($_SERVER['REQUEST_URI'])
 					$General->updateAll('art_pn', $blob_image, 'apn__image', 'apn__pn', $_POST['pn_id']);
 				}
 				
-			$General->updateAll('art_pn', 1 , 'apn_actif', 'apn__pn', $_POST['pn_id']);
+			$General->updateAll('art_pn', 1 , 'apn__actif', 'apn__pn', $_POST['pn_id']);
 			header('location: ArtCataloguePN');
 			break;
 		}

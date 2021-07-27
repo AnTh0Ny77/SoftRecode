@@ -244,7 +244,7 @@
                                         </div>
                                         
                                             {% for garantie in garanties %}
-                                                {% if garantie.kw__value != 00 %}
+                                                {% if garantie.kw__value > 12 %}
                                                     <div class="input-group-text bg-light border-0 col-12 mx-1">
                                                         <div>
                                                             <div >
@@ -556,7 +556,7 @@
                     <input type="hidden" name="idDevis" value="{{devis.devis__id}}">
                 <div class="d-flex justify-content-around flex-wrap my-3 ">
                     
-                    <div class="custom-control custom-checkbox col-4">
+                    {# <div class="custom-control custom-checkbox col-4">
                         {% if devis.cmd__mode_remise %}
                             <input type="checkbox" class="custom-control-input" id="checkremise" name="checkremise" value='ok' checked>
                             <label class="custom-control-label" for="checkremise">Mode remise</label>
@@ -565,7 +565,7 @@
                             <label class="custom-control-label" for="checkremise">Mode remise</label>
                         {% endif %}
                         
-                    </div>
+                    </div> #}
                     <div class="custom-control custom-checkbox col-4">
                         {% if devis.cmd__report_xtend %}
                             <input type="checkbox" class="custom-control-input" id="checkExtend" name="checkExtend" value='ok' checked>
