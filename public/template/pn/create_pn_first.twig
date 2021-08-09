@@ -49,14 +49,25 @@
        <div class="d-flex mt-4 justify-content-start">
            <div class="row col-6">
                <form method="POST" action="create-pn-first" class="col-9"> 
-                <div class="row col-12">
-                    <h3 class="text-primary font-weight-bold">Nom du Pn</h3>
-                    <input type="text" name="recherche_pn" class="form-control form-control-lg col-12" id="recherche_pn" minlength="3" maxlength="50" required>
-                    <div class="modal-footer col-12">
-                            <button class="btn btn-primary btn-lg">Valider</button>
+                    <div class=" col-12">
+                        <h3 class="text-primary font-weight-bold">Nom du Pn</h3>
+                        <input type="text" name="recherche_pn" class="form-control form-control-lg col-12" id="recherche_pn" minlength="3" maxlength="50" required>
                     </div>
-                   
-                </div>
+                    <div class=" col-12 mt-4">
+                        <h3 class="text-primary font-weight-bold">Famille</h3>
+                        <div>
+                            <select class="form-select form-control form-select-lg col-12" name="famille_pn" id="famille_pn" required>
+                                {% for famille in famille_list %}
+                                    <option value="{{famille.kw__value}}">{{famille.kw__lib}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                       
+                       
+                        <div class="modal-footer col-12 mt-4">
+                                <button class="btn btn-primary btn-lg">Valider</button>
+                        </div>
+                    </div>
                </form>
            </div>
            {% if pn_id %}

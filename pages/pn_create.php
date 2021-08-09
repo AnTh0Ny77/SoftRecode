@@ -9,6 +9,7 @@ $Cmd = new \App\Tables\Cmd($Database);
 $Pistage = new App\Tables\Pistage($Database);
 $Article = new App\Tables\Article($Database);
 $General = new App\Tables\General($Database);
+$Stocks = new App\Tables\Stock($Database);
 
 //URL bloqué si pas de connexion :
 if (empty($_SESSION['user']->id_utilisateur)) {
@@ -22,6 +23,7 @@ switch ($_SERVER['REQUEST_URI'])
 	case "/SoftRecode/create-pn-first":
 		//première partie creation et recherche de pn  : 
 		$pn_id = false ;
+		$famille_list = $Article->getFAMILLE();
 
 		//si une cretaion de pn à eu lieu : 
 		if (!empty($_POST['recherche_pn'])) 
@@ -35,8 +37,13 @@ switch ($_SERVER['REQUEST_URI'])
 		   }
 		   else 
 		   {
-			
 			   	$pn__id =  $Article->insert_pn($_POST['recherche_pn'] , $_POST['recherche_pn'] ,$_SESSION['user']->id_utilisateur );
+
+				if (!empty($_POST['famille_pn'])) 
+				{
+					$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $_POST['recherche_pn']);
+					$General->updateAll('art_pn' , $_POST['famille_pn'], 'apn__famille' , 'apn__pn', $pn_court );
+				}
 				$_SESSION['pn_id'] = $_POST['recherche_pn']; 	
 				header('location: create-pn-second');
 				break;
@@ -48,7 +55,8 @@ switch ($_SERVER['REQUEST_URI'])
 			'pn/create_pn_first.twig',
 			[
 				'user' => $_SESSION['user'],
-				'pn_id' => $pn_id
+				'pn_id' => $pn_id , 
+				'famille_list' => $famille_list
 			]
 		);
 		break;
@@ -73,6 +81,10 @@ switch ($_SERVER['REQUEST_URI'])
 			$model_relation = $Article->find_by_liaison($pn_court);
 			$model_relation = json_encode($model_relation);
 
+			//data nécéssaire pour la déclaration des attributs : 
+		
+			$forms_data = $Stocks->get_famille_forms($pn->apn__famille);
+
 			echo $twig->render(
 				'pn/create_pn_second.twig',
 				[
@@ -80,7 +92,8 @@ switch ($_SERVER['REQUEST_URI'])
 					'pn_id' => $pn_id , 
 					'model_list' => $model_list ,
 					'model_relation' => $model_relation, 
-					'pn' => $pn
+					'pn' => $pn , 
+					'forms_data' => $forms_data
 				]
 			);
 			break;	
@@ -89,8 +102,7 @@ switch ($_SERVER['REQUEST_URI'])
 		
 		
 
-	case "/SoftRecode/create-pn-third":
-		
+	case "/SoftRecode/create-pn-third":	
 
 		// if (empty($_POST['id_pn']))  header('location: create-pn-second');
 
@@ -101,7 +113,19 @@ switch ($_SERVER['REQUEST_URI'])
 			$update_models = $Article->insert_liaison_pn_fmm($tableau_modele , $_POST['id_pn'] ) ;
 		}
 
-		//si une validation de pn à été posqté 
+	
+		$pn = $Article->get_pn_byID($_POST['id_pn']);
+		$forms_data = $Stocks->get_famille_forms($pn->apn__famille);
+
+		foreach ($forms_data as $data) 
+		{
+			if (!empty($_POST[$data->aac__cle])) 
+			{
+				$Stocks->insert_attr_pn($_POST['id_pn'] , $data->aac__cle , $_POST[$data->aac__cle] );
+			}
+		}
+
+		//si une validation de pn à été posté 
 		if (!empty($_POST['pn_id'])) 
 		{
 		
