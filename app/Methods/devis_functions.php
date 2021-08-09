@@ -744,11 +744,11 @@ class Devis_functions
                                                 {
                                                     if (is_int(intval($array['devg__type'])/12) ) 
                                                     {
-                                                        $seconde_cellule_2 = "<td valign='top' style=' border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension de garantie à ".intval($array['devg__type']/12). " ans hotline et ateliers en France</td>";
+                                                        $seconde_cellule_2 = "<td valign='top' style=' border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW."; text-align: left;  ;'> extension garantie à ".intval($array['devg__type']/12). " ans hotline et ateliers en France</td>";
                                                     }
                                                     else 
                                                     {
-                                                        $seconde_cellule_2 = "<td valign='top' style='border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW. "; text-align: left;  ;'> extension de garantie hotline et ateliers en France</td>";
+                                                        $seconde_cellule_2 = "<td valign='top' style='border-bottom: 1px #ccc solid; width: ".$secondW."; max-width: ".$secondW. "; text-align: left;  ;'> extension garantie hotline et ateliers en France</td>";
                                                     }
                                                 }
                                     
@@ -1287,11 +1287,11 @@ class Devis_functions
                             { 
                                 if (is_int(intval($array['devg__type']) / 12 )) 
                                 {
-                                    $seconde_cellule_2 = "<td valign='top' style='  text-align: left;  ".$border_extension."'> extension de garantie à " . intval($array['devg__type'] / 12) . " ans - Hotline & ateliers en France</td>";
+                                    $seconde_cellule_2 = "<td valign='top' style='  text-align: left;  ".$border_extension."'> extension garantie à " . intval($array['devg__type'] / 12) . " ans, hotline & ateliers en France</td>";
                                 }
                                 else
                                 {
-                                    $seconde_cellule_2 = "<td valign='top' style=' text-align: left;  ".$border_extension. "'> extension de garantie - Hotline & ateliers en France</td>";
+                                    $seconde_cellule_2 = "<td valign='top' style=' text-align: left;  ".$border_extension. "'> extension garantie, hotline & ateliers en France</td>";
                                 }
                                 
                             }
