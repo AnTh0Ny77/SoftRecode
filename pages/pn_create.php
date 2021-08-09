@@ -116,12 +116,28 @@ switch ($_SERVER['REQUEST_URI'])
 	
 		$pn = $Article->get_pn_byID($_POST['id_pn']);
 		$forms_data = $Stocks->get_famille_forms($pn->apn__famille);
+		$delete_all_specs = $Stocks->delete_specs($pn->apn__pn);
 
 		foreach ($forms_data as $data) 
 		{
 			if (!empty($_POST[$data->aac__cle])) 
 			{
-				$Stocks->insert_attr_pn($_POST['id_pn'] , $data->aac__cle , $_POST[$data->aac__cle] );
+				if (is_array($_POST[$data->aac__cle]))  
+				{
+					foreach ($_POST[$data->aac__cle] as $value) 
+					{
+						if (!empty($value)) 
+						{
+							$Stocks->insert_attr_pn($_POST['id_pn'] , $data->aac__cle , $value );
+						}
+						
+					}
+				}
+				else 
+				{
+					$Stocks->insert_attr_pn($_POST['id_pn'] , $data->aac__cle , $_POST[$data->aac__cle] );
+				}
+				
 			}
 		}
 

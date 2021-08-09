@@ -27,6 +27,13 @@ class Stock extends Table
     return true;
   }
 
+  public function delete_specs($pn)
+  {
+    $request = $this->Db->Pdo->prepare('DELETE FROM  art_attribut_pn WHERE aap__pn = "'. $pn .'"');
+    $request->execute();
+    return true;
+  }
+
 
   public function get_famille_forms($famil) : array 
   {
