@@ -390,6 +390,8 @@ class Article extends Table
 		return $data;
   }
 
+  
+
   public function find_by_liaison(string $pn_id )
   {
 		//compare le champs input dénué de caractère spéciaux et en majuscules : 

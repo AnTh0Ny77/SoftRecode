@@ -49,6 +49,7 @@
         </div>
 
     </div>
+   
     
      <div class="container mt-5 ">
         <div class="d-flex">
@@ -80,11 +81,30 @@
                             <label for="labelUN">{{data.aac__cle_txt}}</label>
                             <select class=" selectpicker col-12" name="{{data.aac__cle}}" >
                                     <option value="" selected> Non-renseigné</option>
-                                {% for clefs in data.key_responses %}
-                               
-                                        <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
+
                                     
-                                {% endfor %}
+                                        
+                                            {% if spec_array %}
+                                                {% for spec in spec_array %}
+                                                    {% for clefs in data.key_responses %}
+                                                        {% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
+                                                            <option value="{{clefs.aav__valeur}}" selected> {{ clefs.aav__valeur_txt}}</option>
+                                                        {% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
+                                                            <option value="{{clefs.aav__valeur}}" > {{ clefs.aav__valeur_txt}}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endfor %}
+                                            
+
+                                            {% else %}
+                                                {% for clefs in data.key_responses %}
+                                                    <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
+                                                {% endfor %}
+                                            {% endif %}
+                                    
+                                       
+                                   
+                               
                                 
                             </select>
                           </div>
@@ -93,11 +113,23 @@
                             <div class="form-group">
                                 <label for="labelUN!">{{data.aac__cle_txt}} <small class="text-danger">Obligatoires</small></label>
                                 <select class=" selectpicker  col-12" name="{{data.aac__cle}}" required>
-                                    {% for clefs in data.key_responses %}
+                                {% if spec_array %}
+                                {% for spec in spec_array %}
+                                {% for clefs in data.key_responses %}
+                                {% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
+                                <option value="{{clefs.aav__valeur}}" selected> {{ clefs.aav__valeur_txt}}</option>
+                                {% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
+                                <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
+                                {% endif %}
+                                {% endfor %}
+                                {% endfor %}
                                 
-                                            <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
-                                        
-                                    {% endfor %}
+                                
+                                {% else %}
+                                {% for clefs in data.key_responses %}
+                                <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
+                                {% endfor %}
+                                {% endif %}
                                     
                                 </select>
                             </div>
@@ -108,11 +140,23 @@
                             <label for="labelXX">{{data.aac__cle_txt}} <small class="text-success">Choix multiples</small></label>
                             <select class=" selectpicker col-12"name="{{data.aac__cle}}[]" multiple>
                                 <option value="" selected> Non renseignés</option>
-                                {% for clefs in data.key_responses %}
+                            {% if spec_array %}
+                            {% for spec in spec_array %}
+                            {% for clefs in data.key_responses %}
+                            {% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
+                            <option value="{{clefs.aav__valeur}}" selected> {{ clefs.aav__valeur_txt}}</option>
+                            {% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
+                            <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
+                            {% endif %}
+                            {% endfor %}
+                            {% endfor %}
                             
-                                        <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
-                                    
-                                {% endfor %}
+                            
+                            {% else %}
+                            {% for clefs in data.key_responses %}
+                            <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
+                            {% endfor %}
+                            {% endif %}
                                 
                             </select>
                         </div>
@@ -121,11 +165,23 @@
                         <div class="form-group">
                             <label for="labelXX!">{{data.aac__cle_txt}} <small class="text-success">Choix multiples</small> <small class="text-danger">Obligatoires</small></label>
                             <select class="border selectpicker col-12" name="{{data.aac__cle}}" multiple required>
+                                {% if spec_array %}
+                                {% for spec in spec_array %}
                                 {% for clefs in data.key_responses %}
-                            
-                                        <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
-                                    
+                                {% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
+                                <option value="{{clefs.aav__valeur}}" selected> {{ clefs.aav__valeur_txt}}</option>
+                                {% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
+                                <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
+                                {% endif %}
                                 {% endfor %}
+                                {% endfor %}
+                                
+                                
+                                {% else %}
+                                {% for clefs in data.key_responses %}
+                                <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
+                                {% endfor %}
+                                {% endif %}
                                 
                             </select>
                         </div>

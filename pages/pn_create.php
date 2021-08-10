@@ -77,6 +77,7 @@ switch ($_SERVER['REQUEST_URI'])
 			$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_id);
 			
 			$pn = $Article->get_pn_byID($pn_id);
+			$spec__array = $Stocks->get_specs($pn_id);
 			$model_list = $Article->getModels();
 			$model_relation = $Article->find_by_liaison($pn_court);
 			$model_relation = json_encode($model_relation);
@@ -84,6 +85,7 @@ switch ($_SERVER['REQUEST_URI'])
 			//data nécéssaire pour la déclaration des attributs : 
 		
 			$forms_data = $Stocks->get_famille_forms($pn->apn__famille);
+			$spec_array = $Stocks->get_specs($pn_id);
 
 			echo $twig->render(
 				'pn/create_pn_second.twig',
@@ -93,7 +95,8 @@ switch ($_SERVER['REQUEST_URI'])
 					'model_list' => $model_list ,
 					'model_relation' => $model_relation, 
 					'pn' => $pn , 
-					'forms_data' => $forms_data
+					'forms_data' => $forms_data , 
+					'spec_array' => $spec_array
 				]
 			);
 			break;	
@@ -113,33 +116,28 @@ switch ($_SERVER['REQUEST_URI'])
 			$update_models = $Article->insert_liaison_pn_fmm($tableau_modele , $_POST['id_pn'] ) ;
 		}
 
-	
-		$pn = $Article->get_pn_byID($_POST['id_pn']);
-		$forms_data = $Stocks->get_famille_forms($pn->apn__famille);
-		$delete_all_specs = $Stocks->delete_specs($pn->apn__pn);
-
-		foreach ($forms_data as $data) 
+		if (!empty($_POST['id_pn'])) 
 		{
-			if (!empty($_POST[$data->aac__cle])) 
-			{
-				if (is_array($_POST[$data->aac__cle]))  
-				{
-					foreach ($_POST[$data->aac__cle] as $value) 
-					{
-						if (!empty($value)) 
-						{
-							$Stocks->insert_attr_pn($_POST['id_pn'] , $data->aac__cle , $value );
+			$pn = $Article->get_pn_byID($_POST['id_pn']);
+			$forms_data = $Stocks->get_famille_forms($pn->apn__famille);
+			$delete_all_specs = $Stocks->delete_specs($pn->apn__pn);
+
+			foreach ($forms_data as $data) {
+				if (!empty($_POST[$data->aac__cle])) {
+					if (is_array($_POST[$data->aac__cle])) {
+						foreach ($_POST[$data->aac__cle] as $value) {
+							if (!empty($value)) {
+								$Stocks->insert_attr_pn($_POST['id_pn'], $data->aac__cle, $value);
+							}
 						}
-						
+					} else {
+						$Stocks->insert_attr_pn($_POST['id_pn'], $data->aac__cle, $_POST[$data->aac__cle]);
 					}
 				}
-				else 
-				{
-					$Stocks->insert_attr_pn($_POST['id_pn'] , $data->aac__cle , $_POST[$data->aac__cle] );
-				}
-				
 			}
 		}
+	
+		
 
 		//si une validation de pn à été posté 
 		if (!empty($_POST['pn_id'])) 

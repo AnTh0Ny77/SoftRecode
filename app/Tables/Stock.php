@@ -34,6 +34,29 @@ class Stock extends Table
     return true;
   }
 
+  public function get_specs($pn)
+  {
+        $request = $this->Db->Pdo->query('SELECT   
+        a.* 
+        FROM art_attribut_pn as a
+        WHERE a.aap__pn = "' . $pn . '"
+        ORDER BY a.aap__pn DESC LIMIT 50 ');
+        $data = $request->fetchAll(PDO::FETCH_OBJ);
+
+	//  foreach ($data as $spec) 
+	//  {
+	// 		$clef_request = $this->Db->Pdo->query('SELECT   
+	// 		c.* 
+	// 		FROM art_attribut_valeur as c
+	// 		WHERE c.aav__valeur = "' . $spec->aap__valeur . '"
+	// 		ORDER BY c.aav__cle DESC LIMIT 50 ');
+	// 		$clef_array = $clef_request->fetchAll(PDO::FETCH_OBJ);
+	// 		$spec->spec_array = $clef_array;
+	//  }
+
+	 return $data;
+  }
+
 
   public function get_famille_forms($famil) : array 
   {
