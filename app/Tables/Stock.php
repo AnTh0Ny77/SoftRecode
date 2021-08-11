@@ -57,6 +57,20 @@ class Stock extends Table
 	 return $data;
   }
 
+  public function get_specs_value($pn)
+  {
+    $request = $this->Db->Pdo->query('SELECT   
+        a.* , v.aav__valeur_txt , c.aac__cle_txt
+        FROM art_attribut_pn as a
+        LEFT JOIN art_attribut_valeur as v ON a.aap__valeur = v.aav__valeur and ( a.aap__cle = v.aav__cle ) 
+        LEFT JOIN art_attribut_cle as c ON a.aap__cle = c.aac__cle 
+        WHERE a.aap__pn = "' . $pn . '"
+        ORDER BY a.aap__pn DESC LIMIT 50 ');
+
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+  }
+
 
   public function get_famille_forms($famil) : array 
   {

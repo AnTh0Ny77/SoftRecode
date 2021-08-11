@@ -15,12 +15,14 @@ if($_SESSION['user']->user__cmd_acces < 10 )
 $Database = new App\Database('devis');
 $Database->DbConnect();
 $Article = new App\Tables\Article($Database);
+$Stocks = new App\Tables\Stock($Database);
 // Récup de variables (Session et post get)
 
 $pn_list = $Article->select_all_pn();
 
 foreach ($pn_list as $pn) 
 {
+    $pn->specs = $Stocks->get_specs_value($pn->apn__pn);
     $pn->apn__image  = base64_encode($pn->apn__image);
 }
 

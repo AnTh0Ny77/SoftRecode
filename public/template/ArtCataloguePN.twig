@@ -61,7 +61,18 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 								{{pn.apn__pn_long}} 
 							
 							</th>
-							<td>{{pn.apn__desc_short|raw}}</td>
+							<td>
+								
+								{{pn.apn__desc_short|raw}}
+							</td>
+							<td>
+								<p>
+									{% for spec in pn.specs %}
+										{{spec.aac__cle_txt ~ ' :  '}} <b class="text-primary"> {{ spec.aav__valeur_txt }}</b> | 
+									{% endfor %}
+								</p>
+								
+							</td>
 							<td>
 								{% if pn.apn__image  %}<figure class="image" ><img src="data:image/jpeg;base64,{{ pn.apn__image|raw}}" width=90></figure>{% endif %}
 							</td>
