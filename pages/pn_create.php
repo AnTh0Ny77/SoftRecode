@@ -77,7 +77,6 @@ switch ($_SERVER['REQUEST_URI'])
 			$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_id);
 			
 			$pn = $Article->get_pn_byID($pn_id);
-			$spec__array = $Stocks->get_specs($pn_id);
 			$model_list = $Article->getModels();
 			$model_relation = $Article->find_by_liaison($pn_court);
 			$model_relation = json_encode($model_relation);
