@@ -4,6 +4,15 @@ require "./vendor/autoload.php";
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Methods\Pdfunctions;
+
+//mailer : 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require './vendor/phpmailer/phpmailer/src/Exception.php';
+require './vendor/phpmailer/phpmailer/src/PHPMailer.php';
+require './vendor/phpmailer/phpmailer/src/SMTP.php';
 session_start();
 $Database = new App\Database('devis');
 $Database->DbConnect();
@@ -64,7 +73,7 @@ if (empty($_SESSION['user']))
     $formated_date = $date_time->format('d/m/Y'); 
     $Keyword = new \App\Tables\Keyword($Database);
     $garanties = $Keyword->getGaranties();
-        
+    $facturation_auto = $Contact->get_facturation_auto($temp->client__id);    
 
  
     ob_start();
@@ -230,6 +239,9 @@ if (empty($_SESSION['user']))
    if ($temp->devis__note_client) {
       echo $temp->devis__note_client;
    }
+    if (!empty($facturation_auto)) {
+        echo '<br>Facture envoyée par mail à : ' . $facturation_auto->contact__email . ' le ' . $formate;
+    }
    
    ?>
    </div>
@@ -259,7 +271,41 @@ if (empty($_SESSION['user']))
         {
             $doc->output('F:\A'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
         }
-        $doc->output('O:\intranet\Auto_Print\FC\A'.$numFact.'-D'.$temp->devis__id.'-C'.$temp->client__id.'.pdf' , 'F');
+        if (!empty($facturation_auto)) {
+            $config_json = file_get_contents("vendor/config/security.json");
+            $config_json = json_decode($config_json);
+            //Instantiation and passing `true` enables exceptions
+            $mail = new PHPMailer(true);
+            try {
+                //Server settings
+                $doc->output(__DIR__ . '/facture_mail/' . $numFact . '.pdf', 'F');
+                $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+                $mail->isSMTP();
+                $mail->Host       = 'mail01.one2net.net';
+                $mail->SMTPAuth   = true;
+                $mail->Username   = $config_json->mail_adress->compta;
+                $mail->Password   = $config_json->mail_pass->compta;
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                $mail->Port       = 465;
+                //Recipients
+                $mail->setFrom('compta@recode.fr', 'Facture');
+                $mail->addAddress($facturation_auto->contact__email, '');
+                $mail->addBCC('crm@recode.fr');
+                //Attachments
+                $mail->addAttachment(__DIR__ . '/facture_mail/' . $numFact . '.pdf');
+                //Content
+                $mail->isHTML(true);
+                $mail->Subject = 'Votre facture RECODE N:' . $numFact . '';
+                $mail->Body    = 'Vous trouverez ci-joint votre facture N:' . $numFact . ' de votre commande N: ' . $temp->devis__id . '';
+                $mail->send();
+                $deleted = unlink(__DIR__ . '/facture_mail/' . $numFact . '.pdf');
+                $doc->output('O:\intranet\Auto_Print\FC/' . $numFact . 'F-' . $temp->devis__id . 'D-' . $temp->client__id . 'C.pdf', 'F');
+            } catch (Exception $e) {
+                echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+            }
+        } else {
+            $doc->output('O:\intranet\Auto_Print\FC/' . $numFact . 'F-' . $temp->devis__id . 'D-' . $temp->client__id . 'C.pdf', 'F');
+        }
         
         $_SESSION["facture"] =  ' BL n°: '. $temp->devis__id . ' Facturé n°: '. $numFact ;
         
