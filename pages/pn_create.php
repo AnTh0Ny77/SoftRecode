@@ -66,10 +66,7 @@ switch ($_SERVER['REQUEST_URI'])
 
 	case "/SoftRecode/create-pn-second":
 
-		if (!empty($_POST['retour_pn'])) 
-		{
-			$_SESSION['pn_id'] = $_POST['retour_pn'];
-		}
+		
 
 		if (!empty($_SESSION['pn_id'])) 
 		{	
@@ -104,9 +101,16 @@ switch ($_SERVER['REQUEST_URI'])
 		
 		
 
-	case "/SoftRecode/create-pn-third":	
+	case "/SoftRecode/create-pn-third":
 
 		// if (empty($_POST['id_pn']))  header('location: create-pn-second');
+
+		if (!empty($_POST['retour_pn'])) 
+		{
+			$_SESSION['pn_id'] = $_POST['retour_pn'];
+			header('location: create-pn-second');
+			break;
+		}
 
 		if (!empty($_POST['model_array'])) 
 		{
@@ -119,10 +123,16 @@ switch ($_SERVER['REQUEST_URI'])
 		{
 			$pn = $Article->get_pn_byID($_POST['id_pn']);
 			$forms_data = $Stocks->get_famille_forms($pn->apn__famille);
-			$delete_all_specs = $Stocks->delete_specs($pn->apn__pn);
-
+			
+			$count = 0 ;
 			foreach ($forms_data as $data) {
-				if (!empty($_POST[$data->aac__cle])) {
+				$count += 1 ;
+				if (!empty($_POST[$data->aac__cle])) 
+				{
+					if ($count == 1 ) 
+					{
+						$delete_all_specs = $Stocks->delete_specs($pn->apn__pn);
+					}
 					if (is_array($_POST[$data->aac__cle])) {
 						foreach ($_POST[$data->aac__cle] as $value) {
 							if (!empty($value)) {
