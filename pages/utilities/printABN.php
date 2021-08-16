@@ -108,7 +108,7 @@ if (empty($_SESSION['user']))
         $clientView = $Client->getOne($temp->client__id);
 
         $update_tva = $General->updateAll('cmd', $clientView->client__tva , 'cmd__tva' , 'cmd__id', $temp->devis__id );
-        $temp = $Cmd->GetById($temp);
+        $temp = $Cmd->GetById($temp->devis__id);
 
 
         $societeLivraison = false ;
@@ -378,7 +378,7 @@ if (empty($_SESSION['user']))
                 }
      
         
-     
+              
         
         
      } catch (Html2PdfException $e) 
