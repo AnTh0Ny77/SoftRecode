@@ -89,15 +89,15 @@ if (empty($_SESSION['user']))
         $objectInsert = new stdClass;
         $objectInsert->idDevis = $temp;
         $objectInsert->prestation = $ABN->ab__presta;
-        $objectInsert->designation =  ' Facturation pour la période du   ' . $date_periode_debut .' au ' . $date_periode_fin;
-        $objectInsert->etat = 'NC.';
-        $objectInsert->garantie = '';
-        $objectInsert->comClient = '';
-        $objectInsert->quantite = 1;
-        $objectInsert->prix = floatval($total);
-        $objectInsert->idfmm = '409';
-        $objectInsert->extension = '';
-        $objectInsert->prixGarantie = '';
+            $objectInsert->designation =  ' Facturation pour la période du   ' . $date_periode_debut .' au ' . $date_periode_fin;
+            $objectInsert->etat = 'NC.';
+            $objectInsert->garantie = '';
+            $objectInsert->comClient = '';
+            $objectInsert->quantite = 1;
+            $objectInsert->prix = floatval($total);
+            $objectInsert->idfmm = '409';
+            $objectInsert->extension = '';
+            $objectInsert->prixGarantie = '';
 
         //insere la ligne
         $insert = $Cmd->insertLine($objectInsert);

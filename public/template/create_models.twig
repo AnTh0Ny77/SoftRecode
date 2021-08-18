@@ -1,0 +1,174 @@
+{% extends 'new_layout.twig' %}
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" type="text/css" href="public/chosen/chosen.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="public/css/stepper.css">
+
+{% endblock %}
+{% block main %}
+
+<main role="main" class="container-fluid  col-12 container-body" style="background-color:   #f3f3f3  ;">
+  
+    <div class=" mt-4 ">
+        <div class="d-flex justify-content-center">
+                <form action="create-models" method="POST" class="mt-2 container">
+                    <input type="hidden" name="id_models" value="{{pn.afmm__id}}">
+                    <input type="hidden" name="model_array" id="model_array">
+
+                    <h3 class="text-muted mt-5">Choix des caractéristiques pour : <b>{{pn.afmm__modele}}</b></h3>
+                    <div class="alert alert-secondary mt-3 text-muted" role="alert">
+                        <i class="far fa-question-circle"></i> Les champs multiples ou obligatoires son indiqués ! </b>
+                        !
+                    </div>
+                    {% for data in forms_data %}
+
+                    {% if data.aac__option == 'UN' %}
+                    <div class="form-group ">
+                        <label for="labelUN">{{data.aac__cle_txt}}</label>
+                        <select class=" selectpicker col-12" name="{{data.aac__cle}}">
+                            <option value="" selected> Non-renseigné</option>
+
+
+
+                            {% if spec_array %}
+                            {% for spec in spec_array %}
+                            {% for clefs in data.key_responses %}
+                            {% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
+                            <option value="{{clefs.aav__valeur}}" selected> {{ clefs.aav__valeur_txt}}</option>
+                            {% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
+                            <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
+                            {% endif %}
+                            {% endfor %}
+                            {% endfor %}
+
+
+                            {% else %}
+                            {% for clefs in data.key_responses %}
+                            <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
+                            {% endfor %}
+                            {% endif %}
+
+                        </select>
+                    </div>
+
+                    {% elseif data.aac__option == 'UN!' %}
+                    <div class="form-group ">
+                        <label for="labelUN!">{{data.aac__cle_txt}} <small
+                                class="text-danger">Obligatoires</small></label>
+                        <select class=" selectpicker  col-12" name="{{data.aac__cle}}" required>
+                            {% if spec_array %}
+                            {% for spec in spec_array %}
+                            {% for clefs in data.key_responses %}
+                            {% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
+                            <option value="{{clefs.aav__valeur}}" selected> {{ clefs.aav__valeur_txt}}</option>
+                            {% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
+                            <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
+                            {% endif %}
+                            {% endfor %}
+                            {% endfor %}
+
+
+                            {% else %}
+                            {% for clefs in data.key_responses %}
+                            <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
+                            {% endfor %}
+                            {% endif %}
+
+                        </select>
+                    </div>
+
+                    {% elseif data.aac__option == 'XX' %}
+
+                    <div class="form-group">
+                        <label for="labelXX">{{data.aac__cle_txt}} <small class="text-success">Choix
+                                multiples</small></label>
+                        <select class=" selectpicker col-12" name="{{data.aac__cle}}[]" multiple>
+                            <option value="" selected> Non renseignés</option>
+                            {% if spec_array %}
+                            {% for spec in spec_array %}
+                            {% for clefs in data.key_responses %}
+                            {% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
+                            <option value="{{clefs.aav__valeur}}" selected> {{ clefs.aav__valeur_txt}}</option>
+                            {% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
+                            <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
+                            {% endif %}
+                            {% endfor %}
+                            {% endfor %}
+
+
+                            {% else %}
+                            {% for clefs in data.key_responses %}
+                            <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
+                            {% endfor %}
+                            {% endif %}
+
+                        </select>
+                    </div>
+
+                    {% elseif data.aac__option == 'XX!' %}
+                    <div class="form-group">
+                        <label for="labelXX!">{{data.aac__cle_txt}} <small class="text-success">Choix multiples</small>
+                            <small class="text-danger">Obligatoires</small></label>
+                        <select class="border selectpicker col-12" name="{{data.aac__cle}}" multiple required>
+                            {% if spec_array %}
+                            {% for spec in spec_array %}
+                            {% for clefs in data.key_responses %}
+                            {% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
+                            <option value="{{clefs.aav__valeur}}" selected> {{ clefs.aav__valeur_txt}}</option>
+                            {% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
+                            <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
+                            {% endif %}
+                            {% endfor %}
+                            {% endfor %}
+
+
+                            {% else %}
+                            {% for clefs in data.key_responses %}
+                            <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
+                            {% endfor %}
+                            {% endif %}
+
+                        </select>
+                    </div>
+
+                    {% elseif data.aac__option == '2X' %}
+
+                    {% endif %}
+
+                    {% endfor %}
+                    <div class="modal-footer">
+                        <button class="btn btn-primary">Valider</button>
+
+                    </div>
+                </form>
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+</main>
+
+
+{% endblock %}
+{% block script %}
+<!-- jQuery first, then Bootstrap JS -->
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/chosen/chosen.jquery.min.js"></script>
+<script type="text/javascript" src="public/js/stepper.js"></script>
+
+<script type="text/javascript">
+  
+
+
+
+</script>
+{% endblock %}

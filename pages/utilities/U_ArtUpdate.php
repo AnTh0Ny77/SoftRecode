@@ -50,6 +50,8 @@ Yb      88"Yb  88""    dP__Yb    88
 		$nom_doc  = preg_replace('/([^.a-z0-9]+)/i', '-', $nom_doc); // suppression des caractères autres que lettre chiffres . et remplacement par - 
 		// ecriture dans la base
 		$last_id_fmm = $Article->fmm_create($famille, $marque, $modele, $blob_image, $nom_doc, $descom);
+
+		$transfert_specs = $last_id_fmm ; 
 		// prefixage des nom de doc avec le id du model (format 00000-) (ID complété par zero)
 		$last_id_fmm = substr('00000'.$last_id_fmm.'-',-6); // pour completer a zero sur 5 positions et - a la fin
 		// Upload de Doc
@@ -59,7 +61,8 @@ Yb      88"Yb  88""    dP__Yb    88
 		else
 			$msg_info .= "!Fichier Doc Absent ou trop volumineux.<br>";
 		// FLM - il faut afficher le msg_info ou le transmettre .....
-		header('location: ArtCatalogueModele');
+		$_SESSION['models_id'] = $transfert_specs;
+		header('location: create-models');
 	}
 
 /*    d8  dP"Yb  8888b.  88 888888
@@ -98,7 +101,8 @@ Yb      88"Yb  88""    dP__Yb    88
 		{
 			$msg_info = "Mise a jour NON Effectué, PAS de ID_FMM";
 		}
-		header('location: ArtCatalogueModele');
+		$_SESSION['models_id'] = $result;
+		header('location: create-models');
 	}
 
 }

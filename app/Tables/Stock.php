@@ -27,9 +27,27 @@ class Stock extends Table
     return true;
   }
 
+  public function insert_attr_models($models, $aap__cle, $aap__valeur): bool
+  {
+    $request = $this->Db->Pdo->prepare('INSERT INTO art_attribut_modele (aam__id_fmm, aam__cle , aam__valeur )
+        VALUES (:aam__id_fmm , :aam__cle , :aam__valeur)');
+    $request->bindValue(":aam__id_fmm", $models);
+    $request->bindValue(":aam__cle", $aap__cle);
+    $request->bindValue(":aam__valeur", $aap__valeur);
+    $request->execute();
+    return true;
+  }
+
   public function delete_specs($pn)
   {
     $request = $this->Db->Pdo->prepare('DELETE FROM  art_attribut_pn WHERE aap__pn = "'. $pn .'"');
+    $request->execute();
+    return true;
+  }
+
+  public function delete_specs_models($models)
+  {
+    $request = $this->Db->Pdo->prepare('DELETE FROM  art_attribut_modele WHERE aam__id_fmm = "' . $models . '"');
     $request->execute();
     return true;
   }
@@ -43,18 +61,7 @@ class Stock extends Table
         ORDER BY a.aap__pn DESC LIMIT 50 ');
         $data = $request->fetchAll(PDO::FETCH_OBJ);
 
-	//  foreach ($data as $spec) 
-	//  {
-	// 		$clef_request = $this->Db->Pdo->query('SELECT   
-	// 		c.* 
-	// 		FROM art_attribut_valeur as c
-	// 		WHERE c.aav__valeur = "' . $spec->aap__valeur . '"
-	// 		ORDER BY c.aav__cle DESC LIMIT 50 ');
-	// 		$clef_array = $clef_request->fetchAll(PDO::FETCH_OBJ);
-	// 		$spec->spec_array = $clef_array;
-	//  }
-
-	 return $data;
+	    return $data;
   }
 
   public function get_specs_value($pn)
