@@ -2,15 +2,17 @@
 {% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" type="text/css" href="public/chosen/chosen.min.css">
 <link rel="stylesheet" href="public/css/dashboard.css">
 <link rel="stylesheet" href="public/css/stepper.css">
+
 {% endblock %}
 {% block main %}
 
-
-
-<main role="main" class="container-fluid my-1 col-11 container-body">
+<main role="main" class="container-fluid my-1 col-11 container-body" style="background-color:   #f3f3f3  ;">
+    <input type="hidden" id="relation" value="{{model_relation}}">
     <div class="d-flex justify-content-start">
         <div class="bs-stepper col-11">
             <div class="bs-stepper-header" role="tablist">
@@ -51,62 +53,14 @@
                 <div id="information-part" class="content" role="tabpanel" aria-labelledby="information-part-trigger"></div>
             </div>
         </div>
-
     </div>
-    
-       <div class="d-flex mt-4 justify-content-start">
-           <div class="row col-6">
-               <form method="POST" action="create-pn-first" class="col-9"> 
-                    <div class=" col-12">
-                        <h3 class="text-primary font-weight-bold">PN</h3>
-                        <input type="text" name="recherche_pn" class="form-control form-control-lg col-12" id="recherche_pn" minlength="3" maxlength="50" required>
-                    </div>
-                    <div class=" col-12 mt-4">
-                        <h3 class="text-primary font-weight-bold">Famille</h3>
-                        <div>
-                            <select class="form-select form-control form-select-lg col-12" name="famille_pn" id="famille_pn" required>
-                                {% for famille in famille_list %}
-                                    <option value="{{famille.kw__value}}">{{famille.kw__lib}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                       
-                       
-                        <div class="modal-footer col-12 mt-4">
-                                <button class="btn btn-primary btn-lg">Valider</button>
-                        </div>
-                    </div>
-               </form>
-           </div>
-           {% if pn_id %}
-           <div class="row col-6">
-                <div class="alert alert-warning col-12">
-                    <h3><i class="fas fa-exclamation-triangle"></i> Le PN <b><i>{{pn_id.apn__pn_long}}</i></b> existe déja</h3>
-
-                    <table class="table table-striped text-white">
-                        <thead>
-                            <tr>
-                                <th scope="col">Famille</th>
-                                <th scope="col">Description</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th >test</th>
-                                <td>{{pn_id.apn__desc_short}}</td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>   
-                    <p>
-                    <i class="far fa-question-circle"></i> Chaque Pn doit etre unique
-                    </p>
-                </div>
-           </div>
-           {% endif %}
-
-       </div>
+     <div class="container mt-5 ">
+        <div class="d-flex">
+            <div class="col-11">
+              {% include 'forms/forms_article_spec.html.twig' %}     
+            </div>
+        </div> 
+     </div>
 </main>
 
 
@@ -116,11 +70,14 @@
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/chosen/chosen.jquery.min.js"></script>
 <script type="text/javascript" src="public/js/stepper.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
             var stepper = new Stepper($('.bs-stepper')[0])
-            stepper.to(1)
+            stepper.to(3)
+           
         })
 
 </script>

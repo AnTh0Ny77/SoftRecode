@@ -380,6 +380,7 @@ class Article extends Table
 		$SQL = 'SELECT a.* , u.prenom , u.nom 
 		FROM art_pn as a  
 		LEFT JOIN utilisateur as u on  u.id_utilisateur = apn__id_user_modif
+		LEFT JOIN keyword as k ON ( k.kw__type = "famil" AND k.kw__value =  a.apn__famille ) 
 		WHERE apn__pn = "'. $pn_court .'"';
 		$request = $this->Db->Pdo->query($SQL);
 		$data = $request->fetch(PDO::FETCH_OBJ);

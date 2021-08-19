@@ -82,7 +82,7 @@ class Stock extends Table
   public function get_famille_forms($famil) : array 
   {
     $request = $this->Db->Pdo->query('SELECT   
-    c.aac__famille , c.aac__cle , c.aac__ordre , c.aac__cle_txt, c.aac__option 
+    c.aac__famille , c.aac__cle , c.aac__ordre , c.aac__cle_txt, c.aac__option , c.aac__champ
     FROM art_attribut_cle as c
     WHERE aac__famille = "'. $famil .'"
     ORDER BY c.aac__ordre DESC LIMIT 1500 ');

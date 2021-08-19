@@ -91,6 +91,9 @@
 		case '/SoftRecode/create-pn-third';
 			require __DIR__ . '/pages/pn_create.php'; break;
 
+		case '/SoftRecode/create-pn-specs';
+			require __DIR__ . '/pages/pn_create.php'; break;
+
 		case '/SoftRecode/create-models';
 			require __DIR__ . '/pages/create_models.php';break;
 			

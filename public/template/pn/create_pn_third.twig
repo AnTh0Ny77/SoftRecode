@@ -28,10 +28,18 @@
                     </button>
                 </div>
                 <div class="line"></div>
+                <div class="step" data-target="#modele-part-trigger">
+                    <button type="button" class="step-trigger" role="tab" aria-controls="information-part"
+                        id="modele-part-trigger">
+                        <span class="bs-stepper-circle">3</span>
+                        <span class="bs-stepper-label">Fiche technique</span>
+                    </button>
+                </div>
+                <div class="line"></div>
                 <div class="step" data-target="#information-part">
                     <button type="button" class="step-trigger" role="tab" aria-controls="information-part"
                         id="information-part-trigger">
-                        <span class="bs-stepper-circle">3</span>
+                        <span class="bs-stepper-circle">4</span>
                         <span class="bs-stepper-label">Informations</span>
                     </button>
                 </div>
@@ -124,8 +132,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
             var stepper = new Stepper($('.bs-stepper')[0])
-            stepper.next()
-            stepper.next()
+            stepper.to(4)
             $(".chosen-select").chosen({max_selected_options: 5});
             $('.file_upload').file_upload();
               $('.editor').each(function () {

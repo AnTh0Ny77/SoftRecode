@@ -11,9 +11,7 @@
 {% endblock %}
 {% block main %}
 
-
-
-<main role="main" class="container-fluid my-3 col-11 container-body" style="background-color:   #f3f3f3  ;">
+<main role="main" class="container-fluid my-1 col-11 container-body" style="background-color:   #f3f3f3  ;">
     <input type="hidden" id="relation" value="{{model_relation}}">
     <div class="d-flex justify-content-start">
         <div class="bs-stepper col-11">
@@ -33,10 +31,18 @@
                     </button>
                 </div>
                 <div class="line"></div>
+                <div class="step" data-target="#modele-part-trigger">
+                    <button type="button" class="step-trigger" role="tab" aria-controls="information-part"
+                        id="modele-part-trigger">
+                        <span class="bs-stepper-circle">3</span>
+                        <span class="bs-stepper-label">Fiche technique</span>
+                    </button>
+                </div>
+                <div class="line"></div>
                 <div class="step" data-target="#information-part">
                     <button type="button" class="step-trigger" role="tab" aria-controls="information-part"
                         id="information-part-trigger">
-                        <span class="bs-stepper-circle">3</span>
+                        <span class="bs-stepper-circle">4</span>
                         <span class="bs-stepper-label">Informations</span>
                     </button>
                 </div>
@@ -58,7 +64,9 @@
                 <div class="alert alert-secondary mt-3 text-muted" role="alert">
                     <i class="far fa-question-circle"></i> Il est possible d'associer <b>1 ou plusieurs modèles</b> OU de  <b> poursuivre sans en associer </b> ! 
                 </div>
-                <form action="create-pn-third" method="POST" class="mt-3"  >
+
+                <!-- {% include 'forms/forms_article_spec.html.twig' %} -->
+                <form action="create-pn-specs" method="POST" class="mt-3"  >
                     <input type="hidden" name="id_pn" value="{{pn.apn__pn}}" >
                     <input type="hidden" name="model_array" id="model_array">
                     <select name="select_models" data-placeholder="Choisir des modèles" multiple class="chosen-select col-12" id="select_multiple">
@@ -70,7 +78,7 @@
                         
                     </select>
 
-                    <h3 class="text-muted mt-5">Choix des caractéristiques pour :  <b>{{pn.apn__pn_long}}</b></h3>
+                    <!-- <h3 class="text-muted mt-5">Choix des caractéristiques pour :  <b>{{pn.apn__pn_long}}</b></h3>
                     <div class="alert alert-secondary mt-3 text-muted" role="alert">
                         <i class="far fa-question-circle"></i> Les champs multiples ou obligatoires son indiqués ! </b> ! 
                     </div>
@@ -81,9 +89,6 @@
                             <label for="labelUN">{{data.aac__cle_txt}}</label>
                             <select class=" selectpicker col-12" name="{{data.aac__cle}}" >
                                     <option value="" selected> Non-renseigné</option>
-
-                                    
-                                        
                                             {% if spec_array %}
                                                 {% for spec in spec_array %}
                                                     {% for clefs in data.key_responses %}
@@ -100,12 +105,7 @@
                                                 {% for clefs in data.key_responses %}
                                                     <option value="{{clefs.aav__valeur}}"> {{ clefs.aav__valeur_txt}}</option>
                                                 {% endfor %}
-                                            {% endif %}
-                                    
-                                       
-                                   
-                               
-                                
+                                            {% endif %}    
                             </select>
                           </div>
 
@@ -190,7 +190,7 @@
                             
                         {% endif %}
                         
-                    {% endfor %}
+                    {% endfor %} -->
                     <div class="modal-footer">
                         <button class="btn btn-primary">Valider</button>
                        
@@ -219,7 +219,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
             var stepper = new Stepper($('.bs-stepper')[0])
-            stepper.next()
+            stepper.to(2)
             $(".chosen-select").chosen({max_selected_options: 5});
         })
 
