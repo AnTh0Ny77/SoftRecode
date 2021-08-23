@@ -69,6 +69,7 @@ switch ($_SERVER['REQUEST_URI'])
 		if (!empty($_SESSION['pn_id'])) 
 		{	
 			$pn_id = $_SESSION['pn_id'];
+			
 			$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_id);
 			
 			$pn = $Article->get_pn_byID($pn_id);
@@ -103,6 +104,7 @@ switch ($_SERVER['REQUEST_URI'])
 			$tableau_modele = json_decode($_POST['model_array']);
 			$update_models = $Article->insert_liaison_pn_fmm($tableau_modele , $_POST['id_pn'] ) ;
 		}
+		
 
 		if (!empty($_POST['id_pn'])) 
 		{	
@@ -116,8 +118,9 @@ switch ($_SERVER['REQUEST_URI'])
 
 				//data nécéssaire pour la déclaration des attributs : 
 				$forms_data = $Stocks->get_famille_forms($pn->apn__famille);
+				
 				$spec_array = $Stocks->get_specs($pn_id);
-	
+				
 				echo $twig->render(
 					'pn/create_pn_specs.twig',
 					[
@@ -133,9 +136,6 @@ switch ($_SERVER['REQUEST_URI'])
 			break;	
 		}
 
-	
-		
-		
 		
 
 	case "/SoftRecode/create-pn-third":
@@ -157,12 +157,14 @@ switch ($_SERVER['REQUEST_URI'])
 			$forms_data = $Stocks->get_famille_forms($pn->apn__famille);
 			
 			$count = 0 ;
-			foreach ($forms_data as $data) {
-				$count += 1 ;
+			foreach ($forms_data as $data) 
+			{	
+				$count += 1 ;			
 				if (!empty($_POST[$data->aac__cle])) 
 				{
+					
 					if ($count == 1 ) 
-					{
+					{	
 						$delete_all_specs = $Stocks->delete_specs($pn->apn__pn);
 					}
 					if (is_array($_POST[$data->aac__cle])) {

@@ -16,14 +16,17 @@
 			<h3 class="text-muted mt-5">Fiche technique pour le Modèle: {{ object.apn__famille }} <b>{{ object.afmm__id }}</b></h3>
 		{% endif %}
 		
+		
 		{% for data in forms_data %}
+		
 				{% if data.aac__option == 'UN' %}
 				<div class="form-group">
 					<label for="labelUN!"> {{ data.aac__cle_txt }} </label>
 						{% if data.aac__champ == "SLT" %}
 							<select class=" selectpicker col-12" name=" {{ data.aac__cle }}" >
-								<option value="" selected> Non renseignés</option>
+								<option value="" selected> Non renseignés </option>
 								{% if spec_array %}
+								
 									{% for spec in spec_array %}
 										{% for clefs in data.key_responses %}
 											{% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
@@ -37,6 +40,7 @@
 									{% endfor %}
 								{% else %}
 									{% for clefs in data.key_responses %}
+										
 										<option value="{{ clefs.aav__valeur }}"> {{ clefs.aav__valeur_txt }} </option>
 
 									{% endfor %}
