@@ -120,7 +120,7 @@ switch ($_SERVER['REQUEST_URI'])
 				$forms_data = $Stocks->get_famille_forms($pn->apn__famille);
 				
 				$spec_array = $Stocks->get_specs($pn_id);
-				
+				$marqueur = false ;
 				echo $twig->render(
 					'pn/create_pn_specs.twig',
 					[
@@ -130,7 +130,8 @@ switch ($_SERVER['REQUEST_URI'])
 						'model_relation' => $model_relation, 
 						'object' => $pn , 
 						'forms_data' => $forms_data , 
-						'spec_array' => $spec_array
+						'spec_array' => $spec_array , 
+						'marqueur' => $marqueur
 					]
 				);
 			break;	

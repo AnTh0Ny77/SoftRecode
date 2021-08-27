@@ -18,44 +18,51 @@
 		
 		
 		{% for data in forms_data %}
-		
-				{% if data.aac__option == 'UN' %}
+			{% if data.aac__option == 'UN' %}
 				<div class="form-group">
 					<label for="labelUN!"> {{ data.aac__cle_txt }} </label>
 						{% if data.aac__champ == "SLT" %}
 							<select class=" selectpicker col-12" name=" {{ data.aac__cle }}" >
 								<option value="" selected> Non renseignés </option>
 								{% if spec_array %}
-								
 									{% for spec in spec_array %}
 										{% for clefs in data.key_responses %}
 											{% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
-
+												{% set marqueur = true %}
 												<option value="{{ clefs.aav__valeur }}" selected> {{ clefs.aav__valeur_txt }} </option>
 
 											{% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
+												{% set marqueur = true %}
 												<option value="{{ clefs.aav__valeur }}" > {{ clefs.aav__valeur_txt }} </option>
 											{% endif %}
 										{% endfor %}
 									{% endfor %}
+									{% if not marqueur %}
+											{% for clefs in data.key_responses %}
+												<option value="{{ clefs.aav__valeur }}"> {{ clefs.aav__valeur_txt }} </option>
+											{% endfor %}
+									{% endif %}
+									{% set marqueur = false %}
 								{% else %}
 									{% for clefs in data.key_responses %}
-										
 										<option value="{{ clefs.aav__valeur }}"> {{ clefs.aav__valeur_txt }} </option>
-
 									{% endfor %}
 								{% endif %}
+
 							</select>
 					{% elseif data.aac__champ == "RAD" %}
 					{% if spec_array %}
 						{% for spec in spec_array %}
 							{% for clefs in data.key_responses %}
 								{% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
+									{% set marqueur = true %}
 									<div class="form-check" >
 										<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}" checked>
 										<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
 									</div>
+
 								{% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
+									{% set marqueur = true %}
 									<div class="form-check" >
 										<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}"  >
 										<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
@@ -63,10 +70,19 @@
 								{% endif %}
 							{% endfor %}
 						{% endfor %}
+						{% if not marqueur %}
+									{% for clefs in data.key_responses %}
+										<div class="form-check" >
+											<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}"  >
+											<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
+										</div>
+									{% endfor %}
+						{% endif %}
+						{% set marqueur = false %}
 					{% else %}
 						{% for clefs in data.key_responses %}
 							<div class="form-check" >
-								<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}" checked >
+								<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}"  >
 								<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
 							</div>
 						{% endfor %}
@@ -82,36 +98,46 @@
 					<div class="form-group">
 						<label for="labelUN!"> {{ data.aac__cle_txt }} </label>
 							{% if data.aac__champ == "SLT" %}
-								<select class=" selectpicker col-12" name=" {{ data.aac__cle }}" required>
-									{% if spec_array %}
-										{% for spec in spec_array %}
-											{% for clefs in data.key_responses %}
-												{% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
-
-													<option value="{{ clefs.aav__valeur }}" selected> {{ clefs.aav__valeur_txt }} </option>
-
-												{% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
-													<option value="{{ clefs.aav__valeur }}" > {{ clefs.aav__valeur_txt }} </option>
-												{% endif %}
-											{% endfor %}
-										{% endfor %}
-									{% else %}
+							<select class=" selectpicker col-12" name=" {{ data.aac__cle }}"  required>
+								{% if spec_array %}
+									{% for spec in spec_array %}
 										{% for clefs in data.key_responses %}
-											<option value="{{ clefs.aav__valeur }}"> {{ clefs.aav__valeur_txt }} </option>
+											{% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
+												{% set marqueur = true %}
+												<option value="{{ clefs.aav__valeur }}" selected> {{ clefs.aav__valeur_txt }} </option>
 
+											{% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
+												{% set marqueur = true %}
+												<option value="{{ clefs.aav__valeur }}" > {{ clefs.aav__valeur_txt }} </option>
+											{% endif %}
 										{% endfor %}
+									{% endfor %}
+									{% if not marqueur %}
+											{% for clefs in data.key_responses %}
+												<option value="{{ clefs.aav__valeur }}"> {{ clefs.aav__valeur_txt }} </option>
+											{% endfor %}
 									{% endif %}
-								</select>
-						{% elseif data.aac__champ == "RAD" %}
+									{% set marqueur = false %}
+								{% else %}
+									{% for clefs in data.key_responses %}
+										<option value="{{ clefs.aav__valeur }}"> {{ clefs.aav__valeur_txt }} </option>
+									{% endfor %}
+								{% endif %}
+
+							</select>
+							{% elseif data.aac__champ == "RAD" %}
 							{% if spec_array %}
 								{% for spec in spec_array %}
 									{% for clefs in data.key_responses %}
 										{% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
+											{% set marqueur = true %}
 											<div class="form-check" >
-												<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}" required checked>
+												<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}" checked required>
 												<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
 											</div>
+		
 										{% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
+											{% set marqueur = true %}
 											<div class="form-check" >
 												<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}"  required>
 												<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
@@ -119,51 +145,63 @@
 										{% endif %}
 									{% endfor %}
 								{% endfor %}
+								{% if not marqueur %}
+											{% for clefs in data.key_responses %}
+												<div class="form-check" >
+													<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}" required >
+													<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
+												</div>
+											{% endfor %}
+								{% endif %}
+								{% set marqueur = false %}
 							{% else %}
 								{% for clefs in data.key_responses %}
-
 									<div class="form-check" >
-										<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}" checked required>
+										<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}"  required >
 										<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
 									</div>
-				
 								{% endfor %}
 							{% endif %}
-							
-							
-						{% else %}
-							ERREUR DE CONFIGURATION !MERCI DE LE SIGNALER AUX ADMINISTRATEURS 
-						{% endif %}
+								
+								
+							{% else %}
+								ERREUR DE CONFIGURATION !MERCI DE LE SIGNALER AUX ADMINISTRATEURS 
+							{% endif %}
 						
 					</div>
 				{% elseif data.aac__option == 'XX' %}
 					<div class="form-group">
 						<label for="labelXX"> {{ data.aac__cle_txt }} <small class="text-success">Choix multiples</small></label>
 						{% if data.aac__champ == "SLT" %}
-							<select class=" selectpicker col-12" name=" {{ data.aac__cle }}[]" multiple>
-								<option value="" selected> Non renseignés</option>
-								{% if spec_array %}
-									{% for spec in spec_array %}
-										{% for clefs in data.key_responses %}
-											{% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
-
-												<option value="{{ clefs.aav__valeur }}" selected> {{ clefs.aav__valeur_txt }} </option>
-
-											{% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
-
-												<option value="{{ clefs.aav__valeur }}" > {{ clefs.aav__valeur_txt }} </option>
-
-											{% endif %}
-										{% endfor %}
-									{% endfor %}
-								{% else %}
+						<select class=" selectpicker col-12" name=" {{ data.aac__cle }}[]" multiple>
+							<option value="" selected> Non renseignés </option>
+							{% if spec_array %}
+								{% for spec in spec_array %}
 									{% for clefs in data.key_responses %}
 
-										<option value="{{ clefs.aav__valeur }}"> {{ clefs.aav__valeur_txt }} </option>
+										{% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
+											{% set marqueur = true %}
+											<option value="{{ clefs.aav__valeur }}" selected> {{ clefs.aav__valeur_txt }} </option>
 
+										{% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
+											{% set marqueur = true %}
+											<option value="{{ clefs.aav__valeur }}" > {{ clefs.aav__valeur_txt }} </option>
+										{% endif %}
 									{% endfor %}
-								{% endif %}
-							</select>
+								{% endfor %}
+								{% if not marqueur %}
+										{% for clefs in data.key_responses %}
+											<option value="{{ clefs.aav__valeur }}"> {{ clefs.aav__valeur_txt }} </option>
+										{% endfor %}
+								{% endif %} 
+								{% set marqueur = false %}
+							{% else %}
+								{% for clefs in data.key_responses %}
+									<option value="{{ clefs.aav__valeur }}"> {{ clefs.aav__valeur_txt }} </option>
+								{% endfor %}
+							{% endif %}
+
+						</select>
 						{% elseif data.aac__champ == "RAD" %}
 							ERREUR DE CONFIGURATION !MERCI DE LE SIGNALER AUX ADMINISTRATEURS 
 						{% elseif data.aac__champ == "CHK" %}
@@ -171,22 +209,33 @@
 									{% for spec in spec_array %}
 										{% for clefs in data.key_responses %}
 											{% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
+											{% set marqueur = true %}
 												<div class="form-check" >
-													<input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]" >
+													<input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]" checked>
 													<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
 												</div>
 											{% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
+											{% set marqueur = true %}
 												<div class="form-check" >
-													<input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]" checked >
+													<input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]"  >
 													<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
 												</div>
 											{% endif %}
 										{% endfor %}
 									{% endfor %}
+									{% if not marqueur %}
+										{% for clefs in data.key_responses %}
+											<div class="form-check" >
+												<input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]"  >
+												<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
+											</div>
+										{% endfor %}
+									{% endif %}
+								{% set marqueur = false %}
 							{% else %}
 								{% for clefs in data.key_responses %}
 									<div class="form-check" >
-										<input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]" checked >
+										<input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]"  >
 										<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
 									</div>
 								{% endfor %}
@@ -199,63 +248,76 @@
 				<div class="form-group">
 					<label for="labelXX"> {{ data.aac__cle_txt }} <small class="text-success">Choix multiples</small></label>
 					{% if data.aac__champ == "SLT" %}
-						<select class=" selectpicker col-12" name=" {{ data.aac__cle }}[]" multiple required>
-							<option value="" selected> Non renseignés</option>
+						<select class=" selectpicker col-12" name=" {{ data.aac__cle }}[]"  multiple required>
 							{% if spec_array %}
 								{% for spec in spec_array %}
 									{% for clefs in data.key_responses %}
 										{% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
-
+											{% set marqueur = true %}
 											<option value="{{ clefs.aav__valeur }}" selected> {{ clefs.aav__valeur_txt }} </option>
 
 										{% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
-
+											{% set marqueur = true %}
 											<option value="{{ clefs.aav__valeur }}" > {{ clefs.aav__valeur_txt }} </option>
-
 										{% endif %}
 									{% endfor %}
 								{% endfor %}
+								{% if not marqueur %}
+										{% for clefs in data.key_responses %}
+											<option value="{{ clefs.aav__valeur }}"> {{ clefs.aav__valeur_txt }} </option>
+										{% endfor %}
+								{% endif %}
+								{% set marqueur = false %}
 							{% else %}
 								{% for clefs in data.key_responses %}
-
 									<option value="{{ clefs.aav__valeur }}"> {{ clefs.aav__valeur_txt }} </option>
-
 								{% endfor %}
 							{% endif %}
+
 						</select>
 					{% elseif data.aac__champ == "RAD" %}
 						ERREUR DE CONFIGURATION !MERCI DE LE SIGNALER AUX ADMINISTRATEURS 
-					{% elseif data.aac__champ == "CHK" %}
-							{% if spec_array %}
-								{% for spec in spec_array %}
-									{% for clefs in data.key_responses %}
-										{% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
-											<div class="form-check" >
-												<input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]" required>
-												<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
-											</div>
-										{% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
-											<div class="form-check" >
-												<input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]" checked required>
-												<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
-											</div>
-										{% endif %}
-									{% endfor %}
+						{% elseif data.aac__champ == "CHK" %}
+						{% if spec_array %}
+							{% for spec in spec_array %}
+								{% for clefs in data.key_responses %}
+									{% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
+									{% set marqueur = true %}
+										<div class="form-check" >
+											<input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]" required checked>
+											<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
+										</div>
+									{% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
+									{% set marqueur = true %}
+										<div class="form-check" >
+											<input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]" required >
+											<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
+										</div>
+									{% endif %}
 								{% endfor %}
-						{% else %}
-							{% for clefs in data.key_responses %}
-								<div class="form-check" >
-									<input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]" checked required>
-									<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
-								</div>
 							{% endfor %}
-					{% endif %}
+							{% if not marqueur %}
+								{% for clefs in data.key_responses %}
+									<div class="form-check" >
+										<input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]"  required>
+										<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
+									</div>
+								{% endfor %}
+						{% endif %}
+						{% set marqueur = false %}
+					{% else %}
+						{% for clefs in data.key_responses %}
+							<div class="form-check" >
+								<input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]"  required>
+								<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
+							</div>
+						{% endfor %}
+				{% endif %}
 
-				{% endif %}
-					
-				</div>
-				{% endif %}
+			{% endif %}
+			{% endif %}
 		{% endfor %}
+							
 
 		<div class="modal-footer">
 			<button class="btn btn-primary">Valider</button>  
