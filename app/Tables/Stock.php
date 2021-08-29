@@ -52,16 +52,79 @@ class Stock extends Table
     return true;
   }
 
-  public function get_specs($pn)
+  public function get_specs($id_fmm)
   {
         $request = $this->Db->Pdo->query('SELECT   
         a.* 
         FROM art_attribut_pn as a
-        WHERE a.aap__pn = "' . $pn . '"
+        WHERE a.aap__pn = "' . $id_fmm . '"
         ORDER BY a.aap__pn DESC LIMIT 50 ');
         $data = $request->fetchAll(PDO::FETCH_OBJ);
 
-	    return $data;
+       
+
+	      return $data;
+  }
+
+  public function get_specs_models($pn)
+  {
+        $request = $this->Db->Pdo->query('SELECT   
+        a.* 
+        FROM art_attribut_modele as a
+        WHERE a.aam__id_fmm = "' . $pn . '"
+        ORDER BY a.aam__id_fmm  DESC LIMIT 50 ');
+        $data = $request->fetchAll(PDO::FETCH_OBJ);
+
+        foreach ($data as $row) 
+        {
+            $row->aap__cle = $row->aam__cle;
+            $row->aap__valeur = $row->aam__valeur;
+        }
+
+        return $data;
+  }
+
+  public function heritage($id_fmm)
+  {
+      //recupère une liste des pn à hériter: 
+      $SQL = 'SELECT *
+		FROM liaison_fmm_pn WHERE id__fmm = ' . $id_fmm . ' ORDER BY id__pn';
+	$request = $this->Db->Pdo->query($SQL);
+      $pn_list = $request->fetchAll(PDO::FETCH_OBJ);
+
+      //recupère la liste de propriété de l'id_fmm
+      $request = $this->Db->Pdo->query('SELECT   
+		a.* 
+		FROM art_attribut_modele as a
+		WHERE a.aam__id_fmm = "' . $id_fmm . '"
+		ORDER BY a.aam__id_fmm  DESC LIMIT 50 ');
+      $modele_spec_list = $request->fetchAll(PDO::FETCH_OBJ);
+
+	//remet à zero tous les champs obligatoires dans la table pn 
+	foreach ($pn_list as $pn) 
+	{
+		$update = $this->Db->Pdo->prepare(
+			'UPDATE art_attribut_pn
+			SET aap__heritage = 0 
+			WHERE  	aap__pn = ?'
+		);
+		$update->execute([$pn->id__pn]);
+
+		//efface la liste des clefs valeurs similaires à  la nouvelle liste de propriétés : 
+		foreach ($modele_spec_list as $spec) 
+		{
+			$request = "DELETE FROM art_attribut_pn WHERE  aap__pn = '" . $pn->id__pn . "' 
+			AND ( aap__cle = ". $spec->aam__cle. " AND  aap__valeur  = ". $spec->aam__valeur .")";
+			$update = $this->Db->Pdo->prepare($request);
+			$update->execute();
+		}
+	}
+
+	//insert les nouvelles propriétés obligatoires et met a jour le champs : 
+	foreach ($modele_spec_list as $spec) 
+	{
+		
+	}
   }
 
   public function get_specs_value($pn)

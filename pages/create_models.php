@@ -31,7 +31,7 @@ if (!empty($_POST['id_models']))
         if (!empty($_POST[$data->aac__cle])) 
         {
             if ($count == 1) {
-                $delete_all_specs = $Stocks->delete_specs($pn->afmm__id);
+                $delete_all_specs = $Stocks->delete_specs_models($pn->afmm__id);
             }
             if (is_array($_POST[$data->aac__cle])) {
                 foreach ($_POST[$data->aac__cle] as $value) {
@@ -55,12 +55,13 @@ if (!empty($_SESSION['models_id']))
         $_SESSION['models_id'] = "";
         $pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_id);
 
-        $pn = $Article->get_fmm_by_id($pn_id);
+        $Modele = $Article->get_fmm_by_id($pn_id);
 
-       
+       $spec_array = $Stocks->get_specs_models($pn_id);
+    
        
         //data nécéssaire pour la déclaration des attributs :
-        $forms_data = $Stocks->get_famille_forms($pn->afmm__famille);
+        $forms_data = $Stocks->get_famille_forms($Modele->afmm__famille);
         // $spec_array = $Stocks->get_specs($pn);
 
     echo $twig->render(
@@ -68,8 +69,9 @@ if (!empty($_SESSION['models_id']))
             [
                 'user' => $_SESSION['user'],
                 'pn_id' => $pn_id ,
-                'pn' => $pn ,
-                'forms_data' => $forms_data 
+                'object' => $Modele ,
+                'forms_data' => $forms_data ,
+                'spec_array' => $spec_array
             ]
             );
 }
