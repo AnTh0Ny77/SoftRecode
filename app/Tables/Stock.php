@@ -61,8 +61,6 @@ class Stock extends Table
         ORDER BY a.aap__pn DESC LIMIT 50 ');
         $data = $request->fetchAll(PDO::FETCH_OBJ);
 
-       
-
 	      return $data;
   }
 
@@ -100,6 +98,7 @@ class Stock extends Table
 		ORDER BY a.aam__id_fmm  DESC LIMIT 50 ');
       $modele_spec_list = $request->fetchAll(PDO::FETCH_OBJ);
 
+	
 	//remet à zero tous les champs obligatoires dans la table pn 
 	foreach ($pn_list as $pn) 
 	{
@@ -113,18 +112,28 @@ class Stock extends Table
 		//efface la liste des clefs valeurs similaires à  la nouvelle liste de propriétés : 
 		foreach ($modele_spec_list as $spec) 
 		{
+			
 			$request = "DELETE FROM art_attribut_pn WHERE  aap__pn = '" . $pn->id__pn . "' 
-			AND ( aap__cle = ". $spec->aam__cle. " AND  aap__valeur  = ". $spec->aam__valeur .")";
+			AND ( aap__cle = '". $spec->aam__cle. "' AND  aap__valeur  = '". $spec->aam__valeur ."')";
 			$update = $this->Db->Pdo->prepare($request);
 			$update->execute();
 		}
+
+		//insert les nouvelles propriétés obligatoires et met a jour le champs : 
+		foreach ($modele_spec_list as $spec) 
+		{
+			$request = $this->Db->Pdo->prepare('INSERT INTO art_attribut_pn (aap__pn, aap__cle , aap__valeur , aap__heritage)
+			VALUES (:aap__pn , :aap__cle , :aap__valeur , :aap__heritage)');
+			$request->bindValue(":aap__pn", $pn->id__pn);
+			$request->bindValue(":aap__cle",  $spec->aam__cle);
+			$request->bindValue(":aap__valeur", $spec->aam__valeur);
+			$request->bindValue(":aap__heritage", 1 );
+			$request->execute();
+		
+		}
+		return true;
 	}
 
-	//insert les nouvelles propriétés obligatoires et met a jour le champs : 
-	foreach ($modele_spec_list as $spec) 
-	{
-		
-	}
   }
 
   public function get_specs_value($pn)

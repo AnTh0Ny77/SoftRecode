@@ -30,8 +30,11 @@ if (!empty($_POST['id_models']))
         $count += 1;
         if (!empty($_POST[$data->aac__cle])) 
         {
+
             if ($count == 1) {
+              
                 $delete_all_specs = $Stocks->delete_specs_models($pn->afmm__id);
+               
             }
             if (is_array($_POST[$data->aac__cle])) {
                 foreach ($_POST[$data->aac__cle] as $value) {
@@ -44,6 +47,9 @@ if (!empty($_POST['id_models']))
             }
         }
     }
+
+    $heritage = $Stocks->heritage($pn->afmm__id);
+
     header('location: ArtCatalogueModele');
     die();
 }

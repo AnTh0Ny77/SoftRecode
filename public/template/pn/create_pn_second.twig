@@ -68,10 +68,8 @@
                     <select name="select_models" data-placeholder="Choisir des modèles"  class="chosen-select col-12" id="select_multiple" multiple required>
                         {% for modele in model_list %}
                                 <option value="{{modele.afmm__id}}"> {{ modele.famille ~ " " ~ modele.Marque ~   " " ~ modele.afmm__modele}}</option>    
-                        {% endfor %}
-                        
+                        {% endfor %}  
                     </select>
-
 
                     <div class="modal-footer">
                         <button class="btn btn-primary">Valider</button>

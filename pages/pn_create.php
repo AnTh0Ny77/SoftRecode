@@ -73,7 +73,14 @@ switch ($_SERVER['REQUEST_URI'])
 			$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_id);
 			
 			$pn = $Article->get_pn_byID($pn_id);
-			$model_list = $Article->getModels();
+
+			if ($pn->apn__famille == 'PID') 
+			{
+				$model_list = $Article->getModels();
+			}	
+			else $model_list = $Article->find_models_byFamille($pn->apn__famille);
+			
+			
 			$model_relation = $Article->find_by_liaison($pn_court);
 			$model_relation = json_encode($model_relation);
 
@@ -121,6 +128,7 @@ switch ($_SERVER['REQUEST_URI'])
 				
 				$spec_array = $Stocks->get_specs($pn_id);
 				$marqueur = false ;
+				$marqueur_disabled = false ;
 				echo $twig->render(
 					'pn/create_pn_specs.twig',
 					[
@@ -131,7 +139,8 @@ switch ($_SERVER['REQUEST_URI'])
 						'object' => $pn , 
 						'forms_data' => $forms_data , 
 						'spec_array' => $spec_array , 
-						'marqueur' => $marqueur
+						'marqueur' => $marqueur , 
+						'marqueur_disabled' => $marqueur_disabled
 					]
 				);
 			break;	
