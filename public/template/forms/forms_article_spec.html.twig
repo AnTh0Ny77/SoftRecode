@@ -2,9 +2,9 @@
 
 
 {% if object.apn__pn %}
-	<form action="create-pn-third" method="POST" class="">
+	<form action="create-pn-third" method="POST" class="" id="forms_specs">
 {% else %}
-	<form action="create-models" method="POST" class="">
+	<form action="create-models" method="POST" class="" id="forms_specs">
 {% endif %}
 		{% if object.apn__pn %}
 			<input type="hidden" name="id_pn" value="{{object.apn__pn}}">
@@ -378,6 +378,6 @@
 							
 						
 		<div class="row justify-content-end mt-4 col-12">
-			<button class="btn btn-primary">Valider</button>  
+			<button id="post_spec" class="btn btn-primary">Valider</button>  
 		</div>
 	</form>

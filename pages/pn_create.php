@@ -88,6 +88,8 @@ switch ($_SERVER['REQUEST_URI'])
 			$forms_data = $Stocks->get_famille_forms($pn->apn__famille);
 			$spec_array = $Stocks->get_specs($pn_id);
 
+			
+
 			echo $twig->render(
 				'pn/create_pn_second.twig',
 				[
@@ -120,13 +122,21 @@ switch ($_SERVER['REQUEST_URI'])
 				
 				$pn = $Article->get_pn_byID($pn_id);
 				$model_list = $Article->getModels();
-				$model_relation = $Article->find_by_liaison($pn_court);
+				$model_relation = $Article->find_one_by_liaison($pn_court);
+				$model_relation_object = $model_relation;
 				$model_relation = json_encode($model_relation);
 
 				//data nécéssaire pour la déclaration des attributs : 
 				$forms_data = $Stocks->get_famille_forms($pn->apn__famille);
 				
 				$spec_array = $Stocks->get_specs($pn_id);
+
+				if (empty($spec_array)) 
+				{
+					
+					$spec_array = $Stocks->get_spec_model_if_null($model_relation_object->id__fmm);
+				}
+
 				$marqueur = false ;
 				$marqueur_disabled = false ;
 				echo $twig->render(
@@ -158,7 +168,6 @@ switch ($_SERVER['REQUEST_URI'])
 			header('location: create-pn-second');
 			break;
 		}
-
 		
 
 		if (!empty($_POST['id_pn'])) 
@@ -188,6 +197,9 @@ switch ($_SERVER['REQUEST_URI'])
 					}
 				}
 			}
+
+			$model_relation = $Article->find_one_by_liaison($_POST['id_pn']);
+			$Stocks->check_heritage($model_relation->id__fmm , $_POST['id_pn']);
 		}
 	
 		

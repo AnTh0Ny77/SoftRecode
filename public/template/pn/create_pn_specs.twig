@@ -77,6 +77,30 @@
     $(document).ready(function () {
             var stepper = new Stepper($('.bs-stepper')[0])
             stepper.to(3)
+
+
+            $('#post_spec').on('click' ,function()
+            {
+                event.preventDefault();
+                var allInputs = $( ":input" );
+                var select_input = $('.selectpicker');
+
+                for(let i = 0 ; i< allInputs.length; i ++)
+                {
+                    if(allInputs[i].hasAttribute('disabled'))
+                    {
+                        allInputs[i].disabled = false ; 
+                    }
+                 
+                }
+
+                for(let y = 0 ; y < select_input.length ; y ++ )
+                {
+                    select_input[y].disabled = false ; 
+                }
+                $('.selectpicker').selectpicker('refresh');
+                $('#forms_specs').submit();
+            })
            
         })
 

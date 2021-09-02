@@ -28,17 +28,20 @@ if (!empty($_POST['id_models']))
     foreach ($forms_data as $data) 
     {
         $count += 1;
+       
         if (!empty($_POST[$data->aac__cle])) 
         {
-
-            if ($count == 1) {
-              
-                $delete_all_specs = $Stocks->delete_specs_models($pn->afmm__id);
-               
+            var_dump($count);
+            if ($count == 1) 
+            {
+                $delete_all_specs = $Stocks->delete_specs_models($pn->afmm__id);  
             }
-            if (is_array($_POST[$data->aac__cle])) {
+
+            if (is_array($_POST[$data->aac__cle])) 
+            {
                 foreach ($_POST[$data->aac__cle] as $value) {
-                    if (!empty($value)) {
+                    if (!empty($value)) 
+                    {
                         $Stocks->insert_attr_models($_POST['id_models'], $data->aac__cle, $value);
                     }
                 }

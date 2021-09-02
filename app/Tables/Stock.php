@@ -52,6 +52,38 @@ class Stock extends Table
     return true;
   }
 
+  public function check_heritage($model_id , $pn_id)
+  {
+    $spec_model = $this->get_specs_models($model_id);
+    $spec_pn = $this->get_specs($pn_id);
+
+    foreach ($spec_model as $spec) 
+    {
+	    foreach ($spec_pn as $spec_p) 
+	    {
+		   if ($spec_p->aap__cle == $spec->aam__cle and $spec->aam__valeur == $spec_p->aap__valeur) 
+		   {
+			$update_heritage =
+			"UPDATE art_attribut_pn
+			SET aap__heritage = 1  
+			WHERE aap__pn = ? ";
+			$update = $this->Db->Pdo->prepare($update_heritage);
+			$update->execute([$pn_id]);
+		   }
+		   else 
+		   {
+			$update_heritage =
+			"UPDATE art_attribut_pn
+			SET aap__heritage = 0 
+			WHERE aap__pn = ? ";
+			$update = $this->Db->Pdo->prepare($update_heritage);
+			$update->execute([$pn_id]);
+		   }
+	    }
+
+    }
+  }
+
   public function get_specs($id_fmm)
   {
         $request = $this->Db->Pdo->query('SELECT   
@@ -61,7 +93,25 @@ class Stock extends Table
         ORDER BY a.aap__pn DESC LIMIT 50 ');
         $data = $request->fetchAll(PDO::FETCH_OBJ);
 
-	      return $data;
+	return $data;
+  }
+  public function get_spec_model_if_null($model)
+  {
+      $request = $this->Db->Pdo->query('SELECT   
+      a.* 
+      FROM art_attribut_modele as a
+      WHERE a.aam__id_fmm = "' . $model . '"
+      ORDER BY a.aam__id_fmm  DESC LIMIT 50 ');
+      $data = $request->fetchAll(PDO::FETCH_OBJ);
+
+      foreach ($data as $row) 
+      {
+          $row->aap__cle = $row->aam__cle;
+          $row->aap__valeur = $row->aam__valeur;
+          $row->aap__heritage = 1 ;
+      }
+
+      return $data;
   }
 
   public function get_specs_models($pn)
