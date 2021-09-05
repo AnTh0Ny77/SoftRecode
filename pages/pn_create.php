@@ -139,6 +139,7 @@ switch ($_SERVER['REQUEST_URI'])
 
 				$marqueur = false ;
 				$marqueur_disabled = false ;
+				$marqueur_heritage = false ;
 				echo $twig->render(
 					'pn/create_pn_specs.twig',
 					[
@@ -150,7 +151,8 @@ switch ($_SERVER['REQUEST_URI'])
 						'forms_data' => $forms_data , 
 						'spec_array' => $spec_array , 
 						'marqueur' => $marqueur , 
-						'marqueur_disabled' => $marqueur_disabled
+						'marqueur_disabled' => $marqueur_disabled , 
+						'marqueur_heritage' => $marqueur_heritage
 					]
 				);
 			break;	

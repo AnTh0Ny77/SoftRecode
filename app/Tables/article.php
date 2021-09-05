@@ -377,7 +377,7 @@ class Article extends Table
 	  	$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_name);
 		$pn_court = strtoupper($pn_court);
 
-		$SQL = 'SELECT a.* , u.prenom , u.nom 
+		$SQL = 'SELECT a.* , u.prenom , u.nom , k.kw__lib as famille 
 		FROM art_pn as a  
 		LEFT JOIN utilisateur as u on  u.id_utilisateur = apn__id_user_modif
 		LEFT JOIN keyword as k ON ( k.kw__type = "famil" AND k.kw__value =  a.apn__famille ) 
@@ -602,7 +602,10 @@ public function get_fmm_by_id(int $id_fmm)
 {	
 	if ($id_fmm)
 	{ // je fait la lacture si il y a un ID FMM
-		$sql     = "SELECT * FROM art_fmm WHERE afmm__id = ".$id_fmm ;
+		$sql     = "SELECT * , k.kw__lib as famille , m.am__marque as marque  FROM art_fmm 
+		LEFT JOIN keyword as k ON  ( afmm__famille = k.kw__value AND k.kw__type = 'famil') 
+		LEFT JOIN art_marque as m ON ( afmm__marque = m.am__id ) 
+		 WHERE afmm__id = ".$id_fmm ;
 		$request = $this->Db->Pdo->query($sql);
 		$data    = $request->fetch(PDO::FETCH_OBJ);
 		if (isset($data->afmm__image))

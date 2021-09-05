@@ -9,19 +9,27 @@
 		{% if object.apn__pn %}
 			<input type="hidden" name="id_pn" value="{{object.apn__pn}}">
 
-			<h3 class="text-muted mt-5">Fiche technique pour le PN: {{ object.apn__famille }} <b>{{ object.apn__pn_long }}</b></h3>
+			<h3 class="text-muted mt-5">Fiche technique pour le PN:<b>{{ object.famille }} {{ object.apn__pn_long }}</b></h3>
 		{% else %}
 			<input type="hidden" name="id_models" value="{{object.afmm__id}}">
 
-			<h3 class="text-muted mt-5">Fiche technique pour le Modèle: {{ object.apn__famille }} <b>{{ object.afmm__id }}</b></h3>
+			<h3 class="text-muted mt-5">Fiche technique pour le Modèle: <b> {{object.famille ~ " " ~ object.marque}} -  {{ object.afmm__id }}</b></h3>
 		{% endif %}
 		
 		
 		{% for data in forms_data %}
 			{% if data.aac__option == 'UN' %}
+			{% for spec in spec_array %}
+			
+				{% if spec.aap__cle == data.aac__cle and spec.aap__heritage == 1 %}
+					{% set marqueur_heritage = 'Hérité du modèle' %}
+				{% endif %}
+			{% endfor %}
 				<div class="form-group  my-4">
-					<label for="labelUN!" class="text-uppercase font-italic font-weight-bold"> {{ data.aac__cle_txt }}</label>
+					<label for="labelUN" class="text-uppercase font-italic font-weight-bold"> {{ data.aac__cle_txt }} <small class="text-primary">{{marqueur_heritage}}</small></label>
+					{% set marqueur_heritage = false %}
 						{% if data.aac__champ == "SLT" %}
+					
 							{% for spec in spec_array %}
 								{% if spec.aap__cle == data.aac__cle and spec.aap__heritage == 1  %}
 									{% set marqueur_disabled = 'disabled' %}
@@ -110,8 +118,14 @@
 				</div>
 				<hr>
 				{% elseif data.aac__option == 'UN!' %}
+				{% for spec in spec_array %}
+					{% if spec.aap__cle == data.aac__cle and spec.aap__heritage == 1 %}
+						{% set marqueur_heritage = 'Hérité du modèle' %}
+					{% endif %}
+				{% endfor %}
 					<div class="form-group mx-auto  my-4">
-						<label for="labelUN!" class="text-uppercase font-italic font-weight-bold"> {{ data.aac__cle_txt }} <small class="text-danger">obligatoire</small></label>
+						<label for="labelUN!" class="text-uppercase font-italic font-weight-bold"> {{ data.aac__cle_txt }} <small class="text-danger">obligatoire</small> <small class="text-primary">{{marqueur_heritage}}</small></label>
+						{% set marqueur_heritage = false %}
 							{% if data.aac__champ == "SLT" %}
 							{% for spec in spec_array %}
 								{% if spec.aap__cle == data.aac__cle and spec.aap__heritage == 1  %}
@@ -199,8 +213,14 @@
 					
 					<hr>
 				{% elseif data.aac__option == 'XX' %}
+				{% for spec in spec_array %}
+					{% if spec.aap__cle == data.aac__cle and spec.aap__heritage == 1 %}
+						{% set marqueur_heritage = 'Hérité du modèle' %}
+					{% endif %}
+				{% endfor %}
 					<div class="form-group my-4">
-						<label for="labelXX" class="text-uppercase font-italic font-weight-bold"> {{ data.aac__cle_txt }} <small class="text-success">Choix multiples</small></label>
+						<label for="labelXX" class="text-uppercase font-italic font-weight-bold"> {{ data.aac__cle_txt }} <small class="text-success">Choix multiples</small> <small class="text-primary">{{marqueur_heritage}}</small></label>
+						{% set marqueur_heritage = false %}
 						{% if data.aac__champ == "SLT" %}
 						{% for spec in spec_array %}
 									{% if spec.aap__cle == data.aac__cle and spec.aap__heritage == 1  %}
@@ -289,8 +309,14 @@
 					</div>
 					<hr>
 				{% elseif data.aac__option == 'XX!' %}
+				{% for spec in spec_array %}
+					{% if spec.aap__cle == data.aac__cle and spec.aap__heritage == 1 %}
+						{% set marqueur_heritage = 'Hérité du modèle' %}
+					{% endif %}
+				{% endfor %}
 				<div class="form-group  my-4">
-					<label for="labelXX" class="text-uppercase font-italic font-weight-bold"> {{ data.aac__cle_txt }} <small class="text-success">Choix multiples</small> <small class="text-danger">obligatoire</small></label>
+					<label for="labelXX" class="text-uppercase font-italic font-weight-bold"> {{ data.aac__cle_txt }} <small class="text-success">Choix multiples</small> <small class="text-danger">obligatoire</small> <small class="text-primary">{{marqueur_heritage}}</small></label>
+						{% set marqueur_heritage = false %}
 					{% if data.aac__champ == "SLT" %}
 						{% for spec in spec_array %}
 									{% if spec.aap__cle == data.aac__cle and spec.aap__heritage == 1  %}

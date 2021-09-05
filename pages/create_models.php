@@ -31,9 +31,10 @@ if (!empty($_POST['id_models']))
        
         if (!empty($_POST[$data->aac__cle])) 
         {
-            var_dump($count);
+           
             if ($count == 1) 
             {
+                var_dump($count);
                 $delete_all_specs = $Stocks->delete_specs_models($pn->afmm__id);  
             }
 
