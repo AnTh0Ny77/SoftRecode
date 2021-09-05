@@ -57,31 +57,28 @@ class Stock extends Table
     $spec_model = $this->get_specs_models($model_id);
     $spec_pn = $this->get_specs($pn_id);
 
+		//set 0 all fields : 
+		$update_heritage =
+		"UPDATE art_attribut_pn
+		SET aap__heritage = 0  
+		WHERE aap__pn = ? ";
+		$update = $this->Db->Pdo->prepare($update_heritage);
+		$update->execute([$pn_id]);
+
     foreach ($spec_model as $spec) 
     {
 	    foreach ($spec_pn as $spec_p) 
-	    {
-		   if ($spec_p->aap__cle == $spec->aam__cle and $spec->aam__valeur == $spec_p->aap__valeur) 
-		   {
+	    {	   
 			$update_heritage =
 			"UPDATE art_attribut_pn
 			SET aap__heritage = 1  
-			WHERE aap__pn = ? ";
+			WHERE aap__pn = ?  AND ( aap__cle = ? AND aap__valeur = ? ) ";
 			$update = $this->Db->Pdo->prepare($update_heritage);
-			$update->execute([$pn_id]);
-		   }
-		   else 
-		   {
-			$update_heritage =
-			"UPDATE art_attribut_pn
-			SET aap__heritage = 0 
-			WHERE aap__pn = ? ";
-			$update = $this->Db->Pdo->prepare($update_heritage);
-			$update->execute([$pn_id]);
-		   }
+			$update->execute([$pn_id , $spec->aam__cle,  $spec->aam__valeur]);  
 	    }
 
     }
+    
   }
 
   public function get_specs($id_fmm)
