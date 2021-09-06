@@ -267,43 +267,28 @@
 						{% endfor %}
 						<div class="row justify-content-start col-11 mx-auto">
 							{% if spec_array %}
-								{% for spec in spec_array %}
-									
-										{% set marqueur = true %}
-											<div class="form-check col-3" >
-												<input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]" 
-												 {{marqueur_disabled}}
-												{% for clefs in data.key_responses %}
 
-													{% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
-														checked
-													{% set marqueur = true %}
-													{% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
+								{% for clefs in data.key_responses %}
+										<div class="form-check col-3" >
+											<input class="form-check-input" id="radioInput" type="checkbox"
+														value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]"  {{marqueur_disabled}}
 
-													{% set marqueur = true %}
-													{% endif %}
-												
-												{% endfor %}
-												> 
-												
-															<label class="form-check-label" for="radioInput">
-																{% for clefs in data.key_responses %}
-																	{% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
-																		{{ clefs.aav__valeur_txt }} 
-																	{% endif %}
-																{% endfor %}
-															</label>
-														
-														
-														
-											</div>
-										
-											<!-- <div class="form-check col-3" >
-												<input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]" {{marqueur_disabled}}>
-												<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
-											</div> -->
-										
+														{% for spec in spec_array %}
+															{% if spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur  %}
+																
+															{% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
+																checked
+															{% endif %}
+														{% endfor %}
+
+														> 
+														{% set marqueur = true %}
+											<label class="form-check-label" for="radioInput">	
+												{{ clefs.aav__valeur_txt }} 
+											</label>
+										</div>
 								{% endfor %}
+								
 								{% if not marqueur %}
 									{% for clefs in data.key_responses %}
 										<div class="form-check col-3" >
