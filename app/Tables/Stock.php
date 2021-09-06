@@ -204,7 +204,7 @@ class Stock extends Table
     c.aac__famille , c.aac__cle , c.aac__ordre , c.aac__cle_txt, c.aac__option , c.aac__champ
     FROM art_attribut_cle as c
     WHERE aac__famille = "'. $famil .'"
-    ORDER BY c.aac__ordre DESC LIMIT 1500 ');
+    ORDER BY c.aac__ordre ASC LIMIT 1500 ');
     $data = $request->fetchAll(PDO::FETCH_OBJ);
 
     foreach ($data as $clef) 
@@ -213,7 +213,7 @@ class Stock extends Table
       v.aav__cle , v.aav__valeur, v.aav__ordre , v.aav__valeur_txt
       FROM art_attribut_valeur as v
       WHERE v.aav__cle = "'. $clef->aac__cle .'"
-      ORDER BY v.aav__ordre DESC LIMIT 1500 ');
+      ORDER BY v.aav__ordre ASC LIMIT 1500 ');
       $responses = $request->fetchAll(PDO::FETCH_OBJ);
       $clef->key_responses = $responses;
     }

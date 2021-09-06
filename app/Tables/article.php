@@ -388,6 +388,22 @@ class Article extends Table
 		$request = $this->Db->Pdo->query($SQL);
 		$data = $request->fetch(PDO::FETCH_OBJ);
 
+		if (!empty($data))
+		{
+			$SQL = 'SELECT a.afmm__modele
+			FROM art_fmm as a  
+			WHERE a.afmm__id = "'. $data->modele .'"';
+			$request = $this->Db->Pdo->query($SQL);
+			$model_data = $request->fetch(PDO::FETCH_OBJ);
+
+			if (!empty($model_data)) 
+			{
+				$data->modele = $model_data->afmm__modele ; 
+			}
+		
+		}
+		
+
 		if (!empty($data->apn__image))
 				$data->apn__image = base64_encode($data->apn__image);
 				

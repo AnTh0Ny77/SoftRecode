@@ -9,7 +9,7 @@
 		{% if object.apn__pn %}
 			<input type="hidden" name="id_pn" value="{{object.apn__pn}}">
 
-			<h3 class="text-muted mt-5">Fiche technique pour le PN:<b>{{ object.famille }} {{ object.modele ~ " " ~ object.apn__pn_long }}</b></h3>
+			<h3 class="text-muted mt-5">Fiche technique pour le PN:<b>{{ object.apn__pn_long  }}  ( {{ object.modele ~ " " ~  object.famille }} )</b></h3>
 		{% else %}
 			<input type="hidden" name="id_models" value="{{object.afmm__id}}">
 
@@ -73,6 +73,10 @@
 									{% endif %}
 						{% endfor %}
 						<div class="row mx-auto justify-content-start col-11">
+							<div class="form-check col-3" >
+								<input class="form-check-input" id="radioInput" type="radio" value="" name="{{ data.aac__cle }}"  {{marqueur_disabled}}>
+								<label class="form-check-label" for="radioInput">Non Renseigné</label>
+							</div>
 							{% if spec_array %}
 									{% for spec in spec_array %}
 										{% for clefs in data.key_responses %}
@@ -172,15 +176,25 @@
 											{% for clefs in data.key_responses %}
 												{% if spec.aap__cle == data.aac__cle and spec.aap__valeur == clefs.aav__valeur %}
 													{% set marqueur = true %}
-													<div class="form-check  col-2" >
-														<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}" checked required {{marqueur_disabled}}>
+													<div class="form-check  col-2" >	
+														{% if loop.first %}
+															<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}" checked  {{marqueur_disabled}} required>
+														{% else %}
+															<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}" checked  {{marqueur_disabled}}>
+														{% endif %}
+														
 														<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }}  </label>
 													</div>
 				
 												{% elseif spec.aap__cle == data.aac__cle and spec.aap__valeur != clefs.aav__valeur %}
 													{% set marqueur = true %}
 													<div class="form-check  col-2" >
-														<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}"  required {{marqueur_disabled}}>
+														{% if loop.first %}
+															<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}"   {{marqueur_disabled}} required>
+														{% else %}
+															<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}"   {{marqueur_disabled}}>
+														{% endif %}
+														
 														<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }}  </label>
 													</div>
 												{% endif %}
@@ -189,7 +203,12 @@
 										{% if not marqueur %}
 													{% for clefs in data.key_responses %}
 														<div class="form-check  col-2" >
-															<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}" required {{marqueur_disabled}}>
+															{% if loop.first %}
+																<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}"  {{marqueur_disabled}} required>
+															{% else %}
+																<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}"  {{marqueur_disabled}}>
+															{% endif %}
+															
 															<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }}  </label>
 														</div>
 													{% endfor %}
@@ -198,7 +217,12 @@
 									{% else %}
 										{% for clefs in data.key_responses %}
 											<div class="form-check  col-2" >
-												<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}"  required {{marqueur_disabled}}>
+												{% if loop.first %}
+													<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}"   {{marqueur_disabled}} required>
+												{% else %}
+													<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}"   {{marqueur_disabled}}>
+												{% endif %}
+												
 												<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }}  </label>
 											</div>
 										{% endfor %}
