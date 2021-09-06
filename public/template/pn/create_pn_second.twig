@@ -60,7 +60,7 @@
      <div class="container mt-5 ">
         <div class="d-flex">
             <div class="col-11">
-                <h3 class="text-muted">Choix des modèles associés pour : <b>{{pn.apn__pn_long}}</b></h3>
+                <h3 class="text-muted">Choix des modèles associés pour : <b>{{ pn.famille ~ " " ~ pn.modele ~ " " ~  pn.apn__pn_long}}</b></h3>
 
                 <form action="create-pn-specs" method="POST" class="mt-3"  >
                     <input type="hidden" name="id_pn" value="{{pn.apn__pn}}" >

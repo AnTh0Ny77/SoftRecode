@@ -61,13 +61,6 @@
                     <button class="btn btn-secondary"><i class="fad fa-arrow-left"></i> Modèles associés</button>
                     <h3 class="text-muted mx-5">Informations </h3>
                 </form>
-               
-                <div class="alert alert-secondary mt-3 text-muted " role="alert">
-                   
-                    <div>
-                    <i class="far fa-question-circle"></i> Le nom du PN n'est plus modifiable, en cas de problème ou d'erreur merci de contacter les administrateurs!<br>
-                    </div>
-                </div>
                 <form  enctype="multipart/form-data" action="create-pn-third" method="POST" class="mt-3"  >
                     <input type="hidden" name="pn_id" value="{{pn.apn__pn}}">
                     <input class="form-control" type="hidden" value="{{pn.apn__pn_long}}" placeholder="Disabled input" aria-label="Disabled input example" disabled readonly>
@@ -75,7 +68,7 @@
                     <div class=" mt-3 text-muted " role="alert">
                    
                         <div>
-                            <h3> <i class="fas fa-lock-alt fa-lg"></i> {{pn.apn__pn_long}}</h3><br>
+                            <h3> <i class="fas fa-lock-alt fa-lg"></i> {{ pn.famille ~  " " ~ pn.modele ~ " " ~  pn.apn__pn_long}}</h3><br>
                         </div>
                     </div>
                     <div class="d-flex col-12">

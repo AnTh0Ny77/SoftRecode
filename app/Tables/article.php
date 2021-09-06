@@ -132,9 +132,11 @@ class Article extends Table
 
   public function select_all_pn()
   {
-		$SQL = 'SELECT a.* , u.prenom , u.nom 
+		$SQL = 'SELECT a.* , u.prenom , u.nom , k.kw__lib as famille , l.id__fmm as modele
 		FROM art_pn as a  
 		LEFT JOIN utilisateur as u on  u.id_utilisateur = a.apn__id_user_modif
+		LEFT JOIN keyword as k ON ( k.kw__type = "famil" AND k.kw__value =  a.apn__famille ) 
+		LEFT JOIN liaison_fmm_pn as l ON ( a.apn__pn  = l.id__pn ) 
 		ORDER BY apn__date_modif DESC LIMIT 50';
 		$request = $this->Db->Pdo->query($SQL);
 		$data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -377,10 +379,11 @@ class Article extends Table
 	  	$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_name);
 		$pn_court = strtoupper($pn_court);
 
-		$SQL = 'SELECT a.* , u.prenom , u.nom , k.kw__lib as famille 
+		$SQL = 'SELECT a.* , u.prenom , u.nom , k.kw__lib as famille  , l.id__fmm as modele
 		FROM art_pn as a  
 		LEFT JOIN utilisateur as u on  u.id_utilisateur = apn__id_user_modif
 		LEFT JOIN keyword as k ON ( k.kw__type = "famil" AND k.kw__value =  a.apn__famille ) 
+		LEFT JOIN liaison_fmm_pn as l ON ( a.apn__pn  = l.id__pn ) 
 		WHERE apn__pn = "'. $pn_court .'"';
 		$request = $this->Db->Pdo->query($SQL);
 		$data = $request->fetch(PDO::FETCH_OBJ);

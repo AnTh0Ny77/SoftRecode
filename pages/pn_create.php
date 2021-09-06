@@ -236,7 +236,7 @@ switch ($_SERVER['REQUEST_URI'])
 			$pn = $Article->get_pn_byID($_POST['pn_id']);
 		}
 
-		$pn->apn__image = base64_encode($pn->apn__image);
+		// $pn->apn__image = base64_encode($pn->apn__image);
 
 		echo $twig->render(
 			'pn/create_pn_third.twig',

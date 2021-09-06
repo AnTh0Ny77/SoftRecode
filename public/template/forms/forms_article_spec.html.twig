@@ -9,7 +9,7 @@
 		{% if object.apn__pn %}
 			<input type="hidden" name="id_pn" value="{{object.apn__pn}}">
 
-			<h3 class="text-muted mt-5">Fiche technique pour le PN:<b>{{ object.famille }} {{ object.apn__pn_long }}</b></h3>
+			<h3 class="text-muted mt-5">Fiche technique pour le PN:<b>{{ object.famille }} {{ object.modele ~ " " ~ object.apn__pn_long }}</b></h3>
 		{% else %}
 			<input type="hidden" name="id_models" value="{{object.afmm__id}}">
 
