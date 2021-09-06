@@ -23,6 +23,7 @@ if (!empty($_POST['id_models']))
 {
     $pn = $Article->get_fmm_by_id($_POST['id_models']);
     $forms_data = $Stocks->get_famille_forms($pn->afmm__famille);
+    $delete_all_specs = $Stocks->delete_specs_models($pn->afmm__id);  
 
     $count = 0;
     foreach ($forms_data as $data) 
@@ -31,12 +32,7 @@ if (!empty($_POST['id_models']))
        
         if (!empty($_POST[$data->aac__cle])) 
         {
-           
-            if ($count == 1) 
-            {
-                var_dump($count);
-                $delete_all_specs = $Stocks->delete_specs_models($pn->afmm__id);  
-            }
+            
 
             if (is_array($_POST[$data->aac__cle])) 
             {

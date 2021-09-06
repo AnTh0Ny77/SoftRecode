@@ -201,7 +201,7 @@ class Article extends Table
 	LEFT JOIN keyword ON art_fmm.afmm__famille = keyword.kw__value and keyword.kw__type = \'famil\' 
 	LEFT JOIN utilisateur AS user_creat ON user_creat.id_utilisateur = art_fmm.afmm__id_user_creat 
 	LEFT JOIN utilisateur AS user_modif ON user_modif.id_utilisateur = art_fmm.afmm__id_user_modif '.
-	$SQL_WHERE.$SQL_ORDER.' LIMIT 50'; // 'LIMIT 0,50 ';
+	$SQL_WHERE.$SQL_ORDER.' LIMIT 90'; // 'LIMIT 0,50 ';
 	debug($SQL); // pour debug
 	$request =$this->Db->Pdo->query($SQL);
 	$data = $request->fetchAll(PDO::FETCH_OBJ);
