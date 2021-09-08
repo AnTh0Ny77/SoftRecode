@@ -110,6 +110,18 @@ public function majMarqueur($marqueur)
   $update->execute();
 }
 
+public function get_kw_by_typeAndValue($type,$value)
+{
+        $request = $this->Db->Pdo->query('SELECT   
+        k.* 
+        FROM keyword as k
+        WHERE k.kw__type = "' . $type . '" AND k.kw__value = "'. $value .'"
+        LIMIT 1');
+        $data = $request->fetch(PDO::FETCH_OBJ);
+        return $data;
+
+}
+
 
 
 

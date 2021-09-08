@@ -3,6 +3,8 @@
 
 {% if object.apn__pn %}
 	<form action="create-pn-third" method="POST" class="" id="forms_specs">
+{% elseif object.kw__type %}
+	<form action="recherche-articles-specs" method="POST" class="" id="forms_specs">
 {% else %}
 	<form action="create-models" method="POST" class="" id="forms_specs">
 {% endif %}
@@ -10,6 +12,9 @@
 			<input type="hidden" name="id_pn" value="{{object.apn__pn}}">
 
 			<h3 class="text-muted mt-5">Fiche technique pour le PN:<b>{{ object.apn__pn_long  }}  ( {{ object.modele ~ " " ~  object.famille }} )</b></h3>
+
+		{% elseif object.kw__type %}
+			<h3 class="text-muted mt-5">Formulaire de recherche pour la famille :<b>{{ object.kw__lib }} </b></h3>
 		{% else %}
 			<input type="hidden" name="id_models" value="{{object.afmm__id}}">
 

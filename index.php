@@ -96,6 +96,12 @@
 
 		case '/SoftRecode/create-models';
 			require __DIR__ . '/pages/create_models.php';break;
+
+		case '/SoftRecode/recherche-articles-familles';
+			require __DIR__ . '/pages/articles_recherche.php';break;
+
+		case '/SoftRecode/recherche-articles-specs';
+			require __DIR__ . '/pages/articles_recherche.php';break;
 			
 		//devis-> 
 		case '/SoftRecode/nouveauDevis';
