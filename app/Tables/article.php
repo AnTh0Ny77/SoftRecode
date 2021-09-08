@@ -140,6 +140,21 @@ class Article extends Table
 		ORDER BY apn__date_modif DESC LIMIT 50';
 		$request = $this->Db->Pdo->query($SQL);
 		$data = $request->fetchAll(PDO::FETCH_OBJ);
+		
+		foreach ($data as $pn) 
+		{
+			$SQL = 'SELECT a.afmm__modele
+			FROM art_fmm as a  
+			WHERE a.afmm__id = "' . $pn->modele . '"';
+			$request = $this->Db->Pdo->query($SQL);
+			$model_data = $request->fetch(PDO::FETCH_OBJ);
+
+			if (!empty($model_data)) {
+				$pn->modele = $model_data->afmm__modele;
+			}
+		}
+			
+		
 		return $data;
   }
 

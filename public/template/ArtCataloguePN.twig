@@ -56,9 +56,10 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 								{% if pn.apn__actif > 0  %}
 								<i class="fad fa-toggle-on fa-lg mx-2 mt-2" style="color: green;"></i>
 								{% else %}
-									<i class="fad fa-toggle-off fa-lg mx-2 mt-2" style="color: rgb(224, 13, 6);"></i>
-								{% endif %}<br>
-								<b> {{ pn.apn__pn_long  }}  -- {{ pn.modele ~ " " ~  pn.famille }} </b>
+								<i class="fad fa-toggle-off fa-lg mx-2 mt-2" style="color: rgb(224, 13, 6);"></i>
+								{% endif %}
+								<b> {{ pn.apn__pn_long  }}</b> <br>
+								<small>{{ pn.modele ~ " " ~ pn.famille }}</small> 
 							
 							</th>
 							<td>
@@ -77,9 +78,10 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 								{% if pn.apn__image  %}<figure class="image" ><img src="data:image/jpeg;base64,{{ pn.apn__image|raw}}" width=90></figure>{% endif %}
 							</td>
 							<td>
-								{{pn.nom ~  " " ~ pn.prenom }} <br>	
-								
-								
+								<button  class="click-span btn btn-link btn-lg"  data-toggle="tooltip"
+									data-placement="top" title="{{pn.nom ~  " " ~ pn.prenom }}">
+									<i class="fas fa-user-tag"></i>
+								</button>	
 							</td>
 							<td>
 								<form method="POST" action="create-pn-third">
