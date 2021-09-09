@@ -56,6 +56,27 @@ switch ($_SERVER['REQUEST_URI']) {
                 );
                 break;
             }
+    case "/SoftRecode/recherche-articles-results":
+
+            if (empty($_POST['famille'])) 
+            {
+                header('location: recherche-articles-familles');
+                break;
+            }
+
+            else 
+            {
+                $famille = $Keyword->get_kw_by_typeAndValue('famil', $_POST['famille'] );
+
+                echo $twig->render(
+                    'recherches_results.twig',
+                    [
+                        'user' => $_SESSION['user'],
+                        'famille' =>  $famille
+                    ]
+                );
+                break;
+            }
 
             
         

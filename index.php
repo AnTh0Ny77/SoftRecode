@@ -102,6 +102,9 @@
 
 		case '/SoftRecode/recherche-articles-specs';
 			require __DIR__ . '/pages/articles_recherche.php';break;
+		
+		case '/SoftRecode/recherche-articles-results';
+			require __DIR__ . '/pages/articles_recherche.php';break;
 			
 		//devis-> 
 		case '/SoftRecode/nouveauDevis';

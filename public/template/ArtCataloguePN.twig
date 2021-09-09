@@ -67,26 +67,27 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 								{{pn.apn__desc_short|raw}}
 							</td>
 							<td>
-								<p>
+								<div class="row justify-content-end px-auto col-7">
 									{% for spec in pn.specs %}
-										{{spec.aac__cle_txt ~ ' :  '}} <b class="text-primary"> {{ spec.aav__valeur_txt }}</b> | 
-									{% endfor %}
-								</p>
-								
+										<b class="text-primary"> {{ spec.aav__valeur_txt }} </b> | 
+								   {% endfor %}
+								</div>
 							</td>
 							<td>
 								{% if pn.apn__image  %}<figure class="image" ><img src="data:image/jpeg;base64,{{ pn.apn__image|raw}}" width=90></figure>{% endif %}
 							</td>
+						
 							<td>
-								<button  class="click-span btn btn-link btn-lg"  data-toggle="tooltip"
+								<button type="button"  class="click-span btn btn-link btn-lg"  data-toggle="tooltip"
 									data-placement="top" title="{{pn.nom ~  " " ~ pn.prenom }}">
 									<i class="fas fa-user-tag"></i>
 								</button>	
-							</td>
-							<td>
 								<form method="POST" action="create-pn-third">
-									<input type="hidden" name="id_pn" value="{{pn.apn__pn}}">
-									<button class="btn btn-primary btn-sm">Modifier</button>
+									<input type="hidden" name="id_pn" value="{{pn.apn__pn}}" >
+									<button class="btn btn-link btn-lg" data-toggle="tooltip"
+									data-placement="top" title="Modifier">
+										<i class="fas fa-edit"></i>
+									</button>
 								</form>
 						    </td>
 						  </tr>

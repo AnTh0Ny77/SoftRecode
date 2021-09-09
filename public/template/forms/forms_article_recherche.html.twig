@@ -1,0 +1,54 @@
+
+
+
+{% if object.kw__type %}
+<form action="recherche-articles-results" method="POST" class="" id="forms_specs">
+{% endif %}
+    {% if object.kw__type %}
+    <input type="hidden" name="famille" value="{{object.kw__value}}">
+        <h3 class="text-muted mt-5">Formulaire de recherche pour la famille :<b>{{ object.kw__lib }} </b></h3>
+    {% endif %}
+    
+    
+    {% for data in forms_data %}
+
+         {% if data.aac__champ == "SLT" %}
+         <div class="form-group  my-5">
+            <label for="labelUN" class="text-uppercase font-italic font-weight-bold"> {{ data.aac__cle_txt }} </label>
+            <select class=" selectpicker col-12" name=" {{ data.aac__cle }}" >
+                {% if spec_array %}
+
+                {% else %}
+                    {% for clefs in data.key_responses %}
+                        <option value="{{ clefs.aav__valeur }}"> {{ clefs.aav__valeur_txt }} </option>
+                    {% endfor %}
+                {% endif %}
+            </select>
+        </div>
+
+         {% elseif data.aac__champ == "CHK" or data.aac__champ == "RAD"  %}
+         <div class="form-group  my-5">
+            <label for="labelUN" class="text-uppercase font-italic font-weight-bold"> {{ data.aac__cle_txt }} </label>
+            <div class="row justify-content-start col-11 mx-auto">
+                {% if spec_array %}
+                {% else %}
+                    {% for clefs in data.key_responses %}
+                                <div class="form-check col-3" >
+                                        <input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]"  {{marqueur_disabled}}>
+                                        <label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
+                                </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+        </div>
+
+         {% endif %}
+
+    {% endfor %}
+                        
+                    
+    <div class="row justify-content-end mt-4 col-12">
+        <button id="post_spec" class="btn btn-primary">Valider</button>  
+    </div>
+</form>
