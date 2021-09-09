@@ -1,0 +1,74 @@
+<?php
+namespace App\Controller;
+require_once  '././vendor/autoload.php';
+use App\Controller\BasicController;
+use App\Tables\Article;
+use App\Tables\Keyword;
+use App\Tables\Stock;
+
+Class RechercheController extends BasicController
+{
+
+	public static function recherche_famille() : string
+	{
+		self::init();
+		self::security();
+
+		$Article = new Article(self::$Db);
+		$famille_list = $Article->getFAMILLE();
+
+		return self::$twig->render(
+				'recherches_famille.twig',
+			[
+				'user' => $_SESSION['user'] ,
+				'famille_list' => $famille_list
+			]
+			);	
+	}
+
+
+	public static function recherche_spec() : string
+	{
+		self::init();
+		self::security();
+		self::check_post(['famille'],'recherche-articles-famille');
+
+		$Stocks = new Stock(self::$Db);
+		$Keyword = new Keyword(self::$Db);
+
+		$forms_data = 	$Stocks->get_famille_forms($_POST['famille']);
+        $object     = 	$Keyword->get_kw_by_typeAndValue('famil', $_POST['famille'] );
+
+		return self::$twig->render(
+				'recherches_specs.twig',
+			[
+				'user' => $_SESSION['user'] , 
+				'forms_data' => $forms_data ,
+				'object' => $object
+			]
+		);	
+	}
+
+	public static function recherche_results() : string
+	{
+		self::init();
+		self::security();
+		self::check_post(['famille'],'recherche-articles-specs');
+
+		$Stocks = new Stock(self::$Db);
+		$Keyword = new Keyword(self::$Db);
+
+		$famille = $Keyword->get_kw_by_typeAndValue('famil', $_POST['famille'] );
+		
+		return self::$twig->render(
+				'recherches_specs.twig',
+			[
+				'user' => $_SESSION['user'] , 
+				'famille' => $famille ,
+				'stock' => $Stocks
+
+			]
+		);	
+	}
+}
+
