@@ -108,7 +108,8 @@ use App\Controller\RechercheController;
 			break;
 		
 		case '/SoftRecode/recherche-articles-results';
-			require __DIR__ . '/pages/articles_recherche.php';break;
+			echo RechercheController::recherche_results();
+			break;
 			
 		//devis-> 
 		case '/SoftRecode/nouveauDevis';

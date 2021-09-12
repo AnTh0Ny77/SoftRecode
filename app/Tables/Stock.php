@@ -198,6 +198,64 @@ class Stock extends Table
   }
 
 
+  public function find_models_spec(array $forms_data , array $post_data)
+  {
+	  	$array_where_clause = '';
+		$count  = 1 ; 
+		foreach ($forms_data as $data) 
+		{
+			foreach ($post_data as $key => $value) 
+			{
+				if (!empty($post_data[htmlspecialchars($key)]) &&  $post_data[htmlspecialchars($key)] != 'famille') 
+				{
+					if (is_array($post_data[htmlspecialchars($key)])) 
+					{
+						// foreach ($post_data[htmlspecialchars($key)] as  $value) 
+						// {
+						// 	if (!empty($value))
+						// 	{
+						// 		if ($count = 1) {
+						// 			$array_where_clause .= 'WHERE ( aam__cle = "' . $post_data[htmlspecialchars($key)] . '" AND aam__value = "' . $value . '" )';
+						// 			$count += 1;
+						// 		} else {
+						// 			$array_where_clause .= 'AND ( aam__cle = "' . $post_data[htmlspecialchars($key)] . '" AND aam__value = "' . $value . '" )';
+						// 			$count += 1;
+						// 		}
+						// 	}
+						// }
+					}
+					else
+					{
+						if (!empty($value)) 
+						{
+
+							if ($count = 1) 
+							{
+								$array_where_clause .= 'WHERE ( aam__cle = "' . $post_data[htmlspecialchars($key)] . '" AND aam__value = "' . $value . '" )';
+								$count += 1;
+							} else {
+								$array_where_clause .= 'AND ( aam__cle = "' . $post_data[htmlspecialchars($key)] . '" AND aam__value = "' . $value . '" )';
+								$count += 1;
+							}
+						}
+						
+					}
+				}
+			}
+
+		}
+
+		$request = $this->Db->Pdo->query('SELECT   
+		a.* 
+		FROM art_attribut_modele as a
+		"'.$array_where_clause.'"
+		LIMIT 150 ');
+		$data = $request->fetchAll(PDO::FETCH_OBJ);
+		return $data;
+
+  }
+
+
   public function get_famille_forms($famil) : array 
   {
     $request = $this->Db->Pdo->query('SELECT   
