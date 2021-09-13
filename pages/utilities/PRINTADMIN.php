@@ -249,7 +249,6 @@ if ($temp->devis__note_client) {
      if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
     {
         $doc->output('F:/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
-     
     }
     $doc->output('O:\intranet\Auto_Print\FC/'.$numFact.'F-'.$temp->devis__id.'D-'.$temp->client__id.'C.pdf' , 'F');
     

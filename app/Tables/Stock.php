@@ -210,13 +210,13 @@ class Stock extends Table
 			foreach ($post_data as $key => $value) 
 			{
 
-				if (!empty($value) &&  $post_data[htmlspecialchars($key)] != 'famille') 
+				if (!empty($value) &&  $key != 'famille') 
 				{
 					if (is_array($value)) 
 					{
 						if ($count == 1) 
 						{
-							$array_where_clause .= ' WHERE (';
+							$array_where_clause .= '  (';
 							$count += 1;
 							$iteration = 0 ;
 							foreach ($value as $response)
@@ -259,8 +259,8 @@ class Stock extends Table
 
 		$request = $this->Db->Pdo->query('SELECT   
 		a.* 
-		FROM art_attribut_modele as a
-		'.$array_where_clause.'
+		FROM art_attribut_modele as a WHERE 
+		' .$array_where_clause. '
 		 LIMIT 150 ');
 		$data = $request->fetchAll(PDO::FETCH_OBJ);
 		return $data;
