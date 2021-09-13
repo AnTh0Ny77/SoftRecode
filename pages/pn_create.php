@@ -23,7 +23,7 @@ switch ($_SERVER['REQUEST_URI'])
 	case "/SoftRecode/create-pn-first":
 		//première partie creation et recherche de pn  : 
 		$pn_id = false ;
-		$famille_list = $Article->getFAMILLE();
+		$famille_list = $Article->get_famille_for_spec();
 
 		//si une cretaion de pn à eu lieu : 
 		if (!empty($_POST['recherche_pn'])) 

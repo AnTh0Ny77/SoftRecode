@@ -57,17 +57,27 @@ Class RechercheController extends BasicController
 
 		$Stocks = new Stock(self::$Db);
 		$Keyword = new Keyword(self::$Db);
+		$Article = new Article(self::$Db);
 		$famille = $Keyword->get_kw_by_typeAndValue('famil', $_POST['famille'] );
 		$forms_data = $Stocks->get_famille_forms($_POST['famille']);
 		$results_list = $Stocks->find_models_spec($forms_data, $_POST);
+		$results_models = [];
+		foreach ($results_list as $results) 
+		{
+			$article = $Article->get_fmm_by_id($results->aam__id_fmm);
+			$specs = $Stocks->get_specs_models($results->aam__id_fmm);
+			$article->specs = $specs;
+			array_push($results_models , $article );
+		}
 		
+	
 		return self::$twig->render(
 				'recherches_results.twig',
 			[
 				'user' => $_SESSION['user'] , 
 				'famille' => $famille ,
 				'stock' => $Stocks ,
-				'results_list' => $results_list
+				'results_list' => $results_models
 			]
 		);	
 	}

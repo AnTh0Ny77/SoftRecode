@@ -1,8 +1,49 @@
 <div class="container">
     <div class="modal-header">
         <h4 class="modal-title text-muted">Résultats de la recherche :  <b>{{famille.kw__lib}} </b></h4> 
-        {% for results in results_list %}
-            
-        {% endfor %}
+    </div>
+    <div>
+        <table class="table table-striped">    
+        
+            <tbody>
+                {% for results in results_list %}
+                
+                <tr>
+                    <td> 
+                        <b class="text-primary">
+                            {{results.afmm__modele}}
+                        </b>
+                        <br>
+                        <small class="text-muted">
+                                {{results.famille}}
+                                {{results.marque}}
+                        </small>
+                        
+                    </td>
+
+                    <td>
+                        
+                       
+                    </td>
+
+                    <td>
+                        <div class="row justify-content-end px-auto col-7">
+                            {% for spec in results.specs %}
+                                <b class="text-primary"> {{ spec.aav__valeur_txt }} </b> | 
+                            {% endfor %}
+                        </div>
+                    </td>
+
+                    <td>
+                       
+                    </td>
+                
+                    <td>
+                    
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>

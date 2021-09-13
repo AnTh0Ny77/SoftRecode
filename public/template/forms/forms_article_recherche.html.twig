@@ -15,12 +15,12 @@
          {% if data.aac__champ == "SLT" %}
          <div class="form-group  my-5">
             <label for="labelUN" class="text-uppercase font-italic font-weight-bold"> {{ data.aac__cle_txt }} </label>
-            <select class=" selectpicker col-12" name=" {{ data.aac__cle }}" >
+            <select class=" selectpicker col-12" name=" {{ data.aac__cle }}" multiple>
+                <option value="" selected> Aucun</option>
                 {% if spec_array %}
-
                 {% else %}
                     {% for clefs in data.key_responses %}
-                        <option value="{{ clefs.aav__valeur }}"> {{ clefs.aav__valeur_txt }} </option>
+                            <option value="{{ clefs.aav__valeur }}"> {{ clefs.aav__valeur_txt }} </option>
                     {% endfor %}
                 {% endif %}
             </select>

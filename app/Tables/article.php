@@ -501,6 +501,15 @@ class Article extends Table
 	return $data;
   }
 
+  public function get_famille_for_spec()
+  {
+	$SQL = 'SELECT kw__value, kw__lib, kw__lib_uk, kw__info
+	FROM keyword WHERE kw__type = \'famil\' AND kw__info != "XX" ORDER BY kw__ordre, kw__lib';
+	$request =$this->Db->Pdo->query($SQL);
+	$data = $request->fetchAll(PDO::FETCH_OBJ);
+	return $data;
+  }
+
   public function getMARQUE()
   { /* Liste des Marques dans  table ART_MARQUE */
 	$SQL = 'SELECT am__id, am__marque FROM art_marque WHERE am__actif = 1 ORDER BY am__ordre, am__marque';

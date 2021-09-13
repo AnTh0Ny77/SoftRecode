@@ -57,7 +57,7 @@ if ($choix_grp) // pas encore de choix sur le groupe a créer / Modifier (Famill
 if ($GrpModele)
 {
 	//Requetes (récuperation des listes Famille et Marque)
-	$ArtFamille = $Article->getFAMILLE();
+	$ArtFamille = $Article->get_famille_for_spec();
 	$ArtMarque  = $Article->getMARQUE();
 	$ArtFmm     = $Article->get_fmm_by_id($id_fmm);
 	if($art_modif) $action_modele = 'Modif';
