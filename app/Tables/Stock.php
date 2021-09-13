@@ -204,6 +204,7 @@ class Stock extends Table
    
 	  	$array_where_clause = '';
 		$count  = 1 ; 
+		
 		foreach ($forms_data as $data) 
 		{
 			foreach ($post_data as $key => $value) 
@@ -221,7 +222,7 @@ class Stock extends Table
 							foreach ($value as $response)
 							{
 								if ($iteration == 0 ) {
-									$array_where_clause .=  ' aam__cle = "'.$key.'" AND  aam__valeur =  "'.$response.'" ';
+									$array_where_clause .=  ' ( aam__cle = "'.$key.'" AND  aam__valeur =  "'.$response.'" ) ';
 									$iteration += 1;
 								}
 								else{
@@ -239,7 +240,7 @@ class Stock extends Table
 							foreach ($value as $response)
 							{
 								if ($iteration == 0 ){
-									$array_where_clause .=  ' aam__cle = "'.$key.'" AND  aam__valeur =  "'.$response.'" ';
+									$array_where_clause .=  '( aam__cle = "'.$key.'" AND  aam__valeur =  "'.$response.'" )';
 									$iteration += 1;
 								}
 								else {
