@@ -53,12 +53,8 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 						
 						<tr>
 							<th> 
-								{% if pn.apn__actif > 0  %}
-								<i class="fad fa-toggle-on fa-lg mx-2 mt-2" style="color: green;"></i>
-								{% else %}
-								<i class="fad fa-toggle-off fa-lg mx-2 mt-2" style="color: rgb(224, 13, 6);"></i>
-								{% endif %}
-								<b> {{ pn.apn__pn_long  }}</b> <br>
+							
+								<b><h4 class="text-primary"> {{ pn.apn__pn_long  }} </h4></b>
 								<small>{{ pn.modele ~ " " ~ pn.famille }}</small> 
 							
 							</th>
@@ -67,9 +63,22 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 								{{pn.apn__desc_short|raw}}
 							</td>
 							<td>
-								<div class="row justify-content-end px-auto col-7">
+								<div class="row justify-content-end px-auto col-7 text-primary">
 									{% for spec in pn.specs %}
-										<b class="text-primary"> {{ spec.aav__valeur_txt }} </b> | 
+										{% if spec.text_cle %}
+											 {{ spec.text_cle }} :  
+										{% else %}
+											
+										{% endif %}
+										{% for value in spec.data %}
+											 {{value.valeur_txt}} 
+											{% if loop.last %}
+												●
+												{% else %}
+												-
+											{% endif %}
+										{% endfor %}
+										
 								   {% endfor %}
 								</div>
 							</td>
@@ -78,6 +87,20 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 							</td>
 						
 							<td>
+								<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+									{% if pn.apn__actif > 0 %}
+										title="Actif">
+									{% else %}
+										title="Inactif">
+									{% endif %}
+									
+									{% if pn.apn__actif > 0 %}
+									<i class="fad fa-toggle-on " style="color: green;"></i>
+									{% else %}
+									<i class="fad fa-toggle-off " style="color: rgb(224, 13, 6);"></i>
+									{% endif %}
+								</button>
+									
 								<button type="button"  class="click-span btn btn-link btn-lg"  data-toggle="tooltip"
 									data-placement="top" title="{{pn.nom ~  " " ~ pn.prenom }}">
 									<i class="fas fa-user-tag"></i>

@@ -20,10 +20,13 @@ $Stocks = new App\Tables\Stock($Database);
 
 $pn_list = $Article->select_all_pn();
 
+
 foreach ($pn_list as $pn) 
 {
-    $pn->specs = $Stocks->get_specs_value($pn->apn__pn);
+   
+    $pn->specs = $Stocks->get_specs_pn_show($pn->apn__pn);
     $pn->apn__image  = base64_encode($pn->apn__image);
+   
 }
 
 // Donnée transmise au template : 

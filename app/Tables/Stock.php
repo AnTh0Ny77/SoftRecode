@@ -198,6 +198,32 @@ class Stock extends Table
     return $data;
   }
 
+  public function get_specs_pn_show($pn)
+  {
+
+    $request = $this->Db->Pdo->query('SELECT DISTINCT   
+        a.aap__cle as cle , c.aac__cle_txt as cle_txt , c.aac__cle_txt_result as text_cle
+        FROM art_attribut_pn as a
+        LEFT JOIN art_attribut_cle as c ON a.aap__cle = c.aac__cle 
+        WHERE a.aap__pn = "' . $pn . '"  
+        ORDER BY a.aap__cle DESC LIMIT 150  ');
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+
+    foreach ($data as $key) 
+    {
+        $request = $this->Db->Pdo->query('SELECT   
+        a.aap__valeur as valeur , v.aav__valeur_txt as valeur_txt 
+        FROM art_attribut_pn as a
+        LEFT JOIN art_attribut_valeur as v ON a.aap__valeur = v.aav__valeur and ( a.aap__cle = v.aav__cle ) 
+        
+        WHERE a.aap__pn = "' . $pn . '" AND a.aap__cle = "'.$key->cle .'" 
+        ORDER BY a.aap__pn DESC LIMIT 150  ');
+        $key->data = $request->fetchAll(PDO::FETCH_OBJ);
+    }
+
+    return $data;
+  }
+
 
   public function find_models_spec(array $forms_data , array $post_data)
   {
