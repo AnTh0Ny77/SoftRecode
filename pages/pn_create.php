@@ -23,7 +23,7 @@ switch ($_SERVER['REQUEST_URI'])
 	case "/SoftRecode/create-pn-first":
 		//première partie creation et recherche de pn  : 
 		$pn_id = false ;
-		$famille_list = $Article->get_famille_for_spec();
+		$famille_list = $Article->get_famille_for_spec_pn();
 
 		//si une cretaion de pn à eu lieu : 
 		if (!empty($_POST['recherche_pn'])) 
@@ -39,11 +39,13 @@ switch ($_SERVER['REQUEST_URI'])
 		   {
 			   	$pn__id =  $Article->insert_pn($_POST['recherche_pn'] , $_POST['recherche_pn'] ,$_SESSION['user']->id_utilisateur );
 
+				  
 				if (!empty($_POST['famille_pn'])) 
 				{
-					$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $_POST['recherche_pn']);
+					$pn_court = preg_replace("#[^!A-Za-z0-9%]+#", "", $_POST['recherche_pn']);
 					$General->updateAll('art_pn' , $_POST['famille_pn'], 'apn__famille' , 'apn__pn', $pn_court );
 				}
+				
 				$_SESSION['pn_id'] = $_POST['recherche_pn']; 	
 				header('location: create-pn-second');
 				break;
@@ -70,15 +72,18 @@ switch ($_SERVER['REQUEST_URI'])
 		{	
 			$pn_id = $_SESSION['pn_id'];
 			
-			$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_id);
+			$pn_court = preg_replace("#[^!A-Za-z0-9%]+#", "", $pn_id);
 			
 			$pn = $Article->get_pn_byID($pn_id);
+			$marqueur_famille = 0 ;
 
 			if ($pn->apn__famille == 'PID') 
 			{
+				$marqueur_famille = 1 ;
 				$model_list = $Article->getModels();
 			}	
 			else $model_list = $Article->find_models_byFamille($pn->apn__famille);
+			
 			
 			
 			$model_relation = $Article->find_by_liaison($pn_court);
@@ -99,7 +104,8 @@ switch ($_SERVER['REQUEST_URI'])
 					'model_relation' => $model_relation, 
 					'pn' => $pn , 
 					'forms_data' => $forms_data , 
-					'spec_array' => $spec_array
+					'spec_array' => $spec_array, 
+					'marqueur_famille' => $marqueur_famille
 				]
 			);
 			break;	
@@ -113,6 +119,7 @@ switch ($_SERVER['REQUEST_URI'])
 			$tableau_modele = json_decode($_POST['model_array']);
 			$update_models = $Article->insert_liaison_pn_fmm($tableau_modele , $_POST['id_pn'] ) ;
 		}
+
 		
 
 		if (!empty($_POST['id_pn'])) 
@@ -128,6 +135,14 @@ switch ($_SERVER['REQUEST_URI'])
 
 				//data nécéssaire pour la déclaration des attributs : 
 				$forms_data = $Stocks->get_famille_forms($pn->apn__famille);
+
+				//si pas de formulaire: 
+				if (empty($forms_data)) 
+				{
+					header('location: create-pn-third');
+					$_SESSION['redirect_third'] = $_POST['id_pn'];
+					break;
+				}
 				
 				$spec_array = $Stocks->get_specs($pn_id);
 
@@ -169,6 +184,13 @@ switch ($_SERVER['REQUEST_URI'])
 			$_SESSION['pn_id'] = $_POST['retour_pn'];
 			header('location: create-pn-second');
 			break;
+		}
+
+	
+		if (!empty($_SESSION['redirect_third'])) 
+		{
+			$_POST['id_pn'] = $_SESSION['redirect_third'];
+			$_SESSION['redirect_third'] = "";
 		}
 		
 

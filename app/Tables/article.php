@@ -55,7 +55,7 @@ class Article extends Table
 		  $SQL_WHERE .= 'WHERE ( art_fmm.afmm__modele  like(\''.$art_filtre_special.'\') ) ';
 		  break;
 		case "!": // PN (recherche sur le PN court)
-		  $art_filtre_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $art_filtre_special); // pour avoir le PN court (que du alpha et nombre)
+		  $art_filtre_court = preg_replace("#[^!A-Za-z0-9%]+#", "", $art_filtre_special); // pour avoir le PN court (que du alpha et nombre)
 		  $SQL_WHERE .= 'WHERE ( art_pn.apn__pn        like(\''.$art_filtre_court.'\') ) ';
 		  break;
 		default:
@@ -258,7 +258,7 @@ class Article extends Table
 	// cet fonction n'est appelé que si il y a un filtre Modele ou PN
 	$first_digit = substr($art_filtre,0,1);
 	$art_filtre_special = trim(substr($art_filtre,1));
-	$art_filtre_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $art_filtre_special); // pour avoir le PN court (que du alpha et nombre)
+	$art_filtre_court = preg_replace("#[^!A-Za-z0-9%]+#", "", $art_filtre_special); // pour avoir le PN court (que du alpha et nombre)
 	$SQL_WHERE = 'WHERE ( FALSE ) ';
 	if($first_digit == "!") // PN (recherche sur le PN court) et sur modele
 	{
@@ -391,7 +391,7 @@ class Article extends Table
   public function get_pn_byID($pn_name)
   {
 	  	//compare le champs input dénué de caractère spéciaux et en majuscules : 
-	  	$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_name);
+	  	$pn_court = preg_replace("#[^!A-Za-z0-9%]+#", "", $pn_name);
 		$pn_court = strtoupper($pn_court);
 
 		$SQL = 'SELECT a.* , u.prenom , u.nom , k.kw__lib as famille  , l.id__fmm as modele
@@ -403,8 +403,22 @@ class Article extends Table
 		$request = $this->Db->Pdo->query($SQL);
 		$data = $request->fetch(PDO::FETCH_OBJ);
 
+
+	
 		if (!empty($data))
 		{
+			$request = $this->Db->Pdo->query(
+				'SELECT  m.am__marque as marque
+				FROM art_fmm as a
+				INNER JOIN art_marque as m ON a.afmm__marque = m.am__id
+				WHERE a.afmm__id =  "' .$data->modele.'"
+				LIMIT 10');
+				$marque = $request->fetch(PDO::FETCH_OBJ);
+				
+				
+			$data->marque = $marque ; 
+
+
 			$SQL = 'SELECT a.afmm__modele
 			FROM art_fmm as a  
 			WHERE a.afmm__id = "'. $data->modele .'"';
@@ -417,7 +431,7 @@ class Article extends Table
 			}
 		
 		}
-		
+
 
 		if (!empty($data->apn__image))
 				$data->apn__image = base64_encode($data->apn__image);
@@ -430,7 +444,7 @@ class Article extends Table
   public function find_by_liaison(string $pn_id )
   {
 		//compare le champs input dénué de caractère spéciaux et en majuscules : 
-		$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_id);
+		$pn_court = preg_replace("#[^!A-Za-z0-9%]+#", "", $pn_id);
 		$pn_court = strtoupper($pn_court);
 
 		$SQL = 'SELECT *
@@ -445,7 +459,7 @@ class Article extends Table
   public function find_one_by_liaison(string $pn_id )
   {
 		//compare le champs input dénué de caractère spéciaux et en majuscules : 
-		$pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_id);
+		$pn_court = preg_replace("#[^!A-Za-z0-9%]+#", "", $pn_id);
 		$pn_court = strtoupper($pn_court);
 
 		$SQL = 'SELECT *
@@ -478,7 +492,7 @@ class Article extends Table
 
   public function insert_pn($pn, $pn_long , $id_user)
   {
-		$pn = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn);
+		$pn = preg_replace("#[^!A-Za-z0-9%]+#", "", $pn);
 		
 		$request = $this->Db->Pdo->prepare("
 		INSERT INTO art_pn  (apn__pn,		apn__pn_long,	 	apn__id_user_modif, 	apn__date_modif) 
@@ -504,11 +518,21 @@ class Article extends Table
   public function get_famille_for_spec()
   {
 	$SQL = 'SELECT kw__value, kw__lib, kw__lib_uk, kw__info
+	FROM keyword WHERE kw__type = \'famil\' AND (  kw__info != "XX" OR kw__info != "MDL" ) ORDER BY kw__ordre, kw__lib';
+	$request =$this->Db->Pdo->query($SQL);
+	$data = $request->fetchAll(PDO::FETCH_OBJ);
+	return $data;
+  }
+
+  public function get_famille_for_spec_pn()
+  {
+	$SQL = 'SELECT kw__value, kw__lib, kw__lib_uk, kw__info
 	FROM keyword WHERE kw__type = \'famil\' AND kw__info != "XX" ORDER BY kw__ordre, kw__lib';
 	$request =$this->Db->Pdo->query($SQL);
 	$data = $request->fetchAll(PDO::FETCH_OBJ);
 	return $data;
   }
+
 
   public function getMARQUE()
   { /* Liste des Marques dans  table ART_MARQUE */

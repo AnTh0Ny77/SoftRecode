@@ -55,7 +55,6 @@ if (!empty($_POST['id_models']))
 
 if (!empty($_SESSION['models_id']))
 {
-       
         $pn_id = $_SESSION['models_id'];
         $_SESSION['models_id'] = "";
         $pn_court = preg_replace("#[^!A-Za-z0-9_%]+#", "", $pn_id);
@@ -64,6 +63,11 @@ if (!empty($_SESSION['models_id']))
     
         //data nécéssaire pour la déclaration des attributs :
         $forms_data = $Stocks->get_famille_forms($Modele->afmm__famille);
+        if (empty($forms_data)) 
+				{
+					header('location: ArtCatalogueModele');
+					die();
+				}
         // $spec_array = $Stocks->get_specs($pn);
 
     echo $twig->render(
