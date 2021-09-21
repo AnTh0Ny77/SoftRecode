@@ -8,7 +8,7 @@ $Article = new App\Tables\Article($Database);
 
 
 if (empty($_SESSION['user']->id_utilisateur)) {
-    echo 'no no no .... ';
+    echo 'utilisateur non connecté ';
  }
  else {
 

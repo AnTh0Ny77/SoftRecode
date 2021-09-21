@@ -1566,7 +1566,7 @@ class Cmd extends Table
   f.afmm__modele as modele, f.afmm__image as ligne_image , 
   k2.kw__lib as prestaLib,
   k3.kw__info as groupe_famille,
-  p.apn__pn_long, p.apn__image, 
+  p.apn__pn_long, p.apn__image, p.apn__desc_short ,
   k3.kw__lib as famille__lib,
   a.am__marque as marque
   FROM cmd_ligne 
@@ -1634,7 +1634,7 @@ class Cmd extends Table
   k3.kw__info as groupe_famille,
   k3.kw__lib as famille__lib,
   a.am__marque as marque,
-  p.apn__pn_long, p.apn__image
+  p.apn__pn_long, p.apn__image , p.apn__desc_short
   FROM cmd_ligne 
   LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
   LEFT JOIN keyword as k2 ON cmdl__prestation = k2.kw__value AND k2.kw__type = 'pres'
@@ -1696,7 +1696,7 @@ class Cmd extends Table
     k3.kw__info as groupe_famille,
     k3.kw__lib as famille__lib,
     a.am__marque as marque, 
-    p.apn__pn_long, p.apn__image
+    p.apn__pn_long, p.apn__image ,p.apn__desc_short
     FROM cmd_ligne 
     LEFT JOIN keyword as k ON cmdl__etat = k.kw__value AND k.kw__type = 'letat'
     LEFT JOIN keyword as k2 ON cmdl__prestation = k2.kw__value AND k2.kw__type = 'pres'

@@ -322,7 +322,7 @@
 
                         {% if ligne.devl__modele %}
                             <br>
-                           PN:  <b>{{ ligne.apn__pn_long}}</b>
+                           PN:  <b>{{ ligne.apn__pn_long ~ " " ~  ligne.apn__desc_short }}</b>
                         {% endif %}
 
                     </h5>

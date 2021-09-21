@@ -34,6 +34,7 @@ $(document).ready(function()
 				},
 				success: function (data) {
 
+					
 					dataSet = JSON.parse(data);
 					
 
@@ -46,7 +47,11 @@ $(document).ready(function()
 						$("#pn-select").append(new Option('Non spécifié', '0'))
 						for (let index = 0; index < dataSet.length; index++)
 						{
-							$("#pn-select").append(new Option(dataSet[index].id__pn, dataSet[index].id__pn))	
+							if (dataSet[index].apn__desc_short == null)
+							{
+								dataSet[index].apn__desc_short = '';
+							}
+							$("#pn-select").append(new Option(dataSet[index].apn__pn_long + " " + dataSet[index].apn__desc_short, dataSet[index].id__pn))
 						}
 						
 						$('#pn-select').selectpicker('refresh')

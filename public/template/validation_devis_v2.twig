@@ -175,7 +175,8 @@
                                                                         {% if ligne.devl__modele %}
                                                                                 <br>
                                                                                 <strong class="font-bold">
-                                                                                PN:    {{ ligne.apn__pn_long}}
+                                                                                PN:    {{ ligne.apn__pn_long  }}<br>
+                                                                                        {{ligne.apn__desc_short}}
                                                                                 </strong>
                                                                                 
                                                                         {% endif %}
@@ -270,7 +271,8 @@
                                                                                         {% if sous_ref.devl__modele %}
                                                                                         <br>
                                                                                         <strong class="font-bold">
-                                                                                                PN: {{ sous_ref.apn__pn_long}}
+                                                                                                PN: {{ sous_ref.apn__pn_long}}<br>
+                                                                                                {{sous_ref.apn__desc_short}}
                                                                                         </strong>
                                                                                         
                                                                                         {% endif %}
