@@ -4,6 +4,7 @@ require "./vendor/autoload.php";
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Methods\Pdfunctions;
+use App\Controller\ShowSpecController;
 
 session_start();
 $Database = new App\Database('devis');
@@ -314,7 +315,9 @@ ob_start();
 
 			if (!empty($item->devl__modele)) 
 			{
-				$pn =  '<br>PN: '.$item->apn__pn_long ;
+				// $spec = ShowSpecController::show_spec($item->apn__pn);
+				$pn =  '<br>PN: '.$item->apn__pn_long   ;
+				
 			}
 			else 
 			{
@@ -362,6 +365,9 @@ try
 	if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
 	{
 		$doc->output('O:\intranet\Auto_Print\FT\Ft_' . $command->devis__id . '.pdf', 'F');
+	}
+	else {
+		$doc->output('C:\laragon\www\ficheTravail\Ft_' . $command->devis__id . '.pdf', 'F');
 	}
 
 	header('location: ficheTravail');

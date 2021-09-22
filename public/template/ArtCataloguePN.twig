@@ -48,22 +48,41 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 				<table class="table table-striped">
 					
 					<tbody>
-
+						<tr>
+							<th >
+								<div class="d-flex justify-content-start">
+									Modèle/Pn
+								</div>
+								
+							</th>
+							<th>
+								<div class="d-flex justify-content-center">
+									Caractéristiques
+								</div>
+							</th>
+							<th>
+								<div class="d-flex justify-content-center">
+									Images
+								</div>
+							</th>
+							<th>
+								<div class="d-flex justify-content-center">
+									Picto
+								</div>
+							</th>
+						</tr>
 						{% for pn in pn_list  %}
 						
 						<tr>
 							<th> 
 							
-								<b><h4 class="text-primary"> {{ pn.apn__pn_long  }} </h4></b>
+								<b><h4 class="text-primary">PN: {{ pn.apn__pn_long  }} </h4></b>
 								<small>{{ pn.modele ~ " " ~ pn.famille }}</small> 
-							
+								<h5>{{pn.apn__desc_short}}</h5>
 							</th>
+							
 							<td>
-								
-								{{pn.apn__desc_short|raw}}
-							</td>
-							<td>
-								<div class="row justify-content-end px-auto col-7 text-primary">
+								<div class="row justify-content-center px-auto col-7 text-primary">
 									{% for spec in pn.specs %}
 										{% if spec.text_cle %}
 											 {{ spec.text_cle }} :  
@@ -83,35 +102,100 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 								</div>
 							</td>
 							<td>
-								{% if pn.apn__image  %}<figure class="image" ><img src="data:image/jpeg;base64,{{ pn.apn__image|raw}}" width=90></figure>{% endif %}
+								{% if pn.apn__image  %}<figure class="image" ><img src="data:image/jpeg;base64,{{ pn.apn__image|raw}}" width=110></figure>{% endif %}
 							</td>
 						
 							<td>
-								<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
-									{% if pn.apn__actif > 0 %}
-										title="Actif">
-									{% else %}
-										title="Inactif">
-									{% endif %}
+								<div class="d-flex flex-wrap justify-content-start">
+									<div class="d-flex col-2">
+										<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top" 
+										{% if pn.apn__actif ==   0 %}
+											title="Actif">
+											{% else %}
+											title="Inactif">
+											{% endif %}
+										
+											{% if pn.apn__actif > 0 %}
+											<i class="fad fa-toggle-on " style="color: green;"></i>
+											{% else %}
+											<i class="fad fa-toggle-off " style="color: rgb(224, 13, 6);"></i>
+											{% endif %}
+										</button>
+									</div>
+									<div class="d-flex col-2">
+										<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+											title="{{pn.nom ~  " " ~ pn.prenom }}">
+											<i class="fas fa-user-tag"></i>
+										</button>
+									</div>
+									<div class="d-flex col-2">
+										<form method="POST" action="create-pn-third">
+											<input type="hidden" name="id_pn" value="{{pn.apn__pn}}">
+											<button class="btn btn-link btn-lg" data-toggle="tooltip" data-placement="top" title="Modifier">
+												<i class="fas fa-edit"></i>
+											</button>
+										</form>
+									</div>
+									<div class="d-flex col-2">
+										<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+											title="Demande d'achat">
+											<i class="fas fa-tag"></i>
+										</button>
+									</div>
+									<div class="d-flex col-2">
+										<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+											title="Demande de prix">
+											<i class="fas fa-calculator"></i>
+										</button>
+									</div>
+									<div class="d-flex col-2">
+										{% if pn.apn__desc_long %}
+											<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+												title="{{ pn.apn__desc_long|raw}}">
+												<i class="fas fa-file-alt"></i>
+											</button>
+										{% else %}
+											<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+												title="pas de description longue">
+												<i class="fas fa-file-alt"></i>
+											</button>
+										{% endif %}
+										
+									</div>
+									<div class="d-flex col-2">
+										<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+											title="Neuf">
+											<i class="fas fa-circle" style="color: green;"></i>
+										</button>
+									</div>
+									<div class="d-flex col-2">
+										<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+											title="Reconditionné">
+											<i class="fas fa-circle" style="color: rgb(241, 149, 11);"></i>
+										</button>
+									</div>
+									<div class="d-flex col-2">
+										<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+											title="Hs">
+											<i class="fas fa-circle" style="color: rgb(241, 11, 11);"></i>
+										</button>
+									</div>
+									<div class="d-flex col-2">
+										<form action="http://www.google.com/search" method="get" target="_blank">
+											<input type="hidden" name="q" value="{{pn.apn__pn}}">
+											<button class="btn btn-link btn-lg" data-toggle="tooltip" data-placement="top" title="Rechercher sur google">
+												<i class="fab fa-google"></i>
+											</button>
+										</form>
+									</div>
+
 									
-									{% if pn.apn__actif > 0 %}
-									<i class="fad fa-toggle-on " style="color: green;"></i>
-									{% else %}
-									<i class="fad fa-toggle-off " style="color: rgb(224, 13, 6);"></i>
-									{% endif %}
-								</button>
+
+								</div>
+								
 									
-								<button type="button"  class="click-span btn btn-link btn-lg"  data-toggle="tooltip"
-									data-placement="top" title="{{pn.nom ~  " " ~ pn.prenom }}">
-									<i class="fas fa-user-tag"></i>
-								</button>	
-								<form method="POST" action="create-pn-third">
-									<input type="hidden" name="id_pn" value="{{pn.apn__pn}}" >
-									<button class="btn btn-link btn-lg" data-toggle="tooltip"
-									data-placement="top" title="Modifier">
-										<i class="fas fa-edit"></i>
-									</button>
-								</form>
+								
+								
 						    </td>
 						  </tr>
 						{% endfor %}

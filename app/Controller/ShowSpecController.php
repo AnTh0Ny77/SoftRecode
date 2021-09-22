@@ -26,7 +26,7 @@ Class ShowSpecController extends BasicController
 
         if (!empty($spec)) 
         {
-            $html .= ' <div class=" text-primary">';
+            $html .= ' <div style="color: blue">';
 
             foreach ($spec as $data)
             {
