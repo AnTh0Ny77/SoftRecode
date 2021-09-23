@@ -132,29 +132,45 @@ class Article extends Table
 
   public function select_all_pn()
   {
-		$SQL = 'SELECT a.* , u.prenom , u.nom , k.kw__lib as famille , l.id__fmm as modele
+
+		$SQL = 'SELECT  a.* , u.prenom , u.nom , k.kw__lib as famille
 		FROM art_pn as a  
 		LEFT JOIN utilisateur as u on  u.id_utilisateur = a.apn__id_user_modif
 		LEFT JOIN keyword as k ON ( k.kw__type = "famil" AND k.kw__value =  a.apn__famille ) 
-		LEFT JOIN liaison_fmm_pn as l ON ( a.apn__pn  = l.id__pn ) 
 		ORDER BY apn__date_modif DESC LIMIT 50';
 		$request = $this->Db->Pdo->query($SQL);
 		$data = $request->fetchAll(PDO::FETCH_OBJ);
 		
 		foreach ($data as $pn) 
 		{
-			$SQL = 'SELECT a.afmm__modele
+			$SQL = 'SELECT  id__fmm 
+			FROM liaison_fmm_pn 
+			WHERE id__pn = "'.$pn->apn__pn.'"
+			LIMIT 5';
+			$request = $this->Db->Pdo->query($SQL);
+			$liaison = $request->fetchAll(PDO::FETCH_OBJ);
+
+			if(count($liaison) > 1 )
+				$pn->modele = null ; $pn->count_relation =  intval(count($liaison));
+			if(count($liaison) == 1 )
+				$pn->modele = $liaison[0]->id__fmm ; $pn->count_relation =  intval(count($liaison));
+			if(count($liaison) == 0 )
+				$pn->modele = null ; $pn->count_relation =  intval(count($liaison));
+
+			$SQL = 'SELECT a.afmm__modele , m.am__marque as marque
 			FROM art_fmm as a  
+			LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
 			WHERE a.afmm__id = "' . $pn->modele . '"';
 			$request = $this->Db->Pdo->query($SQL);
 			$model_data = $request->fetch(PDO::FETCH_OBJ);
-
-			if (!empty($model_data)) {
-				$pn->modele = $model_data->afmm__modele;
+			if (!empty($model_data))
+			{
+				$pn->modele = $model_data->afmm__modele; 
+				$pn->marque = $model_data->marque;
 			}
+				
 		}
 			
-		
 		return $data;
   }
 
@@ -345,6 +361,25 @@ class Article extends Table
 		$request = $this->Db->Pdo->query($SQL);
 		$data = $request->fetchAll(PDO::FETCH_OBJ);
 		return $data;
+  }
+
+  public function get_pn_where_not_liaison(): array
+  {
+		$SQL = 'SELECT l.id__pn 
+		FROM liaison_fmm_pn as l
+		WHERE 1 OR 1 ORDER BY id__pn';
+		$request = $this->Db->Pdo->query($SQL);
+		$array = $request->fetchAll(PDO::FETCH_COLUMN);
+
+		$SQL = 'SELECT a.apn__pn as id__pn , a.apn__pn_long , a.apn__desc_short
+		FROM apn__pn as a
+		LEFT JOIN art_pn as p ON (l.id__pn = p.apn__pn)
+		WHERE id__fmm NOT IN  ORDER BY id__pn';
+
+		$request = $this->Db->Pdo->query($SQL);
+		$data = $request->fetchAll(PDO::FETCH_OBJ);
+		return $data;
+		
   }
 
   public function get_line_pn_and_return_liaison_list($id_ligne) : array 

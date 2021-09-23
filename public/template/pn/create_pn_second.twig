@@ -102,11 +102,17 @@
 
             let marqueur =  $('#limit_mdl').val();
             let limit = 1 ;
+            let required = false ;
             if(parseInt(marqueur) == 1 )
             {
                 limit = 5 ;
+                required = true ;
             }
            
+            if(required)
+            {
+                $('#select_multiple').prop('required',false);
+            }
             var stepper = new Stepper($('.bs-stepper')[0])
             stepper.to(2)
             $(".chosen-select").chosen({max_selected_options: limit});

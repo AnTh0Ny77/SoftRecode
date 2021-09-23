@@ -77,12 +77,22 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 							<th> 
 							
 								<b><h4 class="text-primary">PN: {{ pn.apn__pn_long  }} </h4></b>
-								<small>{{ pn.modele ~ " " ~ pn.famille }}</small> 
+								<span class="text-muted font-italic">
+									{{ pn.famille  ~ " " }}
+									{% if pn.count_relation == 1  %}
+										{{  "-" ~ pn.marque ~  "-" ~ pn.modele ~ "" }}
+									{% elseif pn.count_relation == 0  %}
+										 - Pas de modèle rattachés
+									{% else %}
+										- plusieurs modèles rattachés
+									{% endif %}
+									
+								</span> 
 								<h5>{{pn.apn__desc_short}}</h5>
 							</th>
 							
 							<td>
-								<div class="row justify-content-center px-auto col-7 text-primary">
+								<div class="row justify-content-center px-auto  text-primary">
 									{% for spec in pn.specs %}
 										{% if spec.text_cle %}
 											 {{ spec.text_cle }} :  

@@ -35,6 +35,7 @@ $(document).ready(function()
 				success: function (data) {
 
 					
+					console.log(data);
 					dataSet = JSON.parse(data);
 					
 

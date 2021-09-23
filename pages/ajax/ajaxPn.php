@@ -13,8 +13,17 @@ if (empty($_SESSION['user']->id_utilisateur)) {
  else {
 
     // requete table client:
-        if (!empty($_POST['AjaxPn'])){
-            $pnList = json_encode($Article->get_pn_from_liaison($_POST['AjaxPn']));
+        if (!empty($_POST['AjaxPn']))
+        {
+            // if(intval($_POST['AjaxPn']) == 11 )
+            // {
+            //     $pnList = json_encode($Article->get_pn_where_not_liaison($_POST['AjaxPn']));
+            // }
+            // else
+            // {
+                $pnList = json_encode($Article->get_pn_from_liaison($_POST['AjaxPn']));
+            // }
+            
             
             echo $pnList;
             

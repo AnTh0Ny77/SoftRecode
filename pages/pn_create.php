@@ -223,7 +223,12 @@ switch ($_SERVER['REQUEST_URI'])
 			}
 
 			$model_relation = $Article->find_one_by_liaison($_POST['id_pn']);
-			$Stocks->check_heritage($model_relation->id__fmm , $_POST['id_pn']);
+
+			if (!empty($model_relation->id__fmm)) 
+			{
+				$Stocks->check_heritage($model_relation->id__fmm , $_POST['id_pn']);
+			}
+			
 		}
 	
 		
