@@ -370,16 +370,15 @@ class Article extends Table
 		WHERE 1 OR 1 ORDER BY id__pn';
 		$request = $this->Db->Pdo->query($SQL);
 		$array = $request->fetchAll(PDO::FETCH_COLUMN);
-
+		
 		$SQL = 'SELECT a.apn__pn as id__pn , a.apn__pn_long , a.apn__desc_short
 		FROM apn__pn as a
 		LEFT JOIN art_pn as p ON (l.id__pn = p.apn__pn)
-		WHERE id__fmm NOT IN  ORDER BY id__pn';
+		WHERE id__fmm NOT IN '.$array[0].'  ORDER BY id__pn';
 
 		$request = $this->Db->Pdo->query($SQL);
 		$data = $request->fetchAll(PDO::FETCH_OBJ);
 		return $data;
-		
   }
 
   public function get_line_pn_and_return_liaison_list($id_ligne) : array 
@@ -390,6 +389,7 @@ class Article extends Table
 		WHERE cmdl__id = ' . $id_ligne . '';
 		$request = $this->Db->Pdo->query($SQL);
 		$ligne = $request->fetch(PDO::FETCH_OBJ);
+
 
 		$SQL = 'SELECT l.* , p.apn__pn_long , p.apn__image
 		FROM liaison_fmm_pn as l 
@@ -404,7 +404,6 @@ class Article extends Table
 			{
 				$value->apn__image = base64_encode($value->apn__image);
 			}
-			
 		}
 
 		array_push($response , $ligne ); 

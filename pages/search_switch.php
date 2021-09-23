@@ -9,6 +9,7 @@ $Contact = new \App\Tables\Contact($Database);
 $Keyword = new \App\Tables\Keyword($Database);
 $Cmd = new \App\Tables\Cmd($Database);
 $Stats = new App\Tables\Stats($Database);
+$Stocks =new \App\Tables\Stock($Database);
 $Pistage = new App\Tables\Pistage($Database);
 $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
 $_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
@@ -94,6 +95,16 @@ if (!empty($_POST['search']))
                         $commande = $Cmd->GetById($_POST['search']);
                         $liste_actions = $Pistage->get_pist_by_id($_POST['search']);
                         $lignes = $Cmd->devisLigne($_POST['search']);
+
+                        foreach ($lignes as $ligne) 
+                        {
+                                if (!empty($ligne->devl__modele)) 
+                                {
+                                        $ligne->spec = $Stocks->select_empty_heritage($ligne->devl__modele , true , true);
+                                }
+                                else $ligne->spec = " ";
+                                
+                        }
 
                         if ($commande->devis__etat == 'VLD' || $commande->devis__etat == 'VLA') 
                         {

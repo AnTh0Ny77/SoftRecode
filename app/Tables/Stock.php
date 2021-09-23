@@ -81,6 +81,60 @@ class Stock extends Table
     
   }
 
+  //renvoi un tableau des propriétés non-héritées ou héritées ou un string formatté des propriétés non-héritées ou héritées en fonction des parametres :  
+  public function select_empty_heritage(string $pn , bool $return , bool $heritage) 
+  {
+	    $html_return = '';
+		
+		if($heritage == false ){
+			$and_clause ='AND  ( aap__heritage = 0 ) ';
+		} 
+		else $and_clause ='AND  ( aap__heritage = 0 OR aap__heritage = 1  )';
+
+		$request = $this->Db->Pdo->query('SELECT DISTINCT   
+		a.aap__cle as cle , c.aac__cle_txt as cle_txt , c.aac__cle_txt_result as text_cle
+		FROM art_attribut_pn as a
+		LEFT JOIN art_attribut_cle as c ON a.aap__cle = c.aac__cle 
+		WHERE a.aap__pn = "' . $pn . '" '.$and_clause.' 
+		ORDER BY a.aap__cle DESC LIMIT 150  ');
+		$data = $request->fetchAll(PDO::FETCH_OBJ);
+
+		foreach ($data as $key) 
+		{
+			$request = $this->Db->Pdo->query('SELECT   
+			a.aap__valeur as valeur , v.aav__valeur_txt as valeur_txt 
+			FROM art_attribut_pn as a
+			LEFT JOIN art_attribut_valeur as v ON a.aap__valeur = v.aav__valeur and ( a.aap__cle = v.aav__cle ) 
+			
+			WHERE a.aap__pn = "' . $pn . '" AND a.aap__cle = "'.$key->cle .'" 
+			ORDER BY a.aap__pn DESC LIMIT 150  ');
+			$key->data = $request->fetchAll(PDO::FETCH_OBJ);
+		}
+
+	if ($return == true){
+		foreach ($data as  $value) 
+		{
+			if ( $value->text_cle) 			
+				$html_return .= $value->text_cle . ':';
+			
+			foreach ($value->data as $key => $endpoint ) 
+			{
+				$html_return .= $endpoint->valeur_txt . '';
+
+				if ($key === array_key_last($value->data)) {
+					$html_return .=  '●';
+				}
+				else{
+					$html_return .=  '-';
+				}
+			}
+		}
+		return $html_return;
+	}
+	else return $data;
+}
+
+
   public function get_specs($id_fmm)
   {
         $request = $this->Db->Pdo->query('SELECT   

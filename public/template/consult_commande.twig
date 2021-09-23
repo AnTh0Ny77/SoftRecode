@@ -224,7 +224,12 @@
                                                         {% for ligne in lignes  %}
                                                         <tr>
                                                                 <td class="align-middle">
-                                                                        <b>{{ligne.devl__designation}} </b> <span class="mx-2"> <br>fmm: <b>{{ligne.famille__lib ~ " " ~ ligne. modele}}</b>
+                                                                        <b>{{ligne.devl__designation}} </b> <span class="mx-2"> <br>fmm: <b>{{ligne.famille__lib ~ " " ~ ligne.modele}}</b>
+                                                                                <div class="text-primary">
+                                                                                        <small>
+                                                                                                {{ligne.spec}}
+                                                                                        </small>
+                                                                                </div>
                                                                                 {% if ligne.cmdl__sous_ref %}
                                                                                 
                                                                                 <h6 class="text-primary"><small><i>Sous-référence</i></small></h6>

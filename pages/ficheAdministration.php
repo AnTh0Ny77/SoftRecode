@@ -28,6 +28,7 @@ session_start();
  $General = new App\Tables\General($Database);
  $Article = new App\Tables\Article($Database);
  $Pisteur = new App\Tables\Pistage($Database);
+ $Stocks = new App\Tables\Stock($Database);
  $Stats = new App\Tables\Stats($Database);
  $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
 $_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
@@ -92,6 +93,8 @@ $_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_ut
     $umpdateCommentaire = $General->updateAll('cmd' , $_POST['comInterne'] , 'cmd__note_interne' , 'cmd__id' , $_POST['idAdminFiche'] );
     $cmd = $Cmd->GetById($_POST['idAdminFiche']);
     $lignes = $Cmd->devisLigne($_POST['idAdminFiche']);
+
+    
 
     $devisDate = date_create($cmd->devis__date_crea);
     $date = date_format($devisDate, 'd/m/Y');

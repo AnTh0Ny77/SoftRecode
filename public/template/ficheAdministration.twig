@@ -221,9 +221,11 @@
 
                         {% if ligne.apn__pn_long %}
                             <br>
-                            {{ligne.apn__pn_long ~ " " ~ ligne.apn__desc_short}}
+                            {{ligne.apn__pn_long ~ " " ~ ligne.apn__desc_short }}
+                           
+                           
                         {% endif %}
-                     
+                       
                        </td>
                       <td>{{ ligne.devis__note_interne|raw }}</td>
 

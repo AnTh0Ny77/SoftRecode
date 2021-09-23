@@ -14,6 +14,7 @@ $Client = new \App\Tables\Client($Database);
 $User = new App\Tables\User($Database);
 $Global = new App\Tables\General($Database);
 $Contact = new App\Tables\Contact($Database);
+$Stocks = new App\Tables\Stock($Database);
 //controle de la connexion : 
 if (empty($_SESSION['user'])) {
 	header('location: login');
@@ -315,8 +316,8 @@ ob_start();
 
 			if (!empty($item->devl__modele)) 
 			{
-				// $spec = ShowSpecController::show_spec($item->apn__pn);
-				$pn =  '<br>PN: '.$item->apn__pn_long   ;
+				$spec = $Stocks->select_empty_heritage($item->devl__modele , true , false);
+				$pn =  '<br>PN: '.$item->apn__pn_long . " " .  $spec   ;
 				
 			}
 			else 

@@ -228,6 +228,10 @@ switch ($_SERVER['REQUEST_URI'])
 			{
 				$Stocks->check_heritage($model_relation->id__fmm , $_POST['id_pn']);
 			}
+
+			$short_desc = $Stocks->select_empty_heritage($_POST['id_pn'] , true , false);
+
+			$General->updateAll('art_pn' , $short_desc , 'apn__desc_short' , 'apn__pn', $_POST['id_pn'] );
 			
 		}
 	

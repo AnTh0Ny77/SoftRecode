@@ -15,17 +15,18 @@ Class ShowSpecController extends BasicController
 		self::security();
 		$Stock = new Stock(self::$Db);
         $html = '';
-        if ($object->apn__pn){
+        if ($object->cmdl__pn){
 
-            $spec = $Stock->get_specs_pn_show($object->aap__pn);
+            $spec = $Stock->get_specs_pn_show($object->cmdl__pn);
         }
         else{
 
-            $spec = $Stock->get_specs_modele_show($object->afmm__id);
+            $spec = $Stock->get_specs_modele_show($object->cmdl__id__fmm);
         }
 
         if (!empty($spec)) 
         {
+
             $html .= ' <div style="color: blue">';
 
             foreach ($spec as $data)
@@ -33,14 +34,13 @@ Class ShowSpecController extends BasicController
                 if ($data->text_cle) 
                     $html .= ' ' .  $data->text_cle .' :';
 
-                foreach ($data->$data as $key => $value) 
-                {
+                foreach ($data->$data as $key => $value){
                     $html .= ' ' . $value->valeur_txt ;
 
-                    if ($key === array_key_last($data->$data)) {
+                    if ($key === array_key_last($data->$data)){
                         $html .= '●';
                     }
-                    else {
+                    else{
                         $html .= '-';
                     }
                 }
