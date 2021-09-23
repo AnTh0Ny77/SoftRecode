@@ -225,12 +225,17 @@
                                                         <tr>
                                                                 <td class="align-middle">
                                                                         <b>{{ligne.devl__designation}} </b> <span class="mx-2"> <br>fmm: <b>{{ligne.famille__lib ~ " " ~ ligne.modele}}</b>
-                                                                                <div class="text-primary">
-                                                                                        <b> PN: {{ligne.apn__pn_long}}</b>
-                                                                                        <small>
-                                                                                                {{ligne.spec}}
-                                                                                        </small>
-                                                                                </div>
+                                                                              
+                                                                                        {% if ligne.apn__pn_long %}
+                                                                                        <div class="text-primary">
+                                                                                                <b> PN: {{ligne.apn__pn_long}}</b>
+                                                                                                <small>
+                                                                                                        {{ligne.spec}}
+                                                                                                </small>
+                                                                                        </div>
+                                                                                        {% endif %}
+                                                                                        
+                                                                               
                                                                                 {% if ligne.cmdl__sous_ref %}
                                                                                 
                                                                                 <h6 class="text-primary"><small><i>Sous-référence</i></small></h6>
