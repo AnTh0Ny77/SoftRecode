@@ -345,6 +345,10 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
                 {
                     $config_json = file_get_contents("vendor/config/security.json");
                     $config_json = json_decode($config_json);
+
+                    
+                  
+                    
                     //Instantiation and passing `true` enables exceptions
                     $mail = new PHPMailer(true);
                     try {
@@ -373,6 +377,7 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
                         $doc->output('O:\intranet\Auto_Print\FC/' . $numFact . 'F-' . $temp->devis__id . 'D-' . $temp->client__id . 'C.pdf', 'F');
                     } catch (Exception $e) {
                         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                        die();
                     }
                 }
                 else

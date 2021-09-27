@@ -180,7 +180,6 @@ class Stock extends Table
             $row->aap__cle = $row->aam__cle;
             $row->aap__valeur = $row->aam__valeur;
         }
-
         return $data;
   }
 
@@ -395,7 +394,57 @@ class Stock extends Table
   }
 
 
- 
+  
+
+  public function get_pn_and_model_list_catalogue($string)
+  {
+
+    $filtre = str_replace("-", ' ', $string);
+    $filtre = str_replace("'", ' ', $filtre);
+    $nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+    $mots_filtre = str_word_count($filtre, 1, '0123456789');
+	$mode_filtre = false;
+
+	if ($nb_mots_filtre > 0) 
+		$mode_filtre = true;
+
+    $operateur = 'AND ';
+    $request = "SELECT DISTINCT 
+      	a.* , u.nom , u.prenom  , k.kw__lib, 
+		LEFT JOIN utilisateur as u on  u.id_utilisateur = apn__id_user_modif
+		LEFT JOIN keyword as k ON ( k.kw__type = 'famil' AND k.kw__value =  a.apn__famille ) 
+		LEFT JOIN liaison_fmm_pn as l ON ( a.apn__pn  = l.id__pn )
+		FROM art__pn as a
+		";
+
+    if ($mode_filtre) {
+      $request .=  "WHERE ( apn__pn LIKE '%".$mots_filtre[0]."%' 
+        OR apn__desc_short LIKE '%".$mots_filtre[0]."%' 
+        OR u.prenom LIKE  '%".$mots_filtre[0]."%' 
+		OR u.prenom LIKE  '%".$mots_filtre[0]."%' 
+		OR k.kw__lib LIKE '%".$mots_filtre[0]."%'  
+		)";
+
+      for ($i = 1; $i < $nb_mots_filtre; $i++) {
+        $request .=  $operateur . " ( apn__pn LIKE '%".$mots_filtre[$i]."%' 
+		OR apn__desc_short LIKE '%".$mots_filtre[$i]."%' 
+		OR u.prenom LIKE '%".$mots_filtre[$i]."%' 
+		OR u.nom LIKE '%".$mots_filtre[$i]."%'
+		OR k.kw__lib LIKE '%".$mots_filtre[$i]."%'
+		)";
+      }
+      $request .= "ORDER BY  apn__date_modif DESC  LIMIT 60";
+    } 
+	else 
+	{
+      	$request .= "ORDER BY  apn__date_modif DESC  LIMIT 60";
+    }
+
+    $send = $this->Db->Pdo->query($request);
+    $data = $send->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+  }
+
 
 
 }
