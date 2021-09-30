@@ -17,8 +17,14 @@ $Database->DbConnect();
 $Article = new App\Tables\Article($Database);
 $Stocks = new App\Tables\Stock($Database);
 // Récup de variables (Session et post get)
+$ArtFiltre ='';
+if (!empty($_POST['art_filtre'])) 
+{
+    $ArtFiltre = $_POST['art_filtre'];
+    $pn_list = $Stocks->get_pn_and_model_list_catalogue($ArtFiltre);
+}
+else $pn_list = $Article->select_all_pn();
 
-$pn_list = $Article->select_all_pn();
 
 
 foreach ($pn_list as $pn) 
@@ -29,9 +35,13 @@ foreach ($pn_list as $pn)
    
 }
 
+$results = count($pn_list);
+
 // Donnée transmise au template : 
 echo $twig->render('ArtCataloguePN.twig',
 [
     'user'=> $_SESSION['user'],
-    'pn_list' => $pn_list
+    'pn_list' => $pn_list,
+    'art_filtre' =>  $ArtFiltre,
+    'results' => $results
 ]);
