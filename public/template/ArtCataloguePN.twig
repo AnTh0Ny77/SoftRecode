@@ -81,7 +81,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 						{% for pn in pn_list  %}
 						
 						<tr>
-							<th> 
+							<th style="width: 290px"> 
 							
 								<b><h4 class="text-primary"><small >PN : </small> {{ pn.apn__pn_long  }} </h4></b>
 								<span class="text-muted font-italic">
@@ -122,10 +122,10 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 								{% if pn.apn__image  %}<figure class="image" ><img src="data:image/jpeg;base64,{{ pn.apn__image|raw}}" width=110></figure>{% endif %}
 							</td>
 						
-							<td style="width: 250px">
+							<td style="width: 270px">
 								<div class="d-flex flex-wrap justify-content-start" >
 									<div class="d-flex col-2">
-										<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top" 
+										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" 
 										{% if pn.apn__actif ==   0 %}
 											title="Actif">
 											{% else %}
@@ -133,75 +133,75 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 											{% endif %}
 										
 											{% if pn.apn__actif > 0 %}
-											<i class="fad fa-toggle-on " style="color: green;"></i>
+											<i class="fad fa-toggle-on fa-lg" style="color: green;"></i>
 											{% else %}
-											<i class="fad fa-toggle-off " style="color: rgb(224, 13, 6);"></i>
+											<i class="fad fa-toggle-off fa-lg" style="color: rgb(224, 13, 6);"></i>
 											{% endif %}
 										</button>
 									</div>
 									<div class="d-flex col-2">
-										<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+										<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
 											title="{{pn.nom ~  " " ~ pn.prenom }}">
-											<i class="fas fa-user-tag"></i>
+											<i class="fas fa-user-tag fa-lg"></i>
 										</button>
 									</div>
 									<div class="d-flex col-2">
-										<form method="POST" action="create-pn-third">
+										<form method="POST" action="create-pn-third" data-toggle="tooltip" data-placement="top" title="Modifier">
 											<input type="hidden" name="id_pn" value="{{pn.apn__pn}}">
-											<button class="btn btn-link btn-lg" data-toggle="tooltip" data-placement="top" title="Modifier">
-												<i class="fas fa-edit"></i>
+											<button class="btn btn-link " >
+												<i class="fas fa-edit fa-lg"></i>
 											</button>
 										</form>
 									</div>
 									<div class="d-flex col-2">
-										<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
 											title="Demande d'achat">
-											<i class="fas fa-tag"></i>
+											<i class="fas fa-tag fa-lg"></i>
 										</button>
 									</div>
 									<div class="d-flex col-2">
-										<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
 											title="Demande de prix">
-											<i class="fas fa-calculator"></i>
+											<i class="fas fa-calculator fa-lg"></i>
 										</button>
 									</div>
 									<div class="d-flex col-2">
 										{% if pn.apn__desc_long %}
-											<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+											<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
 												title="{{ pn.apn__desc_long|raw}}">
-												<i class="fas fa-file-alt"></i>
+												<i class="fas fa-file-alt fa-lg"></i>
 											</button>
 										{% else %}
-											<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+											<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
 												title="pas de description longue">
-												<i class="fas fa-file-alt"></i>
+												<i class="fas fa-file-alt fa-lg"></i>
 											</button>
 										{% endif %}
 										
 									</div>
 									<div class="d-flex col-2">
-										<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
 											title="Neuf">
-											<i class="fas fa-circle" style="color: green;"></i>
+											<i class="fas fa-circle fa-lg" style="color: green;"></i>
 										</button>
 									</div>
 									<div class="d-flex col-2">
-										<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+										<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
 											title="Reconditionné">
-											<i class="fas fa-circle" style="color: rgb(241, 149, 11);"></i>
+											<i class="fas fa-circle fa-lg" style="color: rgb(241, 149, 11);"></i>
 										</button>
 									</div>
 									<div class="d-flex col-2">
-										<button type="button" class="click-span btn btn-link btn-lg" data-toggle="tooltip" data-placement="top"
+										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
 											title="Hs">
-											<i class="fas fa-circle" style="color: rgb(241, 11, 11);"></i>
+											<i class="fas fa-circle fa-lg" style="color: rgb(241, 11, 11);"></i>
 										</button>
 									</div>
 									<div class="d-flex col-2">
 										<form action="http://www.google.com/search" method="get" target="_blank">
 											<input type="hidden" name="q" value="{{pn.apn__pn}}">
-											<button class="btn btn-link btn-lg" data-toggle="tooltip" data-placement="top" title="Rechercher sur google">
-												<i class="fab fa-google"></i>
+											<button class="btn btn-link " data-toggle="tooltip" data-placement="top" title="Rechercher sur google">
+												<i class="fab fa-google fa-lg"></i>
 											</button>
 										</form>
 									</div>
