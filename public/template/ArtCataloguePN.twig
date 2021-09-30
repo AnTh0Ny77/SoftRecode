@@ -83,11 +83,11 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 						<tr>
 							<th> 
 							
-								<b><h4 class="text-primary">PN: {{ pn.apn__pn_long  }} </h4></b>
+								<b><h4 class="text-primary"><small >PN : </small> {{ pn.apn__pn_long  }} </h4></b>
 								<span class="text-muted font-italic">
 									{{ pn.famille  ~ " " }}
 									{% if pn.count_relation == 1  %}
-										{{  "-" ~ pn.marque ~  "-" ~ pn.modele ~ "" }}
+										{{  " - " ~ pn.marque ~  " - " ~ pn.modele ~ "" }}
 									{% elseif pn.count_relation == 0  %}
 										 - Pas de modèle rattachés
 									{% else %}
