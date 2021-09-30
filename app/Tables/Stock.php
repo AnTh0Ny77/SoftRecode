@@ -420,7 +420,7 @@ class Stock extends Table
 			LEFT JOIN art_marque as m ON ( t.afmm__marque = m.am__id ) 
       LEFT JOIN art_attribut_pn as s ON ( a.apn__pn = s.aap__pn )
       LEFT JOIN art_attribut_cle as c ON ( s.aap__cle = c.aac__cle ) 
-      LEFT JOIN art_attribut_valeur as v ON( s.aap__valeur = v.aav__valeur)";
+      LEFT JOIN art_attribut_valeur as v ON( s.aap__valeur = v.aav__valeur AND s.aap__cle = v.aav__cle )";
       
     if ($mode_filtre) {
       $request .=  "WHERE ( apn__pn LIKE '%". preg_replace("#[^!A-Za-z0-9_%]+#", "", $mots_filtre[0])."%' 
@@ -449,7 +449,7 @@ class Stock extends Table
       	$request .= " ORDER BY  apn__date_modif DESC  LIMIT 60";
     }
 
-    
+   
     $send = $this->Db->Pdo->query($request);
     $data = $send->fetchAll(PDO::FETCH_OBJ);
     return $data;
