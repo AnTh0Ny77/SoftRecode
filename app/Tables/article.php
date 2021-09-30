@@ -160,7 +160,8 @@ class Article extends Table
 			$SQL = 'SELECT a.afmm__modele , m.am__marque as marque
 			FROM art_fmm as a  
 			LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
-			WHERE a.afmm__id = "' . $pn->modele . '"';
+			WHERE a.afmm__id = "' . $pn->modele . '"
+			';
 			$request = $this->Db->Pdo->query($SQL);
 			$model_data = $request->fetch(PDO::FETCH_OBJ);
 			if (!empty($model_data))
