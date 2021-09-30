@@ -443,16 +443,47 @@ class Stock extends Table
         OR v.aav__valeur_txt LIKE '%" . $mots_filtre[$i] . "%'
 		)";
       }
-      $request .= " ORDER BY  apn__date_modif DESC  LIMIT 60";
+      $request .= " ORDER BY   	apn__pn ASC  LIMIT 50";
     } 
 	else 
 	{
-      	$request .= " ORDER BY  apn__date_modif DESC  LIMIT 60";
+      	$request .= " ORDER BY   	apn__pn ASC  LIMIT 50";
     }
 
-   
     $send = $this->Db->Pdo->query($request);
     $data = $send->fetchAll(PDO::FETCH_OBJ);
+
+
+    foreach ($data as $pn) 
+		{
+			$SQL = 'SELECT  id__fmm 
+			FROM liaison_fmm_pn 
+			WHERE id__pn = "'.$pn->apn__pn.'"
+			LIMIT 5';
+			$request = $this->Db->Pdo->query($SQL);
+			$liaison = $request->fetchAll(PDO::FETCH_OBJ);
+
+			if(count($liaison) > 1 )
+				$pn->modele = null ; $pn->count_relation =  intval(count($liaison));
+			if(count($liaison) == 1 )
+				$pn->modele = $liaison[0]->id__fmm ; $pn->count_relation =  intval(count($liaison));
+			if(count($liaison) == 0 )
+				$pn->modele = null ; $pn->count_relation =  intval(count($liaison));
+
+			$SQL = 'SELECT a.afmm__modele , m.am__marque as marque
+			FROM art_fmm as a  
+			LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
+			WHERE a.afmm__id = "' . $pn->modele . '"
+			';
+			$request = $this->Db->Pdo->query($SQL);
+			$model_data = $request->fetch(PDO::FETCH_OBJ);
+			if (!empty($model_data))
+			{
+				$pn->modele = $model_data->afmm__modele; 
+				$pn->marque = $model_data->marque;
+			}
+				
+		}
     return $data;
   }
 
