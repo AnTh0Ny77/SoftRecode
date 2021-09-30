@@ -410,11 +410,14 @@ class Stock extends Table
 
     $operateur = 'AND ';
     $request = "SELECT DISTINCT 
-      	a.* , u.nom , u.prenom  , k.kw__lib, 
+      	a.* , u.nom , u.prenom  , k.kw__lib as famille ,  t.afmm__id , t.afmm__marque, m.am__marque
+    FROM art_pn as a
 		LEFT JOIN utilisateur as u on  u.id_utilisateur = apn__id_user_modif
 		LEFT JOIN keyword as k ON ( k.kw__type = 'famil' AND k.kw__value =  a.apn__famille ) 
 		LEFT JOIN liaison_fmm_pn as l ON ( a.apn__pn  = l.id__pn )
-		FROM art__pn as a
+    LEFT JOIN art_fmm as t ON ( l.id__fmm = t.afmm__id ) 
+    LEFT JOIN art_marque as m ON ( t.afmm__marque = m.am__id ) 
+	
 		";
 
     if ($mode_filtre) {
@@ -422,7 +425,8 @@ class Stock extends Table
         OR apn__desc_short LIKE '%".$mots_filtre[0]."%' 
         OR u.prenom LIKE  '%".$mots_filtre[0]."%' 
 		OR u.prenom LIKE  '%".$mots_filtre[0]."%' 
-		OR k.kw__lib LIKE '%".$mots_filtre[0]."%'  
+		OR k.kw__lib LIKE '%".$mots_filtre[0]. "%' 
+    OR m.am__marque LIKE '%" . $mots_filtre[0] . "%' 
 		)";
 
       for ($i = 1; $i < $nb_mots_filtre; $i++) {
@@ -430,14 +434,15 @@ class Stock extends Table
 		OR apn__desc_short LIKE '%".$mots_filtre[$i]."%' 
 		OR u.prenom LIKE '%".$mots_filtre[$i]."%' 
 		OR u.nom LIKE '%".$mots_filtre[$i]."%'
-		OR k.kw__lib LIKE '%".$mots_filtre[$i]."%'
+		OR k.kw__lib LIKE '%".$mots_filtre[$i]. "%'
+    OR m.am__marque LIKE '%" . $mots_filtre[$i] . "%'
 		)";
       }
-      $request .= "ORDER BY  apn__date_modif DESC  LIMIT 60";
+      $request .= " ORDER BY  apn__date_modif DESC  LIMIT 60";
     } 
 	else 
 	{
-      	$request .= "ORDER BY  apn__date_modif DESC  LIMIT 60";
+      	$request .= " ORDER BY  apn__date_modif DESC  LIMIT 60";
     }
 
     $send = $this->Db->Pdo->query($request);
