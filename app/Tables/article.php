@@ -133,7 +133,7 @@ class Article extends Table
   public function select_all_pn()
   {
 
-		$SQL = 'SELECT  a.* , u.prenom , u.nom , k.kw__lib as famille
+		$SQL = 'SELECT DISTINCT  a.* , u.prenom , u.nom , k.kw__lib as famille
 		FROM art_pn as a  
 		LEFT JOIN utilisateur as u on  u.id_utilisateur = a.apn__id_user_modif
 		LEFT JOIN keyword as k ON ( k.kw__type = "famil" AND k.kw__value =  a.apn__famille ) 

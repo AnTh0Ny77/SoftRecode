@@ -50,7 +50,7 @@ class Devis_functions
                     //si un commentaire client est présent il s'ajoute sous la désignation 
                     if (!empty($ligne->devl__note_client) && intval($ligne->cmdl__image) > 1) 
                     {
-                        $ligne->devl__note_client = '<span style="max-width= 100%; "> ' .$ligne->devl__note_client.'</span>';
+                        $ligne->devl__note_client = '<span style="max-width= 100%; ">  ' .$ligne->devl__note_client.'</span>';
                         $designation =  $ligne->devl__designation .'<span style="margin-top: -10px;">'. $ligne->devl__note_client .'</span>';
                     }
                     elseif (!empty($ligne->devl__note_client) && intval($ligne->cmdl__image) == 1 && empty($ligne->ligne_image)) {
@@ -62,6 +62,7 @@ class Devis_functions
                         
                         $designation =  $ligne->devl__designation .'<br>
                                 <span style="   max-width: 70px;">
+                                
                                     <figure class="image" >
                                         <img src="data:image/png;base64,'.$ligne->ligne_image.'"  width="70" />
                                     </figure>   
@@ -1170,6 +1171,29 @@ class Devis_functions
                             </td>             
                         </tr>";
                     } 
+                    elseif (intval($ligne->cmdl__image) == 1 && empty($ligne->ligne_image)) 
+                    {
+                        $ligne_photo = "
+                        <tr style='font-size: 95%; font-style: italic; padding-top: -10px;'>
+
+                            <td valign='top' colspan='5'  style=' ".$border_bottom_photo." width: 80%; max-width: 80%; '>
+                                <table>
+                                    <tr style='font-size: 95%; font-style: italic;'>
+                                        <td style='width: 120px; max-width: 120px;'>
+                                            
+                                        </td>
+                                        <td style='width: 450px; max-width: 450px; padding-top: -12px;'>
+                                            ".$ligne->devl__note_client." 
+                                        </td>
+                                    </tr>
+                                </table> 
+                            </td>
+
+                            <td valign='top' colspan='1' style=' ".$border_bottom_photo." text-align: left;  '>
+                            </td>             
+                        </tr>";
+                    } 
+                    
                     //si une photo est présente : 
                     elseif (intval($ligne->cmdl__image) == 1 && !empty($ligne->ligne_image)) 
                     {

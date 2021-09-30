@@ -403,39 +403,43 @@ class Stock extends Table
     $filtre = str_replace("'", ' ', $filtre);
     $nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
     $mots_filtre = str_word_count($filtre, 1, '0123456789');
-	$mode_filtre = false;
+	  $mode_filtre = false;
 
+   
 	if ($nb_mots_filtre > 0) 
 		$mode_filtre = true;
 
-    $operateur = 'AND ';
+    $operateur = ' AND ';
     $request = "SELECT DISTINCT 
-      	a.* , u.nom , u.prenom  , k.kw__lib as famille ,  t.afmm__id , t.afmm__marque, m.am__marque
-    FROM art_pn as a
-		LEFT JOIN utilisateur as u on  u.id_utilisateur = apn__id_user_modif
-		LEFT JOIN keyword as k ON ( k.kw__type = 'famil' AND k.kw__value =  a.apn__famille ) 
-		LEFT JOIN liaison_fmm_pn as l ON ( a.apn__pn  = l.id__pn )
-    LEFT JOIN art_fmm as t ON ( l.id__fmm = t.afmm__id ) 
-    LEFT JOIN art_marque as m ON ( t.afmm__marque = m.am__id ) 
-	
-		";
-
+      	a.* , u.nom , u.prenom  , k.kw__lib as famille ,  t.afmm__id , t.afmm__marque, m.am__marque 
+		FROM art_pn as a
+			LEFT JOIN utilisateur as u on  u.id_utilisateur = apn__id_user_modif
+			LEFT JOIN keyword as k ON ( k.kw__type = 'famil' AND k.kw__value =  a.apn__famille ) 
+			LEFT JOIN liaison_fmm_pn as l ON ( a.apn__pn  = l.id__pn )
+			LEFT JOIN art_fmm as t ON ( l.id__fmm = t.afmm__id ) 
+			LEFT JOIN art_marque as m ON ( t.afmm__marque = m.am__id ) 
+      LEFT JOIN art_attribut_pn as s ON ( a.apn__pn = s.aap__pn )
+      LEFT JOIN art_attribut_cle as c ON ( s.aap__cle = c.aac__cle ) 
+      LEFT JOIN art_attribut_valeur as v ON( s.aap__valeur = v.aav__valeur)";
+      
     if ($mode_filtre) {
-      $request .=  "WHERE ( apn__pn LIKE '%".$mots_filtre[0]."%' 
+      $request .=  "WHERE ( apn__pn LIKE '%". preg_replace("#[^!A-Za-z0-9_%]+#", "", $mots_filtre[0])."%' 
         OR apn__desc_short LIKE '%".$mots_filtre[0]."%' 
         OR u.prenom LIKE  '%".$mots_filtre[0]."%' 
-		OR u.prenom LIKE  '%".$mots_filtre[0]."%' 
-		OR k.kw__lib LIKE '%".$mots_filtre[0]. "%' 
-    OR m.am__marque LIKE '%" . $mots_filtre[0] . "%' 
+        OR u.nom LIKE  '%".$mots_filtre[0]."%' 
+        OR k.kw__lib LIKE '%".$mots_filtre[0]. "%' 
+      	OR m.am__marque LIKE '%" . $mots_filtre[0] . "%' 
+        OR v.aav__valeur_txt LIKE '%" . $mots_filtre[0] . "%'
 		)";
 
       for ($i = 1; $i < $nb_mots_filtre; $i++) {
-        $request .=  $operateur . " ( apn__pn LIKE '%".$mots_filtre[$i]."%' 
-		OR apn__desc_short LIKE '%".$mots_filtre[$i]."%' 
-		OR u.prenom LIKE '%".$mots_filtre[$i]."%' 
-		OR u.nom LIKE '%".$mots_filtre[$i]."%'
-		OR k.kw__lib LIKE '%".$mots_filtre[$i]. "%'
-    OR m.am__marque LIKE '%" . $mots_filtre[$i] . "%'
+        $request .=  $operateur . " ( apn__pn LIKE '%".preg_replace("#[^!A-Za-z0-9_%]+#", "", $mots_filtre[$i])."%' 
+        OR apn__desc_short LIKE '%".$mots_filtre[$i]."%' 
+        OR u.prenom LIKE '%".$mots_filtre[$i]."%' 
+        OR u.nom LIKE '%".$mots_filtre[$i]."%'
+        OR k.kw__lib LIKE '%".$mots_filtre[$i]. "%'
+        OR m.am__marque LIKE '%" . $mots_filtre[$i] . "%'
+        OR v.aav__valeur_txt LIKE '%" . $mots_filtre[$i] . "%'
 		)";
       }
       $request .= " ORDER BY  apn__date_modif DESC  LIMIT 60";
@@ -445,6 +449,7 @@ class Stock extends Table
       	$request .= " ORDER BY  apn__date_modif DESC  LIMIT 60";
     }
 
+    
     $send = $this->Db->Pdo->query($request);
     $data = $send->fetchAll(PDO::FETCH_OBJ);
     return $data;

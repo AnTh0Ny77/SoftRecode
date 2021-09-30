@@ -25,7 +25,7 @@ LEFT JOIN client as c ON cmd__client__id_fact = c.client__id
 LEFT JOIN contact as d ON d.contact__fonction = \'FAC\' 
 LEFT JOIN liaison_client_contact as l ON ( c.client__id = l.liaison__client__id AND d.contact__id = l.liaison__contact__id ) 
 WHERE l.liaison__contact__id = ( SELECT contact__id FROM contact WHERE l.liaison__contact__id = contact__id AND contact__fonction = \'FAC\' ) 
-AND ( cmd__date_fact > 000 )");
+AND ( cmd__date_fact > 000 )" );
 //execution:
 $data = $request->fetchAll(PDO::FETCH_OBJ);
 
@@ -279,7 +279,7 @@ foreach ($data as $cmd) {
                 //Content
                 $mail->isHTML(true);
                 $mail->Subject = 'Votre facture RECODE N:' . $numFact . '';
-                $mail->Body    = 'Vous trouverez ci-joint votre facture N:' . $numFact . ' de votre commande N: ' . $temp->devis__id . '';
+                $mail->Body    = 'Suite à un problème technique nous vous renvoyons votre facture N:' . $numFact . ' de votre commande N: ' . $temp->devis__id . ' . Si vous avez deja reçu votre facture merci de ne pas tenir compte de ce mail.';
                 $mail->send();
                 $deleted = unlink(__DIR__ . '/facture_mail/' . $numFact . '.pdf');
             } catch (Exception $e) {
