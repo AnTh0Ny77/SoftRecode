@@ -53,6 +53,10 @@ class Devis_functions
                         $ligne->devl__note_client = '<span style="max-width= 100%; "> ' .$ligne->devl__note_client.'</span>';
                         $designation =  $ligne->devl__designation .'<span style="margin-top: -10px;">'. $ligne->devl__note_client .'</span>';
                     }
+                    elseif (!empty($ligne->devl__note_client) && intval($ligne->cmdl__image) == 1 && empty($ligne->ligne_image)) {
+                        $ligne->devl__note_client = '<span style="max-width= 100%; "> ' .$ligne->devl__note_client.'</span>';
+                        $designation =  $ligne->devl__designation .'<span style="margin-top: -10px;">'. $ligne->devl__note_client .'</span>';
+                    }
                     elseif(intval($ligne->cmdl__image) == 1 && !empty($ligne->ligne_image)) 
                     {
                         
