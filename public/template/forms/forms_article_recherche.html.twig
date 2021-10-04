@@ -2,10 +2,11 @@
 
 
 {% if object.kw__type %}
-<form action="recherche-articles-results" method="POST" class="" id="forms_specs">
+<form action="ArtCataloguePN" method="POST" class="" id="forms_specs">
 {% endif %}
     {% if object.kw__type %}
     <input type="hidden" name="famille" value="{{object.kw__value}}">
+    <input type="hidden" name="recherche_guide" value="{{object.kw__value}}">
         <h3 class="text-muted mt-5">Formulaire de recherche pour la famille :<b>{{ object.kw__lib }} </b></h3>
     {% endif %}
     

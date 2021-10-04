@@ -38,7 +38,12 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 			{% else %}
 				<h5 class="text-danger my-3 mx-4" >Aucuns résultast </h5>
 			{% endif %}
-			
+				<div class="d-flex">
+					<a class="nav-link " href="recherche-articles-familles">
+						<i class="fas fa-search fa-fw"></i> Recherche assistée
+					</a>
+				</div>
+				
 			<div class="card-header d-flex flex-row align-items-center justify-content-center">
 				<div class="input-group input-group-lg">
 					<input type="text" autofocus class="form-control" name="art_filtre" id="art_filtre" placeholder="Rechercher dans le catalogue" value="{{art_filtre}}">
@@ -243,5 +248,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 <script type="text/javascript" src="public/mdb/js/mdb.min.js"></script> <!-- MDB core JavaScript -->
 <script type="text/javascript" src="public/mdb/js/mdb-file-upload.min.js"></script>
 
-<script>$('.file_upload').file_upload();</script> {# pour le file_upload #}
+<script>
+
+	$('.file_upload').file_upload();</script> {# pour le file_upload #}
   {% endblock %}

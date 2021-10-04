@@ -372,6 +372,114 @@ class Stock extends Table
   }
 
 
+  public function find_pn_spec( array $post_data)
+  {
+   
+	  	$array_where_clause = '';
+		$count  = 1 ; 
+		
+		
+			foreach ($post_data as $key => $value) 
+			{
+				
+				if (!empty($value) &&  $key != 'famille' &&  $key != 'recherche_guide') 
+				{
+
+					if (is_array($value)) 
+					{
+						if ($count == 1) 
+						{
+							$array_where_clause .= '  ';
+							$count += 1;
+							$iteration = 0 ;
+							foreach ($value as $response)
+							{
+								if ($iteration == 0 ) {
+									$array_where_clause .=  ' ( aap__cle = "'.$key.'" AND  aap__valeur =  "'.$response.'" ) ';
+									$iteration += 1;
+								}
+								else{
+									$array_where_clause .=  ' OR  ( aap__cle = "'.$key.'" AND aap__valeur =  "'.$response.'" ) ';
+									$iteration += 1;
+								}
+							}
+							$array_where_clause .= ' ';
+						}
+						else 
+						{
+							$array_where_clause .= ' AND ';
+							$count += 1;
+							$iteration = 0 ;
+							foreach ($value as $response)
+							{
+								if ($iteration == 0 ){
+									$array_where_clause .=  '( aap__cle = "'.$key.'" AND  aap__valeur =  "'.$response.'" )';
+									$iteration += 1;
+								}
+								else {
+									$array_where_clause .=  ' AND ( aap__cle = "'.$key.'" AND aap__valeur =  "'.$response.'" ) ';
+									$iteration += 1;
+								}
+							
+							}
+							$array_where_clause .= '  ';
+						}
+					}
+
+				}
+			}
+
+	
+		$request = $this->Db->Pdo->query('SELECT DISTINCT 
+		a.* , u.prenom , u.nom , k.kw__lib as famille
+		FROM art_attribut_pn 
+		LEFT JOIN art_pn as a ON  ( a.apn__pn = aap__pn )
+		LEFT JOIN utilisateur as u on  u.id_utilisateur = a.apn__id_user_modif
+     	LEFT JOIN keyword as k ON  k.kw__type = "famil" AND k.kw__value =  a.apn__famille 
+    	WHERE ' .$array_where_clause. '
+		ORDER BY a.apn__date_modif LIMIT 50 ');  
+		
+		
+		
+		$data = $request->fetchAll(PDO::FETCH_OBJ);
+
+		foreach ($data as $pn) 
+		{
+			$SQL = 'SELECT  id__fmm 
+			FROM liaison_fmm_pn 
+			WHERE id__pn = "'.$pn->apn__pn.'"
+			LIMIT 5';
+			$request = $this->Db->Pdo->query($SQL);
+			$liaison = $request->fetchAll(PDO::FETCH_OBJ);
+
+			if(count($liaison) > 1 )
+				$pn->modele = null ; $pn->count_relation =  intval(count($liaison));
+			if(count($liaison) == 1 )
+				$pn->modele = $liaison[0]->id__fmm ; $pn->count_relation =  intval(count($liaison));
+			if(count($liaison) == 0 )
+				$pn->modele = null ; $pn->count_relation =  intval(count($liaison));
+
+			$SQL = 'SELECT a.afmm__modele , m.am__marque as marque
+			FROM art_fmm as a  
+			LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
+			WHERE a.afmm__id = "' . $pn->modele . '"
+			';
+			$request = $this->Db->Pdo->query($SQL);
+			$model_data = $request->fetch(PDO::FETCH_OBJ);
+			if (!empty($model_data))
+			{
+				$pn->modele = $model_data->afmm__modele; 
+				$pn->marque = $model_data->marque;
+			}
+				
+		}
+			
+		
+		return $data;
+
+  }
+
+
   public function get_famille_forms($famil) : array 
   {
     $request = $this->Db->Pdo->query('SELECT   

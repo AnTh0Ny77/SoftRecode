@@ -12,6 +12,8 @@ if(empty($_SESSION['user']->id_utilisateur))
 if($_SESSION['user']->user__cmd_acces < 10 )
 	{ header('location: noAccess'); }
 
+
+              
 $Database = new App\Database('devis');
 $Database->DbConnect();
 $Article = new App\Tables\Article($Database);
@@ -23,8 +25,11 @@ if (!empty($_POST['art_filtre']))
     $ArtFiltre = $_POST['art_filtre'];
     $pn_list = $Stocks->get_pn_and_model_list_catalogue($ArtFiltre);
 }
+elseif (!empty($_POST['recherche_guide'])) {
+    $forms_data = $Stocks->get_famille_forms($_POST['famille']);
+    $pn_list = $Stocks->find_pn_spec( $_POST);
+}
 else $pn_list = $Article->select_all_pn();
-
 
 
 foreach ($pn_list as $pn) 
@@ -32,7 +37,6 @@ foreach ($pn_list as $pn)
    
     $pn->specs = $Stocks->get_specs_pn_show($pn->apn__pn);
     $pn->apn__image  = base64_encode($pn->apn__image);
-   
 }
 
 $results = count($pn_list);

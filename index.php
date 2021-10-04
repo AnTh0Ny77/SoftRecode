@@ -69,7 +69,7 @@ use App\Controller\RechercheController;
 		case '/SoftRecode/catalogue';
 			require __DIR__ .'/pages/ArtCataloguePN.php';break;
 
-		case '/SoftRecode/ArtCataloguePN';
+		case '/SoftRecode/ArtCataloguePN'.$get_data;
 			require __DIR__ .'/pages/catalogue_pn.php';break;
 
 		case '/SoftRecode/ArtCatalogueModele';
