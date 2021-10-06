@@ -175,6 +175,41 @@ class Article extends Table
 		return $data;
   }
 
+	public function select_all_model()
+	{
+
+		$SQL = 'SELECT DISTINCT  a.* , u.prenom , u.nom , k.kw__lib as famille
+		FROM art_fmm as a  
+		LEFT JOIN utilisateur as u on  u.id_utilisateur = a.afmm__id_user_creat
+		LEFT JOIN keyword as k ON ( k.kw__type = "famil" AND k.kw__value =  a.afmm__famille ) 
+		LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
+		ORDER BY afmm__dt_modif DESC LIMIT 25';
+		$request = $this->Db->Pdo->query($SQL);
+		$data = $request->fetchAll(PDO::FETCH_OBJ);
+
+		foreach ($data as $model) {
+			$SQL = 'SELECT  id__pn 
+			FROM liaison_fmm_pn 
+			WHERE id__fmm = "' . $model->afmm__id . '"
+			LIMIT 5';
+			$request = $this->Db->Pdo->query($SQL);
+			$liaison = $request->fetchAll(PDO::FETCH_OBJ);
+
+			if (count($liaison) > 1)
+			$model->pn = null;
+			$model->count_relation =  intval(count($liaison));
+			if (count($liaison) == 1)
+			$model->pn = $liaison[0]->id__pn;
+			$model->count_relation =  intval(count($liaison));
+			if (count($liaison) == 0)
+			$model->pn = null;
+			$model->count_relation =  intval(count($liaison));
+
+		}
+
+		return $data;
+	}
+
   public function get_catalogue_fmm($filtre=FALSE)
   { /* nouvelle tables article (composé de art_fmm, art_marque) */
 	$SQL_WHERE = $SQL_GROUPBY = $SQL_ORDER = '';
