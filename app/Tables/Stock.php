@@ -309,16 +309,16 @@ class Stock extends Table
 	{
 		if (!empty($value) &&  $key != 'famille' &&  $key != 'recherche_guide') 
 				{
-					$on_clause = '';
+					$on_clause = '( ';
 					
 
 					foreach ($value as $cle => $step) { 
 						if ($cle === array_key_first($value)) 
 						{
-							$on_clause .= '( v.aav__valeur = "'.$step.'"';
+							$on_clause .= ' v.aav__valeur = "'.$step.'"';
 						}
 						elseif($cle === array_key_last($value)){
-							$on_clause .= '  OR v.aav__valeur = "'.$step.'")';
+							$on_clause .= '  OR v.aav__valeur = "'.$step.'"';
 						}
 						else 
 						{
@@ -326,12 +326,13 @@ class Stock extends Table
 						}
 						
 					}
+					$on_clause .= ' )';
 					
 					$request = $this->Db->Pdo->query('SELECT   
 					c.aac__cle_txt , v.aav__valeur_txt 
 					FROM art_attribut_cle as c
 					LEFT JOIN art_attribut_valeur as v ON  ( v.aav__cle = c.aac__cle AND '.$on_clause.' )
-					WHERE c.aac__cle = "'.$key.'"  
+					WHERE c.aac__cle =  "'.$key.'"  
 					ORDER BY c.aac__ordre ASC LIMIT 150  '); 
 					$data = $request->fetchAll(PDO::FETCH_OBJ);
 
