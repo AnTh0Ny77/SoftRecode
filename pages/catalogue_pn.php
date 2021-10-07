@@ -18,14 +18,35 @@ $Database = new App\Database('devis');
 $Database->DbConnect();
 $Article = new App\Tables\Article($Database);
 $Stocks = new App\Tables\Stock($Database);
-// Récup de variables (Session et post get)
+$query_resume = false ;
+
+// traitement des variables de sessions 
+if (!empty($_GET['config_demande'])) {
+    if (empty($_GET['config_model']))
+        $_SESSION['config']['model'] = false ;
+
+    if (empty($_GET['config_pn']))
+        $_SESSION['config']['pn'] = false; 
+
+    if (!empty($_GET['config_model']))
+        $_SESSION['config']['model'] = true;
+    
+    if (!empty($_GET['config_pn']))
+        $_SESSION['config']['pn'] = true; 
+}
+
+
+
+
+
 if (!empty($_GET['search']))
-    $_POST['art_filtre'] = $_GET['search'];
+    $_GET['art_filtre'] = $_GET['search'];
 
 $ArtFiltre ='';
-if (!empty($_POST['art_filtre'])) 
+if (!empty($_GET['art_filtre'])) 
 {
-    $ArtFiltre = $_POST['art_filtre'];
+
+    $ArtFiltre = $_GET['art_filtre'];
     $pn_list = $Stocks->get_pn_list($ArtFiltre);
     $model_list = $Stocks->get_model_list($ArtFiltre);
 }
@@ -33,6 +54,16 @@ elseif (!empty($_POST['recherche_guide'])) {
     $forms_data = $Stocks->get_famille_forms($_POST['famille']);
     $pn_list = $Stocks->find_pn_spec( $_POST);
     $model_list = $Stocks->find_model_spec($_POST);
+    $return_query = $Stocks->return_forms($_POST);
+    
+    foreach ($return_query as $key => $value) {
+        $query_resume .=  $key . ': ' ;
+        foreach ($value as $text) {
+            $query_resume .= $text . ' - ';
+        }
+        $query_resume .=  ' | ' ;
+    }
+
  }
 else{
     $pn_list = $Article->select_all_pn();
@@ -46,18 +77,6 @@ if (!isset($_SESSION['config'])) {
     ];
 }
 
-if (!empty($_POST['config_model']))
-    $_SESSION['config']['model'] = true;
-
-if (!empty($_POST['config_pn']))
-    $_SESSION['config']['pn'] = true; 
-
-if (empty($_POST['config_model']))
-        $_SESSION['config']['model'] = false ;
-
-if (empty($_POST['config_pn']))
-    $_SESSION['config']['pn'] = false; 
-
 if ($_SESSION['config']['pn'] == false ) 
     $pn_list = [];
 
@@ -65,8 +84,9 @@ if ($_SESSION['config']['model'] == false)
     $model_list = [];
 
 
-
-
+$Totoro = new App\Totoro('euro');
+$Totoro->DbConnect();
+ 
 
 foreach ($pn_list as $pn) 
 {
@@ -93,5 +113,6 @@ echo $twig->render('ArtCataloguePN.twig',
     'results' => $results_pn,
     'results_model' => $results_model ,
     'total' => $total_results, 
-    'config' => $_SESSION['config']
+    'config' => $_SESSION['config'],
+    'query_resume' => $query_resume
 ]);

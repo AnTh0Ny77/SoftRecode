@@ -302,12 +302,69 @@ class Stock extends Table
     return $data;
   }
 
+  public function return_forms(array $forms_data){
+	
+	$array = [];
+	foreach ($forms_data as $key => $value) 
+	{
+		if (!empty($value) &&  $key != 'famille' &&  $key != 'recherche_guide') 
+				{
+					$on_clause = '';
+					
+
+					foreach ($value as $cle => $step) { 
+						if ($cle === array_key_first($value)) 
+						{
+							$on_clause .= '( v.aav__valeur = "'.$step.'"';
+						}
+						elseif($cle === array_key_last($value)){
+							$on_clause .= '  OR v.aav__valeur = "'.$step.'")';
+						}
+						else 
+						{
+							$on_clause .= '  OR v.aav__valeur = "'.$step.'"';
+						}
+						
+					}
+					
+					$request = $this->Db->Pdo->query('SELECT   
+					c.aac__cle_txt , v.aav__valeur_txt 
+					FROM art_attribut_cle as c
+					LEFT JOIN art_attribut_valeur as v ON  ( v.aav__cle = c.aac__cle AND '.$on_clause.' )
+					WHERE c.aac__cle = "'.$key.'"  
+					ORDER BY c.aac__ordre ASC LIMIT 150  '); 
+					$data = $request->fetchAll(PDO::FETCH_OBJ);
+
+					if (!empty($data)) 
+					{
+						$key_name = '';
+						foreach($data as $clefs => $valeur){
+							
+							if ($clefs === array_key_first($data)) {
+								$key_name = $valeur->aac__cle_txt ;
+								$array[$key_name] = [];
+								array_push($array[$key_name], $valeur->aav__valeur_txt );
+							}
+							else array_push($array[$key_name], $valeur->aav__valeur_txt );
+			
+						};
+					}	
+					
+			
+				}
+	}
+
+	
+	return $array;
+	
+  }
 
   public function find_models_spec(array $forms_data , array $post_data)
   {
    
 	  	$array_where_clause = '';
 		$count  = 1 ; 
+
 		
 		foreach ($forms_data as $data) 
 		{
@@ -358,7 +415,6 @@ class Stock extends Table
 					}
 				}
 			}
-
 		}
 
 		$request = $this->Db->Pdo->query('SELECT   
@@ -367,6 +423,7 @@ class Stock extends Table
 		' .$array_where_clause. '
 		 LIMIT 150 ');
 		$data = $request->fetchAll(PDO::FETCH_OBJ);
+		
 		return $data;
 
   }
@@ -381,6 +438,8 @@ class Stock extends Table
 		
 			foreach ($post_data as $key => $value) 
 			{
+			
+
 				
 				if (!empty($value) &&  $key != 'famille' &&  $key != 'recherche_guide') 
 				{

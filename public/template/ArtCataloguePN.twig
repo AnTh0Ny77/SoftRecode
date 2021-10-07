@@ -31,7 +31,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 	<div class="col-11">
 		<div class="card shadow mb-4">
 {# Barre de recherche et bouton #}
-		<form role="form" method="post" action="ArtCataloguePN">
+		<form role="form" method="GET" action="ArtCataloguePN">
 			{% if results_model > 0 %}
 				<h5 class="text-success my-3 mx-4">{{results_model}} Modèles trouvés <small>Sur {{total}} résultats</small></h5>
 			{% else %}
@@ -47,6 +47,23 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 					<a class="nav-link " href="recherche-articles-familles">
 						<i class="fas fa-search fa-fw"></i> Recherche assistée
 					</a>
+					{% if query_resume %}
+						<div class="alert alert-secondary col-9" role="alert">
+							<small>Résultats pour les paramètres de recherche guidée suivants :</small>  <i>{{query_resume}}</i> : 
+							<b>
+								{% if config.model %}
+									Par
+								{% else %}
+
+								{% endif %}
+								{% if config.pn %}
+
+								{% else %}
+
+								{% endif %}
+							</b>
+					  	</div>
+					{% endif  %}
 				</div>
 				
 				
@@ -62,13 +79,14 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 			<div class="d-flex mx-5 my-2 col-8 justify-content-start">
 				<h5 class="mt-2 mx-5">Rechercher dans:</h5>
 				<div class="form-check form-check-inline">
+					<input type="hidden" name="config_demande" value="ok">
 					{% if config.model %}
 						<input class="form-check-input" type="checkbox" name="config_model" id="inlineCheckbox1" value="true" checked>
 					{% else %}
 						<input class="form-check-input" type="checkbox" name="config_model" id="inlineCheckbox1" value="true">
 					{% endif %}
 					
-					<label class="form-check-label" for="inlineCheckbox1">Modèles</label>
+					<label class="form-check-label" for="inlineCheckbox1">Modèles - </label>
 				</div>
 				<div class="form-check form-check-inline">
 					{% if config.pn %}
@@ -76,15 +94,19 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 					{% else %}
 						<input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="config_pn" value="true" >
 					{% endif %}
-					<label class="form-check-label" for="inlineCheckbox2">Pn</label>
+					<label class="form-check-label" for="inlineCheckbox2">Pn - </label>
 				</div>
 				<div class="form-check form-check-inline">
 					<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option2" checked>
-					<label class="form-check-label" for="inlineCheckbox3">Neuf</label>
+					<label class="form-check-label" for="inlineCheckbox3">Neuf - </label>
 				</div>
 				<div class="form-check form-check-inline">
 					<input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option2" checked>
-					<label class="form-check-label" for="inlineCheckbox4">Occasions</label>
+					<label class="form-check-label" for="inlineCheckbox4">Occasions - </label>
+				</div>
+				<div class="form-check form-check-inline">
+					<input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="option2" checked>
+					<label class="form-check-label" for="inlineCheckbox4">HS - </label>
 				</div>
 				
 			</div>
@@ -184,7 +206,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 											</div>
 												<div class="d-flex col-2">
 													<form action="http://www.google.com/search" method="get" target="_blank">
-														<input type="hidden" name="q" value="{{pn.apn__pn}}">
+														<input type="hidden" name="q" value="{{model.afmm__modele}}">
 														<button class="btn btn-link " data-toggle="tooltip" data-placement="top" title="Rechercher sur google">
 															<i class="fab fa-google fa-lg"></i>
 														</button>
@@ -192,26 +214,12 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 												</div>
 											<div class="d-flex col-2">
 												<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
-													title="{{pn.nom ~  " " ~ pn.prenom }}">
+													title="{{model.nom ~  " " ~ model.prenom }}">
 													<i class="fas fa-user-tag fa-lg"></i>
 												</button>
 											</div>
 											<div class="d-flex col-2">
-												{% if pn.apn__desc_long %}
-												<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
-													title="{{ pn.apn__desc_long|raw}}">
-													<i class="fas fa-file-alt fa-lg"></i>
-												</button>
-												{% else %}
-												<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
-													title="pas de description longue">
-													<i class="fas fa-file-alt fa-lg"></i>
-												</button>
-												{% endif %}
-											
 											</div>
-										
-											
 											<div class="d-flex col-2">
 												<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
 													title="Demande de prix">
@@ -264,7 +272,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 										{% if spec.text_cle %}
 											 {{ spec.text_cle }} :  
 										{% else %}
-											
+									
 										{% endif %}
 										{% for value in spec.data %}
 											 {{value.valeur_txt}} 
@@ -274,7 +282,6 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 												-
 											{% endif %}
 										{% endfor %}
-										
 								   {% endfor %}
 								</div>
 							</td>
@@ -284,61 +291,6 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 						
 							<td style="width: 270px">
 								<div class="d-flex flex-wrap justify-content-start" >
-									<div class="d-flex col-2">
-										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" 
-										{% if pn.apn__actif ==   0 %}
-											title="Actif">
-											{% else %}
-											title="Inactif">
-											{% endif %}
-										
-											{% if pn.apn__actif > 0 %}
-											<i class="fad fa-toggle-on fa-lg" style="color: green;"></i>
-											{% else %}
-											<i class="fad fa-toggle-off fa-lg" style="color: rgb(224, 13, 6);"></i>
-											{% endif %}
-										</button>
-									</div>
-									<div class="d-flex col-2">
-										<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
-											title="{{pn.nom ~  " " ~ pn.prenom }}">
-											<i class="fas fa-user-tag fa-lg"></i>
-										</button>
-									</div>
-									<div class="d-flex col-2">
-										<form method="POST" action="create-pn-third" data-toggle="tooltip" data-placement="top" title="Modifier">
-											<input type="hidden" name="id_pn" value="{{pn.apn__pn}}">
-											<button class="btn btn-link " >
-												<i class="fas fa-edit fa-lg"></i>
-											</button>
-										</form>
-									</div>
-									<div class="d-flex col-2">
-										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
-											title="Demande d'achat">
-											<i class="fas fa-tag fa-lg"></i>
-										</button>
-									</div>
-									<div class="d-flex col-2">
-										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
-											title="Demande de prix">
-											<i class="fas fa-calculator fa-lg"></i>
-										</button>
-									</div>
-									<div class="d-flex col-2">
-										{% if pn.apn__desc_long %}
-											<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
-												title="{{ pn.apn__desc_long|raw}}">
-												<i class="fas fa-file-alt fa-lg"></i>
-											</button>
-										{% else %}
-											<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
-												title="pas de description longue">
-												<i class="fas fa-file-alt fa-lg"></i>
-											</button>
-										{% endif %}
-										
-									</div>
 									<div class="d-flex col-2">
 										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
 											title="Neuf">
@@ -358,6 +310,60 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 										</button>
 									</div>
 									<div class="d-flex col-2">
+										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" 
+										{% if pn.apn__actif ==   0 %}
+												title="Actif">
+											{% else %}
+												title="Inactif">
+											{% endif %}
+											{% if pn.apn__actif > 0 %}
+												<i class="fad fa-toggle-on fa-lg" style="color: green;"></i>
+											{% else %}
+												<i class="fad fa-toggle-off fa-lg" style="color: rgb(224, 13, 6);"></i>
+											{% endif %}
+										</button>
+									</div>
+									<div class="d-flex col-2">
+										<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
+											title="{{pn.nom ~  " " ~ pn.prenom }}">
+											<i class="fas fa-user-tag fa-lg"></i>
+										</button>
+									</div>
+									<div class="d-flex col-2">
+										{% if pn.apn__desc_long %}
+											<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
+												title="{{ pn.apn__desc_long|raw}}">
+												<i class="fas fa-file-alt fa-lg"></i>
+											</button>
+										{% else %}
+											<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
+												title="pas de description longue" disabled>
+												<i class="fas fa-file-alt fa-lg"></i>
+											</button>
+										{% endif %}
+										
+									</div>
+									<div class="d-flex col-2">
+										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
+											title="Demande d'achat">
+											<i class="fas fa-tag fa-lg"></i>
+										</button>
+									</div>
+									<div class="d-flex col-2">
+										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
+											title="Demande de prix">
+											<i class="fas fa-calculator fa-lg"></i>
+										</button>
+									</div>
+									<div class="d-flex col-2">
+										<form method="POST" action="create-pn-third" data-toggle="tooltip" data-placement="top" title="Modifier">
+											<input type="hidden" name="id_pn" value="{{pn.apn__pn}}">
+											<button class="btn btn-link " >
+												<i class="fas fa-edit fa-lg"></i>
+											</button>
+										</form>
+									</div>
+									<div class="d-flex col-2">
 										<form action="http://www.google.com/search" method="get" target="_blank">
 											<input type="hidden" name="q" value="{{pn.apn__pn}}">
 											<button class="btn btn-link " data-toggle="tooltip" data-placement="top" title="Rechercher sur google">
@@ -365,14 +371,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 											</button>
 										</form>
 									</div>
-
-									
-
-								</div>
-								
-									
-								
-								
+								</div>	
 						    </td>
 						  </tr>
 						{% endfor %}
