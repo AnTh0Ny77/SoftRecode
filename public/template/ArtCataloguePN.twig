@@ -238,7 +238,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 								<span class="text-muted font-italic">
 									{{ pn.famille  ~ " " ~  pn.marque  }}
 									{% if pn.count_relation == 1  %}
-									<a href="ArtCataloguePN?search={{pn.modele}}">{{ " - " ~ pn.modele ~ "" }}</a>
+									<a href="ArtCataloguePN?search={{pn.modele}}&config_model=true">{{ " - " ~ pn.modele ~ "" }}</a>
 										
 									{% elseif pn.count_relation == 0  %}
 										 - Pas de modèle rattachés
