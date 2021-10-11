@@ -47,7 +47,6 @@ if (!empty($_GET['search']))
 $ArtFiltre ='';
 if (!empty($_GET['art_filtre'])) 
 {
-
     $ArtFiltre = $_GET['art_filtre'];
     $pn_list = $Stocks->get_pn_list($ArtFiltre);
     $model_list = $Stocks->get_model_list($ArtFiltre);
@@ -65,7 +64,6 @@ elseif (!empty($_POST['recherche_guide'])) {
         }
         $query_resume .=  ' | ' ;
     }
-
  }
 else{
     $pn_list = $Article->select_all_pn();
@@ -123,7 +121,6 @@ foreach ($model_list as $model)
         if (intval($count->id_etat == 21)) 
             $model->hs = $count->ct_etat; 
     }
-    
 }
 
 
