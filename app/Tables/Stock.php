@@ -3,6 +3,7 @@
 namespace App\Tables;
 use App\Tables\Table;
 use App\Database;
+use App\Totoro;
 use PDO;
 
 
@@ -317,9 +318,6 @@ class Stock extends Table
 						{
 							$on_clause .= ' v.aav__valeur = "'.$step.'"';
 						}
-						elseif($cle === array_key_last($value)){
-							$on_clause .= '  OR v.aav__valeur = "'.$step.'"';
-						}
 						else 
 						{
 							$on_clause .= '  OR v.aav__valeur = "'.$step.'"';
@@ -328,6 +326,8 @@ class Stock extends Table
 					}
 					$on_clause .= ' )';
 					
+					
+
 					$request = $this->Db->Pdo->query('SELECT   
 					c.aac__cle_txt , v.aav__valeur_txt 
 					FROM art_attribut_cle as c
@@ -359,6 +359,17 @@ class Stock extends Table
 	return $array;
 	
   }
+
+
+  public function count_from_totoro(Totoro $totoro , $article){
+	 	 $sql= $totoro->Pdo->query('SELECT id_etat, count(id_etat) AS ct_etat
+		FROM locator
+		WHERE out_datetime IS NULL
+		AND article = "'. $article.'"
+		GROUP BY article, id_etat');
+		$data = $sql->fetchAll(PDO::FETCH_OBJ);
+		return $data;
+  	}
 
   public function find_models_spec(array $forms_data , array $post_data)
   {
@@ -600,6 +611,7 @@ class Stock extends Table
         OR u.nom LIKE  '%".$mots_filtre[0]."%' 
         OR k.kw__lib LIKE '%".$mots_filtre[0]. "%' 
       	OR m.am__marque LIKE '%" . $mots_filtre[0] . "%' 
+		OR t.afmm__modele LIKE '%" . $mots_filtre[0] . "%'
         OR v.aav__valeur_txt LIKE '%" . $mots_filtre[0] . "%'
 		)";
 
@@ -610,6 +622,7 @@ class Stock extends Table
         OR u.nom LIKE '%".$mots_filtre[$i]."%'
         OR k.kw__lib LIKE '%".$mots_filtre[$i]. "%'
         OR m.am__marque LIKE '%" . $mots_filtre[$i] . "%'
+		OR t.afmm__modele LIKE '%" . $mots_filtre[0] . "%'
         OR v.aav__valeur_txt LIKE '%" . $mots_filtre[$i] . "%'
 		)";
       }

@@ -135,7 +135,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 										{{ model.famille ~ " " ~ model.marque   }}
 										{% if model.count_relation == 1 %}
 										<br>
-										<a href="ArtCataloguePN?search={{model.pn}}">
+										<a href="ArtCataloguePN?search={{model.pn}}&config_pn=true">
 										{{ "PN: " ~    model.pn ~ "" }}
 										</a>
 										{% elseif pn.count_relation == 0 %}
@@ -173,20 +173,48 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 									<td style="width: 270px">
 										<div class="d-flex flex-wrap justify-content-start">
 											<div class="d-flex col-2">
-												<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Neuf">
-													<i class="fas fa-circle fa-lg" style="color: green;"></i>
-												</button>
+
+												
+											
+			
+												{% if model.neuf %}
+													<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Neuf : {{ model.neuf}}">
+														<i class="fas fa-circle fa-lg" style="color: green;"></i>
+													</button>
+												{% else %}
+												
+													<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Neuf : NC">
+														<i class="fas fa-circle fa-lg" style="color: green;"></i>
+													</button>
+												{% endif %}
+												
 											</div>
 											<div class="d-flex col-2">
-												<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
-													title="Reconditionné">
+												{% if model.occasion  %}
+													<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
+														title="Occasion : {{ model.occasion}}">
+														<i class="fas fa-circle fa-lg" style="color: rgb(241, 149, 11);"></i>
+													</button>
+												{% else %}
+													<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
+													title="Occasion : NC">
 													<i class="fas fa-circle fa-lg" style="color: rgb(241, 149, 11);"></i>
-												</button>
+													</button>
+												{% endif %}
+												
 											</div>
 											<div class="d-flex col-2">
-												<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Hs">
-													<i class="fas fa-circle fa-lg" style="color: rgb(241, 11, 11);"></i>
-												</button>
+												{% if model.hs %}
+													<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Hs : {{ model.hs}}">
+														<i class="fas fa-circle fa-lg" style="color: rgb(241, 11, 11);"></i>
+													</button>
+												{% else %}
+													<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Hs : NC">
+														<i class="fas fa-circle fa-lg" style="color: rgb(241, 11, 11);"></i>
+													</button>
+												{% endif %}
+											
+												
 											</div>
 												<div class="d-flex col-2">
 													<form action="http://www.google.com/search" method="get" target="_blank">
@@ -276,22 +304,46 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 							<td style="width: 270px">
 								<div class="d-flex flex-wrap justify-content-start" >
 									<div class="d-flex col-2">
-										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
-											title="Neuf">
-											<i class="fas fa-circle fa-lg" style="color: green;"></i>
-										</button>
+										{% if pn.neuf %}
+											<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
+												title="Neuf : {{pn.neuf}}">
+												<i class="fas fa-circle fa-lg" style="color: green;"></i>
+											</button>
+										{% else %}
+											<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
+												title="Neuf : Nc">
+												<i class="fas fa-circle fa-lg" style="color: green;"></i>
+											</button>
+										{% endif %}
+									
 									</div>
 									<div class="d-flex col-2">
-										<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
-											title="Reconditionné">
-											<i class="fas fa-circle fa-lg" style="color: rgb(241, 149, 11);"></i>
-										</button>
+										{% if pn.occasion %}
+											<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
+												title="Reconditionné : {{pn.occasion }}">
+												<i class="fas fa-circle fa-lg" style="color: rgb(241, 149, 11);"></i>
+											</button>
+										{% else %}
+											<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
+												title="Reconditionné : Nc">
+												<i class="fas fa-circle fa-lg" style="color: rgb(241, 149, 11);"></i>
+											</button>
+										{% endif %}
+										
 									</div>
 									<div class="d-flex col-2">
-										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
-											title="Hs">
+										{% if pn.hs %}
+											<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
+											title="Hs : {{ pn.hs}}">
 											<i class="fas fa-circle fa-lg" style="color: rgb(241, 11, 11);"></i>
-										</button>
+											</button>
+										{% else %}
+											<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
+											title="Hs: Nc">
+											<i class="fas fa-circle fa-lg" style="color: rgb(241, 11, 11);"></i>
+											</button>
+										{% endif %}
+										
 									</div>
 									<div class="d-flex col-2">
 										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" 
