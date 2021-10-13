@@ -110,6 +110,7 @@ foreach ($pn_list as $pn)
 foreach ($model_list as $model) 
 {
     $model->specs = $Stocks->get_specs_modele_show($model->afmm__id);
+    $model->afmm__image = base64_encode($model->afmm__image);
     $count_stock = $Stocks->count_from_totoro($Totoro,$model->afmm__modele);
 
     foreach ($count_stock as $count) 

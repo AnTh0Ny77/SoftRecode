@@ -49,7 +49,7 @@ if (!empty($_POST['id_models']))
     }
 
     $heritage = $Stocks->heritage($pn->afmm__id);
-    header('location: ArtCatalogueModele');
+    header('location: ArtCataloguePN');
     die();
 }
 
@@ -65,7 +65,7 @@ if (!empty($_SESSION['models_id']))
         $forms_data = $Stocks->get_famille_forms($Modele->afmm__famille);
         if (empty($forms_data)) 
 				{
-					header('location: ArtCatalogueModele');
+					header('location: ArtCataloguePN');
 					die();
 				}
         // $spec_array = $Stocks->get_specs($pn);

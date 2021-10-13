@@ -32,9 +32,7 @@ $(document).ready(function()
 				{
 					"AjaxPn": modele
 				},
-				success: function (data) {
-
-					
+				success: function (data) {					
 					console.log(data);
 					dataSet = JSON.parse(data);
 					

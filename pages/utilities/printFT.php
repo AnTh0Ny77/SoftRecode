@@ -329,7 +329,7 @@ ob_start();
 						<td style='border-bottom: 1px #ccc solid'> " . $item->prestaLib . " <br> " . $item->kw__lib . " <br> " . $temp . " mois</td>
 						<td style='border-bottom: 1px #ccc solid; width: 55%;'> 
 							<br> <small>désignation :</small> <b>" . $item->devl__designation . "</b><br>"
-				. $item->famille__lib . " " . $item->marque . " " . $item->modele . " " . $item->devl__modele  . " " . $pn .  " " . $item->devl__note_interne . " ". $item->devl__note_client."
+				. $item->famille__lib . " " . $item->marque . " " . $item->modele . "  " . $pn .  " " . $item->devl__note_interne . " ". $item->devl__note_client."
 				</td>
 						 <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite . " </strong></td>
 						  <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>

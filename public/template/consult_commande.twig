@@ -261,9 +261,9 @@
                                                                                 </tbody>
                                                                               </table>
                                                                 </td>
-                                                                <td class="align-middle">
+                                                                <td class="align-start" style="width: 100px;">
                                                                         {% if user.user__prix_acces > 0 %}
-                                                                                        <h5><b>{{ligne.devl_puht}}</b> € U.HT</h5> 
+                                                                                       <b>{{ligne.devl_puht}}</b> € HT 
                                                                         {% else %}
                                                                                          <div class="alert alert-warning" role="alert">
                                                                                                  droits insufisants (prix €)
@@ -318,8 +318,8 @@
                                                                 <td class="align-middle"></td>
                                                                 <td class="align-middle"> 
                                                                         {% if user.user__prix_acces > 0 %}
-                                                                                <h5><small>Tva taux: </small> <b>{{totaux[1]}}</b> %</h5>
-                                                                                <h5><small>Tva Montant: </small> <b>{{totaux[2]}}</b> €</h5>
+                                                                                <h5><small>Tva : </small> <b>{{totaux[1]}}</b> %</h5>
+                                                                                <h5><small>Tva : </small> <b>{{totaux[2]}}</b> €</h5>
                                                                         {% else %}
                                                                                 <div class="alert alert-warning" role="alert">
                                                                                         droits insufisants (prix €)
@@ -330,8 +330,8 @@
                                                                 <td class="align-middle">
                                                                         <h5>
                                                                                 {% if user.user__prix_acces > 0 %}
-                                                                                        <h5><small>Total HT: </small> <b>{{totaux[0]}}</b> €</h5>
-                                                                                        <h5><small>Total TTC: </small> <b>{{totaux[3]}}</b> €</h5>
+                                                                                        <h5><small>HT: </small> <b>{{totaux[0]}}</b> €</h5>
+                                                                                        <h5><small>TTC: </small> <b>{{totaux[3]}}</b> €</h5>
                                                                                 {% else %}
                                                                                         <div class="alert alert-warning" role="alert">
                                                                                                 droits insufisants (prix €)
