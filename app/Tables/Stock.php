@@ -52,7 +52,7 @@ class Stock extends Table
     $request->execute();
     return true;
   }
-
+  	
   public function check_heritage($model_id , $pn_id)
   {
     $spec_model = $this->get_specs_models($model_id);
