@@ -24,32 +24,41 @@ switch ($_SERVER['REQUEST_URI'])
 		//première partie creation et recherche de pn  : 
 		$pn_id = false ;
 		$famille_list = $Article->get_famille_for_spec_pn();
+		$alert_quote = false;
 
 		//si une cretaion de pn à eu lieu : 
 		if (!empty($_POST['recherche_pn'])) 
 		{
-		   $verify_if_exist = $Article->get_pn_byID($_POST['recherche_pn']);
-		   
-		   if (!empty($verify_if_exist)) 
-		   {
-				$pn_id =  $verify_if_exist;
-				
-		   }
-		   else 
-		   {
-			   	$pn__id =  $Article->insert_pn($_POST['recherche_pn'] , $_POST['recherche_pn'] ,$_SESSION['user']->id_utilisateur );
+			
+			if ( preg_match('/"/', $_POST['recherche_pn']) or preg_match("/'/", $_POST['recherche_pn'])) {
+				$alert_quote = 'Le Nom du Pn ne peut pas contenir de " ou de \'\ ';
+			}
+			else {
+					$verify_if_exist = $Article->get_pn_byID(trim($_POST['recherche_pn']) ,'"');
+			
+					if (!empty($verify_if_exist)) 
+					{
+						$pn_id =  $verify_if_exist;
+						
+					}
+					else 
+					{
+							$pn__id =  $Article->insert_pn($_POST['recherche_pn'] , $_POST['recherche_pn'] ,$_SESSION['user']->id_utilisateur );
+			
+						if (!empty($_POST['famille_pn'])) 
+						{
+							$pn_court = preg_replace("#[^!A-Za-z0-9%]+#", "", $_POST['recherche_pn']);
+							$General->updateAll('art_pn' , $_POST['famille_pn'], 'apn__famille' , 'apn__pn', $pn_court );
+						}
+						
+						$_SESSION['pn_id'] = $_POST['recherche_pn']; 	
+						header('location: create-pn-second');
+						break;
+					}
+			}
 
-				  
-				if (!empty($_POST['famille_pn'])) 
-				{
-					$pn_court = preg_replace("#[^!A-Za-z0-9%]+#", "", $_POST['recherche_pn']);
-					$General->updateAll('art_pn' , $_POST['famille_pn'], 'apn__famille' , 'apn__pn', $pn_court );
-				}
-				
-				$_SESSION['pn_id'] = $_POST['recherche_pn']; 	
-				header('location: create-pn-second');
-				break;
-		   }
+
+		  
 		}
 
 		// Donnée transmise au template : 
@@ -58,7 +67,8 @@ switch ($_SERVER['REQUEST_URI'])
 			[
 				'user' => $_SESSION['user'],
 				'pn_id' => $pn_id , 
-				'famille_list' => $famille_list
+				'famille_list' => $famille_list , 
+				'alert_quote' => $alert_quote
 			]
 		);
 		break;
