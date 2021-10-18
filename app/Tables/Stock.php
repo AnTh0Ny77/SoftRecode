@@ -17,6 +17,18 @@ class Stock extends Table
     $this->Db = $db;
   }
 
+
+  //partie rajoutée pour la partie devis 
+  public function check_famille($pn)
+  {
+		$request = $this->Db->Pdo->query('SELECT apn__famille
+		FROM art_pn as a
+		WHERE  a.apn__pn = "' . $pn . '"');
+		$data = $request->fetch(PDO::FETCH_OBJ);
+  }
+
+  
+
   public function insert_attr_pn($pn , $aap__cle , $aap__valeur ) : bool
   {
     $request = $this->Db->Pdo->prepare('INSERT INTO art_attribut_pn (aap__pn, aap__cle , aap__valeur )

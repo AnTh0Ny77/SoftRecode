@@ -149,8 +149,6 @@ if (empty($_SESSION['user']))
             margin-top: 30px;
          }
     
-        
-         
           table{   font-size:13; font-style: normal; font-variant: normal;  border-collapse:separate; }
          
           strong{ color:#000;}
@@ -376,11 +374,7 @@ if (empty($_SESSION['user']))
                 } else {
                     $doc->output('O:\intranet\Auto_Print\FC/' . $numFact . 'F-' . $temp->devis__id . 'D-' . $temp->client__id . 'C.pdf', 'F');
                 }
-     
-        
-              
-        
-        
+      
      } catch (Html2PdfException $e) 
      {
        die($e); 
@@ -388,9 +382,6 @@ if (empty($_SESSION['user']))
 
 
        }
-       
-      
-      
        
     }
     $file = fopen("auto.csv", "w");
