@@ -245,7 +245,6 @@ try {
 
     for ($i=0; $i < 2; $i++) 
     { 
-   
         $doc->output('O:\intranet\Auto_Print\CT\CT'.$temp->devis__id.'n'.$i.'.pdf', 'F');
     }
    

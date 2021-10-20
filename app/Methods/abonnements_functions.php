@@ -100,15 +100,9 @@ class Abonnements_functions
                                         <tr>
                                                 <td style="text-align: center;  width: 100%">
                                                         <h4>
-                                                                <?php
-                                                                if ($presta == 'MNT') {
-                                                                        echo 'CONTRAT DE MAINTENANCE<br>
+                                                               CONTRAT DE LOCATION<br>
                                                                 DE MATERIEL INFORMATIQUE';
-                                                                } else {
-                                                                        echo 'CONTRAT DE LOCATION<br>
-                                                                        DE MATERIEL INFORMATIQUE';
-                                                                }
-                                                                ?>
+                                                               
 
                                                         </h4>
                                                         <h4>
