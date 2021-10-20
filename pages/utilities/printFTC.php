@@ -268,12 +268,12 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
                         </td>
 
 
-                            <td style="text-align: right; ">
+                        <td style="text-align: right; ">
                             BPMED NICE ENTREPRISE<br>
                             <strong>IBAN : </strong>FR76 1460 7003 6569 0218 9841 804<br>
                             <strong>BIC : </strong>CCBPFRPPMAR
                             </td>
-                        </tr>
+                    </tr>
                         
                         <tr>
 
@@ -345,10 +345,6 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
                 {
                     $config_json = file_get_contents("vendor/config/security.json");
                     $config_json = json_decode($config_json);
-
-                    
-                  
-                    
                     //Instantiation and passing `true` enables exceptions
                     $mail = new PHPMailer(true);
                     try {
