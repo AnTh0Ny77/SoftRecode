@@ -19,12 +19,17 @@ class Stock extends Table
 
 
   //partie rajoutée pour la partie devis 
-  public function check_famille($pn)
+  public function check_famille_pn($pn)
   {
 		$request = $this->Db->Pdo->query('SELECT apn__famille
 		FROM art_pn as a
 		WHERE  a.apn__pn = "' . $pn . '"');
 		$data = $request->fetch(PDO::FETCH_OBJ);
+
+		var_dump($data);
+		if ($data->apn__famille =='PID' or $data->apn__famille == 'ACC' ) {
+			return true;
+		}	else return false;
   }
 
   

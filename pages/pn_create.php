@@ -31,7 +31,7 @@ switch ($_SERVER['REQUEST_URI'])
 		{
 			
 			if ( preg_match('/"/', $_POST['recherche_pn']) or preg_match("/'/", $_POST['recherche_pn'])) {
-				$alert_quote = 'Le Nom du Pn ne peut pas contenir de " ou de \'\ ';
+				$alert_quote = 'Le Nom du Pn ne peut pas contenir de guillemets ';
 			}
 			else {
 					$verify_if_exist = $Article->get_pn_byID(trim($_POST['recherche_pn']) ,'"');
@@ -87,7 +87,7 @@ switch ($_SERVER['REQUEST_URI'])
 			$pn = $Article->get_pn_byID($pn_id);
 			$marqueur_famille = 0 ;
 
-			if ($pn->apn__famille == 'PID') 
+			if ($pn->apn__famille == 'PID' or $pn->apn__famille == 'ACC' ) 
 			{
 				$marqueur_famille = 1 ;
 				$model_list = $Article->getModels();
@@ -239,9 +239,12 @@ switch ($_SERVER['REQUEST_URI'])
 				$Stocks->check_heritage($model_relation->id__fmm , $_POST['id_pn']);
 			}
 
-			$short_desc = $Stocks->select_empty_heritage($_POST['id_pn'] , true , false);
+			if (empty($pn->apn__desc_short)) {
+				$short_desc = $Stocks->select_empty_heritage($_POST['id_pn'], true, false);
 
-			$General->updateAll('art_pn' , $short_desc , 'apn__desc_short' , 'apn__pn', $_POST['id_pn'] );
+				$General->updateAll('art_pn', $short_desc, 'apn__desc_short', 'apn__pn', $_POST['id_pn']);
+			}
+			
 			
 		}
 	
