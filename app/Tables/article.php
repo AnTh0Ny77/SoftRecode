@@ -568,6 +568,10 @@ class Article extends Table
   public function insert_pn($pn, $pn_long , $id_user)
   {
 		$pn = preg_replace("#[^!A-Za-z0-9%]+#", "", $pn);
+
+		$pn = trim($pn, '"');
+		$pn_long = trim($pn_long, '"');
+
 		
 		$request = $this->Db->Pdo->prepare("
 		INSERT INTO art_pn  (apn__pn,		apn__pn_long,	 	apn__id_user_modif, 	apn__date_modif) 

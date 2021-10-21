@@ -17,6 +17,23 @@ class Stock extends Table
     $this->Db = $db;
   }
 
+
+  //partie rajoutée pour la partie devis 
+  public function check_famille_pn($pn)
+  {
+		$request = $this->Db->Pdo->query('SELECT apn__famille
+		FROM art_pn as a
+		WHERE  a.apn__pn = "' . $pn . '"');
+		$data = $request->fetch(PDO::FETCH_OBJ);
+
+		var_dump($data);
+		if ($data->apn__famille =='PID' or $data->apn__famille == 'ACC' ) {
+			return true;
+		}	else return false;
+  }
+
+  
+
   public function insert_attr_pn($pn , $aap__cle , $aap__valeur ) : bool
   {
     $request = $this->Db->Pdo->prepare('INSERT INTO art_attribut_pn (aap__pn, aap__cle , aap__valeur )
@@ -52,7 +69,7 @@ class Stock extends Table
     $request->execute();
     return true;
   }
-  	
+
   public function check_heritage($model_id , $pn_id)
   {
     $spec_model = $this->get_specs_models($model_id);
@@ -365,9 +382,10 @@ class Stock extends Table
 	 	 $sql= $totoro->Pdo->query('SELECT id_etat, count(id_etat) AS ct_etat
 		FROM locator
 		WHERE out_datetime IS NULL
-		AND article = "'. $article.'"
-		GROUP BY article, id_etat');
+		AND article =  "'. $article.'"
+		GROUP BY id_etat');
 		$data = $sql->fetchAll(PDO::FETCH_OBJ);
+		
 		return $data;
   	}
 
@@ -637,6 +655,7 @@ class Stock extends Table
     $data = $send->fetchAll(PDO::FETCH_OBJ);
 
 
+	
     foreach ($data as $pn) 
 		{
 			$SQL = 'SELECT  id__fmm 
