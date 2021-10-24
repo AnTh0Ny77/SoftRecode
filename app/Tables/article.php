@@ -427,7 +427,7 @@ class Article extends Table
 		$ligne = $request->fetch(PDO::FETCH_OBJ);
 
 
-		$SQL = 'SELECT l.* , p.apn__pn_long , p.apn__image
+		$SQL = 'SELECT l.* , p.apn__pn_long , p.apn__image , p.apn__desc_short
 		FROM liaison_fmm_pn as l 
 		LEFT JOIN art_pn as p ON p.apn__pn = l.id__pn
 		WHERE id__fmm = ' . $ligne->cmdl__id__fmm . ' ';

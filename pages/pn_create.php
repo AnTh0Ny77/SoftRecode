@@ -127,6 +127,10 @@ switch ($_SERVER['REQUEST_URI'])
 		if (!empty($_POST['model_array'])) 
 		{
 			$tableau_modele = json_decode($_POST['model_array']);
+			if ($_POST['famille'] == 'PID') 
+			{
+				array_push($tableau_modele , 100 );
+			}
 			$update_models = $Article->insert_liaison_pn_fmm($tableau_modele , $_POST['id_pn'] ) ;
 		}
 

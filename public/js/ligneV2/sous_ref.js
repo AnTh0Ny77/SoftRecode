@@ -280,7 +280,7 @@ $(document).ready(function()
 
                         for (let index = 0; index < dataSet[1].length; index++) {
 
-                            $("#pn-select-sr-m").append(new Option(dataSet[1][index].apn__pn_long, dataSet[1][index].id__pn))
+                            $("#pn-select-sr-m").append(new Option(dataSet[1][index].apn__pn_long + " " + dataSet[1][index].apn__desc_short, dataSet[1][index].id__pn))
 
                         }
                         $('#pn-select-sr-m').selectpicker('refresh');

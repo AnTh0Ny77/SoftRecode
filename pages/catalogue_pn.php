@@ -84,8 +84,8 @@ if ($_SESSION['config']['model'] == false)
     $model_list = [];
 
 
-$Totoro = new App\Totoro('euro');
-$Totoro->DbConnect();
+// $Totoro = new App\Totoro('euro');
+// $Totoro->DbConnect();
 
 
 foreach ($pn_list as $pn) 
@@ -93,16 +93,16 @@ foreach ($pn_list as $pn)
    
     $pn->specs = $Stocks->get_specs_pn_show($pn->apn__pn);
     $pn->apn__image  = base64_encode($pn->apn__image);
-    $count_stock = $Stocks->count_from_totoro($Totoro, $pn->apn__pn);
-    foreach ($count_stock as $count) 
-    {
-        if (intval($count->id_etat == 1  )) 
-            $pn->neuf = $count->ct_etat ;
-        if (intval($count->id_etat == 11  )) 
-            $pn->occasion = $count->ct_etat;
-        if (intval($count->id_etat == 21)) 
-            $pn->hs = $count->ct_etat; 
-    }
+    // $count_stock = $Stocks->count_from_totoro($Totoro, $pn->apn__pn);
+    // foreach ($count_stock as $count) 
+    // {
+    //     if (intval($count->id_etat == 1  )) 
+    //         $pn->neuf = $count->ct_etat ;
+    //     if (intval($count->id_etat == 11  )) 
+    //         $pn->occasion = $count->ct_etat;
+    //     if (intval($count->id_etat == 21)) 
+    //         $pn->hs = $count->ct_etat; 
+    // }
 }
 
 
@@ -110,17 +110,17 @@ foreach ($model_list as $model)
 {
     $model->specs = $Stocks->get_specs_modele_show($model->afmm__id);
     $model->afmm__image = base64_encode($model->afmm__image);
-    $count_stock = $Stocks->count_from_totoro($Totoro,$model->afmm__modele);
+    // $count_stock = $Stocks->count_from_totoro($Totoro,$model->afmm__modele);
 
-    foreach ($count_stock as $count) 
-    {
-        if (intval($count->id_etat == 1  )) 
-            $model->neuf = $count->ct_etat ;
-        if (intval($count->id_etat == 11  )) 
-            $model->occasion = $count->ct_etat;
-        if (intval($count->id_etat == 21)) 
-            $model->hs = $count->ct_etat; 
-    }
+    // foreach ($count_stock as $count) 
+    // {
+    //     if (intval($count->id_etat == 1  )) 
+    //         $model->neuf = $count->ct_etat ;
+    //     if (intval($count->id_etat == 11  )) 
+    //         $model->occasion = $count->ct_etat;
+    //     if (intval($count->id_etat == 21)) 
+    //         $model->hs = $count->ct_etat; 
+    // }
 }
 
 

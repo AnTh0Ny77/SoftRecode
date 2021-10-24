@@ -61,9 +61,10 @@
         <div class="d-flex">
             <div class="col-11">
                 <h3 class="text-muted">Choix du modèle associé pour : <b> {{ pn.apn__pn_long  }}  ( {{ pn.modele ~ " " ~  pn.famille }} )</b></h3>
-
+                
                 <form action="create-pn-specs" method="POST" class="mt-3">
                     <input type="hidden" name="id_pn" value="{{pn.apn__pn}}" >
+                    <input type="hidden" name="famille" value="{{pn.apn__famille}}">
                     <input type="hidden" id="limit_mdl" value="{{marqueur_famille}}" >
                     <input type="hidden" name="model_array" id="model_array">
                     <select name="select_models" data-placeholder="Choisir des modèles"  class="chosen-select col-12" id="select_multiple" multiple required>
