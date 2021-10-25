@@ -188,56 +188,48 @@ ob_start();
 
 						if ($command->devis__contact__id) 
 						{
-							$contact = $Contact->getOne($command->devis__contact__id);
-							echo "<small>facturation : " . $contact->contact__civ . " " . $contact->contact__nom . " " . $contact->contact__prenom . "</small><strong><br>";
-							echo Pdfunctions::showSociete($clientView) . " </strong> ";
-							if (!empty($clientView->client__tel)) 
-							{
-								echo '<br> TEL : ' . $clientView->client__tel . '';
-							}
-							if($command->devis__contact_livraison) 
-							{ 
+							if ($command->devis__contact_livraison) {
 								$contact2 = $Contact->getOne($command->devis__contact_livraison);
-								echo "<br> <small>livraison : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
+								echo " <small>livraison : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
 								echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-									if (!empty($societeLivraison->client__tel)) 
-									{
-										echo '<br> TEL : ' . $societeLivraison->client__tel . '';
-									}
-							} 
-							else 
-							{
-								echo "<br> <small>livraison :</small><strong><br>";
+								if (!empty($societeLivraison->client__tel)) {
+									echo '<br> TEL : ' . $societeLivraison->client__tel . '';
+								}
+							} else {
+								echo "<small>livraison :</small><strong><br>";
 								echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-								if (!empty($societeLivraison->client__tel)) 
-								{
+								if (!empty($societeLivraison->client__tel)) {
 									echo '<br> TEL : ' . $societeLivraison->client__tel . '';
 								}
 							}
-						} 
+								$contact = $Contact->getOne($command->devis__contact__id);
+								echo "<br><small>facturation : " . $contact->contact__civ . " " . $contact->contact__nom . " " . $contact->contact__prenom . "</small><strong><br>";
+								echo Pdfunctions::showSociete($clientView) . " </strong> ";
+								if (!empty($clientView->client__tel)) 
+								{
+									echo '<br> TEL : ' . $clientView->client__tel . '';
+								}
+								
+							} 
 						else 
 						{
-							echo "<small>facturation :</small><strong><br>";
-							echo Pdfunctions::showSociete($clientView) . " </strong>";
-							if ($command->devis__contact_livraison) 
-							{
+							if ($command->devis__contact_livraison) {
 								$contact2 = $Contact->getOne($command->devis__contact_livraison);
-								echo "<br> <small>livraison : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
+								echo " <small>livraison : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
 								echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-								if (!empty($societeLivraison->client__tel)) 
-								{
+								if (!empty($societeLivraison->client__tel)) {
 									echo '<br> TEL : ' . $societeLivraison->client__tel . '';
 								}
-							} 
-							else 
-							{
-								echo "<br> <small>livraison :</small><strong><br>";
+							} else {
+								echo " <small>livraison :</small><strong><br>";
 								echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-								if (!empty($societeLivraison->client__tel)) 
-								{
+								if (!empty($societeLivraison->client__tel)) {
 									echo '<br> TEL : ' . $societeLivraison->client__tel . '';
 								}
 							}
+							echo "<br><small>facturation :</small><strong><br>";
+							echo Pdfunctions::showSociete($clientView) . " </strong>";
+							
 						}
 					} 
 					else 
@@ -317,7 +309,7 @@ ob_start();
 			if (!empty($item->devl__modele)) 
 			{
 				$spec = $Stocks->select_empty_heritage($item->devl__modele , true , false);
-				$pn =  '<br>PN: '.$item->apn__pn_long . " " .  $spec   ;
+				$pn =  '<br>PN: '.$item->apn__pn_long . " <br>" .  $spec   ;
 				
 			}
 			else 
@@ -329,7 +321,7 @@ ob_start();
 						<td style='border-bottom: 1px #ccc solid'> " . $item->prestaLib . " <br> " . $item->kw__lib . " <br> " . $temp . " mois</td>
 						<td style='border-bottom: 1px #ccc solid; width: 55%;'> 
 							<br> <small>désignation :</small> <b>" . $item->devl__designation . "</b><br>"
-				. $item->famille__lib . " " . $item->marque . " " . $item->modele . "  " . $pn .  " " . $item->devl__note_interne . " ". $item->devl__note_client."
+				. $item->famille__lib . " " . $item->marque . " Modèle:" . $item->modele . "  " . $pn .  " " . $item->devl__note_interne . " ". $item->devl__note_client."
 				</td>
 						 <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite . " </strong></td>
 						  <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
