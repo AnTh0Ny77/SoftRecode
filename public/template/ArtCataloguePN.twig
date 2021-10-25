@@ -178,40 +178,57 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 											
 			
 												{% if model.neuf %}
+												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
 													<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Neuf : {{ model.neuf}}">
 														<i class="fas fa-circle fa-lg" style="color: green;"></i>
 													</button>
+												</a>
+													
 												{% else %}
-												
+												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
 													<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Neuf : NC">
 														<i class="fas fa-circle fa-lg" style="color: green;"></i>
 													</button>
+												</a>
+												
 												{% endif %}
 												
 											</div>
 											<div class="d-flex col-2">
 												{% if model.occasion  %}
+												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
 													<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
 														title="Occasion : {{ model.occasion}}">
 														<i class="fas fa-circle fa-lg" style="color: rgb(241, 149, 11);"></i>
 													</button>
+												</a>
+													
 												{% else %}
+												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
 													<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
 													title="Occasion : NC">
 													<i class="fas fa-circle fa-lg" style="color: rgb(241, 149, 11);"></i>
 													</button>
+												</a>
+													
 												{% endif %}
 												
 											</div>
 											<div class="d-flex col-2">
 												{% if model.hs %}
+												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
 													<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Hs : {{ model.hs}}">
 														<i class="fas fa-circle fa-lg" style="color: rgb(241, 11, 11);"></i>
 													</button>
+												</a>
+													
 												{% else %}
+												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
 													<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Hs : NC">
 														<i class="fas fa-circle fa-lg" style="color: rgb(241, 11, 11);"></i>
 													</button>
+												</a>
+													
 												{% endif %}
 											
 												
