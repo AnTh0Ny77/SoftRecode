@@ -9,8 +9,6 @@
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
 <link rel="stylesheet" href="public/css/dashboard.css">
   {% endblock %}
- 
- 
      {% block main %}
      <main role="main" class="container-fluid my-3 col-11 container-body">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
@@ -36,30 +34,25 @@
                 <thead>
                   <tr>
                     <th scope="col" style="width: 15%;">Client</th>
-                    <th scope="col" style="width: 35%;">Commande/Prestation/Commentaires</th>
-                    
-                   
+                    <th scope="col" style="width: 35%;">Commande/Prestation/Commentaires</th> 
                   </tr>
                 </thead>
                 {% for abn in ABNList %}
-
                     {% if abn.array != null  %}
-                   
-                   
                       <tbody>
                        <tr>
                           <td scope="col"><b>{{abn.client.client__societe ~ '(' ~ abn.client.client__id  ~ ')'}}<br>
-                          {{ abn.client.client__adr1 }}<br>
-                          {{ abn.client.client__cp  ~ " " ~ abn.client.client__ville}}</b><br>
+                            {{ abn.client.client__adr1 }}<br>
+                            {{ abn.client.client__cp  ~ " " ~ abn.client.client__ville}}</b><br>
                           <p class="text-primary">{{abn.nbMachine}} machine(s) actives</p> <b>{{abn.total}} € H.T</b><br>
                           <form method="POST" action="abonnementAdmin">
-                            <input type="hidden" name="hiddenId" value="{{abn.ab__cmd__id}}">
-                            <button class="btn btn-link btn-sm">modifier</button>
+                              <input type="hidden" name="hiddenId" value="{{abn.ab__cmd__id}}">
+                              <button class="btn btn-link btn-sm">modifier</button>
                           </form>
                           </td>
                           <td scope="col">N° : <b>{{ abn.ab__cmd__id}}</b><br>{{abn.prestaLib}}<br>
-                          Date anniversaire:  <b>{{abn.ab__date_anniv}}</b><br>
-                          Périodicité facturation: <b>{{abn.ab__fact_periode}}</b> mois
+                            Date anniversaire:  <b>{{abn.ab__date_anniv}}</b><br>
+                            Périodicité facturation: <b>{{abn.ab__fact_periode}}</b> mois
                           <br>
                          
                           </td>
@@ -81,6 +74,17 @@
             </form>
           </div>
         </div>
+      </div>
+
+
+
+      <div  >
+          {% if premiere_echeance %}
+            <div class="alert alert-danger mx-auto newCard" role="alert">
+               <b> {{premiere_echeance|length}} contrat(s) </b>à(ont) été(s) retiré(s) <br> du tableau car sa(leurs) date(s) d'échéance + leur période de facturation<br> sont inférieures à la date actuelle de facturation automatique.<br>
+            </div>
+           
+          {% endif %}
       </div>
       
       

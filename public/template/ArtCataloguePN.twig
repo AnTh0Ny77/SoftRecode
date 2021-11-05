@@ -79,20 +79,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 						<input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="config_pn" value="true" >
 					{% endif %}
 					<label class="form-check-label" for="inlineCheckbox2">Pn - </label>
-				</div>
-				<!-- <div class="form-check form-check-inline">
-					<input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option2" checked>
-					<label class="form-check-label" for="inlineCheckbox3">Neuf - </label>
-				</div>
-				<div class="form-check form-check-inline">
-					<input class="form-check-input" type="checkbox" id="inlineCheckbox4" value="option2" checked>
-					<label class="form-check-label" for="inlineCheckbox4">Occasions - </label>
-				</div>
-				<div class="form-check form-check-inline">
-					<input class="form-check-input" type="checkbox" id="inlineCheckbox5" value="option2" checked>
-					<label class="form-check-label" for="inlineCheckbox4">HS - </label>
-				</div> -->
-				
+				</div>		
 			</div>
 			
 		</form>
@@ -173,10 +160,6 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 									<td style="width: 270px">
 										<div class="d-flex flex-wrap justify-content-start">
 											<div class="d-flex col-2">
-
-												
-											
-			
 												{% if model.neuf %}
 												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
 													<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Neuf : {{ model.neuf}}">
@@ -280,11 +263,9 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 									</td>
 							</tr>
 						{% endfor %}
-						{% for pn in pn_list  %}
-						
+						{% for pn in pn_list %}	
 						<tr>
 							<th style="width: 290px"> 
-							
 								<b><h4 class="text-primary"><small >PN : </small> {{ pn.apn__pn_long  }} </h4></b>
 								<span class="text-muted font-italic">
 									{{ pn.famille  ~ " " ~  pn.marque  }}
