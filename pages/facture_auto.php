@@ -23,7 +23,7 @@ if ($_SESSION['user']->user__facture_acces < 10 )
  $Abonnement = new App\Tables\Abonnement($Database);
  $Stats = new App\Tables\Stats($Database);
  $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
-$_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
+ $_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
  
  
 //si une facturation auto a été demandée :
@@ -33,38 +33,49 @@ $_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_ut
    
    //recupère les abonnements actif :
    $abonnement_liste = $Abonnement->get_actif_for_fact($mois);
+
    //tableau qui contiendra les abonnement avec ligne facturable présentes: 
    $abonnement_facturable = [];
+   $array_premiere_echeance = [];
    $date = date("".$_POST['anneAuto']."-".$mois."-d H:i:s");
    foreach ($abonnement_liste as $abn) 
    {
-     
-    $abn->client = $Client->getOne($abn->ab__client__id_fact);
-    
-    $ligne = $Abonnement->getLigneFacturableAuto($abn->ab__cmd__id , $date);
-    
-    $abn->nbMachine =  sizeof($ligne);
-    $abn->total = 00.00;
-      foreach($ligne as $machine)
-      {
-         $machine->totalTrim =  number_format($machine->abl__prix_mois * $abn->ab__fact_periode , 2 , ',', ' ') ;
-         $abn->total += $machine->abl__prix_mois * $abn->ab__fact_periode  ;
-      }
-    $abn->total = number_format($abn->total , 2 , ',', ' ') ;
-    $abn->array = $ligne;
-    if (!empty($ligne)) 
-      {
-         array_push($abonnement_facturable , $abn);
-      }
 
-      //formatte les dates pour la liste en visu  
-      $dateFact = new DateTime( $abn->ab__date_anniv);
-      $abn->ab__date_anniv = $dateFact->format('d/m/Y'); 
-    
+      $effectiveDate = strtotime("+".$abn->ab__fact_periode." months", strtotime($abn->ab__date_anniv));
+      $effectiveDate = date('Y-m-d',$effectiveDate);
+      $automateDate =  date("".$_POST['anneAuto']."-".$mois."-d ");
+
+      if (strtotime($effectiveDate) <= strtotime($automateDate)) 
+      {
+         array_push($array_premiere_echeance , $abn);
+      }
+      else{
+         $abn->client = $Client->getOne($abn->ab__client__id_fact);
+      
+         $ligne = $Abonnement->getLigneFacturableAuto($abn->ab__cmd__id , $date);
+         
+         $abn->nbMachine =  sizeof($ligne);
+         $abn->total = 00.00;
+         foreach($ligne as $machine)
+         {
+            $machine->totalTrim =  number_format($machine->abl__prix_mois * $abn->ab__fact_periode , 2 , ',', ' ') ;
+            $abn->total += $machine->abl__prix_mois * $abn->ab__fact_periode  ;
+         }
+         $abn->total = number_format($abn->total , 2 , ',', ' ') ;
+         $abn->array = $ligne;
+         if (!empty($ligne)) 
+         {
+            array_push($abonnement_facturable , $abn);
+         }
+   
+         //formatte les dates pour la liste en visu  
+         $dateFact = new DateTime( $abn->ab__date_anniv);
+         $abn->ab__date_anniv = $dateFact->format('d/m/Y'); 
+      }
    }
    
-  
-
+   
+   
    $text = $_POST['anneAuto'] . '-' . $mois .'-' . '1' ;
    $date = new DateTime($text);
    $date = date_format($date,'m-Y');
@@ -76,7 +87,8 @@ $_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_ut
     'user'=>$user,
     'ABNList'=>$abonnement_liste, 
     'arrayfacturable'=> $arrayFacturable, 
-    'date' => $date
+    'date' => $date ,
+    'premiere_echeance' => $array_premiere_echeance
     ]);
   
  }
