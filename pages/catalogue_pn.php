@@ -90,9 +90,15 @@ $Totoro->DbConnect();
 
 foreach ($pn_list as $pn) 
 {
-   
     $pn->specs = $Stocks->get_specs_pn_show($pn->apn__pn);
     $pn->apn__image  = base64_encode($pn->apn__image);
+    if (empty($pn->apn__image) && $pn->count_relation == 1) {
+        $model = $Article->find_model('afmm__id' , $pn->modele);
+        if (!empty($model)) {
+            $pn->apn__image  = base64_encode($model->afmm__image);
+        }
+       
+    }
     $count_stock = $Stocks->count_from_totoro($Totoro, $pn->apn__pn);
     foreach ($count_stock as $count) 
     {
