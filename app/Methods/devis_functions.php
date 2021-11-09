@@ -973,16 +973,56 @@ class Devis_functions
 				 
 			}
 		}
+      
+
 
 		$marqueurPresta = ' <input type="checkbox"> garantie 06/12 mois';
 		$marqueurType = '';
-        foreach ($lignes  as $ligne) 
+        $array_garantie = [
+            06 => [],
+            12 => [],
+            24 => [],
+            48 => [],
+            60 => []
+        ];
+        foreach ($lignes  as  $ligne) 
         {
-             if ($ligne->devl__type == 'REP') 
-             {
-			 $marqueurPresta = '<input type="checkbox"> hors garantie' ;
-			 }
+            if(!empty($ligne->devl__mois_garantie) && intval($ligne->devl__mois_garantie != 0)) {
+               foreach ($array_garantie as $key => $value) {
+                    if (intval($key) === intval($ligne->devl__mois_garantie) ) {
+                       array_push($array_garantie[$key], 1 );
+                    }
+               }
+            } 
 		 }
+
+         foreach($array_garantie as $key => $grt) {
+           if (empty($grt)) {
+                unset($array_garantie[$key]);
+           }
+           else $array_garantie[$key] = $key;
+         }
+        $array_garantie = array_values($array_garantie);
+         switch (count($array_garantie)) {
+
+             case 1:
+               
+                $marqueurPresta = ' <input type="checkbox"> garantie '. $array_garantie[0] .' mois';
+                 break;
+            case 2:
+                $marqueurPresta = ' <input type="checkbox"> garantie ' . $array_garantie[0] .'/'. $array_garantie[1] . ' mois';
+                break;
+             default:
+                $marqueurPresta = ' <input type="checkbox"> garantie standard';
+                 break;
+         }
+
+        foreach ($lignes  as  $ligne) {
+            //réparation : 
+            if ($ligne->devl__type == 'REP') {
+                $marqueurPresta = '<input type="checkbox"> hors garantie';
+            }
+        }
          $echoArrays = "";
          
         foreach ($globalArray as  $resultsArray) 
