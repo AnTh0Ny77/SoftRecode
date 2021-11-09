@@ -979,6 +979,10 @@ class Devis_functions
 		$marqueurPresta = ' <input type="checkbox"> garantie 06/12 mois';
 		$marqueurType = '';
         $array_garantie = [
+            01 => [],
+            02 => [],
+            03 => [],
+            04 => [],
             06 => [],
             12 => [],
             24 => [],
