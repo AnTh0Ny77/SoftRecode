@@ -45,7 +45,7 @@ if ($_SESSION['user']->user__facture_acces < 10 )
       $effectiveDate = date('Y-m-d',$effectiveDate);
       $automateDate =  date("".$_POST['anneAuto']."-".$mois."-d ");
 
-      if (strtotime($effectiveDate) <= strtotime($automateDate)) 
+      if (strtotime($effectiveDate) >= strtotime($automateDate)) 
       {
          array_push($array_premiere_echeance , $abn);
       }
