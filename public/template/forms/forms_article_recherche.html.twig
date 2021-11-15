@@ -18,10 +18,45 @@
                 {% if spec_array %}
                 {% else %}
                     {% for clefs in data.key_responses %}
-                                <div class="form-check col-3" >
-                                        <input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}[]"  {{marqueur_disabled}}>
+                                {% if forms %}
+                                {% set bool = false %}
+                                    {% for key , row in forms %}
+                                        {% if key == data.aac__cle %}
+                                           {% set bool = true %}
+                                           
+                                                <div class="form-check col-3">
+                                                    <input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}"
+                                                        name="{{ data.aac__cle }}[]" {{marqueur_disabled}} 
+                                                        {% for value in row %}
+                                                            {% if value == clefs.aav__valeur %}
+                                                                checked
+                                                            {% else %}
+                                                        {% endif %}
+                                                        {% endfor %}
+                                                        >
+                                                    <label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
+                                                </div>
+                                        
+                                           
+                                        {% endif %}
+                                    {% endfor %}
+                                
+                                    {% if not bool %}
+                                        <div class="form-check col-3">
+                                            <input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}"
+                                                name="{{ data.aac__cle }}[]" {{marqueur_disabled}}>
+                                            <label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
+                                        </div>
+                                    {% endif %}
+
+                                {% else %}
+                                    <div class="form-check col-3">
+                                        <input class="form-check-input" id="radioInput" type="checkbox" value="{{ clefs.aav__valeur }}"
+                                            name="{{ data.aac__cle }}[]" {{marqueur_disabled}}>
                                         <label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
-                                </div>
+                                    </div>
+                                {% endif %}
+                                
                     {% endfor %}
                 {% endif %}
             </div>

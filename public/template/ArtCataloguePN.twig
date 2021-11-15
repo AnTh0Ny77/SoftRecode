@@ -7,6 +7,8 @@
 		<link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css"> <!-- File Upload -->
 		<link rel="stylesheet" href="public/css/dashboard.css">
 		<link rel="stylesheet" href="public/mdb/css/mdb-file-upload.css">
+		
+	
 	{% endblock %}
 {% block main %}
 
@@ -38,17 +40,27 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 				<h5 class="text-danger my-3 mx-4" >Aucuns pn trouvés </h5>
 			{% endif %}
 				
-				<div class="d-flex">
-					<a class="nav-link " href="recherche-articles-familles">
-						<i class="fas fa-search fa-fw"></i> Recherche assistée
-					</a>
-					{% if query_resume %}
-						<div class="alert alert-secondary col-9" role="alert">
-							<small>Résultats pour les paramètres de recherche guidée suivants :</small>  <i>{{query_resume}}</i> ---
-							
-					  	</div>
-					{% endif  %}
+			<div class="d-flex mx-5 my-2 col-8 justify-content-start">
+				<h5 class="mt-2 mx-5">Rechercher dans:</h5>
+				<div class="form-check form-check-inline">
+					<input type="hidden" name="config_demande" value="ok">
+					{% if config.model %}
+					<input class="form-check-input" type="checkbox" name="config_model" id="inlineCheckbox1" value="true" checked>
+					{% else %}
+					<input class="form-check-input" type="checkbox" name="config_model" id="inlineCheckbox1" value="true">
+					{% endif %}
+			
+					<label class="form-check-label" for="inlineCheckbox1">Modèles - </label>
 				</div>
+				<div class="form-check form-check-inline">
+					{% if config.pn %}
+					<input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="config_pn" value="true" checked>
+					{% else %}
+					<input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="config_pn" value="true">
+					{% endif %}
+					<label class="form-check-label" for="inlineCheckbox2">Pn - </label>
+				</div>
+			</div>
 				
 				
 			<div class="card-header d-flex flex-row align-items-center justify-content-center">
@@ -60,29 +72,37 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 					<a class="btn btn-info btn-lg ml-3" href="ArtCreation">Création</a>
 				</div>
 			</div>
-			<div class="d-flex mx-5 my-2 col-8 justify-content-start">
-				<h5 class="mt-2 mx-5">Rechercher dans:</h5>
-				<div class="form-check form-check-inline">
-					<input type="hidden" name="config_demande" value="ok">
-					{% if config.model %}
-						<input class="form-check-input" type="checkbox" name="config_model" id="inlineCheckbox1" value="true" checked>
-					{% else %}
-						<input class="form-check-input" type="checkbox" name="config_model" id="inlineCheckbox1" value="true">
-					{% endif %}
-					
-					<label class="form-check-label" for="inlineCheckbox1">Modèles - </label>
-				</div>
-				<div class="form-check form-check-inline">
-					{% if config.pn %}
-						<input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="config_pn" value="true" checked >
-					{% else %}
-						<input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="config_pn" value="true" >
-					{% endif %}
-					<label class="form-check-label" for="inlineCheckbox2">Pn - </label>
-				</div>		
-			</div>
+			
 			
 		</form>
+		<div class="d-flex flex-row">
+			<div class="col-10">
+				<div>
+					<div class="my-2">
+							<a class="btn btn-link " href="recherche-articles-familles">
+								<i class="fas fa-search fa-fw"></i> Recherche assistée
+							</a>
+					</div>		
+				</div>
+				{% if query_resume %}
+				<div class="alert alert-secondary  text-primary" role="alert">
+					<small>Résultats pour les paramètres de recherche guidée suivants :</small> <b><i>{{query_resume}}</i></b>
+				{% if recherche_precedente %}
+				<form class=" my-2 d-flex" method="POST" action="recherche-articles-specs">
+					<input type="hidden" name="rechercheJSON" value="{{recherche_precedente["json"]}}">
+					<input type="hidden" name="famille" value="{{recherche_precedente["famille"]}}">
+					<button class="btn btn-primary btn-sm">
+						<i class="fas fa-edit"></i> Modifier la recherche 
+					</button>
+				</form>
+				{% endif %}
+				</div>
+				{% endif %}
+				
+			</div>
+			
+		
+		</div>
 {# Tableau #}
 		<div class="card-body">
 			<div class="chart-area">

@@ -33,10 +33,10 @@ switch ($_SERVER['REQUEST_URI']) {
         break;
 
     case "/SoftRecode/recherche-articles-specs":
-
+       
             if (empty($_POST['famille'])) 
             {
-                header('location: recherche-articles-specs');
+                header('location: recherche-articles-familles');
                 break;
             }
             else
@@ -44,6 +44,12 @@ switch ($_SERVER['REQUEST_URI']) {
 
                 $forms_data = $Stocks->get_famille_forms($_POST['famille']);
                 $object = $Keyword->get_kw_by_typeAndValue('famil', $_POST['famille'] );
+               
+                if (!empty($_POST['rechercheJSON'])) {
+                   
+                    $forms = json_decode($_POST['rechercheJSON']);
+                    
+                }
 
                 echo $twig->render(
                     'recherches_specs.twig',

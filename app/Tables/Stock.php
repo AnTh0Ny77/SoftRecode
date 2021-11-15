@@ -271,7 +271,7 @@ class Stock extends Table
 
   public function get_specs_pn_show($pn)
   {
-		$request = $this->Db->Pdo->query('SELECT    
+		$request = $this->Db->Pdo->query('SELECT  DISTINCT 
 			a.aap__cle as cle , c.aac__cle_txt as cle_txt , c.aac__cle_txt_result as text_cle
 			FROM art_attribut_pn as a
 			LEFT JOIN art_attribut_cle as c ON a.aap__cle = c.aac__cle 
@@ -392,68 +392,39 @@ class Stock extends Table
   public function find_models_spec(array $forms_data , array $post_data)
   {
    
-	  	$array_where_clause = '';
 		$count  = 1 ; 
-
-		
-		foreach ($forms_data as $data) 
-		{
-			foreach ($post_data as $key => $value) 
-			{
-
-				if (!empty($value) &&  $key != 'famille') 
-				{
-					if (is_array($value)) 
-					{
-						if ($count == 1) 
-						{
-							$array_where_clause .= '  (';
-							$count += 1;
-							$iteration = 0 ;
-							foreach ($value as $response)
-							{
-								if ($iteration == 0 ) {
-									$array_where_clause .=  ' ( aam__cle = "'.$key.'" AND  aam__valeur =  "'.$response.'" ) ';
-									$iteration += 1;
-								}
-								else{
-									$array_where_clause .=  ' OR  ( aam__cle = "'.$key.'" AND aam__valeur =  "'.$response.'" ) ';
-									$iteration += 1;
-								}
-							}
-							$array_where_clause .= ' )';
-						}
-						else 
-						{
-							$array_where_clause .= ' AND (';
-							$count += 1;
-							$iteration = 0 ;
-							foreach ($value as $response)
-							{
-								if ($iteration == 0 ){
-									$array_where_clause .=  '( aam__cle = "'.$key.'" AND  aam__valeur =  "'.$response.'" )';
-									$iteration += 1;
-								}
-								else {
-									$array_where_clause .=  ' OR ( aam__cle = "'.$key.'" AND aam__valeur =  "'.$response.'" ) ';
-									$iteration += 1;
-								}
-							
-							}
-							$array_where_clause .= ' ) ';
-						}
+		$where = '';
+		foreach ($post_data as $key => $value) {
+			if (!empty($value) &&  $key != 'famille' &&  $key != 'recherche_guide') {
+				if ($count == 1) {
+					$count += 1;
+					$specs = '';
+					foreach ($value as $keys => $spec) {
+						if ($keys === array_key_last($value)) {
+							$specs .=  ' "' . $spec . '" ';
+						} else $specs .=  ' "' .  $spec . '", ';
 					}
+					$where .= 'WHERE afmm__id in ( SELECT aam__id_fmm FROM art_attribut_modele WHERE aam__cle = "' . $key . '" AND aam__valeur IN (' . $specs . ') )';
+				} else {
+					$count += 1;
+					$specs = '';
+					foreach ($value as $keys => $spec) {
+						if ($keys === array_key_last($value)) {
+							$specs .=  ' "' . $spec . '" ';
+						} else $specs .=  ' "' .  $spec . '", ';
+					}
+					$where .= 'AND afmm__id in ( SELECT aam__id_fmm FROM art_attribut_modele WHERE aam__cle = "' . $key . '" AND aam__valeur IN ( ' . $specs . ') )';
 				}
 			}
 		}
-
+	
+		
 		$request = $this->Db->Pdo->query('SELECT   
 		a.* 
 		FROM art_attribut_modele as a WHERE 
-		' .$array_where_clause. '
+		' . $where. '
 		 LIMIT 150 ');
 		$data = $request->fetchAll(PDO::FETCH_OBJ);
-		
 		return $data;
 
   }
@@ -462,75 +433,53 @@ class Stock extends Table
   public function find_pn_spec( array $post_data)
   {
    
-	  	$array_where_clause = '';
 		$count  = 1 ; 
-		
-		
-			foreach ($post_data as $key => $value) 
-			{
-			
-
-				
-				if (!empty($value) &&  $key != 'famille' &&  $key != 'recherche_guide') 
-				{
-
-					if (is_array($value)) 
-					{
-						if ($count == 1) 
-						{
-							$array_where_clause .= '  ';
-							$count += 1;
-							$iteration = 0 ;
-							foreach ($value as $response)
-							{
-								if ($iteration == 0 ) {
-									$array_where_clause .=  ' ( aap__cle = "'.$key.'" AND  aap__valeur =  "'.$response.'" ) ';
-									$iteration += 1;
-								}
-								else{
-									$array_where_clause .=  ' OR  ( aap__cle = "'.$key.'" AND aap__valeur =  "'.$response.'" ) ';
-									$iteration += 1;
-								}
-							}
-							$array_where_clause .= ' ';
+		$where = '';
+		foreach ($post_data as $key => $value) 
+		{
+			if (!empty($value) &&  $key != 'famille' &&  $key != 'recherche_guide') {
+				if ($count == 1) {
+					$count += 1;
+					$specs = '';
+					foreach ($value as $keys => $spec) {
+						if ($keys === array_key_last($value)) {
+							$specs .=  ' "'. $spec . '" ';
 						}
-						else 
-						{
-							$array_where_clause .= ' AND ';
-							$count += 1;
-							$iteration = 0 ;
-							foreach ($value as $response)
-							{
-								if ($iteration == 0 ){
-									$array_where_clause .=  '( aap__cle = "'.$key.'" AND  aap__valeur =  "'.$response.'" )';
-									$iteration += 1;
-								}
-								else {
-									$array_where_clause .=  ' AND ( aap__cle = "'.$key.'" AND aap__valeur =  "'.$response.'" ) ';
-									$iteration += 1;
-								}
-							
-							}
-							$array_where_clause .= '  ';
-						}
+						else $specs .=  ' "' .  $spec . '", ';
+						
 					}
-
+					$where .= 'WHERE apn__pn in ( SELECT aap__pn FROM art_attribut_pn WHERE aap__cle = "' . $key . '" AND aap__valeur IN ('. $specs .') )';
+				} else {
+					$count += 1;
+					$specs = '';
+					foreach ($value as $keys => $spec) {
+						if ($keys === array_key_last($value)) {
+							$specs .=  ' "' . $spec . '" ';
+						} else $specs .=  ' "' .  $spec . '", ';
+					}
+					$where .= 'AND apn__pn in ( SELECT aap__pn FROM art_attribut_pn WHERE aap__cle = "' . $key . '" AND aap__valeur IN ( ' . $specs . ') )';
 				}
 			}
+		}
 
-	
-		$request = $this->Db->Pdo->query('SELECT DISTINCT 
-		a.* , u.prenom , u.nom , k.kw__lib as famille
-		FROM art_attribut_pn 
-		LEFT JOIN art_pn as a ON  ( a.apn__pn = aap__pn )
-		LEFT JOIN utilisateur as u on  u.id_utilisateur = a.apn__id_user_modif
-     	LEFT JOIN keyword as k ON  k.kw__type = "famil" AND k.kw__value =  a.apn__famille 
-    	WHERE ' .$array_where_clause. '
-		ORDER BY a.apn__date_modif LIMIT 50 ');  
+		
+		$sql = $this->Db->Pdo->query('SELECT
+			art_pn.*,
+			u.prenom,
+			u.nom,
+			k.kw__lib AS famille
+		FROM
+			art_pn
+		LEFT JOIN utilisateur AS u ON u.id_utilisateur = apn__id_user_modif
+		LEFT JOIN keyword AS k ON k.kw__type = "famil" AND k.kw__value = apn__famille
+					'. $where.'
+		ORDER BY
+			apn__date_modif
+		LIMIT 50
+		');
 		
 		
-		
-		$data = $request->fetchAll(PDO::FETCH_OBJ);
+		$data = $sql->fetchAll(PDO::FETCH_OBJ);
 
 		foreach ($data as $pn) 
 		{
@@ -611,16 +560,16 @@ class Stock extends Table
 
     $operateur = ' AND ';
     $request = "SELECT DISTINCT 
-      	a.* , u.nom , u.prenom  , k.kw__lib as famille ,  t.afmm__id , t.afmm__marque, m.am__marque 
+      	a.* , u.nom , u.prenom  , k.kw__lib as famille  , t.afmm__marque, m.am__marque 
 		FROM art_pn as a
-			LEFT JOIN utilisateur as u on  u.id_utilisateur = apn__id_user_modif
-			LEFT JOIN keyword as k ON ( k.kw__type = 'famil' AND k.kw__value =  a.apn__famille ) 
-			LEFT JOIN liaison_fmm_pn as l ON ( a.apn__pn  = l.id__pn )
-			LEFT JOIN art_fmm as t ON ( l.id__fmm = t.afmm__id ) 
-			LEFT JOIN art_marque as m ON ( t.afmm__marque = m.am__id ) 
-      LEFT JOIN art_attribut_pn as s ON ( a.apn__pn = s.aap__pn )
-      LEFT JOIN art_attribut_cle as c ON ( s.aap__cle = c.aac__cle ) 
-      LEFT JOIN art_attribut_valeur as v ON( s.aap__valeur = v.aav__valeur AND s.aap__cle = v.aav__cle )";
+		LEFT JOIN utilisateur as u on  u.id_utilisateur = apn__id_user_modif
+		LEFT JOIN keyword as k ON ( k.kw__type = 'famil' AND k.kw__value =  a.apn__famille ) 
+		LEFT JOIN liaison_fmm_pn as l ON ( a.apn__pn  = l.id__pn )
+		LEFT JOIN art_fmm as t ON ( l.id__fmm = t.afmm__id ) 
+		LEFT JOIN art_marque as m ON ( t.afmm__marque = m.am__id ) 
+		LEFT JOIN art_attribut_pn as s ON ( a.apn__pn = s.aap__pn )
+		LEFT JOIN art_attribut_cle as c ON ( s.aap__cle = c.aac__cle ) 
+		LEFT JOIN art_attribut_valeur as v ON( s.aap__valeur = v.aav__valeur AND s.aap__cle = v.aav__cle )";
       
     if ($mode_filtre) {
       $request .=  "WHERE ( apn__pn LIKE '%". preg_replace("#[^!A-Za-z0-9_%]+#", "", $mots_filtre[0])."%' 
