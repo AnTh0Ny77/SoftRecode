@@ -28,7 +28,7 @@ class Stock extends Table
 
 		var_dump($data);
 		if ($data->apn__famille =='PID' or $data->apn__famille == 'ACC' ) {
-			return true;
+			return $data->apn__famille;
 		}	else return false;
   }
 
