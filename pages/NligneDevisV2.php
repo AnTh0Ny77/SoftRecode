@@ -250,8 +250,14 @@ if (!empty($_POST['input_id_ref']) && !empty($_POST['select_sous_ref']) && !empt
         $General->updateAll('cmd_ligne', $_POST['pn_select-sr'], 'cmdl__pn', 'cmdl__id', $daugther_line);
         //change l'idd fmm a piece detachée si la famille du pn est piece detachée ou accésoire :
         $verify = $Stocks->check_famille_pn($_POST['pn_select-sr']);
-        if ($verify != false)
-            $General->updateAll('cmd_ligne', 100, 'cmdl__id__fmm', 'cmdl__id', $daugther_line);
+        
+            if ($verify == 'PID') {
+                $General->updateAll('cmd_ligne', 100, 'cmdl__id__fmm', 'cmdl__id', $daugther_line);
+            }
+            elseif ($verify == 'ACC') {
+                $General->updateAll('cmd_ligne', 101, 'cmdl__id__fmm', 'cmdl__id', $daugther_line);
+            }
+           
    }
    else 
    {
@@ -283,8 +289,12 @@ if (!empty($_POST['input_modif_sous_ref']) && !empty($_POST['input_modif_sous_re
         $General->updateAll('cmd_ligne', $_POST['pn_select-sr-m'], 'cmdl__pn', 'cmdl__id', $_POST['input_modif_sous_ref']);
         //change l'idd fmm a piece detachée si la famille du pn est piece detachée ou accésoire :
         $verify = $Stocks->check_famille_pn($_POST['pn_select-sr-m']);
-        if ($verify != false)
+       
+        if ($verify == 'PID') {
             $General->updateAll('cmd_ligne', 100, 'cmdl__id__fmm', 'cmdl__id', $_POST['input_modif_sous_ref']);
+        } elseif ($verify == 'ACC') {
+            $General->updateAll('cmd_ligne', 101, 'cmdl__id__fmm', 'cmdl__id', $_POST['input_modif_sous_ref']);
+        }
     }
     else 
     {
@@ -359,8 +369,12 @@ if (!empty($_POST['devis']) && empty($_POST['boolModif']))
 
         //change l'idd fmm a piece detachée si la famille du pn est piece detachée ou accésoire :
         $verify = $Stocks->check_famille_pn($_POST['pn_select']);
-        if ($verify != false ) 
-            $General->updateAll('cmd_ligne',100, 'cmdl__id__fmm', 'cmdl__id', $newLines);
+        
+        if ($verify == 'PID') {
+            $General->updateAll('cmd_ligne', 100, 'cmdl__id__fmm', 'cmdl__id', $newLines);
+        } elseif ($verify == 'ACC') {
+            $General->updateAll('cmd_ligne', 101, 'cmdl__id__fmm', 'cmdl__id', $newLines);
+        }
         
     } 
     else 
@@ -432,8 +446,12 @@ if (!empty($_POST['boolModif']) )
             $General->updateAll('cmd_ligne', $_POST['pn_select'] , 'cmdl__pn', 'cmdl__id', $_POST['boolModif']);
             //change l'idd fmm a piece detachée si la famille du pn est piece detachée ou accésoire :
             $verify = $Stocks->check_famille_pn($_POST['pn_select']);
-            if ($verify != false)
+           
+            if ($verify == 'PID') {
                 $General->updateAll('cmd_ligne', 100, 'cmdl__id__fmm', 'cmdl__id', $_POST['boolModif']);
+            } elseif ($verify == 'ACC') {
+                $General->updateAll('cmd_ligne', 101, 'cmdl__id__fmm', 'cmdl__id', $_POST['boolModif']);
+            }
         }
         else 
         {

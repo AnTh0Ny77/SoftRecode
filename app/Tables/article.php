@@ -549,17 +549,21 @@ class Article extends Table
   public function insert_liaison_pn_fmm(array $tableau_modele , string $pn__id) : bool
   {
 	 
-		$request = 'DELETE FROM liaison_fmm_pn WHERE  id__pn = "' . $pn__id . '" ';
+		$request = 'DELETE FROM liaison_fmm_pn WHERE  id__pn =  "'. $pn__id . '" ';
 		$update = $this->Db->Pdo->prepare($request);
 		$update->execute();
+
+	
 		
 		foreach ($tableau_modele as $modele_id) 
 		{
+			
 			$request = $this->Db->Pdo->prepare("
 			INSERT INTO liaison_fmm_pn  (id__fmm,		id__pn) 
 			VALUES              (:id__fmm,      :id__pn)");
 			$request->bindValue(":id__fmm", $modele_id);
 			$request->bindValue(":id__pn",  strtoupper($pn__id));
+			
 			$request->execute();
 		}
 		return true;
