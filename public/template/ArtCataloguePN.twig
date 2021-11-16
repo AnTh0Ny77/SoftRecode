@@ -54,11 +54,35 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 				</div>
 				<div class="form-check form-check-inline">
 					{% if config.pn %}
-					<input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="config_pn" value="true" checked>
+						<input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="config_pn" value="true" checked>
 					{% else %}
-					<input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="config_pn" value="true">
+						<input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="config_pn" value="true">
 					{% endif %}
 					<label class="form-check-label" for="inlineCheckbox2">Pn - </label>
+				</div>
+				<div class="form-check form-check-inline">
+					{% if config.neuf %}
+						<input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="config_neuf" value="true" checked>
+					{% else %}
+						<input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="config_neuf" value="true">
+					{% endif %}
+					<label class="form-check-label" for="inlineCheckbox2">Neuf - </label>
+				</div>
+				<div class="form-check form-check-inline">
+					{% if config.occasion %}
+						<input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="config_occasion" value="true" checked>
+					{% else %}
+						<input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="config_occasion" value="true">
+					{% endif %}
+					<label class="form-check-label" for="inlineCheckbox2">Occasion - </label>
+				</div>
+				<div class="form-check form-check-inline">
+					{% if config.hs %}
+						<input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="config_hs" value="true" checked>
+					{% else %}
+						<input class="form-check-input" type="checkbox" id="inlineCheckbox2" name="config_hs" value="true">
+					{% endif %}
+					<label class="form-check-label" for="inlineCheckbox2">Hs</label>
 				</div>
 			</div>
 				
@@ -181,16 +205,18 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 										<div class="d-flex flex-wrap justify-content-start">
 											<div class="d-flex col-2">
 												{% if model.neuf %}
-												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
-													<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Neuf : {{ model.neuf}}">
-														<i class="fas fa-circle fa-lg" style="color: green;"></i>
-													</button>
+												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank" >
+													<span class="fa-stack " style="vertical-align: top;"  data-toggle="tooltip" data-placement="top"
+													title="Neuf" >
+														<i class="fas fa-circle fa-stack-2x " style="color: #569500"> </i>
+														<i class=" fa-stack-1x text-white">{{ model.neuf}}</i>
+													</span>	
 												</a>
-													
 												{% else %}
-												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
-													<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Neuf : NC">
-														<i class="fas fa-circle fa-lg" style="color: green;"></i>
+												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank" class="disabled" data-toggle="tooltip" data-placement="top"
+												title="Neuf" >
+													<button type="button" class="click-span btn btn-link disabled" data-toggle="tooltip" data-placement="top" title="Neuf">
+														<i class="fas fa-circle fa-lg" style="color: #569500"></i>
 													</button>
 												</a>
 												
@@ -200,37 +226,39 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 											<div class="d-flex col-2">
 												{% if model.occasion  %}
 												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
-													<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
-														title="Occasion : {{ model.occasion}}">
-														<i class="fas fa-circle fa-lg" style="color: rgb(241, 149, 11);"></i>
-													</button>
+													<span class="fa-stack" style="vertical-align: top;"  data-toggle="tooltip" data-placement="top"
+													title="Occasion">
+														<i class="fas fa-circle fa-stack-2x " style="color: #E55500"> </i>
+														<i class=" fa-stack-1x text-white">{{ model.occasion}}</i>
+													</span>	
 												</a>
-													
 												{% else %}
 												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
-													<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
-													title="Occasion : NC">
-													<i class="fas fa-circle fa-lg" style="color: rgb(241, 149, 11);"></i>
+													<button type="button" class="click-span btn btn-link disabled" data-toggle="tooltip" data-placement="top"
+													title="Occasion">
+													<i class="fas fa-circle fa-lg" style="color: #E55500"></i>
 													</button>
-												</a>
-													
+												</a>	
 												{% endif %}
 												
 											</div>
 											<div class="d-flex col-2">
 												{% if model.hs %}
 												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
-													<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Hs : {{ model.hs}}">
-														<i class="fas fa-circle fa-lg" style="color: rgb(241, 11, 11);"></i>
-													</button>
+													<span class="fa-stack" style="vertical-align: top;"  data-toggle="tooltip" data-placement="top"
+													title="Hs">
+														<i class="fas fa-circle fa-stack-2x " style="color: #E74F4F"> </i>
+														<i class=" fa-stack-1x text-white">{{ model.hs}}</i>
+													</span>	
 												</a>
 													
 												{% else %}
 												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
-													<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Hs : NC">
-														<i class="fas fa-circle fa-lg" style="color: rgb(241, 11, 11);"></i>
+													<button type="button" class="click-span btn btn-link disabled" data-toggle="tooltip" data-placement="top"
+													title="Occasion">
+													<i class="fas fa-circle fa-lg" style="color: #E74F4F"></i>
 													</button>
-												</a>
+												</a>	
 													
 												{% endif %}
 											
@@ -329,76 +357,64 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 								<div class="d-flex flex-wrap justify-content-start" >
 									<div class="d-flex col-2">
 										{% if pn.neuf %}
-										
-										<a href="http://intranet/locator_query.php?f_art={{pn.apn__pn}}" target="_blank">
-											<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
-												title="Neuf : {{pn.neuf}}">
-												<i class="fas fa-circle fa-lg" style="color: green;"></i>
-											</button>
+										<a href="http://intranet/locator_query.php?f_art={{pn.apn__pn}}" target="_blank" >
+											<span class="fa-stack " style="vertical-align: top;"  data-toggle="tooltip" data-placement="top"
+											title="Neuf" >
+												<i class="fas fa-circle fa-stack-2x " style="color: #569500"> </i>
+												<i class=" fa-stack-1x text-white">{{ pn.neuf}}</i>
+											</span>	
 										</a>
-											
 										{% else %}
-										<a href="http://intranet/locator_query.php?f_art={{pn.apn__pn}}" target="_blank">
-											<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Neuf : Nc">
-												<i class="fas fa-circle fa-lg" style="color: green;"></i>
-											</button>
+										<a href="http://intranet/locator_query.php?f_art={{pn.apn__pn}}" target="_blank" class="disabled" data-toggle="tooltip" data-placement="top"
+												title="Neuf" >
+													<button type="button" class="click-span btn btn-link disabled" data-toggle="tooltip" data-placement="top" title="Neuf">
+														<i class="fas fa-circle fa-lg" style="color: #569500"></i>
+												</button>
 										</a>
 										{% endif %}
-									
 									</div>
 									<div class="d-flex col-2">
 										{% if pn.occasion %}
-										<a href="http://intranet/locator_query.php?f_art={{pn.apn__pn}}" target="_blank">
-											<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
-												title="Reconditionné : {{pn.occasion }}">
-												<i class="fas fa-circle fa-lg" style="color: rgb(241, 149, 11);"></i>
-											</button>
+										
+										<a href="http://intranet/locator_query.php?f_art={{pn.apn__pn}}" target="_blank" >
+											<span class="fa-stack " style="vertical-align: top;"  data-toggle="tooltip" data-placement="top"
+											title="Occasion" >
+												<i class="fas fa-circle fa-stack-2x " style="color: #E55500"> </i>
+												<i class=" fa-stack-1x text-white">{{pn.occasion}}</i>
+											</span>	
 										</a>
 											
 										{% else %}
-										<a href="http://intranet/locator_query.php?f_art={{pn.apn__pn}}" target="_blank">
-											<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
-												title="Reconditionné : Nc">
-												<i class="fas fa-circle fa-lg" style="color: rgb(241, 149, 11);"></i>
-											</button>
+										<a href="http://intranet/locator_query.php?f_art={{pn.apn__pn}}" target="_blank" class="disabled" data-toggle="tooltip" data-placement="top"
+												title="Occasion" >
+													<button type="button" class="click-span btn btn-link disabled" data-toggle="tooltip" data-placement="top" title="Occasion">
+														<i class="fas fa-circle fa-lg" style="color: #E55500"></i>
+												</button>
 										</a>
-											
 										{% endif %}
-										
 									</div>
 									<div class="d-flex col-2">
 										{% if pn.hs %}
-										<a href="http://intranet/locator_query.php?f_art={{pn.apn__pn}}" target="_blank">
-												<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
-													title="Hs : {{ pn.hs}}">
-													<i class="fas fa-circle fa-lg" style="color: rgb(241, 11, 11);"></i>
-												</button>
+										<a href="http://intranet/locator_query.php?f_art={{pn.apn__pn}}" target="_blank" >
+											<span class="fa-stack " style="vertical-align: top;"  data-toggle="tooltip" data-placement="top"
+											title="Hs" >
+												<i class="fas fa-circle fa-stack-2x " style="color: #E74F4F"> </i>
+												<i class=" fa-stack-1x text-white">{{pn.hs}}</i>
+											</span>	
 										</a>
 											
 										{% else %}
-										<a href="http://intranet/locator_query.php?f_art={{pn.apn__pn}}" target="_blank">
-											<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" title="Hs: Nc">
-												<i class="fas fa-circle fa-lg" style="color: rgb(241, 11, 11);"></i>
-											</button>
+										<a href="http://intranet/locator_query.php?f_art={{pn.apn__pn}}" target="_blank" class="disabled" data-toggle="tooltip" data-placement="top"
+												title="Hs" >
+													<button type="button" class="click-span btn btn-link disabled" data-toggle="tooltip" data-placement="top" title="Hs">
+														<i class="fas fa-circle fa-lg" style="color: #E74F4F"></i>
+												</button>
 										</a>
 											
 										{% endif %}
 										
 									</div>
-									<div class="d-flex col-2">
-										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top" 
-										{% if pn.apn__actif ==   0 %}
-												title="Inactif">
-											{% else %}
-												title="Actif">
-											{% endif %}
-											{% if pn.apn__actif > 0 %}
-												<i class="fad fa-toggle-on fa-lg" style="color: green;"></i>
-											{% else %}
-												<i class="fad fa-toggle-off fa-lg" style="color: rgb(224, 13, 6);"></i>
-											{% endif %}
-										</button>
-									</div>
+									
 									<div class="d-flex col-2">
 										<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
 											title="{{pn.nom ~  " " ~ pn.prenom }}">

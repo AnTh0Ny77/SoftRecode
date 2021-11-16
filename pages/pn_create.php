@@ -127,11 +127,21 @@ switch ($_SERVER['REQUEST_URI'])
 		if (!empty($_POST['model_array'])) 
 		{
 			$tableau_modele = json_decode($_POST['model_array']);
+			foreach ($tableau_modele as $key => $value) 
+				{
+					if ($value == '100' or $value == '101' ) {
+						unset($tableau_modele[$key]);
+					}
+				}
 			if ($_POST['famille'] == 'PID') 
 			{
-				array_push($tableau_modele , 100 );
+				array_push($tableau_modele , '100' );
 			}
-			$update_models = $Article->insert_liaison_pn_fmm($tableau_modele , $_POST['id_pn'] ) ;
+			if ($_POST['famille'] == 'ACC') 
+			{
+				array_push($tableau_modele , '101' );
+			}
+			$update_models = $Article->insert_liaison_pn_fmm($tableau_modele , preg_replace("#[^!A-Za-z0-9%]+#", "", $_POST['id_pn']));
 		}
 
 		

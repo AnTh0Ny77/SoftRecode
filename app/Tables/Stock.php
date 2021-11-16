@@ -510,14 +510,9 @@ class Stock extends Table
 				$pn->marque = $model_data->marque;
 			}
 				
-		}
-			
-		
+		}			
 		return $data;
   }
-
-
-
 
 
   public function get_famille_forms($famil) : array 
@@ -681,9 +676,9 @@ class Stock extends Table
 				OR v.aav__valeur_txt LIKE '%" . $mots_filtre[$i] . "%'
 		)";
 			}
-			$request .= " ORDER BY  afmm__dt_modif ASC  LIMIT 25";
+			$request .= " ORDER BY  afmm__modele ASC  LIMIT 25";
 		} else {
-			$request .= " ORDER BY  afmm__dt_modif ASC  LIMIT 25";
+			$request .= " ORDER BY  afmm__modele ASC  LIMIT 25";
 		}
 
 		$send = $this->Db->Pdo->query($request);

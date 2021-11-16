@@ -29,6 +29,25 @@ if (!empty($_GET['config_demande'])) {
     if (empty($_GET['config_pn']))
         $_SESSION['config']['pn'] = false; 
 
+    if (empty($_GET['config_neuf']))
+        $_SESSION['config']['neuf'] = false;
+    
+    if (empty($_GET['config_occasion']))
+        $_SESSION['config']['occasion'] = false;
+    
+    if (empty($_GET['config_hs']))
+        $_SESSION['config']['hs'] = false;
+    ///////////////////////////////////////////////////
+    if (!empty($_GET['config_neuf']))
+        $_SESSION['config']['neuf'] = true;
+    
+    if (!empty($_GET['config_occasion']))
+        $_SESSION['config']['occasion'] = true;
+    
+    if (!empty($_GET['config_hs']))
+        $_SESSION['config']['hs'] = true;
+
+
     if (!empty($_GET['config_model']))
         $_SESSION['config']['model'] = true;
     
@@ -42,10 +61,20 @@ if (!empty($_GET['config_model']))
 if (!empty($_GET['config_pn']))
     $_SESSION['config']['pn'] = true; 
 
+if (!empty($_GET['config_neuf']))
+    $_SESSION['config']['neuf'] = true;
+
+if (!empty($_GET['config_occasion']))
+    $_SESSION['config']['occasion'] = true;
+
+if (!empty($_GET['config_hs']))
+    $_SESSION['config']['hs'] = true;
+
 if (!empty($_GET['search']))
     $_GET['art_filtre'] = $_GET['search'];
 
 $ArtFiltre ='';
+
 if (!empty($_GET['art_filtre'])) 
 {
     $ArtFiltre = $_GET['art_filtre'];
@@ -81,7 +110,10 @@ else{
 if (!isset($_SESSION['config'])) {
     $_SESSION['config']= [
         "model" => true,
-        "pn" => true
+        "pn" => true ,
+        "neuf" => true ,
+        "occasion" => true , 
+        "hs" => true
     ];
 }
 
@@ -92,11 +124,11 @@ if ($_SESSION['config']['model'] == false)
     $model_list = [];
 
 
-// $Totoro = new App\Totoro('euro');
-// $Totoro->DbConnect();
+$Totoro = new App\Totoro('euro');
+$Totoro->DbConnect();
 
 
-foreach ($pn_list as $pn) 
+foreach ($pn_list as $key => $pn) 
 {
     $pn->specs = $Stocks->get_specs_pn_show($pn->apn__pn);
     $pn->apn__image  = base64_encode($pn->apn__image);
@@ -107,34 +139,82 @@ foreach ($pn_list as $pn)
         }
        
     }
-    // $count_stock = $Stocks->count_from_totoro($Totoro, $pn->apn__pn);
-    // foreach ($count_stock as $count) 
-    // {
-    //     if (intval($count->id_etat == 1  )) 
-    //         $pn->neuf = $count->ct_etat ;
-    //     if (intval($count->id_etat == 11  )) 
-    //         $pn->occasion = $count->ct_etat;
-    //     if (intval($count->id_etat == 21)) 
-    //         $pn->hs = $count->ct_etat; 
-    // }
+    $count_stock = $Stocks->count_from_totoro($Totoro, $pn->apn__pn);
+  
+      
+    foreach ($count_stock as $count) 
+    {
+        if (intval($count->id_etat == 1  )) 
+            $pn->neuf = $count->ct_etat ;
+        if (intval($count->id_etat == 11  )) 
+            $pn->occasion = $count->ct_etat;
+        if (intval($count->id_etat == 21)) 
+            $pn->hs = $count->ct_etat; 
+
+    }
+
+    if (!isset($pn->neuf) && $_SESSION['config']['neuf'] == true) {
+        unset($pn_list[$key]);
+    }
+
+    if (!isset($pn->occasion) && $_SESSION['config']['occasion'] == true) {
+        unset($pn_list[$key]);
+     }
+
+     if (!isset($pn->hs) && $_SESSION['config']['hs'] == true) {
+        unset($pn_list[$key]);
+     }
 }
 
-
-foreach ($model_list as $model) 
+$temp = [];
+foreach ($model_list as $key => $model) 
 {
     $model->specs = $Stocks->get_specs_modele_show($model->afmm__id);
     $model->afmm__image = base64_encode($model->afmm__image);
-    // $count_stock = $Stocks->count_from_totoro($Totoro,$model->afmm__modele);
+    $count_stock = $Stocks->count_from_totoro($Totoro,$model->afmm__modele);
 
-    // foreach ($count_stock as $count) 
-    // {
-    //     if (intval($count->id_etat == 1  )) 
-    //         $model->neuf = $count->ct_etat ;
-    //     if (intval($count->id_etat == 11  )) 
-    //         $model->occasion = $count->ct_etat;
-    //     if (intval($count->id_etat == 21)) 
-    //         $model->hs = $count->ct_etat; 
-    // }
+    foreach ($count_stock as $count) 
+    {
+        if (intval($count->id_etat == 1  )) 
+            $model->neuf = $count->ct_etat ;
+        if (intval($count->id_etat == 11  )) 
+            $model->occasion = $count->ct_etat;
+        if (intval($count->id_etat == 21)) 
+            $model->hs = $count->ct_etat; 
+    }
+
+    $marqueur = false ;
+
+   
+
+    if(isset($model->neuf) && $_SESSION['config']['neuf'] == true){
+        if ($marqueur == false) {
+            array_push($temp,$model_list[$key]);
+        }
+        $marqueur = true ;
+    }
+
+    if(isset($model->occasion) && $_SESSION['config']['occasion'] == true){
+        if ($marqueur == false) {
+            array_push($temp,$model_list[$key]);
+        }
+        $marqueur = true ;
+     }
+
+     if(isset($model->hs) && $_SESSION['config']['hs'] == true){
+        if ($marqueur == false) {
+            array_push($temp,$model_list[$key]);
+        }
+        $marqueur = true ;
+     }
+}
+
+if ( $_SESSION['config']['neuf'] == false and $_SESSION['config']['occasion'] == false and $_SESSION['config']['hs'] == false ) 
+{
+    $model_list = $model_list;
+}
+else {
+    $model_list = $temp;
 }
 
 
