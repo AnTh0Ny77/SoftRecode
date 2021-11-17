@@ -128,6 +128,7 @@ $Totoro = new App\Totoro('euro');
 $Totoro->DbConnect();
 
 
+$temp_pn = [];
 foreach ($pn_list as $key => $pn) 
 {
     $pn->specs = $Stocks->get_specs_pn_show($pn->apn__pn);
@@ -153,17 +154,30 @@ foreach ($pn_list as $key => $pn)
 
     }
 
-    if (!isset($pn->neuf) && $_SESSION['config']['neuf'] == true) {
-        unset($pn_list[$key]);
+    $marqueur = false;
+
+
+    if (isset($pn->neuf) && $_SESSION['config']['neuf'] == true) {
+        if ($marqueur == false) {
+            array_push($temp, $pn_list[$key]);
+        }
+        $marqueur = true;
     }
 
-    if (!isset($pn->occasion) && $_SESSION['config']['occasion'] == true) {
-        unset($pn_list[$key]);
-     }
+    if (isset($pn->occasion) && $_SESSION['config']['neuf'] == true) {
+        if ($marqueur == false) {
+            array_push($temp, $pn_list[$key]);
+        }
+        $marqueur = true;
+    }
 
-     if (!isset($pn->hs) && $_SESSION['config']['hs'] == true) {
-        unset($pn_list[$key]);
-     }
+    if (isset($pn->hs) && $_SESSION['config']['neuf'] == true) {
+        if ($marqueur == false) {
+            array_push($temp, $pn_list[$key]);
+        }
+        $marqueur = true;
+    }
+
 }
 
 $temp = [];
@@ -184,8 +198,6 @@ foreach ($model_list as $key => $model)
     }
 
     $marqueur = false ;
-
-   
 
     if(isset($model->neuf) && $_SESSION['config']['neuf'] == true){
         if ($marqueur == false) {
@@ -212,9 +224,11 @@ foreach ($model_list as $key => $model)
 if ( $_SESSION['config']['neuf'] == false and $_SESSION['config']['occasion'] == false and $_SESSION['config']['hs'] == false ) 
 {
     $model_list = $model_list;
+    $pn_list = $pn_list;
 }
 else {
     $model_list = $temp;
+    $pn_list = $temp_pn;
 }
 
 

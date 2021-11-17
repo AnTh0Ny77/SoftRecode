@@ -72,10 +72,9 @@
                     </div>
                     <div class="col-3 ml-3 my-4">
                         <label for="desc_courte" class="form-label">Description courte</label>
-                        <input type="text" max="1500" class="form-control " name="desc-courte" id="desc-courte" rows="2" value="{{pn.apn__desc_short}}" >
+                        <input type="text" max="100" class="form-control " name="desc-courte" id="desc-courte" rows="2" value="{{pn.apn__desc_short}}" required>
                     </div>
                     <div class="d-flex col-12">
-                       
                         <div class="col-3">
                             <label for="desc_courte" class="form-label">Description longue</label>
                             <textarea class="form-control editor" name="desc-longue" id="desc-longue" rows="2" >{{pn.apn__desc_long}}</textarea>
