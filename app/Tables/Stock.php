@@ -304,7 +304,7 @@ class Stock extends Table
         LEFT JOIN art_attribut_cle as c ON a.aam__cle = c.aac__cle 
         WHERE a.aam__id_fmm = "' . $pn . '" 
 		GROUP BY a.aam__cle
-        ORDER BY c.aac__ordre DESC LIMIT 150  ');
+        ORDER BY c.aac__ordre ASC LIMIT 150  ');
     $data = $request->fetchAll(PDO::FETCH_OBJ);
 
     foreach ($data as $key) {
@@ -313,7 +313,7 @@ class Stock extends Table
         FROM art_attribut_modele as a
         LEFT JOIN art_attribut_valeur as v ON a.aam__valeur = v.aav__valeur and ( a.aam__cle = v.aav__cle ) 
         WHERE a.aam__id_fmm = "' . $pn . '" AND a.aam__cle = "' . $key->cle . '" 
-        ORDER BY v.aav__ordre DESC LIMIT 150  ');
+        ORDER BY v.aav__ordre ASC LIMIT 150  ');
       $key->data = $request->fetchAll(PDO::FETCH_OBJ);
     }
 
@@ -491,26 +491,49 @@ class Stock extends Table
 			$liaison = $request->fetchAll(PDO::FETCH_OBJ);
 
 			if(count($liaison) > 1 )
-				$pn->modele = null ; $pn->count_relation =  intval(count($liaison));
+				$pn->modele = $liaison ; $pn->count_relation =  intval(count($liaison));
 			if(count($liaison) == 1 )
 				$pn->modele = $liaison[0]->id__fmm ; $pn->count_relation =  intval(count($liaison));
 			if(count($liaison) == 0 )
 				$pn->modele = null ; $pn->count_relation =  intval(count($liaison));
 
-			$SQL = 'SELECT a.afmm__modele , m.am__marque as marque
-			FROM art_fmm as a  
-			LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
-			WHERE a.afmm__id = "' . $pn->modele . '"
-			';
+			if ($pn->count_relation > 1 ) {
+
+				$list_models = '';
+					foreach ($pn->modele as $keys => $spec) {
+						if ($keys === array_key_last($pn->modele)) {
+							$list_models .=  ' "'. $spec->id__fmm . '" ';
+						}
+						else $list_models .=  ' "' .  $spec->id__fmm . '", ';
+						
+					}
+				$SQL = 'SELECT a.afmm__modele , m.am__marque as marque
+				FROM art_fmm as a  
+				LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
+				WHERE a.afmm__id IN  (' . $list_models . ')';
+			}
+			else {
+				$SQL = 'SELECT a.afmm__modele , m.am__marque as marque
+				FROM art_fmm as a  
+				LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
+				WHERE a.afmm__id = "' . $pn->modele . '"
+				';
+			}
+			
 			$request = $this->Db->Pdo->query($SQL);
-			$model_data = $request->fetch(PDO::FETCH_OBJ);
-			if (!empty($model_data))
+			$model_data = $request->fetchAll(PDO::FETCH_OBJ);
+			
+			if (!empty($model_data) and count($model_data) == 1)
 			{
-				$pn->modele = $model_data->afmm__modele; 
-				$pn->marque = $model_data->marque;
+			
+				$pn->modele = $model_data[0]->afmm__modele; 
+				$pn->marque = $model_data[0]->marque;
+			}elseif(!empty($model_data) and count($model_data) > 1){
+				
+				$pn->relations = $model_data;
 			}
 				
-		}			
+		}
 		return $data;
   }
 
@@ -537,8 +560,6 @@ class Stock extends Table
     return $data;
   }
 
-
-  
 
   public function get_pn_list($string)
   {
@@ -610,23 +631,46 @@ class Stock extends Table
 			$liaison = $request->fetchAll(PDO::FETCH_OBJ);
 
 			if(count($liaison) > 1 )
-				$pn->modele = null ; $pn->count_relation =  intval(count($liaison));
+				$pn->modele = $liaison ; $pn->count_relation =  intval(count($liaison));
 			if(count($liaison) == 1 )
 				$pn->modele = $liaison[0]->id__fmm ; $pn->count_relation =  intval(count($liaison));
 			if(count($liaison) == 0 )
 				$pn->modele = null ; $pn->count_relation =  intval(count($liaison));
 
-			$SQL = 'SELECT a.afmm__modele , m.am__marque as marque
-			FROM art_fmm as a  
-			LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
-			WHERE a.afmm__id = "' . $pn->modele . '"
-			';
+			if ($pn->count_relation > 1 ) {
+
+				$list_models = '';
+					foreach ($pn->modele as $keys => $spec) {
+						if ($keys === array_key_last($pn->modele)) {
+							$list_models .=  ' "'. $spec->id__fmm . '" ';
+						}
+						else $list_models .=  ' "' .  $spec->id__fmm . '", ';
+						
+					}
+				$SQL = 'SELECT a.afmm__modele , m.am__marque as marque
+				FROM art_fmm as a  
+				LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
+				WHERE a.afmm__id IN  (' . $list_models . ')';
+			}
+			else {
+				$SQL = 'SELECT a.afmm__modele , m.am__marque as marque
+				FROM art_fmm as a  
+				LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
+				WHERE a.afmm__id = "' . $pn->modele . '"
+				';
+			}
+			
 			$request = $this->Db->Pdo->query($SQL);
-			$model_data = $request->fetch(PDO::FETCH_OBJ);
-			if (!empty($model_data))
+			$model_data = $request->fetchAll(PDO::FETCH_OBJ);
+			
+			if (!empty($model_data) and count($model_data) == 1)
 			{
-				$pn->modele = $model_data->afmm__modele; 
-				$pn->marque = $model_data->marque;
+			
+				$pn->modele = $model_data[0]->afmm__modele; 
+				$pn->marque = $model_data[0]->marque;
+			}elseif(!empty($model_data) and count($model_data) > 1){
+				
+				$pn->relations = $model_data;
 			}
 				
 		}
@@ -710,57 +754,43 @@ class Stock extends Table
 	public function find_model_spec(array $post_data)
 	{
 
-		$array_where_clause = '';
-		$count  = 1;
-
-
-		foreach ($post_data as $key => $value) {
-
+		$count  = 1 ; 
+		$where = '';
+		foreach ($post_data as $key => $value) 
+		{
 			if (!empty($value) &&  $key != 'famille' &&  $key != 'recherche_guide') {
-
-				if (is_array($value)) {
-					if ($count == 1) {
-						$array_where_clause .= '  ';
-						$count += 1;
-						$iteration = 0;
-						foreach ($value as $response) {
-							if ($iteration == 0) {
-								$array_where_clause .=  ' ( aam__cle = "' . $key . '" AND  aam__valeur =  "' . $response . '" ) ';
-								$iteration += 1;
-							} else {
-								$array_where_clause .=  ' OR  ( aam__cle = "' . $key . '" AND aam__valeur =  "' . $response . '" ) ';
-								$iteration += 1;
-							}
+				if ($count == 1) {
+					$count += 1;
+					$specs = '';
+					foreach ($value as $keys => $spec) {
+						if ($keys === array_key_last($value)) {
+							$specs .=  ' "'. $spec . '" ';
 						}
-						$array_where_clause .= ' ';
-					} else {
-						$array_where_clause .= ' AND ';
-						$count += 1;
-						$iteration = 0;
-						foreach ($value as $response) {
-							if ($iteration == 0) {
-								$array_where_clause .=  '( aam__cle = "' . $key . '" AND  aam__valeur =  "' . $response . '" )';
-								$iteration += 1;
-							} else {
-								$array_where_clause .=  ' AND ( aam__cle = "' . $key . '" AND aam__valeur =  "' . $response . '" ) ';
-								$iteration += 1;
-							}
-						}
-						$array_where_clause .= '  ';
+						else $specs .=  ' "' .  $spec . '", ';
+						
 					}
+					$where .= 'WHERE afmm__id in ( SELECT aam__id_fmm FROM art_attribut_modele WHERE aam__cle = "' . $key . '" AND aam__valeur IN ('. $specs .') )';
+				} else {
+					$count += 1;
+					$specs = '';
+					foreach ($value as $keys => $spec) {
+						if ($keys === array_key_last($value)) {
+							$specs .=  ' "' . $spec . '" ';
+						} else $specs .=  ' "' .  $spec . '", ';
+					}
+					$where .= 'AND afmm__id  in ( SELECT aam__id_fmm FROM art_attribut_modele WHERE aam__cle = "' . $key . '" AND aam__valeur IN ( ' . $specs . ') )';
 				}
 			}
 		}
 
 
-		$request = $this->Db->Pdo->query('SELECT DISTINCT 
-		a.* , u.prenom , u.nom , k.kw__lib as famille , m.am__marque as marque
-		FROM art_attribut_modele
-		LEFT JOIN art_fmm as a ON  ( a.afmm__id = aam__id_fmm )
+		$request = $this->Db->Pdo->query('SELECT  
+		a.* , u.prenom , u.nom , k.kw__lib as famille , m.am__marque
+		FROM art_fmm as a 
 		LEFT JOIN utilisateur as u on  u.id_utilisateur = a.afmm__id_user_creat
      	LEFT JOIN keyword as k ON  k.kw__type = "famil" AND k.kw__value =  a.afmm__famille 
-		 LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
-    	WHERE ' . $array_where_clause . '
+		LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
+    	' . $where . '
 		ORDER BY a.afmm__dt_modif LIMIT 50 ');
 
 		$data = $request->fetchAll(PDO::FETCH_OBJ);
@@ -782,6 +812,10 @@ class Stock extends Table
 			if (count($liaison) == 0)
 				$model->pn = null;
 				$model->count_relation =  intval(count($liaison));
+
+
+
+		
 		
 		}
 

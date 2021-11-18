@@ -98,7 +98,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 			</div>
 			
 			
-		</form>
+		</form> 
 		<div class="d-flex flex-row">
 			<div class="col-10">
 				<div>
@@ -157,13 +157,14 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 							</th>
 						</tr>
 						{% for model in model_list %}
+						
 							<tr>
 								<th style="width: 290px">
 									<b>
 										<h4 class="text-success"><small>MODELE : </small> {{ model.afmm__modele }} </h4>
 									</b>
 									<span class="text-muted font-italic">
-										{{ model.famille ~ " " ~ model.marque   }}
+										{{ model.famille ~ " " ~ model.am__marque }}
 										{% if model.count_relation == 1 %}
 										<br>
 										<a href="ArtCataloguePN?search={{model.pn}}&config_pn=true">
@@ -323,7 +324,9 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 									{% elseif pn.count_relation == 0  %}
 										 - Pas de modèle rattachés
 									{% else  %}
-										- plusieurs modèles rattachés
+											{% for relation in pn.relations %}
+												<a href="ArtCataloguePN?search={{relation.afmm__modele}}&config_model=true">{{ " - " ~ relation.afmm__modele ~ "" }}</a><br>
+											{% endfor %}
 									{% endif %}
 									
 								</span> 

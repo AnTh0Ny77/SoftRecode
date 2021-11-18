@@ -60,8 +60,17 @@
      <div class="container mt-5 ">
         <div class="d-flex">
             <div class="col-11">
-                <h3 class="text-muted">Choix du modèle associé pour : <b> {{ pn.apn__pn_long  }}  ( {{ pn.modele ~ " " ~  pn.famille }} )</b></h3>
+              
+                    
+               {% if pn.apn__famille == 'PID' %}
+                    <h3 class="text-muted">Choix du modèle associé pour : <b> {{ pn.apn__pn_long  }}  ( {{  " " ~  pn.famille }} )</b></h3>
+               {% else %}
+                    <h3 class="text-muted">Choix du modèle associé pour : <b> {{ pn.apn__pn_long  }}  ( {{ pn.modele ~ " " ~  pn.famille }} )</b></h3>
+               {% endif %}
+             
+               
                 
+            
                 <form action="create-pn-specs" method="POST" class="mt-3">
                     <input type="hidden" name="id_pn" value="{{pn.apn__pn}}" >
                     <input type="hidden" name="famille" value="{{pn.apn__famille}}">
@@ -69,7 +78,12 @@
                     <input type="hidden" name="model_array" id="model_array">
                     <select name="select_models" data-placeholder="Choisir des modèles"  class="chosen-select col-12" id="select_multiple" multiple required>
                         {% for modele in model_list %}
-                                <option value="{{modele.afmm__id}}"> {{ modele.famille ~ " " ~ modele.Marque ~   " " ~ modele.afmm__modele}}</option>    
+                                {% if modele.modele.afmm__id == 100 or   modele.modele.afmm__id == 101 %}
+                                    <option value="{{modele.afmm__id}}"> {{  " " ~ modele.Marque ~   " " ~ modele.afmm__modele}}</option>  
+                                {% else %}
+                                    <option value="{{modele.afmm__id}}"> {{ modele.famille ~ " " ~ modele.Marque ~   " " ~ modele.afmm__modele}}</option>  
+                                {% endif %}
+                                  
                         {% endfor %}  
                     </select>
 
