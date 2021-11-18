@@ -151,23 +151,46 @@ class Article extends Table
 			$liaison = $request->fetchAll(PDO::FETCH_OBJ);
 
 			if(count($liaison) > 1 )
-				$pn->modele = null ; $pn->count_relation =  intval(count($liaison));
+				$pn->modele = $liaison ; $pn->count_relation =  intval(count($liaison));
 			if(count($liaison) == 1 )
 				$pn->modele = $liaison[0]->id__fmm ; $pn->count_relation =  intval(count($liaison));
 			if(count($liaison) == 0 )
 				$pn->modele = null ; $pn->count_relation =  intval(count($liaison));
 
-			$SQL = 'SELECT a.afmm__modele , m.am__marque as marque
-			FROM art_fmm as a  
-			LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
-			WHERE a.afmm__id = "' . $pn->modele . '"
-			';
+			if ($pn->count_relation > 1 ) {
+
+				$list_models = '';
+					foreach ($pn->modele as $keys => $spec) {
+						if ($keys === array_key_last($pn->modele)) {
+							$list_models .=  ' "'. $spec->id__fmm . '" ';
+						}
+						else $list_models .=  ' "' .  $spec->id__fmm . '", ';
+						
+					}
+				$SQL = 'SELECT a.afmm__modele , m.am__marque as marque
+				FROM art_fmm as a  
+				LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
+				WHERE a.afmm__id IN  (' . $list_models . ')';
+			}
+			else {
+				$SQL = 'SELECT a.afmm__modele , m.am__marque as marque
+				FROM art_fmm as a  
+				LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
+				WHERE a.afmm__id = "' . $pn->modele . '"
+				';
+			}
+			
 			$request = $this->Db->Pdo->query($SQL);
-			$model_data = $request->fetch(PDO::FETCH_OBJ);
-			if (!empty($model_data))
+			$model_data = $request->fetchAll(PDO::FETCH_OBJ);
+			
+			if (!empty($model_data) and count($model_data) == 1)
 			{
-				$pn->modele = $model_data->afmm__modele; 
-				$pn->marque = $model_data->marque;
+			
+				$pn->modele = $model_data[0]->afmm__modele; 
+				$pn->marque = $model_data[0]->marque;
+			}elseif(!empty($model_data) and count($model_data) > 1){
+				
+				$pn->relations = $model_data;
 			}
 				
 		}
@@ -178,7 +201,7 @@ class Article extends Table
 	public function select_all_model()
 	{
 
-		$SQL = 'SELECT DISTINCT  a.* , u.prenom , u.nom , k.kw__lib as famille
+		$SQL = 'SELECT DISTINCT  a.* , u.prenom , u.nom , k.kw__lib as famille , m.am__marque
 		FROM art_fmm as a  
 		LEFT JOIN utilisateur as u on  u.id_utilisateur = a.afmm__id_user_creat
 		LEFT JOIN keyword as k ON ( k.kw__type = "famil" AND k.kw__value =  a.afmm__famille ) 
@@ -601,7 +624,7 @@ class Article extends Table
   public function get_famille_for_spec()
   {
 	$SQL = 'SELECT kw__value, kw__lib, kw__lib_uk, kw__info
-	FROM keyword WHERE kw__type = \'famil\' AND (  kw__info != "XX" OR kw__info != "MDL" ) ORDER BY kw__ordre, kw__lib';
+	FROM keyword WHERE kw__type = \'famil\' AND (  kw__info != "XX" OR kw__info != "MDL" )  AND  ( kw__ordre < 90 ) ORDER BY kw__ordre, kw__lib';
 	$request =$this->Db->Pdo->query($SQL);
 	$data = $request->fetchAll(PDO::FETCH_OBJ);
 	return $data;

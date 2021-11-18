@@ -85,11 +85,11 @@ if (empty($_SESSION['user']->id_utilisateur)) {
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align: left;  width: 50% ; margin-left: 25%;">
-                            <h2>Devis <?php echo $devis->devis__id ?></h2><br>
+                        <td style="text-align: left;   width: 50% ; margin-left: 25%;">
+                            <h2>Devis <?php echo $devis->devis__id ?></h2>
                             <?php echo $date_devis_formate ?><br>
-                            <?php echo $devis->email ?>
-                            <p><small>Notre offre est valable une semaine à dater du : <?php echo $date_devis_formate ?></small></p>
+                            <?php echo $devis->email ?><br>
+                            <small>Notre offre est valable une semaine à dater du : <?php echo $date_devis_formate ?></small>
                         </td>
                         <td style="text-align: left; width:50%">
                             <?php
