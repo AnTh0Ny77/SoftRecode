@@ -13,6 +13,10 @@ if (empty($_SESSION['user']->id_utilisateur))
 if ($_SESSION['user']->user__cmd_acces < 10 ) 
 	{ header('location: noAccess'); }
 
+if (empty($_SESSION['user']->user__matos_acces) or $_SESSION['user']->user__matos_acces < 30 ) {
+		header('location: noAccess');
+		die();
+}
 // variables
 $choix_grp = TRUE; // choix du group (que choisir comme dreation ?)
 $GrpMarque = $GrpModele = $GrpPN = $Cancel = $action_modele = FALSE;
