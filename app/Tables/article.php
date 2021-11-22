@@ -167,13 +167,13 @@ class Article extends Table
 						else $list_models .=  ' "' .  $spec->id__fmm . '", ';
 						
 					}
-				$SQL = 'SELECT a.afmm__modele , m.am__marque as marque
+				$SQL = 'SELECT a.afmm__modele ,  a.afmm__id , m.am__marque as marque
 				FROM art_fmm as a  
 				LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
 				WHERE a.afmm__id IN  (' . $list_models . ')';
 			}
 			else {
-				$SQL = 'SELECT a.afmm__modele , m.am__marque as marque
+				$SQL = 'SELECT a.afmm__modele ,   a.afmm__id ,  m.am__marque as marque
 				FROM art_fmm as a  
 				LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
 				WHERE a.afmm__id = "' . $pn->modele . '"
