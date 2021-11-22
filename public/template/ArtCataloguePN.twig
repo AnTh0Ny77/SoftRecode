@@ -317,15 +317,22 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 							<th style="width: 290px"> 
 								<b><h4 class="text-primary"><small >PN : </small> {{ pn.apn__pn_long  }} </h4></b>
 								<span class="text-muted font-italic">
-									{{ pn.famille  ~ " " ~  pn.marque  }}
+										{% if pn.apn__famille == "PID" or  pn.apn__famille == "ACC" %}
+											
+										{% else %}
+											{{ pn.famille  ~ " " ~  pn.marque  }}
+										{% endif %}
+								
 									{% if pn.count_relation == 1  %}
-									<a href="ArtCataloguePN?search={{pn.modele}}&config_model=true">{{ " - " ~ pn.modele ~ "" }}</a>
+									<a href="ArtCataloguePN?search={{pn.modele}}&config_model=true">{{ "  " ~ pn.modele ~ "" }}</a>
 										
 									{% elseif pn.count_relation == 0  %}
 										 - Pas de modèle rattachés
 									{% else  %}
 											{% for relation in pn.relations %}
-												<a href="ArtCataloguePN?search={{relation.afmm__modele}}&config_model=true">{{ " - " ~ relation.afmm__modele ~ "" }}</a><br>
+												{% if relation.afmm__id != 100 or  relation.afmm__id != 101   %}
+													<a href="ArtCataloguePN?search={{relation.afmm__modele}}&config_model=true">{{ "  " ~ relation.afmm__modele ~ "" }}</a> - 
+												{% endif %}
 											{% endfor %}
 									{% endif %}
 									

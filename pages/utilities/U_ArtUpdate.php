@@ -9,6 +9,7 @@ if (empty($_SESSION['user']) )
 	{ header('location: login'); }
 else
 {
+	
 	//Connexion et requetes :
 	$Database = new App\Database('devis');
 	$Database->DbConnect();
@@ -49,6 +50,9 @@ Yb      88"Yb  88""    dP__Yb    88
 		$nom_doc  = strtoupper($nom_doc); // mise en majuscule
 		$nom_doc  = preg_replace('/([^.a-z0-9]+)/i', '-', $nom_doc); // suppression des caractères autres que lettre chiffres . et remplacement par - 
 		// ecriture dans la base
+		$modele = trim($modele, '"');
+		$modele = str_replace(['"',"'"], "", $modele);
+		
 		$last_id_fmm = $Article->fmm_create($famille, $marque, $modele, $blob_image, $nom_doc, $descom);
 
 		$transfert_specs = $last_id_fmm ; 

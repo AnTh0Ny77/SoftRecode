@@ -75,8 +75,6 @@
 						{% endfor %}
 						
 						<div class="row mx-auto justify-content-start col-11">
-							
-							
 							{% if spec_array %}
 									{% for spec in spec_array %}
 										{% for clefs in data.key_responses %}
@@ -93,15 +91,8 @@
 													<input class="form-check-input" id="radioInput" type="radio" value="{{ clefs.aav__valeur }}" name="{{ data.aac__cle }}"   {{marqueur_disabled}}>
 													<label class="form-check-label" for="radioInput">{{ clefs.aav__valeur_txt }} </label>
 												</div>
-											{% endif %}
-											
-										{% endfor %}
-										{% if loop.last %}
-													<div class="form-check col-3" >
-														<input class="form-check-input" id="radioInput" type="radio" value="" name="{{ data.aac__cle }}"  {{marqueur_disabled}}>
-														<label class="form-check-label" for="radioInput">Non Renseigné</label>
-													</div>
-										{% endif %}
+											{% endif %}					
+										{% endfor %}								
 									{% endfor %}
 									{% if not marqueur %}
 												{% for clefs in data.key_responses %}

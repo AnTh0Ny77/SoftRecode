@@ -16,6 +16,10 @@ if (empty($_SESSION['user']->id_utilisateur)) {
 	header('location: login');
 }
 
+if (empty($_SESSION['user']->user__matos_acces) or $_SESSION['user']->user__matos_acces < 20 ) {
+	header('location: noAccess');
+	die();
+}
 
 
 switch ($_SERVER['REQUEST_URI']) 
@@ -221,6 +225,8 @@ switch ($_SERVER['REQUEST_URI'])
 		if (!empty($_POST['id_pn'])) 
 		{
 			$pn = $Article->get_pn_byID($_POST['id_pn']);
+		
+			
 			$forms_data = $Stocks->get_famille_forms($pn->apn__famille);
 			
 			$count = 0 ;
@@ -254,9 +260,9 @@ switch ($_SERVER['REQUEST_URI'])
 			}
 
 			if (empty($pn->apn__desc_short)) {
-				$short_desc = $Stocks->select_empty_heritage($_POST['id_pn'], true, false);
+				// $short_desc = $Stocks->select_empty_heritage($_POST['id_pn'], true, false);
 
-				$General->updateAll('art_pn', $short_desc, 'apn__desc_short', 'apn__pn', $_POST['id_pn']);
+				// $General->updateAll('art_pn', $short_desc, 'apn__desc_short', 'apn__pn', $_POST['id_pn']);
 			}
 			
 			
@@ -295,7 +301,7 @@ switch ($_SERVER['REQUEST_URI'])
 		}
 
 		// $pn->apn__image = base64_encode($pn->apn__image);
-
+		$pn->specs = $Stocks->get_specs_pn_show($pn->apn__pn);
 		echo $twig->render(
 			'pn/create_pn_third.twig',
 			[
