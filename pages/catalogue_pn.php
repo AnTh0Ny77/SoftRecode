@@ -159,21 +159,21 @@ foreach ($pn_list as $key => $pn)
 
     if (isset($pn->neuf) && $_SESSION['config']['neuf'] == true) {
         if ($marqueur == false) {
-            array_push($temp, $pn_list[$key]);
+            array_push($temp_pn, $pn_list[$key]);
         }
         $marqueur = true;
     }
 
     if (isset($pn->occasion) && $_SESSION['config']['occasion'] == true) {
         if ($marqueur == false) {
-            array_push($temp, $pn_list[$key]);
+            array_push($temp_pn, $pn_list[$key]);
         }
         $marqueur = true;
     }
 
     if (isset($pn->hs) && $_SESSION['config']['hs'] == true) {
         if ($marqueur == false) {
-            array_push($temp, $pn_list[$key]);
+            array_push($temp_pn, $pn_list[$key]);
         }
         $marqueur = true;
     }

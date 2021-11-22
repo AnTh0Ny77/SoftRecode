@@ -729,6 +729,7 @@ class Stock extends Table
 		$data = $send->fetchAll(PDO::FETCH_OBJ);
 
 
+	
 		foreach ($data as $model) {
 			$SQL = 'SELECT  id__pn 
 			FROM liaison_fmm_pn 
@@ -737,16 +738,55 @@ class Stock extends Table
 			$request = $this->Db->Pdo->query($SQL);
 			$liaison = $request->fetchAll(PDO::FETCH_OBJ);
 
+			
 			if (count($liaison) > 1)
-			$model->pn = null;
-			$model->count_relation =  intval(count($liaison));
+			$model->pn = $liaison;
+				$model->count_relation =  intval(count($liaison));
 			if (count($liaison) == 1)
 			$model->pn = $liaison[0]->id__pn;
-			$model->count_relation =  intval(count($liaison));
+				$model->count_relation =  intval(count($liaison));
 			if (count($liaison) == 0)
 			$model->pn = null;
-			$model->count_relation =  intval(count($liaison));
+				$model->count_relation =  intval(count($liaison));
+
+
+			if ($model->count_relation > 1 )
+			 {
+
+					$list_pn = '';
+
+						foreach ($model->pn as $keys => $spec) {
+							if ($keys === array_key_last($model->pn)) {
+								$list_pn .=  ' "'. $spec->id__pn . '" ';
+							}
+							else $list_pn .=  ' "' .  $spec->id__pn . '", ';
+							
+						}
+						
+					$SQL = 'SELECT a.apn__pn_long , a.apn__pn , a.apn__famille  
+					FROM art_pn as a  
+					WHERE a.apn__pn IN  (' . $list_pn . ')';
+				}
+			else {
+				$SQL = 'SELECT  a.apn__pn_long , a.apn__pn , a.apn__famille  
+				FROM art_pn as a   
+				WHERE a.apn__pn = "' . $model->pn . '"
+				';
+			}
+				
+				$request = $this->Db->Pdo->query($SQL);
+				$model_data = $request->fetchAll(PDO::FETCH_OBJ);
+				
+				if (!empty($model_data) and count($model_data) == 1)
+				{
+					$model->pn = $model_data[0]->apn__pn; 
+
+				}elseif(!empty($model_data) and count($model_data) > 1){
+					
+					$model->relations = $model_data;
+				}
 		}
+
 		return $data;
 	}
 
@@ -813,7 +853,42 @@ class Stock extends Table
 				$model->pn = null;
 				$model->count_relation =  intval(count($liaison));
 
+				if ($model->count_relation > 1 )
+			 {
 
+					$list_pn = '';
+
+						foreach ($model->pn as $keys => $spec) {
+							if ($keys === array_key_last($model->pn)) {
+								$list_pn .=  ' "'. $spec->id__pn . '" ';
+							}
+							else $list_pn .=  ' "' .  $spec->id__pn . '", ';
+							
+						}
+						
+					$SQL = 'SELECT a.apn__pn_long , a.apn__pn , a.apn__famille  
+					FROM art_pn as a  
+					WHERE a.apn__pn IN  (' . $list_pn . ')';
+				}
+			else {
+				$SQL = 'SELECT  a.apn__pn_long , a.apn__pn , a.apn__famille  
+				FROM art_pn as a   
+				WHERE a.apn__pn = "' . $model->pn . '"
+				';
+			}
+				
+				$request = $this->Db->Pdo->query($SQL);
+				$model_data = $request->fetchAll(PDO::FETCH_OBJ);
+				
+			
+				if (!empty($model_data) and count($model_data) == 1)
+				{
+					$model->pn = $model_data[0]->apn__pn; 
+
+				}elseif(!empty($model_data) and count($model_data) > 1){
+					
+					$model->relations = $model_data;
+				}
 
 		
 		
