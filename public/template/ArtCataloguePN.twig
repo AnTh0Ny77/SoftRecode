@@ -172,7 +172,8 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 										</a>
 										
 										{% elseif model.count_relation == 0 %}
-										- Pas de pn rattachés
+										<br>
+										Pas de pn rattachés
 										{% else %}
 										<br>
 											{% for relation in model.relations %}
@@ -331,7 +332,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 									<a href="ArtCataloguePN?search={{pn.modele}}&config_model=true">{{ "  " ~ pn.modele ~ "" }}</a>
 										
 									{% elseif pn.count_relation == 0  %}
-										 - Pas de modèle rattachés
+										Pas de modèle rattachés
 									{% else  %}
 											{% for relation in pn.relations %}
 												{% if relation.afmm__id != '100' or  relation.afmm__id != '101'  %}
