@@ -23,6 +23,16 @@ $GrpMarque = $GrpModele = $GrpPN = $Cancel = $action_modele = FALSE;
 $art_modif = FALSE;
 $art_creat = TRUE;
 
+if(!isset($_SESSION['regex_article'])){
+	$_SESSION['regex_article'] = false ;
+}
+
+if (!empty($_SESSION['regex_article'])) {
+	$_POST['GrpModele'] = true ;
+	$_POST['id_fmm'] = $_SESSION['regex_article']['id_fmm'];
+}
+
+
 // recuperation des post et get..  0:0, 1:false, 2:false/true, 3:Null, 8:img, 7:SQL, 9:Tab
 $GrpMarque   = get_post('GrpMarque', 2);
 $GrpModele   = get_post('GrpModele', 2);
@@ -48,7 +58,7 @@ $user = $_SESSION['user'];
 $Database->DbConnect();
 $Article = new App\Tables\Article($Database);
 $Stats = new App\Tables\Stats($Database);
- $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
+$_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
 $_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
 
 if ($choix_grp) // pas encore de choix sur le groupe a créer / Modifier (Famille , PN, Marque ...)
@@ -78,6 +88,7 @@ if ($GrpModele)
 	'ArtFamille' => $ArtFamille,
 	'ArtMarque'  => $ArtMarque,
 	'ArtFmm'     => $ArtFmm,
-	'id_fmm'     => $id_fmm
+	'id_fmm'     => $id_fmm , 
+	'regex_article' => $_SESSION['regex_article']
 	]);
 }

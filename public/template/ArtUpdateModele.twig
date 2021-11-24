@@ -43,6 +43,13 @@
 	{% endif %}
 	</div>
 
+	{% if regex_article %}
+	<div class="alert alert-warning" role="alert">
+		
+		Le nom du modèle <b> {{ regex_article['modele'] }}</b> ne peut pas contenir de caractères spéciaux ( accents inclus ) à l'exeption du tiret 
+	</div>
+		
+	{% endif %}
 {#""Yb 88      dP"Yb   dP""b8     .dP"Y8    db    88 .dP"Y8 88 888888 
 88__dP 88     dP   Yb dP   `"     `Ybo."   dPYb   88 `Ybo." 88 88__   
 88""Yb 88  .o Yb   dP Yb          o.`Y8b  dP__Yb  88 o.`Y8b 88 88""   
@@ -66,7 +73,13 @@
 						<div class="col-9">
 							<select class="selectpicker form-control" name="famille" multiple data-live-search="true" title="Choisir une famille" data-live-search-placeholder="Rechercher ici" data-max-options="1" required>
 								{% for Famille in ArtFamille  %}
-								<option value={{Famille.kw__value}}{% if Famille.kw__value == ArtFmm.afmm__famille %}{{selected}}{% endif %}>{{Famille.kw__lib}}</option>
+									{% if regex_article['famille'] == Famille.kw__value  %}
+										<option value={{Famille.kw__value}} selected>
+											{{Famille.kw__lib}}</option>
+									{% else %}
+											<option value={{Famille.kw__value}}{% if Famille.kw__value==ArtFmm.afmm__famille %}{{selected}}{% endif %}>
+												{{Famille.kw__lib}}</option>
+									{% endif %}
 								{% endfor %}
 							</select>
 						</div>
@@ -82,7 +95,14 @@
 						<div class="col-9">
 							<select class="selectpicker form-control" name="marque" multiple data-live-search="true" title="Choisir une marque" data-live-search-placeholder="Rechercher ici" data-max-options="1" required>
 								{% for Marque in ArtMarque  %}
-								<option value={{Marque.am__id}}{% if Marque.am__id == ArtFmm.afmm__marque %}{{selected}}{% endif %}>{{Marque.am__marque}}</option>
+								{% if regex_article['marque'] == Marque.am__id %}
+									<option value={{Marque.am__id}} selected>{{Marque.am__marque}}
+									</option>
+								{% else %}
+									<option value={{Marque.am__id}}{% if Marque.am__id==ArtFmm.afmm__marque %}{{selected}}{% endif %}>{{Marque.am__marque}}
+									</option>
+								{% endif %}
+								
 								{% endfor %}
 							</select>
 						</div>
@@ -96,7 +116,14 @@
 						</div>
 						<div class="col-9">
 							<div class="input-group">
-								<input type="text" class="form-control" name="modele" placeholder="Saisir votre nouveau modele" value="{{ArtFmm.afmm__modele}}" required>
+								{% if regex_article %}
+									<input type="text" class="form-control" name="modele" placeholder="Saisir votre nouveau modele"
+										value="{{regex_article['modele']}}" required minlength="5">
+								{% else %}
+								<input type="text" class="form-control" name="modele" placeholder="Saisir votre nouveau modele"
+									value="{{ArtFmm.afmm__modele}}" required minlength="5">
+								{% endif %}
+								
 							</div>
 						</div>
 					</div>
