@@ -28,14 +28,18 @@ switch ($_SERVER['REQUEST_URI'])
 		//première partie creation et recherche de pn  : 
 		$pn_id = false ;
 		$famille_list = $Article->get_famille_for_spec_pn();
-		$alert_quote = false;
+		$alert = false;
 
 		//si une cretaion de pn à eu lieu : 
 		if (!empty($_POST['recherche_pn'])) 
 		{
 			
-			if ( preg_match('/"/', $_POST['recherche_pn']) or preg_match("/'/", $_POST['recherche_pn'])) {
-				$alert_quote = 'Le Nom du Pn ne peut pas contenir de guillemets ';
+			if (!empty(preg_match("/[^a-zA-Z0-9- ]/", $_POST['recherche_pn']))) {
+				$alert =  [
+						'alert' => 'Le Nom  ' . $_POST['recherche_pn'] . ' ne peut pas contenir de caractères spéciaux ( accents inclus ) sauf le tiret et doit faire 5 caractères minimums ',
+						'pn' =>  $_POST['recherche_pn'] , 
+						'famille' => $_POST['famille_pn'] 
+					];
 			}
 			else {
 					$verify_if_exist = $Article->get_pn_byID(trim($_POST['recherche_pn']) ,'"');
@@ -47,6 +51,7 @@ switch ($_SERVER['REQUEST_URI'])
 					}
 					else 
 					{
+							trim($_POST['recherche_pn']," \n\r\t\v\0");
 							$pn__id =  $Article->insert_pn($_POST['recherche_pn'] , $_POST['recherche_pn'] ,$_SESSION['user']->id_utilisateur );
 			
 						if (!empty($_POST['famille_pn'])) 
@@ -72,7 +77,7 @@ switch ($_SERVER['REQUEST_URI'])
 				'user' => $_SESSION['user'],
 				'pn_id' => $pn_id , 
 				'famille_list' => $famille_list , 
-				'alert_quote' => $alert_quote
+				'alert' => $alert
 			]
 		);
 		break;
