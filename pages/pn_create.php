@@ -33,10 +33,11 @@ switch ($_SERVER['REQUEST_URI'])
 		//si une cretaion de pn à eu lieu : 
 		if (!empty($_POST['recherche_pn'])) 
 		{
-			
-			if (!empty(preg_match("/[^a-zA-Z0-9- ]/", $_POST['recherche_pn']))) {
+
+			$_POST['recherche_pn'] = trim($_POST['recherche_pn']);
+			if (!empty(preg_match("/[^A-Z0-9-]/", $_POST['recherche_pn']))) {
 				$alert =  [
-						'alert' => 'Le Nom  ' . $_POST['recherche_pn'] . ' ne peut pas contenir de caractères spéciaux ( accents inclus ) sauf le tiret et doit faire 5 caractères minimums ',
+						'alert' => 'Le Nom  ' . $_POST['recherche_pn'] . ' ne peut pas contenir d\'espace , de minuscules ,  de caractères spéciaux( accents inclus ) sauf le tiret et doit faire 5 caractères minimums ',
 						'pn' =>  $_POST['recherche_pn'] , 
 						'famille' => $_POST['famille_pn'] 
 					];
@@ -51,7 +52,7 @@ switch ($_SERVER['REQUEST_URI'])
 					}
 					else 
 					{
-							trim($_POST['recherche_pn']," \n\r\t\v\0");
+							trim($_POST['recherche_pn']);
 							$pn__id =  $Article->insert_pn($_POST['recherche_pn'] , $_POST['recherche_pn'] ,$_SESSION['user']->id_utilisateur );
 			
 						if (!empty($_POST['famille_pn'])) 
