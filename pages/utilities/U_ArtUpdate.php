@@ -19,6 +19,27 @@ else
 	// traitement du formulaire :
 	$message = $msg_info = '';
 	// recuperation des paramettres
+	$_SESSION['regex_article'] = false;
+	//récupétation de la variable du nom de + filtres regex et redirection  : 
+	$modele_name = $_POST['modele'];
+	
+	if (!empty(preg_match("/[^a-zA-Z0-9- ]/", $_POST['modele']))) {
+		$_SESSION['regex_article'] = [
+			'modele' =>  $_POST['modele'] , 
+			'famille' =>  $_POST['famille'],
+			'marque' => $_POST['marque'],
+			'id_fmm' => $_POST['id_fmm'],
+			
+
+		];
+		header('location: ArtCreation');
+		die();
+	}
+	
+
+
+
+
 	$creat = $modif = $GrpModele = $GrpMarque = $GrpPN = FALSE;
 	if (isset($_POST['Creat']))     $creat = TRUE;
 	if (isset($_POST['Modif']))     $modif = TRUE;
