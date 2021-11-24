@@ -56,8 +56,7 @@
 # Embedded web-server pid file
 /.web-server-pid
 
-*.pdf
-*.html
+/pages/ajax/visio/
 ### Symfony Patch ###
 /web/css/
 /web/js/
