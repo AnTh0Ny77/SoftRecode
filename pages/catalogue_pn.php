@@ -116,8 +116,8 @@ elseif (!empty($_POST['recherche_guide'])) {
     }
  }
 else{
-    $pn_list = $Article->select_all_pn();
-    $model_list = $Article->select_all_model();
+    $pn_list = $Stocks->get_pn_list('');
+    $model_list = $Stocks->get_model_list('');
 } 
 
 if (!isset($_SESSION['config'])) {
