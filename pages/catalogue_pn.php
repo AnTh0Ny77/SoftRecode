@@ -86,10 +86,22 @@ if (!isset($_SESSION['config']['model']))
     $_SESSION['config']['model'] = true;
 
 
+if (!isset($_SESSION['config']['search']))
+    $_SESSION['config']['search'] = '';
+
+if (isset($_GET['art_filtre']) && empty($_GET['art_filtre'])) {
+        $_SESSION['config']['search'] = '';
+}
+if (empty($_GET['art_filtre']) && !empty($_SESSION['config']['search'])) {
+        $_GET['art_filtre'] =  $_SESSION['config']['search'] ;
+}
+
+
 $ArtFiltre ='';
 
 if (!empty($_GET['art_filtre'])) 
 {
+    $_SESSION['config']['search'] = $_GET['art_filtre'];
     $ArtFiltre = $_GET['art_filtre'];
     $pn_list = $Stocks->get_pn_list($ArtFiltre);
     
@@ -120,6 +132,7 @@ else{
     $model_list = $Stocks->get_model_list('');
 } 
 
+
 if (!isset($_SESSION['config'])) {
     $_SESSION['config']= [
         "model" => true,
@@ -146,13 +159,7 @@ foreach ($pn_list as $key => $pn)
 {
     $pn->specs = $Stocks->get_specs_pn_show($pn->apn__pn);
     $pn->apn__image  = base64_encode($pn->apn__image);
-    if (empty($pn->apn__image) && $pn->count_relation == 1) {
-        $model = $Article->find_model('afmm__id' , $pn->modele);
-        if (!empty($model)) {
-            $pn->apn__image  = base64_encode($model->afmm__image);
-        }
-       
-    }
+   
     $count_stock = $Stocks->count_from_totoro($Totoro, $pn->apn__pn);
   
       
@@ -261,5 +268,6 @@ echo $twig->render('ArtCataloguePN.twig',
     'total' => $total_results, 
     'config' => $_SESSION['config'],
     'query_resume' => $query_resume , 
-    'recherche_precedente' => $recherche_précédente
+    'recherche_precedente' => $recherche_précédente , 
+    'search' => $_SESSION['config']['search']
 ]);

@@ -89,7 +89,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 				
 			<div class="card-header d-flex flex-row align-items-center justify-content-center">
 				<div class="input-group input-group-lg">
-					<input type="text" autofocus class="form-control" name="art_filtre" id="art_filtre" placeholder="Rechercher dans le catalogue" value="{{art_filtre}}">
+					<input type="text" autofocus class="form-control" name="art_filtre" id="art_filtre" placeholder="Rechercher dans le catalogue" value="{{search}}">
 					<div class="input-group-append ">
 						<button class="btn btn-lg input-group-text" type="submit" name="art_btn_filtre" title="Rechercher un materiel"><i class="fad fa-bullseye-arrow fa-lg"></i></button>
 					</div>
@@ -323,19 +323,24 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 							<th style="width: 400px"> 
 								<b><h4 class="text-primary"><small >PN : </small> {{ pn.apn__pn_long  }} </h4></b>
 								<span class="text-muted font-italic">
-										{% if pn.apn__famille == "PID" or  pn.apn__famille == "ACC" %}
-											{{pn.famille}} <br>
-										{% else %}
+
+
+									{% if pn.apn__famille == "PID" or  pn.apn__famille == "ACC" %}
+											{{pn.famille}}  <br>
+									{% else %}
 											{{ pn.famille  ~ " " ~  pn.marque  }} 
-										{% endif %}
+									{% endif %}
 								
+
+
 									{% if pn.count_relation == 1  %}
-									<a class="text-success" href="ArtCataloguePN?search={{pn.modele}}&config_model=true">{{ "  " ~ pn.modele ~ "" }}</a>
-										
+									
+										<a class="text-success" href="ArtCataloguePN?search={{pn.modele}}&config_model=true">{{ "  " ~ pn.modele ~ "" }}</a>	
 									{% elseif pn.count_relation == 0  %}
 										Pas de modèle rattachés
 									{% else  %}
 											{% for relation in pn.relations %}
+											
 												{% if relation.afmm__id != '100' and  relation.afmm__id != '101' %}
 													{% if loop.last %}
 														<a class="text-success" href="ArtCataloguePN?search={{relation.afmm__famille}}&config_model=true">{{ "  " ~ relation.afmm__modele ~ "" }}</a>  

@@ -611,7 +611,11 @@ class Stock extends Table
     }
     $request .= " ORDER BY  apn__pn   LIMIT 25";
     } 
-	else $request .= " ORDER BY  apn__pn   LIMIT 25";
+	else
+	if ($nb_mots_filtre > 0) {
+
+	} else 
+	 $request .= " ORDER BY  apn__date_modif DESC  LIMIT 25";
 
 	
     $send = $this->Db->Pdo->query($request);
@@ -665,6 +669,7 @@ class Stock extends Table
 			
 			if (!empty($model_data) and count($model_data) == 1)
 			{
+				
 				$pn->modele = $model_data[0]->afmm__modele; 
 				$pn->marque = $model_data[0]->marque;
 			}elseif(!empty($model_data) and count($model_data) > 1){
@@ -721,7 +726,7 @@ class Stock extends Table
 			}
 			$request .= " ORDER BY  afmm__modele ASC  LIMIT 25";
 		} else {
-			$request .= " ORDER BY  afmm__modele ASC  LIMIT 25";
+			$request .= " ORDER BY  afmm__dt_modif  DESC  LIMIT 25";
 		}
 
 		$send = $this->Db->Pdo->query($request);
