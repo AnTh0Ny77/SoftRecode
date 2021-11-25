@@ -632,6 +632,7 @@ class Stock extends Table
 			$request = $this->Db->Pdo->query($SQL);
 			$liaison = $request->fetchAll(PDO::FETCH_OBJ);
 
+			
 			//compte le nombre de liaison :
 			if(count($liaison) > 1 )
 				$pn->modele = $liaison ; $pn->count_relation =  intval(count($liaison));

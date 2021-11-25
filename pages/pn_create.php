@@ -59,6 +59,8 @@ switch ($_SERVER['REQUEST_URI'])
 						{
 							$pn_court = preg_replace("#[^!A-Za-z0-9%]+#", "", $_POST['recherche_pn']);
 							$General->updateAll('art_pn' , $_POST['famille_pn'], 'apn__famille' , 'apn__pn', $pn_court );
+							$objDateTime = new DateTime('NOW');
+							$General->updateAll('art_pn' , $objDateTime->format('Y-m-d\TH:i:s.') , 'apn__date_modif' , 'apn__pn', $pn_court );
 						}
 						
 						$_SESSION['pn_id'] = $_POST['recherche_pn']; 	

@@ -96,29 +96,18 @@ if (empty($_GET['art_filtre']) && !empty($_SESSION['config']['search'])) {
         $_GET['art_filtre'] =  $_SESSION['config']['search'] ;
 }
 
-
 $ArtFiltre ='';
 
-if (!empty($_GET['art_filtre'])) 
+if (!empty($_POST['recherche_guide'])) 
 {
-    $_SESSION['config']['search'] = $_GET['art_filtre'];
-    $ArtFiltre = $_GET['art_filtre'];
-    $pn_list = $Stocks->get_pn_list($ArtFiltre);
-    
-    $model_list = $Stocks->get_model_list($ArtFiltre);
-}
-elseif (!empty($_POST['recherche_guide'])) {
+    $_SESSION['config']['search'] = '';
     $forms_data = $Stocks->get_famille_forms($_POST['famille']);
     $pn_list = $Stocks->find_pn_spec( $_POST);
     $model_list = $Stocks->find_model_spec($_POST);
     $return_query = $Stocks->return_forms($_POST);
-
     $recherche_précédente['famille'] = $_POST['famille'];
-
-   
     $recherche_précédente['json'] = json_encode($_POST);
 
-    
     foreach ($return_query as $key => $value) {
         $query_resume .=  $key . ': ' ;
         foreach ($value as $text) {
@@ -126,12 +115,18 @@ elseif (!empty($_POST['recherche_guide'])) {
         }
         $query_resume .=  ' | ' ;
     }
+}
+elseif (!empty($_GET['art_filtre']) && empty($_POST['recherche_guide'])) {
+   
+    $_SESSION['config']['search'] = $_GET['art_filtre'];
+    $ArtFiltre = $_GET['art_filtre'];
+    $pn_list = $Stocks->get_pn_list($ArtFiltre);
+    $model_list = $Stocks->get_model_list($ArtFiltre);
  }
 else{
     $pn_list = $Stocks->get_pn_list('');
     $model_list = $Stocks->get_model_list('');
 } 
-
 
 if (!isset($_SESSION['config'])) {
     $_SESSION['config']= [
@@ -153,7 +148,6 @@ if ($_SESSION['config']['model'] == false)
 $Totoro = new App\Totoro('euro');
 $Totoro->DbConnect();
 
-
 $temp_pn = [];
 foreach ($pn_list as $key => $pn) 
 {
@@ -161,7 +155,9 @@ foreach ($pn_list as $key => $pn)
     $pn->apn__image  = base64_encode($pn->apn__image);
    
     $count_stock = $Stocks->count_from_totoro($Totoro, $pn->apn__pn);
-  
+    $date_time = new DateTime($pn->apn__date_modif);
+	$date_time = $date_time->format('d/m/Y');
+	$pn->apn__date_modif = $date_time ; 
       
     foreach ($count_stock as $count) 
     {
