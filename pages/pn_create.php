@@ -35,6 +35,7 @@ switch ($_SERVER['REQUEST_URI'])
 		{
 
 			$_POST['recherche_pn'] = trim($_POST['recherche_pn']);
+			$_POST['recherche_pn'] = strtoupper($_POST['recherche_pn']);
 			if (!empty(preg_match("/[^A-Z0-9-]/", $_POST['recherche_pn']))) {
 				$alert =  [
 						'alert' => 'Le Nom  ' . $_POST['recherche_pn'] . ' ne peut pas contenir d\'espace , de minuscules ,  de caractères spéciaux( accents inclus ) sauf le tiret et doit faire 5 caractères minimums ',
