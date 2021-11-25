@@ -334,8 +334,11 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 
 
 									{% if pn.count_relation == 1  %}
-									
-										<a class="text-success" href="ArtCataloguePN?search={{pn.modele}}&config_model=true">{{ "  " ~ pn.modele ~ "" }}</a>	
+										{% if pn.id__fmm != '100' and pn.id__fmm != '101' %}
+											<a class="text-success" href="ArtCataloguePN?search={{pn.modele}}&config_model=true">{{ "  " ~ pn.modele ~ "" }}</a>
+										{% else %}
+											Pas de modèle rattachés
+										{% endif %}
 									{% elseif pn.count_relation == 0  %}
 										Pas de modèle rattachés
 									{% else  %}
@@ -442,7 +445,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 									
 									<div class="d-flex col-2">
 										<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
-											title="{{pn.nom ~  " " ~ pn.prenom }}">
+											title="{{pn.nom ~  " " ~ pn.prenom ~ " <br>" ~ pn.apn__date_modif |raw}}">
 											<i class="fas fa-user-tag fa-lg"></i>
 										</button>
 									</div>
