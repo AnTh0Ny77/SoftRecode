@@ -228,9 +228,6 @@ class Article extends Table
 				$model->pn = null;
 				$model->count_relation =  intval(count($liaison));
 			
-
-			
-		
 		}
 
 		return $data;
@@ -452,7 +449,6 @@ class Article extends Table
 		$request = $this->Db->Pdo->query($SQL);
 		$ligne = $request->fetch(PDO::FETCH_OBJ);
 
-
 		$SQL = 'SELECT l.* , p.apn__pn_long , p.apn__image , p.apn__desc_short
 		FROM liaison_fmm_pn as l 
 		LEFT JOIN art_pn as p ON p.apn__pn = l.id__pn
@@ -467,7 +463,6 @@ class Article extends Table
 				$value->apn__image = base64_encode($value->apn__image);
 			}
 		}
-
 		array_push($response , $ligne ); 
 		array_push($response , $data );
 		return $response;
