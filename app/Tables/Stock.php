@@ -563,14 +563,14 @@ class Stock extends Table
 
   public function get_pn_list($string)
   {
-
+	//traitement du champs recheche : 
     $filtre = str_replace("-", ' ', $string);
     $filtre = str_replace("'", ' ', $filtre);
+	//nombre de mots pour itérations : 
     $nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
     $mots_filtre = str_word_count($filtre, 1, '0123456789');
-	  $mode_filtre = false;
+	$mode_filtre = false;
 
-   
 	if ($nb_mots_filtre > 0) 
 		$mode_filtre = true;
 
@@ -605,24 +605,21 @@ class Stock extends Table
         OR u.nom LIKE '%".$mots_filtre[$i]."%'
         OR k.kw__lib LIKE '%".$mots_filtre[$i]. "%'
         OR m.am__marque LIKE '%" . $mots_filtre[$i] . "%'
-		OR t.afmm__modele LIKE '%" . $mots_filtre[0] . "%'
+		OR t.afmm__modele LIKE '%" . $mots_filtre[$i] . "%'
         OR v.aav__valeur_txt LIKE '%" . $mots_filtre[$i] . "%'
 		)";
-      }
-      $request .= " ORDER BY  apn__pn ASC  LIMIT 25";
-    } 
-	else 
-	{
-      	$request .= " ORDER BY  apn__pn ASC  LIMIT 25";
     }
+    $request .= " ORDER BY  apn__pn   LIMIT 25";
+    } 
+	else $request .= " ORDER BY  apn__pn   LIMIT 25";
 
     $send = $this->Db->Pdo->query($request);
     $data = $send->fetchAll(PDO::FETCH_OBJ);
 
-
-	
+	//pour chaque pn trouvé
     foreach ($data as $pn) 
 		{
+			//recup les id fmm depuis la liaison
 			$SQL = 'SELECT  id__fmm 
 			FROM liaison_fmm_pn 
 			WHERE id__pn = "'.$pn->apn__pn.'"
@@ -630,6 +627,7 @@ class Stock extends Table
 			$request = $this->Db->Pdo->query($SQL);
 			$liaison = $request->fetchAll(PDO::FETCH_OBJ);
 
+			//compte le nombre de liaison :
 			if(count($liaison) > 1 )
 				$pn->modele = $liaison ; $pn->count_relation =  intval(count($liaison));
 			if(count($liaison) == 1 )
@@ -637,16 +635,17 @@ class Stock extends Table
 			if(count($liaison) == 0 )
 				$pn->modele = null ; $pn->count_relation =  intval(count($liaison));
 
+			//si plusieurs modèle sont présents : 
 			if ($pn->count_relation > 1 ) {
-
+				//crée un string depuis le tableau 
 				$list_models = '';
 					foreach ($pn->modele as $keys => $spec) {
 						if ($keys === array_key_last($pn->modele)) {
 							$list_models .=  ' "'. $spec->id__fmm . '" ';
 						}
-						else $list_models .=  ' "' .  $spec->id__fmm . '", ';
-						
+						else $list_models .=  ' "' .  $spec->id__fmm . '", ';	
 					}
+				//recupère les données des modèles depuis art__fmm : IN si plusieurs = si 1 seul 
 				$SQL = 'SELECT a.afmm__modele ,  a.afmm__id , m.am__marque as marque
 				FROM art_fmm as a  
 				LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
@@ -665,7 +664,6 @@ class Stock extends Table
 			
 			if (!empty($model_data) and count($model_data) == 1)
 			{
-			
 				$pn->modele = $model_data[0]->afmm__modele; 
 				$pn->marque = $model_data[0]->marque;
 			}elseif(!empty($model_data) and count($model_data) > 1){
