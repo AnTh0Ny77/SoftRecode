@@ -64,9 +64,13 @@
                         <div>
                             <select class="form-select form-control form-select-lg col-12" name="famille_pn" id="famille_pn" required>
                                 {% for famille in famille_list %}
+                                  
                                 {% if alert['famille']  == famille.kw__value %}
                                     <option value="{{famille.kw__value}}" selected>{{famille.kw__lib}}</option>
                                 {% else %}
+                                    {% if loop.first %}
+                                        <option value="" selected disabled> Veuillez choisir une famille</option>
+                                    {% endif %}
                                     <option value="{{famille.kw__value}}">{{famille.kw__lib}}</option>
                                 {% endif %}
                                     
