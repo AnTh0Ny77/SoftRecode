@@ -1711,7 +1711,7 @@ class Cmd extends Table
     foreach ($data as $ligne) 
     {
       
-      if (!empty($ligne->ligne_image)) 
+      if (!empty($ligne->cmdl__image)) 
       {
         if (!empty($ligne->apn__image)) 
         {
