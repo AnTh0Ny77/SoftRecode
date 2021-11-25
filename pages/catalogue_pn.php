@@ -80,6 +80,11 @@ if (!isset($_SESSION['config']['occasion']))
 if (!isset($_SESSION['config']['neuf']))
     $_SESSION['config']['neuf'] = false;
 
+if (!isset($_SESSION['config']['pn']))
+    $_SESSION['config']['pn'] = true;
+if (!isset($_SESSION['config']['model']))
+    $_SESSION['config']['model'] = true;
+
 
 $ArtFiltre ='';
 
