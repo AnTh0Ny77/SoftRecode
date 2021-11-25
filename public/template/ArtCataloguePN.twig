@@ -157,7 +157,8 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 							</th>
 						</tr>
 						{% for model in model_list %}
-						
+							
+							{% if model.afmm__actif < 9  %}
 							<tr>
 								<th style="width: 290px">
 									<b>
@@ -314,6 +315,8 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 										</div>
 									</td>
 							</tr>
+							{% endif %}
+							
 						{% endfor %}
 						{% for pn in pn_list %}	
 						<tr>
