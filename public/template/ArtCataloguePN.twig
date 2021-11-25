@@ -166,16 +166,14 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 									<span class="text-muted font-italic">
 										{{ model.famille ~ " " ~ model.am__marque }}
 										{% if model.count_relation == 1 %}
-										<br>
-										<a href="ArtCataloguePN?search={{model.pn}}&config_pn=true">
-										{{ "PN: " ~    model.pn ~ "" }}
-										</a>
-										
+											<br>
+											<a href="ArtCataloguePN?search={{model.pn}}&config_pn=true"> {{ "PN: " ~    model.pn ~ "" }}</a>
 										{% elseif model.count_relation == 0 %}
 										<br>
 										Pas de pn rattachés
 										{% else %}
 										<br>
+											<span class="text-primary"> PN: </span> 
 											{% for relation in model.relations %}
 														<a href="ArtCataloguePN?search={{relation.apn__pn}}&config_model=true">{{ "  " ~ relation.apn__pn_long ~ "" }}</a> - 
 											{% endfor %}
@@ -329,14 +327,18 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 										{% endif %}
 								
 									{% if pn.count_relation == 1  %}
-									<a href="ArtCataloguePN?search={{pn.modele}}&config_model=true">{{ "  " ~ pn.modele ~ "" }}</a>
+									<a class="text-success" href="ArtCataloguePN?search={{pn.modele}}&config_model=true">{{ "  " ~ pn.modele ~ "" }}</a>
 										
 									{% elseif pn.count_relation == 0  %}
 										Pas de modèle rattachés
 									{% else  %}
 											{% for relation in pn.relations %}
 												{% if relation.afmm__id != '100' and  relation.afmm__id != '101' %}
-													<a href="ArtCataloguePN?search={{relation.afmm__famille}}&config_model=true">{{ "  " ~ relation.afmm__modele ~ "" }}</a> - 
+													{% if loop.last %}
+														<a class="text-success" href="ArtCataloguePN?search={{relation.afmm__famille}}&config_model=true">{{ "  " ~ relation.afmm__modele ~ "" }}</a>  
+													{% else %}
+														<a class="text-success" href="ArtCataloguePN?search={{relation.afmm__famille}}&config_model=true">{{ "  " ~ relation.afmm__modele ~ "" }}</a> - 
+													{% endif %}	
 												{% endif %}
 											{% endfor %}
 									{% endif %}
