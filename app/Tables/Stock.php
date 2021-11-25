@@ -576,7 +576,7 @@ class Stock extends Table
 
     $operateur = ' AND ';
     $request = "SELECT DISTINCT 
-      	a.* , u.nom , u.prenom  , k.kw__lib as famille  , t.afmm__marque, m.am__marque 
+      	a.* , u.nom , u.prenom  , k.kw__lib as famille  
 		FROM art_pn as a
 		LEFT JOIN utilisateur as u on  u.id_utilisateur = apn__id_user_modif
 		LEFT JOIN keyword as k ON ( k.kw__type = 'famil' AND k.kw__value =  a.apn__famille ) 
@@ -613,6 +613,7 @@ class Stock extends Table
     } 
 	else $request .= " ORDER BY  apn__pn   LIMIT 25";
 
+	
     $send = $this->Db->Pdo->query($request);
     $data = $send->fetchAll(PDO::FETCH_OBJ);
 

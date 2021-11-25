@@ -335,8 +335,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 										Pas de modèle rattachés
 									{% else  %}
 											{% for relation in pn.relations %}
-										
-												{% if relation.afmm__id != '100' or  relation.afmm__id != '101'  %}
+												{% if relation.afmm__id != '100' and  relation.afmm__id != '101' %}
 													<a href="ArtCataloguePN?search={{relation.afmm__famille}}&config_model=true">{{ "  " ~ relation.afmm__modele ~ "" }}</a> - 
 												{% endif %}
 											{% endfor %}
