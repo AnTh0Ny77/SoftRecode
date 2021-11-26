@@ -28,6 +28,14 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 	<div class="col-11">
 		<div class="card shadow mb-4">
 {# Barre de recherche et bouton #}
+{% if alert_delete %}
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+	<strong>Le pn à bien été supprimé!</strong> 
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+{% endif %}
 		<form role="form" method="GET" action="ArtCataloguePN">
 			{% if results_model > 0 %}
 				<h5 class="text-success my-3 mx-4">{{results_model}} Modèles trouvés <small>Sur {{total}} résultats</small></h5>
