@@ -121,6 +121,16 @@
                         <button class="btn btn-success btn-block">Valider et activer le PN</button>
                     </div>
                 </form>
+                {% if pn.apn__actif == 0   %}
+                    <div class="container-fluid ">
+                        <form action="ArtCataloguePN" method="POST">
+                            <input type="hidden" name="retour_pn" value="{{pn.apn__pn}}">
+                            <input type="hidden" name="famille" value="{{pn.apn__famille}}">
+                            <button class="btn btn-danger"><i class="fas fa-trash-alt"></i> Supprimer le pn </button>
+                        </form>
+                    </div>
+                {% endif %}
+               
             </div>
          
 

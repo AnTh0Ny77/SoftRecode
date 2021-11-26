@@ -97,6 +97,12 @@ if (empty($_GET['art_filtre']) && !empty($_SESSION['config']['search'])) {
 }
 
 $ArtFiltre ='';
+$alert_delete = false ; 
+//efface un pn si demandé : 
+if (!empty($_POST['retour_pn'])) {
+    $Article->delete_pn($_POST['retour_pn']);
+    $alert_delete = true ;
+}
 
 if (!empty($_POST['recherche_guide'])) 
 {
@@ -265,5 +271,6 @@ echo $twig->render('ArtCataloguePN.twig',
     'config' => $_SESSION['config'],
     'query_resume' => $query_resume , 
     'recherche_precedente' => $recherche_précédente , 
-    'search' => $_SESSION['config']['search']
+    'search' => $_SESSION['config']['search'] , 
+    'alert_delete' => $alert_delete
 ]);

@@ -55,7 +55,16 @@
         </div>
 
     </div>
-   
+    {% if pn.apn__actif == 0 %}
+        <div class="container-fluid mx-4">
+            <form action="create-pn-first" method="POST">
+                <input type="hidden" name="retour_pn" value="{{pn.apn__pn}}">
+                <input type="hidden" name="famille" value="{{pn.apn__famille}}">
+                <button class="btn btn-link"><i class="fad fa-backward"></i> Précédent</button>
+            </form>
+        </div>
+    {% endif %}
+    
     
      <div class="container mt-5 ">
         <div class="d-flex">

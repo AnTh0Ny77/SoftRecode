@@ -566,6 +566,18 @@ class Article extends Table
 		return $data;
   }
 
+  public function delete_pn($pn){
+		$request = 'DELETE FROM liaison_fmm_pn WHERE  id__pn =  "' . $pn . '" ';
+		$update = $this->Db->Pdo->prepare($request);
+		$update->execute();
+		$request = 'DELETE FROM art_attribut_pn WHERE  aap__pn =  "' . $pn . '" ';
+		$update = $this->Db->Pdo->prepare($request);
+		$update->execute();
+		$request = 'DELETE FROM art_pn WHERE  apn__pn =  "' . $pn . '" ';
+		$update = $this->Db->Pdo->prepare($request);
+		$update->execute();
+  }
+
 
   public function insert_liaison_pn_fmm(array $tableau_modele , string $pn__id) : bool
   {

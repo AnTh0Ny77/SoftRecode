@@ -30,6 +30,16 @@ switch ($_SERVER['REQUEST_URI'])
 		$famille_list = $Article->get_famille_for_spec_pn();
 		$alert = false;
 
+		if (!empty($_POST['retour_pn'])) {
+
+				$Article->delete_pn($_POST['retour_pn']);
+			$alert =  [
+				'alert' => null,
+				'pn' => $_POST['retour_pn'],
+				'famille' => $_POST['famille']
+			];
+		}
+
 		//si une cretaion de pn à eu lieu : 
 		if (!empty($_POST['recherche_pn'])) 
 		{
