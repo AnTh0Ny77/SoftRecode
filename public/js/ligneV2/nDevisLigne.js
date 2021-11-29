@@ -21,6 +21,8 @@ $(document).ready(function()
 		});				    
     }
 
+	// MAUVAISE OPTIMISIATION DU CODE PLUSIEURS FUNCTIONS SONT UTILISEES / 
+	// EST APPLIQUE DURANT LA PREMIERE SELECTION EN CAS DE CREATION DE LIGNE DE DEVIS / 
 	let get_pn_and_refresh = function()
 	{
 		let modele = $('#fmm').children("option:selected").val();
@@ -33,10 +35,10 @@ $(document).ready(function()
 					"AjaxPn": modele
 				},
 				success: function (data) {					
-					console.log(data);
+					
 					dataSet = JSON.parse(data);
 					
-
+					
 					if ( dataSet.length > 0 )
 					{
 						
@@ -73,6 +75,8 @@ $(document).ready(function()
 
 	}
 
+
+	// EST UTILISEE EN CAS DE MODIFICATION DE LIGNE / 
 	let get_pn_line_and_refresh = function()
 	{
 		let id_ligne = $('#boolModif').val();
@@ -87,7 +91,7 @@ $(document).ready(function()
 				success: function (data) 
 				{
 					dataSet = JSON.parse(data);
-					console.log(dataSet);
+					console.log( 'hey');
 					if (dataSet[1].length > 0) 
 					{
 						$('#wrapper-pn').removeClass('d-none');
@@ -97,7 +101,7 @@ $(document).ready(function()
 
 						for (let index = 0; index < dataSet[1].length; index++)
 						{
-						
+							
 							$("#pn-select").append(new Option(dataSet[1][index].apn__pn_long + " " +  dataSet[1][index].apn__desc_short, dataSet[1][index].id__pn))
 
 						}
