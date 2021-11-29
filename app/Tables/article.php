@@ -414,7 +414,7 @@ class Article extends Table
   {
 		$SQL = 'SELECT l.* , p.apn__pn_long , p.apn__desc_short
 		FROM liaison_fmm_pn as l
-		LEFT JOIN art_pn as p ON (l.id__pn = p.apn__pn)
+		LEFT JOIN art_pn as p ON (l.id__pn = p.apn__pn )
 		WHERE id__fmm = '. $fmm_id .' ORDER BY id__pn';
 
 		$request = $this->Db->Pdo->query($SQL);

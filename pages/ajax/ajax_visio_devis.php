@@ -74,8 +74,11 @@ if (empty($_SESSION['user']->id_utilisateur)) {
                 <table class="page_header" style="width: 100%;">
                     <tr>
                         <td style="text-align: left;  width: 50%"><img style=" width:65mm" src="public/img/recodeDevistel.png" />
+                        <img style=" width:13mm; margin-top: 50px;" src="public/img/Ecovadis.png" />
                         </td>
+                      
                         <td style="text-align: left; width:50%">
+                            
                             <h3>REPARATION-LOCATION-VENTE</h3><img style=" width:65mm;" src="public/img/baniere.jpg" />
                             <br>
                             Votre partenaire traçabilité<br>

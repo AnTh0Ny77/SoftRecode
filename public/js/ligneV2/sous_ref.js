@@ -161,6 +161,7 @@ $(document).ready(function()
     })
 
 
+    //recupère les pn dispo pour la sous ref  : 
     let get_pn_sousRef_and_refresh = function () {
         let modele = $('#select_sous_ref').children("option:selected").val();
         $.ajax(
@@ -208,7 +209,7 @@ $(document).ready(function()
 
     }
 
-
+    //recupre les pn dispo et selectionne en cas de modif de sous ref  :  
     let get_pn_sousRef_M_and_refresh = function () {
         let modele = $('#select_modif_sous_ref').children("option:selected").val();
         $.ajax(
