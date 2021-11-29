@@ -297,6 +297,7 @@ switch ($_SERVER['REQUEST_URI'])
 			$General->updateAll('art_pn' , $_POST['desc-courte'], 'apn__desc_short' , 'apn__pn', $_POST['pn_id'] );
 			$General->updateAll('art_pn', $_POST['desc-longue'], 'apn__desc_long', 'apn__pn', $_POST['pn_id']);
 			$General->updateAll('art_pn', $_SESSION['user']->id_utilisateur, 'apn__id_user_modif', 'apn__pn', $_POST['pn_id']);
+			$General->updateAll('art_pn', $_POST['desc-com'], 'apn__design_com', 'apn__pn', $_POST['pn_id']);
 			$General->updateAll('art_pn', $date, 'apn__date_modif', 'apn__pn', $_POST['pn_id']);
 			
 				if (!empty($_FILES['modele_image']['tmp_name']))

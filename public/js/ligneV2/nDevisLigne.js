@@ -124,6 +124,26 @@ $(document).ready(function()
 	}
 
 	//check quand un changement à lieu sur le select du pn si une photo est disponible :  
+	let update_designation_commerciale_pn = function(){
+		$('#pn-select').on('change' , function(){
+			let Pn = $(this).children("option:selected").val();
+			if (Pn && Pn != '0'){
+				$.ajax({
+					type: 'post' , url : "Ajax-pn-id" , data : { "pn_id": Pn },
+					success: function(data){
+						dataSet = JSON.parse(data);
+						if (dataSet.apn__design_com.length > 0 ) {
+							$('#designation').val(dataSet.apn__design_com);
+						}
+						
+					}
+				})
+			} 
+		})
+	}
+
+	update_designation_commerciale_pn();
+
 
 	let check_pn_photo = function()
 	{
