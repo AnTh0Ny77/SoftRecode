@@ -26,7 +26,6 @@ class Stock extends Table
 		WHERE  a.apn__pn = "' . $pn . '"');
 		$data = $request->fetch(PDO::FETCH_OBJ);
 
-		var_dump($data);
 		if ($data->apn__famille =='PID' or $data->apn__famille == 'ACC' ) {
 			return $data->apn__famille;
 		}	else return false;
