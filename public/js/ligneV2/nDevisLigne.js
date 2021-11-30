@@ -126,6 +126,7 @@ $(document).ready(function()
 	//check quand un changement à lieu sur le select du pn si une photo est disponible :  
 	let update_designation_commerciale_pn = function(){
 		$('#pn-select').on('change' , function(){
+			CKEDITOR.instances['comClient'].setData('');
 			let Pn = $(this).children("option:selected").val();
 			if (Pn && Pn != '0'){
 				$.ajax({
@@ -135,7 +136,10 @@ $(document).ready(function()
 						if (dataSet.apn__design_com.length > 0 ) {
 							$('#designation').val(dataSet.apn__design_com);
 						}
+						if (dataSet.apn__desc_long.length > 0) {
+							CKEDITOR.instances['comClient'].insertHtml(dataSet.apn__design_com);
 						
+						}
 					}
 				})
 			} 
@@ -213,7 +217,7 @@ $(document).ready(function()
 //selection de l'article dans le select ( Ajax recupère la désignation commerciale si existante)
 $('#fmm').on('change', function()
 {
-
+	CKEDITOR.instances['comClient'].setData('');
     var selectedArticle = $(this).children("option:selected").text();
 	get_pn_and_refresh();
     var id_fmm = $(this).children("option:selected").val();

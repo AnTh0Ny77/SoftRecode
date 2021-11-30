@@ -28,7 +28,7 @@ class Client extends Table
     public function get_client_devis()
     {
         $request = $this->Db->Pdo->query(
-            'SELECT  LPAD(client__id,6,0) as client__id, client__societe ,  client__ville , client__cp  FROM client WHERE client__id  > 10  ORDER BY client__dt_last_modif DESC LIMIT 4000'
+            'SELECT  LPAD(client__id,6,0) as client__id, client__societe ,  client__ville , client__cp  FROM client WHERE client__id  > 10  ORDER BY client__id DESC '
         );
         $data = $request->fetchAll(PDO::FETCH_OBJ);
         return $data;
