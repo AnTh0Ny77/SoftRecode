@@ -258,25 +258,44 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 											<div class="d-flex col-2">
 												{% if model.hs %}
 												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
-													<span class="fa-stack" style="vertical-align: top;"  data-toggle="tooltip" data-placement="top"
-													title="Hs">
+													<span class="fa-stack" style="vertical-align: top;" data-toggle="tooltip" data-placement="top" title="Hs">
 														<i class="fas fa-circle fa-stack-2x " style="color: #E74F4F"> </i>
 														<i class=" fa-stack-1x text-white">{{ model.hs}}</i>
-													</span>	
+													</span>
 												</a>
-													
+											
 												{% else %}
 												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
 													<button type="button" class="click-span btn btn-link disabled" data-toggle="tooltip" data-placement="top"
-													title="Occasion">
-													<i class="fas fa-circle fa-lg" style="color: #E74F4F"></i>
+														title="Occasion">
+														<i class="fas fa-circle fa-lg" style="color: #E74F4F"></i>
 													</button>
-												</a>	
-													
+												</a>
+											
+												{% endif %}
+											</div>
+											<div class="d-flex col-2">
+												{% if model.hs %}
+												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
+													<span class="fa-stack" style="vertical-align: top;" data-toggle="tooltip" data-placement="top" title="Hs">
+														<i class="fas fa-circle fa-stack-2x " style="color: #E74F4F"> </i>
+														<i class=" fa-stack-1x text-white">{{ model.hs}}</i>
+													</span>
+												</a>
+											
+												{% else %}
+												<a href="http://intranet/locator_query.php?f_art={{model.afmm__modele}}" target="_blank">
+													<button type="button" class="click-span btn btn-link disabled" data-toggle="tooltip" data-placement="top"
+														title="Occasion">
+														<i class="fas fa-circle fa-lg" style="color: #E74F4F"></i>
+													</button>
+												</a>
+											
 												{% endif %}
 											
-												
+											
 											</div>
+									
 												<div class="d-flex col-2">
 													<form action="http://www.google.com/search" method="get" target="_blank">
 														<input type="hidden" name="q" value="{{model.afmm__modele}}">
@@ -285,12 +304,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 														</button>
 													</form>
 												</div>
-											<div class="d-flex col-2">
-												<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
-													title="{{model.nom ~  " " ~ model.prenom }}">
-													<i class="fas fa-user-tag fa-lg"></i>
-												</button>
-											</div>
+											
 											<div class="d-flex col-2">
 											</div>
 											<div class="d-flex col-2">
@@ -312,7 +326,16 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 												</div>
 											</div>
 											<div class="d-flex col-2">
-													<div data-toggle="tooltip" data-placement="top" title="Modifier">
+												
+											</div>
+											<div class="d-flex col-2">
+												<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
+													title="pas de description longue" disabled>
+													<i class="fas fa-file-alt fa-lg"></i>
+												</button>
+											</div>
+											<div class="d-flex col-2">
+													<div data-toggle="tooltip" data-placement="top" title="Modifier <br> {{model.nom ~ " " ~ model.prenom}} <br> {{model.afmm__dt_modif}}">
 														<a href="ArtCreation?id_fmm={{model.afmm__id}}">
 														<button class="btn btn-link ">
 															<i class="fas fa-edit fa-lg"></i>
@@ -450,27 +473,38 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 										{% endif %}
 										
 									</div>
+									<div class="d-flex col-2">
+										{% if pn.hs %}
+										<a href="http://intranet/locator_query.php?f_art={{pn.apn__pn}}" target="_blank">
+											<span class="fa-stack " style="vertical-align: top;" data-toggle="tooltip" data-placement="top" title="Hs">
+												<i class="fas fa-circle fa-stack-2x " style="color: #E74F4F"> </i>
+												<i class=" fa-stack-1x text-white">{{pn.hs}}</i>
+											</span>
+										</a>
 									
-									<div class="d-flex col-2">
-										<button type="button" class="click-span btn btn-link" data-toggle="tooltip" data-placement="top"
-											title="{{pn.nom ~  " " ~ pn.prenom ~ " <br>" ~ pn.apn__date_modif |raw}}">
-											<i class="fas fa-user-tag fa-lg"></i>
-										</button>
-									</div>
-									<div class="d-flex col-2">
-										{% if pn.apn__desc_long %}
-											<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
-												title="{{ pn.apn__desc_long|raw}}">
-												<i class="fas fa-file-alt fa-lg"></i>
-											</button>
 										{% else %}
-											<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
-												title="pas de description longue" disabled>
-												<i class="fas fa-file-alt fa-lg"></i>
+										<a href="http://intranet/locator_query.php?f_art={{pn.apn__pn}}" target="_blank" class="disabled"
+											data-toggle="tooltip" data-placement="top" title="Hs">
+											<button type="button" class="click-span btn btn-link disabled" data-toggle="tooltip" data-placement="top"
+												title="Hs">
+												<i class="fas fa-circle fa-lg" style="color: #E74F4F"></i>
 											</button>
+										</a>
+									
 										{% endif %}
-										
+									
 									</div>
+									<div class="d-flex col-3">
+										<form action="http://www.google.com/search" method="get" target="_blank">
+											<input type="hidden" name="q" value="{{pn.apn__pn}}">
+											<button class="btn btn-link " data-toggle="tooltip" data-placement="top" title="Rechercher sur google">
+												<i class="fab fa-google fa-lg"></i>
+											</button>
+										</form>
+									</div>
+									
+									
+									
 									<div class="d-flex col-2">
 										<div data-toggle="tooltip" data-placement="top" title="Demande D'achat">
 											<a href=" http://intranet/locator_catalogue.php?filtre={{pn.apn__pn}}" target="_blank">
@@ -489,22 +523,33 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 											</a>
 										</div>
 									</div>
+									
 									<div class="d-flex col-2">
-										<form method="POST" action="create-pn-third" data-toggle="tooltip" data-placement="top" title="Modifier">
+										
+									</div>
+									<div class="d-flex col-2">
+										{% if pn.apn__desc_long %}
+										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
+											title="{{ pn.apn__desc_long|raw}}">
+											<i class="fas fa-file-alt fa-lg"></i>
+										</button>
+										{% else %}
+										<button type="button" class="click-span btn btn-link " data-toggle="tooltip" data-placement="top"
+											title="pas de description longue" disabled>
+											<i class="fas fa-file-alt fa-lg"></i>
+										</button>
+										{% endif %}
+									
+									</div>
+									<div class="d-flex col-2">
+										<form method="POST" action="create-pn-third" data-toggle="tooltip" data-placement="top" title="Modifier <br> {{pn.nom ~ " " ~ pn.prenom }} <br> {{pn.apn__date_modif}}">
 											<input type="hidden" name="id_pn" value="{{pn.apn__pn}}">
 											<button class="btn btn-link " >
 												<i class="fas fa-edit fa-lg"></i>
 											</button>
 										</form>
 									</div>
-									<div class="d-flex col-2">
-										<form action="http://www.google.com/search" method="get" target="_blank">
-											<input type="hidden" name="q" value="{{pn.apn__pn}}">
-											<button class="btn btn-link " data-toggle="tooltip" data-placement="top" title="Rechercher sur google">
-												<i class="fab fa-google fa-lg"></i>
-											</button>
-										</form>
-									</div>
+									
 								</div>	
 						    </td>
 						  </tr>
