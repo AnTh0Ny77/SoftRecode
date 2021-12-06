@@ -100,7 +100,7 @@ $(document).ready(function()
 				success: function (data) 
 				{
 					dataSet = JSON.parse(data);
-					console.log( 'hey');
+					console.log(dataSet);
 					if (dataSet[1].length > 0) 
 					{
 						$('#wrapper-pn').removeClass('d-none');
@@ -203,6 +203,7 @@ $(document).ready(function()
 		get_pn_line_and_refresh(true);
 	}
 	if ($('#duplicata').length > 0){
+		console.log($('#duplicata').val());
 		get_pn_line_and_refresh(false);
 	}
 

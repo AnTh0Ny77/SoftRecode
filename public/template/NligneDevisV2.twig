@@ -283,6 +283,10 @@
                                                     <input type='hidden' name='boolModif' value=''>
                                                     <button class="btn btn-outline-primary  " type="submit" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Valider <i class="far fa-bullseye-pointer"></i></button>
                                                 {% endif %}
+                                                {% if duplicate %}
+                                                    <input type='hidden'  id="duplicata" value='{{modif.cmdl__id}}'>
+                                                {% endif %}
+                                               
                                 </div>
                                
                                 </div>
@@ -351,7 +355,7 @@
                         <form class="mx-1" action="ligneDevisV2" method="POST">
                             <input type="hidden" name="modifyIdCmd" value="{{ligne.cmdl__cmd__id}}"/>
                             <input type="hidden" name="modifyId" value="{{ligne.devl__id}}"/>
-                            <input type="hidden" name="duplicate" id="duplicata" value="{{ligne.devl__id}}">
+                            <input type="hidden" name="duplicate"  value="{{ligne.devl__id}}">
                             <button type="submit" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Dupliquer"><i class="far fa-copy"></i></button>
                         </form>
                     </div>
@@ -741,6 +745,7 @@
         </div>
     </div>
     <!--formulaire d'envoi du port auto-->
+    
     {% if devisLignes %}
     <form action="ligneDevisV2" method="POST" id="form_port">
         <input type="hidden" id="value_port" name="value_port" value="">
