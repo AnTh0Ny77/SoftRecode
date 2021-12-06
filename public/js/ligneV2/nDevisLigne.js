@@ -98,7 +98,7 @@ $(document).ready(function()
 						$('#pn-select').find('option').remove();
 						$('#pn-select').selectpicker('refresh');
 						$("#pn-select").append(new Option('Non spécifié', '0'))
-
+						CKEDITOR.instances['comClient'].data('');
 						for (let index = 0; index < dataSet[1].length; index++)
 						{
 							
@@ -137,7 +137,7 @@ $(document).ready(function()
 							$('#designation').val(dataSet.apn__design_com);
 						}
 						if (dataSet.apn__desc_long.length > 0) {
-							CKEDITOR.instances['comClient'].insertHtml(dataSet.apn__design_com);
+							CKEDITOR.instances['comClient'].insertHtml(dataSet.apn__desc_long);
 						
 						}
 					}
