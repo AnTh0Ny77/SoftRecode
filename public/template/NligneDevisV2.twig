@@ -351,7 +351,7 @@
                         <form class="mx-1" action="ligneDevisV2" method="POST">
                             <input type="hidden" name="modifyIdCmd" value="{{ligne.cmdl__cmd__id}}"/>
                             <input type="hidden" name="modifyId" value="{{ligne.devl__id}}"/>
-                            <input type="hidden" name="duplicate" value="{{ligne.devl__id}}">
+                            <input type="hidden" name="duplicate" id="duplicata" value="{{ligne.devl__id}}">
                             <button type="submit" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Dupliquer"><i class="far fa-copy"></i></button>
                         </form>
                     </div>

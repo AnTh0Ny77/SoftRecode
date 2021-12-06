@@ -26,6 +26,8 @@ $(document).ready(function()
 	let get_pn_and_refresh = function()
 	{
 		let modele = $('#fmm').children("option:selected").val();
+
+		
 		$.ajax(
 			{
 				type: 'post',
@@ -77,9 +79,16 @@ $(document).ready(function()
 
 
 	// EST UTILISEE EN CAS DE MODIFICATION DE LIGNE / 
-	let get_pn_line_and_refresh = function()
+	let get_pn_line_and_refresh = function(bool)
 	{
 		let id_ligne = $('#boolModif').val();
+
+		if (bool == true ) {
+			 id_ligne = $('#boolModif').val();
+		} else{
+			 id_ligne = $('#duplicata').val();
+		} 
+		
 			$.ajax(
 			{
 				type: 'post',
@@ -98,7 +107,7 @@ $(document).ready(function()
 						$('#pn-select').find('option').remove();
 						$('#pn-select').selectpicker('refresh');
 						$("#pn-select").append(new Option('Non spécifié', '0'))
-						CKEDITOR.instances['comClient'].data('');
+						
 						for (let index = 0; index < dataSet[1].length; index++)
 						{
 							
@@ -191,7 +200,10 @@ $(document).ready(function()
 
 	if ($('#boolModif').length > 0 )
 	{
-		get_pn_line_and_refresh();
+		get_pn_line_and_refresh(true);
+	}
+	if ($('#duplicata').length > 0){
+		get_pn_line_and_refresh(false);
 	}
 
     if ($('#comInterne').length) 
@@ -242,12 +254,12 @@ $('#fmm').on('change', function()
 		    {
 			$("#designation").val(selectedArticle);
 		    }
-		    if (dataSet.afmm__image != null || dataSet.afmm__image.length == 0 ) 
-		    {
+			if (dataSet.afmm__image) {
 				$('#hover_image').removeClass('d-none');
 				let html = '<img src="data:image/png;base64,' + dataSet.afmm__image + '" width="270" />';
-				jbox_image.setContent(html);    
-		    }
+				jbox_image.setContent(html);
+			}
+		   
 		    else
 		    {
 				$('#hover_image').addClass('d-none');
