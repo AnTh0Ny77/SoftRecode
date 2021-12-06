@@ -173,7 +173,7 @@ foreach ($pn_list as $key => $pn)
     $pn->specs = $Stocks->get_specs_pn_show($pn->apn__pn);
     $pn->apn__image  = base64_encode($pn->apn__image);
    
-    // $count_stock = $Stocks->count_from_totoro($Totoro, $pn->apn__pn);
+    $count_stock = $Stocks->count_from_totoro($Totoro, $pn->apn__pn);
     $date_time = new DateTime($pn->apn__date_modif);
 	$date_time = $date_time->format('d/m/Y');
 	$pn->apn__date_modif = $date_time ; 
