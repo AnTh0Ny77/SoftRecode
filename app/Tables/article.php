@@ -623,10 +623,26 @@ class Article extends Table
   }
 
   public function getFAMILLE()
-  { /* Liste des famille dans keyword.famil */
+  { 
+	$sql = 'SELECT DISTINCT
+    keyword.kw__type,
+    keyword.kw__value,
+    keyword.kw__ordre,
+    keyword.kw__lib,
+    keyword.kw__info
+	FROM
+		keyword
+	INNER JOIN art_attribut_cle ON art_attribut_cle.aac__famille = keyword.kw__value
+	WHERE
+		keyword.kw__type = \'famil\'
+	GROUP BY
+		kw__value';
+
+
+
 	$SQL = 'SELECT kw__value, kw__lib, kw__lib_uk, kw__info
 	FROM keyword WHERE kw__type = \'famil\' ORDER BY kw__ordre, kw__lib';
-	$request =$this->Db->Pdo->query($SQL);
+	$request =$this->Db->Pdo->query($sql);
 	$data = $request->fetchAll(PDO::FETCH_OBJ);
 	return $data;
   }
