@@ -558,7 +558,7 @@
 
                 <form action="printDevis2" method="POST">
                     <input type="hidden" name="idDevis" value="{{devis.devis__id}}">
-                <div class="d-flex justify-content-around flex-wrap my-3 ">
+                <div class="d-flex justify-content-between flex-wrap my-3 ">
                     
                     {# <div class="custom-control custom-checkbox col-4">
                         {% if devis.cmd__mode_remise %}
@@ -577,8 +577,7 @@
                         {% else %}
                             <input type="checkbox" class="custom-control-input" id="checkExtend" name="checkExtend" value='ok'>
                             <label class="custom-control-label" for="checkExtend">Reporter les extensions</label>
-                        {% endif %}
-                        
+                        {% endif %} 
                     </div>
                     <div class="custom-control custom-checkbox col-4">
                             {% if devis.cmd__modele_devis == 'STX' %}
@@ -587,8 +586,7 @@
                             {% else %}
                                 <input type="checkbox" class="custom-control-input" id="check_total" name="check_total" value='ok'>
                                 <label class="custom-control-label" for="check_total">Masquer le total</label>
-                            {% endif %}
-                            
+                            {% endif %}    
                     </div>
                     <div class="custom-control custom-checkbox col-4">
                         {% if devis.cmd__modele_devis == 'TVT' %}
@@ -598,9 +596,16 @@
                             <input type="checkbox" class="custom-control-input" id="check_tva" name="check_tva" value='ok'>
                             <label class="custom-control-label" for="check_tva">Masquer la tva</label>
                         {% endif %}
-                           
                     </div>
-
+                    <div class="custom-control custom-checkbox col-4">
+                        {% if devis.cmd__modele_devis == 'STS' %}
+                            <input type="checkbox" class="custom-control-input" id="check_standard" name="check_standard" value='ok' checked>
+                            <label class="custom-control-label" for="check_standard">Masquer sans garantie</label>
+                        {% else %}
+                            <input type="checkbox" class="custom-control-input" id="check_standard" name="check_standard" value='ok'>
+                            <label class="custom-control-label" for="check_standard">Masquer sans garantie</label>
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <div>

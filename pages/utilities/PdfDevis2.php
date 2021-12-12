@@ -91,6 +91,11 @@ if (!empty($_POST['idDevis']))
         }
 
         //si absence de total :
+        if (!empty($_POST['check_standard'])) {
+            $General->updateAll('cmd', 'STS', 'cmd__modele_devis', 'cmd__id', $_POST['idDevis']);
+        }
+
+        //si absence de total :
         if (!empty($_POST['check_total'])) 
         {
             $General->updateAll('cmd' , 'STX' , 'cmd__modele_devis' , 'cmd__id' , $_POST['idDevis']);
