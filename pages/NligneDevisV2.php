@@ -119,7 +119,7 @@ if (!empty($_POST['modifReturn']) )
         $General->updateAll('cmd' , $_POST['contactLivraison'] , 'cmd__contact__id_livr' , 'cmd__id' , $_POST['modifReturn']);
         $General->updateAll('cmd' , $_POST['globalComClient'] , 'cmd__note_client' , 'cmd__id' , $_POST['modifReturn']);
         $General->updateAll('cmd' , $_POST['globalComInt'] , 'cmd__note_interne' , 'cmd__id' , $_POST['modifReturn']);
-        $General->updateAll('cmd' , 'STT' , 'cmd__modele_devis' , 'cmd__id' , $_POST['modifReturn']);
+        // $General->updateAll('cmd' , 'STT' , 'cmd__modele_devis' , 'cmd__id' , $_POST['modifReturn']);
         $General->updateAll('cmd' , $tva , 'cmd__tva' , 'cmd__id' , $_POST['modifReturn']);
         $General->updateAll('cmd' , $titre , 'cmd__nom_devis' , 'cmd__id' , $_POST['modifReturn']);
         $General->updateAll('cmd' , $_POST['code'] , 'cmd__code_cmd_client' , 'cmd__id' , $_POST['modifReturn']);
