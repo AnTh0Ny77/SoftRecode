@@ -172,6 +172,7 @@ $('#client_input').on('keypress' , function(e)
                             success: function(data)
                             {
                                 //deserialize objet json (tableau d'objets)
+                                console.log(data)
                                 dataSet = JSON.parse(data);
                                 //si la réponse est nulle : 
                                 if (dataSet.length < 1) 

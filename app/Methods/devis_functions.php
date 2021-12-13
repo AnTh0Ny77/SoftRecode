@@ -975,7 +975,6 @@ class Devis_functions
 		}
       
 
-
 		$marqueurPresta = ' <input type="checkbox"> garantie 06/12 mois';
 		$marqueurType = '';
         $array_garantie = [
@@ -1109,6 +1108,172 @@ class Devis_functions
                 }
 		    }
 			echo  $finalEcho . '</table>';
+}
+
+
+public static function no_standard_total_devis($lignes , $garantieArray , $prixTotal , $tva , $_taux_tva)
+{
+$globalArray = array();
+foreach ($garantieArray as  $value) 
+{
+    // création d'un tableau multidimensionnel pour chaque valeur présente dans le tableau : 
+    $type = intval($value->kw__value);
+    $globalArray[$type]  = [$type];
+}  
+    // pour sur chaque ligne de garantie 
+    foreach ($lignes as $ligne ) 
+    { 
+        // variable $xtend déclaré pour chaque tableau d'extension de garanties : 
+        $xtend =  $ligne->tableau_extension;
+        // si il ne s'agit pas d'un service pour sur chaque tableau d'extension du tableau des extensions de  garantie : 
+    
+            foreach($xtend as $array) 
+            {
+                //sur chaque valeur du tableau des garantie dans keyword : 
+                foreach ($globalArray as  $value) 
+                {
+                    // si la valeur du nombre de mois dans l'extension correspond à la valeur du  tableau de la liste keyword : 
+                    if (intval($array['devg__type']) == $value[0]) 
+                    {
+                        // la variable $results est le résultat du prix de l'extension correspondante * la quantité 
+                        $results = floatval($array['devg__prix']) * intval($ligne->devl_quantite);
+                        //  pousse dans le tableau correspondant à la valeur de la garantie :
+                        array_push( $globalArray[$value[0]] , $results );     
+                    } 
+                    else 
+                    {
+                        // sinon détruit la valeur : 
+                        unset($value);
+                    }
+                }      
+        }
+    }
+  
+
+    $marqueurPresta = ' <input type="checkbox"> garantie 06/12 mois';
+    $marqueurType = '';
+    $array_garantie = [
+        01 => [],
+        02 => [],
+        03 => [],
+        04 => [],
+        06 => [],
+        12 => [],
+        24 => [],
+        48 => [],
+        60 => []
+    ];
+    foreach ($lignes  as  $ligne) 
+    {
+        if(!empty($ligne->devl__mois_garantie) && intval($ligne->devl__mois_garantie != 0)) {
+           foreach ($array_garantie as $key => $value) {
+                if (intval($key) === intval($ligne->devl__mois_garantie) ) {
+                   array_push($array_garantie[$key], 1 );
+                }
+           }
+        } 
+     }
+
+     foreach($array_garantie as $key => $grt) {
+       if (empty($grt)) {
+            unset($array_garantie[$key]);
+       }
+       else $array_garantie[$key] = $key;
+     }
+    $array_garantie = array_values($array_garantie);
+     switch (count($array_garantie)) {
+
+         case 1:
+           
+            $marqueurPresta = ' <input type="checkbox"> garantie '. $array_garantie[0] .' mois';
+             break;
+        case 2:
+            $marqueurPresta = ' <input type="checkbox"> garantie ' . $array_garantie[0] .'/'. $array_garantie[1] . ' mois';
+            break;
+         
+     }
+
+    foreach ($lignes  as  $ligne) {
+        //réparation : 
+        if ($ligne->devl__type == 'REP') {
+            $marqueurPresta = '<input type="checkbox"> hors garantie';
+        }
+    }
+     $echoArrays = "";
+     
+    foreach ($globalArray as  $resultsArray) 
+    {
+        if (sizeof($resultsArray) > 1)
+        {
+            // si la taille du tableau correspond au nombre de ligne +1 (index 0 )alors chaque ligne possède la garantie : 
+            $marqueurType = "Type de garantie";
+            //on retire l'index 0 corespondant à la valeur de la garantie :
+            $prixTemp =  floatval(array_sum($resultsArray) - $resultsArray[0]);
+            // on additionne au prix total  :
+            $prix = $prixTemp + $prixTotal;
+            // renvoi dans le template html => 
+            if (!$tva) 
+            {
+                $echoArrays .=  "<tr><td style='width: 250px; font-size: 95%; font-style: italic; text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style=' font-size: 95%; font-style: italic; text-align: center'><strong>  "
+                . number_format($prix,2  ,',', ' ').
+                " €</strong></td></tr>";
+            } 
+            else 
+            {
+                $echoArrays .=  "<tr><td style='width: 210px; font-size: 95%; font-style: italic;  text-align: left'><input type='checkbox'> garantie " .$resultsArray[0] ." mois </td><td style='font-size: 95%; font-style: italic; text-align: center'><strong>  "
+                . number_format($prix,2  ,',', ' ').
+                " €</strong></td><td style='font-size: 95%; font-style: italic; text-align: right'> " 
+                .number_format(Devis_functions::ttc( floatval($prix), $_taux_tva),2 ,',', ' ').
+                " €</td></tr>";
+            }
+        }       
+    }
+    
+    if (empty($echoArrays)) 
+        {
+            $finalEcho = '<table CELLSPACING=0  style=" margin-left: 180px;  border: 1px black solid;">
+            <tr style="background-color: #dedede; ">
+            <td style=" margin-left: 210px; width: 0px; text-align: left"> '. $marqueurType .'</td>
+            <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
+            <td style="text-align: center">Total € TTC</td>
+            </tr>
+            <tr><td style="width: 0px; font-size: 95%; font-style: italic; text-align: left"> </td>
+            <td style="text-align: center; font-style: italic;  font-size: 95%;"><strong>  '. number_format($prixTotal,2  ,',', ' ') . ' €</strong></td>
+            <td style="text-align: right; font-style: italic; font-size: 95%;"> ' .number_format(Devis_functions::ttc(floatval($prixTotal), $_taux_tva),2 ,',', ' ').' €</td>
+            </tr>' . $echoArrays;
+
+            if(!$tva) 
+            {
+                $finalEcho = '<table CELLSPACING=0  style=" margin-left: 200px;  border: 1px black solid;">
+                <tr style="background-color: #dedede;">
+                <td style="width: 0px; text-align: left"> '. $marqueurType .'</td>
+                <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
+                </tr>
+                <tr><td style=" color: white; width: 0px;font-size: 95%; font-style: italic; text-align: left"></td>
+                <td style="font-style: italic; text-align: center; font-size: 95%;"><strong>  '. number_format($prixTotal,2  ,',', ' ') . '€</strong></td>
+                </tr>' . $echoArrays;'';
+            }  
+    
+        }
+        else 
+        {
+            $finalEcho = '<table CELLSPACING=0  style=" border: 1px black solid;">
+            <tr style="background-color: #dedede; ">
+            <td style="width: 210px; text-align: left"> '. $marqueurType .'</td>
+            <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
+            <td style="text-align: center">Total € TTC</td>
+            </tr>' . $echoArrays;
+
+            if (!$tva) 
+            {
+                $finalEcho = '<table CELLSPACING=0  style=" border: 1px black solid;">
+                <tr style="background-color: #dedede;">
+                <td style="width: 250px; text-align: left"> '. $marqueurType .'</td>
+                <td style="text-align: center; width: 85px;"><strong>Total € HT </strong></td>
+                </tr>' . $echoArrays;'';
+            }
+        }
+        echo  $finalEcho . '</table>';
 }
 
     public static function remise_total_devis_pdf($cmd , $array_ligne)

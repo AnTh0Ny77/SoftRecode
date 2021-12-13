@@ -40,7 +40,6 @@ if (empty($_SESSION['user'])) {
             $societe_livraison = $Client->getOne($devis->devis__id_client_livraison);
         }
         ob_start();
-
 ?>
         <style type="text/css">
             .page_header {
@@ -186,6 +185,11 @@ if (empty($_SESSION['user'])) {
                                     case 'TVT':
                                         $totalPrice = array_sum($devis_ligne);
                                         $totaux = Devis_functions::classic_total_devis($devis_ligne, $garanties, array_sum($tableau_prix), false, $devis->tva_Taux);
+                                        break;
+                                    
+                                    case 'STS':
+                                        $totalPrice = array_sum($devis_ligne);
+                                        $totaux = Devis_functions::no_standard_total_devis($devis_ligne, $garanties, array_sum($tableau_prix), false, $devis->tva_Taux);
                                         break;
 
                                     default:
