@@ -1,0 +1,43 @@
+.input-recode{
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.16);
+    border-radius: 10px;
+}
+
+
+.input-recode:focus{
+  box-shadow: 0px 0px 20px 5px #77DB85;
+  border-color: #77DB85;
+  border-radius: 10px;
+}
+
+.btn-recode{
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 12px 27px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.file-recode{
+    width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.label-file-recode{
+    cursor: pointer;
+    color: #4CAF50;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.label-file-recode:hover {
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.16);
+    
+}

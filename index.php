@@ -2,6 +2,7 @@
 
 require "vendor/autoload.php";
 use App\Controller\RechercheController;
+use App\Controller\TicketsFormsController;
 
 
  
@@ -101,6 +102,10 @@ use App\Controller\RechercheController;
 
 		case '/SoftRecode/recherche-articles-familles';
 			echo RechercheController::recherche_famille();
+			break;
+
+		case '/SoftRecode/tickets-forms';
+			echo TicketsFormsController::forms();
 			break;
 
 		case '/SoftRecode/recherche-articles-specs';
