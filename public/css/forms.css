@@ -20,6 +20,9 @@
     display: inline-block;
     font-size: 14px;
 }
+.btn-recode:hover{
+    background-color: #4CAF50; /* Green */
+}
 
 .file-recode{
     width: 0.1px;
@@ -40,4 +43,12 @@
 .label-file-recode:hover {
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.16);
     
+}
+
+.background-recode{
+    background-image: url("../img/background-image.png");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat, repeat;
+    background-color: #cccccc;
 }

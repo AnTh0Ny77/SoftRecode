@@ -15,7 +15,7 @@ class customSearchInput extends HTMLElement
                 const input_search = document.createElement('input');
                 input_search.setAttribute('type', 'search');
                 input_search.setAttribute('class', 'form-control');
-                
+               
                 //definition du boutton : 
                 const button = document.createElement('button');
                 button.setAttribute('type', 'button');

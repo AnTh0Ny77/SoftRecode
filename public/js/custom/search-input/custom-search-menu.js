@@ -22,7 +22,7 @@ class customSearchMenu extends HTMLElement
                 //definition de l'input de recherche : 
                 const input_search = document.createElement('input');
                 input_search.setAttribute('type', 'search');
-                input_search.setAttribute('class', 'form-control form-control-sm border rounded');
+                input_search.setAttribute('class', 'form-control form-control-sm border rounded  input-recode');
                 input_search.setAttribute('name', 'search');
                 formRow.append(input_search);
 
@@ -41,7 +41,7 @@ class customSearchMenu extends HTMLElement
                         {
                                 form.submit(); 
                         }
-                        else input_search.setAttribute('class', 'form-control border  border-danger');
+                        else input_search.setAttribute('class', 'form-control border input-recode  border-danger');
                 }
 
                 //definition des écouteur d'évenements : 
@@ -60,7 +60,7 @@ class customSearchMenu extends HTMLElement
                 })
                 input_search.addEventListener('focusout', () =>
                 {
-                        input_search.setAttribute('class', 'form-control form-control-sm border rounded');
+                        input_search.setAttribute('class', 'form-control form-control-sm border input-recode rounded');
                 })
         }
 
