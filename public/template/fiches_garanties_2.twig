@@ -91,7 +91,7 @@
         <input type='hidden' id="hiddenAddLinesCmd" name='hiddenAddLinesCmd' value='{{cmd.devis__id}}'>
         <div class="d-flex flex-row form-group mt-3 justify-content-around  mx-4">
           <div class="col-12 form-group">
-            <label for="validationCustom04">Article</label>
+            <label for="choixDesignation">Article</label>
             <select class="selectpicker col-12 input-recode" id="choixDesignation" name="choixDesignation" data-live-search="true">
               {% for article in articleList %}
               <option class="optionSelect " value={{article.afmm__id}}>{{article.afmm__modele ~ " " ~
@@ -100,7 +100,19 @@
             </select>
           </div>
         </div>
-		<div class="d-flex flex-row form-group  justify-content-around  mx-4">
+      
+        <div class="d-flex flex-row form-group justify-content-around  mx-4">
+          <div class="d-none form-group col-12" id="wrapper-pn">
+            <label for="pn-select">PN</label>
+                <select class=" input-recode  selectpicker col-12" data-live-search="true" data-size="10" data-width="100%"
+                    name="pn_select" id="pn-select">
+                    <option class="optionSelect " value="0">Non spécifié</option>
+                </select>
+          </div>
+        </div>
+         
+       
+		<div class="d-flex flex-row form-group mt-3  justify-content-around  mx-4">
 			<div class="col-12 form-group">
 				<label for="validationCustom04">Désignation</label>
 				<input type="text" class="form-control input-recode" id="designationArticle" name="designationArticle" required>
@@ -137,7 +149,7 @@
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
 <script type="text/javascript" src="public/ckeditor/ckeditor.js"></script>
-
+<script type="text/javascript" src="public/js/functions/articles.js"></script>
 <script type="text/javascript" src="public/js/fiches_garanties_2.js"></script>
 
 {% endblock %}

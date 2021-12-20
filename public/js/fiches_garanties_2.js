@@ -234,16 +234,28 @@ $(document).ready(function()
          
      })
      
-       
-
-     //innit de l'éditeur de texte de la zone de commentaire: 
+    //innit de l'éditeur de texte de la zone de commentaire: 
     CKEDITOR.config.height = '5em';
-    CKEDITOR.replace('commentaire_interne',
-        {
-            language: 'fr',
-            removePlugins: 'justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor',
-            removeButtons: 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
-        });
+    CKEDITOR.replace('commentaire_interne',{
+        language: 'fr',
+        removePlugins: 'justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor',
+        removeButtons: 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
+    });
+
+    // public/js/functions/articles.js:
+
+    //select du modele 
+    let select_modele = $('#choixDesignation');
+    //select du pn:
+    let select_pn =  $('#pn-select');
+    //wrapper du pn 
+    let wrapper_pn = $('#wrapper-pn');
+
+    //met à jour le select du pn sur chaque changement du select du modele: 
+    select_modele.on('change' , function(){
+        selectModele_2_selectPn(select_modele,select_pn,wrapper_pn);
+    })
+    
 })
     
     
