@@ -5,9 +5,11 @@
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="public/css/forms.css">
+<link rel="stylesheet" href="public/css/components.css">
 {% endblock %}
 {% block main %}
-<main role="main" class=" container-fluid my-3 col-11 container-body">
+<main role="main" class=" container-fluid my-3 col-11 container-body text-monospace">
  
   <div class="d-flex justify-content-start flex-column mb-5 border-bottom">
     <h2>Fiche de garantie</h2>
@@ -16,14 +18,14 @@
     <div class=" my-1  col-5">
       <!--carte recherche-->
       <div class='card-body' id="search_client">
-        <input class="form-control mr-sm-2 " list="search_list" type="search" placeholder="Recherche client"
+        <input class="form-control mr-sm-2 input-recode " list="search_list" type="search" placeholder="Recherche client"
           aria-label="Search" id="client_input" autocomplete='off'>
         <ul id="search_list" class="list-group">
         </ul>
       </div>
       <div class="container ">
         <!--carte client select -->
-        <div class="card  mb-3 d-none" id="card_client">
+        <div class="card shadow-rec mb-3 d-none" id="card_client">
           <div class="card-header">
             <button type="button" class="close" aria-label="Close" id="client_button">
               <span aria-hidden="true">&times;</span>
@@ -40,12 +42,12 @@
           <input type="hidden" id="hidden_client" name="hidden_client">
           <div class="form-group">
             <label for="contact_select">Contact</label>
-            <select class="form-control" id="contact_select" name="contact_select" data-size="5">
+            <select class="form-control input-recode" id="contact_select" name="contact_select" data-size="5">
             </select>
           </div>
           <div class="form-group">
             <label for="prestation">Type garantie</label>
-            <select class="form-control" name="prestation" id="prestation" data-size="5">
+            <select class="form-control input-recode" name="prestation" id="prestation" data-size="5">
               <option value="02" selected>Garantie</option>
               <option value='03'>Maintenance</option>
               <option value='06'>RMA Fournisseur</option>
@@ -53,18 +55,18 @@
           </div>
           <div class="form-group">
             <label for="commande_origine">N° commande d'origine</label>
-            <input class="form-control" type="text" id="commande_origine" name="commande_origine" / required>
+            <input class="form-control input-recode" type="text" id="commande_origine" name="commande_origine" / required>
           </div>
           <div class="form-group">
             <label for="commentaire_interne">Commentaire</label>
-            <textarea class="form-control" id="commentaire_interne" name="commentaire_interne"
+            <textarea class="form-control input-recode" id="commentaire_interne" name="commentaire_interne"
               placeholder="Commentaire interne...."></textarea>
           </div>
           <div class="modal-footer" id="">
-            <button data-toggle="modal" data-target="#modal_ligne" type="button" class="btn btn-success">Articles <i
+            <button data-toggle="modal" data-target="#modal_ligne" type="button" class="btn-recode shadow-rec">Articles <i
                 class="fas fa-plus"></i></button>
             <input type="hidden" name="json_array" id="json_array">
-            <button type="submit" id="print_button" class="btn btn-primary d-none" disabled>Valider <i
+            <button type="submit" id="print_button" class="btn-recode-primary d-none" disabled>Valider <i
                 class="fas fa-print"></i></button>
           </div>
         </form>
@@ -80,44 +82,47 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Ajout Ligne</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">Ajout d'Articles</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <input type="hidden" name="hiddenAddLines" value="{{ retour.devis__id}}">
         <input type='hidden' id="hiddenAddLinesCmd" name='hiddenAddLinesCmd' value='{{cmd.devis__id}}'>
-        <div class="d-flex flex-row form-group m-3 justify-content-around">
-          <div class="col-6 form-group">
+        <div class="d-flex flex-row form-group mt-3 justify-content-around  mx-4">
+          <div class="col-12 form-group">
             <label for="validationCustom04">Article</label>
-            <select class="selectpicker col-12" id="choixDesignation" name="choixDesignation" data-live-search="true">
+            <select class="selectpicker col-12 input-recode" id="choixDesignation" name="choixDesignation" data-live-search="true">
               {% for article in articleList %}
-              <option class="optionSelect modelSelect " value={{article.afmm__id}}>{{article.afmm__modele ~ " " ~
+              <option class="optionSelect " value={{article.afmm__id}}>{{article.afmm__modele ~ " " ~
                 article.famille ~ " " ~ article.Marque }}</option>
               {% endfor %}
             </select>
           </div>
-          <div class="form-group col-3">
-            <label for="validationCustom04">Quantité</label>
-            <input type="number" class="form-control" value="1" min="1" id="quantiteLigne" name="quantiteLigne"
-              required>
-          </div>
         </div>
-        <div class="d-flex flex-row form-group m-2 justify-content-around">
-          <div class="form-group col-7">
-            <label for="validationCustom04">Désignation</label>
-            <input type="text" class="form-control" id="designationArticle" name="designationArticle" required>
-          </div>
-          <div class="col-md-3 ">
-            <label for="prestationChoix">Type de retour</label>
-            <select class="form-control" name="typeLigne" id='typeLigne' required>
-              <option class="" value="ECH">Echange</option>
-              <option class="" value="RTE">Retour</option>
-            </select>
-          </div>
-        </div>
+		<div class="d-flex flex-row form-group  justify-content-around  mx-4">
+			<div class="col-12 form-group">
+				<label for="validationCustom04">Désignation</label>
+				<input type="text" class="form-control input-recode" id="designationArticle" name="designationArticle" required>
+			</div>
+		</div>
+		<div class="d-flex justify-content-between mb-4 mx-4">
+			<div class="form-group col-5">
+				<label for="validationCustom04">Quantité</label>
+				<input type="number" class="form-control input-recode" value="1" min="1" id="quantiteLigne" name="quantiteLigne"
+					required>
+			</div>
+			<div class="form-group col-5 ">
+				<label for="prestationChoix">Type de retour</label>
+				<select class="form-control input-recode" name="typeLigne" id='typeLigne' required>
+					<option class="" value="ECH">Echange</option>
+					<option class="" value="RTE">Retour</option>
+				</select>
+			</div>
+		</div>
+       
         <div class="modal-footer">
-          <button class="btn btn-success" id='post_article'>Valider</button>
+          <button class="btn btn-success btn-recode shadow-rec" id='post_article'>Valider</button>
         </div>
       </div>
     </div>

@@ -10,6 +10,16 @@
   border-radius: 10px;
 }
 
+.card-recode{
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.16);
+    border-radius: 10px;
+}
+
+.green-card-recode{
+    box-shadow: 4px 4px 8px #77DB85;
+    border-radius: 10px;
+}
+
 .btn-recode{
     background-color: #4CAF50; /* Green */
     border: none;
@@ -22,6 +32,34 @@
 }
 .btn-recode:hover{
     background-color: #4CAF50; /* Green */
+}
+
+.btn-recode-danger{
+    background-color: #e74444; /* Green */
+    border: none;
+    color: white;
+    padding: 12px 27px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+.btn-recode-danger:hover{
+    background-color: #f51212; /* Green */
+}
+
+.btn-recode-primary{
+    background-color: #219ee7; /* Green */
+    border: none;
+    color: white;
+    padding: 12px 27px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+.btn-recode-primary:hover{
+    background-color: #007dc5; /* Green */
 }
 
 .file-recode{

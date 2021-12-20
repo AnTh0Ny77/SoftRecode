@@ -149,13 +149,17 @@ $(document).ready(function()
             //on creer une ligne pour chaque article : 
            if(tableau_article[index].typ == 'ECH')
            {
-               text_variable = 'Echange:'
+               text_variable = 'Echange'
            }
            else
            {
-               text_variable = 'Retour:'
+               text_variable = 'Retour'
            } 
-            let new_line = '<div class=" mb-2 card shadow bg-light  px-4 py-4 d-flex flex-row justify-content-around"><div class="text-primary" >'+ text_variable  +'</div> <div class="mx-3">'+ tableau_article[index].qte + ' X <b class="mx-3">' + tableau_article[index].design +'</b></div><div> <button type="button" class=" btn btn-danger btn-sm click_article" value="'+index+'"><i class="far fa-times"></i></button></div>  </div>';
+            let new_line = '<div class="py-4 mb-2 card green-card-recode bg-secondary py-2 d-flex flex-row justify-content-around"><h5 class="text-primary font-weight-bold" >'+ text_variable  +
+                ' <br> <span class="text-secondary">quantité: ' + tableau_article[index].qte
+                + '</span></h5> <div class="mx-3"><b class="mx-3">' + tableau_article[index].design
+                +'</b></div><div> <button type="button" class=" btn-recode-danger rounded-pill shadow-rec click_article" value="'
+            +index+'"><i class="far fa-times"></i></button></div>  </div>';
           
            $("#form_article").append(new_line);
         
