@@ -209,7 +209,9 @@ $(document).ready(function()
          let designation = $('#designationArticle').val();
          let quantite = $('#quantiteLigne').val();
          let type = $('#typeLigne').val();
-        
+         let pn_ligne = $('#pn-select').children("option:selected").val();
+
+         console.log(pn_ligne);
         
          if ( designation.length > 1 && quantite > 0) 
          {
@@ -219,6 +221,7 @@ $(document).ready(function()
                  design : designation ,
                  qte : quantite ,
                  typ : type ,
+                 pn: pn_ligne
                
              }
              tableau_article.push(article);
@@ -250,10 +253,16 @@ $(document).ready(function()
     let select_pn =  $('#pn-select');
     //wrapper du pn 
     let wrapper_pn = $('#wrapper-pn');
+    //designation text = 
+    let designation = $('#designationArticle');
 
     //met à jour le select du pn sur chaque changement du select du modele: 
     select_modele.on('change' , function(){
         selectModele_2_selectPn(select_modele,select_pn,wrapper_pn);
+    })
+    //met a jour la designation sur chaque changement de pn :  
+    select_pn.on('change', function (){
+        maj_designation(designation, select_pn);
     })
     
 })

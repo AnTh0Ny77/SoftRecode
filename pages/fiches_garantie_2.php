@@ -89,7 +89,8 @@ if(!empty($_POST['json_array']) && !empty($_POST['hidden_client']) && !empty($_P
 		$objectInsert->idfmm = $ligne->id;
 		$objectInsert->extension = '';
 		$objectInsert->prixGarantie = '';
-		$insert = $Cmd->insertLine($objectInsert);
+		$objectInsert->pn = $ligne->pn;
+		$insert = $Cmd->insertLine_fiche($objectInsert);
 	}
 	
 	$retour = $Cmd->GetById($retour);

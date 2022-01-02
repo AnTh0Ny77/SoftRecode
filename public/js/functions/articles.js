@@ -16,6 +16,7 @@
 						if (dataSet[index].apn__desc_short == null){
 							dataSet[index].apn__desc_short = '';
 						}
+						
 						selectPn.append(new Option(dataSet[index].apn__pn_long + " " + dataSet[index].apn__desc_short, dataSet[index].id__pn))
 					}
 					selectPn.selectpicker('refresh')
@@ -36,5 +37,7 @@
     //met a jour la designation d'un champ texte avec le changement d'un select : 
     let maj_designation = function(text_input, select_input){
         var selected_pn_text = select_input.children("option:selected").text();
-        text_input.val(selected_pn_text);
+		if (selected_pn_text.length > 2 ) {
+			text_input.val(selected_pn_text);
+		}
     }
