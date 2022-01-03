@@ -149,13 +149,17 @@ $(document).ready(function()
             //on creer une ligne pour chaque article : 
            if(tableau_article[index].typ == 'ECH')
            {
-               text_variable = 'Echange:'
+               text_variable = 'Echange'
            }
            else
            {
-               text_variable = 'Retour:'
+               text_variable = 'Retour'
            } 
-            let new_line = '<div class=" mb-2 card shadow bg-light  px-4 py-4 d-flex flex-row justify-content-around"><div class="text-primary" >'+ text_variable  +'</div> <div class="mx-3">'+ tableau_article[index].qte + ' X <b class="mx-3">' + tableau_article[index].design +'</b></div><div> <button type="button" class=" btn btn-danger btn-sm click_article" value="'+index+'"><i class="far fa-times"></i></button></div>  </div>';
+            let new_line = '<div class="py-4 mb-2 card green-card-recode bg-secondary py-2 d-flex flex-row justify-content-around"><h5 class="text-primary font-weight-bold" >'+ text_variable  +
+                ' <br> <span class="text-secondary">quantité: ' + tableau_article[index].qte
+                + '</span></h5> <div class="mx-3"><b class="mx-3">' + tableau_article[index].design
+                +'</b></div><div> <button type="button" class=" btn-recode-danger rounded-pill shadow-rec click_article" value="'
+            +index+'"><i class="far fa-times"></i></button></div>  </div>';
           
            $("#form_article").append(new_line);
         
@@ -205,7 +209,9 @@ $(document).ready(function()
          let designation = $('#designationArticle').val();
          let quantite = $('#quantiteLigne').val();
          let type = $('#typeLigne').val();
-        
+         let pn_ligne = $('#pn-select').children("option:selected").val();
+
+         console.log(pn_ligne);
         
          if ( designation.length > 1 && quantite > 0) 
          {
@@ -215,6 +221,7 @@ $(document).ready(function()
                  design : designation ,
                  qte : quantite ,
                  typ : type ,
+                 pn: pn_ligne
                
              }
              tableau_article.push(article);
@@ -230,16 +237,34 @@ $(document).ready(function()
          
      })
      
-       
-
-     //innit de l'éditeur de texte de la zone de commentaire: 
+    //innit de l'éditeur de texte de la zone de commentaire: 
     CKEDITOR.config.height = '5em';
-    CKEDITOR.replace('commentaire_interne',
-        {
-            language: 'fr',
-            removePlugins: 'justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor',
-            removeButtons: 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
-        });
+    CKEDITOR.replace('commentaire_interne',{
+        language: 'fr',
+        removePlugins: 'justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor',
+        removeButtons: 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
+    });
+
+    // public/js/functions/articles.js:
+
+    //select du modele 
+    let select_modele = $('#choixDesignation');
+    //select du pn:
+    let select_pn =  $('#pn-select');
+    //wrapper du pn 
+    let wrapper_pn = $('#wrapper-pn');
+    //designation text = 
+    let designation = $('#designationArticle');
+
+    //met à jour le select du pn sur chaque changement du select du modele: 
+    select_modele.on('change' , function(){
+        selectModele_2_selectPn(select_modele,select_pn,wrapper_pn);
+    })
+    //met a jour la designation sur chaque changement de pn :  
+    select_pn.on('change', function (){
+        maj_designation(designation, select_pn);
+    })
+    
 })
     
     

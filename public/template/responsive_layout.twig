@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- layoutMain.twig -->
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="icon"  href="public/img/favicon.ico" />
+    <link rel="stylesheet" href="public/css/components.css">
+	{% block style %}
+    
+	{% endblock %}
+	<title>Soft Recode</title>
+</head>
+<body >
+    <nav class="navbar navbar-light sticky-top bg-light shadow-rec">
+            <div>
+                <span class=" ml-2 pr-2 center-text text-monospace" href="#"><i class="fas fa-user text-success "></i>  {{ " " ~ user.prenom ~  " " ~  user.nom ~ " " }} </span> 
+                {% if user.devis_cours %}
+                    <a href="search_switch_notifs?id_user={{user.id_utilisateur}}&status=ATN"  class="btn rounded-circle"
+                    data-toggle="tooltip" data-placement="top" title="devis envoyés">
+                        <span class="fa-stack text-success  " style="vertical-align: top;">
+                            <i class="fal fa-file fa-stack-2x "></i>
+                            <i class=" fa-stack-1x text-success">{{user.devis_cours}}</i>
+                        </span>
+                    </a>
+                {% endif %}
+                {% if user.commandes_cours %}
+                    <button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="commandes en cours">
+                        <a href="search_switch_notifs?id_user={{user.id_utilisateur}}&status=CMD">
+                            <span class="fa-stack text-success" style="vertical-align: top;">
+                                <i class="fal fa-file fa-stack-2x"></i>
+                                <i class=" fa-stack-1x text-success">{{user.commandes_cours}}</i>
+                            </span>	
+                        </a>
+                    </button>	 
+                {% endif %}
+            </div>
+            <div class="btn-group dropleft">
+                <button type="button" class="btn  rounded-pill  shadow-rec-green"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                    <i class="fas fa-tools grey-link" ></i>
+                </button>
+            <div class="dropdown-menu text-monospace menu-drop"> 
+                <custom-search-menu method="POST" class="my-auto" url='search_switch'></custom-search-menu>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="dashboard"><i class="fal fa-chart-network fa-lg fa-fw"></i>  Dashboard</a>	
+                <a class="dropdown-item" href="http://intranet/" target="_blank"><i class="fad fa-recycle fa-lg fa-fw "></i>  Intranet</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="mesDevis"><i class="fal fa-file-search fa-fw"></i> Recherche devis</a>
+				<a class="dropdown-item" href="DevisV2"><i class="fal fa-file-edit fa-fw"></i> Nouveau devis</a>
+				<a class="dropdown-item" href="etiquettes"><i class="fas fa-print-search fa-fw"></i> Étiquettes</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="admin_client"><i class="far fa-building"></i> Creer/Modifier Client</a>
+                <a class="dropdown-item" href="admin_contact"><i class="fas fa-tools"></i> Creer/Modifier Contact</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="ficheTravail"><i class="fal fa-file-search fa-fw"></i> Recherche fiches</a>
+                <a class="dropdown-item" href="fiches_garantie"><i class="fas fa-pencil-alt"></i> Fiches de garantie</a>
+                <a class="dropdown-item" href="transport"><i class="far fa-truck-couch fa-fw"></i> Saisie Transport</a>
+                <a class="dropdown-item" href="fichesEnCours"><i class="far fa-list-alt"></i> Détails fiches en cours</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="facture"><i class="fal fa-file-search fa-fw"></i> Facturation</a>
+                <a class="dropdown-item" href="export"><i class="fas fa-cloud-download-alt"></i> Export</a>
+                <a class="dropdown-item" href="stat"><i class="fas fa-chart-pie"></i> Statistiques</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="abonnement"><i class="far fa-calendar-alt"></i> Abonnements</a>
+                <a class="dropdown-item" href="abonnementNouveau"><i class="far fa-calendar-alt"></i> Creer abonnement</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="ArtCataloguePN"><i class="fad fa-clipboard-check fa-fw"></i> Catalogue</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="utilisateurs"><i class="fal fa-user-tag fa-fw"></i> Utilisateurs</a>
+                <a class="dropdown-item" href="action_utilisateur"><i class="far fa-user-secret"></i> Historique actions</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="unlog"><i class="fad fa-sign-out"></i> Se deconnecter </a>
+            </div>
+              </div>
+      </nav>
+    
+	<!--end navbar-->
+	{% block main  %}
+	{% endblock %}
+</div>
+
+{% block script %}
+{% endblock %}
+<script type="module" src="public/js/custom/import.js"></script>
+<script type="text/javascript">
+	 //initialization des tooltips 
+	 $(function () 
+	 {
+		$('[data-toggle="tooltip"]').tooltip({ html: true })
+	})
+</script>
+
+</body>
+</html>
