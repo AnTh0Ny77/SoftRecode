@@ -56,8 +56,8 @@ if (!empty($_SESSION['AvoirValide'])) {
     $General->updateAll('cmd' , 'AVR', 'cmd__modele_facture', 'cmd__id' , $_POST['PRINTADMINAVOIR'] );
      
     //date du jour:
-    // $date = date("Y-m-d H:i:s");
-    $date = date("2021-12-31 H:i:s");
+    $date = date("Y-m-d H:i:s");
+   
     //update les dates : 
     $General->updateAll('cmd' ,$date, 'cmd__date_fact', 'cmd__id' , $_POST['PRINTADMINAVOIR']);
     $General->updateAll('cmd' ,$date, 'cmd__date_cmd', 'cmd__id' , $_POST['PRINTADMINAVOIR']);
