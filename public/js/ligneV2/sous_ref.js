@@ -160,7 +160,6 @@ $(document).ready(function()
         $('#modal_modif_sous_ref').modal('show');
     })
 
-
     //recupère les pn dispo pour la sous ref  : 
     let get_pn_sousRef_and_refresh = function () {
         let modele = $('#select_sous_ref').children("option:selected").val();
@@ -168,39 +167,30 @@ $(document).ready(function()
             {
                 type: 'post',
                 url: "AjaxPn",
-                data:
-                {
-                    "AjaxPn": modele
-                },
-                success: function (data) {
-
+                data:{"AjaxPn": modele},
+                success: function (data){
                     dataSet = JSON.parse(data);
-
-
-                    if (dataSet.length > 0) {
-
+                    if (dataSet.length > 0){
                         $('#wrapper-pn-sr').removeClass('d-none');
                         $('#pn-select-sr').find('option').remove();
                         $('#pn-select-sr').selectpicker('refresh');
                         $("#pn-select-sr").append(new Option('Non spécifié', '0'))
-                        for (let index = 0; index < dataSet.length; index++) {
-                            if (dataSet[index].apn__desc_short == null) {
+                        for (let index = 0; index < dataSet.length; index++){
+                            if (dataSet[index].apn__desc_short == null){
                                 dataSet[index].apn__desc_short = '';
                             }
                             $("#pn-select-sr").append(new Option(dataSet[index].apn__pn_long + " " + dataSet[index].apn__desc_short, dataSet[index].id__pn))
                         }
-
                         $('#pn-select-sr').selectpicker('refresh')
-                        $('#pn-select-sr').selectpicker('val', '0');
+                        $('#pn-select-sr').selectpicker('val', '0')
                     }
                     else {
                         $('#pn-select-sr').find('option').remove();
-                        $("#pn-select-sr").append(new Option('Non spécifié', '0'))
+                        $("#pn-select-sr").append(new Option('Non spécifié','0'))
                         $('#pn-select-sr').selectpicker('refresh')
-                        $('#pn-select-sr').selectpicker('val', '0');
-                        $('#wrapper-pn-sr').addClass('d-none');
+                        $('#pn-select-sr').selectpicker('val', '0')
+                        $('#wrapper-pn-sr').addClass('d-none')
                     }
-
                 },
                 error: function (err) {
                     console.log('error: ', err);
@@ -209,36 +199,36 @@ $(document).ready(function()
 
     }
 
+    $('#pn-select-sr').on('change' ,function(){
+        let text = $('#pn-select-sr').children("option:selected").text();
+        $('#designation_sous_ref').val(text)
+    })
+
+    $('#pn-select-sr-m').on('change', function(){
+        let text = $('#pn-select-sr-m').children("option:selected").text();
+        $('#designation_modif_sous_ref').val(text)
+    })
+
     //recupre les pn dispo et selectionne en cas de modif de sous ref  :  
     let get_pn_sousRef_M_and_refresh = function () {
         let modele = $('#select_modif_sous_ref').children("option:selected").val();
-        $.ajax(
-            {
+        $.ajax({
                 type: 'post',
                 url: "AjaxPn",
-                data:
-                {
-                    "AjaxPn": modele
-                },
-                success: function (data) {
-
-                    console.log(data)
+                data:{"AjaxPn": modele},
+                success: function (data){
                     dataSet = JSON.parse(data);
-
-
-                    if (dataSet.length > 0) {
-
+                    if (dataSet.length > 0){
                         $('#wrapper-pn-sr-m').removeClass('d-none');
                         $('#pn-select-sr-m').find('option').remove();
                         $('#pn-select-sr-m').selectpicker('refresh');
                         $("#pn-select-sr-m").append(new Option('Non spécifié', '0'))
                         for (let index = 0; index < dataSet.length; index++) {
-                            if (dataSet[index].apn__desc_short == null) {
+                            if (dataSet[index].apn__desc_short == null){
                                 dataSet[index].apn__desc_short = '';
                             }
                             $("#pn-select-sr-m").append(new Option(dataSet[index].apn__pn_long + " " + dataSet[index].apn__desc_short, dataSet[index].id__pn))
                         }
-
                         $('#pn-select-sr-m').selectpicker('refresh')
                         $('#pn-select-sr-m').selectpicker('val', '0');
                     }
@@ -249,7 +239,6 @@ $(document).ready(function()
                         $('#pn-select-sr-m').selectpicker('val', '0');
                         $('#wrapper-pn-sr-m').addClass('d-none');
                     }
-
                 },
                 error: function (err) {
                     console.log('error: ', err);
@@ -261,69 +250,51 @@ $(document).ready(function()
     //ouverture du modal de modif : pn 
     let get_pn_line_sr_and_refresh = function (idLigne) {
         let id_ligne = idLigne
-       
-        $.ajax(
-            {
+        $.ajax({
                 type: 'post',
                 url: "Ajax-pn-ligne",
-                data:
-                {
-                    "ligneID": id_ligne
-                },
+                data:{"ligneID": id_ligne},
                 success: function (data) {
                     dataSet = JSON.parse(data);
-                    console.log(dataSet);
-                    if (dataSet[1].length > 0) {
+                    if (dataSet[1].length > 0){
                         $('#wrapper-pn-sr-m').removeClass('d-none');
                         $('#pn-select-sr-m').find('option').remove();
                         $('#pn-select-sr-m').selectpicker('refresh');
                         $("#pn-select-sr-m").append(new Option('Non spécifié', '0'))
-
-                        for (let index = 0; index < dataSet[1].length; index++) {
-
+                        for (let index = 0; index < dataSet[1].length; index++){
                             $("#pn-select-sr-m").append(new Option(dataSet[1][index].apn__pn_long + " " + dataSet[1][index].apn__desc_short, dataSet[1][index].id__pn))
-
                         }
                         $('#pn-select-sr-m').selectpicker('refresh');
-                        if (dataSet[0].cmdl__pn != null) {
+                        if (dataSet[0].cmdl__pn != null){
                             $('#pn-select-sr-m').selectpicker('val', dataSet[0].cmdl__pn);
                         }
-                        else {
+                        else{
                             $('#pn-select-sr-m').selectpicker('val', '0');
                         }
-
                     }
                 },
-                error: function (err) {
+                error: function (err){
                     console.log('error: ', err);
                 }
             })
     }
 
     //fermeture du modal de modif 
-    $('#close_modal_modif_sous_ref').on('click' ,function()
-    {
+    $('#close_modal_modif_sous_ref').on('click' ,function(){
         delete_form_modif();
         $('#modal_modif_sous_ref').modal('hide');
     })
-
-
     //init de commentaire de modificationde sous ref : 
-    if ($('#com_modif_sous_ref').length) 
-    {
-        CKEDITOR.replace( 'com_modif_sous_ref' ,
-		{
+    if ($('#com_modif_sous_ref').length){
+        CKEDITOR.replace( 'com_modif_sous_ref',{
 			language: 'fr',
 			removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor' ,
 			removeButtons : 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
 		});
     }
-
     //init du commentaire interne sous-ref : 
-    if ($('#com_sous_ref').length) 
-    {
-        CKEDITOR.replace( 'com_sous_ref' ,
-		{
+    if ($('#com_sous_ref').length) {
+        CKEDITOR.replace( 'com_sous_ref' ,{
 			language: 'fr',
 			removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor' ,
 			removeButtons : 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
