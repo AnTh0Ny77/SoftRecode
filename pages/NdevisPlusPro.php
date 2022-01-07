@@ -66,6 +66,9 @@ if (!empty($_POST['DupliquerDevis']))
     $lignes_sources = $Cmd->devisLigne($_POST['DupliquerDevis']);
     $devis_duplicata = $Cmd->duplicate_devis($devis_source);
 
+    //test duplicata avec sous ref :
+    $lignes_sources = $Cmd->devisLigne_sous_ref($_POST['DupliquerDevis']);
+
     foreach ($lignes_sources as $ligne) 
     {
        
