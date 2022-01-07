@@ -210,12 +210,11 @@ if (!empty($_SESSION['AvoirValide'])) {
    </div>
    <table  style="width:100%;  margin-bottom: 5px; margin-top: 35 px;">
        <tr>
-       <td style="text-align: left;  width: 100%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;">Conditions de paiement à réception/Conditions générales de Vente.
-        Des pénalités de retard au taux légal seront appliquées en cas de paiement après la date d'échéance. Conformément à la loi du 12.05.80, EUROCOMPUTER conserve la propriété du matériel jusqu'au paiement intégral du prix et des frais annexes.
-       <hr>
-       </td>
+        <td style="text-align: left;  width: 100%; padding-top: 7px; padding-bottom: 7px; padding-left:6px;">Conditions de paiement à réception/Conditions générales de Vente.
+            Des pénalités de retard au taux légal seront appliquées en cas de paiement après la date d'échéance. Conformément à la loi du 12.05.80, EUROCOMPUTER conserve la propriété du matériel jusqu'au paiement intégral du prix et des frais annexes.
+            <hr>
+        </td>
        </tr>
-       
    </table>
            <table  class="page_footer" style="text-align: center; margin: auto; ">
            <tr>
