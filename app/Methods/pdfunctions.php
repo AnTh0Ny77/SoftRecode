@@ -1281,6 +1281,30 @@ public static function totalABN($objectCmd, $arrayLigne )
 		return $response;
 	}
 
+	public static function total_abn_mois($objectCmd, $arrayLigne)
+	{
+		$tva = floatval($objectCmd->tva_Taux);
+		$array_prix = [];
+		$response = [];
+		foreach ($arrayLigne as $ligne) {
+			if (!empty($ligne->abl__prix_mois)) {
+				$prix = floatval($ligne->abl__prix_mois);
+				$total_ligne = 1 * $prix;
+				array_push($array_prix, $total_ligne);
+			}
+		}
+
+		$global_ht = array_sum($array_prix);
+
+		$montant_tva = floatval(($global_ht * $tva) / 100);
+
+		$global_ttc = $global_ht + $montant_tva;
+
+		array_push($response, floatval($global_ht), floatval($tva), floatval($montant_tva), floatval($global_ttc));
+
+		return $response;
+	}
+
 
 
 
