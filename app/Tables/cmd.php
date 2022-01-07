@@ -1400,7 +1400,6 @@ class Cmd extends Table
     return $requestLigne;
   }
 
-
   //insère une ligne dans un devis :
   public function insertLineDevis($object)
   {
@@ -1487,27 +1486,64 @@ class Cmd extends Table
     $verifOrdre = $this->Db->Pdo->query(
       'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne WHERE cmdl__cmd__id = ' . $cmdId . ' '
     );
-    $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
-    $ordreMax = $ordreMax->maxOrdre + 1;
-    $requestLigne->bindValue(":devl__devis__id", $cmdId);
-    $requestLigne->bindValue(":devl__type", $object->devl__type);
-    $requestLigne->bindValue(":devl__designation", $object->devl__designation);
-    $requestLigne->bindValue(":devl__etat", $object->devl__etat);
-    $requestLigne->bindValue(":devl__mois_garantie", intval($object->devl__mois_garantie));
-    $requestLigne->bindValue(":devl_quantite", $object->devl_quantite);
-    $requestLigne->bindValue(":devl_puht", floatval($object->devl_puht));
-    $requestLigne->bindValue(":devl__note_client", $object->devl__note_client);
-    $requestLigne->bindValue(":devl__ordre", $ordreMax);
-    $requestLigne->bindValue(":id__fmm", $object->id__fmm);
-    $requestLigne->bindValue(":cmdl__note_interne", $object->devl__note_interne);
-    $requestLigne->bindValue(":cmdl__etat_masque", $object->cmdl__etat_masque);
-    $requestLigne->bindValue(":cmdl__image", $object->cmdl__image);
-    $requestLigne->bindValue(":cmdl__actif", $object->cmdl__actif);
-    $requestLigne->bindValue(":cmdl__sous_ref", $object->cmdl__sous_ref);
-    $requestLigne->bindValue(":cmdl__pn", $object->devl__modele);
-    $requestLigne->execute();
-    $id_ligne = $this->Db->Pdo->lastInsertId();
-    return $id_ligne;
+      $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
+      $ordreMax = $ordreMax->maxOrdre + 1;
+      $requestLigne->bindValue(":devl__devis__id", $cmdId);
+      $requestLigne->bindValue(":devl__type", $object->devl__type);
+      $requestLigne->bindValue(":devl__designation", $object->devl__designation);
+      $requestLigne->bindValue(":devl__etat", $object->devl__etat);
+      $requestLigne->bindValue(":devl__mois_garantie", intval($object->devl__mois_garantie));
+      $requestLigne->bindValue(":devl_quantite", $object->devl_quantite);
+      $requestLigne->bindValue(":devl_puht", floatval($object->devl_puht));
+      $requestLigne->bindValue(":devl__note_client", $object->devl__note_client);
+      $requestLigne->bindValue(":devl__ordre", $ordreMax);
+      $requestLigne->bindValue(":id__fmm", $object->id__fmm);
+      $requestLigne->bindValue(":cmdl__note_interne", $object->devl__note_interne);
+      $requestLigne->bindValue(":cmdl__etat_masque", $object->cmdl__etat_masque);
+      $requestLigne->bindValue(":cmdl__image", $object->cmdl__image);
+      $requestLigne->bindValue(":cmdl__actif", $object->cmdl__actif);
+      $requestLigne->bindValue(":cmdl__sous_ref", $object->cmdl__sous_ref);
+      $requestLigne->bindValue(":cmdl__pn", $object->devl__modele);
+      $requestLigne->execute();
+      $id_ligne = $this->Db->Pdo->lastInsertId();
+
+      if(!empty($object->sous_ref)){
+        foreach ($object->sous_ref as $sous_ref) {
+          $requestLigne =  $this->Db->Pdo->prepare(
+            	'INSERT INTO  cmd_ligne (
+				cmdl__cmd__id, cmdl__prestation,  cmdl__designation ,
+				cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  ,  
+				cmdl__puht , cmdl__note_client  ,  cmdl__ordre , cmdl__id__fmm , cmdl__note_interne , cmdl__etat_masque , cmdl__image , cmdl__actif , cmdl__sous_ref , cmdl__pn   )
+				VALUES (
+				:devl__devis__id, :devl__type,  :devl__designation,
+				:devl__etat, :devl__mois_garantie , :devl_quantite,  
+				:devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm ,  :cmdl__note_interne , :cmdl__etat_masque , :cmdl__image , :cmdl__actif , :cmdl__sous_ref , :cmdl__pn  )'
+          	);
+          	$verifOrdre = $this->Db->Pdo->query(
+            	'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne WHERE cmdl__cmd__id = ' . $cmdId . ' '
+          	);
+			$ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
+			$ordreMax = $ordreMax->maxOrdre + 1;
+			$requestLigne->bindValue(":devl__devis__id", $cmdId);
+			$requestLigne->bindValue(":devl__type", $sous_ref->devl__type);
+			$requestLigne->bindValue(":devl__designation",$sous_ref->devl__designation);
+			$requestLigne->bindValue(":devl__etat", $sous_ref->devl__etat);
+			$requestLigne->bindValue(":devl__mois_garantie", intval($sous_ref->devl__mois_garantie));
+			$requestLigne->bindValue(":devl_quantite", $sous_ref->devl_quantite);
+			$requestLigne->bindValue(":devl_puht", floatval($sous_ref->devl_puht));
+			$requestLigne->bindValue(":devl__note_client", $sous_ref->devl__note_client);
+			$requestLigne->bindValue(":devl__ordre", $ordreMax);
+			$requestLigne->bindValue(":id__fmm", $sous_ref->id__fmm);
+			$requestLigne->bindValue(":cmdl__note_interne", $sous_ref->devl__note_interne);
+			$requestLigne->bindValue(":cmdl__etat_masque",$sous_ref->cmdl__etat_masque);
+			$requestLigne->bindValue(":cmdl__image", $sous_ref->cmdl__image);
+			$requestLigne->bindValue(":cmdl__actif", $sous_ref->cmdl__actif);
+			$requestLigne->bindValue(":cmdl__sous_ref", $id_ligne);
+			$requestLigne->bindValue(":cmdl__pn", $sous_ref->devl__modele);
+			$requestLigne->execute();
+        }
+      }
+      return $id_ligne;
   }
 
   
