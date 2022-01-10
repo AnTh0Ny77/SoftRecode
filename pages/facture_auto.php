@@ -47,6 +47,17 @@ if ($_SESSION['user']->user__facture_acces < 10 )
 
       if (strtotime($effectiveDate) >= strtotime($automateDate)) 
       {
+         $abn->client = $Client->getOne($abn->ab__client__id_fact);
+         $ligne = $Abonnement->getLigneFacturableAuto($abn->ab__cmd__id , $date);
+         $abn->nbMachine =  sizeof($ligne);
+         $abn->total = 00.00;
+         foreach($ligne as $machine)
+         {
+            $machine->totalTrim =  number_format($machine->abl__prix_mois * $abn->ab__fact_periode , 2 , ',', ' ') ;
+            $abn->total += $machine->abl__prix_mois * $abn->ab__fact_periode  ;
+         }
+         $abn->total = number_format($abn->total , 2 , ',', ' ') ;
+         $abn->array = $ligne;
          array_push($array_premiere_echeance , $abn);
       }
       else{

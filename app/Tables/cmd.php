@@ -1040,26 +1040,25 @@ class Cmd extends Table
               ?>
             </td>
             <td style="text-align: left; width:50%"><strong><?php
-                                                            if ($societeLivraison) {
+           if ($societeLivraison) {
+          		 if ($command->devis__contact__id){                                        
+					// si un contact est présent dans l'adresse de facturation :
+                	$contact = $Contact->getOne($command->devis__contact__id);
+                 	echo "<small>facturation : " . $contact->contact__civ . " " . $contact->contact__nom . " " . $contact->contact__prenom . "</small><strong><br>";
+                    echo Pdfunctions::showSociete($clientView) . " </strong> ";
+                    if (!empty($clientView->client__tel)) {
+                    	echo '<br> TEL : ' . $clientView->client__tel . '';
+                    }
 
-                                                              if ($command->devis__contact__id) {
-                                                                // si un contact est présent dans l'adresse de facturation :
-                                                                $contact = $Contact->getOne($command->devis__contact__id);
-                                                                echo "<small>facturation : " . $contact->contact__civ . " " . $contact->contact__nom . " " . $contact->contact__prenom . "</small><strong><br>";
-                                                                echo Pdfunctions::showSociete($clientView) . " </strong> ";
-                                                                if (!empty($clientView->client__tel)) {
-                                                                  echo '<br> TEL : ' . $clientView->client__tel . '';
-                                                                }
-
-                                                                if ($command->devis__contact_livraison) {
-                                                                  //si un contact est présent dans l'adresse de livraison : 
-                                                                  $contact2 = $Contact->getOne($command->devis__contact_livraison);
-                                                                  echo "<br> <small>livraison : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
-                                                                  echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-                                                                  if (!empty($societeLivraison->client__tel)) {
-                                                                    echo '<br> TEL : ' . $societeLivraison->client__tel . '';
-                                                                  }
-                                                                } else {
+                    if($command->devis__contact_livraison) {
+                    //si un contact est présent dans l'adresse de livraison : 
+                    $contact2 = $Contact->getOne($command->devis__contact_livraison);
+                    echo "<br> <small>livraison : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
+                    echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+                    if(!empty($societeLivraison->client__tel)) {
+                    echo '<br> TEL : ' . $societeLivraison->client__tel . '';
+            }
+                    } else {
                                                                   // si pas de contact de livraison : 
                                                                   echo "<br> <small>livraison :</small><strong><br>";
                                                                   echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
@@ -1290,7 +1289,6 @@ class Cmd extends Table
     return $id_extension;
   }
 
-
   // creer un nouvel avoir: 2 eme param = garantie ou retour , 3eme = client : echange reliquat et co (id) , id du tech qui edite la fiche :
   public function makeRetour($facture, $type, $client, $user)
   {
@@ -1320,9 +1318,6 @@ class Cmd extends Table
     return $idfacture;
   }
 
-
-
-
   //insère une ligne dans un devis :
   public function insertLine($object)
   {
@@ -1343,11 +1338,7 @@ class Cmd extends Table
     );
 
     $ordreMax = $verifOrdre->fetch(PDO::FETCH_OBJ);
-
-
-
     $ordreMax = $ordreMax->maxOrdre + 1;
-
     $requestLigne->bindValue(":devl__devis__id", $object->idDevis);
     $requestLigne->bindValue(":devl__type", $object->prestation);
     $requestLigne->bindValue(":devl__designation", $object->designation);
@@ -1362,7 +1353,6 @@ class Cmd extends Table
     $requestLigne->bindValue(":cmdl__garantie_puht", floatVal($object->prixGarantie));
     $requestLigne->bindValue(":cmdl__qte_livr", intval($object->quantite));
     $requestLigne->execute();
-
     return $requestLigne;
   }
 
@@ -1438,7 +1428,7 @@ class Cmd extends Table
   public function insertLineReliquat($object)
   {
     $requestLigne =  $this->Db->Pdo->prepare(
-      'INSERT INTO  cmd_ligne (
+    'INSERT INTO  cmd_ligne (
      cmdl__cmd__id, cmdl__prestation,  cmdl__designation ,
      cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  ,  
      cmdl__puht , cmdl__note_client  ,  cmdl__ordre , cmdl__id__fmm , cmdl__garantie_option , cmdl__garantie_puht , cmdl__qte_livr , cmdl__note_interne)

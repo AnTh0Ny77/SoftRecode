@@ -3,6 +3,7 @@
 require "vendor/autoload.php";
 use App\Controller\RechercheController;
 use App\Controller\TicketsFormsController;
+use App\Controller\ExtranetController;
 
 
  
@@ -106,6 +107,10 @@ use App\Controller\TicketsFormsController;
 
 		case '/SoftRecode/tickets-forms';
 			echo TicketsFormsController::forms();
+			break;
+
+		case '/SoftRecode/extra-login';
+			echo ExtranetController::login();
 			break;
 
 		case '/SoftRecode/recherche-articles-specs';

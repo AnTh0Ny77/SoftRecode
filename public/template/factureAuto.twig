@@ -75,28 +75,50 @@
           </div>
         </div>
       </div>
-
-
-
-      <div  >
+      <div>
           {% if premiere_echeance %}
-         
-            <div class="alert alert-danger mx-auto newCard" role="alert">
-               <b> {{premiere_echeance|length}} contrat(s) </b>à(ont) été(s) retiré(s) <br> du tableau car sa(leurs) date(s) d'échéance + leur période de facturation<br> sont inférieures à la date actuelle de facturation automatique.<br>
-            </div>
+          <div class="alert alert-danger mx-auto newCard" role="alert">
+               <b>{{premiere_echeance|length}} contrat(s) </b>à(ont) été(s) retiré(s) <br> du tableau car sa(leurs) date(s) d'échéance + leur période de facturation<br> sont inférieures à la date actuelle de facturation automatique.<br>
+          </div>
 
-
-           
+          <div class="card px-3">
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th scope="col" style="width: 15%;">Client</th>
+						<th scope="col" style="width: 35%;">Abonnement</th> 
+					</tr>
+				</thead>
+              {% for abn in premiere_echeance %}
+				<tbody>
+					<tr>
+					   <td scope="col"><b>{{abn.client.client__societe ~ '(' ~ abn.client.client__id  ~ ')'}}<br>
+						{{ abn.client.client__adr1 }}<br>
+						{{ abn.client.client__cp  ~ " " ~ abn.client.client__ville}}</b><br>
+					   <p class="text-primary">{{abn.nbMachine}} machine(s) actives</p> <b>{{abn.total}} € H.T</b><br>
+					   <form method="POST" action="abonnementAdmin">
+						  <input type="hidden" name="hiddenId" value="{{abn.ab__cmd__id}}">
+						  <button class="btn btn-link btn-sm">modifier</button>
+					   </form>
+					   </td>
+					   <td scope="col">N° : <b>{{ abn.ab__cmd__id}}</b><br>{{abn.prestaLib}}<br>
+						Date anniversaire:  <b>{{abn.ab__date_anniv}}</b><br>
+						Périodicité facturation: <b>{{abn.ab__fact_periode}}</b> mois
+					   <br>
+					  
+					   </td>
+					 </tr>
+				</tbody>
+              {% endfor %}
+		</table>
+          </div>
+            
+            
           {% endif %}
-      </div>
-      
-      
+      </div>  
     </div>
-
     </main>
      {% endblock %}
-     
-    
      {% block script %}
      <!-- Optional JavaScript -->
 
