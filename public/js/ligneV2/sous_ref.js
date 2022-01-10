@@ -196,9 +196,9 @@ $(document).ready(function()
                     console.log('error: ', err);
                 }
             })
-
     }
 
+    
     $('#pn-select-sr').on('change' ,function(){
         let text = $('#pn-select-sr').children("option:selected").text();
         $('#designation_sous_ref').val(text)
