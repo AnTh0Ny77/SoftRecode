@@ -33,12 +33,12 @@ if ($_SESSION['user']->user__facture_acces < 10 )
    
    //recupère les abonnements actif :
    $abonnement_liste = $Abonnement->get_actif_for_fact($mois);
-
+   $total_price = [];
    //tableau qui contiendra les abonnement avec ligne facturable présentes: 
    $abonnement_facturable = [];
    $array_premiere_echeance = [];
    $date = date("".$_POST['anneAuto']."-".$mois."-d H:i:s");
-   foreach ($abonnement_liste as $abn) 
+   foreach ($abonnement_liste as $key => $abn) 
    {
 
       $effectiveDate = strtotime("+".$abn->ab__fact_periode." months", strtotime($abn->ab__date_anniv));
@@ -58,13 +58,13 @@ if ($_SESSION['user']->user__facture_acces < 10 )
          }
          $abn->total = number_format($abn->total , 2 , ',', ' ') ;
          $abn->array = $ligne;
+         $abn->ab__date_anniv = $dateFact->format('d/m/Y'); 
          array_push($array_premiere_echeance , $abn);
+         unset($abonnement_liste[$key]);
       }
       else{
          $abn->client = $Client->getOne($abn->ab__client__id_fact);
-      
          $ligne = $Abonnement->getLigneFacturableAuto($abn->ab__cmd__id , $date);
-         
          $abn->nbMachine =  sizeof($ligne);
          $abn->total = 00.00;
          foreach($ligne as $machine)
@@ -73,6 +73,7 @@ if ($_SESSION['user']->user__facture_acces < 10 )
             $abn->total += $machine->abl__prix_mois * $abn->ab__fact_periode  ;
          }
          $abn->total = number_format($abn->total , 2 , ',', ' ') ;
+         array_push( $total_price , $abn->total);
          $abn->array = $ligne;
          if (!empty($ligne)) 
          {
@@ -91,7 +92,9 @@ if ($_SESSION['user']->user__facture_acces < 10 )
    $date = new DateTime($text);
    $date = date_format($date,'m-Y');
    $arrayFacturable = json_encode($abonnement_facturable);
-  
+   $count_list = count($abonnement_liste);
+   $total_price = array_sum($total_price);
+   $total_price =  number_format($total_price, 2, ',', ' ');
     // Donnée transmise au template : 
     echo $twig->render('factureAuto.twig',
     [
@@ -99,7 +102,9 @@ if ($_SESSION['user']->user__facture_acces < 10 )
     'ABNList'=>$abonnement_liste, 
     'arrayfacturable'=> $arrayFacturable, 
     'date' => $date ,
-    'premiere_echeance' => $array_premiere_echeance
+    'premiere_echeance' => $array_premiere_echeance,
+    'count_list' => $count_list , 
+    'total_price' => $total_price
     ]);
   
  }
