@@ -23,8 +23,11 @@
         <input type="hidden" name="idUtilisateur" id="idUtilisateur" value="{{user.log_nec}}">
         <input type="hidden" id="minFact" value="{{minFact.cmd__id_facture}}">
     <!--carte liste de Devis -->
-      <div class="col-8">
+      <div class="col-7">
         <div class="card shadow mb-4">
+            <div class="alert alert-success col-6" role="alert">
+              <b>{{count_list}} contrat(s) </b>Vont etres factuté automatiquement <br>
+            </div>
           <!-- Card Header - -->
          
           <!-- Card Body -->
@@ -72,7 +75,7 @@
           </div>
         </div>
       </div>
-      <div>
+      <div class="col-5">
           {% if premiere_echeance %}
           <div class="alert alert-danger mx-auto newCard" role="alert">
                <b>{{premiere_echeance|length}} contrat(s) </b>à(ont) été(s) retiré(s) <br> du tableau car sa(leurs) date(s) d'échéance + leur période de facturation<br> sont inférieures à la date actuelle de facturation automatique.<br>
