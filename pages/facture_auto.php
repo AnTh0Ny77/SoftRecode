@@ -58,6 +58,7 @@ if ($_SESSION['user']->user__facture_acces < 10 )
          }
          $abn->total = number_format($abn->total , 2 , ',', ' ') ;
          $abn->array = $ligne;
+         $dateFact = new DateTime($abn->ab__date_anniv);
          $abn->ab__date_anniv = $dateFact->format('d/m/Y'); 
          array_push($array_premiere_echeance , $abn);
          unset($abonnement_liste[$key]);
