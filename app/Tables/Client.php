@@ -135,9 +135,9 @@ class Client extends Table
         OR client__ville LIKE '%" . $mots_filtre[$i] . "%' 
         OR client__cp LIKE '%" . $mots_filtre[$i] . "%') ";
             }
-            $request .= "ORDER BY  client__societe DESC  LIMIT 7  ";
+            $request .= "ORDER BY  client__societe DESC  LIMIT 12 ";
         } else {
-            $request .=  "ORDER BY  client__societe DESC  LIMIT 7 ";
+            $request .=  "ORDER BY  client__societe DESC  LIMIT 12 ";
         }
 
         $send = $this->Db->Pdo->query($request);
