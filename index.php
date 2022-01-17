@@ -109,6 +109,10 @@ use App\Controller\ExtranetController;
 			echo TicketsFormsController::forms();
 			break;
 
+		case '/SoftRecode/tickets-lignes';
+			echo TicketsFormsController::formsLigne();
+			break;
+
 		case '/SoftRecode/extra-login';
 			echo ExtranetController::login();
 			break;
