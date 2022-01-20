@@ -52,4 +52,20 @@ class TicketsFormsController extends BasicController
         );
     }
 
+    //@route: /tickets-select-type
+    public static function selectTicketsType(){
+        self::init();
+        self::security();
+        $keyword = new Keyword(self::$Db);
+        $type_list = $keyword->findByType('tmoti');
+
+        return self::$twig->render(
+            'forms_select_type.twig',
+            [
+                'user' => $_SESSION['user'],
+                'type_list' => $type_list 
+            ]
+        );
+    }
+
 }

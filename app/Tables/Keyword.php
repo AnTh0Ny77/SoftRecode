@@ -101,6 +101,12 @@ public function getExport(){
   return $data;
 }
 
+public function findByType($type){
+  $request =$this->Db->Pdo->query('SELECT * FROM keyword WHERE kw__type= "'.$type.'" ORDER BY  kw__ordre  ASC ');
+  $data = $request->fetchAll(PDO::FETCH_OBJ);
+  return $data;
+}
+
 public function majMarqueur($marqueur)
 {
   $request = 'UPDATE keyword
