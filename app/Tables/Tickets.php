@@ -22,6 +22,11 @@ class Tickets extends Table {
         return $data;
   }
 
+  public function findScenario($motif){
+    $request = $this->Db->Pdo->query('SELECT  *  FROM ticket_scenario WHERE tks__motif =  "'.$motif.'" ORDER BY tks__ordre  LIMIT 50000');
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+    return $data;
+}
 
 
 }

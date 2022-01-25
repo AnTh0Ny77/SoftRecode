@@ -68,4 +68,43 @@ class TicketsFormsController extends BasicController
         );
     }
 
+
+    //@route: /tickets-handle-forms
+    public static function FormsMarker(){
+        self::init();
+        self::security();
+        $keyword = new Keyword(self::$Db);
+        $type_list = $keyword->findByType('tmoti');
+
+
+        //soit le post émane de la creation ( avec motif / soit le post contient un id tickets )
+        if (!empty($_POST['creatickets'])){
+           
+        }
+        else{
+            //le post est un ticket existant:  
+            if (!empty($_POST['tickets'])){
+                # code...
+            }
+            else{
+                header('location: /tickets-create-forms');
+            }
+                
+            
+        }
+
+        //recupère le scénario lié au motif du tickets  :   
+
+        //recupère le forms lié au scénario et à  l'étape : 
+        
+        //vérifie les droit de l'utilisateur :  
+
+        //affiche le forms 
+    }
+
+    protected function handleForms(bool $crea, string $previous , string $motif){
+
+    }
+
 }
+
