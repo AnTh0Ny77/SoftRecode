@@ -74,12 +74,34 @@ class TicketsFormsController extends BasicController
         self::init();
         self::security();
         $keyword = new Keyword(self::$Db);
+        $Ticket = new Tickets(self::$Db);
         $type_list = $keyword->findByType('tmoti');
 
 
         //soit le post émane de la creation ( avec motif / soit le post contient un id tickets )
-        if (!empty($_POST['creatickets'])){
-           
+        if (!empty($_POST['TypeTickets'])){
+            $tickets = $Ticket->find_first_step($_POST['TypeTickets']);
+            //switch pour récuperer la liste des id nécéssaire 
+            switch ($tickets) {
+                case 'value':
+                    # code...
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+            $forms = $tickets->forms;
+            return self::$twig->render(
+                'forms_tickets.twig',
+                [
+                    'user' => $_SESSION['user'],
+                    'forms' => $forms , 
+                    'tickets' => $tickets
+                ]
+            );
+            var_dump($tickets);
+            die();
         }
         else{
             //le post est un ticket existant:  
