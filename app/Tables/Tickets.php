@@ -23,19 +23,21 @@ class Tickets extends Table {
   }
 
   public function find_first_step($motif){
-      $request = $this->Db->Pdo->query('SELECT  *  FROM ticket_scenario 
-	  LEFT JOIN keyword as k ON 
-      WHERE  ( tks__ordre = 1 AND tks__motif_ligne_preced IS NULL ) 
-      AND ( tks__motif =  "' . $motif . '" ) 
-      ORDER BY tks__ordre  LIMIT 50000');
-      $data = $request->fetch(PDO::FETCH_OBJ);
+    $request = $this->Db->Pdo->query('SELECT  * , k.kw__info
+		FROM ticket_scenario 
+		LEFT JOIN keyword as k ON ( k.kw__type = "tmoti" AND k.kw__value = tks__motif ) 
+		WHERE  ( tks__ordre = 1 AND tks__motif_ligne_preced IS NULL ) 
+		AND ( tks__motif =  "' . $motif . '" ) 
+		ORDER BY tks__ordre  LIMIT 50000');
+
+    $data = $request->fetch(PDO::FETCH_OBJ);
 
     $request = $this->Db->Pdo->query('SELECT  *  FROM ticket_senar_champ 
 		WHERE  tksc__motif_ligne =  "' . $data->tks__motif_ligne . '" 
 		ORDER BY tksc__ordre LIMIT 50000');
-		$champs = $request->fetchAll(PDO::FETCH_OBJ);
-		$data->forms =  $champs;
-		return $data;
+	$champs = $request->fetchAll(PDO::FETCH_OBJ);
+	$data->forms =  $champs;
+	return $data;
   }
 
   public function findScenario($motif){

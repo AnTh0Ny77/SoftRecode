@@ -77,18 +77,18 @@ class TicketsFormsController extends BasicController
         $Ticket = new Tickets(self::$Db);
         $type_list = $keyword->findByType('tmoti');
 
-
         //soit le post émane de la creation ( avec motif / soit le post contient un id tickets )
         if (!empty($_POST['TypeTickets'])){
             $tickets = $Ticket->find_first_step($_POST['TypeTickets']);
+
             //switch pour récuperer la liste des id nécéssaire 
-            switch ($tickets) {
-                case 'value':
-                    # code...
+            switch ($tickets->tks__motif) {
+                case 'dp':
+                    $subject_list = null;
                     break;
                 
                 default:
-                    # code...
+                    $subject_list = null;
                     break;
             }
             $forms = $tickets->forms;
@@ -111,8 +111,6 @@ class TicketsFormsController extends BasicController
             else{
                 header('location: /tickets-create-forms');
             }
-                
-            
         }
 
         //recupère le scénario lié au motif du tickets  :   
