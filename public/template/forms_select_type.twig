@@ -1,0 +1,36 @@
+{% extends 'responsive_layout.twig' %}
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" type="text/css" href="public/chosen/chosen.min.css">
+<link rel="stylesheet" href="public/css/forms.css">
+{% endblock %}
+{% block main %}
+<main role="main" class="col-12 container-body background-extranet text-monospace">
+  <div class="container pt-5 ">
+      <h1 class="text-white text-center">
+          Quel Type de Tickets souhaitez-vous établir ? 
+      </h1>
+      <form action="tickets-handle-forms" method="POST" class="col-12 col-sm-9 mx-auto">
+        <div class="form-group pt-5">
+            <select class="custom-select form-control-lg input-recode" name="TypeTickets" id="selectMotif" required>
+                {% for motif in type_list %}
+                    <option value="{{motif.kw__value}}" >{{motif.kw__lib}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group d-flex justify-content-end">
+            <button class="btn btn-recode" >Valider</button>
+        </div>
+      </form>
+  </div>
+</main>
+{% endblock %}
+{% block script %}
+<!-- jQuery first, then Bootstrap JS -->
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+{% endblock %}

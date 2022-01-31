@@ -79,3 +79,11 @@
     background-repeat: no-repeat, repeat;
     background-color: #cccccc;
 }
+
+.background-extranet{
+    background-image: url("../img/extrafond.jpg");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat, repeat;
+    background-color: #cccccc;
+}

@@ -91,21 +91,22 @@
 
 <main role="main" class="col-12 container-body background-extranet text-monospace">
   <div class="container pt-5 ">
-      <form action="" class="col-12 col-sm-9 mx-auto">
-          <div class="form-group pt-5">
-                <select class="custom-select form-control-lg input-recode" id="selectMotif">
-                    <option value="" selected>Choix du motif</option>
-                    <option value="1">Motif N° 1</option>
-                    <option value="2">Motif N° 2</option>
-                    <option value="3">Motif N° 3</option>
-                </select>
-          </div>
-          <div  class="form-group d-none">
+      <h2>
 
-          </div>
-        <div class="form-group">
-            <input type="text" class="form-control  form-control-lg input-recode" placeholder="titre du ticket">
+      </h2>
+      <form action="" class="col-12 col-sm-9 mx-auto">
+        <div class="form-group pt-5">
+               
         </div>
+        <div class="form-group">
+            <select class="custom-select form-control-lg input-recode" id="selectMotif" required>
+                <option value="" selected>Action</option>
+                {% for motif in motifs_list %}
+                    <option value="{{motif.tks__id}}" >{{motif.tks__lib}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
         <div class="form-group">
             <textarea class="form-control  form-control-lg input-recode" placeholder="Commentaire" rows="3"></textarea>
         </div>
