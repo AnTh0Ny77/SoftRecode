@@ -6,7 +6,7 @@ use App\Tables\Table;
 use App\Database;
 use App\Methods\Pdfunctions;
 use PDO;
-
+use stdClass;
 
 class Tickets extends Table {
   
@@ -21,6 +21,35 @@ class Tickets extends Table {
         $data = $request->fetchAll(PDO::FETCH_OBJ);
         return $data;
   }
+
+  public function get_subject_table($column_name){
+	  $request = $this->Db->Pdo->query('SELECT COLUMN_NAME  , TABLE_NAME 
+	  FROM INFORMATION_SCHEMA.COLUMNS 
+	  WHERE COLUMN_NAME =  "'.$column_name.'" ');
+	  $data = $request->fetch(PDO::FETCH_ASSOC);
+	  return $data;
+  }
+
+  public function get_subject_list($array_column , $table_name){
+
+	$request_string =  '';
+	foreach ($array_column as $key => $column){
+		if ($key === array_key_last($array_column)){
+			$request_string .= $column . ' ';
+		} else 	$request_string .= $column . ', ';
+	
+	}
+	$request = $this->Db->Pdo->query('SELECT '.$request_string.'
+	FROM  '.$table_name.' LIMIT 50000 ');
+	$data = $request->fetchAll(PDO::FETCH_ASSOC);
+	$array_response = [];
+	foreach ($data as $results){
+		$subject = new stdClass;
+		$subject->id = $results[0];
+	}
+
+	return $data;
+}
 
   public function find_first_step($motif){
     $request = $this->Db->Pdo->query('SELECT  * , k.kw__info
