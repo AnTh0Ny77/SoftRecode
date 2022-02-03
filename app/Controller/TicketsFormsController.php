@@ -90,7 +90,7 @@ class TicketsFormsController extends BasicController
           
           
             $forms = $tickets->forms;
-            var_dump($forms);
+            
             return self::$twig->render(
                 'forms_tickets_generator.html.twig',
                 [

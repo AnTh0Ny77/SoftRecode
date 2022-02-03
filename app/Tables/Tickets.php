@@ -87,6 +87,11 @@ class Tickets extends Table {
 		WHERE  tksc__motif_ligne =  "' . $data->tks__motif_ligne . '" 
 		ORDER BY tksc__ordre LIMIT 50000');
 	$champs = $request->fetchAll(PDO::FETCH_OBJ);
+	foreach($champs as $key => $value){
+		if (!empty($value->tksc__option)){
+			$value->tksc__option = explode(';' ,$value->tksc__option);
+		}
+	}
 	$data->forms =  $champs;
 	return $data;
   }
