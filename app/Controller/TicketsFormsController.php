@@ -88,11 +88,11 @@ class TicketsFormsController extends BasicController
                 $subject_list = $Ticket->get_subject_list($request , $subject_list['TABLE_NAME']);
             }
           
-           var_dump($subject_list);
-           die();
+          
             $forms = $tickets->forms;
+            var_dump($forms);
             return self::$twig->render(
-                'forms_tickets.twig',
+                'forms_tickets_generator.html.twig',
                 [
                     'subject_list' => $subject_list ,
                     'user' => $_SESSION['user'],

@@ -45,11 +45,33 @@ class Tickets extends Table {
 	$array_response = [];
 	foreach ($data as $results){
 		$subject = new stdClass;
-		$subject->id = $results[0];
+		$lib = '';
+		foreach($results as $key => $value){
+			if ($key === array_key_first($results)){
+				$subject->id = $value ; 
+			}
+			else{
+				$lib .= ' ' . $value . ' ';
+			}
+			
+		}
+		$subject->lib = $lib;
+		array_push($array_response , $subject);
 	}
-
-	return $data;
+	return $array_response;
 }
+
+  public function get_for_select($array_column, $table_name){
+		$request_string =  '';
+		foreach ($array_column as $key => $column) {
+			if ($key === array_key_last($array_column)) {
+				$request_string .= $column . ' ';
+			} else 	$request_string .= $column . ', ';
+		}
+		$request = $this->Db->Pdo->query('SELECT ' . $request_string . '
+		FROM  ' . $table_name . ' LIMIT 1 ');
+		$data = $request->fetchAll(PDO::FETCH_ASSOC);
+  }
 
   public function find_first_step($motif){
     $request = $this->Db->Pdo->query('SELECT  * , k.kw__info

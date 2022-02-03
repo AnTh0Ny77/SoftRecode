@@ -20,6 +20,9 @@
                 </select>
             {% endif %}
         </div>
+        {% for form in forms %}
+               {{ include('forms/forms_tickets_fields.html.twig')}}
+        {% endfor %}
         <div class="form-group d-flex justify-content-end">
             <button class="btn btn-recode" >Valider</button>
         </div>

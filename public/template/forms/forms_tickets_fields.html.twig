@@ -1,0 +1,22 @@
+
+
+
+<div class="form-group">
+    {% if form.tksc__type_de_champ == "TXT" %}
+        {% if form.tksc__obligatoire == 1 %}
+            <input type="text" class="form-control  form-control-lg input-recode" maxlength="{{form.tksc__obligatoire}}" placeholder="{{form.tksc__nom_champ}}" required>
+        {% else %}
+            <input type="text" class="form-control  form-control-lg input-recode" maxlength="{{form.tksc__obligatoire}}" placeholder="{{form.tksc__nom_champ}}" >
+        {% endif %}
+    {% elseif form.tksc__type_de_champ == "NUM" %}
+
+    {% elseif form.tksc__type_de_champ == "RAD" %}
+
+    {% elseif form.tksc__type_de_champ == "CHK" %}
+
+    {% elseif form.tksc__type_de_champ == "FIL" %}
+
+    {% elseif form.tksc__type_de_champ == "AER" %}
+        
+    {% endif %}
+</div>
