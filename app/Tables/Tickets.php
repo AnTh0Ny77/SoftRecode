@@ -30,6 +30,33 @@ class Tickets extends Table {
 	  return $data;
   }
 
+
+  public function insert_ticket(array $post){
+	$request = $this->Db->Pdo->prepare("
+	INSERT INTO ticket  (tk__motif,		 	tk__motif_id ,	 	tk__titre ) 
+	VALUES              (:tk__motif,      :tk__motif_id,      :tk__titre)"); 
+	$request->bindValue(":tk__motif", $post['motif']);
+	$request->bindValue(":tk__motif_id", $post['idSubject']);
+	$request->bindValue(":tk__titre",  $post['titre']);
+	$request->execute();
+	$id = $this->Db->Pdo->lastInsertId();
+	return $id;
+  }
+
+  public function insert_line(array $post){
+	$request = $this->Db->Pdo->prepare("
+	INSERT INTO ticket_ligne  (tkl__tk_id,		 	tkl__user_id ,	 	tkl__dt,  	tkl__motif_ligne,  tkl__user_id_dest) 
+	VALUES      			  (:tkl__tk_id,      	:tkl__user_id,      :tkl__dt, :tkl__motif_ligne,   :tkl__user_id_dest)"); 
+	$request->bindValue(":tkl__tk_id", $post['motif']);
+	$request->bindValue(":tkl__user_id", $post['idSubject']);
+	$request->bindValue(":tkl__dt",  $post['titre']);
+	$request->bindValue(":tkl__motif_ligne",  $post['titre']);
+	$request->bindValue(":tkl__user_id_dest",  $post['titre']);
+	$request->execute();
+	$id = $this->Db->Pdo->lastInsertId();
+	return $id;
+  }
+
   public function get_subject_list($array_column , $table_name){
 
 	$request_string =  '';
@@ -40,7 +67,7 @@ class Tickets extends Table {
 	
 	}
 	$request = $this->Db->Pdo->query('SELECT '.$request_string.'
-	FROM  '.$table_name.' LIMIT 50000 ');
+	FROM  '.$table_name.' LIMIT 5000 ');
 	$data = $request->fetchAll(PDO::FETCH_ASSOC);
 	$array_response = [];
 	foreach ($data as $results){
@@ -81,15 +108,24 @@ class Tickets extends Table {
 		AND ( tks__motif =  "' . $motif . '" ) 
 		ORDER BY tks__ordre  LIMIT 50000');
 
-    $data = $request->fetch(PDO::FETCH_OBJ);
-
-    $request = $this->Db->Pdo->query('SELECT  *  FROM ticket_senar_champ 
+	    $data = $request->fetch(PDO::FETCH_OBJ);
+    	$request = $this->Db->Pdo->query('SELECT  *  FROM ticket_senar_champ 
 		WHERE  tksc__motif_ligne =  "' . $data->tks__motif_ligne . '" 
 		ORDER BY tksc__ordre LIMIT 50000');
 	$champs = $request->fetchAll(PDO::FETCH_OBJ);
 	foreach($champs as $key => $value){
 		if (!empty($value->tksc__option)){
-			$value->tksc__option = explode(';' ,$value->tksc__option);
+			if (preg_match('/@/' , $value->tksc__option) == 1){
+				$request = explode('@',$value->tksc__option);
+                $subject_list = $this->get_subject_table($request[0]);
+				if (!empty($subject_list)){
+					$subject_list = $this->get_subject_list($request , $subject_list['TABLE_NAME']);
+					$value->tksc__option = $subject_list;
+				}
+			}
+			else{
+				$value->tksc__option = explode(';' ,$value->tksc__option);
+			}
 		}
 	}
 	$data->forms =  $champs;

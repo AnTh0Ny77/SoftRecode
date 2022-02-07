@@ -33,14 +33,12 @@ class TicketsFormsController extends BasicController
     {
         self::init();
         self::security();
-
         $Article = new Article(self::$Db);
         $famille_list = $Article->getFAMILLE();
         $user = new User(self::$Db);
         $user_list = $user->getAll();
         $Tickets = new Tickets(self::$Db);
         $motifs_list = $Tickets->get_scenario();
-
         return self::$twig->render(
             'forms_ligne.twig',
             [
@@ -77,27 +75,26 @@ class TicketsFormsController extends BasicController
         $Ticket = new Tickets(self::$Db);
         $type_list = $keyword->findByType('tmoti');
         $subject_list = null;
+        $crea_forms = null;
        
         //soit le post émane de la creation ( avec motif / soit le post contient un id tickets )
         if (!empty($_POST['TypeTickets'])){
+            $crea_forms = 1 ;
             $tickets = $Ticket->find_first_step($_POST['TypeTickets']);
-            if (!empty($tickets->kw__info)) {
-
+            if (!empty($tickets->kw__info)){
                 $request = explode('|',$tickets->kw__info);
                 $subject_list = $Ticket->get_subject_table($request[0]);
                 $subject_list = $Ticket->get_subject_list($request , $subject_list['TABLE_NAME']);
             }
-          
-          
             $forms = $tickets->forms;
-            
             return self::$twig->render(
                 'forms_tickets_generator.html.twig',
                 [
                     'subject_list' => $subject_list ,
                     'user' => $_SESSION['user'],
                     'forms' => $forms , 
-                    'tickets' => $tickets
+                    'tickets' => $tickets,
+                    'crea_forms' => $crea_forms
                 ]
             );
         }
@@ -120,8 +117,13 @@ class TicketsFormsController extends BasicController
         //affiche le forms 
     }
 
-    protected function handleForms(bool $crea, string $previous , string $motif){
-
+    protected function handleForms(array $post){
+            if (!empty($post['creaForms'])) {
+                //je creer 
+            }
+            else{
+                //j'update
+            }
     }
 
 }

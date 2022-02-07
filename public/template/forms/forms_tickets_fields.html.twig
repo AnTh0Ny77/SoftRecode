@@ -36,6 +36,12 @@
             </div>
     {% elseif form.tksc__type_de_champ == "FIL" %}
 
+    {% elseif form.tksc__type_de_champ == "SLT" %}
+            <select class="custom-select form-control-lg input-recode" name="{{form.tksc__nom_champ}}" >
+                {% for subject in form.tksc__option %}
+                    <option value="{{subject.id}}" >{{subject.lib}}</option>
+                {% endfor %}
+            </select>
     {% elseif form.tksc__type_de_champ == "AER" %}
             <textarea class="form-control  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" placeholder="{{form.tksc__nom_champ}}" rows="3"></textarea>
     {% endif %}
