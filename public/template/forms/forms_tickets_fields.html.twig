@@ -42,6 +42,8 @@
                     <option value="{{subject.id}}" >{{subject.lib}}</option>
                 {% endfor %}
             </select>
+    {% elseif form.tksc__type_de_champ == "CLI" %} 
+            {% include "forms/forms_client_field.html.twig" %}
     {% elseif form.tksc__type_de_champ == "AER" %}
             <textarea class="form-control  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" placeholder="{{form.tksc__nom_champ}}" rows="3"></textarea>
     {% endif %}

@@ -25,6 +25,21 @@
     display: inline-block;
     font-size: 14px;
 }
+.pastille-recode{
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 9px 22px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    box-shadow: 0px 0px 11px 3px #9b9b9b;
+    border-radius: 5px;
+}
+.pastille-recode:hover{
+    background-color: #4CAF50; /* Green */
+}
 .btn-recode:hover{
     background-color: #4CAF50; /* Green */
 }
