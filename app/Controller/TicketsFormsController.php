@@ -76,11 +76,14 @@ class TicketsFormsController extends BasicController
         $type_list = $keyword->findByType('tmoti');
         $subject_list = null;
         $crea_forms = null;
-       
+        $motif = null;
+        $motif_lib = null;     
         //soit le post émane de la creation ( avec motif / soit le post contient un id tickets )
         if (!empty($_POST['TypeTickets'])){
             $crea_forms = 1 ;
             $tickets = $Ticket->find_first_step($_POST['TypeTickets']);
+            $motif = $tickets->tks__motif_ligne;
+            $motif_lib = $tickets->tks__lib;
             if (!empty($tickets->kw__info)){
                 $request = explode('|',$tickets->kw__info);
                 $subject_list = $Ticket->get_subject_table($request[0]);
@@ -94,7 +97,10 @@ class TicketsFormsController extends BasicController
                     'user' => $_SESSION['user'],
                     'forms' => $forms , 
                     'tickets' => $tickets,
-                    'crea_forms' => $crea_forms
+                    'crea_forms' => $crea_forms,
+                    'type_tickets' => $_POST['TypeTickets'],
+                    'motif' => $motif,
+                    'libelle' => $motif_lib
                 ]
             );
         }
@@ -117,9 +123,35 @@ class TicketsFormsController extends BasicController
         //affiche le forms 
     }
 
-    protected function handleForms(array $post){
-            if (!empty($post['creaForms'])) {
-                //je creer 
+
+
+    //@route: /tickets-post-data
+    public static function formsHandler(){
+        self::init();
+        self::security();
+        return self::handleForms($_POST);
+    }
+
+    public static function handleForms(array $post){
+            $Ticket = new Tickets(self::$Db);
+            if (!empty($post['creaForms'])){
+
+                //si un sujet est donné : 
+                if (!empty($post['idSubject'])) {
+                    $post['idSubject'] = $post['idSubject'];
+                }else $post['idSubject'] = null;
+                //si un titre est donné : 
+                if (!empty($post['Titre'])) {
+                    $post['Titre'] = $post['Titre'];
+                } else $post['Titre'] = null;
+
+                $post['creator'] = $_SESSION['user']->id_utilisateur;
+                $new_tickets = $Ticket->insert_ticket($post);
+                $post['id_ligne'] = $new_tickets;
+                $post['dt'] = date('now');
+                $new_line = $Ticket->insert_line($post);
+
+                var_dump($new_tickets , $new_line);
             }
             else{
                 //j'update

@@ -35,9 +35,9 @@ class Tickets extends Table {
 	$request = $this->Db->Pdo->prepare("
 	INSERT INTO ticket  (tk__motif,		 	tk__motif_id ,	 	tk__titre ) 
 	VALUES              (:tk__motif,      :tk__motif_id,      :tk__titre)"); 
-	$request->bindValue(":tk__motif", $post['motif']);
+	$request->bindValue(":tk__motif", $post['type']);
 	$request->bindValue(":tk__motif_id", $post['idSubject']);
-	$request->bindValue(":tk__titre",  $post['titre']);
+	$request->bindValue(":tk__titre",  $post['Titre']);
 	$request->execute();
 	$id = $this->Db->Pdo->lastInsertId();
 	return $id;
@@ -47,11 +47,11 @@ class Tickets extends Table {
 	$request = $this->Db->Pdo->prepare("
 	INSERT INTO ticket_ligne  (tkl__tk_id,		 	tkl__user_id ,	 	tkl__dt,  	tkl__motif_ligne,  tkl__user_id_dest) 
 	VALUES      			  (:tkl__tk_id,      	:tkl__user_id,      :tkl__dt, :tkl__motif_ligne,   :tkl__user_id_dest)"); 
-	$request->bindValue(":tkl__tk_id", $post['motif']);
-	$request->bindValue(":tkl__user_id", $post['idSubject']);
-	$request->bindValue(":tkl__dt",  $post['titre']);
-	$request->bindValue(":tkl__motif_ligne",  $post['titre']);
-	$request->bindValue(":tkl__user_id_dest",  $post['titre']);
+	$request->bindValue(":tkl__tk_id", $post['id_ligne']);
+	$request->bindValue(":tkl__user_id", $post['creator']);
+	$request->bindValue(":tkl__dt",  $post['dt']);
+	$request->bindValue(":tkl__motif_ligne",  $post['libelle']);
+	$request->bindValue(":tkl__user_id_dest",  $post['A_Qui']);
 	$request->execute();
 	$id = $this->Db->Pdo->lastInsertId();
 	return $id;

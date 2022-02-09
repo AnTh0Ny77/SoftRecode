@@ -121,6 +121,10 @@ use App\Controller\ExtranetController;
 			echo TicketsFormsController::FormsMarker();
 			break;
 
+		case '/SoftRecode/tickets-post-data';
+			echo TicketsFormsController::formsHandler();
+			break;
+
 		case '/SoftRecode/extra-login';
 			echo ExtranetController::login();
 			break;

@@ -4,15 +4,15 @@
 <div class="form-group">
     {% if form.tksc__type_de_champ == "TXT" %}
         {% if form.tksc__obligatoire == 1 %}
-            <input type="text" class="form-control  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__obligatoire}}" placeholder="{{form.tksc__nom_champ}}" required>
+            <input type="text" class="form-control  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}" placeholder="{{form.tksc__nom_champ}}" required>
         {% else %}
-            <input type="text" class="form-control  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__obligatoire}}" placeholder="{{form.tksc__nom_champ}}" >
+            <input type="text" class="form-control  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}" placeholder="{{form.tksc__nom_champ}}" >
         {% endif %}
     {% elseif form.tksc__type_de_champ == "NUM" %}
         {% if form.tksc__obligatoire == 1 %}
-            <input type="number" step="0.01" class="form-control col-5  form-control-lg input-recode" maxlength="{{form.tksc__obligatoire}}" placeholder="{{form.tksc__nom_champ}}" required>
+            <input type="number" step="0.01" class="form-control col-5  form-control-lg input-recode" maxlength="{{form.tksc__long_de_champ}}" placeholder="{{form.tksc__nom_champ}}" required>
         {% else %}
-            <input type="number" step="0.01" class="form-control col-5  form-control-lg input-recode" maxlength="{{form.tksc__obligatoire}}" placeholder="{{form.tksc__nom_champ}}" >
+            <input type="number" step="0.01" class="form-control col-5  form-control-lg input-recode" maxlength="{{form.tksc__long_de_champ}}" placeholder="{{form.tksc__nom_champ}}" >
         {% endif %}
     {% elseif form.tksc__type_de_champ == "RAD" %}
         <h5 class="text-white">{{form.tksc__nom_champ}}</h5>
@@ -37,6 +37,7 @@
     {% elseif form.tksc__type_de_champ == "FIL" %}
 
     {% elseif form.tksc__type_de_champ == "SLT" %}
+            <h5 class="text-white">{{form.tksc__nom_champ}}</h5>
             <select class="custom-select form-control-lg input-recode" name="{{form.tksc__nom_champ}}" >
                 {% for subject in form.tksc__option %}
                     <option value="{{subject.id}}" >{{subject.lib}}</option>
