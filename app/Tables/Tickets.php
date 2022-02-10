@@ -33,11 +33,12 @@ class Tickets extends Table {
 
   public function insert_ticket(array $post){
 	$request = $this->Db->Pdo->prepare("
-	INSERT INTO ticket  (tk__motif,		 	tk__motif_id ,	 	tk__titre ) 
-	VALUES              (:tk__motif,      :tk__motif_id,      :tk__titre)"); 
+	INSERT INTO ticket  (tk__motif,		 	tk__motif_id ,	 	tk__titre , tk__indic ) 
+	VALUES              (:tk__motif,      :tk__motif_id,      :tk__titre , :tk__indic)"); 
 	$request->bindValue(":tk__motif", $post['type']);
 	$request->bindValue(":tk__motif_id", $post['idSubject']);
 	$request->bindValue(":tk__titre",  $post['Titre']);
+	$request->bindValue(":tk__indic",  'STD');
 	$request->execute();
 	$id = $this->Db->Pdo->lastInsertId();
 	return $id;
@@ -45,16 +46,46 @@ class Tickets extends Table {
 
   public function insert_line(array $post){
 	$request = $this->Db->Pdo->prepare("
-	INSERT INTO ticket_ligne  (tkl__tk_id,		 	tkl__user_id ,	 	tkl__dt,  	tkl__motif_ligne,  tkl__user_id_dest) 
-	VALUES      			  (:tkl__tk_id,      	:tkl__user_id,      :tkl__dt, :tkl__motif_ligne,   :tkl__user_id_dest)"); 
+	INSERT INTO ticket_ligne  (tkl__tk_id,	tkl__user_id ,	 	tkl__dt,  	tkl__motif_ligne,  tkl__user_id_dest , tkl__memo) 
+	VALUES      			  (:tkl__tk_id,  :tkl__user_id,      :tkl__dt, :tkl__motif_ligne,   :tkl__user_id_dest , :tkl__memo)"); 
 	$request->bindValue(":tkl__tk_id", $post['id_ligne']);
 	$request->bindValue(":tkl__user_id", $post['creator']);
 	$request->bindValue(":tkl__dt",  $post['dt']);
-	$request->bindValue(":tkl__motif_ligne",  $post['libelle']);
+	$request->bindValue(":tkl__motif_ligne",  $post['motif']);
+	$request->bindValue(":tkl__memo",  $post['libelle']);
 	$request->bindValue(":tkl__user_id_dest",  $post['A_Qui']);
 	$request->execute();
 	$id = $this->Db->Pdo->lastInsertId();
 	return $id;
+  }
+
+  public function insert_field(array $post){
+		foreach ($post as $key => $value) {
+				switch ($key) {
+					case 'id_ligne':
+					case 'creator':
+					case 'dt':
+					case 'motif':
+					case 'libelle':
+					case 'A_Qui':
+					case 'type':
+					case 'idSubject':
+					case 'Titre':
+					break;
+					default:
+						//requete pour chercher le type de champs : 
+						$champs = $this->findChamp($post['motif'],$key);
+						if(preg_match("/@/", $champs->tksc__option)){
+							
+						}else{
+
+						} 
+						//enregistrer 
+
+						break;
+				}
+		}
+
   }
 
   public function get_subject_list($array_column , $table_name){
@@ -112,8 +143,8 @@ class Tickets extends Table {
     	$request = $this->Db->Pdo->query('SELECT  *  FROM ticket_senar_champ 
 		WHERE  tksc__motif_ligne =  "' . $data->tks__motif_ligne . '" 
 		ORDER BY tksc__ordre LIMIT 50000');
-	$champs = $request->fetchAll(PDO::FETCH_OBJ);
-	foreach($champs as $key => $value){
+		$champs = $request->fetchAll(PDO::FETCH_OBJ);
+		foreach($champs as $key => $value){
 		if (!empty($value->tksc__option)){
 			if (preg_match('/@/' , $value->tksc__option) == 1){
 				$request = explode('@',$value->tksc__option);
@@ -137,6 +168,12 @@ class Tickets extends Table {
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
 }
+
+	public function findChamp($motif ,$nom){
+		$request = $this->Db->Pdo->query('SELECT  tksc__option  FROM ticket_scenario WHERE tks__motif =  "'.$motif.'" AND tks__nom_champ = "'.$nom.'"');
+		$data = $request->fetch(PDO::FETCH_OBJ);
+		return $data;
+	}
 
 
 }
