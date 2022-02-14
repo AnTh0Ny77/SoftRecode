@@ -35,7 +35,11 @@
                 {% endfor %}
             </div>
     {% elseif form.tksc__type_de_champ == "FIL" %}
-
+            <div class="">
+                <h5 class="text-white">{{form.tksc__nom_champ}}</h5>
+                <input type="hidden" name="MAX_FILE_SIZE" value="30000"/>
+                <input class="form-control" type="file" name="{{form.tksc__nom_champ}}" multiple>
+            </div>
     {% elseif form.tksc__type_de_champ == "SLT" %}
             <h5 class="text-white">{{form.tksc__nom_champ}}</h5>
             <select class="custom-select form-control-lg input-recode" name="{{form.tksc__nom_champ}}" >

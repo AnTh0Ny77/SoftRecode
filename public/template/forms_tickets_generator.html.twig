@@ -10,7 +10,11 @@
 {% block main %}
 <main role="main" class="col-12 container-body background-extranet text-monospace">
   <div class="container pt-5 ">
+      {% if multiparts %}
+      <form action="tickets-post-data" method="POST" class="col-12 col-sm-9 mx-auto" enctype="multipart/form-data">
+      {% else %}
       <form action="tickets-post-data" method="POST" class="col-12 col-sm-9 mx-auto">
+      {% endif %}
         <h2 class="text-white">{{libelle}}</h2>
         <input type="hidden" name="motif" value="{{motif}}">
         <input type="hidden" name="libelle" value="{{libelle}}">

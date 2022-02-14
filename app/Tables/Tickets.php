@@ -59,7 +59,15 @@ class Tickets extends Table {
 	return $id;
   }
 
-  public function insert_field(array $post){
+	public function insert_multipart( string $directory,  int $id_line , array $files){
+
+		foreach ($files as $key  => $file){
+			var_dump(mime_content_type($file));
+		}
+		die();
+	}
+
+  public function insert_field(array $post , $id_ligne){
 		foreach ($post as $key => $value) {
 				switch ($key) {
 					case 'id_ligne':
@@ -74,14 +82,46 @@ class Tickets extends Table {
 					break;
 					default:
 						//requete pour chercher le type de champs : 
+					
 						$champs = $this->findChamp($post['motif'],$key);
-						if(preg_match("/@/", $champs->tksc__option)){
+						var_dump($key , $value);
+						if (is_array($value)){
+							$text = '';
+							foreach ($value as  $response) {
+								$text .= $response . ' '; 
+							}
+						}
+						if ( isset($text) and strlen($text) > 2 ){
+							$value =  $text;
+						}
+						$text = '';
+						
+						if (!empty($champs)) {
+							$pattern = "@";
+					
+							if(stripos( $champs->tksc__option , $pattern)){
+								$value = $champs->tksc__option . '@' . $value ;
+								$request = $this->Db->Pdo->prepare("
+								INSERT INTO ticket_ligne_champ  (tklc__id, tklc__nom_champ,  tklc__ordre,  tklc__memo ) 
+								VALUES      			  (:tklc__id,  :tklc__nom_champ,  :tklc__ordre,  :tklc__memo)"); 
+								$request->bindValue(":tklc__id", $id_ligne);
+								$request->bindValue(":tklc__nom_champ", $key);
+								$request->bindValue(":tklc__ordre",  $champs->tksc__ordre);
+								$request->bindValue(":tklc__memo",  $value);
+								$request->execute();
+							}else{
 							
-						}else{
-
-						} 
-						//enregistrer 
-
+								$request = $this->Db->Pdo->prepare("
+								INSERT INTO ticket_ligne_champ  (tklc__id, tklc__nom_champ,  tklc__ordre,  tklc__memo ) 
+								VALUES      			  (:tklc__id,  :tklc__nom_champ,  :tklc__ordre,  :tklc__memo)"); 
+								$request->bindValue(":tklc__id", $id_ligne);
+								$request->bindValue(":tklc__nom_champ", $key);
+								$request->bindValue(":tklc__ordre",  $champs->tksc__ordre);
+								$request->bindValue(":tklc__memo",  $value);
+								$request->execute();
+							} 
+						}
+						
 						break;
 				}
 		}
@@ -144,9 +184,13 @@ class Tickets extends Table {
 		WHERE  tksc__motif_ligne =  "' . $data->tks__motif_ligne . '" 
 		ORDER BY tksc__ordre LIMIT 50000');
 		$champs = $request->fetchAll(PDO::FETCH_OBJ);
+		$multiparts = null;
 		foreach($champs as $key => $value){
+		if ($value->tksc__type_de_champ == 'FIL') {
+			$multiparts =  true;
+		}
 		if (!empty($value->tksc__option)){
-			if (preg_match('/@/' , $value->tksc__option) == 1){
+			if (preg_match('/@/' , $value->tksc__option) == 1 and  $value->tksc__type_de_champ != 'CLI'){
 				$request = explode('@',$value->tksc__option);
                 $subject_list = $this->get_subject_table($request[0]);
 				if (!empty($subject_list)){
@@ -159,6 +203,7 @@ class Tickets extends Table {
 			}
 		}
 	}
+	$data->multiparts = $multiparts;
 	$data->forms =  $champs;
 	return $data;
   }
@@ -170,7 +215,7 @@ class Tickets extends Table {
 }
 
 	public function findChamp($motif ,$nom){
-		$request = $this->Db->Pdo->query('SELECT  tksc__option  FROM ticket_scenario WHERE tks__motif =  "'.$motif.'" AND tks__nom_champ = "'.$nom.'"');
+		$request = $this->Db->Pdo->query('SELECT  tksc__option , tksc__ordre  FROM ticket_senar_champ WHERE tksc__motif_ligne =  "'.$motif.'" AND tksc__nom_champ = "'.$nom.'"');
 		$data = $request->fetch(PDO::FETCH_OBJ);
 		return $data;
 	}

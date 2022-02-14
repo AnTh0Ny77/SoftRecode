@@ -89,7 +89,7 @@ let delete_liste_faturation = function () {
 let add_client_selected = function(client , display_client){
     $('#client_input').addClass('d-none');
     $('#btn_search_client').addClass('d-none');
-    $('#client').val(client);
+    $('#Client').val(client);
     $('#display_client').val(display_client);
     $('#display_client').removeClass('d-none');
     $('#remove_client').removeClass('d-none');
@@ -97,7 +97,7 @@ let add_client_selected = function(client , display_client){
 let remove_client_selected = function(){
     $('#client_input').removeClass('d-none');
     $('#btn_search_client').removeClass('d-none');
-    $('#client').val('');
+    $('#Client').val('');
     $('#display_client').val('');
     $('#display_client').addClass('d-none');
     $('#remove_client').addClass('d-none');
