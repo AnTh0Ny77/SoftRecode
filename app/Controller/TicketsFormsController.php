@@ -89,7 +89,7 @@ class TicketsFormsController extends BasicController
                 $subject_list = $Ticket->get_subject_table($request[0]);
                 $subject_list = $Ticket->get_subject_list($request , $subject_list['TABLE_NAME']);
             }
-
+          
             return self::$twig->render(
                 'forms_tickets_generator.html.twig',
                 [
@@ -101,7 +101,7 @@ class TicketsFormsController extends BasicController
                     'type_tickets' => $_POST['TypeTickets'],
                     'motif' => $motif,
                     'libelle' => $motif_lib , 
-                    'mutiparts' =>  $tickets->multiparts
+                    'multiparts' =>  $tickets->multiparts
                 ]
             );
         }
@@ -130,8 +130,7 @@ class TicketsFormsController extends BasicController
     public static function formsHandler(){
         self::init();
         self::security();
-        var_dump($_POST);
-        die();
+       
         return self::handleForms($_POST, $_FILES);
     }
 
@@ -153,7 +152,7 @@ class TicketsFormsController extends BasicController
                 $post['id_ligne'] = $new_tickets;
                 $post['dt'] = date('now');
                 $new_line = $Ticket->insert_line($post);
-                $Ticket->insert_multipart('/', 1 , $files );
+                $Ticket->insert_multipart('C:\laragon\www\SoftRecode', $new_line , $files );
                 $new_field = $Ticket->insert_field($post,$new_line);
             }
             else{

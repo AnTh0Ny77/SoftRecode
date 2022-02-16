@@ -60,9 +60,21 @@ class Tickets extends Table {
   }
 
 	public function insert_multipart( string $directory,  int $id_line , array $files){
-
+	
 		foreach ($files as $key  => $file){
-			var_dump(mime_content_type($file));
+			//check mime type and size 
+			//rename without special char and space 
+			$mime_type  = mime_content_type($file['tmp_name']);
+
+
+
+			$file = file_get_contents($file['tmp_name']);
+			$path = $directory . '/' . $id_line ;
+			if (!is_dir($path)) {
+				mkdir($path, 0777, TRUE);
+			}
+			
+			file_put_contents($path, $file);
 		}
 		die();
 	}
