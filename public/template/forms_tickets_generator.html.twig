@@ -22,13 +22,13 @@
         <input type="hidden" name="creaForms" value="{{crea_forms}}">
         <input type="hidden" name="type" value="{{type_tickets}}">
         <div class="form-group pt-5">
-            {% if  subject_list %}
+            {# {% if  subject_list %}
                 <select class="custom-select form-control-lg input-recode" name="idSubject"  required>
                     {% for subject in subject_list %}
                         <option value="{{subject.id}}" >{{subject.lib}}</option>
                     {% endfor %}
                 </select>
-            {% endif %}
+            {% endif %} #}
         </div>
         {% for form in forms %}
                {{ include('forms/forms_tickets_fields.html.twig')}}

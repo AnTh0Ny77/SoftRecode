@@ -36,16 +36,30 @@
             </div>
     {% elseif form.tksc__type_de_champ == "FIL" %}
             <div class="">
-                <h5 class="text-white">{{form.tksc__nom_champ}}</h5>
-                <input class="form-control" type="file" name="{{form.tksc__nom_champ}}" multiple>
+                {% if form.tksc__obligatoire == 1 %}
+                    <h5 class="text-white">{{form.tksc__nom_champ}}</h5>
+                    <input class="form-control" type="file" name="{{form.tksc__nom_champ}}" multiple required>
+                {% else %}
+                    <h5 class="text-white">{{form.tksc__nom_champ}}</h5>
+                    <input class="form-control" type="file" name="{{form.tksc__nom_champ}}" multiple>
+                {% endif %}
             </div>
     {% elseif form.tksc__type_de_champ == "SLT" %}
             <h5 class="text-white">{{form.tksc__nom_champ}}</h5>
-            <select class="custom-select form-control-lg input-recode" name="{{form.tksc__nom_champ}}" >
-                {% for subject in form.tksc__option %}
-                    <option value="{{subject.id}}" >{{subject.lib}}</option>
-                {% endfor %}
-            </select>
+            {% if form.tksc__obligatoire == 1 %}
+                <select class="custom-select form-control-lg input-recode" name="{{form.tksc__nom_champ}}" required>
+                    {% for subject in form.tksc__option %}
+                        <option value="{{subject.id}}" >{{subject.lib}}</option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                <select class="custom-select form-control-lg input-recode" name="{{form.tksc__nom_champ}}" >
+                    {% for subject in form.tksc__option %}
+                        <option value="{{subject.id}}" >{{subject.lib}}</option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+            
     {% elseif form.tksc__type_de_champ == "CLI" %} 
             {% include "forms/forms_client_field.html.twig" %}
     {% elseif form.tksc__type_de_champ == "AER" %}

@@ -4,7 +4,7 @@
 namespace App\Tables;
 use App\Tables\Table;
 use App\Database;
-use App\Methods\Pdfunctions;
+use App\Tables\General;
 use PDO;
 use stdClass;
 
@@ -36,7 +36,7 @@ class Tickets extends Table {
 	INSERT INTO ticket  (tk__motif,		 	tk__motif_id ,	 	tk__titre , tk__indic ) 
 	VALUES              (:tk__motif,      :tk__motif_id,      :tk__titre , :tk__indic)"); 
 	$request->bindValue(":tk__motif", $post['type']);
-	$request->bindValue(":tk__motif_id", $post['idSubject']);
+	$request->bindValue(":tk__motif_id", null);
 	$request->bindValue(":tk__titre",  $post['Titre']);
 	$request->bindValue(":tk__indic",  'STD');
 	$request->execute();
@@ -65,9 +65,6 @@ class Tickets extends Table {
 			//check mime type and size 
 			//rename without special char and space 
 			$mime_type  = mime_content_type($file['tmp_name']);
-
-
-
 			$file = file_get_contents($file['tmp_name']);
 			$path = $directory . '/' . $id_line ;
 			if (!is_dir($path)) {
@@ -79,7 +76,7 @@ class Tickets extends Table {
 		die();
 	}
 
-  public function insert_field(array $post , $id_ligne){
+  public function insert_field(array $post , $id_ligne , $id_tickets){
 		foreach ($post as $key => $value) {
 				switch ($key) {
 					case 'id_ligne':
@@ -96,7 +93,6 @@ class Tickets extends Table {
 						//requete pour chercher le type de champs : 
 					
 						$champs = $this->findChamp($post['motif'],$key);
-						var_dump($key , $value);
 						if (is_array($value)){
 							$text = '';
 							foreach ($value as  $response) {
@@ -108,7 +104,7 @@ class Tickets extends Table {
 						}
 						$text = '';
 						
-						if (!empty($champs)) {
+						if (!empty($champs) and intval($champs->tksc__sujet) != 1 ) {
 							$pattern = "@";
 					
 							if(stripos( $champs->tksc__option , $pattern)){
@@ -132,6 +128,10 @@ class Tickets extends Table {
 								$request->bindValue(":tklc__memo",  $value);
 								$request->execute();
 							} 
+						}
+						elseif(!empty($champs) and intval($champs->tksc__sujet) == 1 ){
+							$update = new General($this->Db);
+							$update->updateAll('ticket', $value , 'tk__motif_id' , 'tk__id' , $id_tickets);
 						}
 						
 						break;
@@ -227,7 +227,7 @@ class Tickets extends Table {
 }
 
 	public function findChamp($motif ,$nom){
-		$request = $this->Db->Pdo->query('SELECT  tksc__option , tksc__ordre  FROM ticket_senar_champ WHERE tksc__motif_ligne =  "'.$motif.'" AND tksc__nom_champ = "'.$nom.'"');
+		$request = $this->Db->Pdo->query('SELECT  tksc__option , tksc__ordre , tksc__sujet  FROM ticket_senar_champ WHERE tksc__motif_ligne =  "'.$motif.'" AND tksc__nom_champ = "'.$nom.'"');
 		$data = $request->fetch(PDO::FETCH_OBJ);
 		return $data;
 	}

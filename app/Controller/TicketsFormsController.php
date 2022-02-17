@@ -84,16 +84,11 @@ class TicketsFormsController extends BasicController
             $tickets = $Ticket->find_first_step($_POST['TypeTickets']);
             $motif = $tickets->tks__motif_ligne;
             $motif_lib = $tickets->tks__lib;
-            if (!empty($tickets->kw__info)){
-                $request = explode('|',$tickets->kw__info);
-                $subject_list = $Ticket->get_subject_table($request[0]);
-                $subject_list = $Ticket->get_subject_list($request , $subject_list['TABLE_NAME']);
-            }
           
             return self::$twig->render(
                 'forms_tickets_generator.html.twig',
                 [
-                    'subject_list' => $subject_list,
+                    // 'subject_list' => $subject_list,
                     'user' => $_SESSION['user'],
                     'forms' => $tickets->forms , 
                     'tickets' => $tickets,
@@ -138,10 +133,6 @@ class TicketsFormsController extends BasicController
             $Ticket = new Tickets(self::$Db);
             if (!empty($post['creaForms'])){
 
-                //si un sujet est donné : 
-                if (!empty($post['idSubject'])) {
-                    $post['idSubject'] = $post['idSubject'];
-                }else $post['idSubject'] = null;
                 //si un titre est donné : 
                 if (!empty($post['Titre'])) {
                     $post['Titre'] = $post['Titre'];
@@ -152,8 +143,8 @@ class TicketsFormsController extends BasicController
                 $post['id_ligne'] = $new_tickets;
                 $post['dt'] = date('now');
                 $new_line = $Ticket->insert_line($post);
-                $Ticket->insert_multipart('C:\laragon\www\SoftRecode', $new_line , $files );
-                $new_field = $Ticket->insert_field($post,$new_line);
+                // $Ticket->insert_multipart('C:\laragon\www\SoftRecode', $new_line , $files );
+                $new_field = $Ticket->insert_field($post,$new_line , $new_tickets);
             }
             else{
                 //j'update
