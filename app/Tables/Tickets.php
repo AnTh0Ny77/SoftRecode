@@ -22,12 +22,37 @@ class Tickets extends Table {
         return $data;
   }
 
+
+  public function get_last(){
+	$request = $this->Db->Pdo->query('SELECT  t.*  FROM ticket as t
+	WHERE 1 = 1  ORDER BY tk__id ASC LIMIT 100');
+	$data = $request->fetchAll(PDO::FETCH_OBJ);
+	return $data;
+}
+
   public function get_subject_table($column_name){
 	  $request = $this->Db->Pdo->query('SELECT COLUMN_NAME  , TABLE_NAME 
 	  FROM INFORMATION_SCHEMA.COLUMNS 
 	  WHERE COLUMN_NAME =  "'.$column_name.'" ');
 	  $data = $request->fetch(PDO::FETCH_ASSOC);
 	  return $data;
+  }
+
+
+  public function findOne($id){
+		$request = $this->Db->Pdo->query('SELECT  t.*  FROM ticket as t
+		WHERE t.tk__id = "'.$id.'" ');
+		$ticket = $request->fetch(PDO::FETCH_OBJ);
+		$request = $this->Db->Pdo->query('SELECT  l.*  FROM ticket_ligne as l
+		WHERE l.tkl__tk_id = "'.$id.'" ');
+		$lignes = $request->fetchAll(PDO::FETCH_OBJ);
+		$ticket->lignes = $lignes;
+		foreach ($ticket->lignes as $ligne){
+			$request = $this->Db->Pdo->query('SELECT  c.*  FROM ticket_ligne_champ as c
+			WHERE c.tklc__id = "'.$ligne->tkl__id.'" ');
+			$fields = $request->fetchAll(PDO::FETCH_OBJ);
+			$ligne->fields = $fields;
+		}
   }
 
 

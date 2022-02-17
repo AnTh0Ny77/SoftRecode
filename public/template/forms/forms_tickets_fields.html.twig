@@ -1,6 +1,4 @@
 
-
-
 <div class="form-group">
     {% if form.tksc__type_de_champ == "TXT" %}
         {% if form.tksc__obligatoire == 1 %}
@@ -59,7 +57,6 @@
                     {% endfor %}
                 </select>
             {% endif %}
-            
     {% elseif form.tksc__type_de_champ == "CLI" %} 
             {% include "forms/forms_client_field.html.twig" %}
     {% elseif form.tksc__type_de_champ == "AER" %}

@@ -67,6 +67,7 @@ class TicketsFormsController extends BasicController
     }
 
 
+
     //@route: /tickets-handle-forms
     public static function FormsMarker(){
         self::init();
@@ -106,7 +107,7 @@ class TicketsFormsController extends BasicController
                 # code...
             }
             else{
-                header('location: /tickets-create-forms');
+                header('location: tickets-create-forms');
             }
         }
 
@@ -125,8 +126,8 @@ class TicketsFormsController extends BasicController
     public static function formsHandler(){
         self::init();
         self::security();
-       
-        return self::handleForms($_POST, $_FILES);
+        self::handleForms($_POST, $_FILES);
+        return header('location: tickets-display-list');
     }
 
     public static function handleForms(array $post , array $files){

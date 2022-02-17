@@ -10,26 +10,14 @@
 {% block main %}
 <main role="main" class="col-12 container-body background-extranet text-monospace">
   <div class="container pt-5 ">
-      {% if multiparts %}
-      
-      <form action="tickets-post-data" method="POST" class="col-12 col-sm-9 mx-auto" enctype="multipart/form-data">
-      {% else %}
-      <form action="tickets-post-data" method="POST" class="col-12 col-sm-9 mx-auto">
-      {% endif %}
-        <h2 class="text-white">{{libelle}}</h2>
-        <input type="hidden" name="motif" value="{{motif}}">
-        <input type="hidden" name="libelle" value="{{libelle}}">
-        <input type="hidden" name="creaForms" value="{{crea_forms}}">
-        <input type="hidden" name="type" value="{{type_tickets}}">
-        <div class="form-group pt-5">
-        </div>
-        {% for form in forms %}
-               {{ include('forms/forms_tickets_fields.html.twig')}}
+    <ul class="list-group list-group-flush">
+        {% for ticket in list %}
+            <li class="list-group-item bg-transparent">
+                <a href="tickets-display?id={{ticket.tk__id}}" class="btn btn-link btn-lg active text-white" role="button">{{ticket.tk__titre}}</a>
+            </li>
         {% endfor %}
-        <div class="form-group d-flex justify-content-end">
-            <button class="btn btn-recode" >Valider</button>
-        </div>
-      </form>
+    </ul>
+       
   </div>
 </main>
 {% endblock %}
@@ -38,5 +26,5 @@
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
-<script type="text/javascript" src="public/js/client_module.js"></script>
+
 {% endblock %}
