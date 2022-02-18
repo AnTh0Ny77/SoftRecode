@@ -35,19 +35,37 @@ class TicketsDisplayController extends BasicController
         self::init();
         self::security();
         $Ticket = new Tickets(self::$Db);
-        $list = $Ticket->get_last();
+        $display_entitie = null;
 
-        if(empty($Request['id']))
-           header('location: tickets-display-list');
+        if(empty($Request['id'])){
+            header('location: tickets-display-list');
+            die();
+        }
 
+        $ticket = $Ticket->findOne($Request['id']);
         
-
+        if (empty($ticket)){
+            header('location: tickets-display-list');
+            die();
+        }
         
+        $config = file_get_contents('configDisplay.json');
+        $config = json_decode($config);
+        $config = $config->entities;
+        foreach ($config as  $entitie){
+           if (!empty($ticket->sujet)){
+                $subject_identifier = $ticket->sujet->tksc__option;
+                $display_entitie = $Ticket->createEntities($entitie , $subject_identifier, $ticket->tk__motif_id );
+              
+           }
+        }
+        
+       
         return self::$twig->render(
             'display_ticket.html.twig',
             [
                 'user' => $_SESSION['user'], 
-                'list' => $list
+                'ticket' => $ticket
             ]
         );
     }

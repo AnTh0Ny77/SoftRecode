@@ -52,7 +52,57 @@ class Tickets extends Table {
 			WHERE c.tklc__id = "'.$ligne->tkl__id.'" ');
 			$fields = $request->fetchAll(PDO::FETCH_OBJ);
 			$ligne->fields = $fields;
+			$request = $this->Db->Pdo->query('SELECT  s.*  FROM ticket_senar_champ as s
+			WHERE s.tksc__motif_ligne = "' . $ligne->tkl__motif_ligne . '" ');
+			$scenario = $request->fetchAll(PDO::FETCH_OBJ);
+			foreach ($scenario as $step) {
+				if (intval($step->tksc__sujet) == 1 ){
+					$ticket->sujet = $step;
+				}
+			}
+
 		}
+		return $ticket;
+  }
+
+
+  public function createEntities(object $entitie, string $identifier , int $id){
+		$pattern = "@";
+		if (stripos($identifier, $pattern)){
+			$request = explode('@', $identifier);
+			$subject_table = $this->get_subject_table($request[1]);
+			if (!empty($subject_table) and $entitie->identifier  == $request[1] ){
+				$request = $this->Db->Pdo->query('SELECT  * 
+				FROM '. $subject_table['TABLE_NAME'].' 
+				WHERE '. $entitie->identifier.' = '. $id.'');
+				$data = $request->fetch(PDO::FETCH_ASSOC);
+				if (!empty($data)){
+					$subject = [];
+					$text = '';
+					foreach ($entitie as $key => $properties) {
+						foreach ($data as $clefs => $valeur) {
+							if (is_string($properties)) {
+								if ($clefs == $properties) {
+									$subject[$key] = $valeur;
+								}
+							}elseif(is_array($properties)){
+								
+								foreach($properties as $field){
+									if ($field == $clefs ) {
+										$text .= $valeur . ' ';
+										
+									}
+								}
+								$subject[$key] = $text;
+							}
+							
+						}
+					}
+					var_dump($subject);
+					return $subject;
+				}else return null;
+			} else return null;
+		} else return null;
   }
 
 
