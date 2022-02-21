@@ -36,13 +36,14 @@ class TicketsDisplayController extends BasicController
         self::security();
         $Ticket = new Tickets(self::$Db);
         $sujet = null;
-
+        $user_destinataire = null;
         if(empty($Request['id'])){
             header('location: tickets-display-list');
             die();
         }
 
         $ticket = $Ticket->findOne($Request['id']);
+        $user_destinataire = $Ticket->getCurrentUser($Request['id']);
         
         if (empty($ticket)){
             header('location: tickets-display-list');
@@ -67,6 +68,7 @@ class TicketsDisplayController extends BasicController
             'display_ticket.html.twig',
             [
                 'user' => $_SESSION['user'],
+                'destinataire' => $user_destinataire, 
                 'sujet' =>  $sujet ,
                 'ticket' => $ticket , 
                 

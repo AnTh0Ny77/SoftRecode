@@ -40,7 +40,10 @@ class Tickets extends Table {
 
 
   public function findOne($id){
-		$request = $this->Db->Pdo->query('SELECT  t.*  FROM ticket as t
+	    $tmoti = "tmoti";
+		$request = $this->Db->Pdo->query('SELECT  t.* , k.kw__lib 
+		FROM ticket as t
+		LEFT JOIN keyword as k ON ( k.kw__value = t.tk__motif AND  k.kw__type= "tmoti") 
 		WHERE t.tk__id = "'.$id.'" ');
 		$ticket = $request->fetch(PDO::FETCH_OBJ);
 		$request = $this->Db->Pdo->query('SELECT  l.*  FROM ticket_ligne as l
@@ -65,16 +68,27 @@ class Tickets extends Table {
 		return $ticket;
   }
 
+  public function getCurrentUser( int $ticket_id){
+		$request = $this->Db->Pdo->query('SELECT  MAX(tkl__dt) as dateLigne  FROM ticket_ligne 
+		WHERE tkl__tk_id = "'.$ticket_id.'" ');
+		$ligne = $request->fetch(PDO::FETCH_OBJ);
+		$request = $this->Db->Pdo->query('SELECT tkl__user_id_dest , u.nom , u.prenom  FROM ticket_ligne 
+		LEFT JOIN utilisateur as u ON ( tkl__user_id_dest = u.id_utilisateur) 
+		WHERE tkl__dt = "'.$ligne->dateLigne.'" ');
+		$ligne = $request->fetch(PDO::FETCH_OBJ);
+		return $ligne;
+  }
+
 
   public function createEntities(object $entitie, string $identifier ,  $id){
 		$pattern = "@";
 		if (stripos($identifier, $pattern)){
 			$request = explode('@', $identifier);
 			$subject_table = $this->get_subject_table($request[1]);
-			if (!empty($subject_table) and $entitie->identifier  == $request[1] ){
+			if (!empty($subject_table) and $entitie->identifier  == $request[0] ){
 				$request = $this->Db->Pdo->query('SELECT  * 
 				FROM '. $subject_table['TABLE_NAME'].' 
-				WHERE '. $entitie->identifier.' = '. $id.'');
+				WHERE '. $entitie->identifier.' = "'. $id.'" ');
 				$data = $request->fetch(PDO::FETCH_ASSOC);
 				if (!empty($data)){
 					$subject = [];
