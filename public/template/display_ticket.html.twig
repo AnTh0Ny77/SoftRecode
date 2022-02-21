@@ -10,9 +10,23 @@
 {% block main %}
 <main role="main" class="col-12 container-body background-extranet text-monospace">
   <div class="container pt-5 ">
-    <ul class="list-group list-group-flush">
-      hello
-    </ul>
+    <div class="container pt-5 ">
+        <form action="tickets-post-data" method="POST" class="col-12 col-sm-9 mx-auto">
+          <h2 class="text-white">{{ticket.tk__id ~ " " ~ ticket.tk__titre}}</h2>
+          
+          <div class="form-group pt-5">
+            {% if sujet %}
+            
+              {{ include('display/display_ticket_subject.html.twig')}}
+            {% endif %}
+            {% for form in forms %}
+              {{ include('display/display_ticket_ligne.html.twig')}}
+            {% endfor %}
+          </div>
+          
+         
+        </form>
+    </div>
        
   </div>
 </main>

@@ -66,7 +66,7 @@ class Tickets extends Table {
   }
 
 
-  public function createEntities(object $entitie, string $identifier , int $id){
+  public function createEntities(object $entitie, string $identifier ,  $id){
 		$pattern = "@";
 		if (stripos($identifier, $pattern)){
 			$request = explode('@', $identifier);
@@ -78,27 +78,29 @@ class Tickets extends Table {
 				$data = $request->fetch(PDO::FETCH_ASSOC);
 				if (!empty($data)){
 					$subject = [];
-					$text = '';
 					foreach ($entitie as $key => $properties) {
+						$text = '';
 						foreach ($data as $clefs => $valeur) {
 							if (is_string($properties)) {
+								
 								if ($clefs == $properties) {
+									$subject["alternative"] = $entitie->alternative; 
+									if ($key == 'picture') {
+										$valeur = base64_encode($valeur);
+									}
 									$subject[$key] = $valeur;
 								}
 							}elseif(is_array($properties)){
-								
 								foreach($properties as $field){
 									if ($field == $clefs ) {
 										$text .= $valeur . ' ';
+										$subject[$key] = $text;
 										
 									}
 								}
-								$subject[$key] = $text;
-							}
-							
+							}		
 						}
 					}
-					var_dump($subject);
 					return $subject;
 				}else return null;
 			} else return null;

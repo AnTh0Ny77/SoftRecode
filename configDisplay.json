@@ -5,6 +5,7 @@
            "table": "client",
            "identifier": "client__id",
            "label": [
+               "client__id",
                "client__societe" ,
                 "client__cp" , 
                 "client__ville"
@@ -14,7 +15,7 @@
                 "client__adr2"
                ] ,
            "picture": null,
-           "alternative": null
+           "alternative": "path/to/image"
        },
        {
             "name": "pn",
@@ -27,7 +28,7 @@
                 "apn__desc_short"
             ],
             "picture": "apn__image",
-            "alternative": null
+            "alternative": "path/to/pn"
         }
     ]
 }
