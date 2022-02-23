@@ -25,7 +25,7 @@ class Tickets extends Table {
 
   public function get_last(){
 	$request = $this->Db->Pdo->query('SELECT  t.*  FROM ticket as t
-	WHERE 1 = 1  ORDER BY tk__id ASC LIMIT 100');
+	WHERE 1 = 1  ORDER BY tk__id DESC LIMIT 100');
 	$data = $request->fetchAll(PDO::FETCH_OBJ);
 	return $data;
 }
@@ -79,6 +79,19 @@ class Tickets extends Table {
 		return $ligne;
   }
 
+  public function getNextAction($ticket_id){
+		$request = $this->Db->Pdo->query('SELECT  MAX(tkl__dt) as dateLigne  FROM ticket_ligne 
+		WHERE tkl__tk_id = "' . $ticket_id . '" ');
+		$ligne = $request->fetch(PDO::FETCH_OBJ);
+		$request = $this->Db->Pdo->query('SELECT  tkl__motif_ligne   FROM ticket_ligne 
+		WHERE tkl__dt = "' . $ligne->dateLigne . '" ');
+		$ligne = $request->fetch(PDO::FETCH_OBJ);
+		$request = $this->Db->Pdo->query('SELECT  * FROM ticket_scenario
+		WHERE tks__motif_ligne_preced = "' . $ligne->tkl__motif_ligne . '" ');
+		$scenario = $request->fetchAll(PDO::FETCH_OBJ);
+		return $scenario;
+  }
+
 
   public function createEntities(object $entitie, string $identifier ,  $id){
 		$pattern = "@";
@@ -115,11 +128,53 @@ class Tickets extends Table {
 							}		
 						}
 					}
+					
 					return $subject;
 				}else return null;
 			} else return null;
 		} else return null;
   }
+
+  public function create_secondary_entities(object $entitie, string $identifier){
+		$pattern = "@";
+		if (stripos($identifier, $pattern)) {
+			$request = explode('@', $identifier);
+			$subject_table = $this->get_subject_table($request[1]);
+			if (!empty($subject_table) and $entitie->identifier  == $request[0]){
+				$request = $this->Db->Pdo->query('SELECT  * 
+				FROM ' . $subject_table['TABLE_NAME'] . ' 
+				WHERE ' . $entitie->identifier . ' = "' . end($request) . '" ');
+				$data = $request->fetch(PDO::FETCH_ASSOC);
+				if (!empty($data)) {
+					$subject = [];
+					foreach ($entitie as $key => $properties) {
+						$text = '';
+						foreach ($data as $clefs => $valeur) {
+							if (is_string($properties)) {
+
+								if ($clefs == $properties) {
+									$subject["alternative"] = $entitie->alternative;
+									if ($key == 'picture') {
+										$valeur = base64_encode($valeur);
+									}
+									$subject[$key] = $valeur;
+								}
+							} elseif (is_array($properties)) {
+								foreach ($properties as $field) {
+									if ($field == $clefs) {
+										$text .= $valeur . ' ';
+										$subject[$key] = $text;
+									}
+								}
+							}
+						}
+					}
+					return $subject;
+				} else return null;
+			}else return null;
+		}else return null;
+  }
+
 
 
   public function insert_ticket(array $post){

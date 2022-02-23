@@ -37,22 +37,42 @@ class TicketsDisplayController extends BasicController
         $Ticket = new Tickets(self::$Db);
         $sujet = null;
         $user_destinataire = null;
+        $next_action = null;
+       
+
         if(empty($Request['id'])){
             header('location: tickets-display-list');
             die();
         }
 
         $ticket = $Ticket->findOne($Request['id']);
-        $user_destinataire = $Ticket->getCurrentUser($Request['id']);
-        
-        if (empty($ticket)){
+        if (empty($ticket)) {
             header('location: tickets-display-list');
             die();
         }
-        
         $config = file_get_contents('configDisplay.json');
         $config = json_decode($config);
         $config = $config->entities;
+        foreach ($ticket->lignes as $ligne) {
+            $entitites_array = [];
+            $pattern = "@";
+            foreach ($ligne->fields as $key => $field){
+                    if (stripos($field->tklc__memo , $pattern)){
+                        foreach($config as  $entitie) {
+                           $secondary_entities = $Ticket->create_secondary_entities($entitie , $field->tklc__memo);
+                           if(!empty($secondary_entities)){
+                               array_push($entitites_array, $secondary_entities );
+                           }
+                        }
+                    }
+            }
+            if (!empty($entitites_array)) {
+                $ligne->entities = $entitites_array;
+            }
+        }
+        $user_destinataire = $Ticket->getCurrentUser($Request['id']);
+        $next_action = $Ticket->getNextAction($Request['id']);
+        
         foreach ($config as  $entitie){
            if (!empty($ticket->sujet)){
                 $subject_identifier = $ticket->sujet->tksc__option;
@@ -60,7 +80,6 @@ class TicketsDisplayController extends BasicController
                 if (!empty($display_entitie)) {
                     $sujet = $display_entitie;
                 }
-               
            }
         }
        
@@ -71,6 +90,7 @@ class TicketsDisplayController extends BasicController
                 'destinataire' => $user_destinataire, 
                 'sujet' =>  $sujet ,
                 'ticket' => $ticket , 
+                'next_action'=> $next_action
                 
             ]
         );

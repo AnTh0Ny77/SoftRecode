@@ -2,18 +2,18 @@
 <div class="form-group">
     {% if form.tksc__type_de_champ == "TXT" %}
         {% if form.tksc__obligatoire == 1 %}
-            <input type="text" class="form-control  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}" placeholder="{{form.tksc__nom_champ}}" required>
+            <input type="text" class="form-control  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}" placeholder="{{form.tksc__label}}" required>
         {% else %}
-            <input type="text" class="form-control  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}" placeholder="{{form.tksc__nom_champ}}" >
+            <input type="text" class="form-control  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}" placeholder="{{form.tksc__label}}" >
         {% endif %}
     {% elseif form.tksc__type_de_champ == "NUM" %}
         {% if form.tksc__obligatoire == 1 %}
-            <input type="number" step="0.01" class="form-control col-5  form-control-lg input-recode" maxlength="{{form.tksc__long_de_champ}}" placeholder="{{form.tksc__nom_champ}}" required>
+            <input type="number" step="0.01" class="form-control col-5  form-control-lg input-recode" maxlength="{{form.tksc__long_de_champ}}" placeholder="{{form.tksc__label}}" required>
         {% else %}
-            <input type="number" step="0.01" class="form-control col-5  form-control-lg input-recode" maxlength="{{form.tksc__long_de_champ}}" placeholder="{{form.tksc__nom_champ}}" >
+            <input type="number" step="0.01" class="form-control col-5  form-control-lg input-recode" maxlength="{{form.tksc__long_de_champ}}" placeholder="{{form.tksc__label}}" >
         {% endif %}
     {% elseif form.tksc__type_de_champ == "RAD" %}
-        <h5 class="text-white">{{form.tksc__nom_champ}}</h5>
+        <h5 class="text-white">{{form.tksc__label}}</h5>
         <div class="row justify-content-start col-12 ">
             {% for row in form.tksc__option %}
                 <div class="form-check text-white col-5 col-md-4">
@@ -23,7 +23,7 @@
             {% endfor %}
         </div>
     {% elseif form.tksc__type_de_champ == "CHK" %}
-        <h5 class="text-white">{{form.tksc__nom_champ}}</h5>
+        <h5 class="text-white">{{form.tksc__label}}</h5>
             <div class="row justify-content-between col-12 ">
                 {% for row in form.tksc__option %}
                     <div class="form-check text-white col-5 col-md-4">
@@ -35,15 +35,15 @@
     {% elseif form.tksc__type_de_champ == "FIL" %}
             <div class="">
                 {% if form.tksc__obligatoire == 1 %}
-                    <h5 class="text-white">{{form.tksc__nom_champ}}</h5>
+                    <h5 class="text-white">{{form.tksc__label}}</h5>
                     <input class="form-control" type="file" name="{{form.tksc__nom_champ}}" multiple required>
                 {% else %}
-                    <h5 class="text-white">{{form.tksc__nom_champ}}</h5>
+                    <h5 class="text-white">{{form.tksc__label}}</h5>
                     <input class="form-control" type="file" name="{{form.tksc__nom_champ}}" multiple>
                 {% endif %}
             </div>
     {% elseif form.tksc__type_de_champ == "SLT" %}
-            <h5 class="text-white">{{form.tksc__nom_champ}}</h5>
+            <h5 class="text-white">{{form.tksc__label}}</h5>
             {% if form.tksc__obligatoire == 1 %}
                 <select class="custom-select form-control-lg input-recode" name="{{form.tksc__nom_champ}}" required>
                     {% for subject in form.tksc__option %}
@@ -60,6 +60,6 @@
     {% elseif form.tksc__type_de_champ == "CLI" %} 
             {% include "forms/forms_client_field.html.twig" %}
     {% elseif form.tksc__type_de_champ == "AER" %}
-            <textarea class="form-control  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" placeholder="{{form.tksc__nom_champ}}" rows="3"></textarea>
+            <textarea class="form-control  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" placeholder="{{form.tksc__label}}" rows="3"></textarea>
     {% endif %}
 </div>

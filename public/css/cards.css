@@ -7,6 +7,16 @@
     padding-left: 5%;
     padding-right: 5px;
 }
+
+.card-recode-ligne{
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.16);
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    padding-top: 5px;
+    padding-bottom: 2%;
+    padding-left: 1%;
+    padding-right: 5px;
+}
 .card-recode-green{
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.16);
     background-color: #96db99;
@@ -14,6 +24,19 @@
    
     padding-left: 5%;
     padding-right: 5px;
+}
+
+.card-recode-secondary{
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.16);
+    background-color: #babdba;
+    border-radius: 7px;
+   
+    padding-left: 3%;
+    padding-right: 3px;
+}
+
+.modal-recode{
+    background-color: #96db99;
 }
 
 .subject-image{

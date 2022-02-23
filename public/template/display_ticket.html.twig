@@ -12,7 +12,7 @@
 <main role="main" class="col-12 container-body background-extranet text-monospace">
   <div class="container pt-2 ">
     <div class="container pt-4 ">
-        <form action="tickets-post-data" method="POST" class="col-12 col-sm-9 mx-auto">
+        <div  class="col-12 col-sm-9 mx-auto">
           <div class="d-flex justify-content-center">
               <div class="col-4 text-white display-logo">
 				{{ include('display/display_logo_ticket.html.twig')}}
@@ -40,7 +40,7 @@
 					<h2 class="font-weight-bold text-wrap display-tiltle">{{ticket.tk__titre}}</h2>
 				</div>
 			</div>
-            {% for ligne in lignes %}
+            {% for ligne in ticket.lignes %}
               {{ include('display/display_ticket_ligne.html.twig')}}
             {% endfor %}
 			<div class="d-flex flex-column align-items-center">
@@ -54,14 +54,32 @@
           </div>
 		  {#modal #}
           <div class="modal fade modal-validation-ticket" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg">
-			  <div class="modal-content">
-				...
+			<div class="modal-dialog modal-lg modal-recode">
+			  <div class="modal-content modal-recode ">
+				  <form action="tickets-post-data" method="POST">
+					  	<div class="d-flex flex-column my-5 justify-content-center">
+							<div class="d-flex justify-content-center">
+								<h1 class="font-weight-bold">Que voulez-vous faire ? </h1>
+								<input type="hidden" name="tickets" value="{{ticket.tk__id}}">
+							</div>
+							<div class=" col-12 d-flex justify-content-center my-5">
+								<select class=" col-7 custom-select form-control-lg input-recode" name="scenario" required>
+									{% for action in next_action %}
+									<option value="{{action.tks__motif_ligne}}">{{action.tks__lib}}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class=" col-12 d-flex justify-content-center my-5">
+								<button type="button" class="btn btn-recode my-2 col-xs-7 col-md-4">Valider</button>
+							</div>
+						</div>	
+				  </form>
+				
 			  </div>
 			</div>
 		  </div>
          
-        </form>
+        </div>
     </div>
        
   </div>

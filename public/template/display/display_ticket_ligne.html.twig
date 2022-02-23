@@ -1,3 +1,23 @@
-<div>
-    ligne
+<div class="card-recode-ligne d-flex flex-column">
+    {% if ligne.entities %}
+        {% for entitie in ligne.entities %}
+                <div class="card-recode-secondary col-11 d-flex">
+                    <div class=" col-5 col-md-3 d-fex align-items-center">
+                        {% if entitie.picture %}
+                        <figure class="image"><img class="subject-image" src="data:image/jpeg;base64,{{ entitie.picture|raw}}"></figure>
+                        {% else %}
+                        <figure class="image"><img class="subject-image" src="{{entitie.alternative}}"></figure>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <div class="mt-2">
+                            <h3 class="title-sujet">{{entitie.label}}</h3>
+                        </div>
+                        <div class="d-fex align-item-center">
+                            <p class="recode-p">{{entitie.additionals}}</p>
+                        </div>
+                    </div>
+                </div>
+        {% endfor %}
+    {% endif %}
 </div>
