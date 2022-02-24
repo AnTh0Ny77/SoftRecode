@@ -1,12 +1,23 @@
 <div class="card-recode-ligne d-flex flex-column">
+    <div class="recode-ligne-header mt-2 mb-4">
+        <h4>{{ligne.nom ~ " " ~ ligne.prenom ~  "  : " ~ ligne.tkl__memo}}</h4>
+        <h4>Destinataire(s): {{ligne.prenom_dest ~ " " ~ ligne.nom_dest}}</h4>
+    </div>
     {% if ligne.entities %}
         {% for entitie in ligne.entities %}
-                <div class="card-recode-secondary col-11 d-flex">
-                    <div class=" col-5 col-md-3 d-fex align-items-center">
+        <div>
+            <h5 class="recode-display-field"> {{entitie.name}}:</h5>
+        </div>
+                <div class="card-recode-secondary ml-3 col-11 d-flex ">
+                    <div class=" col-10 col-md-6 col-lg-3 d-fex  mx-auto px-auto j align-items-center recode-div-pic">
                         {% if entitie.picture %}
-                        <figure class="image"><img class="subject-image" src="data:image/jpeg;base64,{{ entitie.picture|raw}}"></figure>
+                        <div class="d-flex justify-content-center">
+                            <figure class="image mx-auto"><img class="subject-image" src="data:image/jpeg;base64,{{ entitie.picture|raw}}"></figure>
+                        </div>
                         {% else %}
-                        <figure class="image"><img class="subject-image" src="{{entitie.alternative}}"></figure>
+                        <div class="d-flex justify-content-center">
+                            <figure class="image col-8 col-md-12"><img class="subject-image" src="{{entitie.alternative}}"></figure>
+                        </div>
                         {% endif %}
                     </div>
                     <div>
@@ -20,4 +31,13 @@
                 </div>
         {% endfor %}
     {% endif %}
+    <div class="mt-4">
+        {% for field in ligne.fields %}
+            <h5>{{field.tksc__label}} : 
+                <span class="font-weight-bold">
+                    {{field.tklc__memo}}
+                </span>
+            </h5>
+        {% endfor %}
+    </div>
 </div>

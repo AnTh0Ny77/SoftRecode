@@ -46,12 +46,17 @@ class Tickets extends Table {
 		LEFT JOIN keyword as k ON ( k.kw__value = t.tk__motif AND  k.kw__type= "tmoti") 
 		WHERE t.tk__id = "'.$id.'" ');
 		$ticket = $request->fetch(PDO::FETCH_OBJ);
-		$request = $this->Db->Pdo->query('SELECT  l.*  FROM ticket_ligne as l
+		$request = $this->Db->Pdo->query('SELECT  l.*  , u.nom , u.prenom , z.nom as nom_dest , z.prenom as prenom_dest   
+		FROM ticket_ligne as l
+		LEFT JOIN utilisateur AS u ON ( u.id_utilisateur = l.tkl__user_id ) 
+		LEFT JOIN utilisateur AS z ON ( z.id_utilisateur = l.tkl__user_id_dest ) 
 		WHERE l.tkl__tk_id = "'.$id.'" ');
 		$lignes = $request->fetchAll(PDO::FETCH_OBJ);
 		$ticket->lignes = $lignes;
 		foreach ($ticket->lignes as $ligne){
-			$request = $this->Db->Pdo->query('SELECT  c.*  FROM ticket_ligne_champ as c
+			$request = $this->Db->Pdo->query('SELECT  c.* , t.tksc__label
+			FROM ticket_ligne_champ as c
+			LEFT JOIN ticket_senar_champ as t ON ( c.tklc__nom_champ = t.tksc__nom_champ )
 			WHERE c.tklc__id = "'.$ligne->tkl__id.'" ');
 			$fields = $request->fetchAll(PDO::FETCH_OBJ);
 			$ligne->fields = $fields;
@@ -154,6 +159,7 @@ class Tickets extends Table {
 
 								if ($clefs == $properties) {
 									$subject["alternative"] = $entitie->alternative;
+									$subject["name"] = $entitie->name;
 									if ($key == 'picture') {
 										$valeur = base64_encode($valeur);
 									}

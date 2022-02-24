@@ -11,13 +11,13 @@
 {% block main %}
 <main role="main" class="col-12 container-body background-extranet text-monospace">
   <div class="container pt-2 ">
-    <div class="container pt-4 ">
+    <div class=" pt-4 ">
         <div  class="col-12 col-sm-9 mx-auto">
           <div class="d-flex justify-content-center">
               <div class="col-4 text-white display-logo">
 				{{ include('display/display_logo_ticket.html.twig')}}
               </div>
-              <div class="card-recode d-flex flex-column col-12 col-md-8">
+              <div class="card-recode d-flex flex-column col-12 col-lg-8">
                 	<h1 class="recode-orange-title"> Ticket {{ticket.tk__id}}</h1>
 					<p class="recode-p">{{ticket.kw__lib}}<br> 
 						<span class="text-dark font-weight-bold text-uppercase">En cours chez {{ destinataire.prenom ~ " " ~ destinataire.nom }}</span>
@@ -33,9 +33,7 @@
 				<div class="col-2">
 					<i class="fas fa-arrow-down fa-2x"></i>
 				</div>
-				<div class="col-1">
-
-				</div>
+				
 				<div class="ml-5 col-8 ">
 					<h2 class="font-weight-bold text-wrap display-tiltle">{{ticket.tk__titre}}</h2>
 				</div>
@@ -48,22 +46,22 @@
 				<select class="custom-select form-control-lg input-recode" name="{{form.tksc__nom_champ}}" required>
                         <option value="hello" >test esthétique</option>
                 </select> #}
-				<button type="button" class="btn btn-recode my-2 col-xs-7 col-md-4" data-toggle="modal" data-target=".modal-validation-ticket">Modifier le ticket</button>
-				<button type="button" class="btn btn-recode-danger col-xs-7 col-md-4">Cloturer le ticket</button>
+				<button type="button" class="btn btn-recode my-2 col-12 col-md-6 col-lg-4" data-toggle="modal" data-target=".modal-validation-ticket">Modifier le ticket</button>
+				<button type="button" class="btn btn-recode-danger col-12 col-md-6 col-lg-4">Cloturer le ticket</button>
 			</div>
           </div>
 		  {#modal #}
           <div class="modal fade modal-validation-ticket" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-lg modal-recode">
+			<div class="modal-dialog modal-dialog-centered  modal-lg  ">
 			  <div class="modal-content modal-recode ">
 				  <form action="tickets-post-data" method="POST">
 					  	<div class="d-flex flex-column my-5 justify-content-center">
-							<div class="d-flex justify-content-center">
+							<div class="d-flex justify-content-center text-center">
 								<h1 class="font-weight-bold">Que voulez-vous faire ? </h1>
 								<input type="hidden" name="tickets" value="{{ticket.tk__id}}">
 							</div>
 							<div class=" col-12 d-flex justify-content-center my-5">
-								<select class=" col-7 custom-select form-control-lg input-recode" name="scenario" required>
+								<select class=" col-11 col-md-10 col-lg-7 custom-select form-control-lg input-recode" name="scenario" required>
 									{% for action in next_action %}
 									<option value="{{action.tks__motif_ligne}}">{{action.tks__lib}}</option>
 									{% endfor %}

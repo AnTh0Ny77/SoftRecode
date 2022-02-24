@@ -56,7 +56,8 @@ class TicketsDisplayController extends BasicController
         foreach ($ticket->lignes as $ligne) {
             $entitites_array = [];
             $pattern = "@";
-            foreach ($ligne->fields as $key => $field){
+            $other_fields = [];
+            foreach ($ligne->fields as $key => $field){   
                     if (stripos($field->tklc__memo , $pattern)){
                         foreach($config as  $entitie) {
                            $secondary_entities = $Ticket->create_secondary_entities($entitie , $field->tklc__memo);
@@ -64,7 +65,10 @@ class TicketsDisplayController extends BasicController
                                array_push($entitites_array, $secondary_entities );
                            }
                         }
-                    }
+                    }else{
+                        array_push($other_fields,$field);
+                    } 
+                    $ligne->fields =  $other_fields;
             }
             if (!empty($entitites_array)) {
                 $ligne->entities = $entitites_array;
