@@ -1,16 +1,20 @@
-<div class="card-recode d-flex">
-    <div class=" col-5 col-md-3 d-fex align-items-center">
+<div class="card-recode subject-card d-flex">
+    <div class=" col-12 col-md-6 col-lg-3 d-fex align-items-center jsutify-content-center recode-div-pic">
         {% if sujet.picture %}
-            <figure class="image" ><img class="subject-image" src="data:image/jpeg;base64,{{ sujet.picture|raw}}" ></figure>
+        <div class="d-flex justify-content-center">
+            <figure class="image  col-8 col-md-12" ><img class="lead-subject-image" src="data:image/jpeg;base64,{{ sujet.picture|raw}}" ></figure>
+        </div>
         {% else %}
-            <figure class="image" ><img class="subject-image" src="{{sujet.alternative}}" ></figure>
+        <div class="d-flex justify-content-center">
+            <figure class="image col-8 col-md-12" ><img class="lead-subject-image" src="{{sujet.alternative}}" ></figure>
+        </div>     
         {% endif %}
     </div>
-    <div>
-        <div class="mt-2">
+    <div class="col-lg-9">
+        <div class="mt-2 ">
             <h3 class="title-sujet">{{sujet.label}}</h3>
         </div>
-        <div class="d-fex align-item-center">
+        <div class="d-fex align-item-center ">
             <p class="recode-p">{{sujet.additionals}}</p>
         </div>
     </div>

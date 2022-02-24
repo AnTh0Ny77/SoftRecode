@@ -1,7 +1,10 @@
 <div class="card-recode-ligne d-flex flex-column">
     <div class="recode-ligne-header mt-2 mb-4">
-        <h4>{{ligne.nom ~ " " ~ ligne.prenom ~  "  : " ~ ligne.tkl__memo}}</h4>
-        <h4>Destinataire(s): {{ligne.prenom_dest ~ " " ~ ligne.nom_dest}}</h4>
+        <h5>
+            <span class="font-weight-bold">
+                {{ligne.nom ~ " " ~ ligne.prenom ~  "  : " ~ ligne.tkl__memo}}
+            </span>
+        </h5>
     </div>
     {% if ligne.entities %}
         {% for entitie in ligne.entities %}
@@ -9,10 +12,10 @@
             <h5 class="recode-display-field"> {{entitie.name}}:</h5>
         </div>
                 <div class="card-recode-secondary ml-3 col-11 d-flex ">
-                    <div class=" col-10 col-md-6 col-lg-3 d-fex  mx-auto px-auto j align-items-center recode-div-pic">
+                    <div class=" col-10 col-md-6 col-lg-3 d-fex  mx-auto px-auto  align-items-center recode-div-pic">
                         {% if entitie.picture %}
                         <div class="d-flex justify-content-center">
-                            <figure class="image mx-auto"><img class="subject-image" src="data:image/jpeg;base64,{{ entitie.picture|raw}}"></figure>
+                            <figure class="image col-8 col-md-12"><img class="subject-image" src="data:image/jpeg;base64,{{ entitie.picture|raw}}"></figure>
                         </div>
                         {% else %}
                         <div class="d-flex justify-content-center">
@@ -39,5 +42,10 @@
                 </span>
             </h5>
         {% endfor %}
+        <h5>Destinataire :  
+            <span class="font-weight-bold">
+                {{ligne.prenom_dest ~ " " ~ ligne.nom_dest}}
+            </span>
+        </h5>
     </div>
 </div>
