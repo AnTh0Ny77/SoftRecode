@@ -142,7 +142,7 @@ class TicketsFormsController extends BasicController
                 $post['creator'] = $_SESSION['user']->id_utilisateur;
                 $new_tickets = $Ticket->insert_ticket($post);
                 $post['id_ligne'] = $new_tickets;
-                $post['dt'] = date('now');
+                $post['dt'] = date('Y-m-d H:i:s');
                 $new_line = $Ticket->insert_line($post);
                 // $Ticket->insert_multipart('C:\laragon\www\SoftRecode', $new_line , $files );
                 $new_field = $Ticket->insert_field($post,$new_line , $new_tickets);

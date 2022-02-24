@@ -5,6 +5,7 @@ namespace App\Tables;
 use App\Tables\Table;
 use App\Database;
 use App\Tables\General;
+use DateTime;
 use PDO;
 use stdClass;
 
@@ -54,6 +55,9 @@ class Tickets extends Table {
 		$lignes = $request->fetchAll(PDO::FETCH_OBJ);
 		$ticket->lignes = $lignes;
 		foreach ($ticket->lignes as $ligne){
+			$date_time = new DateTime($ligne->tkl__dt);
+			//formate la date pour l'utilisateur:
+			$ligne->tkl__dt = $date_time->format('d/m/Y H:i');
 			$request = $this->Db->Pdo->query('SELECT  c.* , t.tksc__label
 			FROM ticket_ligne_champ as c
 			LEFT JOIN ticket_senar_champ as t ON ( c.tklc__nom_champ = t.tksc__nom_champ )
