@@ -376,6 +376,41 @@ class Tickets extends Table {
 	return $data;
   }
 
+  public function find_next_step($step){
+		$request = $this->Db->Pdo->query('SELECT  * , k.kw__info
+		FROM ticket_scenario 
+		LEFT JOIN keyword as k ON ( k.kw__type = "tmoti" AND k.kw__value = tks__motif ) 
+		WHERE  ( tks__motif_ligne =  "' . $step . '" ) 
+		ORDER BY tks__ordre  LIMIT 50000');
+
+		$data = $request->fetch(PDO::FETCH_OBJ);
+		$request = $this->Db->Pdo->query('SELECT  *  FROM ticket_senar_champ 
+		WHERE  tksc__motif_ligne =  "' . $data->tks__motif_ligne . '" 
+		ORDER BY tksc__ordre LIMIT 50000');
+		$champs = $request->fetchAll(PDO::FETCH_OBJ);
+		$multiparts = null;
+		foreach ($champs as $key => $value) {
+			if ($value->tksc__type_de_champ == 'FIL') {
+				$multiparts =  true;
+			}
+			if (!empty($value->tksc__option)) {
+				if (preg_match('/@/', $value->tksc__option) == 1 and  $value->tksc__type_de_champ != 'CLI') {
+					$request = explode('@', $value->tksc__option);
+					$subject_list = $this->get_subject_table($request[0]);
+					if (!empty($subject_list)) {
+						$subject_list = $this->get_subject_list($request, $subject_list['TABLE_NAME']);
+						$value->tksc__option = $subject_list;
+					}
+				} else {
+					$value->tksc__option = explode(';', $value->tksc__option);
+				}
+			}
+		}
+		$data->multiparts = $multiparts;
+		$data->forms =  $champs;
+		return $data;
+  }
+
   public function findScenario($motif){
     $request = $this->Db->Pdo->query('SELECT  *  FROM ticket_scenario WHERE tks__motif =  "'.$motif.'" ORDER BY tks__ordre  LIMIT 50000');
     $data = $request->fetchAll(PDO::FETCH_OBJ);

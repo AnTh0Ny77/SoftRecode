@@ -1,0 +1,50 @@
+<div class="card-recode-ligne d-flex flex-column">
+    <div class="recode-ligne-header mt-2 mb-4">
+        <h5>
+            <span class="font-weight-bold">
+                {{ligne.nom ~ " " ~ ligne.prenom ~ " : " ~ ligne.tkl__memo}}
+            </span>
+            <span class="text-upercase">
+                le : {{ligne.tkl__dt}}
+            </span>
+        </h5>
+    </div>
+    {% if ligne.entities %}
+    {% for entitie in ligne.entities %}
+    <div>
+        <h5 class="recode-display-field"> {{entitie.name}}:</h5>
+    </div>
+    <div class="card-recode-secondary ml-3 col-11 d-flex ">
+        <div class=" col-10 col-md-6 col-lg-3 d-fex  mx-auto px-auto  align-items-center recode-div-pic">
+            {% if entitie.picture %}
+            <div class="d-flex justify-content-center">
+                <figure class="image col-8 col-md-12"><img class="subject-image"
+                        src="data:image/jpeg;base64,{{ entitie.picture|raw}}"></figure>
+            </div>
+            {% else %}
+            <div class="d-flex justify-content-center">
+                <figure class="image col-8 col-md-12"><img class="subject-image" src="{{entitie.alternative}}"></figure>
+            </div>
+            {% endif %}
+        </div>
+        <div>
+            <div class="mt-2">
+                <h3 class="title-sujet">{{entitie.label}}</h3>
+            </div>
+            <div class="d-fex align-item-center">
+                <p class="recode-p">{{entitie.additionals}}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <div class="mt-2">
+        {% for field in ligne.fields %}
+        <h5>{{field.tksc__label}} :
+            <span class="font-weight-bold">
+                {{field.tklc__memo}}
+            </span>
+        </h5>
+        {% endfor %}
+    </div>
+</div>

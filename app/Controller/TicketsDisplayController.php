@@ -50,6 +50,8 @@ class TicketsDisplayController extends BasicController
             header('location: tickets-display-list');
             die();
         }
+
+        
         $config = file_get_contents('configDisplay.json');
         $config = json_decode($config);
         $config = $config->entities;

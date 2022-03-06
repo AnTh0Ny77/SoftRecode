@@ -104,20 +104,86 @@ class TicketsFormsController extends BasicController
         else{
             //le post est un ticket existant:  
             if (!empty($_POST['tickets'])){
-                # code...
+                $sujet = null;
+                //recueperer les données du tickets + entitées 
+                $ticket = $Ticket->findOne($_POST['tickets']);
+                $config = file_get_contents('configDisplay.json');
+                $config = json_decode($config);
+                $config = $config->entities;
+                foreach ($ticket->lignes as $ligne) {
+                    $entitites_array = [];
+                    $pattern = "@";
+                    $other_fields = [];
+                    foreach ($ligne->fields as $key => $field) {
+                        if (stripos($field->tklc__memo, $pattern)) {
+                            foreach ($config as  $entitie) {
+                                $secondary_entities = $Ticket->create_secondary_entities($entitie, $field->tklc__memo);
+                                if (!empty($secondary_entities)) {
+                                    array_push($entitites_array, $secondary_entities);
+                                }
+                            }
+                        } else {
+                            array_push($other_fields, $field);
+                        }
+                        $ligne->fields =  $other_fields;
+                    }
+                    if (!empty($entitites_array)) {
+                        $ligne->entities = $entitites_array;
+                    }
+                }
+                foreach ($config as  $entitie) {
+                    if (!empty($ticket->sujet)) {
+                        $subject_identifier = $ticket->sujet->tksc__option;
+                        $display_entitie = $Ticket->createEntities($entitie, $subject_identifier, $ticket->tk__motif_id);
+                        if (!empty($display_entitie)) {
+                            $sujet = $display_entitie;
+                        }
+                    }
+                }
+                $last_ligne = end($ticket->lignes);
+
+                foreach ($config as  $entitie) {
+                    if (!empty($ticket->sujet)) {
+                        $subject_identifier = $ticket->sujet->tksc__option;
+                        $display_entitie = $Ticket->createEntities($entitie, $subject_identifier, $ticket->tk__motif_id);
+                        if (!empty($display_entitie)) {
+                            $sujet = $display_entitie;
+                        }
+                    }
+                }
+               
+                //recupere le formulaire :  
+                if (!empty($_POST['scenario'])){
+                    $forms = $Ticket->find_next_step($_POST['scenario']);
+                    $motif_lib = $forms->tks__lib;
+                    $motif = $forms->tks__motif_ligne;
+                    return self::$twig->render(
+                        'forms_tickets_steps_generator.html.twig',
+                        [
+                            // 'subject_list' => $subject_list,
+                            'current_tickets' => $ticket,  
+                            'ligne' => $last_ligne ,
+                            'user' => $_SESSION['user'],
+                            'forms' => $forms->forms,
+                            'tickets' => $forms,
+                            'crea_forms' => $crea_forms,
+                            'motif' => $motif,
+                            'libelle' => $motif_lib,
+                            'multiparts' =>   $forms->multiparts
+                        ]
+                    );
+
+                } else {
+                    header('location: tickets-create-forms');
+                }
+
             }
             else{
                 header('location: tickets-create-forms');
             }
         }
 
-        //recupère le scénario lié au motif du tickets  :   
-
-        //recupère le forms lié au scénario et à  l'étape : 
-        
-        //vérifie les droit de l'utilisateur :  
-
-        //affiche le forms 
+      
     }
 
 
