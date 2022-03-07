@@ -74,11 +74,27 @@ class TicketsFormsController extends BasicController
         self::security();
         $keyword = new Keyword(self::$Db);
         $Ticket = new Tickets(self::$Db);
+        $presta_list = $keyword->findByType('pres');
         $type_list = $keyword->findByType('tmoti');
         $subject_list = null;
         $crea_forms = null;
         $motif = null;
-        $motif_lib = null;     
+        $motif_lib = null;  
+        $preset = [];   
+
+        //preset traitement : 
+        if (!empty($_GET)) {
+            if (!empty($_GET['TypeTickets'])) {
+                $_POST['TypeTickets'] = $_GET['TypeTickets'];
+            }
+            foreach ($_GET as $key => $value) {
+                if ($key != 'TypeTickets'){
+                    $preset[$key] = $value;
+                }
+            }
+        }
+
+       
         //soit le post émane de la creation ( avec motif / soit le post contient un id tickets )
         if (!empty($_POST['TypeTickets'])){
             $crea_forms = 1 ;
@@ -91,6 +107,8 @@ class TicketsFormsController extends BasicController
                 [
                     // 'subject_list' => $subject_list,
                     'user' => $_SESSION['user'],
+                    'presta_list' => $presta_list ,
+                    'preset' => $preset ,
                     'forms' => $tickets->forms , 
                     'tickets' => $tickets,
                     'crea_forms' => $crea_forms,
@@ -162,6 +180,7 @@ class TicketsFormsController extends BasicController
                         [
                             // 'subject_list' => $subject_list,
                             'current_tickets' => $ticket,  
+                            'presta_list' => $presta_list ,
                             'ligne' => $last_ligne ,
                             'user' => $_SESSION['user'],
                             'forms' => $forms->forms,
@@ -186,8 +205,6 @@ class TicketsFormsController extends BasicController
       
     }
 
-
-
     //@route: /tickets-post-data
     public static function formsHandler(){
         self::init();
@@ -199,22 +216,21 @@ class TicketsFormsController extends BasicController
     public static function handleForms(array $post , array $files){
             $Ticket = new Tickets(self::$Db);
             if (!empty($post['creaForms'])){
-
                 //si un titre est donné : 
-                if (!empty($post['Titre'])) {
+                if (!empty($post['Titre'])){
                     $post['Titre'] = $post['Titre'];
                 } else $post['Titre'] = null;
 
-                $post['creator'] = $_SESSION['user']->id_utilisateur;
-                $new_tickets = $Ticket->insert_ticket($post);
-                $post['id_ligne'] = $new_tickets;
-                $post['dt'] = date('Y-m-d H:i:s');
-                $new_line = $Ticket->insert_line($post);
-                // $Ticket->insert_multipart('C:\laragon\www\SoftRecode', $new_line , $files );
-                $new_field = $Ticket->insert_field($post,$new_line , $new_tickets);
+                    $post['creator'] = $_SESSION['user']->id_utilisateur;
+                    $new_tickets = $Ticket->insert_ticket($post);
+                    $post['id_ligne'] = $new_tickets;
+                    $post['dt'] = date('Y-m-d H:i:s');
+                    $new_line = $Ticket->insert_line($post);
+                    // $Ticket->insert_multipart('C:\laragon\www\SoftRecode', $new_line , $files );
+                    $new_field = $Ticket->insert_field($post,$new_line , $new_tickets);
             }
             else{
-                //j'update
+                
             }
     }
 

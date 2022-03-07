@@ -1,0 +1,16 @@
+
+
+<h5 class="text-white">{{form.tksc__label}}</h5>
+{% if form.tksc__obligatoire == 1 %}
+<select class=" selectpicker  show-tick " data-width="100%" data-live-search="true" data-size="10" name="{{form.tksc__nom_champ}}" required>
+    {% for presta in presta_list %}
+        <option value="{{presta.kw__lib}}" >{{presta.kw__lib}}</option>
+    {% endfor %}
+</select>
+{% else %}
+<select class="custom-select form-control-lg input-recode" name="{{form.tksc__nom_champ}}" >
+    {% for presta in presta_list %}
+        <option value="{{presta.kw__lib}}" >{{presta.kw__lib}}</option>
+    {% endfor %}
+</select>
+{% endif %}

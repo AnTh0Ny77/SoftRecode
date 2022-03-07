@@ -247,7 +247,7 @@ class Tickets extends Table {
 					break;
 					default:
 						//requete pour chercher le type de champs : 
-					
+						
 						$champs = $this->findChamp($post['motif'],$key);
 						if (is_array($value)){
 							$text = '';
@@ -274,7 +274,6 @@ class Tickets extends Table {
 								$request->bindValue(":tklc__memo",  $value);
 								$request->execute();
 							}else{
-							
 								$request = $this->Db->Pdo->prepare("
 								INSERT INTO ticket_ligne_champ  (tklc__id, tklc__nom_champ,  tklc__ordre,  tklc__memo ) 
 								VALUES      			  (:tklc__id,  :tklc__nom_champ,  :tklc__ordre,  :tklc__memo)"); 
@@ -293,7 +292,6 @@ class Tickets extends Table {
 						break;
 				}
 		}
-
   }
 
   public function get_subject_list($array_column , $table_name){
