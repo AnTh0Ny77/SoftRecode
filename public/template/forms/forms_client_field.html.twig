@@ -50,6 +50,11 @@
 <div class="d-flex">
     <input type="text" value="" class=" d-none form-control col-7  form-control-lg input-recode"  id="display_client" readonly>
     <input type="hidden" value=""  name="{{form.tksc__nom_champ}}" id="{{form.tksc__nom_champ}}" required>
+    {% if preset.Client %}
+        <input type="hidden" value="{{preset.Client}}"  id="presetClient" >
+    {% else %}
+        <input type="hidden" value="" id="presetClient">
+    {% endif %}
     <button type="button" id="remove_client" class=" d-none btn btn-recode-danger mx-3"><i class="fas fa-times-circle"></i></button>
 </div>
 

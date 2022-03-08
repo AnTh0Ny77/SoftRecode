@@ -106,3 +106,71 @@ let remove_client_selected = function(){
 $('#remove_client').on('click' , function(){
     remove_client_selected();
 })
+
+//preselectionne le client :
+let preset_client  = $('#presetClient').val();
+if (preset_client.length > 4 ){
+    let string_recherche = preset_client;
+    $("body").css("cursor", "wait");
+    //requete ajax qui recupère les résultats de la requete  : 
+    $.ajax({
+        type: 'post',
+        url: "Ajax_search_client_devis",
+        data:
+        {
+            "search": string_recherche
+        },
+        success: function (data) {
+            //deserialize objet json (tableau d'objets)
+            dataSet = JSON.parse(data);
+            //si la réponse est nulle : 
+            if (dataSet.length < 1) {
+                show_alert('Aucun résultat');
+                delete_liste_faturation();
+                $("body").css("cursor", "auto");
+            }
+            //si la réponse est unique je selectionne de suite le client  : 
+            else if (dataSet.length == 1) {
+                delete_liste_faturation();
+                let client = dataSet[0].client__id;
+                let display_client = '(' + dataSet[0].client__id + ') ' + dataSet[0].client__societe + '  ' + dataSet[0].client__cp + ' - ' + dataSet[0].client__ville + '';
+                add_client_selected(client, display_client);
+                $("body").css("cursor", "auto");
+            }
+            // si la reponse est multiple je propose une selection : 
+            else {
+                //si il y a 20 résultats ou + je préviens l'utilisateur d'utiliser des critères plus précis:
+                if (dataSet.length == 12) {
+                    $('#alert_long_facture').text('');
+                }
+                else {
+                    $('#alert_long_facture').text(' ');
+                }
+                //cree la liste client :
+                delete_liste_faturation();
+                create_list_client(dataSet);
+                //attribue la fonction click a chaque button créé afin de selectionner le client dynamiquement : 
+                $('.click-facturation').on('click', function () {
+                    delete_liste_faturation();
+                    let client = parseInt(this.value);
+                    //boucle dans le tableau de resultat pour retrouver la concordance: 
+                    for (let index = 0; index < dataSet.length; index++) {
+                        if (dataSet[index].client__id == client) {
+                            let display_client = '(' + dataSet[index].client__id + ') ' + dataSet[index].client__societe + '  ' + dataSet[index].client__cp + ' - ' + dataSet[index].client__ville + '';
+                            add_client_selected(client, display_client);
+                        }
+                    }
+
+                    //ferme le modal : 
+                    $('#modal_choix_client').modal('hide');
+                })
+                //j'ouvre le modal : 
+                $('#modal_choix_client').modal('show');
+            }
+            $("body").css("cursor", "auto");
+        },
+        error: function (err) {
+            console.log('error: ', err);
+        }
+    })
+}

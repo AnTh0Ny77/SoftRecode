@@ -8,6 +8,10 @@
     padding-right: 5px;
 }
 
+.card-recode-cursor{
+    cursor: pointer;
+}
+
 .card-recode-ligne{
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.16);
     background-color: #FFFFFF;

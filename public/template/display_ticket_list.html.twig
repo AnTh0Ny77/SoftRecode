@@ -6,18 +6,17 @@
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
 <link rel="stylesheet" type="text/css" href="public/chosen/chosen.min.css">
 <link rel="stylesheet" href="public/css/forms.css">
+<link rel="stylesheet" href="public/css/cards.css">
+<link rel="stylesheet" href="public/css/font-family.css">
 {% endblock %}
 {% block main %}
 <main role="main" class="col-12 container-body background-extranet ">
   <div class="container pt-5 ">
-    <ul class="list-group list-group-flush">
+    <div class="d-flex flex-column align-items-center">
         {% for ticket in list %}
-            <li class="list-group-item bg-transparent">
-                <a href="tickets-display?id={{ticket.tk__id}}" class="btn btn-link btn-lg active text-white" role="button">{{ticket.tk__titre}}</a>
-            </li>
+            {{ include('display/display_ticket_item.html.twig')}}
         {% endfor %}
-    </ul>
-       
+    </div>    
   </div>
 </main>
 {% endblock %}

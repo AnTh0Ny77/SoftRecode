@@ -25,10 +25,15 @@ class Tickets extends Table {
 
 
   public function get_last(){
+	$results  = [];
 	$request = $this->Db->Pdo->query('SELECT  t.*  FROM ticket as t
-	WHERE 1 = 1  ORDER BY tk__id DESC LIMIT 100');
+	WHERE 1 = 1  ORDER BY tk__id DESC LIMIT 30');
 	$data = $request->fetchAll(PDO::FETCH_OBJ);
-	return $data;
+	foreach ($data as $ticket) {
+		$ticket = $this->findOne($ticket->tk__id);
+		array_push($results , $ticket);
+	}
+	return $results;
 }
 
   public function get_subject_table($column_name){
@@ -54,6 +59,7 @@ class Tickets extends Table {
 		WHERE l.tkl__tk_id = "'.$id.'" ');
 		$lignes = $request->fetchAll(PDO::FETCH_OBJ);
 		$ticket->lignes = $lignes;
+		$ticket->last_line = $this->get_last_line($id);
 		foreach ($ticket->lignes as $ligne){
 			$date_time = new DateTime($ligne->tkl__dt);
 			//formate la date pour l'utilisateur:
@@ -75,6 +81,24 @@ class Tickets extends Table {
 
 		}
 		return $ticket;
+  }
+
+  public function get_last_line($id){
+		$request = $this->Db->Pdo->query('SELECT  MAX(tkl__dt) as dateLigne  FROM ticket_ligne 
+		WHERE tkl__tk_id = "' . $id . '" ');
+		$ligne = $request->fetch(PDO::FETCH_OBJ);
+		$request = $this->Db->Pdo->query('SELECT * , u.nom , u.prenom , z.nom as nom_dest , z.prenom as prenom_dest 
+		FROM ticket_ligne 
+		LEFT JOIN utilisateur AS u ON ( u.id_utilisateur = tkl__user_id ) 
+		LEFT JOIN utilisateur AS z ON ( z.id_utilisateur = tkl__user_id_dest ) 
+		WHERE tkl__dt = "' . $ligne->dateLigne . '" ');
+		$ligne = $request->fetch(PDO::FETCH_OBJ);
+		if (!empty($ligne)) {
+			$date_time = new DateTime($ligne->tkl__dt);
+			$ligne->tkl__dt = $date_time->format('d/m/Y H:i');
+		}
+		
+		return $ligne;
   }
 
   public function getCurrentUser( int $ticket_id){
