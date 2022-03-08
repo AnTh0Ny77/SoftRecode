@@ -18,6 +18,9 @@
         {% endfor %}
     </div>    
   </div>
+  <form id="editTicket" method="POST" action="tickets-display">
+    <input type="hidden" id="idTicket" name="id" value="" required>
+  </form>
 </main>
 {% endblock %}
 {% block script %}
@@ -25,5 +28,5 @@
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
-
+<script type="text/javascript" src="public/js/tickets_module_list.js"></script>
 {% endblock %}

@@ -1,11 +1,16 @@
-<div class="card-recode card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
+{% if ticket.tk__lu == 1  %}
+    <div class="card-recode card-recode-cursor d-flex flex-column my-3 col-12 col-lg-8">
+{% else %}
+    <div class="card-recode-green-shadow card-recode-cursor d-flex flex-column my-3 col-12 col-lg-8">
+{% endif %}
+    <input type="hidden" value="{{ticket.tk__id}}">
     <div class="d-flex">
         <div class="col-6">
             <h3 class="recode-orange-title"> Ticket {{ticket.tk__id}}
             </h3>
         </div>
         <div class="col-6">
-            <h3 class="recode-orange-title"><span class="  text-dark">{{ticket.tk__titre}}</span>
+            <h3 class="recode-orange-title"><span class="text-dark">{{ticket.tk__titre}}</span>
             </h3>
         </div>
     </div>
@@ -13,6 +18,9 @@
     <div class="d-flex">
         <div class="col-6">
             <p class="recode-p">{{ticket.kw__lib}}<br>
+                {% if ticket.sujet %}
+                    <span class="text-dark font-weight-bold">{{ticket.sujet.label ~ " " ~ ticket.sujet.additionals}}</span><br>
+                {% endif %}
                 <span class="text-dark font-weight-bold text-uppercase">En cours chez 
                     <span class="recode-orange-title">
                         {{ticket.last_line.prenom_dest ~ " " ~ ticket.last_line.nom_dest}}

@@ -5,6 +5,7 @@ require_once  '././vendor/autoload.php';
 use App\Controller\BasicController;
 use App\Tables\Article;
 use App\Tables\Keyword;
+use App\Tables\General;
 use App\Tables\Stock;
 use App\Tables\User;
 use App\Tables\Tickets;
@@ -18,7 +19,24 @@ class TicketsDisplayController extends BasicController
         self::init();
         self::security();
         $Ticket = new Tickets(self::$Db);
+       
+        $config = file_get_contents('configDisplay.json');
+        $config = json_decode($config);
+        $config = $config->entities;
         $list = $Ticket->get_last();
+
+        foreach ($list as $ticket) {
+            foreach ($config as  $entitie) {
+                if (!empty($ticket->sujet)) {
+                    $subject_identifier = $ticket->sujet->tksc__option;
+                    $display_entitie = $Ticket->createEntities($entitie, $subject_identifier, $ticket->tk__motif_id);
+                    if (!empty($display_entitie)) {
+                        $ticket->sujet = $display_entitie;
+                    }
+                }
+            }
+            if (!is_array($ticket->sujet)) unset($ticket->sujet); 
+        }
         
         return self::$twig->render(
             'display_ticket_list.html.twig',
@@ -35,9 +53,14 @@ class TicketsDisplayController extends BasicController
         self::init();
         self::security();
         $Ticket = new Tickets(self::$Db);
+        $General = new General(self::$Db);
         $sujet = null;
         $user_destinataire = null;
         $next_action = null;
+
+        if (!empty($_POST['id'])) {
+            $Request['id'] = $_POST['id'] ;
+        }
        
 
         if(empty($Request['id'])){
@@ -76,6 +99,7 @@ class TicketsDisplayController extends BasicController
                 $ligne->entities = $entitites_array;
             }
         }
+        $General->updateAll('ticket', 1 , 'tk__lu', 'tk__id', $Request['id']);
         $user_destinataire = $Ticket->getCurrentUser($Request['id']);
         $next_action = $Ticket->getNextAction($Request['id']);
         

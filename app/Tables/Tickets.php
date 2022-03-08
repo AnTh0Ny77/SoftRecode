@@ -27,7 +27,7 @@ class Tickets extends Table {
   public function get_last(){
 	$results  = [];
 	$request = $this->Db->Pdo->query('SELECT  t.*  FROM ticket as t
-	WHERE 1 = 1  ORDER BY tk__id DESC LIMIT 30');
+	WHERE 1 = 1  ORDER BY tk__id DESC LIMIT 20');
 	$data = $request->fetchAll(PDO::FETCH_OBJ);
 	foreach ($data as $ticket) {
 		$ticket = $this->findOne($ticket->tk__id);
