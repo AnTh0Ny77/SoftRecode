@@ -402,7 +402,7 @@ class Tickets extends Table {
 		$request = $this->Db->Pdo->query('SELECT  * , k.kw__info
 		FROM ticket_scenario 
 		LEFT JOIN keyword as k ON ( k.kw__type = "tmoti" AND k.kw__value = tks__motif ) 
-		WHERE  ( tks__motif_ligne =  "' . $step . '" ) 
+		WHERE  ( tks__id =  "' . $step . '"  ) 
 		ORDER BY tks__ordre  LIMIT 50000');
 
 		$data = $request->fetch(PDO::FETCH_OBJ);

@@ -174,3 +174,10 @@ if (preset_client.length > 4 ){
         }
     })
 }
+
+
+$(window).keydown(function (event) {
+    if ((event.keyCode == 13)) {
+        event.preventDefault();
+    }
+});

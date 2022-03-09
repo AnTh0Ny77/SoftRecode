@@ -11,31 +11,31 @@
 {% block main %}
 <main role="main" class="col-12 container-body background-extranet ">
   <div class="container pt-2 ">
-    <div class=" pt-4 ">
+    <div class=" pt-2 ">
         <div  class="col-12 col-sm-9 mx-auto">
           <div class="d-flex justify-content-center">
               <div class="col-4 text-white display-logo">
 				{{ include('display/display_logo_ticket.html.twig')}}
               </div>
               <div class="card-recode d-flex flex-column col-12 col-lg-8">
-                	<h1 class="recode-orange-title"> Ticket {{ticket.tk__id}}</h1>
+                	<h2 class="recode-orange-title"> Ticket {{ticket.tk__id}}</h2>
 					<p class="recode-p">{{ticket.kw__lib}}<br> 
 						<span class="text-dark font-weight-bold text-uppercase">En cours chez {{ destinataire.prenom ~ " " ~ destinataire.nom }}</span>
 					</p>
               </div>
           </div>
           
-          <div class="form-group pt-5">
+          <div class="form-group pt-2">
             {% if sujet %}
               {{ include('display/display_ticket_subject.html.twig')}}
             {% endif %}
-			<div class="card-recode-green my-3 py-3 d-flex justify-content-start align-items-end">
+			<div class="card-recode-green my-2 py-3 d-flex justify-content-start align-items-end">
 				<div class="col-2">
 					<i class="fas fa-arrow-down fa-2x"></i>
 				</div>
 				
 				<div class="ml-5 col-8 ">
-					<h2 class="font-weight-bold text-wrap display-tiltle">{{ticket.tk__titre}}</h2>
+					<h4 class="font-weight-bold text-wrap display-tiltle">{{ticket.tk__titre}}</h4>
 				</div>
 			</div>
             {% for ligne in ticket.lignes %}
@@ -63,7 +63,7 @@
 							<div class=" col-12 d-flex justify-content-center my-5">
 								<select class=" col-11 col-md-10 col-lg-7 custom-select form-control-lg input-recode" name="scenario" required>
 									{% for action in next_action %}
-									<option value="{{action.tks__motif_ligne}}">{{action.tks__lib}}</option>
+									<option value="{{action.tks__id}}">{{action.tks__lib}}</option>
 									{% endfor %}
 								</select>
 							</div>

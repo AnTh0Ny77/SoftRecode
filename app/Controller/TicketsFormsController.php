@@ -5,6 +5,7 @@ require_once  '././vendor/autoload.php';
 use App\Controller\BasicController;
 use App\Tables\Article;
 use App\Tables\Keyword;
+use App\Tables\General;
 use App\Tables\Stock;
 use App\Tables\User;
 use App\Tables\Tickets;
@@ -172,6 +173,7 @@ class TicketsFormsController extends BasicController
                
                 //recupere le formulaire :  
                 if (!empty($_POST['scenario'])){
+                   
                     $forms = $Ticket->find_next_step($_POST['scenario']);
                     $motif_lib = $forms->tks__lib;
                     $motif = $forms->tks__motif_ligne;
@@ -230,7 +232,15 @@ class TicketsFormsController extends BasicController
                     $new_field = $Ticket->insert_field($post,$new_line , $new_tickets);
             }
             else{
-                
+                if (!empty($_POST['currentTicket'])) {
+                    $post['id_ligne'] = $_POST['currentTicket'] ;
+                    $post['creator'] = $_SESSION['user']->id_utilisateur;
+                    $post['dt'] = date('Y-m-d H:i:s');
+                    $new_line = $Ticket->insert_line($post);
+                    $new_field = $Ticket->insert_field($post, $new_line, $_POST['currentTicket']);
+                    $General = new General(self::$Db);
+                    $General->updateAll('ticket', 0 , 'tk__lu', 'tk__id', $_POST['currentTicket']);
+                }
             }
     }
 

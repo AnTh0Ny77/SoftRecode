@@ -9,9 +9,11 @@
 }
 
 .card-recode-green-shadow{
-    box-shadow: 4px 4px 6px 4px  #77DB85;
+    box-shadow: 3px 3px 5px 3px  #77DB85;
     border-color: #77DB85;
-    background-color: #FFFFFF;
+    border-width: 2px;
+    border-style: solid;
+    background-color: #dbd6d6;
     border-radius: 10px;
     padding-top: 5px;
     padding-bottom: 2%;

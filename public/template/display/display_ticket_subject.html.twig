@@ -2,17 +2,17 @@
     <div class=" col-12 col-md-6 col-lg-3 d-fex align-items-center jsutify-content-center recode-div-pic">
         {% if sujet.picture %}
         <div class="d-flex justify-content-center">
-            <figure class="image  col-8 col-md-12" ><img class="lead-subject-image" src="data:image/jpeg;base64,{{ sujet.picture|raw}}" ></figure>
+            <figure class="image  col-8 col-md-12" ><img class="subject-image" src="data:image/jpeg;base64,{{ sujet.picture|raw}}" ></figure>
         </div>
         {% else %}
         <div class="d-flex justify-content-center">
-            <figure class="image col-8 col-md-12" ><img class="lead-subject-image" src="{{sujet.alternative}}" ></figure>
+            <figure class="image col-8 col-md-12" ><img class="subject-image" src="{{sujet.alternative}}" ></figure>
         </div>     
         {% endif %}
     </div>
     <div class="col-lg-9">
         <div class="mt-2 ">
-            <h3 class="title-sujet">{{sujet.label}}</h3>
+            <h4 class="title-sujet">{{sujet.label}}</h4>
         </div>
         <div class="d-fex align-item-center ">
             <p class="recode-p">{{sujet.additionals}}</p>
