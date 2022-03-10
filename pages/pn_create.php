@@ -79,9 +79,6 @@ switch ($_SERVER['REQUEST_URI'])
 						break;
 					}
 			}
-
-
-		  
 		}
 
 		// Donnée transmise au template : 
@@ -95,9 +92,6 @@ switch ($_SERVER['REQUEST_URI'])
 			]
 		);
 		break;
-
-
-
 
 	case "/SoftRecode/create-pn-second":
 
