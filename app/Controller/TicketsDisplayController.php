@@ -19,12 +19,17 @@ class TicketsDisplayController extends BasicController
         self::init();
         self::security();
         $Ticket = new Tickets(self::$Db);
+
+
+        //si un ticket à été cloturé : 
+        if (!empty($_POST['ticketsCloture'])){
+            $Ticket->cloture_ticket($_POST['ticketsCloture'], $_SESSION['user']->id_utilisateur , date('Y-m-d H:i:s') , $_POST['commentaire']);
+        }
        
         $config = file_get_contents('configDisplay.json');
         $config = json_decode($config);
         $config = $config->entities;
         $list = $Ticket->get_last();
-
         foreach ($list as $ticket) {
             foreach ($config as  $entitie) {
                 if (!empty($ticket->sujet)) {
@@ -37,7 +42,6 @@ class TicketsDisplayController extends BasicController
             }
             if (!is_array($ticket->sujet)) unset($ticket->sujet); 
         }
-        
         return self::$twig->render(
             'display_ticket_list.html.twig',
             [
@@ -99,7 +103,9 @@ class TicketsDisplayController extends BasicController
                 $ligne->entities = $entitites_array;
             }
         }
-        $General->updateAll('ticket', 1 , 'tk__lu', 'tk__id', $Request['id']);
+        if ($ticket->tk__lu != 2 ) {
+            $General->updateAll('ticket', 1 , 'tk__lu', 'tk__id', $Request['id']);
+        }
         $user_destinataire = $Ticket->getCurrentUser($Request['id']);
         $next_action = $Ticket->getNextAction($Request['id']);
         

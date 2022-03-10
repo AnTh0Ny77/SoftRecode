@@ -26,8 +26,10 @@ class Tickets extends Table {
 
   public function get_last(){
 	$results  = [];
-	$request = $this->Db->Pdo->query('SELECT  t.*  FROM ticket as t
-	WHERE 1 = 1  ORDER BY tk__id DESC LIMIT 20');
+	$request = $this->Db->Pdo->query('SELECT  t.* , MAX(l.tkl__dt) as last_date  FROM ticket as t
+	LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
+	WHERE tk__lu != 2 GROUP BY t.tk__id 
+	ORDER BY last_date DESC  LIMIT 20');
 	$data = $request->fetchAll(PDO::FETCH_OBJ);
 	foreach ($data as $ticket) {
 		$ticket = $this->findOne($ticket->tk__id);
@@ -318,6 +320,31 @@ class Tickets extends Table {
 		}
   }
 
+  public function cloture_ticket($id , $user_id , $date , $commentaire){
+		$update = new General($this->Db);
+		$update->updateAll('ticket',  2 , 'tk__lu' , 'tk__id' , $id);
+		$request = $this->Db->Pdo->prepare("
+		INSERT INTO ticket_ligne  (tkl__tk_id,	tkl__user_id ,	 	tkl__dt,  	tkl__motif_ligne,  tkl__user_id_dest , tkl__memo) 
+		VALUES      			  (:tkl__tk_id,  :tkl__user_id,      :tkl__dt, :tkl__motif_ligne,   :tkl__user_id_dest , :tkl__memo)"); 
+		$request->bindValue(":tkl__tk_id", $id);
+		$request->bindValue(":tkl__user_id", $user_id);
+		$request->bindValue(":tkl__dt",  $date);
+		$request->bindValue(":tkl__motif_ligne",  'cloture');
+		$request->bindValue(":tkl__memo",  'cloture du ticket');
+		$request->bindValue(":tkl__user_id_dest",  0 );
+		$request->execute();
+		$ligne = $this->Db->Pdo->lastInsertId();
+		$request = $this->Db->Pdo->prepare("
+				INSERT INTO ticket_ligne_champ  (tklc__id, tklc__nom_champ,  tklc__ordre,  tklc__memo ) 
+				VALUES      			  (:tklc__id,  :tklc__nom_champ,  :tklc__ordre,  :tklc__memo)"); 
+		$request->bindValue(":tklc__id", $ligne);
+		$request->bindValue(":tklc__nom_champ", 'cloture');
+		$request->bindValue(":tklc__ordre",  999);
+		$request->bindValue(":tklc__memo",  $commentaire);
+		$request->execute();
+		return $id;
+  }
+
   public function get_subject_list($array_column , $table_name){
 
 	$request_string =  '';
@@ -439,11 +466,80 @@ class Tickets extends Table {
     return $data;
 }
 
-	public function findChamp($motif ,$nom){
+public function findChamp($motif ,$nom){
 		$request = $this->Db->Pdo->query('SELECT  tksc__option , tksc__ordre , tksc__sujet  FROM ticket_senar_champ WHERE tksc__motif_ligne =  "'.$motif.'" AND tksc__nom_champ = "'.$nom.'"');
 		$data = $request->fetch(PDO::FETCH_OBJ);
 		return $data;
+}
+
+
+public function search_ticket($input){
+	switch ($input) {
+		case strlen($input) == 7 and is_numeric($input):
+			//cherche une commande 
+			return 'commande';
+			break;
+
+		case strlen($input) == 6 and is_numeric($input):
+			//cherche un client
+			return 'client';
+			break;
+
+		case strlen($input) == 5 and is_numeric($input):
+			//cherche un ticket
+			return 'ticket';
+			break;
+		default:
+			//recherche textuelle 
+			break;
 	}
+}
+
+public function format_string(string $input){
+	$filtre = str_replace("-", ' ',$input);
+	$filtre = str_replace("'", ' ', $filtre);
+	$nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+	$mots_filtre = str_word_count($filtre, 1, '0123456789');
+	if ($nb_mots_filtre == 1 ){$mode_filtre = false; }else $mode_filtre = true;
+	return $mots_filtre;
+}
+
+public function searchTicket(string $input, array $config){
+	
+	$input_array = $this->format_string($input);
+	$operateur = "AND ";
+	// $request = $this->Db->Pdo->query('SELECT  tklc__id  , tklc__memo  FROM ticket_ligne_champ WHERE 1 = 1  LIMIT 50000');
+    // $data = $request->fetchAll(PDO::FETCH_OBJ);
+	// foreach ($data as $key => $value){
+	// 	if (preg_match('/@/' , $value->tklc__memo) == 1){
+	// 		$request = explode('@',$value->tksc__option);
+    //             $subject_list = $this->get_subject_table($request[0]);
+	// 			if (!empty($subject_list)){
+	// 				$subject_list = $this->get_subject_list($request , $subject_list['TABLE_NAME']);
+	// 				$value->tksc__option = $subject_list;
+	// 			}
+	// 	}
+	// }
+	foreach ($config as  $entitie){
+			foreach ($input_array as $key => $value) {
+				$request = "SELECT    
+				FROM client 
+				WHERE client__id  > 10 ";
+						}
+	}
+}
+
+public function find_ticket($input){
+	$filtre = str_replace("-", ' ',$input);
+	$filtre = str_replace("'", ' ', $filtre);
+	$nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+	$mots_filtre = str_word_count($filtre, 1, '0123456789');
+	if ($nb_mots_filtre == 1 ) {
+		$mode_filtre = false;
+	}else $mode_filtre = true;
+	$operateur = "AND ";
+
+}
 
 
 }
