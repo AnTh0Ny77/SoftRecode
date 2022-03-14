@@ -122,7 +122,7 @@ use App\Controller\ExtranetController;
 			echo TicketsFormsController::FormsMarker();
 			break;
 
-		case '/SoftRecode/tickets-display-list';
+		case '/SoftRecode/tickets-display-list'.$get_data;
 			echo TicketsDisplayController::displayTicketList();
 			break;
     

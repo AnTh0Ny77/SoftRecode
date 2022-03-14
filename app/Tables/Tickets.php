@@ -38,6 +38,57 @@ class Tickets extends Table {
 	return $results;
 }
 
+	public function get_last_in( $tickets){
+
+		if (!empty($tickets)) {
+			$results  = [];
+			$text = '( ';
+			foreach ($tickets as $key => $entry) {
+				if ($key === array_key_last($tickets)) {
+					$text .= $entry->tkl__tk_id . ' ';
+				} else $text .= $entry->tkl__tk_id . ', ';
+			}
+			$text .= ' )';
+			$request = $this->Db->Pdo->query('SELECT  t.* , MAX(l.tkl__dt) as last_date  FROM ticket as t
+			LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
+			WHERE tk__lu != 2 AND ( t.tk__id IN  ' . $text . ')  GROUP BY t.tk__id 
+			ORDER BY last_date DESC  LIMIT 20');
+			$data = $request->fetchAll(PDO::FETCH_OBJ);
+
+			foreach ($data as $ticket) {
+				$ticket = $this->findOne($ticket->tk__id);
+				array_push($results, $ticket);
+			}
+			return $results;
+		} else return null;
+	}
+
+	public function get_last_ticket( $tickets){
+
+			if (!empty($tickets)) {
+				$results  = [];
+				$text = '( ';
+				foreach ($tickets as $key => $entry) {
+					if ($key === array_key_last($tickets)) {
+						$text .= $entry->tk__id . ' ';
+					} else $text .= $entry->tk__id . ', ';
+				}
+				$text .= ' )';
+				$request = $this->Db->Pdo->query('SELECT  t.* , MAX(l.tkl__dt) as last_date  FROM ticket as t
+				LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
+				WHERE tk__lu != 2 AND ( t.tk__id IN  ' . $text . ')  GROUP BY t.tk__id 
+				ORDER BY last_date DESC  LIMIT 20');
+				$data = $request->fetchAll(PDO::FETCH_OBJ);
+
+				foreach ($data as $ticket) {
+					$ticket = $this->findOne($ticket->tk__id);
+					array_push($results, $ticket);
+				}
+				return $results;
+			} else return null;
+			
+	}
+
   public function get_subject_table($column_name){
 	  $request = $this->Db->Pdo->query('SELECT COLUMN_NAME  , TABLE_NAME 
 	  FROM INFORMATION_SCHEMA.COLUMNS 
@@ -473,27 +524,27 @@ public function findChamp($motif ,$nom){
 }
 
 
-public function search_ticket($input){
-	switch ($input) {
-		case strlen($input) == 7 and is_numeric($input):
-			//cherche une commande 
-			return 'commande';
-			break;
+// public function search_ticket($input){
+// 	switch ($input) {
+// 		case strlen($input) == 7 and is_numeric($input):
+// 			//cherche une commande 
+// 			return 'commande';
+// 			break;
 
-		case strlen($input) == 6 and is_numeric($input):
-			//cherche un client
-			return 'client';
-			break;
+// 		case strlen($input) == 6 and is_numeric($input):
+// 			//cherche un client
+// 			return 'client';
+// 			break;
 
-		case strlen($input) == 5 and is_numeric($input):
-			//cherche un ticket
-			return 'ticket';
-			break;
-		default:
-			//recherche textuelle 
-			break;
-	}
-}
+// 		case strlen($input) == 5 and is_numeric($input):
+// 			//cherche un ticket
+// 			return 'ticket';
+// 			break;
+// 		default:
+// 			//recherche textuelle 
+// 			break;
+// 	}
+// }
 
 public function format_string(string $input){
 	$filtre = str_replace("-", ' ',$input);
@@ -504,29 +555,114 @@ public function format_string(string $input){
 	return $mots_filtre;
 }
 
+
+public function search_in_entities( string $table, string  $filtre , object  $entitie){
+
+		
+		$filtre = str_replace("-", ' ', $filtre);
+		$filtre = str_replace("'", ' ', $filtre);
+		$nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+		$mots_filtre = str_word_count($filtre, 1, '0123456789');
+		$operateur = "AND ";
+
+		if ($entitie->table == $table) {
+			$request = "SELECT  " . $entitie->identifier . "
+			FROM " . $table . "
+			WHERE 1 = 1 ";
+
+			$request .=   $operateur . " ( " . $entitie->identifier . " LIKE '%" . $mots_filtre[0] . "%' ";
+			for ($i = 0; $i < count($entitie->label); $i++) {
+				$request .=  "OR " . $entitie->label[$i] . " LIKE '%" . $mots_filtre[0] . "%' ";
+			}
+			$request .= ")";
+
+			for ($i = 1; $i < $nb_mots_filtre; $i++) {
+				if ($i == 1) {
+					$request .=   $operateur . " ( " . $entitie->identifier . " LIKE '%" . $mots_filtre[$i] . "%' ";
+				}
+				for ($y = 0; $y < count($entitie->label); $y++) {
+						$request .=  "OR " . $entitie->label[$y] . " LIKE '%" . $mots_filtre[$i] . "%' ";
+				}
+				$request .= ")";
+			}
+			$request .= "ORDER BY  " . $entitie->identifier . " ASC  LIMIT 100  ";
+			$send = $this->Db->Pdo->query($request);
+			$data = $send->fetchAll(PDO::FETCH_OBJ);
+			return $data;
+		} else return null;
+		
+}
+
+public function search_in_ticket(string  $filtre){
+		$filtre = str_replace("-", ' ', $filtre);
+		$filtre = str_replace("'", ' ', $filtre);
+		$nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+		$mots_filtre = str_word_count($filtre, 1, '0123456789');
+		$operateur = "AND ";
+
+		$request = "SELECT tk__id  FROM ticket WHERE  ( tk__id LIKE '" . $mots_filtre[0] . "' 
+		OR tk__motif LIKE '%" . $mots_filtre[0] . "%' 
+		OR tk__titre LIKE '%" . $mots_filtre[0] . "%' )";
+
+		if (count($mots_filtre) >  1 ) {
+			$request .= $operateur . " ( ";
+			for ($i = 1; $i < $nb_mots_filtre; $i++){
+				if ($i == 1) {
+					$request .= " tk__id LIKE '%" . $mots_filtre[$i] . "%'"; 
+				}else $request .= "OR  tk__motif LIKE '%" . $mots_filtre[$i] . "%'
+				OR tk__titre LIKE '%" . $mots_filtre[$i] . "%' )"; 
+				
+
+			}
+		}
+		
+		$send = $this->Db->Pdo->query($request);
+		$data = $send->fetchAll(PDO::FETCH_OBJ);
+		
+		return $data;
+}
+
+public function get_tickets_with_line(array $line){
+
+		if (!empty($line)) {
+			$text = '( ';
+			foreach ($line as $key => $entry) {
+				if ($key === array_key_last($line)) {
+					$text .= $entry . ' ';
+				} else $text .= $entry . ', ';
+			}
+			$text .= ' )';
+			$request = $this->Db->Pdo->query('SELECT tkl__tk_id  FROM ticket_ligne WHERE tkl__id  IN   ' . $text . ' GROUP BY tkl__tk_id LIMIT 500');
+			$data = $request->fetchAll(PDO::FETCH_OBJ);
+			return $data;
+		}
+	    
+}
+
 public function searchTicket(string $input, array $config){
+	$results_array = [];
 	
-	$input_array = $this->format_string($input);
-	$operateur = "AND ";
-	// $request = $this->Db->Pdo->query('SELECT  tklc__id  , tklc__memo  FROM ticket_ligne_champ WHERE 1 = 1  LIMIT 50000');
-    // $data = $request->fetchAll(PDO::FETCH_OBJ);
-	// foreach ($data as $key => $value){
-	// 	if (preg_match('/@/' , $value->tklc__memo) == 1){
-	// 		$request = explode('@',$value->tksc__option);
-    //             $subject_list = $this->get_subject_table($request[0]);
-	// 			if (!empty($subject_list)){
-	// 				$subject_list = $this->get_subject_list($request , $subject_list['TABLE_NAME']);
-	// 				$value->tksc__option = $subject_list;
-	// 			}
-	// 	}
-	// }
-	foreach ($config as  $entitie){
-			foreach ($input_array as $key => $value) {
-				$request = "SELECT    
-				FROM client 
-				WHERE client__id  > 10 ";
+	$request = $this->Db->Pdo->query('SELECT  tklc__id  , tklc__memo  FROM ticket_ligne_champ WHERE 1 = 1  LIMIT 50000');
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+	foreach ($data as $key => $value){
+		//si cela est relié a une entité en base de donnée :
+		if (preg_match('/@/' , $value->tklc__memo) == 1){
+			$request = explode('@',$value->tklc__memo);
+                $subject_list = $this->get_subject_table($request[0]);
+				if (!empty($subject_list)){
+					foreach ($config as $entitie) {
+						$match = $this->search_in_entities($subject_list['TABLE_NAME'], $input, $entitie);
+						if ($match != null) {
+							array_push($results_array, $value->tklc__id);
 						}
+					}
+					
+				}
+		}else{
+
+		}
 	}
+	return $results_array ;
 }
 
 public function find_ticket($input){

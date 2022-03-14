@@ -19,8 +19,9 @@ class TicketsDisplayController extends BasicController
         self::init();
         self::security();
         $Ticket = new Tickets(self::$Db);
-
-
+        $alert_results = false ;
+        $text_results = false ; 
+       
         //si un ticket à été cloturé : 
         if (!empty($_POST['ticketsCloture'])){
             $Ticket->cloture_ticket($_POST['ticketsCloture'], $_SESSION['user']->id_utilisateur , date('Y-m-d H:i:s') , $_POST['commentaire']);
@@ -29,24 +30,52 @@ class TicketsDisplayController extends BasicController
         $config = file_get_contents('configDisplay.json');
         $config = json_decode($config);
         $config = $config->entities;
-        $list = $Ticket->get_last();
-        foreach ($list as $ticket) {
-            foreach ($config as  $entitie) {
-                if (!empty($ticket->sujet)) {
-                    $subject_identifier = $ticket->sujet->tksc__option;
-                    $display_entitie = $Ticket->createEntities($entitie, $subject_identifier, $ticket->tk__motif_id);
-                    if (!empty($display_entitie)) {
-                        $ticket->sujet = $display_entitie;
+
+        if (!empty($_GET['searchTickets'])){
+
+            $text_results = $_GET['searchTickets'];
+            $list = $Ticket->searchTicket($_GET['searchTickets'], $config);
+            $list = $Ticket->get_tickets_with_line($list);
+            $list_in_ticket = $Ticket->search_in_ticket($_GET['searchTickets']);
+            if (empty($list)) $alert_results = true;
+            $list_in_ticket = $Ticket->get_last_ticket($list_in_ticket);
+            
+            $list = $Ticket->get_last_in($list);
+            if (!empty($list) && !empty($list_in_ticket)) {
+                $list = array_merge($list, $list_in_ticket);
+            }elseif (empty($list) && !empty($list_in_ticket)) {
+                $list = $list_in_ticket;
+            }
+           
+
+            if (empty($list)) {
+                $alert_results = true;
+            }
+           
+        }else $list = $Ticket->get_last();
+
+        if (!empty($list)) {
+            foreach ($list as $ticket) {
+                foreach ($config as  $entitie) {
+                    if (!empty($ticket->sujet)) {
+                        $subject_identifier = $ticket->sujet->tksc__option;
+                        $display_entitie = $Ticket->createEntities($entitie, $subject_identifier, $ticket->tk__motif_id);
+                        if (!empty($display_entitie)) {
+                            $ticket->sujet = $display_entitie;
+                        }
                     }
                 }
+                if (!is_array($ticket->sujet)) unset($ticket->sujet);
             }
-            if (!is_array($ticket->sujet)) unset($ticket->sujet); 
         }
+        
         return self::$twig->render(
             'display_ticket_list.html.twig',
             [
                 'user' => $_SESSION['user'], 
-                'list' => $list
+                'list' => $list , 
+                'alert_results' => $alert_results , 
+                'text_results' => $text_results
             ]
         );
     }

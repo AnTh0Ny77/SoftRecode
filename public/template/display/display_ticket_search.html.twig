@@ -1,20 +1,20 @@
 
     <div class=" my-2 col-12 col-lg-8">
-        <form class="d-flex justify-content-between">
+        <form class="d-flex justify-content-between" method="get" action="tickets-display-list">
             <input type="text" class="form-control form-control-lg input-recode col-8 col-lg-10"
             placeholder="numéro, titre, client, Pn, type etc.." 
-            name="searchTickets" maxlength="100" required>
+            name="searchTickets" value="{{text_results}}" maxlength="100" required>
             <button class="btn btn-recode "><i class="fas fa-search"></i></button>
         </form>
         <div class="row justify-content-start col-12 my-2 mx-2">
-                <div class="form-check text-white col-5 col-md-4">
-                    <input class="form-check-input" id="radioInput" type="checkbox" value="" name="cloture">
-                    <label class="form-check-label" for="radioInput">Mes tickets</label>
-                </div>
-                <div class="form-check text-white col-5 col-md-4">
-                    <input class="form-check-input" id="radioInput" type="checkbox" value="" name="cloture">
-                    <label class="form-check-label" for="radioInput">Inclure les tickets cloturés</label>
-                </div>
+            <div class="form-check text-white col-5 col-md-4">
+                <input class="form-check-input" id="radioInput" type="checkbox" value="" name="cloture">
+                <label class="form-check-label" for="radioInput">Mes tickets</label>
+            </div>
+            <div class="form-check text-white col-5 col-md-4">
+                <input class="form-check-input" id="radioInput" type="checkbox" value="" name="cloture">
+                <label class="form-check-label" for="radioInput">Inclure les tickets cloturés</label>
+            </div>
         </div>
     </div>
 
