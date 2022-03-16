@@ -34,21 +34,28 @@ class TicketsDisplayController extends BasicController
         if (!empty($_GET['searchTickets'])){
 
             $text_results = $_GET['searchTickets'];
-            $list = $Ticket->searchTicket($_GET['searchTickets'], $config);
-            $list = $Ticket->get_tickets_with_line($list);
-            $list_in_ticket = $Ticket->search_in_ticket($_GET['searchTickets']);
-            if (empty($list)) $alert_results = true;
-            $list_in_ticket = $Ticket->get_last_ticket($list_in_ticket);
-            
-            $list = $Ticket->get_last_in($list);
-            if (!empty($list) && !empty($list_in_ticket)) {
-                $list = array_merge($list, $list_in_ticket);
-            }elseif (empty($list) && !empty($list_in_ticket)) {
-                $list = $list_in_ticket;
-            }
-           
+            // $list = $Ticket->searchTicket($_GET['searchTickets'], $config);
+            // $list = $Ticket->get_tickets_with_line($list);
+            // $list_in_ticket = $Ticket->search_in_ticket($_GET['searchTickets']);
+            // if (empty($list)) $alert_results = true;
+            // $list_in_ticket = $Ticket->get_last_ticket($list_in_ticket);
+            // $list = $Ticket->get_last_in($list);
+            // if (!empty($list) && !empty($list_in_ticket)){
+            //     $list = array_merge($list, $list_in_ticket);
+            // }elseif (empty($list) && !empty($list_in_ticket)){
+            //     $list = $list_in_ticket;
+            // }
 
-            if (empty($list)) {
+            // $list_in_ligne = $Ticket->search_in_ticket_ligne($_GET['searchTickets']);
+            // $list_in_ligne = $Ticket->get_last_ticket($list_in_ligne);
+            // if (!empty($list_in_ligne) && !empty($list)){
+            //     $list = array_merge($list, $list_in_ligne);
+            // }elseif (empty($list) && !empty($list_in_ligne)) {
+            //     $list = $list_in_ligne;
+            // }
+            $list = $Ticket->search_ticket($_GET['searchTickets'] , $config);
+        
+            if (empty($list)){
                 $alert_results = true;
             }
            
@@ -65,7 +72,7 @@ class TicketsDisplayController extends BasicController
                         }
                     }
                 }
-                if (!is_array($ticket->sujet)) unset($ticket->sujet);
+                if ( !empty($ticket->sujet)  && !is_array($ticket->sujet)) unset($ticket->sujet);
             }
         }
         

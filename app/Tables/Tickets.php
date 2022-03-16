@@ -524,27 +524,89 @@ public function findChamp($motif ,$nom){
 }
 
 
-// public function search_ticket($input){
-// 	switch ($input) {
-// 		case strlen($input) == 7 and is_numeric($input):
-// 			//cherche une commande 
-// 			return 'commande';
-// 			break;
+public function search_ticket( string $input , array $config ){
+	switch ($input) {
+		// case strlen($input) == 7 and is_numeric($input):
+			
+		// 	return 'commande';
+		// 	break;
 
-// 		case strlen($input) == 6 and is_numeric($input):
-// 			//cherche un client
-// 			return 'client';
-// 			break;
+		case strlen($input) == 6 and is_numeric($input):
+			$list = $this->search_ticket_with_id('client', $input);
+			$list = $this->get_last_ticket($list);
+			return $list;
+			break;
 
-// 		case strlen($input) == 5 and is_numeric($input):
-// 			//cherche un ticket
-// 			return 'ticket';
-// 			break;
-// 		default:
-// 			//recherche textuelle 
-// 			break;
-// 	}
-// }
+		case strlen($input) == 4 and is_numeric($input):
+			$list = $this->search_ticket_with_id('ticket', $input);
+			$list = $this->get_last_ticket($list);
+			return $list;
+			break;
+		default:
+				$list = $this->searchTicket($input, $config);
+				$list = $this->get_tickets_with_line($list);
+				$list_in_ticket = $this->search_in_ticket($_GET['searchTickets']);
+				$list_in_ticket = $this->get_last_ticket($list_in_ticket);
+				$list = $this->get_last_in($list);
+				if (!empty($list) && !empty($list_in_ticket)) {
+					$list = array_merge($list, $list_in_ticket);
+				} elseif (empty($list) && !empty($list_in_ticket)){
+					$list = $list_in_ticket;
+				}
+				$list_in_ligne = $this->search_in_ticket_ligne($_GET['searchTickets']);
+				$list_in_ligne = $this->get_last_ticket($list_in_ligne);
+				if (!empty($list_in_ligne) && !empty($list)) {
+					$list = array_merge($list, $list_in_ligne);
+				} elseif (empty($list) && !empty($list_in_ligne)){
+					$list = $list_in_ligne;
+				}
+				return $list;
+			break;
+	}
+}
+
+public function search_ticket_with_id(string $table , int $id){
+
+		switch ($table) {
+			case 'client':
+				$request = $this->Db->Pdo->query("SELECT  tk__id FROM ticket 
+				WHERE  CONCAT('0000 ',tk__motif_id) LIKE '". $id . "' ORDER BY tk__id LIMIT 1000");
+				$data = $request->fetchAll(PDO::FETCH_OBJ);
+				$array_field_results = [];
+				$request = $this->Db->Pdo->query("SELECT  tklc__id , tklc__memo 
+				FROM ticket_ligne_champ
+				WHERE tklc__nom_champ = 'client' ORDER BY tklc__id  LIMIT 1000");
+				$data_champs = $request->fetchAll(PDO::FETCH_OBJ);
+				foreach ($data_champs as $key => $value){
+					$id_client = explode('@', $value->tklc__memo);
+					$id_client = end($id_client);
+					if ($id_client == $id){
+						$request = $this->Db->Pdo->query("SELECT  tkl__tk_id as tk__id 
+						FROM ticket_ligne
+						WHERE tkl__id = ". $value->tklc__id." ORDER BY tk__id LIMIT 1000");
+						$data_champs = $request->fetch(PDO::FETCH_OBJ);
+						array_push($array_field_results , $data_champs);
+					}
+				}
+				if (!empty($array_field_results)) {
+					$data = array_merge($data , $array_field_results);
+				}
+				return $data;
+
+
+				break;
+			case 'commande':
+				# code...
+				break;
+			case 'ticket':
+				$request = $this->Db->Pdo->query("SELECT  tk__id FROM ticket 
+				WHERE   tk__id = '" . $id . "' ORDER BY tk__id LIMIT 1000");
+				$data = $request->fetchAll(PDO::FETCH_OBJ);
+				return $data;
+				break;
+		}
+		
+}
 
 public function format_string(string $input){
 	$filtre = str_replace("-", ' ',$input);
@@ -570,7 +632,7 @@ public function search_in_entities( string $table, string  $filtre , object  $en
 			FROM " . $table . "
 			WHERE 1 = 1 ";
 
-			$request .=   $operateur . " ( " . $entitie->identifier . " LIKE '%" . $mots_filtre[0] . "%' ";
+			$request .=   $operateur . " ( " . $entitie->identifier . " = '" . $mots_filtre[0] . "' ";
 			for ($i = 0; $i < count($entitie->label); $i++) {
 				$request .=  "OR " . $entitie->label[$i] . " LIKE '%" . $mots_filtre[0] . "%' ";
 			}
@@ -578,7 +640,7 @@ public function search_in_entities( string $table, string  $filtre , object  $en
 
 			for ($i = 1; $i < $nb_mots_filtre; $i++) {
 				if ($i == 1) {
-					$request .=   $operateur . " ( " . $entitie->identifier . " LIKE '%" . $mots_filtre[$i] . "%' ";
+					$request .=   $operateur . " ( " . $entitie->identifier . " = '" . $mots_filtre[$i] . "' ";
 				}
 				for ($y = 0; $y < count($entitie->label); $y++) {
 						$request .=  "OR " . $entitie->label[$y] . " LIKE '%" . $mots_filtre[$i] . "%' ";
@@ -600,7 +662,7 @@ public function search_in_ticket(string  $filtre){
 		$mots_filtre = str_word_count($filtre, 1, '0123456789');
 		$operateur = "AND ";
 
-		$request = "SELECT tk__id  FROM ticket WHERE  ( tk__id LIKE '" . $mots_filtre[0] . "' 
+		$request = "SELECT tk__id  FROM ticket WHERE  ( tk__id = '" . $mots_filtre[0] . "' 
 		OR tk__motif LIKE '%" . $mots_filtre[0] . "%' 
 		OR tk__titre LIKE '%" . $mots_filtre[0] . "%' )";
 
@@ -608,7 +670,7 @@ public function search_in_ticket(string  $filtre){
 			$request .= $operateur . " ( ";
 			for ($i = 1; $i < $nb_mots_filtre; $i++){
 				if ($i == 1) {
-					$request .= " tk__id LIKE '%" . $mots_filtre[$i] . "%'"; 
+					$request .= " tk__id = '" . $mots_filtre[$i] . "%'"; 
 				}else $request .= "OR  tk__motif LIKE '%" . $mots_filtre[$i] . "%'
 				OR tk__titre LIKE '%" . $mots_filtre[$i] . "%' )"; 
 				
@@ -618,9 +680,44 @@ public function search_in_ticket(string  $filtre){
 		
 		$send = $this->Db->Pdo->query($request);
 		$data = $send->fetchAll(PDO::FETCH_OBJ);
-		
 		return $data;
 }
+
+	public function search_in_ticket_ligne(string  $filtre)
+	{
+		$filtre = str_replace("-", ' ', $filtre);
+		$filtre = str_replace("'", ' ', $filtre);
+		$nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+		$mots_filtre = str_word_count($filtre, 1, '0123456789');
+		$operateur = "AND ";
+
+		$request = "SELECT tkl__tk_id as  tk__id  
+		FROM ticket_ligne 
+		LEFT JOIN utilisateur as u ON ( tkl__user_id = u.id_utilisateur ) 
+		LEFT JOIN utilisateur as w ON ( tkl__user_id_dest = w.id_utilisateur ) 
+		WHERE  ( tkl__motif_ligne  LIKE '%" . $mots_filtre[0] . "%' 
+		OR u.prenom LIKE '%" . $mots_filtre[0] . "%' 
+		OR u.nom LIKE '%" . $mots_filtre[0] . "%'
+		OR w.nom LIKE '%" . $mots_filtre[0] . "%'
+		OR w.prenom LIKE '%" . $mots_filtre[0] . "%')";
+
+		if (count($mots_filtre) >  1) {
+			$request .= $operateur . " ( ";
+			for ($i = 1; $i < $nb_mots_filtre; $i++) {
+				if ($i == 1) {
+					$request .= " tkl__motif_ligne LIKE '%" . $mots_filtre[$i] . "%'";
+				} else {
+					$request .= "OR  u.prenom LIKE '%" . $mots_filtre[$i] . "%'
+					OR u.nom '%" . $mots_filtre[$i] . "%' 
+					OR w.nom '%" . $mots_filtre[$i] . "%'
+					OR w.prenom '%" . $mots_filtre[$i] . "%')";
+				} 
+			}
+		}
+		$send = $this->Db->Pdo->query($request);
+		$data = $send->fetchAll(PDO::FETCH_OBJ);
+		return $data;
+	}
 
 public function get_tickets_with_line(array $line){
 
