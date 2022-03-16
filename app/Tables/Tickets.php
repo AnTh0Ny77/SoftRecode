@@ -608,6 +608,11 @@ public function search_ticket_with_id(string $table , int $id){
 		
 }
 
+
+public function search_in_subject(string  $filtre, object  $entitie){
+		
+}
+
 public function format_string(string $input){
 	$filtre = str_replace("-", ' ',$input);
 	$filtre = str_replace("'", ' ', $filtre);
@@ -636,18 +641,23 @@ public function search_in_entities( string $table, string  $filtre , object  $en
 			for ($i = 0; $i < count($entitie->label); $i++) {
 				$request .=  "OR " . $entitie->label[$i] . " LIKE '%" . $mots_filtre[0] . "%' ";
 			}
-			$request .= ")";
+			$request .= " ) ";
 
 			for ($i = 1; $i < $nb_mots_filtre; $i++) {
-				if ($i == 1) {
+				if ($i == 1 ) {
 					$request .=   $operateur . " ( " . $entitie->identifier . " = '" . $mots_filtre[$i] . "' ";
 				}
 				for ($y = 0; $y < count($entitie->label); $y++) {
 						$request .=  "OR " . $entitie->label[$y] . " LIKE '%" . $mots_filtre[$i] . "%' ";
 				}
-				$request .= ")";
+				
+				
+			}
+			if ($nb_mots_filtre > 1) {
+				$request .= " ) ";
 			}
 			$request .= "ORDER BY  " . $entitie->identifier . " ASC  LIMIT 100  ";
+		
 			$send = $this->Db->Pdo->query($request);
 			$data = $send->fetchAll(PDO::FETCH_OBJ);
 			return $data;
@@ -670,13 +680,13 @@ public function search_in_ticket(string  $filtre){
 			$request .= $operateur . " ( ";
 			for ($i = 1; $i < $nb_mots_filtre; $i++){
 				if ($i == 1) {
-					$request .= " tk__id = '" . $mots_filtre[$i] . "%'"; 
+					$request .= " tk__motif LIKE '%" . $mots_filtre[$i] . "%'"; 
 				}else $request .= "OR  tk__motif LIKE '%" . $mots_filtre[$i] . "%'
-				OR tk__titre LIKE '%" . $mots_filtre[$i] . "%' )"; 
-				
-
+				OR tk__titre LIKE '%" . $mots_filtre[$i] . "%' "; 	
 			}
+			$request .= ' )';
 		}
+		
 		
 		$send = $this->Db->Pdo->query($request);
 		$data = $send->fetchAll(PDO::FETCH_OBJ);
@@ -708,12 +718,15 @@ public function search_in_ticket(string  $filtre){
 					$request .= " tkl__motif_ligne LIKE '%" . $mots_filtre[$i] . "%'";
 				} else {
 					$request .= "OR  u.prenom LIKE '%" . $mots_filtre[$i] . "%'
-					OR u.nom '%" . $mots_filtre[$i] . "%' 
-					OR w.nom '%" . $mots_filtre[$i] . "%'
-					OR w.prenom '%" . $mots_filtre[$i] . "%')";
+					OR u.nom LIKE '%" . $mots_filtre[$i] . "%' 
+					OR w.nom LIKE '%" . $mots_filtre[$i] . "%'
+					OR w.prenom LIKE '%" . $mots_filtre[$i] . "%'";
 				} 
 			}
+			$request .= ' )';
 		}
+		
+	
 		$send = $this->Db->Pdo->query($request);
 		$data = $send->fetchAll(PDO::FETCH_OBJ);
 		return $data;
