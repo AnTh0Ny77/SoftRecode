@@ -545,7 +545,7 @@ public function search_ticket( string $input , array $config ){
 		default:
 				$list = $this->searchTicket($input, $config);
 				$list = $this->get_tickets_with_line($list);
-				$list_in_ticket = $this->search_in_ticket($_GET['searchTickets']);
+				$list_in_ticket = $this->search_in_ticket($input);
 				$list_in_ticket = $this->get_last_ticket($list_in_ticket);
 				$list = $this->get_last_in($list);
 				if (!empty($list) && !empty($list_in_ticket)) {
@@ -553,12 +553,19 @@ public function search_ticket( string $input , array $config ){
 				} elseif (empty($list) && !empty($list_in_ticket)){
 					$list = $list_in_ticket;
 				}
-				$list_in_ligne = $this->search_in_ticket_ligne($_GET['searchTickets']);
+				$list_in_ligne = $this->search_in_ticket_ligne($input);
 				$list_in_ligne = $this->get_last_ticket($list_in_ligne);
 				if (!empty($list_in_ligne) && !empty($list)) {
 					$list = array_merge($list, $list_in_ligne);
 				} elseif (empty($list) && !empty($list_in_ligne)){
 					$list = $list_in_ligne;
+				}
+				$list_in_subject = $this->search_in_subject($input , $config);
+				$list_in_subject = $this->get_last_ticket($list_in_subject);
+				if (!empty($list)  && !empty($list_in_subject) ){
+					$list = array_merge($list, $list_in_subject);
+				}elseif(empty($list)  && !empty($list_in_subject)){
+					$list =  $list_in_subject;
 				}
 				return $list;
 			break;
@@ -609,8 +616,63 @@ public function search_ticket_with_id(string $table , int $id){
 }
 
 
-public function search_in_subject(string  $filtre, object  $entitie){
-		
+public function search_in_subject(string  $filtre, array  $entities){
+	$array_results = [];
+	$request = $this->Db->Pdo->query('SELECT  tk__motif , tk__id , c.tksc__option
+	FROM ticket 
+	LEFT JOIN ticket_scenario as s ON ( s.tks__motif  =  tk__motif ) 
+	LEFT JOIN ticket_senar_champ as c ON ( s.tks__motif_ligne = c.tksc__motif_ligne ) 
+	WHERE tk__motif_id IS NOT NULL 
+	AND ( c.tksc__sujet = 1 ) 
+	LIMIT 50000');
+    $data = $request->fetchAll(PDO::FETCH_OBJ);
+	foreach ($data as $key => $value) {
+		if (preg_match('/@/' , $value->tksc__option) == 1){
+			$request = explode('@',$value->tksc__option);
+                $subject_list = $this->get_subject_table($request[0]);
+				if (!empty($subject_list)){
+					foreach ($entities as $entitie) {
+						if ($entitie->table == $subject_list['TABLE_NAME']){
+							$match = $this->search_in_config($subject_list['TABLE_NAME'] , $entitie , $filtre);
+							if ($match != null){
+								array_push($array_results , $value);
+							}
+						}
+					}
+				}
+		}
+	}
+	return $array_results;
+}
+
+
+public function search_in_config($table_name , $entitie , $filtre){
+	$filtre = str_replace("-", ' ', $filtre);
+	$filtre = str_replace("'", ' ', $filtre);
+	$nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+	$mots_filtre = str_word_count($filtre, 1, '0123456789');
+	$operateur = "AND ";
+	$request = "SELECT  " . $entitie->identifier . " FROM " . $table_name . " WHERE 1 = 1 ";
+	$request .=   $operateur . " ( " . $entitie->identifier . " = '" . $mots_filtre[0] . "' ";
+	for ($i = 0; $i < count($entitie->label); $i++){
+		$request .=  "OR " . $entitie->label[$i] . " LIKE '%" . $mots_filtre[0] . "%' ";
+	}
+	$request .= " ) ";
+	for ($i = 1; $i < $nb_mots_filtre; $i++){
+		if ($i == 1 ){
+			$request .=   $operateur . " ( " . $entitie->identifier . " = '" . $mots_filtre[$i] . "' ";
+		}
+		for ($y = 0; $y < count($entitie->label); $y++) {
+				$request .=  "OR " . $entitie->label[$y] . " LIKE '%" . $mots_filtre[$i] . "%' ";
+		}
+	}
+	if ($nb_mots_filtre > 1){
+		$request .= " ) ";
+	}
+	$request .= "ORDER BY  " . $entitie->identifier . " ASC  LIMIT 100";
+	$send = $this->Db->Pdo->query($request);
+	$data = $send->fetch(PDO::FETCH_OBJ);
+	return $data;
 }
 
 public function format_string(string $input){
