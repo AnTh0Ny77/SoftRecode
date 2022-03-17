@@ -642,6 +642,7 @@ public function search_in_subject(string  $filtre, array  $entities){
 				}
 		}
 	}
+	
 	return $array_results;
 }
 
@@ -670,8 +671,11 @@ public function search_in_config($table_name , $entitie , $filtre){
 		$request .= " ) ";
 	}
 	$request .= "ORDER BY  " . $entitie->identifier . " ASC  LIMIT 100";
+	
 	$send = $this->Db->Pdo->query($request);
 	$data = $send->fetch(PDO::FETCH_OBJ);
+	
+	
 	return $data;
 }
 
