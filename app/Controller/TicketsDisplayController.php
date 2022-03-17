@@ -120,7 +120,7 @@ class TicketsDisplayController extends BasicController
                 $ligne->entities = $entitites_array;
             }
         }
-        if ($ticket->tk__lu != 2 ) {
+        if ($ticket->tk__lu != 2) {
             $General->updateAll('ticket', 1 , 'tk__lu', 'tk__id', $Request['id']);
         }
         $user_destinataire = $Ticket->getCurrentUser($Request['id']);
