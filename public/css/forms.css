@@ -25,6 +25,19 @@
     display: inline-block;
     font-size: 14px;
 }
+.btn-recode-small{
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 6px 13px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 11px;
+}
+.btn-recode-small:hover{
+    background-color: #4CAF50; /* Green */
+}
 .pastille-recode{
     background-color: #4CAF50; /* Green */
     border: none;

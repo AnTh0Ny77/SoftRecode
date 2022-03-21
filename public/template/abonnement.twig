@@ -1,4 +1,4 @@
-{% extends 'new_layout.twig' %}
+{% extends 'layout_image.html.twig' %}
 {% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
@@ -6,11 +6,14 @@
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
 <link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="public/css/forms.css">
+<link rel="stylesheet" href="public/css/cards.css">
+<link rel="stylesheet" href="public/css/font-family.css">
 {% endblock %}
 {% block main %}
-    <main role="main" class="col-11 pt-3 px-4">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-		<h1 class="h2">Abonnement <i class="far fa-calendar-alt"></i></h1>
+    <main role="main" class=" pt-3 px-4 ">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center mb-3">
+		<h3 class="recode-p">Abonnement <i class="far fa-calendar-alt"></i></h3>
 			<div class="btn-toolbar mb-2 mb-md-0">
 				<div class="btn-group mr-2">
 				</div>
@@ -22,19 +25,19 @@
 	<input type="hidden" id="minFact" value="{{minFact.cmd__id_facture}}">
     <!--carte liste de Devis -->
     <div class="col-6">
-		<div class="card shadow mb-4">
+		<div class="card-recode">
 			<div class="my-2 mx-4 d-flex justify-content-between"> 
 				<div>
-					<h6 class="m-0 font-weight-bold text-primary">Selection Abonnement
-						<i class="fas fa-tools"></i> 
-					</h6>
+					<h4 class="recode-orange-title">Selection 
+						<i class="fas fa-hand-pointer"></i>
+					</h4>
 				</div>
-				<form action="abonnementAdmin" method="POST">
+				<!-- <form action="abonnementAdmin" method="POST">
 					<input type="hidden" id="hiddenId" name="hiddenId"> 
 					<div class="">
 						<button class="btn btn-success mt-2">Administrer</button>
 					</div >
-				</form>
+				</form> -->
 			</div>
 			<div class="card-body">
 				<div class="chart-area">
@@ -45,6 +48,7 @@
 								<th>Date</th>
 								<th>N°/Date</th>
 								<th>Client</th>
+								<th></th>
 							</tr>
 						</thead> 
 						<tbody id="">
@@ -80,7 +84,13 @@
 										{% endif %}
 										<br>
 										{{devis.log_nec}}
-								</td>              
+								</td>    
+								<td>
+									<form action="abonnementAdmin " method="POST" class="my-auto">
+										<input type="hidden" value="{{devis.devis__id}}" name="hiddenId"> 
+										<button class="btn btn-recode-small">Modifier </button>
+									</form>
+								</td>          
 							</tr>
 							{% endfor %}
 						</tbody>
@@ -92,12 +102,12 @@
 		</div>
     </div>
 	<!--carte option -->
-		<div class="col-6 cardVisio" >
-			<div class="card shadow mb-4">
+		<div class="col-5 cardVisio" >
+			<div class="card-recode">
 				<!-- Card Header - -->
 				<div class="my-2 mx-4"> 
-					<h6 class="m-0 font-weight-bold text-primary"> Facturation Automatique <i class="fas fa-file-export"></i>
-					</h6>    
+					<h4 class="recode-orange-title"> Facturation Automatique <i class="fas fa-atom-alt"></i>
+					</h4>    
 				</div>
 				<!-- Card Body -->
 					<div class="card-body" >
@@ -130,7 +140,7 @@
 								</div>
 							</div>
 							<div class="modal-footer mt-5">
-								<button class="btn btn-success">Visualiser <i class="far fa-eye"></i></button>
+								<button class="btn btn-recode">Visualiser <i class="far fa-eye"></i></button>
 							</div >
 						</form>
 					</div>

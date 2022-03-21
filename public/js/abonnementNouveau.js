@@ -1,6 +1,8 @@
 $(document).ready(function() {
 
-
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
     //instancie l'éditor dans le modal: 
         ClassicEditor                   
                 .create( document.querySelector('#comAbn' ) , 
@@ -72,3 +74,5 @@ $(document).ready(function() {
 
    send_notif(notif_impression);
 })    
+
+
