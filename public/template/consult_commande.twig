@@ -26,6 +26,12 @@
                                                                 title="Modifier la commande: {{commande.devis__id}}">
                                                         </custom-form-button-mini>
                                                {% endif %}
+                                               {% if commande.devis__etat == 'CMD' %}
+                                                        <custom-form-button-mini method='POST' url='adminFiche' name='AdminGarantie' value='{{commande.devis__id}}'
+                                                                logo='<i class="far fa-edit"></i>' data-toggle="tooltip" data-placement="top"
+                                                                title="administrer la Fiche: {{commande.devis__id}}">
+                                                        </custom-form-button-mini>
+                                               {% endif %}
                                                 <a target="_blank" class="btn btn-link mx-1" href="http://intranet/tel_prise_04s.php?id_cmd={{commande.devis__id}}"
                                                         data-toggle="tooltip" data-placement="top" title="Consulter la commande: {{commande.devis__id}} sur l'intranet">
                                                         <i class="fas fa-network-wired"></i>
@@ -261,9 +267,9 @@
                                                                                 </tbody>
                                                                               </table>
                                                                 </td>
-                                                                <td class="align-start" style="width: 100px;">
+                                                                <td class="align-left" style="width: 180px;">
                                                                         {% if user.user__prix_acces > 0 %}
-                                                                                       <b>{{ligne.devl_puht}}</b> € HT 
+                                                                                       <b>{{ligne.devl_puht}}</b> € 
                                                                         {% else %}
                                                                                          <div class="alert alert-warning" role="alert">
                                                                                                  droits insufisants (prix €)
@@ -330,8 +336,8 @@
                                                                 <td class="align-middle">
                                                                         <h5>
                                                                                 {% if user.user__prix_acces > 0 %}
-                                                                                        <h5><small>HT: </small> <b>{{totaux[0]}}</b> €</h5>
-                                                                                        <h5><small>TTC: </small> <b>{{totaux[3]}}</b> €</h5>
+                                                                                        <h5><small></small> <b>{{totaux[0]}}</b> € HT</h5>
+                                                                                        <h5><small></small> <b>{{totaux[3]}}</b> € TTC</h5>
                                                                                 {% else %}
                                                                                         <div class="alert alert-warning" role="alert">
                                                                                                 droits insufisants (prix €)

@@ -85,35 +85,52 @@
 		  id="telephone">
 	      </div>
 	      <div class="form-group col-md-3">
-		<label for="inputZip">Fax </label>
-		<input type="tel" class="form-control" name="fax" value='{{modif.client__fax}}' maxlength="25" id="fax">
+			<label for="inputZip">Fax </label>
+			<input type="tel" class="form-control" name="fax" value='{{modif.client__fax}}' maxlength="25" id="fax">
 	      </div>
 	      <div class="form-group col-md-5">
-		<label for="input_pays">Pays </label>
-		<input type="text" class="form-control" name="input_pays" value='{{modif.client__pays}}' maxlength="25"
-		  id="input_pays">
+			<label for="input_pays">Pays </label>
+			<input type="text" class="form-control" name="input_pays" value='{{modif.client__pays}}' maxlength="25"
+			id="input_pays">
 	      </div>
 	    </div>
+		<div class="form-row">
+			<div class="form-group col-md-5">
+				<label for="select_tva">Siret</label>
+				<input type="text" value='{{modif.client__siret}}' class="form-control" name="siret_number" maxlength="50">
+			</div>
+			<div class="form-group col-md-5">
+				<label for="mailContact"><i>N° Intracom * </i></label>
+				<input type="text" value='{{modif.client__tva_intracom}}' class="form-control" name="intracom_input" id=''
+					maxlength="200">
+			</div>
+		</div>
+		
 	    <div class="my-2 ">
-	      <label for="select_tva">Tva</label>
-	      <div class="d-flex col-md-6 ">
-		<select class="selectpicker show-tick border" data-live-search="true" data-width="100%" id="select_tva"
-		  name="select_tva" required>
-		  {% for tva in tva_list %}
-		  {% if modif.client__tva == tva.kw__value %}
-		  <option value="{{tva.kw__value}}" selected>{{tva.kw__lib}}</option>
-		  {% else %}
-		  <option value="{{tva.kw__value}}">{{tva.kw__lib}}</option>
-		  {% endif %}
-		  {% endfor %}
-		</select>
+		<label for="select_tva">Tva</label>
+	      <div class="d-flex">
+			
+			  <div class="d-flex col-6">
+				
+				<select class="selectpicker show-tick border" data-live-search="true" data-width="100%" id="select_tva"
+					name="select_tva" required>
+					{% for tva in tva_list %}
+					{% if modif.client__tva == tva.kw__value %}
+					<option value="{{tva.kw__value}}" selected>{{tva.kw__lib}}</option>
+					{% else %}
+					<option value="{{tva.kw__value}}">{{tva.kw__lib}}</option>
+					{% endif %}
+					{% endfor %}
+				</select>
+			  </div>
+			
 	      </div>
 	     
-	      <div class="col-6 my-2 d-none" id="div_intracom">
-		<label for="mailContact"><i>N° Intracom * </i></label>
-		<input type="text" value='{{modif.client__tva_intracom}}' class="form-control" name="intracom_input"
-		  id='intracom_input' maxlength="200">
-	      </div>
+	      {# <div class="col-6 my-2 " id="div_intracom">
+			<label for="mailContact"><i>N° Intracom * </i></label>
+			<input type="text" value='{{modif.client__tva_intracom}}' class="form-control" name="intracom_input"
+			id='' maxlength="200">
+	      </div> #}
 	     
 	    </div>
 	    
@@ -283,8 +300,12 @@
 	    <!-- carte des contacts -->
 	      {% if modif %}
 		<div class="card shadow col-4">
-			<div class="card-header bg-white ">
+			<div class="card-header bg-white d-flex justify-content-between">
 				<h5 class="text-primary">Contacts</h5>
+				<form method="POST" action="contactCrea">
+					<input type="hidden" name="hidden_client_2" value='{{modif.client__id}}'>
+					<button class="btn btn-primary btn-sm"> Nouveau</button>
+				</form>
 			</div>
 			<div class="card-body">
 				<table>

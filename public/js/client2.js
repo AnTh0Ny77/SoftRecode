@@ -223,6 +223,7 @@ let userTable = $('#userTable').DataTable({
     "paging": true,
     "info": true,
     retrieve: true,
+    "iDisplayLength": 50,
     "deferRender": true,
     "searching": true,
     "columnDefs": [{

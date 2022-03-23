@@ -39,7 +39,7 @@ class Client extends Table
         $request = $this->Db->Pdo->query("SELECT LPAD(client__id,6,0) as client__id,  client__societe , client__adr1 ,
          client__adr2, client__cp , client__ville , client__tel , client__tva_intracom , 
          client__id_vendeur , client__fax, client__comment , client__tva , 
-         client__date_crea, client__dt_last_modif , client__memo_config , client__pays , client__bloque ,
+         client__date_crea, client__dt_last_modif , client__memo_config , client__pays , client__bloque ,client__siret ,
          u.prenom as prenom_vendeur, u.nom as nom_vendeur ,
          k.kw__lib as lib__tva , k.kw__info as taux__tva
         FROM client 

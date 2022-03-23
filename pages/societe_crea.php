@@ -88,6 +88,10 @@ if (empty($_SESSION['user']->id_utilisateur)) {
 			$General->updateAll('client', $_POST['config'], 'client__memo_config', 'client__id', $creation_societe);
 		}
 
+		if (!empty($_POST['siret_number'])) {
+			$General->updateAll('client', $_POST['siret_number'], 'client__siret', 'client__id', $creation_societe);
+		}
+
 		$Totoro = new App\Totoro('euro');
 		$Totoro->DbConnect();
 		$ContactTotoro = new App\Tables\ContactTotoro($Totoro);
@@ -144,6 +148,7 @@ if (empty($_SESSION['user']->id_utilisateur)) {
 		$General->updateAll('client', $_POST['intracom_input'], 'client__tva_intracom', 'client__id', $_POST['modif__id']);
 		$General->updateAll('client', $_POST['commentaire_client'], 'client__comment', 'client__id', $_POST['modif__id']);
 		$General->updateAll('client', $_POST['vendeur'], 'client__id_vendeur', 'client__id', $_POST['modif__id']);
+		$General->updateAll('client', $_POST['siret_number'], 'client__siret', 'client__id', $_POST['modif__id']);
 		
 		if (!empty($_POST['ckeck_bloque'])) 
 		{
