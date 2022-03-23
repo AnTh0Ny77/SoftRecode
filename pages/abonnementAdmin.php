@@ -110,7 +110,9 @@ if (empty($_POST['hiddenId']) && empty($_POST['idAbnUpdate']) && empty($_POST['i
 
 $totaux = Pdfunctions::total_abn_periodique($cmd, $lignes);
 $total_ht = number_format($totaux[0], 2, ',', ' ');
-
+$total_periodique = intval($abn->ab__fact_periode) * $totaux[0];
+$total_periodique = floatval($total_periodique);
+$total_periodique = number_format($total_periodique , 2 , ',' , ' ' );
 
 // Donnée transmise au template : 
 echo $twig->render(
@@ -123,7 +125,7 @@ echo $twig->render(
     'abn' => $abn,
     'lignes' => $lignes,
     'alert_impression' => $alert_impression ,
-    'total_ht' => $total_ht 
-    
+    'total_ht' => $total_ht, 
+    'total_periodique' => $total_periodique
   ]
 );
