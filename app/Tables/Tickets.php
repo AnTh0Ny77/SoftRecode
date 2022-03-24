@@ -574,7 +574,7 @@ public function my_array_unique($array){
     $duplicate_keys = array();
     $tmp = array();       
 
-	if (count($array) > 1 ) {
+	if (count($array) > 1 or $array != null ) {
 		foreach ($array as $key => $val){
 			// convert objects to arrays, in_array() does not support objects
 			if (is_object($val))
