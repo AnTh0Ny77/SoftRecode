@@ -24,6 +24,8 @@ if ($_SESSION['user']->user__facture_acces < 10 ) header('location: noAccess');
 $user      = $_SESSION['user'];
 $Database  = new App\Database('devis');
 $Database->DbConnect();
+$Totoro    = new App\Totoro('euro');
+$Totoro->DbConnect();
 // $Keyword   = new App\Tables\Keyword($Database);
 // $Client    = new App\Tables\Client($Database);
 // $Contact   = new App\Tables\Contact($Database);
@@ -45,9 +47,9 @@ $vendeurList      = $UserClass->getCommerciaux();
 //declaration des variables diverses : 
 $alertDate = $resultHt = $NombreCmd = $chartsResponses = $chartsVendeur = $arrayPresta = FALSE;
 $chiffre_cmd_fact = $maintenance_location = $cmdSearch = $abnSearch = FALSE;
-$desc_stat = $type_tot = $titre_stat = $SQL_stat = '';
+$desc_stat = $type_tot = $titre_stat = $SQL_stat = $liste_fiche = $liste_fiche_gm = $liste_fiche_rma = '';
 $client = $vendeur = 'Tous';
-$total_ca = $nb_fiche = 0;
+$total_ca = $nb_fiche = $vs_fiche = $vs_periode = $vs_garmaint = $tot_ca_veir = 0;
 
 // recuperations des GET ou POST
 $date_debut     = get_post('date_debut', 1, 'GETPOST');
@@ -113,18 +115,21 @@ ORDER BY
 
 // Base commune pour creation requette
 $sql_select_tabF  = "SELECT sum(cmdl__qte_fact*cmdl__puht) + IFNULL(SUM(cmdl__qte_fact * cmdl__garantie_puht),0) AS total_fiche, ";
-$sql_select_tabF .= "key_presta.kw__lib AS presta, key_etat.kw__lib AS etat FROM cmd ";
+$sql_select_tabF .= "cmdl__prestation, key_presta.kw__lib AS presta, key_etat.kw__lib AS etat FROM cmd ";
+$sql_select_CA    = "SELECT sum(cmdl__qte_fact * cmdl__puht)  AS tot_ca_ve FROM cmd ";
 $sql_select_tabC  = "SELECT sum(cmdl__qte_cmd*cmdl__puht) + IFNULL(SUM(cmdl__qte_cmd * cmdl__garantie_puht),0) AS total_fiche, ";
 $sql_select_tabC .= "key_presta.kw__lib AS presta, key_etat.kw__lib AS etat FROM cmd ";
-$sql_select_ct   = "SELECT count(cmd.cmd__id) AS nb_fiche FROM cmd ";
-$sql_select_join = "LEFT JOIN cmd_ligne ON cmd_ligne.cmdl__cmd__id = cmd.cmd__id ";
-$sql_select_join.= "INNER JOIN keyword AS key_etat    ON cmd_ligne.cmdl__etat = key_etat.kw__value AND key_etat.kw__type = 'letat' ";
-$sql_select_join.= "INNER JOIN keyword AS key_presta ON cmd_ligne.cmdl__prestation = key_presta.kw__value AND key_presta.kw__type = 'pres' ";
-$sql_where       = "WHERE ";
-$sql_where_dt    = "BETWEEN '".$date_debut." 00:00:00' AND '".$date_fin." 23:59:59' ";
-$sql_groupby     = "GROUP BY cmdl__prestation, cmdl__etat ";
-$sql_order       = "ORDER BY key_presta.kw__ordre, cmdl__etat ";
-
+$sql_select_ct    = "SELECT COUNT(DISTINCT(cmd.cmd__id)) AS nb_fiche FROM cmd ";
+$sql_select_liste = "SELECT DISTINCT(cmd__id) FROM cmd ";
+$sql_select_join  = "LEFT JOIN cmd_ligne ON cmd_ligne.cmdl__cmd__id = cmd.cmd__id ";
+$sql_select_join .= "INNER JOIN keyword AS key_etat    ON cmd_ligne.cmdl__etat = key_etat.kw__value AND key_etat.kw__type = 'letat' ";
+$sql_select_join .= "INNER JOIN keyword AS key_presta ON cmd_ligne.cmdl__prestation = key_presta.kw__value AND key_presta.kw__type = 'pres' ";
+$sql_where        = "WHERE ";
+$sql_where_dt     = "BETWEEN '".$date_debut." 00:00:00' AND '".$date_fin." 23:59:59' ";
+$sql_where_no_loc = "AND (cmdl__prestation <> 'LOC' AND cmdl__prestation <> 'PRE' AND cmdl__prestation <> 'PRT') ";
+$sql_tot_ca_ve    = "AND (cmdl__prestation IN ('ECH','VTE')) ";
+$sql_groupby      = "GROUP BY cmdl__prestation, cmdl__etat ";
+$sql_order        = "ORDER BY key_presta.kw__ordre, cmdl__etat ";
 
 //  dP""b8    db           db    Yb    dP 888888  dP""b8        db    88""Yb  dP"Yb  
 // dP   `"   dPYb         dPYb    Yb  dP  88__   dP   `"       dPYb   88__dP dP   Yb 
@@ -132,8 +137,8 @@ $sql_order       = "ORDER BY key_presta.kw__ordre, cmdl__etat ";
 //  YboodP dP""""Yb     dP""""Yb    YP    888888  YboodP     dP""""Yb 88oodP  YbodP  
 if ($CAM)
 {
-	$titre_stat  = 'Chiffre d\'affaire facturé Avec Abonnements (Maint et Loc)';
-	$desc_stat   = 'Chiffre d\'affaire (somme CA des fiches) facturé (date de fact.) Avec maintenance (Etat des fiches VLD & VLA) sur la période (prenant en compte les avoirs) (Ce chiffre doit etre le meme que le CA en compta)';
+	$titre_stat  = 'Chiffre d\'affaires facturé Avec Abonnements (Maint et Loc)';
+	$desc_stat   = 'Chiffre d\'affaires (somme CA des fiches) facturé (date de fact.) Avec maintenance (Etat des fiches VLD & VLA) sur la période (prenant en compte les avoirs) (Ce chiffre doit etre le meme que le CA en compta)';
 	$type_tot    = 'CAM';
 	$cmd_date    = "cmd__date_fact ";
 	$cmd_etat    = "AND cmd__etat IN ('VLD','VLA') ";
@@ -141,11 +146,20 @@ if ($CAM)
 	$T_sql       = $sql_select_tabF.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat.$sql_groupby.$sql_order;
 	$T_request   = $Database->Pdo->query($T_sql);
 	$T_data      = $T_request->fetchAll(PDO::FETCH_ASSOC);
-	// le compmtage de fiche
-	$C_sql       = $sql_select_ct.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat;
+	// ca vente et ech sans ext garantie
+	$CA_sql      = $sql_select_CA.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat.$sql_tot_ca_ve;
+	$CA_request  = $Database->Pdo->query($CA_sql);
+	$CA_data     = $CA_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
+	$tot_ca_ve   = $CA_data['tot_ca_ve'];
+	// le comptage de fiche
+	$C_sql       = $sql_select_ct.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat;
 	$C_request   = $Database->Pdo->query($C_sql);
 	$C_data      = $C_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
 	$nb_fiche    = $C_data['nb_fiche'];
+	// Liste des fiches concernées (sans les fiches avec au moins une ligne de loc ou pret)
+	$L_sql       = $sql_select_liste.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$sql_where_no_loc.$cmd_etat;
+	$L_request   = $Database->Pdo->query($L_sql);
+	$L_data      = $L_request->fetchAll(PDO::FETCH_ASSOC);
 	// Somme du total_ca
 	for ($i=0; $i<=count($T_data)-1; $i++) $total_ca += $T_data[$i]['total_fiche'];
 }
@@ -156,20 +170,24 @@ if ($CAM)
 //  YboodP dP""""Yb     8bodP' dP""""Yb 88  Y8 8bodP'     dP""""Yb 88oodP  YbodP 
 if ($CAS)
  {
-	 $titre_stat  = 'Chiffre d\'affaire facturé sans Abonnement (Maint et Loc) (Fact Automatique)';
-	 $desc_stat   = 'Chiffre d\'affaire (somme CA des fiches) facturé (date de fact.) sans maintenance (Etat des fiches VLD) sur la période';
-	 $type_tot    = 'CAS';
-	 $cmd_date    = "cmd__date_fact ";
-	 $cmd_etat    = "AND cmd__etat IN ('VLD') ";
-	 // le tableau de data
-	 $T_sql       = $sql_select_tabF.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat.$sql_groupby.$sql_order;
-	 $T_request   = $Database->Pdo->query($T_sql);
-	 $T_data      = $T_request->fetchAll(PDO::FETCH_ASSOC);
-	 // le compmtage de fiche
-	 $C_sql       = $sql_select_ct.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat;
-	 $C_request   = $Database->Pdo->query($C_sql);
-	 $C_data      = $C_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
-	 $nb_fiche    = $C_data['nb_fiche'];
+	$titre_stat  = 'Chiffre d\'affaires facturé sans Abonnement (Maint et Loc) (Fact Automatique)';
+	$desc_stat   = 'Chiffre d\'affaires (somme CA des fiches) facturé (date de fact.) sans maintenance (Etat des fiches VLD) sur la période';
+	$type_tot    = 'CAS';
+	$cmd_date    = "cmd__date_fact ";
+	$cmd_etat    = "AND cmd__etat IN ('VLD') ";
+	// le tableau de data
+	$T_sql       = $sql_select_tabF.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat.$sql_groupby.$sql_order;
+	$T_request   = $Database->Pdo->query($T_sql);
+	$T_data      = $T_request->fetchAll(PDO::FETCH_ASSOC);
+	// le compmtage de fiche
+	$C_sql       = $sql_select_ct.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat;
+	$C_request   = $Database->Pdo->query($C_sql);
+	$C_data      = $C_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
+	$nb_fiche    = $C_data['nb_fiche'];
+	// Liste des fiches concernées (sans les fiches avec au moins une ligne de loc ou pret)
+	$L_sql       = $sql_select_liste.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$sql_where_no_loc.$cmd_etat;
+	$L_request   = $Database->Pdo->query($L_sql);
+	$L_data      = $L_request->fetchAll(PDO::FETCH_ASSOC);
 	 // Somme du total_ca
 	 for ($i=0; $i<=count($T_data)-1; $i++) $total_ca += $T_data[$i]['total_fiche'];
 }
@@ -192,7 +210,7 @@ if ($COS)
 	// Somme du total_ca
 	for ($i=0; $i<=count($T_data)-1; $i++) $total_ca += $T_data[$i]['total_fiche'];
 	// le compmtage de fiche
-	$C_sql       = $sql_select_ct.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat;
+	$C_sql       = $sql_select_ct.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat;
 	$C_request   = $Database->Pdo->query($C_sql);
 	$C_data      = $C_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
 	$nb_fiche    = $C_data['nb_fiche'];
@@ -215,10 +233,87 @@ if ($VOL)
 	// Somme du total_ca
 	for ($i=0; $i<=count($T_data)-1; $i++) $total_ca += $T_data[$i]['total_fiche'];
 	// le compmtage de fiche
-	$C_sql       = $sql_select_ct.$sql_select_join.$sql_where.$cmd_etat;
+	$C_sql       = $sql_select_ct.$sql_where.$cmd_etat;
 	$C_request   = $Database->Pdo->query($C_sql);
 	$C_data      = $C_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
 	$nb_fiche    = $C_data['nb_fiche'];
+}
+
+// Si il y a au moins un resultat
+if ($nb_fiche > 0)
+{
+	// creation de la liste de fiches
+	foreach($L_data as $A_cmd_id)
+		{ $liste_fiche .= $A_cmd_id['cmd__id'].','; }
+	$liste_fiche = substr($liste_fiche, 0, -1); // Supprimer la derniere virgule de la liste de fiches
+
+	// prix du matos sortie du locator pour les fiches facturées (matos à reconstruire ou HS non compté etat 21, 22)
+	$VS_sql       = 'SELECT SUM(locator.pu_ht) AS valo_sortie FROM locator ';
+	$VS_sql      .= 'where out_id_cmd IN ('.$liste_fiche.') AND (id_etat < 20 OR id_etat > 30)';
+	$VS_request   = $Totoro->Pdo->query($VS_sql);
+	$VS_data      = $VS_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
+	$vs_fiche     = $VS_data['valo_sortie'];
+
+	// prix du matos sortie sur la periode non destiné a des fiches (matos à reconstruire ou HS non compté etat 21, 22)
+	$VP_sql       = "SELECT SUM(locator.pu_ht) AS valo_periode FROM locator ";
+	$VP_sql      .= "WHERE out_datetime ".$sql_where_dt." ";
+	$VP_sql      .= "AND (out_id_cmd > '4000000' or out_id_cmd < '3000000') AND (id_etat < 20 OR id_etat > 30) ";
+	$VP_request   = $Totoro->Pdo->query($VP_sql);
+	$VP_data      = $VP_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
+	$vs_periode   = $VP_data['valo_periode'];
+
+	// liste des fiches de garantie et Maintenance (non fact, etat ARH)
+	// pour info numero de client speciaux : 2 GARANTIE RECODE, 3 MAINTENANCE RECODE,5 RELIQUAT LIVRAISON Déja Facturé
+	$cmd_date    = "cmd__date_envoi ";
+	$cmd_etat    = "AND cmd__etat = 'ARH' AND cmd__client__id_fact <= 5 ";
+	$LGM_sql     = $sql_select_liste.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat;
+	$LGM_request = $Database->Pdo->query($LGM_sql);
+	$LGM_data    = $LGM_request->fetchAll(PDO::FETCH_ASSOC);
+	// creation de la liste de fiches garantie et maintenance
+	foreach($LGM_data as $A_cmd_id)
+		{ $liste_fiche_gm .= $A_cmd_id['cmd__id'].','; }
+	$liste_fiche_gm = substr($liste_fiche_gm, 0, -1); // Supprimer la derniere virgule de la liste de fiches
+
+	// liste des fiches de RMA (evidement non fact, etat ARH)
+	// pour info numero de client speciaux : 6 RMA fournisseur
+	$cmd_date    = "cmd__date_envoi ";
+	$cmd_etat    = "AND cmd__etat = 'ARH' AND cmd__client__id_fact = 6 ";
+	$LRMA_sql    = $sql_select_liste.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat;
+	$LRMA_request= $Database->Pdo->query($LRMA_sql);
+	$LRMA_data   = $LRMA_request->fetchAll(PDO::FETCH_ASSOC);
+	// creation de la liste de fiches de rma
+	foreach($LRMA_data as $A_cmd_id)
+		{ $liste_fiche_rma .= $A_cmd_id['cmd__id'].','; }
+	$liste_fiche_rma = substr($liste_fiche_rma, 0, -1); // Supprimer la derniere virgule de la liste de fiches
+
+	// prix du matos sortie du locator pour les fiches Garantie et maintenance
+	$VS_gm_sql       = "SELECT SUM(locator.pu_ht) AS valo_sortie FROM locator ";
+	$VS_gm_sql      .= "where out_id_cmd IN (".$liste_fiche_gm.") AND (id_etat < 20 OR id_etat > 30) ";
+	$VS_gm_request   = $Totoro->Pdo->query($VS_gm_sql);
+	$VS_gm_data      = $VS_gm_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
+	$vs_garmaint     = $VS_gm_data['valo_sortie'];
+
+	// Valeur du matos declassifié sur la periode sans le matos en RMA (je ne m'occupe aps du matos sortie, car si il est sortie je ne le compte pas avant donc pas de double comptage)
+	$VD_sql       = "SELECT SUM(locator.pu_ht) AS valo_down FROM locator ";
+	$VD_sql      .= "WHERE ( down_datetime ".$sql_where_dt." ) AND locator.out_id_cmd not in (".$liste_fiche_rma.")";
+	$VD_request   = $Totoro->Pdo->query($VD_sql);
+	$VD_data      = $VD_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
+	$vs_down      = $VD_data['valo_down'];
+
+	// calcul du cumul de CA (VTE, ECH, INT ? , REP ? )
+	foreach ($T_data as $lg_ca ) 
+	{
+		switch ($lg_ca['cmdl__prestation']) 
+		{  // total avec ext garantie
+			case 'VTE':
+			case 'ECH':
+			case 'INT':
+			case 'REP':
+						$tot_ca_veir += $lg_ca['total_fiche'];
+			break;
+		}
+	}
+
 }
 
 // Donnée transmise au template : 
@@ -234,116 +329,20 @@ echo $twig->render('statistique.twig',
 'type_tot'         => $type_tot,
 'titre_stat'       => $titre_stat,
 'desc_stat'        => $desc_stat,
-'sql_stat'         => $T_sql,
+'sql_stat'         => $T_sql ,
 't_data'           => $T_data,
-
-'vendeurList'    => $vendeurList, 
-'vendeurSelect'  => $vendeur,
-'arrayPresta'    => $arrayPresta , 
-'abnSearch'      => $abnSearch,
-'cmdSearch'      => $cmdSearch 
+'vs_fiche'         => $vs_fiche,
+'vs_periode'       => $vs_periode,
+'vs_garmaint'      => $vs_garmaint,
+'vs_down'          => $vs_down,
+'tot_ca_ve'        => $tot_ca_ve,
+'vendeurList'      => $vendeurList, 
+'vendeurSelect'    => $vendeur,
+'arrayPresta'      => $arrayPresta , 
+'abnSearch'        => $abnSearch,
+'cmdSearch'        => $cmdSearch 
 ]);
 
-
-
-
-
-
-//'clientList'     => $clientList , 
-//'articleList'    => $articleTypeList,
-//'alertDate'      => $alertDate ,
-
-// // si les statistiques des commandes en cour à été demandée
-// 	if (!empty($_POST['check_commande'])) 
-// 	{
-// 		//si il faut inclure les commandes deja facturées : 
-// 		if (!empty($_POST['check_commande_facture'])) 
-// 		{
-// 					$cmdList = $Stat->return_commande_client_vendeur_chiffre($date_debut, $date_fin, $_POST['client'], $_POST['vendeur']);
-// 					$description_recherche = 'Les résultats concernent : les commandes passés entre les 2 dates et incluent les celles qui ont déja été facturées ';
-// 					//si je consulte uniquement la maintenance et la location je le rejoute à la description : 
-// 					if ($maintenance_location == true) 
-// 					{
-// 						$description_recherche .= ' et prennent en compte uniquement les prestantions de maintenance et de location';
-// 					}
-// 					$abnSearch = false;
-// 					$chiffre_cmd_fact = true;
-// 		}
-// 		else 
-// 		{
-// 					$cmdList = $Stat->return_commande_client_vendeur($date_debut, $date_fin, $_POST['client'], $_POST['vendeur']);
-// 					$description_recherche = 'Les résultats concernent : les commandes passés entre les 2 dates ( commandées ou expédiées) mais n incluent PAS les commandes déja facturées ';
-// 					if ($maintenance_location == true) 
-// 					{
-// 						$description_recherche .= ' et prennent en compte uniquement les prestantions de maintenance et de location';
-// 					}
-// 					$abnSearch = false;
-// 					$chiffre_cmd_fact = false;
-// 		}
-		
-// 	} 
-// 	//sinon appel de la methode classique du chiffre d'affaire entre 2 dates : 
-// 	else 
-// 	{
-// 		$cmdList = $Stat->returnCmdBetween2DatesClientVendeur($date_debut, $date_fin, $_POST['client'], $_POST['vendeur'], $abnSearch);
-// 			if ($abnSearch == true ) 
-// 			{
-// 					$description_recherche = 'Les résultats concernent : les commandes facturée entre  les 2 dates et incluent les chiffres des abonnements de maintenance et de location ';
-// 			}
-// 			else 
-// 			{
-// 					$description_recherche = 'Les résultats concernent : les commandes facturée entre  les 2 dates mais n incluent pas les chiffres des abonnements de maintenance et de location ';
-// 			}
-	
-// 	}
-
-
-// //si aucun filtre client vendeur n'est doné : ( code à optimiser par la suite )
-// else 
-// {
-// 	//si le chiffre des commandes en cours à été demandé : 
-// 	if (!empty($_POST['check_commande'])) 
-// 	{
-// 			//si je dois inclure le chiffre deja facturé 
-// 			if(!empty($_POST['check_commande_facture']))
-// 			{
-// 					$cmdList = $Stat->return_commandes_chiffre($date_debut, $date_fin);
-// 					$description_recherche = 'Les résultats concernent : les commandes passés entre les 2 dates et incluent les celles qui ont déja été facturées';
-// 					if ($maintenance_location == true) 
-// 							{
-// 								$description_recherche .= ' et prennent en compte uniquement les prestations de maintenance et de location';
-// 							}
-// 					$abnSearch = false;
-// 					$chiffre_cmd_fact = true;
-// 			}
-// 			else
-// 			{
-// 					$cmdList = $Stat->return_commandes($date_debut, $date_fin);
-// 					$description_recherche = 'Les résultats concernent : les commandes passés entre les 2 dates ( commandées ou expédiées) mais n incluent PAS les commandes déja facturées';
-// 					if ($maintenance_location == true) 
-// 							{
-// 								$description_recherche .= ' et prennent en compte uniquement les prestations de maintenance et de location';
-// 							}
-// 					$abnSearch = false;
-// 					$chiffre_cmd_fact = false;
-// 			}
-			
-// 	}
-// 	//sinon je retourne la liste de commandes classique : 
-// 	else 
-// 	{
-// 			$cmdList = $Stat->returnCmdBetween2Dates($date_debut, $date_fin, $abnSearch);
-// 			if ($abnSearch == true) 
-// 			{
-// 					$description_recherche = 'Les résultats concernent : les commandes facturée entre  les 2 dates et incluent les chiffres des abonnements de maintenance et de location ';
-// 			} 
-// 			else 
-// 			{
-// 					$description_recherche = 'Les résultats concernent : les commandes facturée entre  les 2 dates mais n incluent pas les chiffres des abonnements de maintenance et de location ';
-// 			}
-// 	}
-	
-// }
 
 // //tableau des resultats afin d'alimenter les charts : 
 // $arrayResults = [];

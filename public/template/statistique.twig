@@ -103,35 +103,54 @@
 							 - Vendeur : <b>{% if vendeurSelect.nom %}{{vendeurSelect.nom }}{% else %}Tous{% endif %}</b>
 							 - <b>{{nb_fiche}}</b> factures
 							<br>
-							<div class="h3"><span class="badge badge-success badge-pill">{{total_ca|number_format(2,',',' ')}} ‎€ HT</span></div>
+							<div class="h3"><span class="badge badge-success badge-pill">{{total_ca|number_format(2,',',' ')}} € HT</span></div>
 							<em>{{titre_stat}}</em>
 						</div>
-						<div class="h3">Détail par Préstations, Etats</div>
-						<div class="col-6">
-						<table class="table table-striped table-sm">
-							<thead>
-								<tr>
-									<th>Préstaions</th>
-									<th>Etat</th>
-									<th>CA ht</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for data in t_data %}
-								<tr>
-									<td>{{data.presta}}</td>
-									<td>{{data.etat}}</td>
-									<td align=right>{{data.total_fiche|number_format(2,',',' ')}}</td>
-								</tr>
-								{% endfor %}
-							</tbody>
-						</table>
+						<div class="h3">Détail par Préstations, Etats</div>Ext. Garantie Inclue
+						<div class="row">
+							<div class="col-6">
+								<table class="table table-striped table-sm">
+									<thead>
+										<tr>
+											<th>Préstaions</th>
+											<th>Etat</th>
+											<th>CA ht</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for data in t_data %}
+										<tr>
+											<td>{{data.presta}}</td>
+											<td>{{data.etat}}</td>
+											<td align=right>{{data.total_fiche|number_format(2,',',' ')}}</td>
+										</tr>
+										{% endfor %}
+									</tbody>
+								</table>
+							</div>
+							<div class="col-6">
+								Valeur materiel sortie pour fiches facturées (Sauf Loc) <br>{{vs_fiche|number_format(2,',',' ')}} €<br>
+								Valeur materiel sortie pour production ou poubelle(date sortie) <br>{{vs_periode|number_format(2,',',' ')}} €<br>
+								Valeur materiel déclassifié Hors RMA (date déclassification) <br>{{vs_down|number_format(2,',',' ')}} €<br>
+								<br>
+								total CA (Vente + Ech.) (sans ext Grarantie) : {{tot_ca_ve|number_format(2,',',' ')}} €<br>
+								total matériel sortie : {{(vs_fiche + vs_periode + vs_down)|number_format(2,',',' ')}} €<br>
+								% de marge : <b>{{((1 - ((vs_fiche + vs_periode + vs_down) / tot_ca_ve))*100)|number_format(2,',',' ')}} %</b><br>
+								<br>
+								<u>Pour info</u><br><i>
+								Valeur materiel sortie pour fiches garantie maintenance (date exped) <br>{{vs_garmaint|number_format(2,',',' ')}} € 
+								( % de marge : {{((1 - ((vs_fiche + vs_periode + vs_down + vs_garmaint) / tot_ca_ve))*100)|number_format(2,',',' ')}} % )<br>
+								<br><br>
+								<u>A faire ....</u><br>
+								Valeur de stock en debut de période (compté)<br>
+								Valeur de stock en fin de période (compté)<br>
+								Montant des achats de la période (compté)<br>
+								Variation valeur de stock (calculé)<br>
+								Comptage de reliquat (envoie sans port)<br>
+								</i>
+							</div>
 						</div>
-						<div class="col-6">
-						</div>
-
 					{% endif %}
-
 				</div>
 			</div>
 		</div>

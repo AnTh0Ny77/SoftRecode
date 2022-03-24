@@ -1,0 +1,9 @@
+MK Link a executer pour bon fonctionement
+-----------------------------------------
+en mode administrateur
+
+mklink /d C:\laragon\www\SoftRecode\public\archive_pdf\FT O:\intranet\Auto_Print\Archive\FT
+
+mklink /d C:\laragon\www\SoftRecode\public\archive_pdf\BL O:\intranet\Auto_Print\Archive\BL
+
+mklink /d C:\laragon\www\SoftRecode\public\archive_pdf\FC F:
