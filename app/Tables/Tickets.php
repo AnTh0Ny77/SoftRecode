@@ -494,7 +494,7 @@ class Tickets extends Table {
 				$multiparts =  true;
 			}
 			if (!empty($value->tksc__option)) {
-				if (preg_match('/@/', $value->tksc__option) == 1 and  $value->tksc__type_de_champ != 'CLI') {
+				if (preg_match('/@/', $value->tksc__option) == 1 and  $value->tksc__type_de_champ != 'CLI'){
 					$request = explode('@', $value->tksc__option);
 					$subject_list = $this->get_subject_table($request[0]);
 					if (!empty($subject_list)) {
