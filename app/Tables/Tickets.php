@@ -563,6 +563,7 @@ public function search_ticket( string $input , array $config ){
 				}elseif(empty($list)  && !empty($list_in_subject)){
 					$list =  $list_in_subject;
 				}
+				
 				$list = $this->my_array_unique($list);
 				return $list;
 			break;
@@ -573,22 +574,25 @@ public function my_array_unique($array){
     $duplicate_keys = array();
     $tmp = array();       
 
-    foreach ($array as $key => $val){
-        // convert objects to arrays, in_array() does not support objects
-        if (is_object($val))
-            $val = (array)$val;
+	if (count($array) > 1 ) {
+		foreach ($array as $key => $val){
+			// convert objects to arrays, in_array() does not support objects
+			if (is_object($val))
+				$val = (array)$val;
+	
+			if (!in_array($val, $tmp))
+				$tmp[] = $val;
+			else
+				$duplicate_keys[] = $key;
+		}
+	
+		foreach ($duplicate_keys as $key)
+			unset($array[$key]);
+	
+		foreach ($array as $value) 
+				$value = (object)$value;
+	}
 
-        if (!in_array($val, $tmp))
-            $tmp[] = $val;
-        else
-            $duplicate_keys[] = $key;
-    }
-
-    foreach ($duplicate_keys as $key)
-        unset($array[$key]);
-
-	foreach ($array as $value) 
-			$value = (object)$value;
 	
     return $array;
 }
