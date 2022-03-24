@@ -564,6 +564,7 @@ public function search_ticket( string $input , array $config ){
 					$list =  $list_in_subject;
 				}
 				
+				
 				$list = $this->my_array_unique($list);
 				return $list;
 			break;
@@ -574,7 +575,7 @@ public function my_array_unique($array){
     $duplicate_keys = array();
     $tmp = array();       
 
-	if (count($array) > 1 or $array != null ) {
+	if (!empty($array) and  count($array) > 1  ) {
 		foreach ($array as $key => $val){
 			// convert objects to arrays, in_array() does not support objects
 			if (is_object($val))
