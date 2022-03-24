@@ -47,10 +47,10 @@
                         <option value="hello" >test esthétique</option>
                 </select> #}
 				{% if ticket.tk__lu != 2 %}
-					{% if action %}
+					
 						<button type="button" class="btn btn-recode my-2 col-12 col-md-6 col-lg-4" data-toggle="modal"
 							data-target=".modal-validation-ticket">Modifier le ticket</button>
-					{% endif %}
+					
 					<button type="button" class="btn btn-recode-danger col-12 col-md-6 col-lg-4" data-toggle="modal" data-target="#modalCloture">Cloturer le ticket</button>
 				{% endif %}
 			</div>
