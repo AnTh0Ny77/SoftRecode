@@ -1,0 +1,50 @@
+{% if ticket.tk__lu == 1  %}
+    <div class="card-recode card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
+{% elseif ticket.tk__lu == 2  %}
+    <div class="card-recode-lu card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
+{% else %}
+    <div class="card-recode-green-shadow card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
+{% endif %}
+    <input type="hidden" value="{{ticket.tk__id}}">
+    <div class="d-flex">
+        <div class="col-6">
+            <h3 class="recode-orange-title"> Ticket {{ticket.tk__id}}
+                {% if ticket.tk__lu == 2 %}
+                    <small class="font-weight-bold text-muted"> cloturé</small>
+                {% endif %}
+            </h3>
+        </div>
+        <div class="col-6">
+            <h3 class="recode-orange-title"><span class="text-dark">{{ticket.tk__titre}}</span>
+            </h3>
+        </div>
+    </div>
+    
+    <div class="d-flex">
+        <div class="col-6">
+            <p class="recode-p">{{ticket.kw__lib}}<br>
+                {% if ticket.sujet %}
+                    <span class="text-dark font-weight-bold">{{ticket.sujet.label ~ " " ~ ticket.sujet.additionals}}</span><br>
+                {% endif %}
+                {% if ticket.tk__lu != 2 %}
+                    <span class="text-dark font-weight-bold text-uppercase">En cours chez 
+                        <span class="recode-orange-title">
+                            {{ticket.last_line.prenom_dest ~ " " ~ ticket.last_line.nom_dest}}
+                        </span>
+                    </span>
+                {% endif %}    
+            </p>
+        </div>
+        <div class="col-6">
+            <p class="recode-p">{{ticket.last_line.tkl__memo}}<br>
+            <span class="text-dark font-weight-bold text-uppercase">Le {{ticket.last_line.tkl__dt}}<br>
+                <span class="recode-orange-title">
+                    {{ticket.last_line.prenom ~ " " ~ ticket.last_line.nom}}
+                </span>
+            </span>
+
+            </p>
+        </div>
+    </div>
+    
+</div>

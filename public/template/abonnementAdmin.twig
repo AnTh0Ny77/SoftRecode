@@ -15,7 +15,7 @@
 			<i class="fas fa-tools"></i>
 		</h1>
 		<div class="btn-toolbar mb-2 mb-md-0">
-			<div class="btn-group mr-2"></div>
+			<a class="btn btn-success" href="/SoftRecode/abonnement">Retour Liste</a>
 		</div>
 	</div>
 	<!-- 1ere ligne -->
@@ -59,7 +59,9 @@
 								<br>
 								Périodicité facturation : <b>{{abn.ab__fact_periode}} mois</b>
 								<br>
-								Total/période : <b class="text-success"> {{total_ht}} €</b>
+								Total/mois : <b class="text-success"> {{total_ht}} €</b>
+								<br>
+								Total/période : <b class="text-success"> {{total_periodique}} €</b>
 							</div>
 						</div>
 						<div class="form-row col-10">
@@ -197,7 +199,7 @@
 										<input type="hidden"
 											value="{{ligne.abl__ligne}}"
 											name="numLigne">
-										<button class="btn btn-link">
+										<button class="btn btn-link"  data-toggle="tooltip" data-placement="top" title="Dupliquer">
 											<i class="far fa-copy"></i>
 										</button>
 									</form>
@@ -208,9 +210,8 @@
 										<input type="hidden"
 											value="{{ligne.abl__ligne}}"
 											name="numLigne">
-										<button class="btn btn-link">
-											<i
-												class="fad fa-screwdriver"></i>
+										<button class="btn btn-link" data-toggle="tooltip" data-placement="top" title="Modifier">
+											<i class="fad fa-screwdriver"></i>
 										</button>
 									</form>
 								</div>
@@ -229,7 +230,6 @@
 			</div>
 		</div>
 	</div>
-
 	</div>
 	</div>
 </main>{% endblock %}{% block script %}

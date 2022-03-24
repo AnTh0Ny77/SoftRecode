@@ -1,0 +1,64 @@
+<div class="modal fade" id="modal_choix_client" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{form.tksc__nom_champ}}</h5>
+                <h5 class=" modal-title text-danger ml-4" id="alert_long_facture"></h5>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group border-0" id="list_client_facture">
+
+                </ul>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal alerte -->
+<div class="modal fade" id="modal_alert" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alerte</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" id="alert_text" role="alert">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex">
+    <input class=" col-6 form-control  form-control-lg input-recode" type="search" placeholder="{{form.tksc__label}}"
+        aria-label="Search" id="client_input" autocomplete='off' >
+    <button type="button" id="btn_search_client" class="btn btn-recode mx-3"><i class="fas fa-search"></i></button>
+</div>
+<div class="d-flex">
+    <input type="text" value="" class=" d-none form-control col-7  form-control-lg input-recode"  id="display_client" readonly>
+    <input type="hidden" value=""  name="{{form.tksc__nom_champ}}" id="{{form.tksc__nom_champ}}" required>
+    {% if preset.Client %}
+        <input type="hidden" value="{{preset.Client}}"  id="presetClient" >
+    {% else %}
+        <input type="hidden" value="" id="presetClient">
+    {% endif %}
+    <button type="button" id="remove_client" class=" d-none btn btn-recode-danger mx-3"><i class="fas fa-times-circle"></i></button>
+</div>
+
+
+
+
+

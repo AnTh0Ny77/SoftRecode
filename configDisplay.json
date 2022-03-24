@@ -1,0 +1,36 @@
+{
+    "entities": [
+       {
+           "name" : "client",
+           "table": "client",
+           "identifier": "client__id",
+           "identifier_type": "integer",
+           "label": [
+               "client__id",
+               "client__societe" ,
+                "client__cp" , 
+                "client__ville"
+            ],
+           "additionals": [
+               "client__adr1" ,
+                "client__adr2"
+               ] ,
+           "picture": null,
+           "alternative": "public/img/client_image.png"
+       },
+       {
+            "name": "pn",
+            "table": "art_pn",
+            "identifier": "apn__pn",
+            "identifier_type": "string",
+            "label": [
+                "apn__pn_long"
+            ],
+            "additionals": [
+                "apn__desc_short"
+            ],
+            "picture": "apn__image",
+            "alternative": "public/img/pn2.jpg"
+        }
+    ]
+}

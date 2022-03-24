@@ -3,6 +3,7 @@
 require "vendor/autoload.php";
 use App\Controller\RechercheController;
 use App\Controller\TicketsFormsController;
+use App\Controller\TicketsDisplayController;
 use App\Controller\ExtranetController;
 
 
@@ -117,8 +118,20 @@ use App\Controller\ExtranetController;
 			echo TicketsFormsController::selectTicketsType();
 			break;
 
-		case '/SoftRecode/tickets-handle-forms';
+		case '/SoftRecode/tickets-handle-forms'.$get_data;
 			echo TicketsFormsController::FormsMarker();
+			break;
+
+		case '/SoftRecode/tickets-display-list'.$get_data;
+			echo TicketsDisplayController::displayTicketList();
+			break;
+    
+		case '/SoftRecode/tickets-display'.$get_data;
+			echo TicketsDisplayController::displayTicket($_GET);
+			break;
+
+		case '/SoftRecode/tickets-post-data';
+			echo TicketsFormsController::formsHandler();
 			break;
 
 		case '/SoftRecode/extra-login';
@@ -360,9 +373,6 @@ use App\Controller\ExtranetController;
 		
 		case '/SoftRecode/printContrat';
 			require __DIR__ .'/pages/utilities/printContrat.php'; break;
-
-		
-		
 		
 		case '/SoftRecode/PRINTFORMAT';
 			require __DIR__ .'/pages/utilities/printFormat.php'; break;

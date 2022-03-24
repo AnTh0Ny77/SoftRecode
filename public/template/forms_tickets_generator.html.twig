@@ -1,0 +1,53 @@
+{% extends 'responsive_layout.twig' %}
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" type="text/css" href="public/chosen/chosen.min.css">
+<link rel="stylesheet" href="public/css/forms.css">
+<link rel="stylesheet" href="public/css/cards.css">
+<link rel="stylesheet" href="public/css/font-family.css">
+{% endblock %}
+{% block main %}
+<main role="main" class="col-12 container-body background-extranet ">
+  <div class="container pt-4 ">
+      {% if multiparts %}
+      
+      <form action="tickets-post-data" method="POST" class="col-12 col-sm-9 mx-auto" enctype="multipart/form-data">
+      {% else %}
+      <form action="tickets-post-data" method="POST" class="col-12 col-sm-9 mx-auto">
+      {% endif %}
+        <input type="hidden" name="motif" value="{{motif}}">
+        <input type="hidden" name="libelle" value="{{libelle}}">
+        <input type="hidden" name="creaForms" value="{{crea_forms}}">
+        <input type="hidden" name="type" value="{{type_tickets}}">
+        <div class="form-group pt-1">
+        </div>
+        <div class="d-flex justify-content-center">
+          <div class="col-4 text-white display-logo">
+              {{ include('display/display_logo_ticket.html.twig')}}
+          </div>
+          <div class="card-recode d-flex flex-column col-12 col-lg-8">
+              <h2 class="recode-orange-title">Nouveau ticket</h2>
+              <p class="recode-p">{{libelle}}<br>
+              </p>
+          </div>
+      </div>
+        {% for form in forms %}
+               {{ include('forms/forms_tickets_fields.html.twig')}}
+        {% endfor %}
+        <div class="form-group d-flex justify-content-end">
+            <button class="btn btn-recode" >Valider</button>
+        </div>
+      </form>
+  </div>
+</main>
+{% endblock %}
+{% block script %}
+<!-- jQuery first, then Bootstrap JS -->
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/js/client_module.js"></script>
+{% endblock %}

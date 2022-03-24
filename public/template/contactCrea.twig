@@ -182,8 +182,6 @@
                       <div class="">
                         <label for="exampleInputPassword1">Societe</label>
                           <div class="d-flex col-md-6">
-                            
-                              
                               <select class="selectpicker show-tick"  data-live-search="true" data-width="100%"  name="sociteContact" required>        
                                   {% for client in clientList %}
                                         {% if preselected == client.client__id  %}
@@ -191,11 +189,8 @@
                                         {% else %}
                                           <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
                                         {% endif %}
-                                       
                                   {% endfor %}
                               </select>
-                        
-                          
                           </div>
                         </div>
                   </div>

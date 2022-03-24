@@ -808,7 +808,7 @@ public function get_article_devis(int  $id_fmm)
 	WHERE afmm__id = '. $id_fmm.'');
 	$data = $request->fetch(PDO::FETCH_OBJ);
 	return $data;
-  }
+}
 
 //recupère * sur Art_Fmm en foncrtion d'un afmm__id
 public function get_fmm_by_id(int $id_fmm)

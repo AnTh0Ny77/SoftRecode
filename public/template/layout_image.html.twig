@@ -1,0 +1,290 @@
+<!doctype html>
+<!-- layoutMain.twig -->
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="icon"  href="public/img/favicon.ico" />
+    <link rel="stylesheet" href="public/css/forms.css">
+    <link rel="stylesheet" href="public/css/cards.css">
+    <link rel="stylesheet" href="public/css/font-family.css">
+	{% block style %}
+ 
+	{% endblock %}
+	<title>Soft Recode</title>
+</head>
+<body class="" >
+	<!--NavBar--> 
+	<nav class="navbar navbar-light bg-dark text-white  navbar-large  sticky-top flex-md-nowrap p-0 shadow">
+		<div>
+			<a class="navbar-brand text-light  ml-2 pr-2" href="#"><i class="fas fa-user text-success"></i>  {{ user.prenom ~  " " ~  user.nom ~ " " }} </a> 
+			{% if user.devis_cours %}
+			<button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="devis envoyés">
+				<a href="search_switch_notifs?id_user={{user.id_utilisateur}}&status=ATN">
+					<span class="fa-stack text-primary" style="vertical-align: top;">
+						<i class="fal fa-file fa-stack-2x"></i>
+						<i class=" fa-stack-1x text-primary">{{user.devis_cours}}</i>
+					</span>
+				</a>
+			</button>
+			{% endif %}
+			{% if user.commandes_cours %}
+				<button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="commandes en cours">
+					<a href="search_switch_notifs?id_user={{user.id_utilisateur}}&status=CMD">
+						<span class="fa-stack text-success" style="vertical-align: top;">
+							<i class="fal fa-file fa-stack-2x"></i>
+							<i class=" fa-stack-1x text-success">{{user.commandes_cours}}</i>
+						</span>	
+					</a>
+				</button>	 
+			{% endif %}
+			
+		</div>
+		<div class="d-flex flex-row ">
+			<custom-search-menu method="POST" class="my-auto" url='search_switch'></custom-search-menu>
+			<ul class="navbar-nav px-3">
+				<li class="nav-item text-nowrap ">
+					<a class="nav-link text-light" href="unlog">Se deconnecter <i class="fad fa-sign-out text-danger"></i></a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<!--end navbar-->
+
+<!--SideBar-->
+	<div class="d-flex">		
+		<div class="bg-dark  " id="side-container">
+			<table class="table table-hover table-dark  table-side-nav" style="width: 50px;">
+				<tr>
+					<td class="dropdown border-0">
+						<a class="nav-link text-white" href="dashboard">
+						<span data-feather="file"></span>
+						<i class="fal fa-chart-network text-success fa-lg fa-fw"></i>  
+						</a>
+						<div class="dropdown-content bg-dark text-white rounded-right">
+							<b>
+							<div class="card-header text-center">
+								<h5>Dashboard</h5>
+							</div>
+								<a href="dashboard"><i class="fal fa-chart-network fa-lg fa-fw"></i>  Dashboard</a>	
+							</b>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="dropdown">
+						<a class="nav-link text-white" href="http://intranet/" target="_blank">
+						<span data-feather="file"></span>
+						<i class="fad fa-recycle fa-lg fa-fw text-info"></i>  
+						</a>
+						<div class="dropdown-content bg-dark text-white rounded-right">
+							<b>
+							<div class="card-header text-center">
+								<h5>Intranet</h5>
+							</div>
+								<a href="http://intranet/" target="_blank"><i class="fad fa-recycle fa-lg fa-fw "></i>  Intranet</a>	
+							</b>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="dropdown ">
+					<a class="nav-link text-white" href="mesDevis">
+						<span data-feather="file"></span>
+						<i class="fad fa-shopping-cart fa-lg fa-fw text-primary"></i> 
+					</a>
+					<div class="dropdown-content bg-dark text-white rounded-right">
+						<b>
+						<div class="card-header text-center">
+							<h5>Devis</h5>
+						</div>
+							<a href="mesDevis"><i class="fal fa-file-search fa-fw"></i> Recherche</a>
+							<a href="DevisV2"><i class="fal fa-file-edit fa-fw"></i> Nouveau devis</a>
+							<a href="etiquettes"><i class="fas fa-print-search fa-fw"></i> Étiquettes</a>
+								
+						</b>
+					</div>
+						
+					</td>
+				</tr>
+				<tr>
+					<td class="dropdown">
+					<a class="nav-link text-white" href="admin_client">
+						<span data-feather="file"></span>
+						<i class="fas fa-user-tag fa-lg fa-fw text-warning" ></i> 
+					</a>
+					<div class="dropdown-content bg-dark text-white rounded-right">
+						<b>
+							<div class="card-header text-center">
+								<h5>Clients</h5>
+							</div>
+							<a href="admin_client">
+								<i class="far fa-building"></i> Creer/Modifier Client
+							</a>
+							<a class="nav-link" href="admin_contact">
+								<i class="fas fa-tools"></i> Creer/Modifier Contact
+							</a>
+					
+						</b>
+					</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="dropdown">
+					<a class="nav-link text-white"  href="transport"  aria-expanded="false">
+						<span data-feather="file"></span>
+						<i class="far fa-tools fa-lg fa-fw text-info"></i> 
+					</a>
+					<div class="dropdown-content bg-dark text-white rounded-right">
+						<b>
+							<div class="card-header text-center">
+								<h5>Fiches de travail</h5>
+							</div>
+							<a href="ficheTravail">
+								<i class="fal fa-file-search fa-fw"></i> Recherche
+							</a>
+							<a class="nav-link" href="fiches_garantie">
+								<i class="fas fa-pencil-alt"></i> Fiches de garantie
+							</a>
+							<a class="nav-link" href="transport">
+								<i class="far fa-truck-couch fa-fw"></i> Saisie Transport
+							</a>
+							<a class="nav-link " href="fichesEnCours">
+								<i class="far fa-list-alt"></i> Détails fiches en cours
+							</a>
+					
+						</b>
+					</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="dropdown">
+						<a class="nav-link text-white" href="facture" aria-expanded="false" >
+							<span data-feather="file"></span>
+							<i class="fad fa-euro-sign fa-lg fa-fw text-light"></i> 
+						</a>
+						<div class="dropdown-content bg-dark text-white rounded-right">
+							<b>
+								<div class="card-header text-center">
+									<h5>Factures</h5>
+								</div>
+								<a class="nav-link" href="facture">
+									<i class="fal fa-file-search fa-fw"></i> Facturation
+								</a>
+								<a class="nav-link" href="export">
+									<i class="fas fa-cloud-download-alt"></i> Export
+								</a>
+								<a class="nav-link " href="stat">
+									<i class="fas fa-chart-pie"></i> Statistiques
+								</a>
+							</b>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="dropdown">
+						<a class="nav-link text-white" href="abonnement">
+							<span data-feather="file"></span>
+							<i class="fas fa-sync fa-lg fa-fw text-success"></i> 
+						</a>
+						<div class="dropdown-content bg-dark text-white rounded-right">
+							<b>
+								<div class="card-header text-center">
+									<h5>Abonnements</h5>
+								</div>
+								<a class="nav-link " href="abonnement">
+									<i class="far fa-calendar-alt"></i> Administration abonnements
+								</a>
+								<a class="nav-link " href="abonnementNouveau">
+									<i class="far fa-calendar-alt"></i> Creer abonnement
+								</a>
+							</b>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="dropdown">
+					<a class="nav-link text-white" href="tickets">
+						<span data-feather="file"></span>
+						<i class="fad fa-clipboard-list-check fa-lg fa-fw text-primary" ></i> 
+					</a>
+					<div class="dropdown-content bg-dark text-white rounded-right">
+						<b>
+							<div class="card-header text-center">
+								<h5>Tickets</h5>
+							</div>
+							<a class="nav-link " href="tickets">
+								<i class="fad fa-clipboard-check fa-fw"></i> Consultation
+							</a>
+						</b>
+					</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="dropdown">
+					<a class="nav-link text-white" href="ArtCataloguePN">
+						<span data-feather="file"></span>
+						<i class="fad fa-user-robot fa-lg fa-fw text-light"></i> 
+					</a>
+					<div class="dropdown-content bg-dark rounded-right">
+						<b>
+							<div class="card-header text-center">
+								<h5>Matériel</h5>
+							</div>
+							<a class="nav-link " href="ArtCataloguePN">
+								<i class="fad fa-clipboard-check fa-fw"></i> Catalogue
+							</a>
+							{# <a class="nav-link " href="recherche-articles-familles">
+								<i class="fas fa-search fa-fw"></i> Recherche
+							</a> #}
+						</b>
+					</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="dropdown">
+					<a class="nav-link text-white" href="utilisateurs">
+						<span data-feather="file"></span>
+						<i class="fad fa-users-cog fa-lg fa-fw text-warning"></i> 
+					</a>
+					<div class="dropdown-content bg-dark rounded-right">
+						<b>
+							<div class="card-header text-center">
+								<h5>Admin</h5>
+							</div>
+							<a class="nav-link " href="utilisateurs">
+								<span data-feather="file"></span>
+								<i class="fal fa-user-tag fa-fw"></i> Utilisateurs
+							</a>
+							<a class="nav-link" href="action_utilisateur">
+								<span data-feather="file"></span>
+								<i class="far fa-user-secret"></i> Historique actions
+							</a>
+						</b>
+					</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+			
+	
+    <div class="background-extranet col-12">
+        {% block main  %}
+	{% endblock %}
+    </div>
+	
+</div>
+
+{% block script %}
+{% endblock %}
+<script type="module" src="public/js/custom/import.js"></script>
+<script type="text/javascript">
+	 //initialization des tooltips 
+	 $(function () 
+	 {
+		$('[data-toggle="tooltip"]').tooltip({ html: true })
+	})
+</script>
+
+</body>
+</html>

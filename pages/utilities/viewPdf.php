@@ -1,11 +1,9 @@
 <?php
 require "./vendor/autoload.php";
-
 use Spipu\Html2Pdf\Exception\Html2PdfException;
 use Spipu\Html2Pdf\Html2Pdf;
 use App\Methods\Pdfunctions;
 use App\Methods\Devis_functions;
-
 session_start();
 $Database = new App\Database('devis');
 $Database->DbConnect();
@@ -16,13 +14,11 @@ $Keyword = new \App\Tables\Keyword($Database);
 $garanties = $Keyword->getGaranties();
 
 // si pas connecté on ne vole rien ici :
-if (empty($_SESSION['user'])) {
+if (empty($_SESSION['user'])){
     echo 'no no no .... ';
-} else {
-
+}else{
     // requete table client:
-    if (!empty($_POST['AjaxDevis'])) {
-
+    if (!empty($_POST['AjaxDevis'])){
         $devis = $Cmd->GetById($_POST['AjaxDevis']);
         $devis_ligne = $Cmd->devisLigne_actif($_POST['AjaxDevis']);
         foreach ($devis_ligne as $ligne) {
@@ -39,35 +35,28 @@ if (empty($_SESSION['user'])) {
         if ($devis->devis__id_client_livraison != $devis->client__id) {
             $societe_livraison = $Client->getOne($devis->devis__id_client_livraison);
         }
-        ob_start();
-?>
+        ob_start();?>
         <style type="text/css">
             .page_header {
                 margin-left: 30px;
                 margin-top: 30px;
             }
-
             table {
                 font-size: 13;
                 font-style: normal;
                 font-variant: normal;
                 border-collapse: separate;
             }
-
             strong {
                 color: #000;
             }
-
             h3 {
                 color: #666666;
             }
-
             h2 {
                 color: #3b3b3b;
             }
         </style>
-
-
         <page backtop="80mm" backleft="10mm" backright="10mm" backbottom="30mm">
             <page_header>
                 <table class="page_header" style="width: 100%;">
@@ -149,18 +138,13 @@ if (empty($_SESSION['user'])) {
                     </tr>
                 </table>
             </page_footer>
-
             <table CELLSPACING=0 style="margin-top: 15px; width:100%">
-
                 <?php
-
-                if ($devis->cmd__mode_remise > 0) {
-                    echo Devis_functions::remise_devis_ligne_pdf($devis_ligne, 0);
-                } else {
-                    echo Devis_functions::classic_devis_ligne_pdf_image($devis_ligne, 0);
-                }
-
-
+                    if ($devis->cmd__mode_remise > 0) {
+                        echo Devis_functions::remise_devis_ligne_pdf($devis_ligne, 0);
+                    } else {
+                        echo Devis_functions::classic_devis_ligne_pdf_image($devis_ligne, 0);
+                    }
                 ?>
             </table>
             <div>
@@ -169,12 +153,10 @@ if (empty($_SESSION['user'])) {
                         <td style="width: 45%;"></td>
                         <td align="right">
                             <?php
-
                             $tableau_prix = [];
                             foreach ($devis_ligne as $value => $key) {
                                 array_push($tableau_prix, floatval(floatval($key->devl_puht) * intval($key->devl_quantite)));
                             }
-
                             if ($devis->cmd__modele_devis != 'STX') {
                                 switch ($devis->cmd__modele_devis) {
                                     case 'STT':

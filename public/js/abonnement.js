@@ -37,7 +37,7 @@ $(document).ready(function() {
 
     //si la longueur de la table est supérieure a zero je lance la fonction:
     if ($('#ficheTable').length > 0) {
-        selectFirst();
+        // selectFirst();
     }
 
 })    

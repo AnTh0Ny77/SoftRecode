@@ -109,10 +109,19 @@ if (!empty($_POST['search']))
                         if ($commande->devis__etat == 'VLD' || $commande->devis__etat == 'VLA') 
                         {
                                 $totaux = Pdfunctions::totalFacturePDF($commande, $lignes );
+                                foreach ($totaux as $results){
+                                       $results = number_format(floatVal($results), 2, ',', ' ');
+                                        $totaux[$key] = $results;
+                                }
                         }
                         else 
                         {
                                 $totaux = Pdfunctions::totalFacturePRO($commande, $lignes );
+                                foreach ($totaux as $key => $results) {
+                                        $results = number_format(floatVal($results), 2, ',', ' ');
+                                        $totaux[$key] = $results ;
+                                        
+                                }
                         }
                         
 
