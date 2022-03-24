@@ -543,16 +543,12 @@ public function search_ticket( string $input , array $config ){
 			return $list;
 			break;
 		default:
-				$list = $this->searchTicket($input, $config);
-				$list = $this->get_tickets_with_line($list);
+				// $list = $this->searchTicket($input, $config);
+				// $list = $this->get_tickets_with_line($list);
 				$list_in_ticket = $this->search_in_ticket($input);
 				$list_in_ticket = $this->get_last_ticket($list_in_ticket);
-				$list = $this->get_last_in($list);
-				if (!empty($list) && !empty($list_in_ticket)) {
-					$list = array_merge($list, $list_in_ticket);
-				} elseif (empty($list) && !empty($list_in_ticket)){
-					$list = $list_in_ticket;
-				}
+				$list = $list_in_ticket ; 
+				
 				$list_in_ligne = $this->search_in_ticket_ligne($input);
 				$list_in_ligne = $this->get_last_ticket($list_in_ligne);
 				if (!empty($list_in_ligne) && !empty($list)) {
@@ -567,10 +563,37 @@ public function search_ticket( string $input , array $config ){
 				}elseif(empty($list)  && !empty($list_in_subject)){
 					$list =  $list_in_subject;
 				}
+				$list = $this->my_array_unique($list);
 				return $list;
 			break;
 	}
 }
+
+public function my_array_unique($array){
+    $duplicate_keys = array();
+    $tmp = array();       
+
+    foreach ($array as $key => $val){
+        // convert objects to arrays, in_array() does not support objects
+        if (is_object($val))
+            $val = (array)$val;
+
+        if (!in_array($val, $tmp))
+            $tmp[] = $val;
+        else
+            $duplicate_keys[] = $key;
+    }
+
+    foreach ($duplicate_keys as $key)
+        unset($array[$key]);
+
+	foreach ($array as $value) 
+			$value = (object)$value;
+	
+    return $array;
+}
+
+
 
 public function search_ticket_with_id(string $table , int $id){
 
