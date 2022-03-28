@@ -5,6 +5,7 @@ namespace App\Tables;
 use App\Tables\Table;
 use App\Database;
 use App\Tables\General;
+use App\Tables\Article;
 use DateTime;
 use PDO;
 use stdClass;
@@ -263,8 +264,14 @@ class Tickets extends Table {
   }
 
 
+  public function insert_ticket(array $post ){
 
-  public function insert_ticket(array $post){
+	if ($post['type'] === 'DP' && empty($post['Titre'])) {
+		$post['Titre'] = $post['Quantite'] . ' - ' ;
+		$Article = new Article($this->Db);
+		$Pn = $Article->get_pn_byID($post['Pn']);
+		$post['Titre'] .=  $Pn->apn__pn_long ;
+	}
 	$request = $this->Db->Pdo->prepare("
 	INSERT INTO ticket  (tk__motif,		 	tk__motif_id ,	 	tk__titre , tk__indic ) 
 	VALUES              (:tk__motif,      :tk__motif_id,      :tk__titre , :tk__indic)"); 

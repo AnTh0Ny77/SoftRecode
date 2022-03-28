@@ -46,6 +46,17 @@
                     <input class="form-control" type="file" name="{{form.tksc__nom_champ}}" multiple>
                 {% endif %}
             </div>
+
+    {% elseif form.tksc__type_de_champ == "DAT" %}
+            <div class="">
+                {% if form.tksc__obligatoire == 1 %}
+                    <h5 class="text-white">{{form.tksc__label}} *</h5>
+                    <input class="form-control col-5" type="date" min="2018-01-01" max="2030-12-31" name="{{form.tksc__nom_champ}}"  required>
+                {% else %}
+                    <h5 class="text-white">{{form.tksc__label}}</h5>
+                    <input class="form-control col-5" type="date"  min="2018-01-01" max="2030-12-31" name="{{form.tksc__nom_champ}}">
+                {% endif %}
+            </div>
     {% elseif form.tksc__type_de_champ == "SLT" %}
            
             {% if form.tksc__obligatoire == 1 %}

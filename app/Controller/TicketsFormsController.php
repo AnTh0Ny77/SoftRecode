@@ -224,7 +224,7 @@ class TicketsFormsController extends BasicController
                 } else $post['Titre'] = null;
 
                     $post['creator'] = $_SESSION['user']->id_utilisateur;
-                    $new_tickets = $Ticket->insert_ticket($post);
+                    $new_tickets = $Ticket->insert_ticket($post );
                     $post['id_ligne'] = $new_tickets;
                     $post['dt'] = date('Y-m-d H:i:s');
                     $new_line = $Ticket->insert_line($post);
