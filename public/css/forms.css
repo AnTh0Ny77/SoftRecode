@@ -25,6 +25,16 @@
     display: inline-block;
     font-size: 14px;
 }
+.btn-recode-warning{
+    background-color: #F77D24; /* Green */
+    border: none;
+    color: white;
+    padding: 12px 27px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
 .btn-recode-small{
     background-color: #4CAF50; /* Green */
     border: none;
@@ -55,6 +65,9 @@
 }
 .btn-recode:hover{
     background-color: #4CAF50; /* Green */
+}
+.btn-recode-warning:hover{
+    background-color: #eb6d13;
 }
 .btn-recode-danger{
     background-color: #e74444; /* Green */

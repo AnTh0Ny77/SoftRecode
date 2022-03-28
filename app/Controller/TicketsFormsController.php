@@ -68,6 +68,13 @@ class TicketsFormsController extends BasicController
     }
 
 
+    public function find_for_duplicata(string $ticket_id, object $Tickets){
+        $response = [];
+        $ticket = $Tickets->findOne($ticket_id);
+        $response['TypeTickets'] = $ticket->tk__motif;
+    }
+
+
 
     //@route: /tickets-handle-forms
     public static function FormsMarker(){
@@ -84,7 +91,7 @@ class TicketsFormsController extends BasicController
         $preset = [];   
 
         //preset traitement : 
-        if (!empty($_GET)) {
+        if (!empty($_GET)){
             if (!empty($_GET['TypeTickets'])) {
                 $_POST['TypeTickets'] = $_GET['TypeTickets'];
             }
@@ -93,9 +100,12 @@ class TicketsFormsController extends BasicController
                     $preset[$key] = $value;
                 }
             }
+            //si duplicata : 
+            if (!empty($_GET['duplicata'])){
+               
+            }
         }
 
-       
         //soit le post émane de la creation ( avec motif / soit le post contient un id tickets )
         if (!empty($_POST['TypeTickets'])){
             $crea_forms = 1 ;
