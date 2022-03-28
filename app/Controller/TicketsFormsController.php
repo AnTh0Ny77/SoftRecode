@@ -95,7 +95,7 @@ class TicketsFormsController extends BasicController
             if (!empty($_GET['TypeTickets'])) {
                 $_POST['TypeTickets'] = $_GET['TypeTickets'];
             }
-            foreach ($_GET as $key => $value) {
+            foreach ($_GET as $key => $value){
                 if ($key != 'TypeTickets'){
                     $preset[$key] = $value;
                 }
