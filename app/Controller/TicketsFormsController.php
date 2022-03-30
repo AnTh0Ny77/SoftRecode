@@ -70,8 +70,26 @@ class TicketsFormsController extends BasicController
 
     public static function find_for_duplicata(string $ticket_id, object $Tickets){
         $response = [];
-        $ticket = $Tickets->findOne($ticket_id);
+        $ticket = $Tickets->findOne(intval($ticket_id));
         $response['TypeTickets'] = $ticket->tk__motif;
+        foreach ($ticket->lignes as $ligne){
+            var_dump($ticket->first_line->tkl__id , $ligne->tkl__id);
+                if (!empty($ticket->first_line) and $ticket->first_line->tkl__id === $ligne->tkl__id ){
+                        foreach ($ligne->fields as $key => $field){
+                           
+                            if (preg_match('/@/', $field->tklc__memo) == 1) {
+                                $pattern = "@";
+                              
+                                $client = stripos($field->tklc__memo, $pattern);
+                                if ($client[0] === 'client__id') {
+                                    $response['client'] = $client[2];
+                                }
+                            }
+                        }
+                }
+            # code...
+        }
+        return $response;
     }
 
 
@@ -103,6 +121,10 @@ class TicketsFormsController extends BasicController
             //si duplicata : 
             if (!empty($_GET['duplicata'])){
                 $duplicata = self::find_for_duplicata($_GET['duplicata'] , $Ticket);
+                if (!empty($duplicata)) {
+                    var_dump($duplicata);
+                    die();
+                }
                 var_dump($duplicata);
                 die();
             }

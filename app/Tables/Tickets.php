@@ -114,6 +114,7 @@ class Tickets extends Table {
 		$lignes = $request->fetchAll(PDO::FETCH_OBJ);
 		$ticket->lignes = $lignes;
 		$ticket->last_line = $this->get_last_line($id);
+		$ticket->first_line = $this->get_first_line($id);
 		foreach ($ticket->lignes as $ligne){
 			$date_time = new DateTime($ligne->tkl__dt);
 			//formate la date pour l'utilisateur:
@@ -151,9 +152,27 @@ class Tickets extends Table {
 			$date_time = new DateTime($ligne->tkl__dt);
 			$ligne->tkl__dt = $date_time->format('d/m/Y H:i');
 		}
-		
 		return $ligne;
   }
+
+	public function get_first_line($id)
+	{
+		$request = $this->Db->Pdo->query('SELECT  MIN(tkl__dt) as dateLigne  FROM ticket_ligne 
+		WHERE tkl__tk_id = "' . $id . '" ');
+		$ligne = $request->fetch(PDO::FETCH_OBJ);
+		$request = $this->Db->Pdo->query('SELECT * , u.nom , u.prenom , z.nom as nom_dest , z.prenom as prenom_dest 
+		FROM ticket_ligne 
+		LEFT JOIN utilisateur AS u ON ( u.id_utilisateur = tkl__user_id ) 
+		LEFT JOIN utilisateur AS z ON ( z.id_utilisateur = tkl__user_id_dest ) 
+		WHERE tkl__dt = "' . $ligne->dateLigne . '" ');
+		$ligne = $request->fetch(PDO::FETCH_OBJ);
+		if (!empty($ligne)) {
+			$date_time = new DateTime($ligne->tkl__dt);
+			$ligne->tkl__dt = $date_time->format('d/m/Y H:i');
+		}
+
+		return $ligne;
+	}
 
   public function getCurrentUser( int $ticket_id){
 		$request = $this->Db->Pdo->query('SELECT  MAX(tkl__dt) as dateLigne  FROM ticket_ligne 
