@@ -29,8 +29,8 @@ class Tickets extends Table {
 	$results  = [];
 	$request = $this->Db->Pdo->query('SELECT  t.* , MAX(l.tkl__dt) as last_date  FROM ticket as t
 	LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
-	WHERE tk__lu != 2 GROUP BY t.tk__id 
-	ORDER BY last_date DESC  LIMIT 20');
+	WHERE tk__lu != 2 GROUP BY   t.tk__id 
+	ORDER BY last_date  DESC  LIMIT 20');
 	$data = $request->fetchAll(PDO::FETCH_OBJ);
 	foreach ($data as $ticket) {
 		$ticket = $this->findOne($ticket->tk__id);
@@ -96,6 +96,12 @@ class Tickets extends Table {
 	  WHERE COLUMN_NAME =  "'.$column_name.'" ');
 	  $data = $request->fetch(PDO::FETCH_ASSOC);
 	  return $data;
+  }
+
+  public function return_group(){
+	$request = $this->Db->Pdo->query('SELECT MAX( tk__groupe ) as groupe  FROM ticket');
+	$data = $request->fetch(PDO::FETCH_OBJ);
+	return intval($data->groupe) +1 ;
   }
 
 

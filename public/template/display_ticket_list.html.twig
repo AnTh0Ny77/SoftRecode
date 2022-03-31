@@ -12,12 +12,11 @@
 {% block main %}
 <main role="main" class="col-12 container-body background-extranet ">
   <div class="container pt-2 ">
-    
     <div class="d-flex flex-column align-items-center">
       {{ include('display/display_ticket_search.html.twig')}}
-        {% for ticket in list %}
+          {% for ticket in list %}
             {{ include('display/display_ticket_item.html.twig')}}
-        {% endfor %}
+          {% endfor %}
     </div>    
   </div>
   <form id="editTicket" method="POST" action="tickets-display">

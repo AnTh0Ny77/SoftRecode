@@ -43,7 +43,7 @@ class TicketsDisplayController extends BasicController
         }else $list = $Ticket->get_last();
 
         if (!empty($list)) {
-            foreach ($list as $ticket) {
+            foreach ($list as $key => $ticket) {
                 foreach ($config as  $entitie) {
                     if (!empty($ticket->sujet)) {
                         $subject_identifier = $ticket->sujet->tksc__option;
@@ -54,6 +54,18 @@ class TicketsDisplayController extends BasicController
                     }
                 }
                 if ( !empty($ticket->sujet)  && !is_array($ticket->sujet)) unset($ticket->sujet);
+
+                //groupe les ticket 
+                if (!empty($ticket->tk__groupe)){
+                    $array_groups = []; 
+                    foreach ($list as $other_tickets){
+                            if ($other_tickets->tk__groupe === $ticket->tk__groupe and  $ticket->tk__id != $other_tickets->tk__id ){
+                                $temp = $other_tickets ;
+                                array_push($array_groups  , $temp);
+                            }
+                    }
+                    $ticket->groups = $array_groups;
+                }
             }
         }
         
@@ -67,6 +79,9 @@ class TicketsDisplayController extends BasicController
             ]
         );
     }
+
+
+    
 
 
     //@route: /tickets-display

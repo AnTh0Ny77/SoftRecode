@@ -22,6 +22,9 @@
         <input type="hidden" name="libelle" value="{{libelle}}">
         <input type="hidden" name="creaForms" value="{{crea_forms}}">
         <input type="hidden" name="type" value="{{type_tickets}}">
+        {% if duplicata_ticket %}
+            <input type="hidden" name="duplicate" value="{{duplicata_ticket}}">
+        {% endif %}
         <div class="form-group pt-1">
         </div>
         <div class="d-flex justify-content-center">
