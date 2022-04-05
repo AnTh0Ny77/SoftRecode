@@ -1,16 +1,31 @@
-{% if ticket.tk__lu == 1  %}
-    <div class="card-recode card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
-{% elseif ticket.tk__lu == 2  %}
-    <div class="card-recode-lu card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
+{% if ticket.groups %}
+    {% if ticket.tk__lu == 1  %}
+        <div class="card-recode-groups card-recode-cursor d-flex flex-column mt-2 col-12 col-lg-8">
+    {% elseif ticket.tk__lu == 2  %}
+        <div class="card-recode-lu card-recode-cursor d-flex flex-column mt-2 col-12 col-lg-8">
+    {% else %}
+        <div class="card-recode-groups-green-shadow card-recode-cursor d-flex flex-column mt-2 col-12 col-lg-8">
+    {% endif %}
 {% else %}
-    <div class="card-recode-green-shadow card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
+    {% if ticket.tk__lu == 1  %}
+        <div class="card-recode card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
+    {% elseif ticket.tk__lu == 2  %}
+        <div class="card-recode-lu card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
+    {% else %}
+        <div class="card-recode-green-shadow card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
+    {% endif %}
 {% endif %}
+
+
     <input type="hidden" value="{{ticket.tk__id}}">
     <div class="d-flex">
         <div class="col-6">
             <h3 class="recode-orange-title"> Ticket {{ticket.tk__id}}
                 {% if ticket.tk__lu == 2 %}
                     <small class="font-weight-bold text-muted"> cloturé</small>
+                {% endif %}
+                {% if ticket.groups %}
+                    <small class="recode-p mx-2"><i class="fas fa-layer-group"></i></small>
                 {% endif %}
             </h3>
         </div>
@@ -23,8 +38,12 @@
     <div class="d-flex">
         <div class="col-6">
             <p class="recode-p">{{ticket.kw__lib}}<br>
+                {% if ticket.tk__groupe %}
+                          groupe N°{{ticket.tk__groupe}}<br>
+                 {% endif %}
                 {% if ticket.sujet %}
-                    <span class="text-dark font-weight-bold">{{ticket.sujet.label ~ " " ~ ticket.sujet.additionals}}</span><br>
+                    <span class="text-dark font-weight-bold">{{ticket.sujet.label ~ " " ~ ticket.sujet.additionals}}
+                    </span><br>
                 {% endif %}
                 {% if ticket.tk__lu != 2 %}
                     <span class="text-dark font-weight-bold text-uppercase">En cours chez 
@@ -46,19 +65,29 @@
             </p>
         </div>
     </div> 
-    {{ dump(ticket.groups) }}
+    
 </div>
 
 {% if ticket.groups %}
     {% for item in ticket.groups %}
-    
-        {% if item.tk__lu == 1  %}
-            <div class="card-recode card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
-        {% elseif item.tk__lu == 2  %}
-            <div class="card-recode-lu card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
+        {% if loop.last %}
+            {% if item.tk__lu == 1  %}
+                <div class="card-recode-bottom card-recode-cursor  d-flex flex-column mb-3 col-12 col-lg-8">
+            {% elseif item.tk__lu == 2  %}
+                <div class="card-recode-lu card-recode-cursor  d-flex flex-column mb-3 col-12 col-lg-8">
+            {% else %}
+                <div class="card-recode-bottom-green-shadow card-recode-cursor  d-flex flex-column mb-3 col-12 col-lg-8">
+            {% endif %}
         {% else %}
-            <div class="card-recode-green-shadow card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
+            {% if item.tk__lu == 1  %}
+                <div class="card-recode-middle card-recode-cursor  d-flex flex-column  col-12 col-lg-8">
+            {% elseif item.tk__lu == 2  %}
+                <div class="card-recode-lu card-recode-cursor  d-flex flex-column  col-12 col-lg-8">
+            {% else %}
+                <div class="card-recode-middle-green-shadow card-recode-cursor  d-flex flex-column  col-12 col-lg-8">
+            {% endif %}  
         {% endif %}
+        
         <input type="hidden" value="{{item.tk__id}}">
         <div class="d-flex">
             <div class="col-6">
@@ -66,6 +95,7 @@
                     {% if item.tk__lu == 2 %}
                         <small class="font-weight-bold text-muted"> cloturé</small>
                     {% endif %}
+                    <small class="recode-p mx-2"><i class="fas fa-layer-group"></i></small>
                 </h3>
             </div>
             <div class="col-6">

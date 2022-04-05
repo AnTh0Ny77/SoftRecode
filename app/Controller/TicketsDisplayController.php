@@ -13,14 +13,35 @@ use App\Tables\Tickets;
 class TicketsDisplayController extends BasicController
 {
    
+
+    public static function handle_groups(array $list) :array{
+        $array_tickets = [];
+        foreach ($list as $key => $value){
+            $array_groups = [];
+            if (!empty($value->tk__groupe)){
+                    foreach ($list as $index => $ticket) {
+                        if ($ticket->tk__groupe === $value->tk__groupe and  $ticket->tk__id != $value->tk__id ){
+                            array_push($array_groups  , $ticket);
+                        }
+                    }
+                    $ticket->groups = $array_groups;
+                    $temp = $ticket;
+                    array_push($array_tickets , $temp);
+                    unset($list[$index]);
+            }else{
+                array_push($array_tickets ,$value);
+            }
+        }
+        return $array_tickets;
+    }
    
     //@route: /tickets-display-list
     public static function displayTicketList(){
         self::init();
         self::security();
         $Ticket = new Tickets(self::$Db);
-        $alert_results = false ;
-        $text_results = false ; 
+        $alert_results = false;
+        $text_results = false; 
        
         //si un ticket à été cloturé : 
         if (!empty($_POST['ticketsCloture'])){
@@ -43,6 +64,7 @@ class TicketsDisplayController extends BasicController
         }else $list = $Ticket->get_last();
 
         if (!empty($list)) {
+            $temp_list = $list;
             foreach ($list as $key => $ticket) {
                 foreach ($config as  $entitie) {
                     if (!empty($ticket->sujet)) {
@@ -58,15 +80,18 @@ class TicketsDisplayController extends BasicController
                 //groupe les ticket 
                 if (!empty($ticket->tk__groupe)){
                     $array_groups = []; 
-                    foreach ($list as $other_tickets){
+                    foreach ( $temp_list as $index => $other_tickets){
                             if ($other_tickets->tk__groupe === $ticket->tk__groupe and  $ticket->tk__id != $other_tickets->tk__id ){
                                 $temp = $other_tickets ;
                                 array_push($array_groups  , $temp);
+                                unset($temp_list[$key]);
+                                unset($list[$index]);
                             }
                     }
                     $ticket->groups = $array_groups;
                 }
             }
+            // $list = self::handle_groups($list);
         }
         
         return self::$twig->render(

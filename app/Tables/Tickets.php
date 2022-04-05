@@ -332,6 +332,8 @@ class Tickets extends Table {
 			$mime_type  = mime_content_type($file['tmp_name']);
 			$file = file_get_contents($file['tmp_name']);
 			$path = $directory . '/' . $id_line ;
+			var_dump($path);
+			die();
 			if (!is_dir($path)) {
 				mkdir($path, 0777, TRUE);
 			}
