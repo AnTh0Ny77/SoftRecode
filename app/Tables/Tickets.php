@@ -330,17 +330,14 @@ class Tickets extends Table {
 			//check mime type and size 
 			//rename without special char and space 
 			$mime_type  = mime_content_type($file['tmp_name']);
-			$file = file_get_contents($file['tmp_name']);
+			// $file = file_get_contents($file['tmp_name']);
 			$path = $directory . '/' . $id_line ;
-			var_dump($path);
-			die();
 			if (!is_dir($path)) {
 				mkdir($path, 0777, TRUE);
 			}
-			
-			file_put_contents($path, $file);
+			move_uploaded_file($file["tmp_name"], $path.'/'.$file['name']);
 		}
-		die();
+		
 	}
 
   public function insert_field(array $post , $id_ligne , $id_tickets){
@@ -572,6 +569,12 @@ public function search_ticket( string $input , array $config ){
 			break;
 
 		case strlen($input) == 4 and is_numeric($input):
+			$list = $this->search_ticket_with_id('id', $input);
+			$list = $this->get_last_ticket($list);
+			return $list;
+			break;
+
+		case strlen($input) == 3 and is_numeric($input):
 			$list = $this->search_ticket_with_id('ticket', $input);
 			$list = $this->get_last_ticket($list);
 			return $list;
@@ -669,10 +672,18 @@ public function search_ticket_with_id(string $table , int $id){
 				break;
 			case 'ticket':
 				$request = $this->Db->Pdo->query("SELECT  tk__id FROM ticket 
-				WHERE   tk__id = '" . $id . "' ORDER BY tk__id LIMIT 1000");
+				WHERE   tk__groupe = '" . $id . "' ORDER BY tk__id LIMIT 1000");
 				$data = $request->fetchAll(PDO::FETCH_OBJ);
 				return $data;
 				break;
+
+			case 'id':
+				$request = $this->Db->Pdo->query("SELECT  tk__id FROM ticket 
+				WHERE   tk__id = '" . $id . "' ORDER BY tk__id LIMIT 1000");
+				$data = $request->fetchAll(PDO::FETCH_OBJ);
+					return $data;
+					break;
+			
 		}
 		
 }
