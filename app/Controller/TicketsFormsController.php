@@ -282,7 +282,8 @@ class TicketsFormsController extends BasicController
                     $post['id_ligne'] = $new_tickets;
                     $post['dt'] = date('Y-m-d H:i:s');
                     $new_line = $Ticket->insert_line($post);
-                    $Ticket->insert_multipart('C:\laragon\www\SoftRecode\upload', $new_line , $files );
+                    //$Ticket->insert_multipart('C:\laragon\www\SoftRecode\upload', $new_line , $files );
+                    $Ticket->attribute_attachements($new_line);
                     $new_field = $Ticket->insert_field($post,$new_line , $new_tickets);
                     if (!empty($post['duplicate'])){
                         $General = new General(self::$Db);

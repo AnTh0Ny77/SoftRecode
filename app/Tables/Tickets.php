@@ -340,6 +340,16 @@ class Tickets extends Table {
 		
 	}
 
+
+	public function attribute_attachements( int $id_line)
+	{
+			$path =  'C:\laragon\www\SoftRecode\upload\temp';
+			if (is_dir($path)) {
+				rename('C:\laragon\www\SoftRecode\upload\temp', 'C:\laragon\www\SoftRecode\upload/'.$id_line.'');
+				return true;
+			}else return false;		
+	}
+
   public function insert_field(array $post , $id_ligne , $id_tickets){
 		foreach ($post as $key => $value) {
 				switch ($key) {

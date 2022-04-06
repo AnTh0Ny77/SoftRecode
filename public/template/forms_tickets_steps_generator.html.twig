@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="public/css/forms.css">
 <link rel="stylesheet" href="public/css/cards.css">
 <link rel="stylesheet" href="public/css/font-family.css">
+
 {% endblock %}
 {% block main %}
 <main role="main" class="col-12 container-body background-extranet ">
@@ -49,6 +50,7 @@
             </form>
     </div>
 </main>
+{{include('display/display_file_upload.html.twig')}}
 {% endblock %}
 {% block script %}
 <!-- jQuery first, then Bootstrap JS -->
@@ -56,4 +58,5 @@
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="public/js/client_module.js"></script>
+<script type="text/javascript" src="public/js/file_upload.js"></script>
 {% endblock %}

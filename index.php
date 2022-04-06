@@ -274,6 +274,10 @@ use App\Controller\ExtranetController;
 		case '/SoftRecode/AjaxStatDevis';
 			require __DIR__ .'/pages/ajax/ajaxChartsDevis.php'; break;
 
+		case '/SoftRecode/ajax-upload-files';
+			require __DIR__ . '/pages/ajax/ajax_upload_files.php';
+			break;
+
 		case '/SoftRecode/AjaxSaisie';
 			require __DIR__ .'/pages/ajax/ajaxSaisie.php'; break;
 		
