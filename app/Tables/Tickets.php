@@ -98,10 +98,17 @@ class Tickets extends Table {
 	  return $data;
   }
 
-  public function return_group(){
-	$request = $this->Db->Pdo->query('SELECT MAX( tk__groupe ) as groupe  FROM ticket');
+  public function return_group($id){
+
+	$request = $this->Db->Pdo->query('SELECT tk__groupe  as groupe  FROM ticket WHERE tk__id = '.$id.'');
 	$data = $request->fetch(PDO::FETCH_OBJ);
-	return intval($data->groupe) +1 ;
+	if (!empty($data->groupe)){
+		return intval($data->groupe);
+	}else{
+		$request = $this->Db->Pdo->query('SELECT MAX( tk__groupe ) as groupe  FROM ticket');
+		$data = $request->fetch(PDO::FETCH_OBJ);
+		return intval($data->groupe) +1 ;
+	}
   }
 
 
