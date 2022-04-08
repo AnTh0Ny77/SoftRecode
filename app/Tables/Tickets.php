@@ -87,7 +87,6 @@ class Tickets extends Table {
 				}
 				return $results;
 			} else return null;
-			
 	}
 
   public function get_subject_table($column_name){

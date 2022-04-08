@@ -4,12 +4,15 @@ $(document).ready(function(){
     var uploader = new qq.FineUploader({
         element: document.getElementById("uploader"),
         deleteFile: {
-            enabled: true
+            endpoint: 'ajax-delete-files' ,
+            enabled: true,
+            method: 'POST'
         },
         debug: true,
         request: {
-            endpoint: 'ajax-upload-files'
-        }
+            endpoint: 'ajax-upload-files' 
+         
+        } 
     }).on('error', function (event, id, name, reason) {
         console.log('error');
     }).on('complete', function (event, id, name, responseJSON) {
