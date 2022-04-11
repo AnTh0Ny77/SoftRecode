@@ -47,7 +47,7 @@ $vendeurList      = $UserClass->getCommerciaux();
 //declaration des variables diverses : 
 $alertDate = $resultHt = $NombreCmd = $chartsResponses = $chartsVendeur = $arrayPresta = FALSE;
 $chiffre_cmd_fact = $maintenance_location = $cmdSearch = $abnSearch = FALSE;
-$desc_stat = $type_tot = $titre_stat = $SQL_stat = $liste_fiche = $liste_fiche_gm = $liste_fiche_rma = '';
+$desc_stat = $type_tot = $titre_stat = $SQL_stat = $liste_fiche_lp = $liste_fiche = $liste_fiche_gm = $liste_fiche_rma = '';
 $client = $vendeur = 'Tous';
 $total_ca = $nb_fiche = $vs_fiche = $vs_periode = $vs_garmaint = $tot_ca_veir = 0;
 
@@ -127,6 +127,7 @@ $sql_select_join .= "INNER JOIN keyword AS key_presta ON cmd_ligne.cmdl__prestat
 $sql_where        = "WHERE ";
 $sql_where_dt     = "BETWEEN '".$date_debut." 00:00:00' AND '".$date_fin." 23:59:59' ";
 $sql_where_no_loc = "AND (cmdl__prestation <> 'LOC' AND cmdl__prestation <> 'PRE' AND cmdl__prestation <> 'PRT') ";
+$sql_where_loc    = "AND (cmdl__prestation = 'LOC' OR cmdl__prestation = 'PRE') ";
 $sql_tot_ca_ve    = "AND (cmdl__prestation IN ('ECH','VTE')) ";
 $sql_groupby      = "GROUP BY cmdl__prestation, cmdl__etat ";
 $sql_order        = "ORDER BY key_presta.kw__ordre, cmdl__etat ";
@@ -160,6 +161,10 @@ if ($CAM)
 	$L_sql       = $sql_select_liste.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$sql_where_no_loc.$cmd_etat;
 	$L_request   = $Database->Pdo->query($L_sql);
 	$L_data      = $L_request->fetchAll(PDO::FETCH_ASSOC);
+	// Liste des fiches avec pret ou loc (les fiches avec au moins une ligne de loc ou pret)
+	$LP_sql      = $sql_select_liste.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$sql_where_loc.$cmd_etat;
+	$LP_request  = $Database->Pdo->query($LP_sql);
+	$LP_data     = $LP_request->fetchAll(PDO::FETCH_ASSOC);
 	// Somme du total_ca
 	for ($i=0; $i<=count($T_data)-1; $i++) $total_ca += $T_data[$i]['total_fiche'];
 }
@@ -188,6 +193,10 @@ if ($CAS)
 	$L_sql       = $sql_select_liste.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$sql_where_no_loc.$cmd_etat;
 	$L_request   = $Database->Pdo->query($L_sql);
 	$L_data      = $L_request->fetchAll(PDO::FETCH_ASSOC);
+	// Liste des fiches avec pret ou loc (les fiches avec au moins une ligne de loc ou pret)
+	$LP_sql      = $sql_select_liste.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$sql_where_loc.$cmd_etat;
+	$LP_request  = $Database->Pdo->query($LP_sql);
+	$LP_data     = $LP_request->fetchAll(PDO::FETCH_ASSOC);
 	 // Somme du total_ca
 	 for ($i=0; $i<=count($T_data)-1; $i++) $total_ca += $T_data[$i]['total_fiche'];
 }
@@ -242,10 +251,16 @@ if ($VOL)
 // Si il y a au moins un resultat
 if ($nb_fiche > 0)
 {
-	// creation de la liste de fiches
+	// creation de la liste de fiches sans les pret et loc
 	foreach($L_data as $A_cmd_id)
 		{ $liste_fiche .= $A_cmd_id['cmd__id'].','; }
 	$liste_fiche = substr($liste_fiche, 0, -1); // Supprimer la derniere virgule de la liste de fiches
+
+	// creation de la liste de fiches de pret ou loc
+	foreach($LP_data as $A_cmd_id)
+		{ $liste_fiche_lp .= $A_cmd_id['cmd__id'].','; }
+	$liste_fiche_lp = substr($liste_fiche_lp, 0, -1); // Supprimer la derniere virgule de la liste de fiches
+
 
 	// prix du matos sortie du locator pour les fiches facturées (matos à reconstruire ou HS non compté etat 21, 22)
 	$VS_sql       = 'SELECT SUM(locator.pu_ht) AS valo_sortie FROM locator ';
@@ -253,6 +268,17 @@ if ($nb_fiche > 0)
 	$VS_request   = $Totoro->Pdo->query($VS_sql);
 	$VS_data      = $VS_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
 	$vs_fiche     = $VS_data['valo_sortie'];
+
+	// prix du matos sortie du locator pour les fiches de loc et pret (matos à reconstruire ou HS non compté etat 21, 22)
+	$vs_fiche_lp  = -1;
+	if (strlen($liste_fiche_lp) > 6)
+	{
+		$VLP_sql      = 'SELECT SUM(locator.pu_ht) AS valo_sortie FROM locator ';
+		$VLP_sql     .= 'where out_id_cmd IN ('.$liste_fiche_lp.') AND (id_etat < 20 OR id_etat > 30)';
+		$VLP_request  = $Totoro->Pdo->query($VLP_sql);
+		$VLP_data     = $VLP_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
+		$vs_fiche_lp  = $VLP_data['valo_sortie'];
+	}
 
 	// prix du matos sortie sur la periode non destiné a des fiches (matos à reconstruire ou HS non compté etat 21, 22)
 	$VP_sql       = "SELECT SUM(locator.pu_ht) AS valo_periode FROM locator ";
@@ -293,14 +319,16 @@ if ($nb_fiche > 0)
 	$VS_gm_data      = $VS_gm_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
 	$vs_garmaint     = $VS_gm_data['valo_sortie'];
 
-	// Valeur du matos declassifié sur la periode sans le matos en RMA (je ne m'occupe aps du matos sortie, car si il est sortie je ne le compte pas avant donc pas de double comptage)
+	// Valeur du matos declassifié sur la periode sans le matos en RMA (je ne m'occupe pas du matos sortie, car si il est sortie je ne le compte pas avant donc pas de double comptage)
 	$VD_sql       = "SELECT SUM(locator.pu_ht) AS valo_down FROM locator ";
-	$VD_sql      .= "WHERE ( down_datetime ".$sql_where_dt." ) AND locator.out_id_cmd not in (".$liste_fiche_rma.")";
+	$VD_sql      .= "WHERE ( down_datetime ".$sql_where_dt." ) ";
+	if (strlen($liste_fiche_rma) > 6)
+		$VD_sql      .= "AND locator.out_id_cmd not in (".$liste_fiche_rma.") ";
 	$VD_request   = $Totoro->Pdo->query($VD_sql);
 	$VD_data      = $VD_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
 	$vs_down      = $VD_data['valo_down'];
 
-	// calcul du cumul de CA (VTE, ECH, INT ? , REP ? )
+	// // calcul du cumul de CA (VTE, ECH, INT ? , REP ? )
 	foreach ($T_data as $lg_ca ) 
 	{
 		switch ($lg_ca['cmdl__prestation']) 
@@ -309,7 +337,7 @@ if ($nb_fiche > 0)
 			case 'ECH':
 			case 'INT':
 			case 'REP':
-						$tot_ca_veir += $lg_ca['total_fiche'];
+					$tot_ca_veir += $lg_ca['total_fiche'];
 			break;
 		}
 	}
@@ -332,10 +360,12 @@ echo $twig->render('statistique.twig',
 'sql_stat'         => $T_sql ,
 't_data'           => $T_data,
 'vs_fiche'         => $vs_fiche,
+'vs_fiche_lp'      => $vs_fiche_lp,
 'vs_periode'       => $vs_periode,
 'vs_garmaint'      => $vs_garmaint,
 'vs_down'          => $vs_down,
 'tot_ca_ve'        => $tot_ca_ve,
+'tot_ca_veir'      => $tot_ca_veir, // pas bien sur que ca serve  ...
 'vendeurList'      => $vendeurList, 
 'vendeurSelect'    => $vendeur,
 'arrayPresta'      => $arrayPresta , 
