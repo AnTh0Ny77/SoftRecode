@@ -37,6 +37,7 @@
                 </div>
         {% endfor %}
     {% endif %}
+   
     <div class="mt-4">
       
         {% for field in ligne.fields %}
@@ -48,6 +49,22 @@
             </h5>
         {% endif %}
         {% endfor %}
+        {% if ligne.files %}
+        <div class="my-3">
+            {# <h5><i class="fas fa-paperclip"></i> Pièce jointes</h5> #}
+            <div class="d-flex justify-content-start flex-wrap">
+
+            
+            {% for file in ligne.files %}
+                <div class="col-3">
+                    <a target="_blank" href="{{ligne.path ~ file }}"> {{file}} <i class="fas fa-link"></i></a>
+                </div>
+                
+            {% endfor %}
+        </div>
+        </div>
+            
+        {% endif %}
         {% if ligne.tkl__motif_ligne != 'cloture' %}
             <h5>Destinataire :  
                 <span class="font-weight-bold">

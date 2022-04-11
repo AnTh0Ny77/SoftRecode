@@ -24,6 +24,15 @@ class Tickets extends Table {
         return $data;
   }
 
+  public function getFiles($idligne){
+	  if (is_dir('C:\laragon\www\SoftRecode\upload/'.$idligne.'')) {
+		$files =  array_diff(scandir('C:\laragon\www\SoftRecode\upload/'.$idligne.''), array('..', '.'));
+		if (!empty($files)) {
+			return $files;
+		}
+	  }			
+  }
+
 
   public function get_last(){
 	$results  = [];

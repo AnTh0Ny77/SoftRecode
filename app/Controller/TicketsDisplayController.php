@@ -174,8 +174,15 @@ class TicketsDisplayController extends BasicController
                     $sujet = $display_entitie;
                 }
            }
+           $files = $Ticket->getFiles($ligne->tkl__id);
+         
+           if (!empty($files)) {
+            $ligne->path = 'upload/'.$ligne->tkl__id.'/';
+            $ligne->files = $files;
+           }
+         
         }
-       
+      
         return self::$twig->render(
             'display_ticket.html.twig',
             [

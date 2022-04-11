@@ -6,7 +6,8 @@ $(document).ready(function(){
         deleteFile: {
             endpoint: 'ajax-delete-files' ,
             enabled: true,
-            method: 'POST'
+            method: 'POST',
+            debug: true
         },
         debug: true,
         request: {
@@ -16,7 +17,7 @@ $(document).ready(function(){
     }).on('error', function (event, id, name, reason) {
         console.log('error');
     }).on('complete', function (event, id, name, responseJSON) {
-        console.log('ok');
+        console.log(responseJSON);
     });
     console.log('hey');
 })
