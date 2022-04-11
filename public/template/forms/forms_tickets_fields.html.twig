@@ -3,25 +3,46 @@
     {% if form.tksc__type_de_champ == "TXT" %}
         {% if form.tksc__obligatoire == 1 %}
             <h5 class="text-white">{{form.tksc__label}} *</h5>
-            <input type="text" class="form-control  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}"  required>
+                {% if preset[form.tksc__nom_champ] != null %}
+                    <input type="text" class="form-control  form-control-lg input-recode" value="{{preset[form.tksc__nom_champ]}}" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}"  required>
+                {% else %}
+                    <input type="text" class="form-control  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}"  required>
+                {% endif %}
+            
         {% else %}
             <h5 class="text-white">{{form.tksc__label}}</h5>
-            <input type="text" class="form-control  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}"  >
+            {% if preset[form.tksc__nom_champ] != null %}
+                <input type="text" class="form-control  form-control-lg input-recode" value="{{preset[form.tksc__nom_champ]}}" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}"  >
+            {% else %}
+                <input type="text" class="form-control  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}"  >
+            {% endif %}   
         {% endif %}
     {% elseif form.tksc__type_de_champ == "NUM" %}
         {% if form.tksc__obligatoire == 1 %}
             <h5 class="text-white">{{form.tksc__label}} *</h5>
-            <input type="number" step="0.01" class="form-control col-5  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}" required>
+            {% if preset[form.tksc__nom_champ] != null %}
+                <input type="number" step="0.01" class="form-control col-5  form-control-lg input-recode" value="{{preset[form.tksc__nom_champ]}}" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}" required>
+            {% else %}
+                <input type="number" step="0.01" class="form-control col-5  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}" required>
+            {% endif %}    
         {% else %}
             <h5 class="text-white">{{form.tksc__label}}</h5>
-            <input type="number" step="0.01" class="form-control col-5  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}" >
+            {% if  preset[form.tksc__nom_champ] != null %}
+                <input type="number" step="0.01" class="form-control col-5  form-control-lg input-recode" value="{{preset[form.tksc__nom_champ]}}" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}" >
+            {% else %}
+                <input type="number" step="0.01" class="form-control col-5  form-control-lg input-recode" name="{{form.tksc__nom_champ}}" maxlength="{{form.tksc__long_de_champ}}" >
+            {% endif %}
         {% endif %}
     {% elseif form.tksc__type_de_champ == "RAD" %}
         <h5 class="text-white">{{form.tksc__label}}</h5>
         <div class="row justify-content-start col-12 ">
             {% for row in form.tksc__option %}
                 <div class="form-check text-white col-5 col-md-4">
-                    <input class="form-check-input" id="radioInput" type="radio" value="{{ row }}" name="{{form.tksc__nom_champ}}" >
+                    {% if preset[form.tksc__nom_champ] != null and preset[form.tksc__nom_champ] == row %}
+                        <input class="form-check-input" id="radioInput" type="radio" value="{{ row }}" name="{{form.tksc__nom_champ}}" checked>
+                    {% else %}
+                        <input class="form-check-input" id="radioInput" type="radio" value="{{ row }}" name="{{form.tksc__nom_champ}}" >
+                    {% endif %}
                     <label class="form-check-label" for="radioInput">{{ row }} </label>
                 </div>
             {% endfor %}
@@ -40,14 +61,35 @@
             <div class="">
                 {% if form.tksc__obligatoire == 1 %}
                     <h5 class="text-white">{{form.tksc__label}} *</h5>
-                    <input class="form-control" type="file" name="{{form.tksc__nom_champ}}" multiple required>
+                        <div class="file-upload-wrapper">
+                            <div id="uploader" class="input-recode"></div>
+                        </div>
                 {% else %}
                     <h5 class="text-white">{{form.tksc__label}}</h5>
-                    <input class="form-control" type="file" name="{{form.tksc__nom_champ}}" multiple>
+                        <div class="file-upload-wrapper">
+                            <div id="uploader" class="input-recode"></div>
+                        </div>
+                {% endif %}
+            </div>
+    {% elseif form.tksc__type_de_champ == "DAT" %}
+            <div class="">
+                {% if form.tksc__obligatoire == 1 %}
+                    <h5 class="text-white">{{form.tksc__label}} *</h5>
+                    {% if  preset[form.tksc__nom_champ] != null %}
+                        <input class="form-control col-5" type="date" min="2018-01-01" value="{{preset[form.tksc__nom_champ]}}" max="2030-12-31" name="{{form.tksc__nom_champ}}"  required>
+                    {% else %}
+                         <input class="form-control col-5" type="date" min="2018-01-01" max="2030-12-31" name="{{form.tksc__nom_champ}}"  required>
+                    {% endif %}
+                {% else %}
+                    <h5 class="text-white">{{form.tksc__label}}</h5>
+                    {% if  preset[form.tksc__nom_champ] != null  %}
+                        <input class="form-control col-5" type="date" value="{{preset[form.tksc__nom_champ]}}"  min="2018-01-01" max="2030-12-31" name="{{form.tksc__nom_champ}}">
+                    {% else %}
+                        <input class="form-control col-5" type="date"  min="2018-01-01" max="2030-12-31" name="{{form.tksc__nom_champ}}">
+                    {% endif %}
                 {% endif %}
             </div>
     {% elseif form.tksc__type_de_champ == "SLT" %}
-           
             {% if form.tksc__obligatoire == 1 %}
             <h5 class="text-white">{{form.tksc__label}} *</h5>
                 <select class=" selectpicker  show-tick " data-width="100%" data-live-search="true" data-size="10" name="{{form.tksc__nom_champ}}" required>
@@ -55,7 +97,11 @@
                         {% if preset.Pn ==  subject.id and form.tksc__nom_champ =='Pn' %}
                             <option value="{{subject.id}}" selected>{{subject.lib}}</option>
                         {% else %}
-                            <option value="{{subject.id}}" >{{subject.lib}}</option>
+                            {%  if preset[form.tksc__nom_champ] == subject.id %}
+                                <option value="{{subject.id}}" selected>{{subject.lib}}</option>
+                            {% else %}
+                                <option value="{{subject.id}}" >{{subject.lib}}</option>
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 </select>
@@ -66,7 +112,11 @@
                         {% if preset.Pn ==  subject.id and form.tksc__nom_champ == 'Pn' %}
                             <option value="{{subject.id}}" selected>{{subject.lib}}</option>
                         {% else %}
-                            <option value="{{subject.id}}" >{{subject.lib}}</option>
+                            {%  if preset[form.tksc__nom_champ] == subject.id %}
+                                <option value="{{subject.id}}" selected>{{subject.lib}}</option>
+                            {% else %}
+                                <option value="{{subject.id}}" >{{subject.lib}}</option>
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 </select>

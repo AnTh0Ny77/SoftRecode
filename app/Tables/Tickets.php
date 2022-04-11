@@ -5,6 +5,7 @@ namespace App\Tables;
 use App\Tables\Table;
 use App\Database;
 use App\Tables\General;
+use App\Tables\Article;
 use DateTime;
 use PDO;
 use stdClass;
@@ -23,13 +24,22 @@ class Tickets extends Table {
         return $data;
   }
 
+  public function getFiles($idligne){
+	  if (is_dir('C:\laragon\www\SoftRecode\upload/'.$idligne.'')) {
+		$files =  array_diff(scandir('C:\laragon\www\SoftRecode\upload/'.$idligne.''), array('..', '.'));
+		if (!empty($files)) {
+			return $files;
+		}
+	  }			
+  }
+
 
   public function get_last(){
 	$results  = [];
 	$request = $this->Db->Pdo->query('SELECT  t.* , MAX(l.tkl__dt) as last_date  FROM ticket as t
 	LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
-	WHERE tk__lu != 2 GROUP BY t.tk__id 
-	ORDER BY last_date DESC  LIMIT 20');
+	WHERE tk__lu != 2 GROUP BY   t.tk__id 
+	ORDER BY last_date  DESC  LIMIT 20');
 	$data = $request->fetchAll(PDO::FETCH_OBJ);
 	foreach ($data as $ticket) {
 		$ticket = $this->findOne($ticket->tk__id);
@@ -86,7 +96,6 @@ class Tickets extends Table {
 				}
 				return $results;
 			} else return null;
-			
 	}
 
   public function get_subject_table($column_name){
@@ -95,6 +104,19 @@ class Tickets extends Table {
 	  WHERE COLUMN_NAME =  "'.$column_name.'" ');
 	  $data = $request->fetch(PDO::FETCH_ASSOC);
 	  return $data;
+  }
+
+  public function return_group($id){
+
+	$request = $this->Db->Pdo->query('SELECT tk__groupe  as groupe  FROM ticket WHERE tk__id = '.$id.'');
+	$data = $request->fetch(PDO::FETCH_OBJ);
+	if (!empty($data->groupe)){
+		return intval($data->groupe);
+	}else{
+		$request = $this->Db->Pdo->query('SELECT MAX( tk__groupe ) as groupe  FROM ticket');
+		$data = $request->fetch(PDO::FETCH_OBJ);
+		return intval($data->groupe) +1 ;
+	}
   }
 
 
@@ -113,6 +135,7 @@ class Tickets extends Table {
 		$lignes = $request->fetchAll(PDO::FETCH_OBJ);
 		$ticket->lignes = $lignes;
 		$ticket->last_line = $this->get_last_line($id);
+		$ticket->first_line = $this->get_first_line($id);
 		foreach ($ticket->lignes as $ligne){
 			$date_time = new DateTime($ligne->tkl__dt);
 			//formate la date pour l'utilisateur:
@@ -150,9 +173,27 @@ class Tickets extends Table {
 			$date_time = new DateTime($ligne->tkl__dt);
 			$ligne->tkl__dt = $date_time->format('d/m/Y H:i');
 		}
-		
 		return $ligne;
   }
+
+	public function get_first_line($id)
+	{
+		$request = $this->Db->Pdo->query('SELECT  MIN(tkl__dt) as dateLigne  FROM ticket_ligne 
+		WHERE tkl__tk_id = "' . $id . '" ');
+		$ligne = $request->fetch(PDO::FETCH_OBJ);
+		$request = $this->Db->Pdo->query('SELECT * , u.nom , u.prenom , z.nom as nom_dest , z.prenom as prenom_dest 
+		FROM ticket_ligne 
+		LEFT JOIN utilisateur AS u ON ( u.id_utilisateur = tkl__user_id ) 
+		LEFT JOIN utilisateur AS z ON ( z.id_utilisateur = tkl__user_id_dest ) 
+		WHERE tkl__dt = "' . $ligne->dateLigne . '" ');
+		$ligne = $request->fetch(PDO::FETCH_OBJ);
+		if (!empty($ligne)) {
+			$date_time = new DateTime($ligne->tkl__dt);
+			$ligne->tkl__dt = $date_time->format('d/m/Y H:i');
+		}
+
+		return $ligne;
+	}
 
   public function getCurrentUser( int $ticket_id){
 		$request = $this->Db->Pdo->query('SELECT  MAX(tkl__dt) as dateLigne  FROM ticket_ligne 
@@ -263,8 +304,14 @@ class Tickets extends Table {
   }
 
 
+  public function insert_ticket(array $post ){
 
-  public function insert_ticket(array $post){
+	if ($post['type'] === 'DP' && empty($post['Titre'])) {
+		$post['Titre'] = $post['Quantite'] . ' - ' ;
+		$Article = new Article($this->Db);
+		$Pn = $Article->get_pn_byID($post['Pn']);
+		$post['Titre'] .=  $Pn->apn__pn_long ;
+	}
 	$request = $this->Db->Pdo->prepare("
 	INSERT INTO ticket  (tk__motif,		 	tk__motif_id ,	 	tk__titre , tk__indic ) 
 	VALUES              (:tk__motif,      :tk__motif_id,      :tk__titre , :tk__indic)"); 
@@ -298,15 +345,24 @@ class Tickets extends Table {
 			//check mime type and size 
 			//rename without special char and space 
 			$mime_type  = mime_content_type($file['tmp_name']);
-			$file = file_get_contents($file['tmp_name']);
+			// $file = file_get_contents($file['tmp_name']);
 			$path = $directory . '/' . $id_line ;
 			if (!is_dir($path)) {
 				mkdir($path, 0777, TRUE);
 			}
-			
-			file_put_contents($path, $file);
+			move_uploaded_file($file["tmp_name"], $path.'/'.$file['name']);
 		}
-		die();
+		
+	}
+
+
+	public function attribute_attachements( int $id_line)
+	{
+			$path =  'C:\laragon\www\SoftRecode\upload\temp';
+			if (is_dir($path)) {
+				rename('C:\laragon\www\SoftRecode\upload\temp', 'C:\laragon\www\SoftRecode\upload/'.$id_line.'');
+				return true;
+			}else return false;		
 	}
 
   public function insert_field(array $post , $id_ligne , $id_tickets){
@@ -538,6 +594,12 @@ public function search_ticket( string $input , array $config ){
 			break;
 
 		case strlen($input) == 4 and is_numeric($input):
+			$list = $this->search_ticket_with_id('id', $input);
+			$list = $this->get_last_ticket($list);
+			return $list;
+			break;
+
+		case strlen($input) == 3 and is_numeric($input):
 			$list = $this->search_ticket_with_id('ticket', $input);
 			$list = $this->get_last_ticket($list);
 			return $list;
@@ -635,10 +697,18 @@ public function search_ticket_with_id(string $table , int $id){
 				break;
 			case 'ticket':
 				$request = $this->Db->Pdo->query("SELECT  tk__id FROM ticket 
-				WHERE   tk__id = '" . $id . "' ORDER BY tk__id LIMIT 1000");
+				WHERE   tk__groupe = '" . $id . "' ORDER BY tk__id LIMIT 1000");
 				$data = $request->fetchAll(PDO::FETCH_OBJ);
 				return $data;
 				break;
+
+			case 'id':
+				$request = $this->Db->Pdo->query("SELECT  tk__id FROM ticket 
+				WHERE   tk__id = '" . $id . "' ORDER BY tk__id LIMIT 1000");
+				$data = $request->fetchAll(PDO::FETCH_OBJ);
+					return $data;
+					break;
+			
 		}
 		
 }
