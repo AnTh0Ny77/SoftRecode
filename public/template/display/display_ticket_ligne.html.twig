@@ -57,7 +57,7 @@
             
             {% for file in ligne.files %}
                 <div class="col-3">
-                    <a target="_blank" href="{{ligne.path ~ file }}"> {{file}} <i class="fas fa-link"></i></a>
+                    <a target="_blank" class="btn btn-link" href="{{ligne.path ~ file }}"><i class="fas fa-download"></i> {{file}} </a>
                 </div>
                 
             {% endfor %}

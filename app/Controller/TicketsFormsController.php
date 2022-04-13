@@ -99,7 +99,6 @@ class TicketsFormsController extends BasicController
     }
 
 
-
     //@route: /tickets-handle-forms
     public static function FormsMarker(){
         self::init();
@@ -258,8 +257,6 @@ class TicketsFormsController extends BasicController
                 header('location: tickets-create-forms');
             }
         }
-
-      
     }
 
     //@route: /tickets-post-data
