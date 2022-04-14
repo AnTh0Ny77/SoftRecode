@@ -49,7 +49,7 @@ $alertDate = $resultHt = $NombreCmd = $chartsResponses = $chartsVendeur = $array
 $chiffre_cmd_fact = $maintenance_location = $cmdSearch = $abnSearch = FALSE;
 $desc_stat = $type_tot = $titre_stat = $SQL_stat = $liste_fiche_lp = $liste_fiche = $liste_fiche_gm = $liste_fiche_rma = '';
 $client = $vendeur = 'Tous';
-$total_ca = $nb_fiche = $vs_fiche = $vs_periode = $vs_garmaint = $tot_ca_veir = 0;
+$total_ca = $nb_fiche = $vs_fiche = $vs_fiche_lp = $vs_down = $vs_periode = $vs_garmaint = $tot_ca_veir = $tot_stk_deb = $tot_stk_fin = 0;
 
 // recuperations des GET ou POST
 $date_debut     = get_post('date_debut', 1, 'GETPOST');
@@ -248,6 +248,27 @@ if ($VOL)
 	$nb_fiche    = $C_data['nb_fiche'];
 }
 
+// .dP"Y8 888888  dP"Yb   dP""b8 88  dP 
+// `Ybo."   88   dP   Yb dP   `" 88odP  
+// o.`Y8b   88   Yb   dP Yb      88"Yb  
+// 8bodP'   88    YbodP   YboodP 88  Yb 
+
+// Stock Debut de période
+$STKD_sql     = "SELECT sum(locator.pu_ht) AS tot_stk_deb FROM locator WHERE ";
+$STKD_sql    .= "( id_etat in (0,1,11,31,32) AND	in_datetime < '".$date_debut."' AND (out_datetime is NULL OR out_datetime >= '".$date_debut."') ) ";
+$STKD_sql    .= "OR ( id_etat in (21,22) AND down_datetime >= '".$date_debut."' AND	in_datetime < '".$date_debut."' AND (out_datetime is NULL OR out_datetime >= '".$date_debut."') ) ";
+$STKD_request = $Totoro->Pdo->query($STKD_sql);
+$STKD_data    = $STKD_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
+$tot_stk_deb  = $STKD_data['tot_stk_deb'];
+// Stock Fin de période
+$STKF_sql     = "SELECT sum(locator.pu_ht) AS tot_stk_fin FROM locator WHERE ";
+$STKF_sql    .= "( id_etat in (0,1,11,31,32) AND	in_datetime < '".$date_fin."' AND (out_datetime is NULL OR out_datetime >= '".$date_fin."') ) ";
+$STKF_sql    .= "OR ( id_etat in (21,22) AND down_datetime >= '".$date_fin."' AND	in_datetime < '".$date_fin."' AND (out_datetime is NULL OR out_datetime >= '".$date_fin."') ) ";
+$STKF_request = $Totoro->Pdo->query($STKF_sql);
+$STKF_data    = $STKF_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
+$tot_stk_fin  = $STKF_data['tot_stk_fin'];
+
+
 // Si il y a au moins un resultat
 if ($nb_fiche > 0)
 {
@@ -337,7 +358,7 @@ if ($nb_fiche > 0)
 			case 'ECH':
 			case 'INT':
 			case 'REP':
-					$tot_ca_veir += $lg_ca['total_fiche'];
+				$tot_ca_veir += $lg_ca['total_fiche'];
 			break;
 		}
 	}
@@ -370,7 +391,9 @@ echo $twig->render('statistique.twig',
 'vendeurSelect'    => $vendeur,
 'arrayPresta'      => $arrayPresta , 
 'abnSearch'        => $abnSearch,
-'cmdSearch'        => $cmdSearch 
+'cmdSearch'        => $cmdSearch,
+'tot_stk_deb'      => $tot_stk_deb,
+'tot_stk_fin'      => $tot_stk_fin
 ]);
 
 
