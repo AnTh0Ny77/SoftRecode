@@ -26,7 +26,7 @@ session_start();
  $Article = new App\Tables\Article($Database);
  $Stats = new App\Tables\Stats($Database);
  $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
-$_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
+ $_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
  $articleTypeList = $Article->getModels();
  $prestaList = $Keyword->getPresta();
  $keywordList = $Keyword->get2_icon();
@@ -46,7 +46,6 @@ $_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_ut
       $date = date_format($devisDate, 'd/m/Y');
       $devis->cmd__date_fact = $date;
     }
-
 
 //si un export à été envoyé :
 if (!empty($_POST['exportStart']) && !empty($_POST['exportEnd'])) 
@@ -77,23 +76,24 @@ if (!empty($_POST['exportStart']) && !empty($_POST['exportEnd']))
         {
             $libelle = 'A';
         }
-       
+        $libelle = $commande->devis__id.' '.$commande->client__societe;
+        $libelle = substr($libelle, 0 , 28);
         //determine les première ligne par rapport au taux de tva: 
         if (intval($commande->tva_value)  == 10 ) 
         {
-            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'. number_format($total[3] , 2 , ',', ' ').'; ;'. $libelle.'
+            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$libelle.';411'.$commande->client__id.';'. number_format($total[3] , 2 , ',', ' ').'; ;'. $libelle.'
 VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571200; ;'.number_format($total[2] , 2 ,',', ' ').'
 ' ;
         }
         elseif (intval($commande->tva_value)  == 20) 
         {
-            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'.number_format($total[3] , 2 ,  ',' ,  ' ').'; ;'. $libelle.'
+            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$libelle.';411'.$commande->client__id.';'.number_format($total[3] , 2 ,  ',' ,  ' ').'; ;'. $libelle.'
 VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571101; ;'.number_format($total[2] , 2 ,',', ' ').'
 ' ;
         }
         else 
         {
-            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$commande->devis__id.' '.$commande->client__societe.';411'.$commande->client__id.';'.number_format($total[3] , 2 , ',' , ' ').'; ;'. $libelle.'
+            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$libelle.';411'.$commande->client__id.';'.number_format($total[3] , 2 , ',' , ' ').'; ;'. $libelle.'
 ';
         }
        
@@ -122,11 +122,7 @@ VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571101
     fwrite($file , $txt);
     fclose($file);
         }
-     
-    
 }
- 
-  
 // Donnée transmise au template : 
 echo $twig->render('export.twig',
 [
