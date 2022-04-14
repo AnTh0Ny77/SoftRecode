@@ -135,11 +135,15 @@
 								<br>
 								total CA (Vente + Ech.) (sans ext Grarantie) : {{tot_ca_ve|number_format(2,',',' ')}} €<br>
 								total matériel sortie : {{(vs_fiche + vs_periode + vs_down)|number_format(2,',',' ')}} €<br>
-								% de marge : <b>{{((1 - ((vs_fiche + vs_periode + vs_down) / tot_ca_ve))*100)|number_format(2,',',' ')}} %</b><br>
+								cout port (approvisionement) pour le matos sortie (2.75%) : {{((vs_fiche + vs_periode + vs_down)*0.0275)|number_format(2,',',' ')}} €<br>
+								% de marge : <b>{{((1 - (((vs_fiche + vs_periode + vs_down)*1.0275) / tot_ca_ve))*100)|number_format(2,',',' ')}} %</b><br>
 								<br>
 								<u>Pour info</u><br><i>
-								Valeur materiel sortie pour fiches garantie maintenance (date exped) <br>{{vs_garmaint|number_format(2,',',' ')}} € 
-								( % de marge : {{((1 - ((vs_fiche + vs_periode + vs_down + vs_garmaint) / tot_ca_ve))*100)|number_format(2,',',' ')}} % )<br>
+								Valeur materiel sortie pour garantie maintenance (date exped avec port) <br>{{(vs_garmaint*1.0275)|number_format(2,',',' ')}} € 
+								( % de marge : {{((1 - (((vs_fiche + vs_periode + vs_down + vs_garmaint)*1.0275) / tot_ca_ve))*100)|number_format(2,',',' ')}} % )<br>
+								Valeur de stock en debut de période (compté) : {{tot_stk_deb|number_format(2,',',' ')}} €<br>
+								Valeur de stock en fin de période (compté) ...: {{tot_stk_fin|number_format(2,',',' ')}} €<br>
+								Variation de stock sur période : {{(tot_stk_fin-tot_stk_deb)|number_format(2,',',' ')}} €<br>
 								<br>
 								<u>pour philippe</u><br>
 								valo du matos sortie pour loc ou prêt <br>{{vs_fiche_lp|number_format(2,',',' ')}} €<br>
@@ -147,10 +151,7 @@
 								Pour info Stock voir : O:\Comptabilité\STOCK<br>
 								<br>
 								<u>A faire ...</u><br>
-								Valeur de stock en debut de période (compté)<br>
-								Valeur de stock en fin de période (compté)<br>
 								Montant des achats de la période (compté)<br>
-								Variation valeur de stock (calculé)<br>
 								Comptage de reliquat (envoie sans port)<br>
 								</i>
 							</div>
