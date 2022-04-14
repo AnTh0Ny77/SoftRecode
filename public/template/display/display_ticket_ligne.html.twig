@@ -37,14 +37,17 @@
                 </div>
         {% endfor %}
     {% endif %}
-   
     <div class="mt-4">
-      
         {% for field in ligne.fields %}
+        
         {% if field.tklc__memo %}
             <h5>{{field.tksc__label}} : 
                 <span class="font-weight-bold">
-                    {{field.tklc__memo}}
+                    {% if field.tksc__visible > user.user__ticket_acces  %}
+                        <i class="fas fa-lock"></i>
+                    {% else %}
+                        {{field.tklc__memo}}
+                    {% endif %}
                 </span>
             </h5>
         {% endif %}
@@ -53,17 +56,13 @@
         <div class="my-3">
             {# <h5><i class="fas fa-paperclip"></i> Pièce jointes</h5> #}
             <div class="d-flex justify-content-start flex-wrap">
-
-            
             {% for file in ligne.files %}
                 <div class="col-3">
                     <a target="_blank" class="btn btn-link" href="{{ligne.path ~ file }}"><i class="fas fa-download"></i> {{file}} </a>
                 </div>
-                
             {% endfor %}
         </div>
         </div>
-            
         {% endif %}
         {% if ligne.tkl__motif_ligne != 'cloture' %}
             <h5>Destinataire :  
