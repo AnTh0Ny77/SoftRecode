@@ -159,6 +159,11 @@ class TicketsDisplayController extends BasicController
             if (!empty($entitites_array)) {
                 $ligne->entities = $entitites_array;
             }
+            $files = $Ticket->getFiles($ligne->tkl__id);
+            if (!empty($files)) {
+             $ligne->path = 'upload/'.$ligne->tkl__id.'/';
+             $ligne->files = $files;
+            }
         }
         if ($ticket->tk__lu != 2) {
             $General->updateAll('ticket', 1 , 'tk__lu', 'tk__id', $Request['id']);
@@ -174,12 +179,7 @@ class TicketsDisplayController extends BasicController
                     $sujet = $display_entitie;
                 }
            }
-           $files = $Ticket->getFiles($ligne->tkl__id);
          
-           if (!empty($files)) {
-            $ligne->path = 'upload/'.$ligne->tkl__id.'/';
-            $ligne->files = $files;
-           }
          
         }
       
