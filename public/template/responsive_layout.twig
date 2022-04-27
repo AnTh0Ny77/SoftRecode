@@ -14,6 +14,7 @@
 <body >
     <nav class="navbar navbar-light sticky-top bg-light shadow-rec">
             <div>
+                <input type="hidden" id="ticketUser" value="{{user.id_utilisateur}}">
                 <span class=" ml-2 pr-2 center-text text-monospace" href="#"><i class="fas fa-user text-success "></i>  {{ " " ~ user.prenom ~  " " ~  user.nom ~ " " }} </span> 
                 {% if user.devis_cours %}
                     <a href="search_switch_notifs?id_user={{user.id_utilisateur}}&status=ATN"  class="btn rounded-circle"
@@ -85,6 +86,8 @@
 {% block script %}
 {% endblock %}
 <script type="module" src="public/js/custom/import.js"></script>
+<script type="text/javascript" src="public/js/get_tickets_notif.js"></script>
+
 <script type="text/javascript">
 	 //initialization des tooltips 
 	 $(function () 

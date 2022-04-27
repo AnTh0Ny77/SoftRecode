@@ -163,7 +163,7 @@ class Tickets extends Table {
 		$request = $this->Db->Pdo->query('SELECT  MAX(tkl__dt) as dateLigne  FROM ticket_ligne 
 		WHERE tkl__tk_id = "' . $id . '" ');
 		$ligne = $request->fetch(PDO::FETCH_OBJ);
-		$request = $this->Db->Pdo->query('SELECT * , u.nom , u.prenom , z.nom as nom_dest , z.prenom as prenom_dest 
+		$request = $this->Db->Pdo->query('SELECT * , u.nom , u.prenom , z.id_utilisateur as id_dest , z.nom as nom_dest , z.prenom as prenom_dest 
 		FROM ticket_ligne 
 		LEFT JOIN utilisateur AS u ON ( u.id_utilisateur = tkl__user_id ) 
 		LEFT JOIN utilisateur AS z ON ( z.id_utilisateur = tkl__user_id_dest ) 

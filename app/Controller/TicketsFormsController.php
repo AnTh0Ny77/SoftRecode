@@ -164,6 +164,7 @@ class TicketsFormsController extends BasicController
                     'presta_list' => $presta_list ,
                     'preset' => $preset ,
                     'duplicata_ticket' => $duplicata_ticket,
+                   
                     'forms' => $tickets->forms , 
                     'tickets' => $tickets,
                     'crea_forms' => $crea_forms,
@@ -183,7 +184,7 @@ class TicketsFormsController extends BasicController
                 $config = file_get_contents('configDisplay.json');
                 $config = json_decode($config);
                 $config = $config->entities;
-                foreach ($ticket->lignes as $ligne) {
+                foreach ($ticket->lignes as $ligne){
                     $entitites_array = [];
                     $pattern = "@";
                     $other_fields = [];
@@ -239,6 +240,7 @@ class TicketsFormsController extends BasicController
                             'presta_list' => $presta_list ,
                             'ligne' => $last_ligne ,
                             'user' => $_SESSION['user'],
+                            'ligne_forms' => $forms,
                             'forms' => $forms->forms,
                             'tickets' => $forms,
                             'crea_forms' => $crea_forms,

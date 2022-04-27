@@ -6,6 +6,7 @@ use App\Controller\BasicController;
 use App\Tables\Article;
 use App\Tables\Keyword;
 use App\Tables\General;
+use App\Tables\UserGroup;
 use App\Tables\Stock;
 use App\Tables\User;
 use App\Tables\Tickets;
@@ -161,7 +162,35 @@ class TicketsDisplayController extends BasicController
             }
         }
         if ($ticket->tk__lu != 2) {
-            $General->updateAll('ticket', 1 , 'tk__lu', 'tk__id', $Request['id']);
+
+            $last_line = $Ticket->get_last_line($Request['id']);
+          
+            if ($last_line->id_dest == $_SESSION['user']->id_utilisateur ){
+               
+                $General->updateAll('ticket', 1, 'tk__lu', 'tk__id', $Request['id']);
+            }elseif($last_line->id_dest == 1011){
+                $groups = new UserGroup(self::$Db);
+                $array_user = $groups->get_user_by_groups(1011);
+                if (!empty($array_user)) {
+                    foreach ($array_user as $user) {
+                        if ($user->id_utilisateur == $_SESSION['user']->id_utilisateur) {
+                            $General->updateAll('ticket', 1, 'tk__lu', 'tk__id', $Request['id']);
+                        }
+                    }
+                }
+
+            }elseif($last_line->id_dest == 1012){
+                $groups = new UserGroup(self::$Db);
+                $array_user = $groups->get_user_by_groups(1012);
+                if (!empty($array_user)) {
+                    foreach ($array_user as $user){
+                        if ($user->id_utilisateur == $_SESSION['user']->id_utilisateur){
+                            $General->updateAll('ticket', 1, 'tk__lu', 'tk__id', $Request['id']);
+                        }
+                    }
+                }
+               
+            } 
         }
         $user_destinataire = $Ticket->getCurrentUser($Request['id']);
         $next_action = $Ticket->getNextAction($Request['id']);

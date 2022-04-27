@@ -282,6 +282,10 @@ use App\Controller\ExtranetController;
 			require __DIR__ . '/pages/ajax/ajax_delete_files.php';
 			break;
 
+		case '/SoftRecode/ajaxTicket';
+			require __DIR__ . '/pages/ajax/ajaxTicket.php';
+			break;
+		
 		case '/SoftRecode/AjaxSaisie';
 			require __DIR__ .'/pages/ajax/ajaxSaisie.php'; break;
 		

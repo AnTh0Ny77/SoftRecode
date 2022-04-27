@@ -90,37 +90,72 @@
                 {% endif %}
             </div>
     {% elseif form.tksc__type_de_champ == "SLT" %}
-            {% if form.tksc__obligatoire == 1 %}
-            <h5 class="text-white">{{form.tksc__label}} *</h5>
-                <select class=" selectpicker  show-tick " data-width="100%" data-live-search="true" data-size="10" name="{{form.tksc__nom_champ}}" required>
-                    {% for subject in form.tksc__option %}
-                        {% if preset.Pn ==  subject.id and form.tksc__nom_champ =='Pn' %}
-                            <option value="{{subject.id}}" selected>{{subject.lib}}</option>
-                        {% else %}
-                            {%  if preset[form.tksc__nom_champ] == subject.id %}
+            {% if form.tksc__nom_champ != 'A_Qui' %}
+                {% if form.tksc__obligatoire == 1 %}
+                    <h5 class="text-white">{{form.tksc__label}} *</h5>
+                    <select class=" selectpicker  show-tick " data-width="100%" data-live-search="true" data-size="10" name="{{form.tksc__nom_champ}}" required>
+                        {% for subject in form.tksc__option %}
+                            {% if preset.Pn == subject.id and form.tksc__nom_champ =='Pn' %}
                                 <option value="{{subject.id}}" selected>{{subject.lib}}</option>
                             {% else %}
-                                <option value="{{subject.id}}" >{{subject.lib}}</option>
+                                {% if preset[form.tksc__nom_champ] == subject.id %}
+                                    <option value="{{subject.id}}" selected>{{subject.lib}}</option>
+                                {% else %}
+                                    <option value="{{subject.id}}">{{subject.lib}}</option>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                {% else %}
+                <h5 class="text-white">{{form.tksc__label}}</h5>
+                <select class="custom-select form-control-lg input-recode" name="{{form.tksc__nom_champ}}">
+                    {% for subject in form.tksc__option %}
+                        {% if preset.Pn == subject.id and form.tksc__nom_champ == 'Pn' %}
+                            <option value="{{subject.id}}" selected>{{subject.lib}}</option>
+                        {% else %}
+                            {% if preset[form.tksc__nom_champ] == subject.id %}
+                                <option value="{{subject.id}}" selected>{{subject.lib}}</option>
+                            {% else %}
+                                <option value="{{subject.id}}">{{subject.lib}}</option>
                             {% endif %}
                         {% endif %}
                     {% endfor %}
                 </select>
+                {% endif %}
             {% else %}
-                <h5 class="text-white">{{form.tksc__label}}</h5>
-                <select class="custom-select form-control-lg input-recode" name="{{form.tksc__nom_champ}}" >
+                <h5 class="text-white">{{form.tksc__label}} *</h5>
+                <select class=" selectpicker  show-tick " data-width="100%" data-live-search="true" data-size="10"
+                    name="{{form.tksc__nom_champ}}" required>
                     {% for subject in form.tksc__option %}
-                        {% if preset.Pn ==  subject.id and form.tksc__nom_champ == 'Pn' %}
-                            <option value="{{subject.id}}" selected>{{subject.lib}}</option>
-                        {% else %}
-                            {%  if preset[form.tksc__nom_champ] == subject.id %}
+                        {% if tickets.tks__a_qui == 1001 %}
+                            {% if subject.id == user.id_utilisateur %}
                                 <option value="{{subject.id}}" selected>{{subject.lib}}</option>
                             {% else %}
-                                <option value="{{subject.id}}" >{{subject.lib}}</option>
+                                <option value="{{subject.id}}">{{subject.lib}}</option>
+                            {% endif %}
+                        {% elseif tickets.tks__a_qui == 1002 %}
+                            {% if subject.id == user.id_utilisateur %}
+                                <option value="{{subject.id}}" selected>{{subject.lib}}</option>
+                            {% else %}
+                                <option value="{{subject.id}}">{{subject.lib}}</option>
+                            {% endif %}
+                        {% elseif tickets.tks__a_qui == 1011 %}
+                            {% if subject.id == 1011 %}
+                                <option value="{{subject.id}}" selected>{{subject.lib}}</option>
+                            {% else %}
+                                <option value="{{subject.id}}">{{subject.lib}}</option>
+                            {% endif %}
+                        {% elseif tickets.tks__a_qui == 1012 %}
+                            {% if subject.id == 1012 %}
+                                <option value="{{subject.id}}" selected>{{subject.lib}}</option>
+                            {% else %}
+                                <option value="{{subject.id}}">{{subject.lib}}</option>
                             {% endif %}
                         {% endif %}
                     {% endfor %}
                 </select>
             {% endif %}
+            
     {% elseif form.tksc__type_de_champ == "CLI" %} 
             {% include "forms/forms_client_field.html.twig" %}
     {% elseif form.tksc__type_de_champ == "PRE" %} 

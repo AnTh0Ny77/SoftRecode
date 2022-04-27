@@ -17,6 +17,7 @@
 	<!--NavBar--> 
 	<nav class="navbar navbar-light bg-dark text-white  navbar-large  sticky-top flex-md-nowrap p-0 shadow">
 		<div>
+			<input type="hidden" id="ticketUser" value="{{user.id_utilisateur}}">
 			<a class="navbar-brand text-light  ml-2 pr-2" href="#"><i class="fas fa-user text-success"></i>  {{ user.prenom ~  " " ~  user.nom ~ " " }} </a> 
 			{% if user.devis_cours %}
 			<button type="button" class="btn btn-link" data-toggle="tooltip" data-placement="top" title="devis envoyés">
@@ -301,6 +302,7 @@
 {% block script %}
 {% endblock %}
 <script type="module" src="public/js/custom/import.js"></script>
+<script type="text/javascript" src="public/js/get_tickets_notif.js"></script>
 <script type="text/javascript">
 	 //initialization des tooltips 
 	 $(function () 
