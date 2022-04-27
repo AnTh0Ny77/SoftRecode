@@ -124,8 +124,6 @@ if (!empty($_POST['search']))
                                 }
                         }
                         
-
-
                         //formatte les dates pour l'utilisateur : 
                         $date =  new DateTime($commande->devis__date_crea);
                         $commande->devis__date_crea =  $date->format('d/m/Y');

@@ -298,6 +298,7 @@ class TicketsFormsController extends BasicController
                     $post['dt'] = date('Y-m-d H:i:s');
                     $new_line = $Ticket->insert_line($post);
                     $new_field = $Ticket->insert_field($post, $new_line, $_POST['currentTicket']);
+                    $Ticket->attribute_attachements($new_line);
                     $General = new General(self::$Db);
                     $General->updateAll('ticket', 0 , 'tk__lu', 'tk__id', $_POST['currentTicket']);
                 }
