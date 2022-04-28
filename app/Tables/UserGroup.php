@@ -122,7 +122,7 @@ public function get_ticket_for_user($id_user){
 		FROM
 		ticket_ligne
 		LEFT JOIN ticket ON ticket_ligne.tkl__tk_id = ticket.tk__id
-		WHERE tkl__user_id IN('.$string.') and  ( ticket.tk__lu = 0 )
+		WHERE  	tkl__user_id_dest  IN('.$string.') and  ( ticket.tk__lu = 0 )
 		GROUP BY ticket_ligne.tkl__tk_id ');
 		$user_ticket = $request->fetchAll(PDO::FETCH_OBJ);
 		return $user_ticket;
@@ -149,7 +149,7 @@ public function get_all_ticket_for_user($id_user){
 		FROM
 		ticket_ligne
 		LEFT JOIN ticket ON ticket_ligne.tkl__tk_id = ticket.tk__id
-		WHERE tkl__user_id IN('.$string.') and  ( ticket.tk__lu = 1 or ticket.tk__lu = 0  )
+		WHERE  (	tkl__user_id_dest  IN('.$string.') AND  ( ticket.tk__lu = 1 or ticket.tk__lu = 0  ) ) OR   (	tkl__user_id  IN('.$string.') AND  ( ticket.tk__lu = 1 or ticket.tk__lu = 0  ) )  
 		GROUP BY ticket_ligne.tkl__tk_id ');
 		$user_ticket = $request->fetchAll(PDO::FETCH_OBJ);
 		return $user_ticket;
