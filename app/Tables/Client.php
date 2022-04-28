@@ -186,9 +186,9 @@ class Client extends Table
         OR u.nom LIKE '%" . $mots_filtre[$i] . "%' 
         OR client__cp LIKE '%" . $mots_filtre[$i] . "%') ";
             }
-            $request .= "ORDER BY  client__societe ASC  LIMIT 12  ";
+            $request .= "ORDER BY  client__societe ASC  LIMIT 18  ";
         } else {
-            $request .=  "ORDER BY  client__societe ASC  LIMIT 12 ";
+            $request .=  "ORDER BY  client__societe ASC  LIMIT 18 ";
         }
 
         $send = $this->Db->Pdo->query($request);
