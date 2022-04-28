@@ -41,6 +41,7 @@ class TicketsDisplayController extends BasicController
         self::init();
         self::security();
         $Ticket = new Tickets(self::$Db);
+        $General = new General(self::$Db);
         $alert_results = false;
         $text_results = false; 
        
@@ -53,6 +54,10 @@ class TicketsDisplayController extends BasicController
         $config = json_decode($config);
         $config = $config->entities;
 
+        if (!empty($_GET['nonLu'])) {
+            $General->updateAll('ticket', 0 , 'tk__lu', 'tk__id', $_GET['nonLu']);
+        }
+        
         if (!empty($_GET['searchTickets'])){
 
             $text_results = $_GET['searchTickets'];
@@ -62,7 +67,11 @@ class TicketsDisplayController extends BasicController
                 $alert_results = true;
             }
            
-        }else $list = $Ticket->get_last();
+        }elseif(!empty($_GET['id_user'])){
+    
+                $list = $Ticket->search_user_tickets($_GET['id_user'], $_GET['tk__lu']);
+        }
+        else $list = $Ticket->get_last();
 
         if (!empty($list)) {
             $temp_list = $list;

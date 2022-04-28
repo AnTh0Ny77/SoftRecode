@@ -34,6 +34,23 @@
 					</a>
 				</button>	 
 			{% endif %}
+			<input type="hidden" id="ticketUser" value="{{user.id_utilisateur}}">
+                <button type="button" class="btn btn-link d-none" data-toggle="tooltip" data-placement="top" title="DP non lus" id="notifTickets">
+                    <a href="tickets-display-list?id_user={{user.id_utilisateur}}&tk__lu=0">
+                        <span class="fa-stack text-danger" style="vertical-align: top;">
+                            <i class="fal fa-bell-on fa-stack-2x"></i>
+                            <i class=" fa-stack-1x text-danger" id="ticketNonLu"></i>
+                        </span>	
+                    </a>
+                </button>
+				<button type="button" class="btn btn-link d-none" data-toggle="tooltip" data-placement="top" title="DP en cours" id="notifTicketsCours">
+					<a href="tickets-display-list?id_user={{user.id_utilisateur}}&tk__lu=1">
+						<span class="fa-stack text-success" style="vertical-align: top;">
+							<i class="fal fa-bell fa-stack-2x"></i>
+							<i class=" fa-stack-1x text-success" id="ticketEncours"></i>
+						</span>	
+					</a>
+				</button>		
 			
 		</div>
 		<div class="d-flex flex-row ">
@@ -296,6 +313,7 @@
 {% block script %}
 {% endblock %}
 <script type="module" src="public/js/custom/import.js"></script>
+<script type="text/javascript" src="public/js/get_tickets_notif.js"></script>
 <script type="text/javascript">
 	 //initialization des tooltips 
 	 $(function () 

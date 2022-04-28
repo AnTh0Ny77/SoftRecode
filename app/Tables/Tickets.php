@@ -6,6 +6,7 @@ use App\Tables\Table;
 use App\Database;
 use App\Tables\General;
 use App\Tables\Article;
+use App\Tables\UserGroup;
 use DateTime;
 use PDO;
 use stdClass;
@@ -580,6 +581,26 @@ public function findChamp($motif ,$nom){
 		$request = $this->Db->Pdo->query('SELECT  tksc__option , tksc__ordre , tksc__sujet  FROM ticket_senar_champ WHERE tksc__motif_ligne =  "'.$motif.'" AND tksc__nom_champ = "'.$nom.'"');
 		$data = $request->fetch(PDO::FETCH_OBJ);
 		return $data;
+}
+
+public function search_user_tickets($id_user, $lu){
+		if ($lu == 0 ){
+			$groups = new UserGroup($this->Db);
+			$data = $groups->get_ticket_for_user($id_user);
+			foreach ($data as $key => $value) {
+				$value->tk__id = $value-> tkl__tk_id;
+			}
+			$list = $this->get_last_ticket($data);
+			return $list;
+		}else{
+			$groups = new UserGroup($this->Db);
+			$data = $groups->get_all_ticket_for_user($id_user);
+			foreach ($data as $key => $value) {
+				$value->tk__id = $value-> tkl__tk_id;
+			}
+			$list = $this->get_last_ticket($data);
+			return $list;
+		}
 }
 
 
