@@ -145,7 +145,34 @@ class TicketsDisplayController extends BasicController
             die();
         }
 
-      
+        if ($ticket->tk__lu != 2) {
+            $last_line = $Ticket->get_last_line($Request['id']);
+            if ($last_line->id_dest == $_SESSION['user']->id_utilisateur) {
+                $General->updateAll('ticket', 1, 'tk__lu', 'tk__id', $Request['id']);
+            } elseif ($last_line->id_dest == 1011){
+                $groups = new UserGroup(self::$Db);
+                $array_user = $groups->get_user_by_groups(1011);
+                if (!empty($array_user)){
+                    foreach ($array_user as $user) {
+                        if ($user->id_utilisateur == $_SESSION['user']->id_utilisateur) {
+                            $General->updateAll('ticket', 1, 'tk__lu', 'tk__id', $Request['id']);
+                        }
+                    }
+                }
+            } elseif ($last_line->id_dest == 1012) {
+                $groups = new UserGroup(self::$Db);
+                $array_user = $groups->get_user_by_groups(1012);
+                if (!empty($array_user)) {
+                    foreach ($array_user as $user) {
+                        if ($user->id_utilisateur == $_SESSION['user']->id_utilisateur) {
+                            $General->updateAll('ticket', 1, 'tk__lu', 'tk__id', $Request['id']);
+                        }
+                    }
+                }
+            }
+        }
+
+        $ticket = $Ticket->findOne($Request['id']);
         $config = file_get_contents('configDisplay.json');
         $config = json_decode($config);
         $config = $config->entities;
@@ -175,37 +202,7 @@ class TicketsDisplayController extends BasicController
              $ligne->files = $files;
             }
         }
-        if ($ticket->tk__lu != 2) {
-
-            $last_line = $Ticket->get_last_line($Request['id']);
-          
-            if ($last_line->id_dest == $_SESSION['user']->id_utilisateur ){
-               
-                $General->updateAll('ticket', 1, 'tk__lu', 'tk__id', $Request['id']);
-            }elseif($last_line->id_dest == 1011){
-                $groups = new UserGroup(self::$Db);
-                $array_user = $groups->get_user_by_groups(1011);
-                if (!empty($array_user)) {
-                    foreach ($array_user as $user) {
-                        if ($user->id_utilisateur == $_SESSION['user']->id_utilisateur) {
-                            $General->updateAll('ticket', 1, 'tk__lu', 'tk__id', $Request['id']);
-                        }
-                    }
-                }
-
-            }elseif($last_line->id_dest == 1012){
-                $groups = new UserGroup(self::$Db);
-                $array_user = $groups->get_user_by_groups(1012);
-                if (!empty($array_user)) {
-                    foreach ($array_user as $user){
-                        if ($user->id_utilisateur == $_SESSION['user']->id_utilisateur){
-                            $General->updateAll('ticket', 1, 'tk__lu', 'tk__id', $Request['id']);
-                        }
-                    }
-                }
-               
-            } 
-        }
+       
         $user_destinataire = $Ticket->getCurrentUser($Request['id']);
         $next_action = $Ticket->getNextAction($Request['id']);
         
