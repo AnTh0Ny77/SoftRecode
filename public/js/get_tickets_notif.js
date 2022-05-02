@@ -9,6 +9,7 @@ $(document).ready(function (){
         data:{"id": user},
         success: function (data){
             dataSet = JSON.parse(data);
+            console.log(data);
             if (dataSet['1'].length >  0) {
                 $('#ticketNonLu').text(dataSet['1'].length);
                 $('#notifTickets').removeClass('d-none');
