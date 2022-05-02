@@ -149,6 +149,7 @@ class Tickets extends Table {
 			LEFT JOIN ticket_senar_champ as t ON ( c.tklc__nom_champ = t.tksc__nom_champ )
 			WHERE c.tklc__id = "'.$ligne->tkl__id.'" ');
 			$fields = $request->fetchAll(PDO::FETCH_OBJ);
+		
 			$ligne->fields = $fields;
 			$request = $this->Db->Pdo->query('SELECT  s.*  FROM ticket_senar_champ as s
 			WHERE s.tksc__motif_ligne = "' . $ligne->tkl__motif_ligne . '" ');

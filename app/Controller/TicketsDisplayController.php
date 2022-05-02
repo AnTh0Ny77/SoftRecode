@@ -57,7 +57,7 @@ class TicketsDisplayController extends BasicController
         if (!empty($_GET['nonLu'])) {
             $General->updateAll('ticket', 0 , 'tk__lu', 'tk__id', $_GET['nonLu']);
         }
-        
+
         if (!empty($_GET['searchTickets'])){
 
             $text_results = $_GET['searchTickets'];
@@ -201,8 +201,9 @@ class TicketsDisplayController extends BasicController
              $ligne->path = 'upload/'.$ligne->tkl__id.'/';
              $ligne->files = $files;
             }
+            
         }
-       
+      
         $user_destinataire = $Ticket->getCurrentUser($Request['id']);
         $next_action = $Ticket->getNextAction($Request['id']);
         
