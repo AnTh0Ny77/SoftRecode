@@ -205,6 +205,7 @@ class TicketsFormsController extends BasicController
                         $ligne->entities = $entitites_array;
                     }
                 }
+                $sujet = null;
                 foreach ($config as  $entitie) {
                     if (!empty($ticket->sujet)) {
                         $subject_identifier = $ticket->sujet->tksc__option;
@@ -215,7 +216,7 @@ class TicketsFormsController extends BasicController
                     }
                 }
                 $last_ligne = end($ticket->lignes);
-
+               
                 foreach ($config as  $entitie) {
                     if (!empty($ticket->sujet)) {
                         $subject_identifier = $ticket->sujet->tksc__option;
@@ -242,6 +243,7 @@ class TicketsFormsController extends BasicController
                             'user' => $_SESSION['user'],
                             'ligne_forms' => $forms,
                             'forms' => $forms->forms,
+                            'sujet' => $sujet,
                             'tickets' => $forms,
                             'crea_forms' => $crea_forms,
                             'motif' => $motif,
