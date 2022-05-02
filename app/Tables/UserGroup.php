@@ -34,10 +34,10 @@ class UserGroup extends Table {
 
   public function get_groups_by_user($user){
             $request = $this->Db->Pdo->query("SELECT u.* 
-            FROM utilisateur as u
-            LEFT JOIN utilisateur_grp as g ON ( g.id_utilisateur = " . $user .")
-			WHERE ( " . $user ." =  g.id_utilisateur  )
-            ORDER BY prenom");
+			FROM utilisateur_grp as g
+			LEFT JOIN utilisateur as u ON ( g.id_groupe = u.id_utilisateur OR g.id_utilisateur = u.id_utilisateur )
+			WHERE ( ".$user." =  g.id_utilisateur  )
+			ORDER BY prenom");
             $data = $request->fetchAll(PDO::FETCH_CLASS);
             return $data;
   }
@@ -116,15 +116,14 @@ public function get_ticket_for_user($id_user){
 		$string = $id_user;
 	}
 
-	$request = $this->Db->Pdo->query('SELECT
-		Max(ticket_ligne.tkl__dt),
-		ticket_ligne.tkl__tk_id
-		FROM
-		ticket_ligne
-		LEFT JOIN ticket ON ticket_ligne.tkl__tk_id = ticket.tk__id
-		WHERE  	tkl__user_id_dest  IN('.$string.') and  ( ticket.tk__lu = 0 )
-		GROUP BY ticket_ligne.tkl__tk_id ');
-		$user_ticket = $request->fetchAll(PDO::FETCH_OBJ);
+	$request = $this->Db->Pdo->query('SELECT 
+	Max(ticket_ligne.tkl__dt) , ticket_ligne.tkl__tk_id
+	FROM ticket_ligne
+	LEFT JOIN ticket ON ticket_ligne.tkl__tk_id = ticket.tk__id
+	WHERE tkl__user_id_dest  IN('.$string.') AND ( ticket.tk__lu = 0  )
+	AND  ticket_ligne.tkl__dt = ( SELECT Max(t.tkl__dt) FROM ticket_ligne as t WHERE t.tkl__tk_id = ticket.tk__id )
+	GROUP BY ticket_ligne.tkl__tk_id');
+	$user_ticket = $request->fetchAll(PDO::FETCH_OBJ);
 		return $user_ticket;
 }
 public function get_all_ticket_for_user($id_user){
@@ -142,17 +141,17 @@ public function get_all_ticket_for_user($id_user){
 	}else{
 		$string = $id_user;
 	}
+	
 
-	$request = $this->Db->Pdo->query('SELECT
-		Max(ticket_ligne.tkl__dt),
-		ticket_ligne.tkl__tk_id
-		FROM
-		ticket_ligne
-		LEFT JOIN ticket ON ticket_ligne.tkl__tk_id = ticket.tk__id
-		WHERE  (	tkl__user_id_dest  IN('.$string.') AND  ( ticket.tk__lu = 1 or ticket.tk__lu = 0  ) ) OR   (	tkl__user_id  IN('.$string.') AND  ( ticket.tk__lu = 1 or ticket.tk__lu = 0  ) )  
-		GROUP BY ticket_ligne.tkl__tk_id ');
-		$user_ticket = $request->fetchAll(PDO::FETCH_OBJ);
-		return $user_ticket;
+	$request = $this->Db->Pdo->query('SELECT 
+	Max(ticket_ligne.tkl__dt) , ticket_ligne.tkl__tk_id
+	FROM ticket_ligne
+	LEFT JOIN ticket ON ticket_ligne.tkl__tk_id = ticket.tk__id
+	WHERE tkl__user_id_dest  IN('.$string.') AND ( ticket.tk__lu = 0 or ticket.tk__lu = 1 )
+	AND  ticket_ligne.tkl__dt = ( SELECT Max(t.tkl__dt) FROM ticket_ligne as t WHERE t.tkl__tk_id = ticket.tk__id )
+	GROUP BY ticket_ligne.tkl__tk_id');
+	$user_ticket = $request->fetchAll(PDO::FETCH_OBJ);
+	return $user_ticket;
 }
 
 }

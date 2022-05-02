@@ -588,15 +588,16 @@ public function search_user_tickets($id_user, $lu){
 			$groups = new UserGroup($this->Db);
 			$data = $groups->get_ticket_for_user($id_user);
 			foreach ($data as $key => $value) {
-				$value->tk__id = $value-> tkl__tk_id;
+				$value->tk__id = $value->tkl__tk_id;
 			}
 			$list = $this->get_last_ticket($data);
 			return $list;
 		}else{
 			$groups = new UserGroup($this->Db);
 			$data = $groups->get_all_ticket_for_user($id_user);
+		
 			foreach ($data as $key => $value) {
-				$value->tk__id = $value-> tkl__tk_id;
+				$value->tk__id = $value->tkl__tk_id;
 			}
 			$list = $this->get_last_ticket($data);
 			return $list;
