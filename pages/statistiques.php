@@ -334,12 +334,16 @@ if ($nb_fiche > 0)
 	$liste_fiche_rma = substr($liste_fiche_rma, 0, -1); // Supprimer la derniere virgule de la liste de fiches
 
 	// prix du matos sortie du locator pour les fiches Garantie et maintenance
-	$VS_gm_sql       = "SELECT SUM(locator.pu_ht) AS valo_sortie FROM locator ";
-	$VS_gm_sql      .= "where out_id_cmd IN (".$liste_fiche_gm.") AND (id_etat < 20 OR id_etat > 30) ";
-	$VS_gm_request   = $Totoro->Pdo->query($VS_gm_sql);
-	$VS_gm_data      = $VS_gm_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
-	$vs_garmaint     = $VS_gm_data['valo_sortie'];
-
+	$vs_garmaint     = 0;
+	if (strlen($liste_fiche_gm) > 0)
+	{
+		$VS_gm_sql       = "SELECT SUM(locator.pu_ht) AS valo_sortie FROM locator ";
+		$VS_gm_sql      .= "where out_id_cmd IN (".$liste_fiche_gm.") AND (id_etat < 20 OR id_etat > 30) ";
+		$VS_gm_request   = $Totoro->Pdo->query($VS_gm_sql);
+		$VS_gm_data      = $VS_gm_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
+		$vs_garmaint     = $VS_gm_data['valo_sortie'];
+	}
+	
 	// Valeur du matos declassifié sur la periode sans le matos en RMA (je ne m'occupe pas du matos sortie, car si il est sortie je ne le compte pas avant donc pas de double comptage)
 	$VD_sql       = "SELECT SUM(locator.pu_ht) AS valo_down FROM locator ";
 	$VD_sql      .= "WHERE ( down_datetime ".$sql_where_dt." ) ";
