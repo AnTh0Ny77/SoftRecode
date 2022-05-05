@@ -77,7 +77,7 @@ class Tickets extends Table {
 		} else return null;
 	}
 
-	public function get_last_ticket( $tickets){
+	public function get_last_ticket( $tickets , $cloture){
 
 			if (!empty($tickets)) {
 				$results  = [];
@@ -88,11 +88,20 @@ class Tickets extends Table {
 					} else $text .= $entry->tk__id . ', ';
 				}
 				$text .= ' )';
+				if ($cloture == 1) {
+					$request = $this->Db->Pdo->query('SELECT  t.* , MAX(l.tkl__dt) as last_date  FROM ticket as t
+					LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
+					WHERE  ( t.tk__id IN  ' . $text . ')  GROUP BY t.tk__id 
+					ORDER BY last_date DESC  LIMIT 20');
+					$data = $request->fetchAll(PDO::FETCH_OBJ);
+				}else{
 				$request = $this->Db->Pdo->query('SELECT  t.* , MAX(l.tkl__dt) as last_date  FROM ticket as t
-				LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
-				WHERE tk__lu != 2 AND ( t.tk__id IN  ' . $text . ')  GROUP BY t.tk__id 
-				ORDER BY last_date DESC  LIMIT 20');
-				$data = $request->fetchAll(PDO::FETCH_OBJ);
+					LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
+					WHERE tk__lu != 2 AND ( t.tk__id IN  ' . $text . ')  GROUP BY t.tk__id 
+					ORDER BY last_date DESC  LIMIT 20');
+					$data = $request->fetchAll(PDO::FETCH_OBJ);
+				}
+				
 
 				foreach ($data as $ticket) {
 					$ticket = $this->findOne($ticket->tk__id);
@@ -584,29 +593,29 @@ public function findChamp($motif ,$nom){
 		return $data;
 }
 
-public function search_user_tickets($id_user, $lu){
+public function search_user_tickets($id_user, $lu , $cloture){
 		if ($lu == 0 ){
 			$groups = new UserGroup($this->Db);
 			$data = $groups->get_ticket_for_user($id_user);
 			foreach ($data as $key => $value) {
 				$value->tk__id = $value->tkl__tk_id;
 			}
-			$list = $this->get_last_ticket($data);
+			$list = $this->get_last_ticket($data , $cloture);
 			return $list;
 		}else{
 			$groups = new UserGroup($this->Db);
-			$data = $groups->get_all_ticket_for_user($id_user);
+			$data = $groups->get_all_ticket_for_user($id_user , $cloture);
 		
 			foreach ($data as $key => $value) {
 				$value->tk__id = $value->tkl__tk_id;
 			}
-			$list = $this->get_last_ticket($data);
+			$list = $this->get_last_ticket($data, $cloture);
 			return $list;
 		}
 }
 
 
-public function search_ticket( string $input , array $config ){
+public function search_ticket( string $input , array $config  , $cloture){
 	switch ($input) {
 		// case strlen($input) == 7 and is_numeric($input):
 			
@@ -615,37 +624,37 @@ public function search_ticket( string $input , array $config ){
 
 		case strlen($input) == 6 and is_numeric($input):
 			$list = $this->search_ticket_with_id('client', $input);
-			$list = $this->get_last_ticket($list);
+			$list = $this->get_last_ticket($list, $cloture);
 			return $list;
 			break;
 
 		case strlen($input) == 4 and is_numeric($input):
 			$list = $this->search_ticket_with_id('id', $input);
-			$list = $this->get_last_ticket($list);
+			$list = $this->get_last_ticket($list, $cloture);
 			return $list;
 			break;
 
 		case strlen($input) == 3 and is_numeric($input):
 			$list = $this->search_ticket_with_id('ticket', $input);
-			$list = $this->get_last_ticket($list);
+			$list = $this->get_last_ticket($list, $cloture);
 			return $list;
 			break;
 		default:
 				// $list = $this->searchTicket($input, $config);
 				// $list = $this->get_tickets_with_line($list);
 				$list_in_ticket = $this->search_in_ticket($input);
-				$list_in_ticket = $this->get_last_ticket($list_in_ticket);
+				$list_in_ticket = $this->get_last_ticket($list_in_ticket, $cloture);
 				$list = $list_in_ticket ; 
 				
 				$list_in_ligne = $this->search_in_ticket_ligne($input);
-				$list_in_ligne = $this->get_last_ticket($list_in_ligne);
+				$list_in_ligne = $this->get_last_ticket($list_in_ligne, $cloture);
 				if (!empty($list_in_ligne) && !empty($list)) {
 					$list = array_merge($list, $list_in_ligne);
 				} elseif (empty($list) && !empty($list_in_ligne)){
 					$list = $list_in_ligne;
 				}
 				$list_in_subject = $this->search_in_subject($input , $config);
-				$list_in_subject = $this->get_last_ticket($list_in_subject);
+				$list_in_subject = $this->get_last_ticket($list_in_subject, $cloture);
 				if (!empty($list)  && !empty($list_in_subject) ){
 					$list = array_merge($list, $list_in_subject);
 				}elseif(empty($list)  && !empty($list_in_subject)){
