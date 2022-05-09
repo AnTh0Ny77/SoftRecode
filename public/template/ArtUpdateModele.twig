@@ -118,10 +118,10 @@
 							<div class="input-group">
 								{% if regex_article %}
 									<input type="text" class="form-control" name="modele" placeholder="Saisir votre nouveau modele"
-										value="{{regex_article['modele']}}" required minlength="4">
+										value="{{regex_article['modele']}}" required minlength="3">
 								{% else %}
 								<input type="text" class="form-control" name="modele" placeholder="Saisir votre nouveau modele"
-									value="{{ArtFmm.afmm__modele}}" required minlength="4">
+									value="{{ArtFmm.afmm__modele}}" required minlength="3">
 								{% endif %}
 								
 							</div>
