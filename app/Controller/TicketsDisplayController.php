@@ -57,11 +57,20 @@ class TicketsDisplayController extends BasicController
         if (!empty($_GET['nonLu'])) {
             $General->updateAll('ticket', 0 , 'tk__lu', 'tk__id', $_GET['nonLu']);
         }
-
+        $_SESSION['cloture'] = 0;
+        // if (!isset($_SESSION['cloture'])) {
+        //     $_SESSION['cloture'] = 0;
+        // }
+        // if (!empty($_GET['cloture'])) {
+        //     $_SESSION['cloture'] = 1 ;
+        // }
+        // if (isset($_SESSION['cloture']) && empty($_GET['cloture'])) {
+        //     $_SESSION['cloture'] = 0;
+        // }
         if (!empty($_GET['searchTickets'])){
 
             $text_results = $_GET['searchTickets'];
-            $list = $Ticket->search_ticket($_GET['searchTickets'] , $config);
+            $list = $Ticket->search_ticket($_GET['searchTickets'] , $config , $_SESSION['cloture']);
         
             if (empty($list)){
                 $alert_results = true;
@@ -69,9 +78,9 @@ class TicketsDisplayController extends BasicController
            
         }elseif(!empty($_GET['id_user'])){
     
-                $list = $Ticket->search_user_tickets($_GET['id_user'], $_GET['tk__lu']);
+                $list = $Ticket->search_user_tickets($_GET['id_user'], $_GET['tk__lu'] , $_SESSION['cloture']);
         }
-        else $list = $Ticket->get_last();
+        else $list = $Ticket->get_last(1);
 
         if (!empty($list)) {
             $temp_list = $list;
@@ -110,6 +119,7 @@ class TicketsDisplayController extends BasicController
                 'user' => $_SESSION['user'], 
                 'list' => $list , 
                 'alert_results' => $alert_results , 
+                'cloture' => $_SESSION['cloture'],
                 'text_results' => $text_results
             ]
         );

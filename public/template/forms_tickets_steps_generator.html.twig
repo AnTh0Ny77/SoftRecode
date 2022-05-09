@@ -37,9 +37,9 @@
                     {% if sujet %}
                         {{ include('display/display_ticket_subject.html.twig')}}
                     {% endif %}
-                    {% if ligne %}
-                        {{ include('display/display_ticket_previous_ligne.html.twig')}}
-                    {% endif %}
+                    {% for ligne in current_tickets.lignes %}
+                        {{ include('display/display_ticket_ligne.html.twig')}}
+                    {% endfor %}
                 </div>
                 {% for form in forms %}
                     {{ include('forms/forms_tickets_fields.html.twig')}}
