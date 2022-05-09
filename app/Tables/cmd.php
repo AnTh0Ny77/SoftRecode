@@ -1413,7 +1413,7 @@ class Cmd extends Table
       $requestLigne->bindValue(":id__fmm", $object->idfmm);
       $requestLigne->bindValue(":cmdl__garantie_option", $object->extension);
       $requestLigne->bindValue(":cmdl__garantie_puht", floatVal($object->prixGarantie));
-      $requestLigne->bindValue(":cmdl__qte_livr", intval($object->quantite));
+      $requestLigne->bindValue(":cmdl__qte_livr", null);
       $requestLigne->execute();
       return $requestLigne;
   }

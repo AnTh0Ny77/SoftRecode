@@ -162,12 +162,12 @@ else {
                             //si un contact est présent dans l'adresse de livraison :    
                             if ($temp->devis__contact_livraison) {
                                 $contact2 = $Contact->getOne($temp->devis__contact_livraison);
-                                echo "<br> <small>Societe : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
+                                echo "<br> <small>Societe livrée : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
                                 echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>";
                             }
                             // si pas de contact de livraison :
                             else {
-                                echo "<br> <small>Societe :</small><strong><br>";
+                                echo "<br> <small>Societe livrée :</small><strong><br>";
                                 echo Pdfunctions::showSociete($societeLivraison) . "</strong></td>";
                             }
                         }
@@ -176,10 +176,10 @@ else {
                             //si un contact est present:
                             if ($temp->devis__contact__id) {
                                 $contact = $Contact->getOne($temp->devis__contact__id);
-                                echo "<small>Societe : " . $contact->contact__civ . " " . $contact->contact__nom . " " . $contact->contact__prenom . "</small><strong><br>";
+                                echo "<small>Societe livrée et facturée : " . $contact->contact__civ . " " . $contact->contact__nom . " " . $contact->contact__prenom . "</small><strong><br>";
                                 echo Pdfunctions::showSociete($clientView)  . "</strong></td>";
                             } else {
-                                echo "<small>Societe : </small><strong><br>";
+                                echo "<small>Societe livrée et facturée : </small><strong><br>";
                                 echo Pdfunctions::showSociete($clientView)  . "</strong></td>";
                             }
                         }
@@ -349,7 +349,7 @@ else {
                     ?>
                 </table>
             </div>
-            <div class="d-flex justify-content-end mr-3">
+            <div class=" mr-3">
                 <?php
 
                 if (!empty($comand->devis__note_interne)) {
