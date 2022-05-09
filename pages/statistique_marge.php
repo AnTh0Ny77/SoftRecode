@@ -30,7 +30,7 @@ $UserClass = new App\Tables\User($Database);
 //declaration des variables diverses : 
 $alertDate = $resultHt = $NombreCmd = $chartsResponses = $chartsVendeur = $arrayPresta = FALSE;
 $chiffre_cmd_fact = $maintenance_location = $cmdSearch = $abnSearch = FALSE;
-$desc_stat = $type_tot = $titre_stat = $SQL_stat = $liste_fiche_lp = $liste_fiche = $liste_fiche_gm = $liste_fiche_rma = '';
+$debug_info = $type_tot = $titre_stat = $SQL_stat = $liste_fiche_lp = $liste_fiche = $liste_fiche_gm = $liste_fiche_rma = '';
 $client = $vendeur = 'Tous';
 $total_ca = $nb_fiche = $vs_fiche = $vs_fiche_lp = $vs_down = $vs_periode = $vs_garmaint = $tot_ca_veir = $tot_stk_deb = $tot_stk_fin = 0;
 
@@ -105,8 +105,7 @@ $sql_order        = "ORDER BY key_presta.kw__ordre, cmdl__etat ";
 // Yb       dP__Yb
 //  YboodP dP""""Yb
 
-$titre_stat  = 'Chiffre d\'affaires facturé Avec Abonnements (Maint et Loc)';
-$desc_stat   = 'Chiffre d\'affaires (somme CA des fiches) facturé (date de fact.) Avec maintenance (Etat des fiches VLD & VLA) sur la période (prenant en compte les avoirs) (Ce chiffre doit etre le meme que le CA en compta)';
+$titre_stat  = 'Chiffre d\'affaires facturé pour etude de marges';
 $type_tot    = 'CAM';
 $cmd_date    = "cmd__date_fact ";
 $cmd_etat    = "AND cmd__etat IN ('VLD','VLA') ";
@@ -268,8 +267,7 @@ echo $twig->render('statistique_marge.twig',
 'date_fin_fr'      => $date_fin_fr,
 'type_tot'         => $type_tot,
 'titre_stat'       => $titre_stat,
-'desc_stat'        => $desc_stat,
-'sql_stat'         => $T_sql ,
+'debug_info'       => $debug_info,
 't_data'           => $T_data,
 'vs_fiche'         => $vs_fiche,
 'vs_fiche_lp'      => $vs_fiche_lp,
@@ -278,8 +276,6 @@ echo $twig->render('statistique_marge.twig',
 'vs_down'          => $vs_down,
 'tot_ca_ve'        => $tot_ca_ve,
 'tot_ca_veir'      => $tot_ca_veir, // pas bien sur que ca serve  ...
-'vendeurList'      => $vendeurList, 
-'vendeurSelect'    => $vendeur,
 'arrayPresta'      => $arrayPresta , 
 'abnSearch'        => $abnSearch,
 'cmdSearch'        => $cmdSearch,
