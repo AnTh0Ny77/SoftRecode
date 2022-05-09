@@ -113,6 +113,16 @@ $(document).ready(function()
                 $('.controlOption').prop('disabled', true);
                 break;
             
+              case 'REM':
+                $('#garantieRow option[value="00"]').prop('selected', true);
+                $('#etatRow option[value="NEU"]').prop('disabled', 'disabled');
+                $('#etatRow option[value="OCC"]').prop('disabled', 'disabled');
+                $('#etatRow option[value="NC."]').prop('selected', true);
+                $("#garantieRow").prop('disabled', 'disabled');
+                $('#etatRow option[value="NC."]').addClass('bg-dark');
+                $('.controlOption').prop('disabled', true);
+                break;
+            
             case 'LOC':
                 $('#garantieRow option[value="00"]').prop('selected', true);
                 $('#etatRow option[value="NC."]').prop('disabled', 'disabled');
