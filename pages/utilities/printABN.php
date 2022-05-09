@@ -90,7 +90,9 @@ if (empty($_SESSION['user']))
         $objectInsert->idDevis = $temp;
         $objectInsert->prestation = $ABN->ab__presta;
             $objectInsert->designation =  ' Facturation pour la période du   ' . $date_periode_debut .' au ' . $date_periode_fin;
-            $objectInsert->etat = 'NC.';
+            if ($objectInsert->prestation == 'LOC') {
+                $objectInsert->etat = 'OCC';
+            }else { $objectInsert->etat = 'NC.'; }
             $objectInsert->garantie = '';
             $objectInsert->comClient = '';
             $objectInsert->quantite = 1;

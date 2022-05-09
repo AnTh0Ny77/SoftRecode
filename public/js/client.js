@@ -480,7 +480,7 @@ idUtilisateur = $('#idUtilisateur').val();
             },
             success: function (data) 
             {
-              
+              console.log(data);
                 dataSet = JSON.parse(data);
                 checkradio(dataSet);
                 $('#loaderPdf').hide();
@@ -525,7 +525,7 @@ idUtilisateur = $('#idUtilisateur').val();
                 "AjaxDevis" : dataRow[0]
             },
             success: function(data){
-               
+                console.log(data);
                 dataSet = JSON.parse(data);
                 checkradio(dataSet);
                 $('#loaderPdf').hide();

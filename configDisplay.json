@@ -7,13 +7,14 @@
            "identifier_type": "integer",
            "label": [
                "client__id",
-               "client__societe" ,
-                "client__cp" , 
-                "client__ville"
+               "client__societe" 
+               
             ],
            "additionals": [
                "client__adr1" ,
-                "client__adr2"
+                "client__adr2", 
+                "client__cp" , 
+                "client__ville"
                ] ,
            "picture": null,
            "alternative": "public/img/client_image.png"

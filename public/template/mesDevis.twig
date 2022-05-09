@@ -194,7 +194,10 @@
 										</div>
 										</td>
 										{% elseif devis.devis__etat == 'VLD' %}
-										Facturé <i class="fas fa-check-square" style="color: limegreen;"></i> <br> {{ devis.log_nec  }}</td>
+										Facturé <i class="fas fa-check-square" style="color: limegreen;"></i> 
+										<br>
+										N°: {{devis.cmd__id_facture}}<br>
+										 {{ devis.log_nec  }}</td>
 										{% endif %}
 								</tr>
 								

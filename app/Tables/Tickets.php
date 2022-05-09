@@ -254,10 +254,18 @@ class Tickets extends Table {
 			$request = explode('@', $identifier);
 			$subject_table = $this->get_subject_table($request[1]);
 			if (!empty($subject_table) and $entitie->identifier  == $request[0] ){
-				$request = $this->Db->Pdo->query('SELECT  * 
-				FROM '. $subject_table['TABLE_NAME'].' 
-				WHERE '. $entitie->identifier.' = "'. $id.'" ');
-				$data = $request->fetch(PDO::FETCH_ASSOC);
+				if ($subject_table['TABLE_NAME'] == 'client') {
+					$request = $this->Db->Pdo->query('SELECT LPAD(client__id,6,0) as client__id ,  client__societe , client__adr1 , client__adr2 , client__cp , client__ville
+					FROM '. $subject_table['TABLE_NAME'].' 
+					WHERE '. $entitie->identifier.' = "'. $id.'" ');
+					$data = $request->fetch(PDO::FETCH_ASSOC);
+				}else{
+					$request = $this->Db->Pdo->query('SELECT  * 
+					FROM '. $subject_table['TABLE_NAME'].' 
+					WHERE '. $entitie->identifier.' = "'. $id.'" ');
+					$data = $request->fetch(PDO::FETCH_ASSOC);
+				}
+				
 				if (!empty($data)){
 					$subject = [];
 					foreach ($entitie as $key => $properties) {
@@ -296,10 +304,19 @@ class Tickets extends Table {
 			$request = explode('@', $identifier);
 			$subject_table = $this->get_subject_table($request[1]);
 			if (!empty($subject_table) and $entitie->identifier  == $request[0]){
-				$request = $this->Db->Pdo->query('SELECT  * 
-				FROM ' . $subject_table['TABLE_NAME'] . ' 
-				WHERE ' . $entitie->identifier . ' = "' . end($request) . '" ');
-				$data = $request->fetch(PDO::FETCH_ASSOC);
+				if ($subject_table['TABLE_NAME'] == 'client') {
+					$request = $this->Db->Pdo->query('SELECT *,  LPAD(client__id,6,0) as client__id  
+					FROM '. $subject_table['TABLE_NAME'].' 
+					WHERE '. $entitie->identifier.' = "'. end($request).'" ');
+					$data = $request->fetch(PDO::FETCH_ASSOC);
+					$data['client__id'] = '(' .$data['client__id'] . ')';
+				}else{
+					$request = $this->Db->Pdo->query('SELECT  * 
+					FROM '. $subject_table['TABLE_NAME'].' 
+					WHERE '. $entitie->identifier.' = "'. end($request).'" ');
+					$data = $request->fetch(PDO::FETCH_ASSOC);
+				}
+				
 				if (!empty($data)) {
 					$subject = [];
 					foreach ($entitie as $key => $properties) {
