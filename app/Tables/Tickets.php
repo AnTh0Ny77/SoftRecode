@@ -653,8 +653,8 @@ public function search_ticket( string $input , array $config  , $cloture){
 		// 	return 'commande';
 		// 	break;
 
-		case strlen($input) == 6 and is_numeric($input):
-			$list = $this->search_ticket_with_id('client', $input);
+		case strlen((string) $input) == 6 and is_numeric($input) and $input != 0:
+			$list = $this->search_ticket_with_id('client', intval($input));
 			$list = $this->get_last_ticket($list, $cloture);
 			return $list;
 			break;
@@ -777,6 +777,10 @@ public function search_ticket_with_id(string $table , int $id){
 			
 		}
 		
+}
+
+public function clean($string){
+	return preg_replace('/[^A-Za-z0-9\-]/', '', $string);
 }
 
 

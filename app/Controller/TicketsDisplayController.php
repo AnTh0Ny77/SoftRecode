@@ -69,7 +69,10 @@ class TicketsDisplayController extends BasicController
         // }
         if (!empty($_GET['searchTickets'])){
 
+
             $text_results = $_GET['searchTickets'];
+            $_GET['searchTickets'] =  $Ticket->clean($_GET['searchTickets']);
+            $_GET['searchTickets'] = trim($_GET['searchTickets']);
             $list = $Ticket->search_ticket($_GET['searchTickets'] , $config , $_SESSION['cloture']);
         
             if (empty($list)){
