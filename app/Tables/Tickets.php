@@ -38,18 +38,32 @@ class Tickets extends Table {
   }
 
 
-  public function get_last(){
+  public function get_last($cloture){
 	$results  = [];
-	$request = $this->Db->Pdo->query('SELECT  t.* , MAX(l.tkl__dt) as last_date  FROM ticket as t
-	LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
-	WHERE tk__lu != 2 GROUP BY   t.tk__id 
-	ORDER BY last_date  DESC  LIMIT 20');
-	$data = $request->fetchAll(PDO::FETCH_OBJ);
-	foreach ($data as $ticket) {
-		$ticket = $this->findOne($ticket->tk__id);
-		array_push($results , $ticket);
+	if ($cloture == 1 ) {
+		$request = $this->Db->Pdo->query('SELECT  t.* , MAX(l.tkl__dt) as last_date  FROM ticket as t
+		LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
+		WHERE  2 = 2 GROUP BY   t.tk__id 
+		ORDER BY last_date  DESC  LIMIT 20');
+		$data = $request->fetchAll(PDO::FETCH_OBJ);
+		foreach ($data as $ticket) {
+			$ticket = $this->findOne($ticket->tk__id);
+			array_push($results , $ticket);
+		}
+		return $results;
+	}else{
+		$request = $this->Db->Pdo->query('SELECT  t.* , MAX(l.tkl__dt) as last_date  FROM ticket as t
+		LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
+		WHERE tk__lu != 2 GROUP BY   t.tk__id 
+		ORDER BY last_date  DESC  LIMIT 20');
+		$data = $request->fetchAll(PDO::FETCH_OBJ);
+		foreach ($data as $ticket) {
+			$ticket = $this->findOne($ticket->tk__id);
+			array_push($results , $ticket);
+		}
+		return $results;
 	}
-	return $results;
+	
 }
 
 	public function get_last_in( $tickets){
@@ -643,18 +657,18 @@ public function search_ticket( string $input , array $config  , $cloture){
 				// $list = $this->searchTicket($input, $config);
 				// $list = $this->get_tickets_with_line($list);
 				$list_in_ticket = $this->search_in_ticket($input);
-				$list_in_ticket = $this->get_last_ticket($list_in_ticket, $cloture);
+				$list_in_ticket = $this->get_last_ticket($list_in_ticket, 1);
 				$list = $list_in_ticket ; 
 				
 				$list_in_ligne = $this->search_in_ticket_ligne($input);
-				$list_in_ligne = $this->get_last_ticket($list_in_ligne, $cloture);
+				$list_in_ligne = $this->get_last_ticket($list_in_ligne, 1);
 				if (!empty($list_in_ligne) && !empty($list)) {
 					$list = array_merge($list, $list_in_ligne);
 				} elseif (empty($list) && !empty($list_in_ligne)){
 					$list = $list_in_ligne;
 				}
 				$list_in_subject = $this->search_in_subject($input , $config);
-				$list_in_subject = $this->get_last_ticket($list_in_subject, $cloture);
+				$list_in_subject = $this->get_last_ticket($list_in_subject, 1);
 				if (!empty($list)  && !empty($list_in_subject) ){
 					$list = array_merge($list, $list_in_subject);
 				}elseif(empty($list)  && !empty($list_in_subject)){
@@ -924,8 +938,6 @@ public function search_in_ticket(string  $filtre){
 			}
 			$request .= ' )';
 		}
-		
-	
 		$send = $this->Db->Pdo->query($request);
 		$data = $send->fetchAll(PDO::FETCH_OBJ);
 		return $data;

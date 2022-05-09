@@ -57,15 +57,16 @@ class TicketsDisplayController extends BasicController
         if (!empty($_GET['nonLu'])) {
             $General->updateAll('ticket', 0 , 'tk__lu', 'tk__id', $_GET['nonLu']);
         }
-        if (!isset($_SESSION['cloture'])) {
-            $_SESSION['cloture'] = 0;
-        }
-        if (!empty($_GET['cloture'])) {
-            $_SESSION['cloture'] = 1 ;
-        }
-        if (isset($_SESSION['cloture']) && empty($_GET['cloture'])) {
-            $_SESSION['cloture'] = 0;
-        }
+        $_SESSION['cloture'] = 0;
+        // if (!isset($_SESSION['cloture'])) {
+        //     $_SESSION['cloture'] = 0;
+        // }
+        // if (!empty($_GET['cloture'])) {
+        //     $_SESSION['cloture'] = 1 ;
+        // }
+        // if (isset($_SESSION['cloture']) && empty($_GET['cloture'])) {
+        //     $_SESSION['cloture'] = 0;
+        // }
         if (!empty($_GET['searchTickets'])){
 
             $text_results = $_GET['searchTickets'];
@@ -79,7 +80,7 @@ class TicketsDisplayController extends BasicController
     
                 $list = $Ticket->search_user_tickets($_GET['id_user'], $_GET['tk__lu'] , $_SESSION['cloture']);
         }
-        else $list = $Ticket->get_last();
+        else $list = $Ticket->get_last(1);
 
         if (!empty($list)) {
             $temp_list = $list;
