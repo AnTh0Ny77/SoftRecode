@@ -392,6 +392,9 @@ use App\Controller\ExtranetController;
 		case '/SoftRecode/stat'.$get_data;
 			require __DIR__ .'/pages/statistiques.php'; break;
 
+		case '/SoftRecode/stat_marge'.$get_data;
+			require __DIR__ .'/pages/statistique_marge.php'; break;
+
 		case '/SoftRecode/restore';
 			require __DIR__ . '/pages/restore_fact.php';break;
 		
