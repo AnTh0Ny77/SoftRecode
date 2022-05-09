@@ -24,6 +24,7 @@ class customSearchMenu extends HTMLElement
                 input_search.setAttribute('type', 'search');
                 input_search.setAttribute('class', 'form-control form-control-sm border rounded  input-recode');
                 input_search.setAttribute('name', 'search');
+                input_search.setAttribute('autofocus' , true );
                 formRow.append(input_search);
 
                 //definition du boutton : 
