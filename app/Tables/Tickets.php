@@ -115,8 +115,7 @@ class Tickets extends Table {
 					ORDER BY last_date DESC  LIMIT 20');
 					$data = $request->fetchAll(PDO::FETCH_OBJ);
 				}
-				
-
+			
 				foreach ($data as $ticket) {
 					$ticket = $this->findOne($ticket->tk__id);
 					array_push($results, $ticket);

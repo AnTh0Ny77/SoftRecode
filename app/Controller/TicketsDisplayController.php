@@ -13,25 +13,21 @@ use App\Tables\Tickets;
 
 class TicketsDisplayController extends BasicController
 {
-   
-
     public static function handle_groups(array $list) :array{
         $array_tickets = [];
         foreach ($list as $key => $value){
             $array_groups = [];
             if (!empty($value->tk__groupe)){
-                    foreach ($list as $index => $ticket) {
-                        if ($ticket->tk__groupe === $value->tk__groupe and  $ticket->tk__id != $value->tk__id ){
-                            array_push($array_groups  , $ticket);
-                        }
+                foreach ($list as $index => $ticket) {
+                    if ($ticket->tk__groupe === $value->tk__groupe and  $ticket->tk__id != $value->tk__id ){
+                        array_push($array_groups  , $ticket);
                     }
-                    $ticket->groups = $array_groups;
-                    $temp = $ticket;
-                    array_push($array_tickets , $temp);
-                    unset($list[$index]);
-            }else{
-                array_push($array_tickets ,$value);
-            }
+                }
+                $ticket->groups = $array_groups;
+                $temp = $ticket;
+                array_push($array_tickets , $temp);
+                unset($list[$index]);
+             }else array_push($array_tickets ,$value); 
         }
         return $array_tickets;
     }
@@ -44,17 +40,14 @@ class TicketsDisplayController extends BasicController
         $General = new General(self::$Db);
         $alert_results = false;
         $text_results = false; 
-       
         //si un ticket à été cloturé : 
         if (!empty($_POST['ticketsCloture'])){
             $Ticket->cloture_ticket($_POST['ticketsCloture'], $_SESSION['user']->id_utilisateur , date('Y-m-d H:i:s') , $_POST['commentaire']);
         }
-       
         $config = file_get_contents('configDisplay.json');
         $config = json_decode($config);
         $config = $config->entities;
-
-        if (!empty($_GET['nonLu'])) {
+        if (!empty($_GET['nonLu'])){
             $General->updateAll('ticket', 0 , 'tk__lu', 'tk__id', $_GET['nonLu']);
         }
         $_SESSION['cloture'] = 0;
@@ -68,28 +61,21 @@ class TicketsDisplayController extends BasicController
         //     $_SESSION['cloture'] = 0;
         // }
         if (!empty($_GET['searchTickets'])){
-
-
             $text_results = $_GET['searchTickets'];
             $_GET['searchTickets'] =  $Ticket->clean($_GET['searchTickets']);
             $_GET['searchTickets'] = trim($_GET['searchTickets']);
             $list = $Ticket->search_ticket($_GET['searchTickets'] , $config , $_SESSION['cloture']);
-        
-            if (empty($list)){
+            if (empty($list))
                 $alert_results = true;
-            }
-           
         }elseif(!empty($_GET['id_user'])){
-    
                 $list = $Ticket->search_user_tickets($_GET['id_user'], $_GET['tk__lu'] , $_SESSION['cloture']);
         }
         else $list = $Ticket->get_last(1);
-
-        if (!empty($list)) {
+        if (!empty($list)){
             $temp_list = $list;
-            foreach ($list as $key => $ticket) {
-                foreach ($config as  $entitie) {
-                    if (!empty($ticket->sujet)) {
+            foreach ($list as $key => $ticket){
+                foreach ($config as  $entitie){
+                    if (!empty($ticket->sujet)){
                         $subject_identifier = $ticket->sujet->tksc__option;
                         $display_entitie = $Ticket->createEntities($entitie, $subject_identifier, $ticket->tk__motif_id);
                         if (!empty($display_entitie)) {
@@ -97,8 +83,7 @@ class TicketsDisplayController extends BasicController
                         }
                     }
                 }
-                if ( !empty($ticket->sujet)  && !is_array($ticket->sujet)) unset($ticket->sujet);
-
+                if(!empty($ticket->sujet)  && !is_array($ticket->sujet)) unset($ticket->sujet);
                 //groupe les ticket 
                 if (!empty($ticket->tk__groupe)){
                     $array_groups = []; 
@@ -113,9 +98,7 @@ class TicketsDisplayController extends BasicController
                     $ticket->groups = $array_groups;
                 }
             }
-            // $list = self::handle_groups($list);
         }
-        
         return self::$twig->render(
             'display_ticket_list.html.twig',
             [
@@ -128,10 +111,6 @@ class TicketsDisplayController extends BasicController
         );
     }
 
-
-    
-
-
     //@route: /tickets-display
     public static function displayTicket($Request){
         self::init();
@@ -141,28 +120,22 @@ class TicketsDisplayController extends BasicController
         $sujet = null;
         $user_destinataire = null;
         $next_action = null;
-
-        if (!empty($_POST['id'])) {
+        if (!empty($_POST['id']))
             $Request['id'] = $_POST['id'] ;
-        }
-       
-
         if(empty($Request['id'])){
             header('location: tickets-display-list');
             die();
         }
-
         $ticket = $Ticket->findOne($Request['id']);
-        if (empty($ticket)) {
+        if (empty($ticket)){
             header('location: tickets-display-list');
             die();
         }
-
-        if ($ticket->tk__lu != 2) {
+        if ($ticket->tk__lu != 2){
             $last_line = $Ticket->get_last_line($Request['id']);
             if ($last_line->id_dest == $_SESSION['user']->id_utilisateur) {
                 $General->updateAll('ticket', 1, 'tk__lu', 'tk__id', $Request['id']);
-            } elseif ($last_line->id_dest == 1011){
+            }elseif ($last_line->id_dest == 1011){
                 $groups = new UserGroup(self::$Db);
                 $array_user = $groups->get_user_by_groups(1011);
                 if (!empty($array_user)){
@@ -172,7 +145,7 @@ class TicketsDisplayController extends BasicController
                         }
                     }
                 }
-            } elseif ($last_line->id_dest == 1012) {
+            }elseif ($last_line->id_dest == 1012) {
                 $groups = new UserGroup(self::$Db);
                 $array_user = $groups->get_user_by_groups(1012);
                 if (!empty($array_user)) {
@@ -184,12 +157,11 @@ class TicketsDisplayController extends BasicController
                 }
             }
         }
-
         $ticket = $Ticket->findOne($Request['id']);
         $config = file_get_contents('configDisplay.json');
         $config = json_decode($config);
         $config = $config->entities;
-        foreach ($ticket->lignes as $ligne) {
+        foreach ($ticket->lignes as $ligne){
             $entitites_array = [];
             $pattern = "@";
             $other_fields = [];
@@ -214,12 +186,9 @@ class TicketsDisplayController extends BasicController
              $ligne->path = 'upload/'.$ligne->tkl__id.'/';
              $ligne->files = $files;
             }
-            
         }
-      
         $user_destinataire = $Ticket->getCurrentUser($Request['id']);
         $next_action = $Ticket->getNextAction($Request['id']);
-        
         foreach ($config as  $entitie){
            if (!empty($ticket->sujet)){
                 $subject_identifier = $ticket->sujet->tksc__option;
@@ -228,10 +197,7 @@ class TicketsDisplayController extends BasicController
                     $sujet = $display_entitie;
                 }
            }
-         
-         
         }
-      
         return self::$twig->render(
             'display_ticket.html.twig',
             [
@@ -240,7 +206,6 @@ class TicketsDisplayController extends BasicController
                 'sujet' =>  $sujet ,
                 'ticket' => $ticket , 
                 'next_action'=> $next_action
-                
             ]
         );
     }
