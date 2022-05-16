@@ -527,6 +527,55 @@ class Tickets extends Table {
 	return $array_response;
 }
 
+public function get_destinataire_by_groups(array $groups){
+	$results = [];
+	foreach ( $groups as $value) {
+		switch (intval($value)){
+			case 1001:
+			case 1002:
+				$request = $this->Db->Pdo->query('SELECT  id_utilisateur , nom , prenom
+				FROM utilisateur
+				WHERE  ( id_utilisateur < 1000 ) 
+				ORDER BY id_utilisateur');
+				$data = $request->fetchAll(PDO::FETCH_ASSOC);
+				break;
+			case 1011:
+				$request = $this->Db->Pdo->query('SELECT id_utilisateur , nom , prenom
+				FROM utilisateur
+				WHERE  ( id_utilisataeur  IN ( 1011 )  ) 
+				ORDER BY id_utilisateur');
+				$data = $request->fetchAll(PDO::FETCH_ASSOC);
+				break;
+			case 1012:
+				$request = $this->Db->Pdo->query('SELECT  id_utilisateur , nom , prenom
+				FROM utilisateur
+				WHERE  ( id_utilisateur  IN ( 1012 )  ) 
+				ORDER BY id_utilisateur');
+				$data = $request->fetchAll(PDO::FETCH_ASSOC);
+				break;
+		}
+		
+		foreach ($data as $entry) {
+			$subject = new stdClass;
+			$lib = '';
+			foreach( $entry as $key => $value){
+				if ($key === array_key_first($entry)){
+					$subject->id = $value ; 
+				}
+				else{
+					$lib .= ' ' . $value . ' ';
+				}
+				
+			}
+			$subject->lib = $lib;
+			array_push($results , $subject);
+		}
+		
+	}
+	
+	return $results;
+}
+
   public function get_for_select($array_column, $table_name){
 		$request_string =  '';
 		foreach ($array_column as $key => $column) {
@@ -554,23 +603,32 @@ class Tickets extends Table {
 		$champs = $request->fetchAll(PDO::FETCH_OBJ);
 		$multiparts = null;
 		foreach($champs as $key => $value){
-		if ($value->tksc__type_de_champ == 'FIL') {
+		if ($value->tksc__type_de_champ == 'FIL'){
 			$multiparts =  true;
 		}
-		if (!empty($value->tksc__option)){
-			if (preg_match('/@/' , $value->tksc__option) == 1 and  $value->tksc__type_de_champ != 'CLI'){
-				$request = explode('@',$value->tksc__option);
-                $subject_list = $this->get_subject_table($request[0]);
-				if (!empty($subject_list)){
-					$subject_list = $this->get_subject_list($request , $subject_list['TABLE_NAME']);
-					$value->tksc__option = $subject_list;
+		if ($value->tksc__nom_champ == 'A_Qui') {
+			$data->tks__a_qui = explode(';' , $data->tks__a_qui );
+			$list = $this->get_destinataire_by_groups($data->tks__a_qui);
+			$value->tksc__option = $list;
+		}
+		else{
+			if (!empty($value->tksc__option)){
+				if (preg_match('/@/' , $value->tksc__option) == 1 and  $value->tksc__type_de_champ != 'CLI'){
+					$request = explode('@',$value->tksc__option);
+					$subject_list = $this->get_subject_table($request[0]);
+					if (!empty($subject_list)){
+						$subject_list = $this->get_subject_list($request , $subject_list['TABLE_NAME']);
+						$value->tksc__option = $subject_list;
+					}
+				}
+				else{
+					$value->tksc__option = explode(';' ,$value->tksc__option);
 				}
 			}
-			else{
-				$value->tksc__option = explode(';' ,$value->tksc__option);
-			}
 		}
+		
 	}
+	$data->tks__a_qui = $data->tks__a_qui[0];
 	$data->multiparts = $multiparts;
 	$data->forms =  $champs;
 	return $data;
@@ -593,19 +651,28 @@ class Tickets extends Table {
 			if ($value->tksc__type_de_champ == 'FIL') {
 				$multiparts =  true;
 			}
-			if (!empty($value->tksc__option)) {
-				if (preg_match('/@/', $value->tksc__option) == 1 and  $value->tksc__type_de_champ != 'CLI'){
-					$request = explode('@', $value->tksc__option);
-					$subject_list = $this->get_subject_table($request[0]);
-					if (!empty($subject_list)) {
-						$subject_list = $this->get_subject_list($request, $subject_list['TABLE_NAME']);
-						$value->tksc__option = $subject_list;
+			if ($value->tksc__nom_champ == 'A_Qui') {
+				$data->tks__a_qui = explode(';' , $data->tks__a_qui );
+				$list = $this->get_destinataire_by_groups($data->tks__a_qui);
+				$value->tksc__option = $list;
+			}
+			else{
+				if (!empty($value->tksc__option)) {
+					if (preg_match('/@/', $value->tksc__option) == 1 and  $value->tksc__type_de_champ != 'CLI'){
+						$request = explode('@', $value->tksc__option);
+						$subject_list = $this->get_subject_table($request[0]);
+						if (!empty($subject_list)) {
+							$subject_list = $this->get_subject_list($request, $subject_list['TABLE_NAME']);
+							$value->tksc__option = $subject_list;
+						}
+					} else {
+						$value->tksc__option = explode(';', $value->tksc__option);
 					}
-				} else {
-					$value->tksc__option = explode(';', $value->tksc__option);
 				}
 			}
+			
 		}
+		$data->tks__a_qui = $data->tks__a_qui[0];
 		$data->multiparts = $multiparts;
 		$data->forms =  $champs;
 		return $data;
