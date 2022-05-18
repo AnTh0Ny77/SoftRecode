@@ -153,7 +153,7 @@ class Tickets extends Table {
 		LEFT JOIN keyword as k ON ( k.kw__value = t.tk__motif AND  k.kw__type= "tmoti") 
 		WHERE t.tk__id = "'.$id.'" ');
 		$ticket = $request->fetch(PDO::FETCH_OBJ);
-		$request = $this->Db->Pdo->query('SELECT  l.*  , u.nom , u.prenom , z.nom as nom_dest , z.prenom as prenom_dest , z.id_utilisateur as id_dest
+		$request = $this->Db->Pdo->query('SELECT  l.*  , u.id_utilisateur ,  u.nom , u.prenom , z.nom as nom_dest , z.prenom as prenom_dest , z.id_utilisateur as id_dest
 		FROM ticket_ligne as l
 		LEFT JOIN utilisateur AS u ON ( u.id_utilisateur = l.tkl__user_id ) 
 		LEFT JOIN utilisateur AS z ON ( z.id_utilisateur = l.tkl__user_id_dest ) 
@@ -351,7 +351,7 @@ class Tickets extends Table {
   public function insert_ticket(array $post ){
 
 	if ($post['type'] === 'DP' && empty($post['Titre'])) {
-		$post['Titre'] = $post['Quantite'] . ' - ' ;
+		$post['Titre'] = $post['Quantite'] . ' X ' ;
 		$Article = new Article($this->Db);
 		$Pn = $Article->get_pn_byID($post['Pn']);
 		$post['Titre'] .=  $Pn->apn__pn_long ;
