@@ -1,4 +1,9 @@
-<div class="card-recode-ligne d-flex flex-column my-2">
+
+{% if user.id_utilisateur == ligne.id_utilisateur %}
+    <div class="card-recode-ligne d-flex flex-column my-2 bg-dialog-self ml-5">
+{% else %}
+    <div class="card-recode-ligne d-flex flex-column my-2 mr-5">
+{% endif %}
     <div class="recode-ligne-header mt-2 mb-4">
         <h5>
             <span class="font-weight-bold">

@@ -51,7 +51,14 @@
                             {{ticket.last_line.prenom_dest ~ " " ~ ticket.last_line.nom_dest}}
                         </span>
                     </span>
-                {% endif %}    
+                {% endif %}
+                {{ dump(ticket.first_line) }}  
+                <br>
+                <span class="text-dark font-weight-bold text-uppercase">
+                    <span class="recode-orange-title">
+                        {{ticket.last_line.prenom_dest ~ " " ~ ticket.last_line.nom_dest}}
+                    </span>
+                </span>
             </p>
         </div>
         <div class="col-6">

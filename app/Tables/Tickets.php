@@ -115,8 +115,7 @@ class Tickets extends Table {
 					ORDER BY last_date DESC  LIMIT 20');
 					$data = $request->fetchAll(PDO::FETCH_OBJ);
 				}
-				
-
+			
 				foreach ($data as $ticket) {
 					$ticket = $this->findOne($ticket->tk__id);
 					array_push($results, $ticket);
@@ -154,7 +153,7 @@ class Tickets extends Table {
 		LEFT JOIN keyword as k ON ( k.kw__value = t.tk__motif AND  k.kw__type= "tmoti") 
 		WHERE t.tk__id = "'.$id.'" ');
 		$ticket = $request->fetch(PDO::FETCH_OBJ);
-		$request = $this->Db->Pdo->query('SELECT  l.*  , u.nom , u.prenom , z.nom as nom_dest , z.prenom as prenom_dest , z.id_utilisateur as id_dest
+		$request = $this->Db->Pdo->query('SELECT  l.*  , u.id_utilisateur ,  u.nom , u.prenom , z.nom as nom_dest , z.prenom as prenom_dest , z.id_utilisateur as id_dest
 		FROM ticket_ligne as l
 		LEFT JOIN utilisateur AS u ON ( u.id_utilisateur = l.tkl__user_id ) 
 		LEFT JOIN utilisateur AS z ON ( z.id_utilisateur = l.tkl__user_id_dest ) 
@@ -352,7 +351,7 @@ class Tickets extends Table {
   public function insert_ticket(array $post ){
 
 	if ($post['type'] === 'DP' && empty($post['Titre'])) {
-		$post['Titre'] = $post['Quantite'] . ' - ' ;
+		$post['Titre'] = $post['Quantite'] . ' X ' ;
 		$Article = new Article($this->Db);
 		$Pn = $Article->get_pn_byID($post['Pn']);
 		$post['Titre'] .=  $Pn->apn__pn_long ;
@@ -528,6 +527,55 @@ class Tickets extends Table {
 	return $array_response;
 }
 
+public function get_destinataire_by_groups(array $groups){
+	$results = [];
+	foreach ( $groups as $value) {
+		switch (intval($value)){
+			case 1001:
+			case 1002:
+				$request = $this->Db->Pdo->query('SELECT  id_utilisateur , nom , prenom
+				FROM utilisateur
+				WHERE  ( id_utilisateur < 1000 ) 
+				ORDER BY id_utilisateur');
+				$data = $request->fetchAll(PDO::FETCH_ASSOC);
+				break;
+			case 1011:
+				$request = $this->Db->Pdo->query('SELECT id_utilisateur , nom , prenom
+				FROM utilisateur
+				WHERE  ( id_utilisataeur  IN ( 1011 )  ) 
+				ORDER BY id_utilisateur');
+				$data = $request->fetchAll(PDO::FETCH_ASSOC);
+				break;
+			case 1012:
+				$request = $this->Db->Pdo->query('SELECT  id_utilisateur , nom , prenom
+				FROM utilisateur
+				WHERE  ( id_utilisateur  IN ( 1012 )  ) 
+				ORDER BY id_utilisateur');
+				$data = $request->fetchAll(PDO::FETCH_ASSOC);
+				break;
+		}
+		
+		foreach ($data as $entry) {
+			$subject = new stdClass;
+			$lib = '';
+			foreach( $entry as $key => $value){
+				if ($key === array_key_first($entry)){
+					$subject->id = $value ; 
+				}
+				else{
+					$lib .= ' ' . $value . ' ';
+				}
+				
+			}
+			$subject->lib = $lib;
+			array_push($results , $subject);
+		}
+		
+	}
+	
+	return $results;
+}
+
   public function get_for_select($array_column, $table_name){
 		$request_string =  '';
 		foreach ($array_column as $key => $column) {
@@ -555,23 +603,32 @@ class Tickets extends Table {
 		$champs = $request->fetchAll(PDO::FETCH_OBJ);
 		$multiparts = null;
 		foreach($champs as $key => $value){
-		if ($value->tksc__type_de_champ == 'FIL') {
+		if ($value->tksc__type_de_champ == 'FIL'){
 			$multiparts =  true;
 		}
-		if (!empty($value->tksc__option)){
-			if (preg_match('/@/' , $value->tksc__option) == 1 and  $value->tksc__type_de_champ != 'CLI'){
-				$request = explode('@',$value->tksc__option);
-                $subject_list = $this->get_subject_table($request[0]);
-				if (!empty($subject_list)){
-					$subject_list = $this->get_subject_list($request , $subject_list['TABLE_NAME']);
-					$value->tksc__option = $subject_list;
+		if ($value->tksc__nom_champ == 'A_Qui') {
+			$data->tks__a_qui = explode(';' , $data->tks__a_qui );
+			$list = $this->get_destinataire_by_groups($data->tks__a_qui);
+			$value->tksc__option = $list;
+		}
+		else{
+			if (!empty($value->tksc__option)){
+				if (preg_match('/@/' , $value->tksc__option) == 1 and  $value->tksc__type_de_champ != 'CLI'){
+					$request = explode('@',$value->tksc__option);
+					$subject_list = $this->get_subject_table($request[0]);
+					if (!empty($subject_list)){
+						$subject_list = $this->get_subject_list($request , $subject_list['TABLE_NAME']);
+						$value->tksc__option = $subject_list;
+					}
+				}
+				else{
+					$value->tksc__option = explode(';' ,$value->tksc__option);
 				}
 			}
-			else{
-				$value->tksc__option = explode(';' ,$value->tksc__option);
-			}
 		}
+		
 	}
+	$data->tks__a_qui = $data->tks__a_qui[0];
 	$data->multiparts = $multiparts;
 	$data->forms =  $champs;
 	return $data;
@@ -594,19 +651,28 @@ class Tickets extends Table {
 			if ($value->tksc__type_de_champ == 'FIL') {
 				$multiparts =  true;
 			}
-			if (!empty($value->tksc__option)) {
-				if (preg_match('/@/', $value->tksc__option) == 1 and  $value->tksc__type_de_champ != 'CLI'){
-					$request = explode('@', $value->tksc__option);
-					$subject_list = $this->get_subject_table($request[0]);
-					if (!empty($subject_list)) {
-						$subject_list = $this->get_subject_list($request, $subject_list['TABLE_NAME']);
-						$value->tksc__option = $subject_list;
+			if ($value->tksc__nom_champ == 'A_Qui') {
+				$data->tks__a_qui = explode(';' , $data->tks__a_qui );
+				$list = $this->get_destinataire_by_groups($data->tks__a_qui);
+				$value->tksc__option = $list;
+			}
+			else{
+				if (!empty($value->tksc__option)) {
+					if (preg_match('/@/', $value->tksc__option) == 1 and  $value->tksc__type_de_champ != 'CLI'){
+						$request = explode('@', $value->tksc__option);
+						$subject_list = $this->get_subject_table($request[0]);
+						if (!empty($subject_list)) {
+							$subject_list = $this->get_subject_list($request, $subject_list['TABLE_NAME']);
+							$value->tksc__option = $subject_list;
+						}
+					} else {
+						$value->tksc__option = explode(';', $value->tksc__option);
 					}
-				} else {
-					$value->tksc__option = explode(';', $value->tksc__option);
 				}
 			}
+			
 		}
+		$data->tks__a_qui = $data->tks__a_qui[0];
 		$data->multiparts = $multiparts;
 		$data->forms =  $champs;
 		return $data;
@@ -653,8 +719,8 @@ public function search_ticket( string $input , array $config  , $cloture){
 		// 	return 'commande';
 		// 	break;
 
-		case strlen($input) == 6 and is_numeric($input):
-			$list = $this->search_ticket_with_id('client', $input);
+		case strlen((string) $input) == 6 and is_numeric($input) and $input != 0:
+			$list = $this->search_ticket_with_id('client', intval($input));
 			$list = $this->get_last_ticket($list, $cloture);
 			return $list;
 			break;
@@ -777,6 +843,10 @@ public function search_ticket_with_id(string $table , int $id){
 			
 		}
 		
+}
+
+public function clean($string){
+	return preg_replace('/[^A-Za-z0-9\-]/', '', $string);
 }
 
 

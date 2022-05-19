@@ -25,6 +25,14 @@
     display: inline-block;
     font-size: 14px;
 }
+.bg-dialog-self{
+    background: linear-gradient(to bottom, #90e4f0 0%, #77c5f3 100%);
+    border-radius: 20px;
+}
+
+.bg-dialog-ext{
+
+}
 
 .btn-recode-important {
     background-color: #4CAF50 !important;

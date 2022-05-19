@@ -90,7 +90,7 @@
                 {% endif %}
             </div>
     {% elseif form.tksc__type_de_champ == "SLT" %}
-            {% if form.tksc__nom_champ != 'A_Qui' %}
+            {% if form.tksc__nom_champ != 'A_Qui' %}   
                 {% if form.tksc__obligatoire == 1 %}
                     <h5 class="text-white">{{form.tksc__label}} *</h5>
                     <select class=" selectpicker  show-tick " data-width="100%" data-live-search="true" data-size="10" name="{{form.tksc__nom_champ}}" required>
@@ -124,6 +124,7 @@
                 {% endif %}
             {% else %}
                 <h5 class="text-white">{{form.tksc__label}} *</h5>
+              
                 <select class=" selectpicker  show-tick " data-width="100%" data-live-search="true" data-size="10"
                     name="{{form.tksc__nom_champ}}" required>
                     {% for subject in form.tksc__option %}

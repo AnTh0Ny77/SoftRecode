@@ -12,15 +12,12 @@ use App\Tables\Tickets;
 
 class TicketsFormsController extends BasicController
 {
-
     public static function forms(): string
     {
         self::init();
         self::security();
-
         $Article = new Article(self::$Db);
         $famille_list = $Article->getFAMILLE();
-
         return self::$twig->render(
             'forms_tickets.twig',
             [
@@ -67,7 +64,6 @@ class TicketsFormsController extends BasicController
         );
     }
 
-
     public static function find_for_duplicata(string $ticket_id, object $Tickets){
         $response = [];
         $response['fields'] = [];
@@ -92,12 +88,9 @@ class TicketsFormsController extends BasicController
                             }
                         }
                 }
-         
-        }
-        
+        }   
         return $response;
     }
-
 
     //@route: /tickets-handle-forms
     public static function FormsMarker(){
@@ -113,9 +106,7 @@ class TicketsFormsController extends BasicController
         $motif_lib = null;  
         $duplicata_ticket = null;
         $preset = [];   
-
         //preset traitement : 
-
         if (!empty($_GET)){
             //si duplicata : 
             if (!empty($_GET['duplicata'])){
@@ -135,7 +126,6 @@ class TicketsFormsController extends BasicController
                     }
                 }
             }
-
             if (!empty($_GET['TypeTickets'])){
                 $_POST['TypeTickets'] = $_GET['TypeTickets'];
             }
@@ -144,7 +134,6 @@ class TicketsFormsController extends BasicController
                     $preset[$key] = $value;
                 }
             }
-          
         }
 
         //soit le post émane de la creation ( avec motif / soit le post contient un id tickets )
@@ -152,10 +141,7 @@ class TicketsFormsController extends BasicController
             $crea_forms = 1 ;
             $tickets = $Ticket->find_first_step($_POST['TypeTickets']);
             $motif = $tickets->tks__motif_ligne;
-            $motif_lib = $tickets->tks__lib;
-          
-            
-            
+            $motif_lib = $tickets->tks__lib;            
             return self::$twig->render(
                 'forms_tickets_generator.html.twig',
                 [
