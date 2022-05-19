@@ -73,16 +73,19 @@ public function get_dp_client($tk__id){
 		$data = $request->fetch(PDO::FETCH_OBJ);
 		if (!empty($data)){
 			$request = explode('@', $data->tklc__memo);
-			$subject_table = $this->get_subject_table($request[1]);
-			if (!empty($subject_table)  ){
-				if ($subject_table['TABLE_NAME'] == 'client') {
-					$request = $this->Db->Pdo->query('SELECT LPAD(client__id,6,0) as client__id ,  client__societe , client__adr1 , client__adr2 , client__cp , client__ville
-					FROM '. $subject_table['TABLE_NAME'].' 
-					WHERE client__id = "'.$request[2].'" ');
-					$client = $request->fetch(PDO::FETCH_ASSOC);
-					return $client;
+			if (!empty($request[1])) {
+				$subject_table = $this->get_subject_table($request[1]);
+				if (!empty($subject_table)  ){
+					if ($subject_table['TABLE_NAME'] == 'client') {
+						$request = $this->Db->Pdo->query('SELECT LPAD(client__id,6,0) as client__id ,  client__societe , client__adr1 , client__adr2 , client__cp , client__ville
+						FROM '. $subject_table['TABLE_NAME'].' 
+						WHERE client__id = "'.$request[2].'" ');
+						$client = $request->fetch(PDO::FETCH_ASSOC);
+						return $client;
+					}
 				}
 			}
+			
 		}
 		return null;
 }
@@ -167,7 +170,6 @@ public function get_dp_client($tk__id){
 		return intval($data->groupe) +1 ;
 	}
   }
-
 
   public function findOne($id){
 	    $tmoti = "tmoti";
