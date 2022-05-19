@@ -27,12 +27,67 @@ $Totoro    = new App\Totoro('euro');
 $Totoro->DbConnect();
 $UserClass = new App\Tables\User($Database);
 
+/*8888  dP"Yb  88b 88  dP""b8 888888 88  dP"Yb  88b 88 .dP"Y8 
+88__   dP   Yb 88Yb88 dP   `"   88   88 dP   Yb 88Yb88 `Ybo." 
+88""   Yb   dP 88 Y88 Yb        88   88 Yb   dP 88 Y88 o.`Y8b 
+88      YbodP  88  Y8  YboodP   88   88  YbodP  88  Y8 8bodP*/ 
+
+function sql_1_an($sql, $option=false)
+{ 
+	$search  = array('2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030');
+	$replace = array('2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026', '2027', '2028', '2029');
+	$sql_1   = str_replace($search, $replace, $sql);
+	
+	return $sql_1; // indique la valeur à renvoyer 
+} 
+
+function lg_tab_html($sql, $prestation, $etat, $base='sosuke')
+{
+	global $Database; // Rend la variable accessible dans la fonction.
+	global $Totoro;
+	$lg_tab    = '';
+	if ($base == 'totoro')
+	{
+		$T_data    = $Totoro->Pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+		$somme     = $T_data['SOMME'];
+		$sql_1     = sql_1_an($sql);
+		$T_data    = $Totoro->Pdo->query($sql_1)->fetch(PDO::FETCH_ASSOC);
+		$somme_1   = $T_data['SOMME'];
+	}
+	else // pour sosuké par default
+	{
+		$T_data    = $Database->Pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+		$somme     = $T_data['SOMME'];
+		$sql_1     = sql_1_an($sql);
+		$T_data    = $Database->Pdo->query($sql_1)->fetch(PDO::FETCH_ASSOC);
+		$somme_1   = $T_data['SOMME'];
+	}
+	if ($somme_1) // pour eviter le divizion par 0
+		$variation = (($somme-$somme_1)/$somme_1)*100;
+	else
+		$variation = '0'; 
+	$lg_tab   .= '<tr> ';
+	$lg_tab   .= '<td>'.$prestation.'</td> ';
+	$lg_tab   .= '<td>'.$etat.'</td> ';
+	$lg_tab   .= '<td align=right>'.number_format($somme, 2, ',', ' ').'</td> ';
+	$lg_tab   .= '<td align=right>'.number_format($somme_1, 2, ',', ' ').'</td> ';
+	$lg_tab   .= '<td align=right>'.number_format($variation, 2, ',', ' ').' %</td> ';
+	$lg_tab   .= '</tr> ';
+
+	return $lg_tab; // renvoie la ligne complette de tableau en html
+} 
+
+function lg_tab_separateur($titre, $option=false)
+{
+	$lg_tab    = '';
+	$lg_tab   .= '<tr class="table-info"><td colspan=5><b>'.$titre.'</b></td></tr> ';
+
+	return $lg_tab; // renvoie la ligne complette de tableau en html
+} 
+
+
 //declaration des variables diverses : 
-$alertDate = $resultHt = $NombreCmd = $chartsResponses = $chartsVendeur = $arrayPresta = FALSE;
-$chiffre_cmd_fact = $maintenance_location = $cmdSearch = $abnSearch = FALSE;
-$debug_info = $type_tot = $titre_stat = $SQL_stat = $liste_fiche_lp = $liste_fiche = $liste_fiche_gm = $liste_fiche_rma = '';
-$client = $vendeur = 'Tous';
-$total_ca = $nb_fiche = $vs_fiche = $vs_fiche_lp = $vs_down = $vs_periode = $vs_garmaint = $tot_ca_veir = $tot_stk_deb = $tot_stk_fin = 0;
+$debug_info = $tab_html = '';
 
 // recuperations des GET ou POST
 $date_debut     = get_post('date_debut', 1, 'GETPOST');
@@ -59,46 +114,61 @@ la base de select est la meme, le groupement aussi, le where change en fonctions
 des type de demandes.
 
 pour info : le BETWEEN doit etre utilisé avec 23:59:59 ou sans precision d'heure pour la limite de fin  
-il faut ajouter un jour a la date ($date_fin_plus_un = date("Y-m-d", strtotime($Date.'+ 1 days'));)
-****************************************************************************** 
-Exemple de requette
-SELECT
-	sum(cmdl__qte_fact * cmdl__puht) + IFNULL(SUM(cmdl__qte_fact * cmdl__garantie_puht),0) AS total_fiche,
-	cmdl__prestation,
-	cmdl__etat
-FROM
-	cmd
-LEFT JOIN cmd_ligne ON cmd_ligne.cmdl__cmd__id = cmd.cmd__id
-WHERE
-	cmd__date_fact BETWEEN '2021-04-01 00:00:00'
-AND '2021-04-30 23:59:59'
-AND cmd__etat IN ('VLD', 'VLA')
-GROUP BY
-	cmdl__prestation,
-	cmdl__etat
-ORDER BY
-	cmdl__prestation,
-	cmdl__etat
-****************************************************************************** */
+il faut ajouter un jour a la date ($date_fin_plus_un = date("Y-m-d", strtotime($Date.'+ 1 days'));) */
 
 // Base commune pour creation requette
-$sql_select_tabF  = "SELECT sum(cmdl__qte_fact*cmdl__puht) + IFNULL(SUM(cmdl__qte_fact * cmdl__garantie_puht),0) AS total_fiche, ";
-$sql_select_tabF .= "cmdl__prestation, key_presta.kw__lib AS presta, key_etat.kw__lib AS etat FROM cmd ";
-$sql_select_CA    = "SELECT sum(cmdl__qte_fact * cmdl__puht)  AS tot_ca_ve FROM cmd ";
-$sql_select_tabC  = "SELECT sum(cmdl__qte_cmd*cmdl__puht) + IFNULL(SUM(cmdl__qte_cmd * cmdl__garantie_puht),0) AS total_fiche, ";
-$sql_select_tabC .= "key_presta.kw__lib AS presta, key_etat.kw__lib AS etat FROM cmd ";
-$sql_select_ct    = "SELECT COUNT(DISTINCT(cmd.cmd__id)) AS nb_fiche FROM cmd ";
-$sql_select_liste = "SELECT DISTINCT(cmd__id) FROM cmd ";
-$sql_select_join  = "LEFT JOIN cmd_ligne ON cmd_ligne.cmdl__cmd__id = cmd.cmd__id ";
-$sql_select_join .= "INNER JOIN keyword AS key_etat    ON cmd_ligne.cmdl__etat = key_etat.kw__value AND key_etat.kw__type = 'letat' ";
-$sql_select_join .= "INNER JOIN keyword AS key_presta ON cmd_ligne.cmdl__prestation = key_presta.kw__value AND key_presta.kw__type = 'pres' ";
+// Sosuké (SQL)
+$sql_select_vente = "SELECT SUM(cmdl__qte_fact * cmdl__puht) AS SOMME ";
+$sql_select_v_gar = "SELECT SUM(cmdl__qte_fact * cmdl__garantie_puht) AS SOMME ";
+$sql_from         = "FROM cmd LEFT JOIN cmd_ligne ON cmd_ligne.cmdl__cmd__id = cmd.cmd__id ";
+$sql_famille      = "LEFT JOIN art_fmm ON cmd_ligne.cmdl__id__fmm = art_fmm.afmm__id AND cmd_ligne.cmdl__id__fmm = art_fmm.afmm__id ";
+$sql_famille     .= "LEFT JOIN keyword ON art_fmm.afmm__famille = keyword.kw__value AND keyword.kw__type = 'famil' ";
 $sql_where        = "WHERE ";
-$sql_where_dt     = "BETWEEN '".$date_debut." 00:00:00' AND '".$date_fin." 23:59:59' ";
-$sql_where_no_loc = "AND (cmdl__prestation <> 'LOC' AND cmdl__prestation <> 'PRE' AND cmdl__prestation <> 'PRT') ";
-$sql_where_loc    = "AND (cmdl__prestation = 'LOC' OR cmdl__prestation = 'PRE') ";
-$sql_tot_ca_ve    = "AND (cmdl__prestation IN ('ECH','VTE')) ";
-$sql_groupby      = "GROUP BY cmdl__prestation, cmdl__etat ";
-$sql_order        = "ORDER BY key_presta.kw__ordre, cmdl__etat ";
+$sql_where       .= "cmd__date_fact BETWEEN '".$date_debut." 00:00:00' AND '".$date_fin." 23:59:59' ";
+$sql_where       .= "AND cmd__etat IN ('VLD', 'VLA') ";
+$sql_w_vte        = "AND cmdl__prestation = 'VTE' ";
+$sql_w_ech        = "AND cmdl__prestation = 'ECH' ";
+$sql_w_rpr        = "AND cmdl__prestation = 'RPR' ";
+$sql_w_rem        = "AND cmdl__prestation = 'REM' ";
+$sql_w_rep        = "AND cmdl__prestation = 'REP' ";
+$sql_w_loc        = "AND cmdl__prestation = 'LOC' ";
+$sql_w_int        = "AND cmdl__prestation IN ('INT','DEP') ";
+$sql_w_mnt        = "AND cmdl__prestation = 'MNT' ";
+$sql_w_prt        = "AND cmdl__prestation = 'PRT' ";
+$sql_w_neu        = "AND cmdl__etat = 'NEU' ";
+$sql_w_occ        = "AND cmdl__etat = 'OCC' ";
+$sql_w_cdb        = "AND keyword.kw__info = 'CDB' ";
+$sql_w_imp        = "AND keyword.kw__info IN ('ILM', 'IT') ";
+$sql_w_mic        = "AND keyword.kw__info = 'MICRO' ";
+$sql_w_con        = "AND keyword.kw__info = 'CONSO' ";
+$sql_w_pid        = "AND keyword.kw__info = 'PID' ";
+$sql_w_acc        = "AND keyword.kw__info = 'ACC' ";
+$sql_w_ser        = "AND keyword.kw__info IN ('SER','XX') ";
+// Totoro (TQL) c'est bien du sql mais c'est pour les differencier
+$tql_select_achat = "SELECT SUM(pu_ht) AS SOMME ";
+$tql_from         = "FROM locator ";
+$tql_where        = "WHERE ";
+$tql_where       .= "in_datetime BETWEEN '".$date_debut." 00:00:00' AND '".$date_fin." 23:59:59' ";
+$tql_w_achat      = "AND in_prest = 'Achat' ";
+$tql_w_neuf       = "AND id_etat = 1 ";
+$tql_w_occ        = "AND id_etat IN (0, 11) ";
+$tql_w_conso      = "AND id_etat IN (31, 32) ";
+$tql_sel_po_port  = "SELECT SUM(po_frais_port_euro) AS SOMME ";
+$tql_from_po      = "FROM po ";
+$tql_where_po     = "WHERE ";
+$tql_where_po    .= "po_dt_cmd BETWEEN '".$date_debut."' AND '".$date_fin."' ";
+$tql_stk_sql      = "SELECT sum(locator.pu_ht) AS SOMME FROM locator WHERE ";
+$tql_stk_deb      = "( id_etat in (0,1,11,31,32) AND in_datetime < '".$date_debut."' AND (out_datetime is NULL OR out_datetime >= '".$date_debut."') ) ";
+$tql_stk_deb     .= "OR ( id_etat in (21,22) AND down_datetime >= '".$date_debut."' AND	in_datetime < '".$date_debut."' AND (out_datetime is NULL OR out_datetime >= '".$date_debut."') ) ";
+$tql_stk_deb_neuf = "( id_etat in (1,31,32) AND in_datetime < '".$date_debut."' AND (out_datetime is NULL OR out_datetime >= '".$date_debut."') ) ";
+$tql_stk_deb_occ  = "( id_etat in (0,11) AND in_datetime < '".$date_debut."' AND (out_datetime is NULL OR out_datetime >= '".$date_debut."') ) ";
+$tql_stk_deb_occ .= "OR ( id_etat in (21,22) AND down_datetime >= '".$date_debut."' AND	in_datetime < '".$date_debut."' AND (out_datetime is NULL OR out_datetime >= '".$date_debut."') ) ";
+$tql_stk_fin      = "( id_etat in (0,1,11,31,32) AND in_datetime < '".$date_fin."' AND (out_datetime is NULL OR out_datetime >= '".$date_fin."') ) ";
+$tql_stk_fin     .= "OR ( id_etat in (21,22) AND down_datetime >= '".$date_fin."' AND	in_datetime < '".$date_fin."' AND (out_datetime is NULL OR out_datetime >= '".$date_fin."') ) ";
+$tql_stk_fin_neuf = "( id_etat in (1,31,32) AND in_datetime < '".$date_fin."' AND (out_datetime is NULL OR out_datetime >= '".$date_fin."') ) ";
+$tql_stk_fin_occ  = "( id_etat in (0,11) AND in_datetime < '".$date_fin."' AND (out_datetime is NULL OR out_datetime >= '".$date_fin."') ) ";
+$tql_stk_fin_occ .= "OR ( id_etat in (21,22) AND down_datetime >= '".$date_fin."' AND	in_datetime < '".$date_fin."' AND (out_datetime is NULL OR out_datetime >= '".$date_fin."') ) ";
+
 
 //  dP""b8    db
 // dP   `"   dPYb
@@ -106,180 +176,63 @@ $sql_order        = "ORDER BY key_presta.kw__ordre, cmdl__etat ";
 //  YboodP dP""""Yb
 
 $titre_stat  = 'Chiffre d\'affaires facturé pour etude de marges';
-$type_tot    = 'CAM';
-$cmd_date    = "cmd__date_fact ";
-$cmd_etat    = "AND cmd__etat IN ('VLD','VLA') ";
-// le tableau de data
-$T_sql       = $sql_select_tabF.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat.$sql_groupby.$sql_order;
-$T_request   = $Database->Pdo->query($T_sql);
-$T_data      = $T_request->fetchAll(PDO::FETCH_ASSOC);
-// ca vente et ech sans ext garantie
-$CA_sql      = $sql_select_CA.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat.$sql_tot_ca_ve;
-$CA_request  = $Database->Pdo->query($CA_sql);
-$CA_data     = $CA_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
-$tot_ca_ve   = $CA_data['tot_ca_ve'];
-// le comptage de fiche
-$C_sql       = $sql_select_ct.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat;
-$C_request   = $Database->Pdo->query($C_sql);
-$C_data      = $C_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
-$nb_fiche    = $C_data['nb_fiche'];
-// Liste des fiches concernées (sans les fiches avec au moins une ligne de loc ou pret)
-$L_sql       = $sql_select_liste.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$sql_where_no_loc.$cmd_etat;
-$L_request   = $Database->Pdo->query($L_sql);
-$L_data      = $L_request->fetchAll(PDO::FETCH_ASSOC);
-// Liste des fiches avec pret ou loc (les fiches avec au moins une ligne de loc ou pret)
-$LP_sql      = $sql_select_liste.$sql_select_join.$sql_where.$cmd_date.$sql_where_dt.$sql_where_loc.$cmd_etat;
-$LP_request  = $Database->Pdo->query($LP_sql);
-$LP_data     = $LP_request->fetchAll(PDO::FETCH_ASSOC);
-// Somme du total_ca
-for ($i=0; $i<=count($T_data)-1; $i++) $total_ca += $T_data[$i]['total_fiche'];
 
-// .dP"Y8 888888  dP"Yb   dP""b8 88  dP 
-// `Ybo."   88   dP   Yb dP   `" 88odP  
-// o.`Y8b   88   Yb   dP Yb      88"Yb  
-// 8bodP'   88    YbodP   YboodP 88  Yb 
+$tab_html .= lg_tab_separateur('Ventes de marchandises');
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_vte.$sql_w_neu,"01 Ventes (Tout)","Neuf");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_cdb,"01b Ventes CDB","Neuf");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_imp,"01c Ventes IMPRIMANTES","Neuf");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_mic,"01d Ventes MICRO","Neuf");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_con,"01e Ventes CONSO","Neuf");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_pid,"01f Ventes Pieces détachées","Neuf");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_acc,"01g Ventes Accessoires","Neuf");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_ser,"01h Ventes Services","Neuf");
+$debug_info .= "01h -------------- <br>".$sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_ser.'<br>';
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_vte.$sql_w_occ,"02 Ventes (Tout)","Occasion");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_cdb,"02b Ventes CDB","Occasion");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_imp,"02c Ventes IMPRIMANTES","Occasion");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_mic,"02d Ventes MICRO","Occasion");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_con,"02e Ventes CONSO","Occasion");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_pid,"02f Ventes Pieces détachées","Occasion");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_acc,"02g Ventes Accessoires","Occasion");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_ser,"02h Ventes Services","Occasion");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_ech.$sql_w_neu,"03 Echange matériels","Neuf");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_ech.$sql_w_occ,"04 Echange matériels","Occasion");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_rpr.$sql_w_neu,"05 Reprise","Neuf");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_rpr.$sql_w_occ,"05b Reprise","Occasion");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_rem,"06 & 07 Remise","NC.");
+$tab_html .= lg_tab_separateur('Achats de marchandises');
+$tab_html .= lg_tab_html($tql_select_achat.$tql_from.$tql_where.$tql_w_achat,"00 Achats matériels","Tout état","totoro");
+$tab_html .= lg_tab_html($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_neuf,"08 Achats matériels","Neuf","totoro");
+$tab_html .= lg_tab_html($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_occ,"09 Achats matériels","Occasion ou n.a.","totoro");
+$tab_html .= lg_tab_html($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_conso,"09b Achats matériels","Consommables","totoro");
+$tab_html .= lg_tab_html($tql_sel_po_port.$tql_from_po.$tql_where_po,"10 & 11 Transport matériels","Tout état","totoro");
+$tab_html .= lg_tab_separateur('Production');
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_rep,"12 Réparation","NC.");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_loc.$sql_w_neu,"13 Location","Neuf");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_loc.$sql_w_occ,"14 Location","Occasion");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_mnt,"15 Maintenance","NC.");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_int,"16 Intervention et Dep.","NC.");
+$debug_info .= "16 --------------- <br>".$sql_select_vente.$sql_from.$sql_where.$sql_w_int.'<br>';
+$tab_html .= lg_tab_html($sql_select_v_gar.$sql_from.$sql_where.$sql_w_neu,"17 Extension de garantie","Neuf");
+$tab_html .= lg_tab_html($sql_select_v_gar.$sql_from.$sql_where.$sql_w_occ,"18 Extension de garantie","Occasion");
+$tab_html .= lg_tab_separateur('Transport sur vente');
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_prt,"19 Port facturé","NC.");
+// $tab_html .= lg_tab_separateur('Stock');
+// $tab_html .= lg_tab_html($tql_stk_sql.$tql_stk_deb_neuf,"21 Stock début","Neuf","totoro");
+// $tab_html .= lg_tab_html($tql_stk_sql.$tql_stk_deb_occ,"22 Stock début","Occasion","totoro");
+// $tab_html .= lg_tab_html($tql_stk_sql.$tql_stk_fin_neuf,"23 Stock fin","Neuf","totoro");
+// $tab_html .= lg_tab_html($tql_stk_sql.$tql_stk_fin_occ,"24 Stock fin","Occasion","totoro");
 
-// Stock Debut de période
-$STKD_sql     = "SELECT sum(locator.pu_ht) AS tot_stk_deb FROM locator WHERE ";
-$STKD_sql    .= "( id_etat in (0,1,11,31,32) AND	in_datetime < '".$date_debut."' AND (out_datetime is NULL OR out_datetime >= '".$date_debut."') ) ";
-$STKD_sql    .= "OR ( id_etat in (21,22) AND down_datetime >= '".$date_debut."' AND	in_datetime < '".$date_debut."' AND (out_datetime is NULL OR out_datetime >= '".$date_debut."') ) ";
-$STKD_request = $Totoro->Pdo->query($STKD_sql);
-$STKD_data    = $STKD_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
-$tot_stk_deb  = $STKD_data['tot_stk_deb'];
-// Stock Fin de période
-$STKF_sql     = "SELECT sum(locator.pu_ht) AS tot_stk_fin FROM locator WHERE ";
-$STKF_sql    .= "( id_etat in (0,1,11,31,32) AND	in_datetime < '".$date_fin."' AND (out_datetime is NULL OR out_datetime >= '".$date_fin."') ) ";
-$STKF_sql    .= "OR ( id_etat in (21,22) AND down_datetime >= '".$date_fin."' AND	in_datetime < '".$date_fin."' AND (out_datetime is NULL OR out_datetime >= '".$date_fin."') ) ";
-$STKF_request = $Totoro->Pdo->query($STKF_sql);
-$STKF_data    = $STKF_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
-$tot_stk_fin  = $STKF_data['tot_stk_fin'];
-
-
-// Si il y a au moins un resultat
-if ($nb_fiche > 0)
-{
-	// creation de la liste de fiches sans les pret et loc
-	foreach($L_data as $A_cmd_id)
-		{ $liste_fiche .= $A_cmd_id['cmd__id'].','; }
-	$liste_fiche = substr($liste_fiche, 0, -1); // Supprimer la derniere virgule de la liste de fiches
-
-	// creation de la liste de fiches de pret ou loc
-	foreach($LP_data as $A_cmd_id)
-		{ $liste_fiche_lp .= $A_cmd_id['cmd__id'].','; }
-	$liste_fiche_lp = substr($liste_fiche_lp, 0, -1); // Supprimer la derniere virgule de la liste de fiches
-
-
-	// prix du matos sortie du locator pour les fiches facturées (matos à reconstruire ou HS non compté etat 21, 22)
-	$VS_sql       = 'SELECT SUM(locator.pu_ht) AS valo_sortie FROM locator ';
-	$VS_sql      .= 'where out_id_cmd IN ('.$liste_fiche.') AND (id_etat < 20 OR id_etat > 30)';
-	$VS_request   = $Totoro->Pdo->query($VS_sql);
-	$VS_data      = $VS_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
-	$vs_fiche     = $VS_data['valo_sortie'];
-
-	// prix du matos sortie du locator pour les fiches de loc et pret (matos à reconstruire ou HS non compté etat 21, 22)
-	$vs_fiche_lp  = -1;
-	if (strlen($liste_fiche_lp) > 6)
-	{
-		$VLP_sql      = 'SELECT SUM(locator.pu_ht) AS valo_sortie FROM locator ';
-		$VLP_sql     .= 'where out_id_cmd IN ('.$liste_fiche_lp.') AND (id_etat < 20 OR id_etat > 30)';
-		$VLP_request  = $Totoro->Pdo->query($VLP_sql);
-		$VLP_data     = $VLP_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
-		$vs_fiche_lp  = $VLP_data['valo_sortie'];
-	}
-
-	// prix du matos sortie sur la periode non destiné a des fiches (matos à reconstruire ou HS non compté etat 21, 22)
-	$VP_sql       = "SELECT SUM(locator.pu_ht) AS valo_periode FROM locator ";
-	$VP_sql      .= "WHERE out_datetime ".$sql_where_dt." ";
-	$VP_sql      .= "AND (out_id_cmd > '4000000' or out_id_cmd < '3000000') AND (id_etat < 20 OR id_etat > 30) ";
-	$VP_request   = $Totoro->Pdo->query($VP_sql);
-	$VP_data      = $VP_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
-	$vs_periode   = $VP_data['valo_periode'];
-
-	// liste des fiches de garantie et Maintenance (non fact, etat ARH)
-	// pour info numero de client speciaux : 2 GARANTIE RECODE, 3 MAINTENANCE RECODE,5 RELIQUAT LIVRAISON Déja Facturé
-	$cmd_date    = "cmd__date_envoi ";
-	$cmd_etat    = "AND cmd__etat = 'ARH' AND cmd__client__id_fact <= 5 ";
-	$LGM_sql     = $sql_select_liste.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat;
-	$LGM_request = $Database->Pdo->query($LGM_sql);
-	$LGM_data    = $LGM_request->fetchAll(PDO::FETCH_ASSOC);
-	// creation de la liste de fiches garantie et maintenance
-	foreach($LGM_data as $A_cmd_id)
-		{ $liste_fiche_gm .= $A_cmd_id['cmd__id'].','; }
-	$liste_fiche_gm = substr($liste_fiche_gm, 0, -1); // Supprimer la derniere virgule de la liste de fiches
-
-	// liste des fiches de RMA (evidement non fact, etat ARH)
-	// pour info numero de client speciaux : 6 RMA fournisseur
-	$cmd_date    = "cmd__date_envoi ";
-	$cmd_etat    = "AND cmd__etat = 'ARH' AND cmd__client__id_fact = 6 ";
-	$LRMA_sql    = $sql_select_liste.$sql_where.$cmd_date.$sql_where_dt.$cmd_etat;
-	$LRMA_request= $Database->Pdo->query($LRMA_sql);
-	$LRMA_data   = $LRMA_request->fetchAll(PDO::FETCH_ASSOC);
-	// creation de la liste de fiches de rma
-	foreach($LRMA_data as $A_cmd_id)
-		{ $liste_fiche_rma .= $A_cmd_id['cmd__id'].','; }
-	$liste_fiche_rma = substr($liste_fiche_rma, 0, -1); // Supprimer la derniere virgule de la liste de fiches
-
-	// prix du matos sortie du locator pour les fiches Garantie et maintenance
-	$vs_garmaint     = 0;
-	if (strlen($liste_fiche_gm) > 0)
-	{
-		$VS_gm_sql       = "SELECT SUM(locator.pu_ht) AS valo_sortie FROM locator ";
-		$VS_gm_sql      .= "where out_id_cmd IN (".$liste_fiche_gm.") AND (id_etat < 20 OR id_etat > 30) ";
-		$VS_gm_request   = $Totoro->Pdo->query($VS_gm_sql);
-		$VS_gm_data      = $VS_gm_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
-		$vs_garmaint     = $VS_gm_data['valo_sortie'];
-	}
-	
-	// Valeur du matos declassifié sur la periode sans le matos en RMA (je ne m'occupe pas du matos sortie, car si il est sortie je ne le compte pas avant donc pas de double comptage)
-	$VD_sql       = "SELECT SUM(locator.pu_ht) AS valo_down FROM locator ";
-	$VD_sql      .= "WHERE ( down_datetime ".$sql_where_dt." ) ";
-	if (strlen($liste_fiche_rma) > 6)
-		$VD_sql      .= "AND locator.out_id_cmd not in (".$liste_fiche_rma.") ";
-	$VD_request   = $Totoro->Pdo->query($VD_sql);
-	$VD_data      = $VD_request->fetch(PDO::FETCH_ASSOC); // 1 seul ligne
-	$vs_down      = $VD_data['valo_down'];
-
-	// // calcul du cumul de CA (VTE, ECH, INT ? , REP ? )
-	foreach ($T_data as $lg_ca ) 
-	{
-		switch ($lg_ca['cmdl__prestation']) 
-		{  // total avec ext garantie
-			case 'VTE':
-			case 'ECH':
-			case 'INT':
-			case 'REP':
-				$tot_ca_veir += $lg_ca['total_fiche'];
-			break;
-		}
-	}
-
-}
+$debug_info = '';
 
 // Donnée transmise au template : 
 echo $twig->render('statistique_marge.twig',
 [
-'user'             => $user,
-'nb_fiche'         => $nb_fiche , 
-'total_ca'         => $total_ca,
 'date_debut'       => $date_debut, 
 'date_fin'         => $date_fin,
 'date_debut_fr'    => $date_debut_fr, 
 'date_fin_fr'      => $date_fin_fr,
-'type_tot'         => $type_tot,
 'titre_stat'       => $titre_stat,
 'debug_info'       => $debug_info,
-'t_data'           => $T_data,
-'vs_fiche'         => $vs_fiche,
-'vs_fiche_lp'      => $vs_fiche_lp,
-'vs_periode'       => $vs_periode,
-'vs_garmaint'      => $vs_garmaint,
-'vs_down'          => $vs_down,
-'tot_ca_ve'        => $tot_ca_ve,
-'tot_ca_veir'      => $tot_ca_veir, // pas bien sur que ca serve  ...
-'arrayPresta'      => $arrayPresta , 
-'abnSearch'        => $abnSearch,
-'cmdSearch'        => $cmdSearch,
-'tot_stk_deb'      => $tot_stk_deb,
-'tot_stk_fin'      => $tot_stk_fin
+'tab_html'         => $tab_html
 ]);
-
