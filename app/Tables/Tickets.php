@@ -342,6 +342,7 @@ public function get_dp_client($tk__id){
 				}
 				
 				if (!empty($data)) {
+					
 					$subject = [];
 					foreach ($entitie as $key => $properties) {
 						$text = '';
@@ -436,6 +437,7 @@ public function get_dp_client($tk__id){
 
   public function insert_field(array $post , $id_ligne , $id_tickets){
 		foreach ($post as $key => $value) {
+			
 				switch ($key) {
 					case 'id_ligne':
 					case 'creator':
@@ -466,15 +468,18 @@ public function get_dp_client($tk__id){
 							$pattern = "@";
 					
 							if(stripos( $champs->tksc__option , $pattern)){
-								$value = $champs->tksc__option . '@' . $value ;
-								$request = $this->Db->Pdo->prepare("
-								INSERT INTO ticket_ligne_champ  (tklc__id, tklc__nom_champ,  tklc__ordre,  tklc__memo ) 
-								VALUES      			  (:tklc__id,  :tklc__nom_champ,  :tklc__ordre,  :tklc__memo)"); 
-								$request->bindValue(":tklc__id", $id_ligne);
-								$request->bindValue(":tklc__nom_champ", $key);
-								$request->bindValue(":tklc__ordre",  $champs->tksc__ordre);
-								$request->bindValue(":tklc__memo",  $value);
-								$request->execute();
+								if (!empty($value)) {
+									$value = $champs->tksc__option . '@' . $value ;
+									$request = $this->Db->Pdo->prepare("
+									INSERT INTO ticket_ligne_champ  (tklc__id, tklc__nom_champ,  tklc__ordre,  tklc__memo ) 
+									VALUES      			  (:tklc__id,  :tklc__nom_champ,  :tklc__ordre,  :tklc__memo)"); 
+									$request->bindValue(":tklc__id", $id_ligne);
+									$request->bindValue(":tklc__nom_champ", $key);
+									$request->bindValue(":tklc__ordre",  $champs->tksc__ordre);
+									$request->bindValue(":tklc__memo",  $value);
+									$request->execute();
+								}
+								
 							}else{
 								$request = $this->Db->Pdo->prepare("
 								INSERT INTO ticket_ligne_champ  (tklc__id, tklc__nom_champ,  tklc__ordre,  tklc__memo ) 

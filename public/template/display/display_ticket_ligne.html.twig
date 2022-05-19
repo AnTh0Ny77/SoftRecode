@@ -20,15 +20,15 @@
         <div>
             <h5 class="recode-display-field"> {{entitie.name}}:</h5>
         </div>
-                <div class="card-recode-secondary ml-3 col-11 d-flex ">
-                    <div class=" col-10 col-md-6 col-lg-3 d-fex  mx-auto px-auto  align-items-center recode-div-pic">
+                <div class="card-recode-secondary  col-10 d-flex ">
+                    <div class=" col-10 col-md-6 col-lg-3 d-fex   align-items-center recode-div-pic">
                         {% if entitie.picture %}
-                        <div class="d-flex justify-content-center">
-                            <figure class="image col-8 col-md-12"><img class="subject-image" src="data:image/jpeg;base64,{{ entitie.picture|raw}}"></figure>
+                        <div class="d-flex justify-content-center ">
+                            <figure class="image col-6 col-md-10"><img class="subject-image" src="data:image/jpeg;base64,{{ entitie.picture|raw}}"></figure>
                         </div>
                         {% else %}
                         <div class="d-flex justify-content-center">
-                            <figure class="image col-8 col-md-12"><img class="subject-image" src="{{entitie.alternative}}"></figure>
+                            <figure class="image col-6 col-md-10"><img class="subject-image" src="{{entitie.alternative}}"></figure>
                         </div>
                         {% endif %}
                     </div>
@@ -37,7 +37,7 @@
                             <h3 class="title-sujet">{{entitie.label}}</h3>
                         </div>
                         <div class="d-fex align-item-center">
-                            <p class="recode-p">{{entitie.additionals}}</p>
+                            {{entitie.additionals}}
                         </div>
                     </div>
                 </div>
