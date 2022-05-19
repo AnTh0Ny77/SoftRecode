@@ -97,6 +97,8 @@ class TicketsDisplayController extends BasicController
                     }
                     $ticket->groups = $array_groups;
                 }
+                $ticket->client = $Ticket->get_dp_client($ticket->tk__id);
+               
             }
         }
         return self::$twig->render(
