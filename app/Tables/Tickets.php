@@ -176,7 +176,7 @@ public function get_dp_client($tk__id){
 		LEFT JOIN keyword as k ON ( k.kw__value = t.tk__motif AND  k.kw__type= "tmoti") 
 		WHERE t.tk__id = "'.$id.'" ');
 		$ticket = $request->fetch(PDO::FETCH_OBJ);
-		$request = $this->Db->Pdo->query('SELECT  l.*  , u.id_utilisateur ,  u.nom , u.prenom , z.nom as nom_dest , z.prenom as prenom_dest , z.id_utilisateur as id_dest
+		$request = $this->Db->Pdo->query('SELECT  l.*  , u.id_utilisateur , u.icone ,  u.nom , u.prenom , z.nom as nom_dest , z.prenom as prenom_dest , z.id_utilisateur as id_dest
 		FROM ticket_ligne as l
 		LEFT JOIN utilisateur AS u ON ( u.id_utilisateur = l.tkl__user_id ) 
 		LEFT JOIN utilisateur AS z ON ( z.id_utilisateur = l.tkl__user_id_dest ) 

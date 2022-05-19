@@ -205,6 +205,16 @@
     margin-top: 10px;
     border-radius: 50%;
 }
+
+.icone-image{
+    width: 7%;
+    border-color: #f08a2a;
+    border-style: solid;
+    border-width: 2px;
+    margin-top: 10px;
+    border-radius: 50%;
+    margin-bottom: 5px;
+}
 @media (max-width:980px) {
     .subject-image {
         width: 100%;
