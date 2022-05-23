@@ -191,12 +191,17 @@ public function get_dp_client($tk__id){
 			$date_time = new DateTime($ligne->tkl__dt);
 			//formate la date pour l'utilisateur:
 			$ligne->tkl__dt = $date_time->format('d/m/Y H:i');
-			$request = $this->Db->Pdo->query('SELECT  c.* , t.tksc__label , t.tksc__visible
+			$request = $this->Db->Pdo->query('SELECT  c.* , t.tksc__label , t.tksc__visible , t.tksc__link 
 			FROM ticket_ligne_champ as c
 			LEFT JOIN ticket_senar_champ as t ON ( c.tklc__nom_champ = t.tksc__nom_champ )
 			WHERE c.tklc__id = "'.$ligne->tkl__id.'" ');
 			$fields = $request->fetchAll(PDO::FETCH_OBJ);
-		
+			foreach ($fields as $key => $value) {
+				if (!empty($value->tksc__link)){
+					$pattern = '/{data}/';
+					$value->link = preg_replace($pattern , $value->tklc__memo , $value->tksc__link);
+				}
+			}
 			$ligne->fields = $fields;
 			$request = $this->Db->Pdo->query('SELECT  s.*  FROM ticket_senar_champ as s
 			WHERE s.tksc__motif_ligne = "' . $ligne->tkl__motif_ligne . '" ');

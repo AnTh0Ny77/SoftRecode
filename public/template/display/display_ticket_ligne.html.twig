@@ -47,15 +47,29 @@
         {% for field in ligne.fields %}
         
         {% if field.tklc__memo %}
+        {% if field.link %}
+        <h5>
+            <span class="font-weight-bold">{{field.tksc__label}} : </span>   
+                {% if field.tksc__visible >= user.user__ticket_acces  %}
+                    <i class="fas fa-lock"></i>
+                {% else %}
+                    <a href="{{field.link}}" target="_blank" class="link-success">{{field.tklc__memo}}</a>
+                {% endif %}
+        </h5>
+           
+           
+        {% else %}
             <h5>
                 <span class="font-weight-bold">{{field.tksc__label}} : </span>
-               
+            
                     {% if field.tksc__visible >= user.user__ticket_acces  %}
                         <i class="fas fa-lock"></i>
                     {% else %}
                         {{field.tklc__memo}}
                     {% endif %}
             </h5>
+        {% endif %}
+           
         {% endif %}
         {% endfor %}
         {% if ligne.files %}
