@@ -134,10 +134,28 @@
     
 }
 .background-recode{
-    background-image: url("../img/background-image.png");
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat, repeat;
+    width: 100%;
+    background-image: url("../img/wa.jpg");
+    
+    background-repeat: repeat;
+    
+    background-color: #cccccc;
+    
+}
+
+.background-recode-list{
+    /* width: 100%;
+    background: #16222A;  /
+    background: -webkit-linear-gradient(to right, #3A6073, #16222A); 
+    background: linear-gradient(to right, #3A6073, #16222A);  */
+    
+
+    
+    width: 100%;
+    background-image: url("../img/wa.jpg");
+    
+    background-repeat: repeat;
+    
     background-color: #cccccc;
 }
 
@@ -147,4 +165,8 @@
     background-position: center center;
     background-repeat: no-repeat, repeat;
     background-color: #cccccc;
+}
+
+.scrollable-list{
+    overflow: scroll;
 }

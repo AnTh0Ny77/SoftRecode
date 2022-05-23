@@ -1,18 +1,19 @@
-{% extends 'responsive_layout.twig' %}
+{% extends 'new_layout.twig' %}
 {% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
 <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
 <link rel="stylesheet" type="text/css" href="public/chosen/chosen.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
 <link rel="stylesheet" href="public/css/forms.css">
 <link rel="stylesheet" href="public/css/cards.css">
 <link rel="stylesheet" href="public/css/font-family.css">
 {% endblock %}
 {% block main %}
-<main role="main" class="col-12 container-body background-extranet ">
+<main role="main" class=" container-body background-recode-list">
   <div class="container pt-2 ">
-    <div class="d-flex flex-column align-items-center">
+    <div class="d-flex flex-column align-items-center ">
       {{ include('display/display_ticket_search.html.twig')}}
           {% for ticket in list %}
             {{ include('display/display_ticket_item.html.twig')}}

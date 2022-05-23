@@ -67,13 +67,10 @@
                     {{ticket.last_line.prenom ~ " " ~ ticket.last_line.nom}}
                 </span>
             </span>
-
             </p>
         </div>
     </div> 
-    
 </div>
-
 {% if ticket.groups %}
     {% for item in ticket.groups %}
         {% if loop.last %}
@@ -93,7 +90,6 @@
                 <div class="card-recode-middle-green-shadow card-recode-cursor  d-flex flex-column  col-12 col-lg-8">
             {% endif %}  
         {% endif %}
-        
         <input type="hidden" value="{{item.tk__id}}">
         <div class="d-flex">
             <div class="col-6">
@@ -109,7 +105,6 @@
                 </h3>
             </div>
         </div>
-        
         <div class="d-flex">
             <div class="col-6">
                 <p class="recode-p">{{item.kw__lib}}<br>

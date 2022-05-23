@@ -1,4 +1,4 @@
-{% extends 'responsive_layout.twig' %}
+{% extends 'new_layout.twig' %}
 {% block style %}
 <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
@@ -8,10 +8,11 @@
 <link rel="stylesheet" href="public/css/forms.css">
 <link rel="stylesheet" href="public/css/cards.css">
 <link rel="stylesheet" href="public/css/font-family.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
 {{include('display/display_file_upload.html.twig')}}
 {% endblock %}
 {% block main %}
-<main role="main" class="col-12 container-body background-extranet ">
+<main role="main" class="col-12 container-body background-recode-list ">
   <div class="container pt-4 ">
       {% if multiparts %}
       
