@@ -414,6 +414,17 @@ public function get_dp_client($tk__id){
 	return $id;
   }
 
+  public function return_demandeur(int $ticket_id){
+		$request = $this->Db->Pdo->query('SELECT  MIN(tkl__dt) as dateLigne  FROM ticket_ligne 
+		WHERE tkl__tk_id = "' . $ticket_id . '" ');
+		$ligne = $request->fetch(PDO::FETCH_OBJ);
+		$request = $this->Db->Pdo->query('SELECT tkl__user_id , u.nom , u.prenom  FROM ticket_ligne 
+		LEFT JOIN utilisateur as u ON ( tkl__user_id = u.id_utilisateur) 
+		WHERE tkl__dt = "' . $ligne->dateLigne . '" ');
+		$ligne = $request->fetch(PDO::FETCH_OBJ);
+		return $ligne;
+  }
+
 	public function insert_multipart( string $directory,  int $id_line , array $files){
 	
 		foreach ($files as $key  => $file){
@@ -568,6 +579,7 @@ public function get_destinataire_by_groups(array $groups){
 		switch (intval($value)){
 			case 1001:
 			case 1002:
+				var_dump($value);
 				$request = $this->Db->Pdo->query('SELECT  id_utilisateur , nom , prenom
 				FROM utilisateur
 				WHERE  ( id_utilisateur < 1000 ) 
@@ -577,7 +589,7 @@ public function get_destinataire_by_groups(array $groups){
 			case 1011:
 				$request = $this->Db->Pdo->query('SELECT id_utilisateur , nom , prenom
 				FROM utilisateur
-				WHERE  ( id_utilisataeur  IN ( 1011 )  ) 
+				WHERE  ( id_utilisateur  IN ( 1011 )  ) 
 				ORDER BY id_utilisateur');
 				$data = $request->fetchAll(PDO::FETCH_ASSOC);
 				break;
@@ -643,6 +655,7 @@ public function get_destinataire_by_groups(array $groups){
 		}
 		if ($value->tksc__nom_champ == 'A_Qui') {
 			$data->tks__a_qui = explode(';' , $data->tks__a_qui );
+			
 			$list = $this->get_destinataire_by_groups($data->tks__a_qui);
 			$value->tksc__option = $list;
 		}

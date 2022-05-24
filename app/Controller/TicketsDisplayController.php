@@ -74,6 +74,7 @@ class TicketsDisplayController extends BasicController
         if (!empty($list)){
             $temp_list = $list;
             foreach ($list as $key => $ticket){
+                $ticket->demandeur = $Ticket->return_demandeur($ticket->tk__id);
                 foreach ($config as  $entitie){
                     if (!empty($ticket->sujet)){
                         $subject_identifier = $ticket->sujet->tksc__option;

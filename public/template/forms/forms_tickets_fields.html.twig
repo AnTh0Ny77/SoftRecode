@@ -124,9 +124,12 @@
                 {% endif %}
             {% else %}
                 <h5 class="text-white">{{form.tksc__label}} *</h5>
-              
+               
                 <select class=" selectpicker  show-tick " data-width="100%" data-live-search="true" data-size="10"
                     name="{{form.tksc__nom_champ}}" required>
+                    {% if tickets.tks__motif == 'dp' and tickets.tks__motif_ligne != 'dp_ouverture'  %}
+                        <option value="9999" selected>Renvoyer au demandeur</option>
+                    {% endif %}
                     {% for subject in form.tksc__option %}
                         {% if tickets.tks__a_qui == 1001 %}
                             {% if subject.id == user.id_utilisateur %}

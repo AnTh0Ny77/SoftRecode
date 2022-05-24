@@ -34,7 +34,7 @@
     </div>
     <div class="d-flex">
         <div class="col-6">
-            <p class="recode-p">{{ticket.kw__lib}}<br>
+            <p class="recode-p">{{ticket.kw__lib}} <span class="text-dark font-weight-bold"> : </span><span class="recode-orange-title"> {{ticket.demandeur.prenom ~ " " ~ ticket.demandeur.nom}}</span><br>
                 {% if ticket.tk__groupe %}
                           groupe N°{{ticket.tk__groupe}}<br>
                  {% endif %}

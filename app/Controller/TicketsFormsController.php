@@ -268,6 +268,7 @@ class TicketsFormsController extends BasicController
                     $new_tickets = $Ticket->insert_ticket($post );
                     $post['id_ligne'] = $new_tickets;
                     $post['dt'] = date('Y-m-d H:i:s');
+                   
                     $new_line = $Ticket->insert_line($post);
                     //$Ticket->insert_multipart('C:\laragon\www\SoftRecode\upload', $new_line , $files );
                     $Ticket->attribute_attachements($new_line);
@@ -284,6 +285,10 @@ class TicketsFormsController extends BasicController
                     $post['id_ligne'] = $_POST['currentTicket'] ;
                     $post['creator'] = $_SESSION['user']->id_utilisateur;
                     $post['dt'] = date('Y-m-d H:i:s');
+                    if (intval($post['A_Qui']) == 9999) {
+                        $demandeur = $Ticket->return_demandeur($_POST['currentTicket']);
+                        $post['A_Qui'] = $demandeur->tkl__user_id;
+                    }
                     $new_line = $Ticket->insert_line($post);
                     $new_field = $Ticket->insert_field($post, $new_line, $_POST['currentTicket']);
                     $Ticket->attribute_attachements($new_line);
