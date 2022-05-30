@@ -7,19 +7,18 @@
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="public/css/forms.css">
+<link rel="stylesheet" href="public/css/cards.css">
+<link rel="stylesheet" href="public/css/font-family.css">
 
 {% endblock %}
 {% block main %}
-<main  role="main" class="container-fluid my-3 col-11 container-body"> 
-    {# <div id="loading">
-        <div class="lds-hourglass">
-        </div>
-    </div>   #}
-    <div class="d-flex justify-content-start flex-column mb-5 border-bottom">
+<main  role="main" class="container-fluid background-recode-list"> 
+    <div class="d-flex justify-content-start flex-column my-3 text-white ">
         <form class="d-flex align-items-center" action="DevisV2" method="POST">
             <div class="mr-4">
             <input type="hidden" value="{{devis.devis__id}}" name="modif">
-            <button class="btn btn-warning btn-sm "><i class="fas fa-arrow-left"></i> Retour</button>
+            <button class="btn btn-recode-warning btn-sm "><i class="fas fa-arrow-left"></i> Retour</button>
             </div>
             <div class="mx-4">
             {% if modif %}
@@ -31,11 +30,11 @@
         </form>
     </div>
         <!-- 1ere ligne -->
-    <div class="d-flex flex-wrap flex-row justify-content-between col-12">
+    <div class="d-flex flex-wrap flex-row justify-content-between col-12 ">
         {% if modif %}
-        <div class="card col-7 border border-success" >
+        <div class=" col-7 border border-success card-recode-devis" >
         {% else %}
-        <div class="card col-7" >
+        <div class=" col-7 card-recode-devis" >
         {% endif %} 
             <div class="card-body">
                     <form action="ligneDevisV2" method="POST">
@@ -278,10 +277,10 @@
                                                 {% if modif.modif and not duplicate %}
                                                     <input type='hidden' name='boolModif' id="boolModif" value='{{modif.cmdl__id}}'>
                                                     <input type='hidden' name='boolIdCmd' value='{{modif.cmdl__cmd__id}}'>
-                                                    <button class="btn btn-outline-primary  " type="submit" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">modifier <i class="far fa-bullseye-pointer"></i></button>
+                                                    <button class="btn btn-recode-primary " type="submit" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">modifier <i class="far fa-bullseye-pointer"></i></button>
                                                 {% else %}
                                                     <input type='hidden' name='boolModif' value=''>
-                                                    <button class="btn btn-outline-primary  " type="submit" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Valider <i class="far fa-bullseye-pointer"></i></button>
+                                                    <button class="btn btn-recode-primary " type="submit" data-toggle="collapse" data-target="#xtendGarantie" aria-expanded="false" aria-controls="xtendGarantie">Valider <i class="far fa-bullseye-pointer"></i></button>
                                                 {% endif %}
                                                 {% if duplicate %}
                                                     <input type='hidden'  id="duplicata" value='{{modif.cmdl__id}}'>
@@ -300,7 +299,7 @@
         <div class=" col-5" >
         
             {% for ligne in devisLignes %}
-            <div class="card my-1 shadow col-12">
+            <div class=" card-recode-devis my-2  col-12">
             <div class='card-body'>
 
             <div class="d-flex ">
@@ -349,21 +348,21 @@
                      <form class="mx-1" action="ligneDevisV2" method="POST">
                         <input type="hidden" name="modifyIdCmd" value="{{ligne.cmdl__cmd__id}}"/>
                         <input type="hidden" name="modifyId" value="{{ligne.devl__id}}"/>
-                        <button type="submit" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="fal fa-file-edit"></i></button>
+                        <button type="submit" class="btn btn-recode-mini-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="fal fa-file-edit"></i></button>
                     </form>
                     <div class='mx-1'>
                         <form class="mx-1" action="ligneDevisV2" method="POST">
                             <input type="hidden" name="modifyIdCmd" value="{{ligne.cmdl__cmd__id}}"/>
                             <input type="hidden" name="modifyId" value="{{ligne.devl__id}}"/>
                             <input type="hidden" name="duplicate"  value="{{ligne.devl__id}}">
-                            <button type="submit" class="btn btn-outline-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Dupliquer"><i class="far fa-copy"></i></button>
+                            <button type="submit" class="btn btn-recode-mini-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Dupliquer"><i class="far fa-copy"></i></button>
                         </form>
                     </div>
                     <div class='mx-1'>
-                        <button type="button" class="btn btn-outline-success btn-sm open_modal"  value="{{ligne.devl__id}}" data-toggle="tooltip" data-placement="top" title="Ajouter une sous-référence" ><i class="far fa-arrow-circle-down"></i></button>
+                        <button type="button" class="btn btn-recode-mini btn-sm open_modal"  value="{{ligne.devl__id}}" data-toggle="tooltip" data-placement="top" title="Ajouter une sous-référence" ><i class="far fa-arrow-circle-down"></i></button>
                     </div>
                     </div>
-                    <div class="">
+                    <div class="my-2">
                         <p class="card-text">
                             <b>{{ligne.kw__lib ~ " " }}</b>
                             {% if ligne.cmdl__etat_masque > 0 %}
@@ -410,7 +409,7 @@
                                 <input type="hidden" name="up[]" value="{{ligne.devl__ordre}}"/>
                                 <input type="hidden" name="upId" value="{{ligne.cmdl__cmd__id}}"/>
                                 <input type="hidden" name="upLigne" value="{{ligne.devl__id}}"/>
-                                <button type="submit" class="btn btn-outline-success btn-sm" disabled><i class="far fa-arrow-to-top"></i></button>
+                                <button type="submit" class="btn btn-recode-mini btn-sm" disabled><i class="far fa-arrow-to-top"></i></button>
                             </form>
                         </div> 
                         {% else %}
@@ -419,7 +418,7 @@
                                 <input type="hidden" name="up[]" value="{{ligne.devl__ordre}}"/>
                                 <input type="hidden" name="upId" value="{{ligne.cmdl__cmd__id}}"/>
                                 <input type="hidden" name="upLigne" value="{{ligne.devl__id}}"/>
-                                <button type="submit" class="btn btn-outline-success btn-sm" data-toggle="tooltip" data-placement="top" title="Monter"><i class="far fa-arrow-to-top"></i></button>
+                                <button type="submit" class="btn btn-recode-mini btn-sm" data-toggle="tooltip" data-placement="top" title="Monter"><i class="far fa-arrow-to-top"></i></button>
                             </form>
                         </div> 
                         {% endif %}    
@@ -428,7 +427,7 @@
                         <form action="ligneDevisV2" method="POST">
                             <input type="hidden" name="deleteIdCmd" value="{{ligne.cmdl__cmd__id}}"/>
                             <input type="hidden" name="deleteId" value="{{ligne.devl__id}}"/>
-                            <button type="submit" class="btn btn-outline-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Supprimer"><i class="far fa-trash-alt"></i></button>
+                            <button type="submit" class="btn btn-recode-mini-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Supprimer"><i class="far fa-trash-alt"></i></button>
                         </form>
                     </div> 
                     {% if loop.last %}
@@ -438,7 +437,7 @@
                                 <input type="hidden" name="down[]" value="{{ligne.devl__ordre}}"/>
                                 <input type="hidden" name="downId" value="{{ligne.cmdl__cmd__id}}"/>
                                 <input type="hidden" name="downLigne" value="{{ligne.devl__id}}"/>
-                            <button type="submit" class="btn btn-outline-success btn-sm" disabled><i class="far fa-arrow-to-bottom"></i></button>
+                            <button type="submit" class="btn btn-recode-mini btn-sm" disabled><i class="far fa-arrow-to-bottom"></i></button>
                             </form>
                         </div> 
                     </div>  
@@ -449,7 +448,7 @@
                                 <input type="hidden" name="down[]" value="{{ligne.devl__ordre}}"/>
                                 <input type="hidden" name="downId" value="{{ligne.cmdl__cmd__id}}"/>
                                 <input type="hidden" name="downLigne" value="{{ligne.devl__id}}"/>
-                                <button type="submit" class="btn btn-outline-success btn-sm" data-toggle="tooltip" data-placement="top" title="Descendre"><i class="far fa-arrow-to-bottom"></i></button>
+                                <button type="submit" class="btn btn-recode-mini btn-sm" data-toggle="tooltip" data-placement="top" title="Descendre"><i class="far fa-arrow-to-bottom"></i></button>
                             </form>
                         </div> 
                     </div>  
@@ -464,7 +463,7 @@
             {% if ligne.sous_ref %}
                 {% for sous_ref in ligne.sous_ref %}
                
-                <div class=" my-1 shadow col-12 sous_ref_card">
+                <div class=" my-1 shadow col-12 card-recode-sous-ref">
                     <div class='card-body'>
                         <div class="d-flex ">
                             <div class="col-9">
@@ -486,7 +485,7 @@
                                 </h5>
                                 <div class="d-flex flex-row">
                                     <div class="mx-1 text-primary">
-                                        <button value="{{sous_ref.devl__id}}" type="button" class="btn btn-outline-primary btn-sm click_sous_ref" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="fal fa-file-edit"></i></button>
+                                        <button value="{{sous_ref.devl__id}}" type="button" class="btn btn-recode-mini btn-sm click_sous_ref" data-toggle="tooltip" data-placement="top" title="Modifier"><i class="fal fa-file-edit"></i></button>
                                      </div> 
                                     {% if sous_ref.devl__note_interne %}
                                         <div class="mx-1">
@@ -508,7 +507,7 @@
                                     <form action="ligneDevisV2" method="POST">
                                         <input type="hidden" name="deleteIdCmd" value="{{sous_ref.cmdl__cmd__id}}"/>
                                         <input type="hidden" name="deleteId" value="{{sous_ref.devl__id}}"/>
-                                        <button type="submit" class="btn btn-outline-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Suprimer"><i class="far fa-trash-alt"></i></button>
+                                        <button type="submit" class="btn btn-recode-mini-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Suprimer"><i class="far fa-trash-alt"></i></button>
                                     </form>
                                 </div>  
                             </div>
@@ -609,12 +608,12 @@
                 </div>
                 <div class="modal-footer justify-content-between">
                     <div>
-                        <button type="button" value="405" class="btn btn-primary click-port">Port 5</button>
-                        <button type="button" value="406" class="btn btn-primary click-port">Port 30</button>
-                        <button type="button" value="407" class="btn btn-primary click-port">Palette</button>
+                        <button type="button" value="405" class="btn btn-recode-mini-primary mx-1 click-port">Port 5</button>
+                        <button type="button" value="406" class="btn btn-recode-mini-primary mx-1 click-port">Port 30</button>
+                        <button type="button" value="407" class="btn btn-recode-mini-primary mx-1 click-port">Palette</button>
                     </div>
                    
-                    <button type="submit" class="btn btn-success">Valider le Devis</button>
+                    <button type="submit" class="btn btn-recode">Valider le Devis</button>
                 </div>     
             </form>
             </div>

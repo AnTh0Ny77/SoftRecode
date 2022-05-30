@@ -83,6 +83,52 @@
 .pastille-recode:hover{
     background-color: #4CAF50; /* Green */
 }
+.btn-recode-mini{
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 8px 11px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    box-shadow: 0px 2px 1px 3px #9b9b9b;
+    border-radius: 5px;
+}
+.btn-recode-mini:hover{
+    background-color: #4CAF50;
+}
+.btn-recode-mini-danger{
+    background-color: #f51212; /* Green */
+    border: none;
+    color: white;
+    padding: 8px 11px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    box-shadow: 0px 2px 1px 3px #9b9b9b;
+    border-radius: 5px;
+}
+.btn-recode-mini-danger:hover{
+    background-color: #f51212;
+}
+
+.btn-recode-mini-primary{
+    background-color: #219ee7; /* Green */
+    border: none;
+    color: white;
+    padding: 8px 11px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 13px;
+    box-shadow: 0px 2px 1px 3px #9b9b9b;
+    border-radius: 5px;
+}
+.btn-recode-mini-primary:hover{
+    background-color: #219ee7;
+}
 .btn-recode:hover{
     background-color: #4CAF50; /* Green */
 }
