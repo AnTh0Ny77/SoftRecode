@@ -45,8 +45,7 @@ if ($_SESSION['user']->user__facture_acces < 10 )
       $effectiveDate = date('Y-m-d',$effectiveDate);
       $automateDate =  date("".$_POST['anneAuto']."-".$mois."-d ");
 
-      if (strtotime($effectiveDate) >= strtotime($automateDate)) 
-      {
+      if (strtotime($effectiveDate) >= strtotime($automateDate)){
          $abn->client = $Client->getOne($abn->ab__client__id_fact);
          $ligne = $Abonnement->getLigneFacturableAuto($abn->ab__cmd__id , $date);
          $abn->nbMachine =  sizeof($ligne);
@@ -62,25 +61,22 @@ if ($_SESSION['user']->user__facture_acces < 10 )
          $abn->ab__date_anniv = $dateFact->format('d/m/Y'); 
          array_push($array_premiere_echeance , $abn);
          unset($abonnement_liste[$key]);
-      }
-      else{
+      }else{
          $abn->client = $Client->getOne($abn->ab__client__id_fact);
          $ligne = $Abonnement->getLigneFacturableAuto($abn->ab__cmd__id , $date);
          $abn->nbMachine =  sizeof($ligne);
          $abn->total = 00.00;
-         foreach($ligne as $machine)
-         {
+         foreach($ligne as $machine){
             $machine->totalTrim =  number_format($machine->abl__prix_mois * $abn->ab__fact_periode , 2 , ',', ' ') ;
             $abn->total += $machine->abl__prix_mois * $abn->ab__fact_periode  ;
          }
-         $abn->total = number_format($abn->total , 2 , ',', ' ') ;
          array_push( $total_price , $abn->total);
+         $abn->total = number_format($abn->total , 2 , ',', ' ') ;
+        
          $abn->array = $ligne;
-         if (!empty($ligne)) 
-         {
+         if (!empty($ligne)){
             array_push($abonnement_facturable , $abn);
          }
-   
          //formatte les dates pour la liste en visu  
          $dateFact = new DateTime( $abn->ab__date_anniv);
          $abn->ab__date_anniv = $dateFact->format('d/m/Y'); 

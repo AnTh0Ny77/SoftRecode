@@ -7,349 +7,395 @@
 <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
 <link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.css" rel="stylesheet">
 <link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="public/css/forms.css">
+<link rel="stylesheet" href="public/css/cards.css">
+<link rel="stylesheet" href="public/css/font-family.css">
+
 {% endblock %}
 
 {% block main %}
 
-<main  role="main" class="container-fluid my-3 col-11 container-body">   
-<!-- <div id="loading">
+<main role="main" class="container-fluid background-recode-list container-body">
+	<!-- <div id="loading">
 	<div class="lds-hourglass">
 	</div>
 </div> -->
-<div class="d-flex justify-content-start flex-column mb-5 border-bottom">
-	<h1 class="h2">
-		{% if modif %}
-		Devis N°: {{modif.devis__id}} <i class="fal fa-file-edit"></i>
-		{% else %}
-		Nouveau devis  <i class="fal fa-file-edit"></i>
+	<div class="d-flex justify-content-start flex-column text-white my-3">
+		<h1 class="h2">
+			{% if modif %}
+			Devis N°: {{modif.devis__id}} <i class="fal fa-file-edit"></i>
+			{% else %}
+			Nouveau devis <i class="fal fa-file-edit"></i>
+			{% endif %}
+		</h1>
+		{% if alertClient %}
+		<div class="alert alert-danger" role="alert">
+			{{ alertClient }}
+		</div>
 		{% endif %}
-	</h1>
-	{% if alertClient %}
-	<div class="alert alert-danger" role="alert">
-		{{ alertClient }}
+
+		<nav class="nav mt-1">
+		</nav>
 	</div>
-	{% endif %}
+	<!-- 1ere ligne -->
+	<div class="d-flex flex-wrap flex-row justify-content-center">
+		<!--Menu-->
+		<div class="col-11 " id="navSociete">
 
-<nav class="nav mt-1">
-</nav>
-</div>
-<!-- 1ere ligne -->
-<div class="d-flex flex-wrap flex-row justify-content-center">
-<!--Menu-->
-<div class="col-11 " id="navSociete">
+			<form action="ligneDevisV2" method="POST">
+				{% if modif %}
+				<input type="hidden" name="modifReturn" value="{{modif.devis__id}}">
+				{% else %}
+				<input type="hidden" name="modifReturn">
+				{% endif %}
+				<div class="col-12 d-flex justify-content-center">
+					<!--Carte Facturation Livraison Contact-->
+					<div class="col-7 ">
+						<div class="card-recode-devis mb-2 h-100">
+							<!-- Card Header - -->
+							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+								<h6 class="m-0 font-weight-bold text-primary">Société et Contact <i
+										class="fal fa-building"></i> </h6>
 
-<form action="ligneDevisV2" method="POST">
-		{% if modif %}
-		<input type="hidden" name="modifReturn" value="{{modif.devis__id}}">
-		{% else %}
-		<input type="hidden" name="modifReturn">
-		{% endif %}
-<div class="col-12 d-flex justify-content-center">
-<!--Carte Facturation Livraison Contact-->  
-<div class="col-7 " >
-	<div class="card  shadow mb-2 h-100" >
-		<!-- Card Header - -->
-		<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-			<h6 class="m-0 font-weight-bold text-primary">Société et Contact <i class="fal fa-building"></i> </h6>
-			
-		</div>
-		<!-- Card Body xx -->
-		<div class="card-body d-flex flex-column">
-			<div class="my-3">
-                        <label for="comClient"><b>Facturation</b></label>
-                        <div class="col-6 d-flex flex-row my-3">
-                                <input class="form-control"  type="search"  placeholder="Recherche client" aria-label="Search" id="client_input" autocomplete='off' autofocus>
-                                <button type="button" id="btn_search_client" class="btn btn-primary mx-3"><i class="fas fa-search"></i></button>
-                        </div>
-				<div>
-					<div class="mt-2 pt-2">
-						<label>Client : </label>  
-						{% if modif %}
-						
-							<span id="span_facturation" class="text-success"><b> {{ "(" ~ modif.client__id ~ ") " ~ modif.client__societe ~ " " ~ modif.client__cp ~ "-" ~ modif.client__ville ~ " "}}</b> <i class='fas fa-check'></i></span>
-							<input type="hidden" name="clientSelect" id="clientSelect" value="{{modif.client__id}}">
-						
-						
-						{% else %}
-						
-							<span id="span_facturation" class="text-danger"><b>Aucun Client selectionné</b> <i class="fas fa-times-circle"></i></span>
-							<input type="hidden" name="clientSelect" id="clientSelect" value="">
-						
-						{% endif %}
-					</div>	
-				</div>
-				<div>
-					<div class="mt-2 pt-2 ">
-						<label for="exampleInputEmail1" >Contact : </label>  
-						<button id="button_crea_contact" type='button' data-toggle="modal" data-target="#modal_contact" class="btn btn-link d-none"><i class="far fa-plus"></i></button> 
-					</div>
-					<select class="selectpicker border show-tick"  data-live-search="true" data-size="10" data-width="100%" name="contactSelect" id="contactSelect" required> 
-					{% if  modif %}
-					<option value="Aucun" >Aucun</option> 
-					{% for contact in contactList %} 
-					{% if modif.devis__contact__id == contact.contact__id %}
-<option value="{{contact.contact__id}}" selected >{{contact.contact__nom ~ " " ~ contact.contact__prenom ~ " " ~ contact.kw__lib}}</option>
-					{% else %}
-<option value="{{contact.contact__id}}">{{contact.contact__nom ~ " " ~ contact.contact__prenom ~ " " ~ contact.kw__lib}}</option>
-					{% endif %}
-					{% endfor %}
-					{% else %}
-					<option value="Aucun" selected>Aucun</option> 
-					{% endif %}
-					</select>
-				</div>
-				<hr>
-			</div>
+							</div>
+							<!-- Card Body xx -->
+							<div class="card-body d-flex flex-column">
+								<div class="my-3">
+									<label for="comClient"><b>Facturation</b></label>
+									<div class="col-6 d-flex flex-row my-3">
+										<input class="form-control" type="search" placeholder="Recherche client"
+											aria-label="Search" id="client_input" autocomplete='off' autofocus>
+										<button type="button" id="btn_search_client"
+											class="btn  btn-recode-mini-primary mx-3"><i
+												class="fas fa-search"></i></button>
+									</div>
+									<div>
+										<div class="mt-2 pt-2">
+											<label>Client : </label>
+											{% if modif %}
 
-			<div class="my-3">
-				<label ><b>Livraison</b></label>
-				<div class="col-6 d-flex flex-row my-3">
-					<input class="form-control" type="search" placeholder="Recherche client livraison" aria-label="Search" id="client_livraison_input"autocomplete='off' autofocus>
-					<button type="button" id="btn_search_client_livraison" class="btn btn-primary mx-3"><i class="fas fa-search"></i></button>
-				</div>
-				
-				
-				<div class="mt-2 pt-2">
-					{% if modif.devis__id_client_livraison and modif.devis__id_client_livraison != modif.client__id %}
-						<label for="exampleInputEmail1">Client : <b>indentique si non specifiée</b></label>
-						<span id="span_livraison" class="text-success"><b>{{ "(" ~ modif.devis__id_client_livraison ~ ") " ~ modif.client__livraison_societe ~ " " ~ modif.client__livraison_cp ~ "-" ~ modif.client__livraison_ville ~ " "}}
-						</b><i class='fas fa-check'></i></span>
-						<input type="hidden" name="clientLivraison" id="clientLivraison" value="{{modif.devis__id_client_livraison}}">
-					{% else %}
-						<label for="exampleInputEmail1">Client : <b>indentique si non specifiée</b></label>
-						<span id="span_livraison" class="text-danger"></span>
-						<input type="hidden" name="clientLivraison" id="clientLivraison" value="">
-					{% endif %}
-					
-					
-				</div>
-				<div>
-					<div class="mt-2 pt-2 ">
-						<label for="exampleInputEmail1">Contact : </label>
-						{# <button type='button' id="button_contact_crea_livraison" data-toggle="modal" data-target="#modal_contact_livraison" class="btn btn-link d-none"><i class="far fa-plus"></i></button>  #}
-					</div>
-					<select class="selectpicker border show-tick"  data-live-search="true" data-size="10" data-width="100%" name="contactLivraison" id="contactLivraison" required> 
-					{% if contactLivraison %}
-					<option value="Aucun" >Aucun</option>
-					{% for contactL in contactLivraison %}
-					{% if contactL.contact__id == modif.devis__contact_livraison %}
-<option value="{{contactL.contact__id}}" selected >{{contactL.contact__nom ~ " " ~ contactL.contact__prenom ~ " - " ~ contactL.kw__lib  }}</option>
-					{% else %}
-<option value="{{contactL.contact__id}}">{{contactL.contact__nom ~ " " ~ contactL.contact__prenom ~ " - " ~ contactL.kw__lib  }}</option>
-					{% endif %}
-					{% endfor %}
-					{% else %}
-					<option value="Aucun" selected>Aucun</option>
-					{% endif %}
-					</select>
-				</div>
-				
-			</div>
-		</div>
-	</div>
-</div>
+											<span id="span_facturation" class="text-success"><b> {{ "(" ~
+													modif.client__id ~ ") " ~ modif.client__societe ~ " " ~
+													modif.client__cp ~ "-" ~ modif.client__ville ~ " "}}</b> <i
+													class='fas fa-check'></i></span>
+											<input type="hidden" name="clientSelect" id="clientSelect"
+												value="{{modif.client__id}}">
 
-<!--Carte Options-->  
-<div class="col-6 " >
-	<div class="card   shadow mb-2 h-100"  >
-		<!-- Card Header - -->
-		<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-			<h6 class="m-0 font-weight-bold text-primary">Titre et commentaires <i class="fal fa-building"></i></h6>
-			<div class="dropdown no-arrow">
-			</div>
-		</div>
-		<!-- Card Body -->
-		<div class="card-body col-12 d-flex flex-column justify-content-between " >
-			<div class="  d-flex flex-row justify-content-between">
-				<div class="col-12">
-					<div class=" col-12  my-3 ">
-						<label for="comClient"><b>Titre</b></label>
-						{% if modif %}
-						<input class="form-control " type="text"  id="titreDevis" name="titreDevis" value="{{modif.cmd__nom_devis}}">
-						{% else %}
-						<input class="form-control " type="text"  id="titreDevis" name="titreDevis" value="">
-						{% endif %}
-					</div>
-					<div class=" col-12  my-3 ">
-						<label for="comClient"><b>Code commande client</b></label>
-						{% if modif %}
-						<input class="form-control " type="text"   name="code" value="{{modif.cmd__code_cmd_client}}">
-						{% else %}
-						<input class="form-control " type="text"   name="code" >
-						{% endif %}
-					</div>
-					<div class="col-12 my-2 d-flex flex-column">
-						<label for="comClient"><b>Commentaires</b></label>
-						<div class="col-12 my-2  show multi-col">
-							<label for="globalComClient">Client</label>
-							{% if modif %}
-							<textarea class="CKE" id="globalComClient" name="globalComClient" placeholder="Commentaire client....">{{ modif.devis__note_client|raw }}</textarea>
-							{% else %}
-							<textarea class="CKE" id="globalComClient" name="globalComClient" placeholder="Commentaire client...."></textarea>
-							{% endif %}
+
+											{% else %}
+
+											<span id="span_facturation" class="text-danger"><b>Aucun Client
+													selectionné</b> <i class="fas fa-times-circle"></i></span>
+											<input type="hidden" name="clientSelect" id="clientSelect" value="">
+
+											{% endif %}
+										</div>
+									</div>
+									<div>
+										<div class="mt-2 pt-2 ">
+											<label for="exampleInputEmail1">Contact : </label>
+											<button id="button_crea_contact" type='button' data-toggle="modal"
+												data-target="#modal_contact" class="btn btn-link d-none"><i
+													class="far fa-plus"></i></button>
+										</div>
+										<select class="selectpicker border show-tick" data-live-search="true"
+											data-size="10" data-width="100%" name="contactSelect" id="contactSelect"
+											required>
+											{% if modif %}
+											<option value="Aucun">Aucun</option>
+											{% for contact in contactList %}
+											{% if modif.devis__contact__id == contact.contact__id %}
+											<option value="{{contact.contact__id}}" selected>{{contact.contact__nom ~ "
+												" ~ contact.contact__prenom ~ " " ~ contact.kw__lib}}</option>
+											{% else %}
+											<option value="{{contact.contact__id}}">{{contact.contact__nom ~ " " ~
+												contact.contact__prenom ~ " " ~ contact.kw__lib}}</option>
+											{% endif %}
+											{% endfor %}
+											{% else %}
+											<option value="Aucun" selected>Aucun</option>
+											{% endif %}
+										</select>
+									</div>
+									<hr>
+								</div>
+
+								<div class="my-3">
+									<label><b>Livraison</b></label>
+									<div class="col-6 d-flex flex-row my-3">
+										<input class="form-control" type="search"
+											placeholder="Recherche client livraison" aria-label="Search"
+											id="client_livraison_input" autocomplete='off' autofocus>
+										<button type="button" id="btn_search_client_livraison"
+											class="btn  btn-recode-mini-primary mx-3"><i
+												class="fas fa-search"></i></button>
+									</div>
+
+
+									<div class="mt-2 pt-2">
+										{% if modif.devis__id_client_livraison and modif.devis__id_client_livraison !=
+										modif.client__id %}
+										<label for="exampleInputEmail1">Client : <b>indentique si non
+												specifiée</b></label>
+										<span id="span_livraison" class="text-success"><b>{{ "(" ~
+												modif.devis__id_client_livraison ~ ") " ~
+												modif.client__livraison_societe ~ " " ~ modif.client__livraison_cp ~ "-"
+												~ modif.client__livraison_ville ~ " "}}
+											</b><i class='fas fa-check'></i></span>
+										<input type="hidden" name="clientLivraison" id="clientLivraison"
+											value="{{modif.devis__id_client_livraison}}">
+										{% else %}
+										<label for="exampleInputEmail1">Client : <b>indentique si non
+												specifiée</b></label>
+										<span id="span_livraison" class="text-danger"></span>
+										<input type="hidden" name="clientLivraison" id="clientLivraison" value="">
+										{% endif %}
+
+
+									</div>
+									<div>
+										<div class="mt-2 pt-2 ">
+											<label for="exampleInputEmail1">Contact : </label>
+											{# <button type='button' id="button_contact_crea_livraison"
+												data-toggle="modal" data-target="#modal_contact_livraison"
+												class="btn btn-link d-none"><i class="far fa-plus"></i></button> #}
+										</div>
+										<select class="selectpicker border show-tick" data-live-search="true"
+											data-size="10" data-width="100%" name="contactLivraison"
+											id="contactLivraison" required>
+											{% if contactLivraison %}
+											<option value="Aucun">Aucun</option>
+											{% for contactL in contactLivraison %}
+											{% if contactL.contact__id == modif.devis__contact_livraison %}
+											<option value="{{contactL.contact__id}}" selected>{{contactL.contact__nom ~
+												" " ~ contactL.contact__prenom ~ " - " ~ contactL.kw__lib }}</option>
+											{% else %}
+											<option value="{{contactL.contact__id}}">{{contactL.contact__nom ~ " " ~
+												contactL.contact__prenom ~ " - " ~ contactL.kw__lib }}</option>
+											{% endif %}
+											{% endfor %}
+											{% else %}
+											<option value="Aucun" selected>Aucun</option>
+											{% endif %}
+										</select>
+									</div>
+
+								</div>
+							</div>
 						</div>
-						<div class="col-12 my-2  multi-col">
-							<label for="globalComInt">Interne</label>
-							{% if modif %}
-							<textarea class="CKE" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." >{{modif.devis__note_interne}}</textarea>
-							{% else %}
-							<textarea class="CKE" id="globalComInt" name="globalComInt" placeholder="Commentaire interne...." ></textarea>
-							{% endif %}
-						</div>    
+					</div>
+
+					<!--Carte Options-->
+					<div class="col-6 ">
+						<div class="card-recode-devis mb-2 h-100">
+							<!-- Card Header - -->
+							<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+								<h6 class="m-0 font-weight-bold text-primary">Titre et commentaires <i
+										class="fal fa-building"></i></h6>
+								<div class="dropdown no-arrow">
+								</div>
+							</div>
+							<!-- Card Body -->
+							<div class="card-body col-12 d-flex flex-column justify-content-between ">
+								<div class="  d-flex flex-row justify-content-between">
+									<div class="col-12">
+										<div class=" col-12  my-3 ">
+											<label for="comClient"><b>Titre</b></label>
+											{% if modif %}
+											<input class="form-control " type="text" id="titreDevis" name="titreDevis"
+												value="{{modif.cmd__nom_devis}}">
+											{% else %}
+											<input class="form-control " type="text" id="titreDevis" name="titreDevis"
+												value="">
+											{% endif %}
+										</div>
+										<div class=" col-12  my-3 ">
+											<label for="comClient"><b>Code commande client</b></label>
+											{% if modif %}
+											<input class="form-control " type="text" name="code"
+												value="{{modif.cmd__code_cmd_client}}">
+											{% else %}
+											<input class="form-control " type="text" name="code">
+											{% endif %}
+										</div>
+										<div class="col-12 my-2 d-flex flex-column">
+											<label for="comClient"><b>Commentaires</b></label>
+											<div class="col-12 my-2  show multi-col">
+												<label for="globalComClient">Client</label>
+												{% if modif %}
+												<textarea class="CKE" id="globalComClient" name="globalComClient"
+													placeholder="Commentaire client....">{{ modif.devis__note_client|raw }}</textarea>
+												{% else %}
+												<textarea class="CKE" id="globalComClient" name="globalComClient"
+													placeholder="Commentaire client...."></textarea>
+												{% endif %}
+											</div>
+											<div class="col-12 my-2  multi-col">
+												<label for="globalComInt">Interne</label>
+												{% if modif %}
+												<textarea class="CKE" id="globalComInt" name="globalComInt"
+													placeholder="Commentaire interne....">{{modif.devis__note_interne}}</textarea>
+												{% else %}
+												<textarea class="CKE" id="globalComInt" name="globalComInt"
+													placeholder="Commentaire interne...."></textarea>
+												{% endif %}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button class="btn btn-recode-mini-primary" id="valid_devis">Valider</button>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-		<div class="modal-footer">
-			<button class="btn btn-primary" id="valid_devis">Valider</button>
+			</form>
 		</div>
 	</div>
-</div>
-</div>
-</form>
-</div>
-</div>
 </main>
 
 <!--modal creation de contact -->
-<div class="modal fade bd-example-modal-lg" id="modal_contact" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-    	<div class="modal-header">
-			<h5 class="modal-title" id="titre_creation">Creation de Contact</h5>
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-			</button>
-      	</div>
+<div class="modal fade bd-example-modal-lg" id="modal_contact" tabindex="-1" role="dialog"
+	aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="titre_creation">Creation de Contact</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
 
-		<div class="modal-body">
-			<div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="inputState">Fonction *</label>
-                    <select id="inputStateContact" class="form-control" >
-                      {% for keyword in keywordList %}
-                      <option value={{keyword.kw__value}}>{{keyword.kw__lib}}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
+			<div class="modal-body">
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="inputState">Fonction *</label>
+						<select id="inputStateContact" class="form-control">
+							{% for keyword in keywordList %}
+							<option value={{keyword.kw__value}}>{{keyword.kw__lib}}</option>
+							{% endfor %}
+						</select>
+					</div>
 
-                  <div class="form-group col-md-6">
-                    <label for="inputCiv">Civilité</label>
-                    <select id="inputCiv" class="form-control" >
-                      <option value="M.">Mr</option>
-                      <option value="Mme">Mme</option>
-                      <option value="Melle">Melle</option>
-                      <option value="Service">Service</option>
-                    </select>
-                  </div>
-            </div>
-			 <div class="form-row">
-                  <div class="form-group col-md-6">
-                    <label for="inputCity">Nom</label>
-                    <input type="text" class="form-control"  id="nomContact" maxlength="50" >
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="inputCity">Prenom</label>
-                    <input type="text" class="form-control"  maxlength="50" id="prenomContact">
-                  </div>
-                </div>
+					<div class="form-group col-md-6">
+						<label for="inputCiv">Civilité</label>
+						<select id="inputCiv" class="form-control">
+							<option value="M.">Mr</option>
+							<option value="Mme">Mme</option>
+							<option value="Melle">Melle</option>
+							<option value="Service">Service</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="inputCity">Nom</label>
+						<input type="text" class="form-control" id="nomContact" maxlength="50">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="inputCity">Prenom</label>
+						<input type="text" class="form-control" maxlength="50" id="prenomContact">
+					</div>
+				</div>
 
-                <div class="form-row">
-                  <div class="form-group col-md-3">
-                    <label for="inputZip">Telephone</label>
-                    <input type="tel" class="form-control"  maxlength="25" id="telContact">
-                  </div>
-                  <div class="form-group col-md-3">
-                    <label for="inputZip">Fax </label>
-                    <input type="tel" class="form-control"  maxlength="25" id="faxContact">
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="inputCity">Mail</label>
-                    <input type="email" class="form-control" maxlength="200" id="mailContact" >
-					 <input type="hidden"  id="societe_input" >
-                  </div>
-                </div>
+				<div class="form-row">
+					<div class="form-group col-md-3">
+						<label for="inputZip">Telephone</label>
+						<input type="tel" class="form-control" maxlength="25" id="telContact">
+					</div>
+					<div class="form-group col-md-3">
+						<label for="inputZip">Fax </label>
+						<input type="tel" class="form-control" maxlength="25" id="faxContact">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="inputCity">Mail</label>
+						<input type="email" class="form-control" maxlength="200" id="mailContact">
+						<input type="hidden" id="societe_input">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer justify-content-end">
+				<div>
+					<button type="button" class="btn btn-success" id="postContact">Creer</button>
+				</div>
+				<div>
+
+
+				</div>
+			</div>
 		</div>
-		<div class="modal-footer justify-content-end">
-              <div>
-                <button type="button" class="btn btn-success" id="postContact">Creer</button>
-              </div>
-              <div>
-		  
-		   
-    </div>
-  </div>
-</div>
-</div>
+	</div>
 </div>
 
 <!--modal creation de contact livraison -->
-<div class="modal fade bd-example-modal-lg" id="modal_contact_livraison" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-    <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Creation de Contact livraison</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-	  <div class="modal-body">
-		<div class="form-row">
-			  <div class="form-group col-md-6">
-				<label for="inputState">Fonction *</label>
-				<select id="input_livraison_fonction" class="form-control" >
-				  {% for keyword in keywordList %}
-				  <option value={{keyword.kw__value}}>{{keyword.kw__lib}}</option>
-				  {% endfor %}
-				</select>
-			  </div>
+<div class="modal fade bd-example-modal-lg" id="modal_contact_livraison" tabindex="-1" role="dialog"
+	aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Creation de Contact livraison</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="inputState">Fonction *</label>
+						<select id="input_livraison_fonction" class="form-control">
+							{% for keyword in keywordList %}
+							<option value={{keyword.kw__value}}>{{keyword.kw__lib}}</option>
+							{% endfor %}
+						</select>
+					</div>
 
-			  <div class="form-group col-md-6">
-				<label for="inputCiv_livraison">Civilité</label>
-				<select id="inputCiv_livraison" class="form-control" >
-				  <option value="M.">Mr</option>
-				  <option value="Mme">Mme</option>
-				  <option value="Melle">Melle</option>
-				  <option value="Service">Service</option>
-				</select>
-			  </div>
+					<div class="form-group col-md-6">
+						<label for="inputCiv_livraison">Civilité</label>
+						<select id="inputCiv_livraison" class="form-control">
+							<option value="M.">Mr</option>
+							<option value="Mme">Mme</option>
+							<option value="Melle">Melle</option>
+							<option value="Service">Service</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="inputCity">Nom</label>
+						<input type="text" class="form-control" id="nomContact_livraison" maxlength="50">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="inputCity">Prenom</label>
+						<input type="text" class="form-control" maxlength="50" id="prenomContact_livraison">
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-group col-md-3">
+						<label for="inputZip">Telephone</label>
+						<input type="tel" class="form-control" maxlength="25" id="telContact_livraison">
+					</div>
+					<div class="form-group col-md-3">
+						<label for="inputZip">Fax </label>
+						<input type="tel" class="form-control" maxlength="25" id="faxContact_livraison">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="inputCity">Mail</label>
+						<input type="email" class="form-control" maxlength="200" id="mailContact_livraison">
+						<input type="hidden" id="societe_input_livraison">
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer justify-content-end">
+				<div>
+					<button type="button" class="btn btn-success" id="postContact_livraison">Creer</button>
+				</div>
+				<div>
+				</div>
+			</div>
 		</div>
-		 <div class="form-row">
-			  <div class="form-group col-md-6">
-				<label for="inputCity">Nom</label>
-				<input type="text" class="form-control"  id="nomContact_livraison" maxlength="50" >
-			  </div>
-			  <div class="form-group col-md-6">
-				<label for="inputCity">Prenom</label>
-				<input type="text" class="form-control"  maxlength="50" id="prenomContact_livraison">
-			  </div>
-			</div>
-
-			<div class="form-row">
-			  <div class="form-group col-md-3">
-				<label for="inputZip">Telephone</label>
-				<input type="tel" class="form-control"  maxlength="25" id="telContact_livraison">
-			  </div>
-			  <div class="form-group col-md-3">
-				<label for="inputZip">Fax </label>
-				<input type="tel" class="form-control"  maxlength="25" id="faxContact_livraison">
-			  </div>
-			  <div class="form-group col-md-6">
-				<label for="inputCity">Mail</label>
-				<input type="email" class="form-control" maxlength="200" id="mailContact_livraison" >
-				 <input type="hidden"  id="societe_input_livraison" >
-			  </div>
-			</div>
 	</div>
-	<div class="modal-footer justify-content-end">
-		<div>
-		  <button type="button" class="btn btn-success" id="postContact_livraison">Creer</button>
-		</div>
-		<div>
-    </div>
-    </div>
-  </div>
-</div>
 </div>
 
 <!-- Modal choix du client-->
@@ -357,20 +403,20 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" >Choix du client facturé</h5>
+				<h5 class="modal-title">Choix du client facturé</h5>
 				<h5 class=" modal-title text-danger ml-4" id="alert_long_facture"></h5>
-				
+
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
 				<ul class="list-group" id="list_client_facture">
-					
+
 				</ul>
 			</div>
 			<div class="modal-footer">
-				
+
 			</div>
 		</div>
 	</div>
@@ -403,18 +449,18 @@
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title" >Alerte</h5>
+				<h5 class="modal-title">Alerte</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<div class="alert alert-danger"  id="alert_text" role="alert">
-					
+				<div class="alert alert-danger" id="alert_text" role="alert">
+
 				</div>
 			</div>
 			<div class="modal-footer">
-				
+
 			</div>
 		</div>
 	</div>
@@ -423,31 +469,32 @@
 
 {% block script %}
 <!-- jQuery first, then Bootstrap JS -->
-<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
-<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v1.2.0/dist/jBox.all.min.js"></script>
-{# <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script> #}
-<script  type="text/javascript" src="public/js/NdevisPlusPro.js"></script>
-<script  type="text/javascript" src="public/js/devis_version2.js"></script>
+{#
+<script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script> #}
+<script type="text/javascript" src="public/js/NdevisPlusPro.js"></script>
+<script type="text/javascript" src="public/js/devis_version2.js"></script>
 <script type="text/javascript" src="public/ckeditor/ckeditor.js"></script>
 
-			<script>
-				//instance, using default configuration.
-				CKEDITOR.config.height = '5em';
-				CKEDITOR.replace( 'globalComClient' ,
-				{
-					language: 'fr',
-					removePlugins: 'justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor' ,
-					removeButtons : 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
-				});
-				
-				
-				CKEDITOR.replace( 'globalComInt',
-				{
-					language: 'fr',
-					removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor',
-					removeButtons : 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
-				});	
-			</script>
+<script>
+	//instance, using default configuration.
+	CKEDITOR.config.height = '5em';
+	CKEDITOR.replace('globalComClient',
+		{
+			language: 'fr',
+			removePlugins: 'justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor',
+			removeButtons: 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
+		});
+
+
+	CKEDITOR.replace('globalComInt',
+		{
+			language: 'fr',
+			removePlugins: 'image,justify,pastefromgdocs,pastefromword,about,table,tableselection,tabletools,Source,uicolor',
+			removeButtons: 'PasteText,Paste,Cut,Copy,Blockquote,Source,Subscript,Superscript,Undo,Redo,Maximize,Outdent,Indent,Format,SpecialChar,HorizontalRule'
+		});	
+</script>
 {% endblock %}

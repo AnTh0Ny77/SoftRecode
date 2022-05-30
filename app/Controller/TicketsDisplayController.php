@@ -75,15 +75,15 @@ class TicketsDisplayController extends BasicController
             $temp_list = $list;
             foreach ($list as $key => $ticket){
                 $ticket->demandeur = $Ticket->return_demandeur($ticket->tk__id);
-                foreach ($config as  $entitie){
-                    if (!empty($ticket->sujet)){
-                        $subject_identifier = $ticket->sujet->tksc__option;
-                        $display_entitie = $Ticket->createEntities($entitie, $subject_identifier, $ticket->tk__motif_id);
-                        if (!empty($display_entitie)) {
-                            $ticket->sujet = $display_entitie;
-                        }
-                    }
-                }
+                // foreach ($config as  $entitie){
+                //     if (!empty($ticket->sujet)){
+                //         $subject_identifier = $ticket->sujet->tksc__option;
+                //         $display_entitie = $Ticket->createEntities($entitie, $subject_identifier, $ticket->tk__motif_id);
+                //         if (!empty($display_entitie)) {
+                //             $ticket->sujet = $display_entitie;
+                //         }
+                //     }
+                // }
                 if(!empty($ticket->sujet)  && !is_array($ticket->sujet)) unset($ticket->sujet);
                 //groupe les ticket 
                 if (!empty($ticket->tk__groupe)){
