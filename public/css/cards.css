@@ -158,13 +158,14 @@
     border-color: #313d34;
     border-width: 2px;
     border-style: solid;
-    background: repeating-linear-gradient(
+    background-color: #d5dbdb;
+    /* background: repeating-linear-gradient(
         45deg,
         #eaeded  ,
         #d5dbdb  10px,
         #eaeded 10px,
         #cacfd2   20px
-      );
+      ); */
     border-radius: 10px;
     padding-top: 5px;
     padding-bottom: 2%;

@@ -1,26 +1,35 @@
-
-    <div class=" my-2 col-12 col-lg-8">
-        <form  method="get" action="tickets-display-list">
-            <div class="d-flex justify-content-between">
-                <input type="text" class="form-control form-control-lg input-recode col-8 col-lg-10"
-                    placeholder="numéro, titre, groupe,  client, Pn, type etc.." name="searchTickets" value="{{text_results}}"
-                    minlength="2" maxlength="100">
-                <button class="btn btn-recode "><i class="fas fa-search"></i></button>
-               
+<div class=" my-2 col-12 col-lg-8">
+    <form method="get" action="tickets-display-list">
+        <div class="d-flex justify-content-between">
+            <input type="text" class="form-control form-control-lg input-recode col-8 col-lg-10"
+                placeholder="numéro, titre, groupe,  client, Pn, type etc.." name="searchTickets"
+                value="{{text_results}}" minlength="2" maxlength="100">
+            <button class="btn btn-recode "><i class="fas fa-search"></i></button>
+        </div>
+        <div class="mt-3 d-flex justify-content-around">
+            <div class=" ">
+                <select id="filtersTickets" name="StateFilter" multiple>
+                    <optgroup label="Etat">
+                        <option value="Javascript">Cloturés</option>
+                    </optgroup>
+                </select>
             </div>
-            <div class="row justify-content-start col-12 my-2 mx-2">
-                {# <div class="form-check text-white col-5 col-md-4">
-                    {% if cloture %}
-                        <input class="form-check-input"  type="checkbox" value="ok" name="cloture" checked>
-                    {% else %}
-                        <input class="form-check-input"  type="checkbox" value="ok" name="cloture">
-                    {% endif %}
-                  
-                    <label class="form-check-label" for="radioInput">Inclure les tickets cloturés</label>
-                </div> #}
+            <div class=" ">
+                <select id="filtersEtat"  name="AuthorFilter">
+                    <optgroup label="Auteur">
+                        <option value="test2">Tous les tickets</option>
+                        <option value="DP">En cours chez moi</option>
+                    </optgroup>
+                </select>
             </div>
-           
-        </form>
-      
-    </div>
-
+            <div class=" ">
+                <select id="filtersType" name="TypeFilter">
+                    <optgroup label="Motif">
+                        <option value="DP">Demande de prix</option>
+                        <option value="test2">Affaire commerciale</option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>

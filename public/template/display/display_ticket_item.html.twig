@@ -25,6 +25,9 @@
                 {% if ticket.groups %}
                     <small class="recode-p mx-2"><i class="fas fa-layer-group"></i></small>
                 {% endif %}
+                {% if ticket.tk__lu == 0 %}
+                    <small class="text-danger mx-2"><i class="fas fa-bell"></i></small>
+                {% endif %}
             </h3>
         </div>
         <div class="col-6">
