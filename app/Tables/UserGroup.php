@@ -124,7 +124,7 @@ public function get_ticket_for_user($id_user){
 	AND  ticket_ligne.tkl__dt = ( SELECT Max(t.tkl__dt) FROM ticket_ligne as t WHERE t.tkl__tk_id = ticket.tk__id )
 	GROUP BY ticket_ligne.tkl__tk_id');
 	$user_ticket = $request->fetchAll(PDO::FETCH_OBJ);
-		return $user_ticket;
+	return $user_ticket;
 }
 public function get_all_ticket_for_user($id_user , $cloture){
 	

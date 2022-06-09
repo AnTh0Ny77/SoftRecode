@@ -8,25 +8,52 @@
         </div>
         <div class="mt-3 d-flex justify-content-around">
             <div class=" ">
-                <select id="filtersTickets" name="StateFilter" multiple>
+                <select id="filtersTickets" name="StateFilter[]" multiple>
                     <optgroup label="Etat">
-                        <option value="Javascript">Cloturés</option>
+                        {% if filters['Cloture'] == 1 %}
+                            <option value="Cloture" selected>Cloturés</option>
+                        {% else %}
+                            <option value="Cloture">Cloturés</option>
+                        {% endif %}
+                        {% if filters['Lus'] == 1 %}
+                            <option value="Lus" selected>Lus</option>
+                        {% else %}
+                            <option value="Lus">Lus</option>
+                        {% endif %}
+                        {% if filters['NonLus'] == 1 %}
+                            <option value="NonLus" selected>Non lus</option>
+                        {% else %}
+                            <option value="NonLus">Non lus</option>
+                        {% endif %}
+                        
                     </optgroup>
                 </select>
             </div>
             <div class=" ">
                 <select id="filtersEtat"  name="AuthorFilter">
                     <optgroup label="Auteur">
-                        <option value="test2">Tous les tickets</option>
-                        <option value="DP">En cours chez moi</option>
+                        {% if filters['Author'] == 1  %}
+                            <option value="1" selected>Tous les tickets</option>
+                        {% else %}
+                            <option value="1">Tous les tickets</option>
+                        {% endif %}
+                        {% if filters['Author'] == 2 %}
+                            <option value="2" selected>En cours chez moi</option>
+                        {% else %}
+                            <option value="2">En cours chez moi</option>
+                        {% endif %}
+                        {% if filters["Author"] == 3 %}
+                            <option value="3" selected>Mes demandes</option>
+                        {% else %}
+                            <option value="3">Mes demandes</option>
+                        {% endif %}
                     </optgroup>
                 </select>
             </div>
             <div class=" ">
                 <select id="filtersType" name="TypeFilter">
                     <optgroup label="Motif">
-                        <option value="DP">Demande de prix</option>
-                        <option value="test2">Affaire commerciale</option>
+                        <option value="DP" checked>Demande de prix</option>
                     </optgroup>
                 </select>
             </div>

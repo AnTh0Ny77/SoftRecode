@@ -31,6 +31,53 @@ class TicketsDisplayController extends BasicController
         }
         return $array_tickets;
     }
+
+    public static function handle_search(){
+            $cloture   = false;
+            $lus  = false;
+            $nonLus  = false;
+
+            if (!empty($_GET['StateFilter']) && isset($_SESSION['filters'])){
+                foreach ($_GET['StateFilter'] as $key => $value) {
+                   
+                    if ($value == 'Cloture') {
+                         $_SESSION['filters']['Cloture'] = 1;
+                        $cloture = true;
+                    }
+                    if ($value == 'Lus'){
+                        $_SESSION['filters']['Lus'] = 1;
+                        $lus = true;
+                    }
+                    if ($value == 'NonLus'){
+                        $_SESSION['filters']['NonLus'] = 1;
+                        $nonLus = true;
+                    }  
+                }
+            }
+
+            if ($cloture == false ) 
+                $_SESSION['filters']['Cloture'] = 0;
+
+            if ($lus == false)
+                $_SESSION['filters']['Lus'] = 0;
+
+            if ($nonLus == false)
+                $_SESSION['filters']['NonLus'] = 0;
+            
+            
+            if (!empty($_GET['AuthorFilter']) && isset($_SESSION['filters']))
+                $_SESSION['filters']['Author'] = $_GET['AuthorFilter'];
+
+            if (!isset($_SESSION['filters']) && empty($_GET)){
+                $_SESSION['filters'] = [
+                    'Cloture' =>  0 ,
+                    'Lus' => 1,
+                    'NonLus' => 1,
+                    'Author' =>  1,
+                    'Type' => 'DP'
+                ];
+            }
+    }
    
     //@route: /tickets-display-list
     public static function displayTicketList(){
@@ -40,6 +87,11 @@ class TicketsDisplayController extends BasicController
         $General = new General(self::$Db);
         $alert_results = false;
         $text_results = false; 
+        self::handle_search();
+        $results = $Ticket->search_tickets_filters($_SESSION['filters'], '', $_SESSION['user']->id_utilisateur);
+        $list = $results[0];
+        $_SESSION['filters'] = $results[1];
+        $filters = $_SESSION['filters'];
         //si un ticket à été cloturé : 
         if (!empty($_POST['ticketsCloture'])){
             $Ticket->cloture_ticket($_POST['ticketsCloture'], $_SESSION['user']->id_utilisateur , date('Y-m-d H:i:s') , $_POST['commentaire']);
@@ -60,17 +112,17 @@ class TicketsDisplayController extends BasicController
         // if (isset($_SESSION['cloture']) && empty($_GET['cloture'])) {
         //     $_SESSION['cloture'] = 0;
         // }
-        if (!empty($_GET['searchTickets'])){
-            $text_results = $_GET['searchTickets'];
-            $_GET['searchTickets'] =  $Ticket->clean($_GET['searchTickets']);
-            $_GET['searchTickets'] = trim($_GET['searchTickets']);
-            $list = $Ticket->search_ticket($_GET['searchTickets'] , $config , $_SESSION['cloture']);
-            if (empty($list))
-                $alert_results = true;
-        }elseif(!empty($_GET['id_user'])){
-                $list = $Ticket->search_user_tickets($_GET['id_user'], $_GET['tk__lu'] , $_SESSION['cloture']);
-        }
-        else $list = $Ticket->get_last(1);
+        // if (!empty($_GET['searchTickets'])){
+        //     $text_results = $_GET['searchTickets'];
+        //     $_GET['searchTickets'] =  $Ticket->clean($_GET['searchTickets']);
+        //     $_GET['searchTickets'] = trim($_GET['searchTickets']);
+        //     $list = $Ticket->search_ticket($_GET['searchTickets'] , $config , $_SESSION['cloture']);
+        //     if (empty($list))
+        //         $alert_results = true;
+        // }elseif(!empty($_GET['id_user'])){
+        //         $list = $Ticket->search_user_tickets($_GET['id_user'], $_GET['tk__lu'] , $_SESSION['cloture']);
+        // }
+        // else $list = $Ticket->get_last(1);
         if (!empty($list)){
             $temp_list = $list;
             foreach ($list as $key => $ticket){
@@ -107,6 +159,7 @@ class TicketsDisplayController extends BasicController
             [
                 'user' => $_SESSION['user'], 
                 'list' => $list , 
+                'filters' => $filters ,
                 'alert_results' => $alert_results , 
                 'cloture' => $_SESSION['cloture'],
                 'text_results' => $text_results

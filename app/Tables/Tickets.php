@@ -813,6 +813,129 @@ public function search_ticket( string $input , array $config  , $cloture){
 	}
 }
 
+	public function get_groups_by_user($user)
+	{
+		$request = $this->Db->Pdo->query("SELECT u.* 
+			FROM utilisateur_grp as g
+			LEFT JOIN utilisateur as u ON ( g.id_groupe = u.id_utilisateur OR g.id_utilisateur = u.id_utilisateur )
+			WHERE ( " . $user . " =  g.id_utilisateur  )
+			ORDER BY prenom");
+		$data = $request->fetchAll(PDO::FETCH_CLASS);
+		return $data;
+	}
+
+	public function handle_groups_for_request($array_groups){
+		$string = "";
+		foreach ($array_groups as $key => $value) {
+			if ($key === array_key_last($array_groups)) {
+				$string .= $value->id_utilisateur . ' ';
+			} else {
+				$string .= $value->id_utilisateur . ', ';
+			}
+		}
+		return $string ;
+	}
+
+
+
+public function search_tickets_filters($filters , $search , $user ){
+	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//filtre l'etat du ticket : lus/non Lus /cloturé rajoute 99 afin de pas avoir à boucler 
+	$state = 'AND ( 1 = 1  and ticket.tk__lu IN ';
+	$array_states = '(';
+	
+	if (!empty($filters['Lus']) and $filters['Lus']  == 1)
+			$array_states .= '1, ';
+	
+	if (!empty($filters['NonLus']) and $filters['NonLus']  == 1)
+			$array_states .= ' 0, ';
+	
+	if (!empty($filters['Cloture']) and $filters['Cloture']  == 1 )
+			$array_states .= ' 2, ';
+	
+	if (empty($filters['Cloture']) and empty($filters['NonLus']) and  empty($filters['Lus']) )
+			$array_states .= ' 2, 1 , 0 ,  ';
+
+	// si la recherche comprend les ticket cloturé en cours chez on redirige vers tous les tickets cloturé les tickets cloturés ne sont en cours chez personne 
+	if (!empty($filters['Cloture']) and empty($filters['NonLus']) and  empty($filters['Lus'])  and $filters['Author'] != 3 ) {
+			$array_states = ' (  2 , ';
+			$filters['Author'] = 1 ;
+	}
+
+	$array_states .= ' 99 )';
+	$state .=  ' '. $array_states.')';
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//filtre l'auteur du ticket en allant chercher dans la premiere ou la dernière ligne  ( rajoute un select dans le where ):
+	$Autor = '';
+	if ($filters['Author'] == 1 ){
+			$Autor .= '  ' . $state . ' ';
+			$Autor .= 'AND  ticket_ligne.tkl__dt = ( SELECT Max(ticket_ligne.tkl__dt) FROM ticket_ligne WHERE ticket_ligne.tkl__tk_id = ticket.tk__id )  
+			GROUP BY ticket_ligne.tkl__tk_id';
+	}elseif($filters['Author'] == 2){
+			//en cours chez moi Ou mon service OU mon binome ( ligne MAX())
+			//recupère moi ou mes groupes et les fou dans un array :
+			$array_groups = $this->get_groups_by_user($user);
+			if (!empty($array_groups)) {
+				$string = $this->handle_groups_for_request($array_groups);
+			} else {
+				$string = $user;
+			}
+
+		//select dans la ligne max uniquement  :
+		$Autor .= ' AND ( ticket_ligne.tkl__user_id_dest  IN(' . $string . ')  ' . $state .' ';
+		$Autor .= 'AND  ticket_ligne.tkl__dt = ( SELECT Max(ticket_ligne.tkl__dt) FROM ticket_ligne WHERE ticket_ligne.tkl__tk_id = ticket.tk__id ) ) GROUP BY ticket_ligne.tkl__tk_id';
+
+	}elseif($filters['Author'] == 3){
+			$array_groups = $this->get_groups_by_user($user);
+			if (!empty($array_groups)) {
+				$string = $this->handle_groups_for_request($array_groups);
+			} else {
+				$string = $user;
+			}
+			$Autor .= ' AND ( ticket_ligne.tkl__user_id  IN(' . $string . ')  ' . $state . ' ';
+			$Autor .= 'AND  ticket_ligne.tkl__dt = ( SELECT Min(ticket_ligne.tkl__dt) FROM ticket_ligne WHERE ticket_ligne.tkl__tk_id = ticket.tk__id ) ) GROUP BY ticket_ligne.tkl__tk_id';
+	}
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//execute la requete filtrée :
+	$request = $this->Db->Pdo->query('SELECT 
+	Max(ticket_ligne.tkl__dt) , ticket_ligne.tkl__tk_id
+	FROM ticket_ligne
+	LEFT JOIN ticket ON ticket_ligne.tkl__tk_id = ticket.tk__id
+	WHERE 1 = 1 '. $Autor.' ');
+
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//converti le resultat en 1 string exploitable  :
+	$data = $request->fetchAll(PDO::FETCH_OBJ);
+	foreach ($data as $key => $value) {
+		$value->tk__id = $value->tkl__tk_id;
+	}
+	$text = '( ';
+	foreach ($data as $key => $entry) {
+			if ($key === array_key_last($data)) {
+				$text .= $entry->tk__id . ' ';
+			} else $text .= $entry->tk__id . ', ';
+	}
+	$text .= ' )';
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//rtecupère les données adéquates   :
+	$request = $this->Db->Pdo->query('SELECT  t.* , MAX(l.tkl__dt) as last_date  FROM ticket as t
+		LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
+		WHERE  ( t.tk__id IN  ' . $text . ')  GROUP BY t.tk__id 
+		ORDER BY last_date DESC  LIMIT 20');
+	$data = $request->fetchAll(PDO::FETCH_OBJ);
+	$results = [];
+	foreach ($data as $ticket) {
+			$ticket = $this->findOne($ticket->tk__id);
+			array_push($results, $ticket);
+	} 
+	$array_results = [];
+	array_push($array_results , $results);
+	array_push($array_results, $filters);
+	return $array_results;
+}
+
 public function my_array_unique($array){
     $duplicate_keys = array();
     $tmp = array();       
