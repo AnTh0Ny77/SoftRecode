@@ -171,6 +171,17 @@ public function get_dp_client($tk__id){
 	}
   }
 
+  public function find_one_for_list($id){
+	$request = $this->Db->Pdo->query('SELECT  t.* , k.kw__lib 
+	FROM ticket as t
+	LEFT JOIN keyword as k ON ( k.kw__value = t.tk__motif AND  k.kw__type= "tmoti") 
+	WHERE t.tk__id = "'.$id.'" ');
+	$ticket = $request->fetch(PDO::FETCH_OBJ);
+	$ticket->last_line = $this->get_last_line($id);
+	$ticket->first_line = $this->get_first_line($id);
+	return $ticket;
+  }
+
   public function findOne($id){
 	    $tmoti = "tmoti";
 		$request = $this->Db->Pdo->query('SELECT  t.* , k.kw__lib 
@@ -927,7 +938,7 @@ public function search_tickets_filters($filters , $search , $user ){
 	$data = $request->fetchAll(PDO::FETCH_OBJ);
 	$results = [];
 	foreach ($data as $ticket) {
-			$ticket = $this->findOne($ticket->tk__id);
+			$ticket = $this->find_one_for_list($ticket->tk__id);
 			array_push($results, $ticket);
 	} 
 	$array_results = [];
