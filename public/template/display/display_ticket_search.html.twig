@@ -8,6 +8,13 @@
         </div>
         <div class="mt-3 d-flex justify-content-around">
             <div class=" ">
+                <select id="filtersType" name="TypeFilter">
+                    <optgroup label="Motif">
+                        <option value="DP" checked>Demande de prix</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class=" ">
                 <select id="filtersTickets" name="StateFilter[]" multiple>
                     <optgroup label="Etat">
                         {% if filters['Cloture'] == 1 %}
@@ -50,13 +57,7 @@
                     </optgroup>
                 </select>
             </div>
-            <div class=" ">
-                <select id="filtersType" name="TypeFilter">
-                    <optgroup label="Motif">
-                        <option value="DP" checked>Demande de prix</option>
-                    </optgroup>
-                </select>
-            </div>
+            
         </div>
     </form>
 </div>

@@ -36,7 +36,7 @@
 			{% endif %}
 			<input type="hidden" id="ticketUser" value="{{user.id_utilisateur}}">
                 <button type="button" class="btn btn-link d-none" data-toggle="tooltip" data-placement="top" title="DP non lus" id="notifTickets">
-                    <a href="tickets-display-list?id_user={{user.id_utilisateur}}&tk__lu=0">
+                    <a href="tickets-display-list?searchTickets=&StateFilter[]=NonLus&AuthorFilter=2&TypeFilter=DP">
                         <span class="fa-stack text-danger" style="vertical-align: top;">
                             <i class="fal fa-bell-on fa-stack-2x"></i>
                             <i class=" fa-stack-1x text-danger" id="ticketNonLu"></i>
@@ -44,7 +44,7 @@
                     </a>
                 </button>
 				<button type="button" class="btn btn-link d-none" data-toggle="tooltip" data-placement="top" title="DP en cours" id="notifTicketsCours">
-					<a href="tickets-display-list?id_user={{user.id_utilisateur}}&tk__lu=1">
+					<a href="tickets-display-list?searchTickets=&StateFilter[]=Lus&&StateFilter[]=NonLus&AuthorFilter=2&TypeFilter=DP">
 						<span class="fa-stack text-success" style="vertical-align: top;">
 							<i class="fal fa-bell fa-stack-2x"></i>
 							<i class=" fa-stack-1x text-success" id="ticketEncours"></i>

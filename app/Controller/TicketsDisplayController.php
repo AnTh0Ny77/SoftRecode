@@ -87,8 +87,16 @@ class TicketsDisplayController extends BasicController
         $General = new General(self::$Db);
         $alert_results = false;
         $text_results = false; 
+       
+        if (!empty($_GET['searchTickets'])) {
+            //clean the search :
+            $_GET['searchTickets'] =  $Ticket->clean($_GET['searchTickets']);
+            //handle get variable :
+            $_GET['StateFilter'] =  ['Cloture' , 'Lus' , 'NonLus'];
+            $_GET['AuthorFilte'] = 1 ;
+        }
         self::handle_search();
-        $results = $Ticket->search_tickets_filters($_SESSION['filters'], '', $_SESSION['user']->id_utilisateur);
+        $results = $Ticket->search_tickets_filters($_SESSION['filters'], $_GET['searchTickets'] , $_SESSION['user']->id_utilisateur);
         $list = $results[0];
         $_SESSION['filters'] = $results[1];
         $filters = $_SESSION['filters'];
