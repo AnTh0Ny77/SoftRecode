@@ -886,10 +886,26 @@ public function search_ticket( string $input , array $config  , $cloture){
 		$request = $this->Db->Pdo->query("SELECT u.* 
 			FROM utilisateur_grp as g
 			LEFT JOIN utilisateur as u ON ( g.id_groupe = u.id_utilisateur OR g.id_utilisateur = u.id_utilisateur )
-			WHERE ( " . $user . " =  g.id_utilisateur  )
+			WHERE ( " . $user . " =  g.id_utilisateur   AND  g.id_groupe < 2000 ) 
 			ORDER BY prenom");
 		$data = $request->fetchAll(PDO::FETCH_CLASS);
-		return $data;
+		
+
+		//get binome
+		$request = $this->Db->Pdo->query("SELECT u.* 
+			FROM utilisateur_grp as g
+			LEFT JOIN utilisateur as u ON ( g.id_utilisateur = u.id_utilisateur and  u.id_utilisateur <>  " . $user ."  )
+			WHERE (  " . $user . " =  g.id_utilisateur and  g.id_groupe > 2000  ) 
+			ORDER BY prenom");
+		$binome = $request->fetchAll(PDO::FETCH_CLASS);
+
+		if (!empty($binome)) {
+			$list = array_merge($data, $binome);
+			$list = $this->my_array_unique($list);
+			return $list;
+		}else{
+			return $data;
+		}
 	}
 
 	public function handle_groups_for_request($array_groups){
