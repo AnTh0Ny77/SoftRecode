@@ -87,7 +87,7 @@ class TicketsDisplayController extends BasicController
         $General = new General(self::$Db);
         $alert_results = false;
         $text_results = false; 
-       
+        $list = null;
         if (!empty($_GET['searchTickets'])) {
             //clean the search :
             $_GET['searchTickets'] =  $Ticket->clean($_GET['searchTickets']);
