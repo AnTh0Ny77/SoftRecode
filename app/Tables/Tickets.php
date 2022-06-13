@@ -1020,7 +1020,7 @@ public function search_tickets_filters($filters , $search , $user ){
 				$request = $this->Db->Pdo->query('SELECT  t.* , MAX(l.tkl__dt) as last_date  FROM ticket as t
 					LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
 					WHERE  ( t.tk__id IN  ' . $text . ')  GROUP BY t.tk__id 
-					ORDER BY last_date DESC  LIMIT 200');
+					ORDER BY last_date DESC  LIMIT 80');
 				$data = $request->fetchAll(PDO::FETCH_OBJ);
 				$results = [];
 				foreach ($data as $ticket) {
