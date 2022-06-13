@@ -1002,32 +1002,37 @@ public function search_tickets_filters($filters , $search , $user ){
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//converti le resultat en 1 string exploitable  :
 			$data = $request->fetchAll(PDO::FETCH_OBJ);
-			foreach ($data as $key => $value) {
-				$value->tk__id = $value->tkl__tk_id;
+
+			if (!empty($data)) {
+				foreach ($data as $key => $value) {
+					$value->tk__id = $value->tkl__tk_id;
+				}
+				$text = '( ';
+				foreach ($data as $key => $entry) {
+						if ($key === array_key_last($data)) {
+							$text .= $entry->tk__id . ' ';
+						} else $text .= $entry->tk__id . ', ';
+				}
+				$text .= ' )';
+				/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				//rtecupère les données adéquates   :
+			
+				$request = $this->Db->Pdo->query('SELECT  t.* , MAX(l.tkl__dt) as last_date  FROM ticket as t
+					LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
+					WHERE  ( t.tk__id IN  ' . $text . ')  GROUP BY t.tk__id 
+					ORDER BY last_date DESC  LIMIT 200');
+				$data = $request->fetchAll(PDO::FETCH_OBJ);
+				$results = [];
+				foreach ($data as $ticket) {
+						$ticket = $this->find_one_for_list($ticket->tk__id);
+						array_push($results, $ticket);
+				} 
+				$array_results = [];
+				array_push($array_results , $results);
+				array_push($array_results, $filters);
+				return $array_results;
 			}
-			$text = '( ';
-			foreach ($data as $key => $entry) {
-					if ($key === array_key_last($data)) {
-						$text .= $entry->tk__id . ' ';
-					} else $text .= $entry->tk__id . ', ';
-			}
-			$text .= ' )';
-			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			//rtecupère les données adéquates   :
-			$request = $this->Db->Pdo->query('SELECT  t.* , MAX(l.tkl__dt) as last_date  FROM ticket as t
-				LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
-				WHERE  ( t.tk__id IN  ' . $text . ')  GROUP BY t.tk__id 
-				ORDER BY last_date DESC  LIMIT 200');
-			$data = $request->fetchAll(PDO::FETCH_OBJ);
-			$results = [];
-			foreach ($data as $ticket) {
-					$ticket = $this->find_one_for_list($ticket->tk__id);
-					array_push($results, $ticket);
-			} 
-			$array_results = [];
-			array_push($array_results , $results);
-			array_push($array_results, $filters);
-			return $array_results;
+			
 				
 	} else {
 			$array_results = [];
@@ -1334,7 +1339,9 @@ public function search_in_ticket(string  $filtre){
 					OR client__cp LIKE '%" . $mots_filtre[$i] . "%' ";
 				}
 				$request .= "ORDER BY  client__societe DESC  LIMIT 12 ";
+				
 				$send = $this->Db->Pdo->query($request);
+			
 				$results = $send->fetch(PDO::FETCH_OBJ);
 
 				if (!empty($results) and  $results->client__id == intval($client_field[2]) ) {

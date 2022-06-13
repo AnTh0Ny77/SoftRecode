@@ -98,6 +98,7 @@ class TicketsDisplayController extends BasicController
         }
         self::handle_search();
         $results = $Ticket->search_tickets_filters($_SESSION['filters'], $_GET['searchTickets'] , $_SESSION['user']->id_utilisateur);
+        
         $list = $results[0];
         if (empty($list))
             $alert_results = true;
