@@ -96,14 +96,22 @@ class TicketsDisplayController extends BasicController
             $_GET['StateFilter'] =  ['Cloture' , 'Lus' , 'NonLus'];
             $_GET['AuthorFilter'] = 1 ;
         }
+        if (empty($_GET['searchTickets']))
+            $_GET['searchTickets'] = '';
+        
         self::handle_search();
         $results = $Ticket->search_tickets_filters($_SESSION['filters'], $_GET['searchTickets'] , $_SESSION['user']->id_utilisateur);
         
-        $list = $results[0];
+        if (!empty($results[0]))
+            $list = $results[0];
+        
         if (empty($list))
             $alert_results = true;
         
-        $_SESSION['filters'] = $results[1];
+        if (!empty($results[1])) 
+            $_SESSION['filters'] = $results[1];
+        
+       
         $filters = $_SESSION['filters'];
         //si un ticket à été cloturé : 
         if (!empty($_POST['ticketsCloture'])){
