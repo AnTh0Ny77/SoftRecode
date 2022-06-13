@@ -978,7 +978,7 @@ public function search_tickets_filters($filters , $search , $user ){
 
 				//select dans la ligne max uniquement  :
 				$Autor .= ' AND ( ticket_ligne.tkl__user_id_dest  IN(' . $string . ')  ' . $state .' ';
-				$Autor .= 'AND  ticket_ligne.tkl__dt = ( SELECT Max(ticket_ligne.tkl__dt) FROM ticket_ligne WHERE ticket_ligne.tkl__tk_id = ticket.tk__id ) ) GROUP BY ticket_ligne.tkl__tk_id';
+				$Autor .= 'AND  ticket_ligne.tkl__dt = ( SELECT Max(ticket_ligne.tkl__dt) FROM ticket_ligne WHERE ticket_ligne.tkl__tk_id = ticket.tk__id ) ) GROUP BY ticket_ligne.tkl__tk_id LIMIT 50';
 
 			}elseif($filters['Author'] == 3){
 					$array_groups = $this->get_groups_by_user($user);
@@ -988,7 +988,7 @@ public function search_tickets_filters($filters , $search , $user ){
 						$string = $user;
 					}
 					$Autor .= ' AND ( ticket_ligne.tkl__user_id  IN(' . $string . ')  ' . $state . ' ';
-					$Autor .= 'AND  ticket_ligne.tkl__dt = ( SELECT Min(ticket_ligne.tkl__dt) FROM ticket_ligne WHERE ticket_ligne.tkl__tk_id = ticket.tk__id ) ) GROUP BY ticket_ligne.tkl__tk_id';
+					$Autor .= 'AND  ticket_ligne.tkl__dt = ( SELECT Min(ticket_ligne.tkl__dt) FROM ticket_ligne WHERE ticket_ligne.tkl__tk_id = ticket.tk__id ) ) GROUP BY ticket_ligne.tkl__tk_id LIMIT 50';
 			}
 
 			/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1020,7 +1020,7 @@ public function search_tickets_filters($filters , $search , $user ){
 				$request = $this->Db->Pdo->query('SELECT  t.* , MAX(l.tkl__dt) as last_date  FROM ticket as t
 					LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
 					WHERE  ( t.tk__id IN  ' . $text . ')  GROUP BY t.tk__id 
-					ORDER BY last_date DESC  LIMIT 80');
+					ORDER BY last_date DESC  LIMIT 50');
 				$data = $request->fetchAll(PDO::FETCH_OBJ);
 				$results = [];
 				foreach ($data as $ticket) {
