@@ -8,7 +8,9 @@ use App\Tables\Keyword;
 use App\Tables\General;
 use App\Tables\UserGroup;
 use App\Tables\Stock;
+use App\Debug;
 use App\Tables\User;
+use ReflectionClass;
 use App\Tables\Tickets;
 
 class TicketsDisplayController extends BasicController
@@ -99,9 +101,10 @@ class TicketsDisplayController extends BasicController
         if (empty($_GET['searchTickets']))
             $_GET['searchTickets'] = '';
         
+           
         self::handle_search();
         $results = $Ticket->search_tickets_filters($_SESSION['filters'], $_GET['searchTickets'] , $_SESSION['user']->id_utilisateur);
-        
+       
         if (!empty($results[0]))
             $list = $results[0];
         

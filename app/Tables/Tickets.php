@@ -902,30 +902,47 @@ public function search_ticket( string $input , array $config  , $cloture){
 		
 
 		// //get binome
-		// $request = $this->Db->Pdo->query("SELECT u.* 
+		// $request = $this->Db->Pdo->query("SELECT g.id_utilisateur 
 		// 	FROM utilisateur_grp as g
-		// 	LEFT JOIN utilisateur as u ON ( g.id_utilisateur = u.id_utilisateur and  u.id_utilisateur <>  " . $user ."  )
+		// 	LEFT JOIN utilisateur as u ON ( g.id_utilisateur = u.id_utilisateur and g.id_utilisateur <>  " . $user ." )
 		// 	WHERE (  " . $user . " =  g.id_utilisateur and  g.id_groupe > 2000  ) 
 		// 	ORDER BY prenom");
 		// $binome = $request->fetchAll(PDO::FETCH_CLASS);
 
-		// if (!empty($binome)) {
-		// 	$list = array_merge($data, $binome);
-		// 	$list = $this->my_array_unique($list);
-		// 	return $list;
-		// }else{
+		$request = $this->Db->Pdo->query("SELECT g.id_groupe
+			FROM utilisateur_grp as g
+			WHERE (  " . $user . " =  g.id_utilisateur and  g.id_groupe > 2000  ) ");
+		$binome = $request->fetchAll(PDO::FETCH_CLASS);
+	
+		if (!empty($binome[0])) {
+			$request = $this->Db->Pdo->query("SELECT u.*
+			FROM utilisateur_grp as g
+			LEFT JOIN utilisateur as u ON ( g.id_utilisateur = u.id_utilisateur and g.id_utilisateur <>  " . $user ." )
+			WHERE (  " . $binome[0]->id_groupe . " =   g.id_groupe and   g.id_groupe > 2000  ) ");
+			$binome = $request->fetchAll(PDO::FETCH_CLASS);
+		}
+	
+		if (!empty($binome[1])) {
+			$list = array_merge($data, $binome);
+			$list = $this->my_array_unique($list);
+			return $list;
+		}else{
 			return $data;
-		// }
+		}
 	}
 
 	public function handle_groups_for_request($array_groups){
+	
 		$string = "";
 		foreach ($array_groups as $key => $value) {
-			if ($key === array_key_last($array_groups)) {
-				$string .= $value->id_utilisateur . ' ';
-			} else {
-				$string .= $value->id_utilisateur . ', ';
+			if ( $value->id_utilisateur != null) {
+				if ($key === array_key_last($array_groups)) {
+					$string .= $value->id_utilisateur . ' ';
+				} else {
+					$string .= $value->id_utilisateur . ', ';
+				}
 			}
+		
 		}
 		return $string ;
 	}

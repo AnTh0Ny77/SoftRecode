@@ -4,20 +4,19 @@ namespace App;
 
 use PDO;
 use PDOException;
+use ReflectionClass;
 
-class PDODebug   extends PDO {
+class Debug {
 
-
-    public function exec ($statement)
-    {
-        var_dump ($statement); 
-        return (parent::exec ($statement));
+    public function DumpMethod($class , $method_name){
+        $class = new ReflectionClass($class);
+        $methods = $class->getMethods();
+        foreach($methods as $method){
+                if ( $method->name == $method_name ) {
+                    
+                } 
+        }
+        
     }
-    public function query ($statement)
-    {
-        var_dump ($statement); 
-        return (parent::query ($statement));
-    }
-
   
 }

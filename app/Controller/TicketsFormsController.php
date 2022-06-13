@@ -254,7 +254,7 @@ class TicketsFormsController extends BasicController
         self::init();
         self::security();
         self::handleForms($_POST, $_FILES);
-        return header('location: tickets-display-list');
+        return header('location: tickets-display-list?searchTickets=&StateFilter[]=Lus&&StateFilter[]=NonLus&AuthorFilter=2&TypeFilter=DP');
     }
 
     public static function handleForms(array $post , array $files){
