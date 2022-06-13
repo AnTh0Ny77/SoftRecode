@@ -94,7 +94,7 @@ class TicketsDisplayController extends BasicController
             $text_results = $_GET['searchTickets'];
             //handle get variable :
             $_GET['StateFilter'] =  ['Cloture' , 'Lus' , 'NonLus'];
-            $_GET['AuthorFilte'] = 1 ;
+            $_GET['AuthorFilter'] = 1 ;
         }
         self::handle_search();
         $results = $Ticket->search_tickets_filters($_SESSION['filters'], $_GET['searchTickets'] , $_SESSION['user']->id_utilisateur);

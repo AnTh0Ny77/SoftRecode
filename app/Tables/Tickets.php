@@ -805,14 +805,23 @@ public function findTicket($text){
 			return $results;
 			break;
 		default:
-			$list = $this->search_in_ticket($text);
-			$list_in_ligne = $this->search_in_ticket_ligne($text);
-
+	
+			// $list = $this->search_in_ticket($text);
+			// $list_in_ligne = $this->search_in_ticket_ligne($text);
+			$list_with_client = $this->search_in_client_field($text);
+		
 			if (!empty($list_in_ligne) && !empty($list)) 
 				$list = array_merge($list, $list_in_ligne);
 
 			if (empty($list) && !empty($list_in_ligne))
 				$list = $list_in_ligne;
+
+			if (!empty($list)&&  !empty($list_with_client) )
+				$list = array_merge($list, $list_with_client);
+			
+			if (empty($list) && !empty($list_with_client))
+				$list = $list_with_client;
+			
 				
 				$results = [];
 				foreach ($list as $ticket) {
@@ -891,21 +900,21 @@ public function search_ticket( string $input , array $config  , $cloture){
 		$data = $request->fetchAll(PDO::FETCH_CLASS);
 		
 
-		//get binome
-		$request = $this->Db->Pdo->query("SELECT u.* 
-			FROM utilisateur_grp as g
-			LEFT JOIN utilisateur as u ON ( g.id_utilisateur = u.id_utilisateur and  u.id_utilisateur <>  " . $user ."  )
-			WHERE (  " . $user . " =  g.id_utilisateur and  g.id_groupe > 2000  ) 
-			ORDER BY prenom");
-		$binome = $request->fetchAll(PDO::FETCH_CLASS);
+		// //get binome
+		// $request = $this->Db->Pdo->query("SELECT u.* 
+		// 	FROM utilisateur_grp as g
+		// 	LEFT JOIN utilisateur as u ON ( g.id_utilisateur = u.id_utilisateur and  u.id_utilisateur <>  " . $user ."  )
+		// 	WHERE (  " . $user . " =  g.id_utilisateur and  g.id_groupe > 2000  ) 
+		// 	ORDER BY prenom");
+		// $binome = $request->fetchAll(PDO::FETCH_CLASS);
 
-		if (!empty($binome)) {
-			$list = array_merge($data, $binome);
-			$list = $this->my_array_unique($list);
-			return $list;
-		}else{
+		// if (!empty($binome)) {
+		// 	$list = array_merge($data, $binome);
+		// 	$list = $this->my_array_unique($list);
+		// 	return $list;
+		// }else{
 			return $data;
-		}
+		// }
 	}
 
 	public function handle_groups_for_request($array_groups){
@@ -1292,6 +1301,49 @@ public function search_in_ticket(string  $filtre){
 		$send = $this->Db->Pdo->query($request);
 		$data = $send->fetchAll(PDO::FETCH_OBJ);
 		return $data;
+	}
+
+	public function search_in_client_field(string  $filtre){
+		$filtre = str_replace("-", ' ', $filtre);
+		$filtre = str_replace("'", ' ', $filtre);
+		$nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+		$mots_filtre = str_word_count($filtre, 1, '0123456789');
+		$operateur = "AND ";
+
+		$request = $this->Db->Pdo->query('SELECT tklc__memo , ticket_ligne.tkl__tk_id as tk__id  FROM ticket_ligne_champ 
+		LEFT JOIN ticket_ligne ON ( ticket_ligne.tkl__id =  tklc__id ) 
+		WHERE tklc__nom_champ  = "Client" ');
+		$data = $request->fetchAll(PDO::FETCH_OBJ);
+
+		$tickets_array = [];
+		foreach($data as $ticket){
+			$client_field = explode('@',$ticket->tklc__memo);
+
+			if (!empty($client_field[2])) {
+				$request = "SELECT   client__id 
+				FROM client 
+				WHERE client__id  > 10 ";
+				$request .=   $operateur . " client__societe LIKE '%" . $mots_filtre[0] . "%' 
+				OR client__ville LIKE '%" . $mots_filtre[0] . "%' 
+				OR client__cp LIKE '%" . $mots_filtre[0] . "%'";
+			
+				for ($i = 1; $i < $nb_mots_filtre; $i++){
+					$request .=  $operateur . "   client__societe LIKE '%" . $mots_filtre[$i] . "%' 
+					OR client__ville LIKE '%" . $mots_filtre[$i] . "%' 
+					OR client__cp LIKE '%" . $mots_filtre[$i] . "%' ";
+				}
+				$request .= "ORDER BY  client__societe DESC  LIMIT 12 ";
+				$send = $this->Db->Pdo->query($request);
+				$results = $send->fetch(PDO::FETCH_OBJ);
+
+				if (!empty($results) and  $results->client__id == intval($client_field[2]) ) {
+					array_push($tickets_array , $ticket);
+				}
+			}
+			
+		}
+		
+		return $tickets_array;
 	}
 
 public function get_tickets_with_line(array $line){
