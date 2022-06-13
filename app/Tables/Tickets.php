@@ -909,26 +909,26 @@ public function search_ticket( string $input , array $config  , $cloture){
 		// 	ORDER BY prenom");
 		// $binome = $request->fetchAll(PDO::FETCH_CLASS);
 
-		$request = $this->Db->Pdo->query("SELECT g.id_groupe
-			FROM utilisateur_grp as g
-			WHERE (  " . $user . " =  g.id_utilisateur and  g.id_groupe > 2000  ) ");
-		$binome = $request->fetchAll(PDO::FETCH_CLASS);
+		// $request = $this->Db->Pdo->query("SELECT g.id_groupe
+		// 	FROM utilisateur_grp as g
+		// 	WHERE (  " . $user . " =  g.id_utilisateur and  g.id_groupe > 2000  ) ");
+		// $binome = $request->fetchAll(PDO::FETCH_CLASS);
 	
-		if (!empty($binome[0])) {
-			$request = $this->Db->Pdo->query("SELECT u.*
-			FROM utilisateur_grp as g
-			LEFT JOIN utilisateur as u ON ( g.id_utilisateur = u.id_utilisateur and g.id_utilisateur <>  " . $user ." )
-			WHERE (  " . $binome[0]->id_groupe . " =   g.id_groupe and   g.id_groupe > 2000  ) ");
-			$binome = $request->fetchAll(PDO::FETCH_CLASS);
-		}
+		// if (!empty($binome[0])) {
+		// 	$request = $this->Db->Pdo->query("SELECT u.*
+		// 	FROM utilisateur_grp as g
+		// 	LEFT JOIN utilisateur as u ON ( g.id_utilisateur = u.id_utilisateur and g.id_utilisateur <>  " . $user ." )
+		// 	WHERE (  " . $binome[0]->id_groupe . " =   g.id_groupe and   g.id_groupe > 2000  ) ");
+		// 	$binome = $request->fetchAll(PDO::FETCH_CLASS);
+		// }
 	
-		if (!empty($binome[1])) {
-			$list = array_merge($data, $binome);
-			$list = $this->my_array_unique($list);
-			return $list;
-		}else{
+		// if (!empty($binome[1])) {
+		// 	$list = array_merge($data, $binome);
+		// 	$list = $this->my_array_unique($list);
+		// 	return $list;
+		// }else{
 			return $data;
-		}
+		// }
 	}
 
 	public function handle_groups_for_request($array_groups){
