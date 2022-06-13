@@ -806,8 +806,8 @@ public function findTicket($text){
 			break;
 		default:
 	
-			// $list = $this->search_in_ticket($text);
-			// $list_in_ligne = $this->search_in_ticket_ligne($text);
+			$list = $this->search_in_ticket($text);
+			$list_in_ligne = $this->search_in_ticket_ligne($text);
 			$list_with_client = $this->search_in_client_field($text);
 		
 			if (!empty($list_in_ligne) && !empty($list)) 
@@ -824,11 +824,12 @@ public function findTicket($text){
 			
 				
 				$results = [];
-				foreach ($list as $ticket) {
-					$ticket = $this->find_one_for_list($ticket->tk__id);
-					array_push($results, $ticket);
+				if (!empty($list)) {
+					foreach ($list as $ticket) {
+						$ticket = $this->find_one_for_list($ticket->tk__id);
+						array_push($results, $ticket);
+					}
 				}
-				
 				$results =  $this->my_array_unique($results);
 				return $results;
 			break;
