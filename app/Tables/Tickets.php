@@ -346,48 +346,51 @@ public function get_dp_client($tk__id){
 		if (stripos($identifier, $pattern)) {
 			$request = explode('@', $identifier);
 			$subject_table = $this->get_subject_table($request[1]);
-			if (!empty($subject_table) and $entitie->identifier  == $request[0]){
-				if ($subject_table['TABLE_NAME'] == 'client') {
-					$request = $this->Db->Pdo->query('SELECT *,  LPAD(client__id,6,0) as client__id  
-					FROM '. $subject_table['TABLE_NAME'].' 
-					WHERE '. $entitie->identifier.' = "'. end($request).'" ');
-					$data = $request->fetch(PDO::FETCH_ASSOC);
-					$data['client__id'] = '(' .$data['client__id'] . ')';
-				}else{
-					$request = $this->Db->Pdo->query('SELECT  * 
-					FROM '. $subject_table['TABLE_NAME'].' 
-					WHERE '. $entitie->identifier.' = "'. end($request).'" ');
-					$data = $request->fetch(PDO::FETCH_ASSOC);
-				}
-				
-				if (!empty($data)) {
+			if (!empty($subject_table)){
+				if (  $entitie->identifier  == $request[0] or $entitie->identifier  == $request[1]) {
+					if ($subject_table['TABLE_NAME'] == 'client') {
+						$request = $this->Db->Pdo->query('SELECT *,  LPAD(client__id,6,0) as client__id  
+						FROM '. $subject_table['TABLE_NAME'].' 
+						WHERE '. $entitie->identifier.' = "'. end($request).'" ');
+						$data = $request->fetch(PDO::FETCH_ASSOC);
+						$data['client__id'] = '(' .$data['client__id'] . ')';
+					}else{
+						$request = $this->Db->Pdo->query('SELECT  * 
+						FROM '. $subject_table['TABLE_NAME'].' 
+						WHERE '. $entitie->identifier.' = "'. end($request).'" ');
+						$data = $request->fetch(PDO::FETCH_ASSOC);
+					}
 					
-					$subject = [];
-					foreach ($entitie as $key => $properties) {
-						$text = '';
-						foreach ($data as $clefs => $valeur) {
-							if (is_string($properties)) {
-
-								if ($clefs == $properties) {
-									$subject["alternative"] = $entitie->alternative;
-									$subject["name"] = $entitie->name;
-									if ($key == 'picture') {
-										$valeur = base64_encode($valeur);
+					if (!empty($data)) {
+						
+						$subject = [];
+						foreach ($entitie as $key => $properties) {
+							$text = '';
+							foreach ($data as $clefs => $valeur) {
+								if (is_string($properties)) {
+	
+									if ($clefs == $properties) {
+										$subject["alternative"] = $entitie->alternative;
+										$subject["name"] = $entitie->name;
+										if ($key == 'picture') {
+											$valeur = base64_encode($valeur);
+										}
+										$subject[$key] = $valeur;
 									}
-									$subject[$key] = $valeur;
-								}
-							} elseif (is_array($properties)) {
-								foreach ($properties as $field) {
-									if ($field == $clefs) {
-										$text .= $valeur . ' ';
-										$subject[$key] = $text;
+								} elseif (is_array($properties)) {
+									foreach ($properties as $field) {
+										if ($field == $clefs) {
+											$text .= $valeur . ' ';
+											$subject[$key] = $text;
+										}
 									}
 								}
 							}
 						}
-					}
-					return $subject;
-				} else return null;
+						return $subject;
+					} else return null;
+				}
+				
 			}else return null;
 		}else return null;
   }
@@ -467,7 +470,7 @@ public function get_dp_client($tk__id){
 
   public function insert_field(array $post , $id_ligne , $id_tickets){
 		foreach ($post as $key => $value) {
-			
+		
 				switch ($key) {
 					case 'id_ligne':
 					case 'creator':
@@ -494,7 +497,7 @@ public function get_dp_client($tk__id){
 						}
 						$text = '';
 						
-						if (!empty($champs) and intval($champs->tksc__sujet) != 1 ) {
+						if (!empty($champs)  ) {
 							$pattern = "@";
 					
 							if(stripos( $champs->tksc__option , $pattern)){
@@ -511,14 +514,17 @@ public function get_dp_client($tk__id){
 								}
 								
 							}else{
-								$request = $this->Db->Pdo->prepare("
-								INSERT INTO ticket_ligne_champ  (tklc__id, tklc__nom_champ,  tklc__ordre,  tklc__memo ) 
-								VALUES      			  (:tklc__id,  :tklc__nom_champ,  :tklc__ordre,  :tklc__memo)"); 
-								$request->bindValue(":tklc__id", $id_ligne);
-								$request->bindValue(":tklc__nom_champ", $key);
-								$request->bindValue(":tklc__ordre",  $champs->tksc__ordre);
-								$request->bindValue(":tklc__memo",  $value);
-								$request->execute();
+								if (!empty($value)) {
+									$request = $this->Db->Pdo->prepare("
+									INSERT INTO ticket_ligne_champ  (tklc__id, tklc__nom_champ,  tklc__ordre,  tklc__memo ) 
+									VALUES      			  (:tklc__id,  :tklc__nom_champ,  :tklc__ordre,  :tklc__memo)"); 
+									$request->bindValue(":tklc__id", $id_ligne);
+									$request->bindValue(":tklc__nom_champ", $key);
+									$request->bindValue(":tklc__ordre",  $champs->tksc__ordre);
+									$request->bindValue(":tklc__memo",  $value);
+									$request->execute();
+								}
+								
 							} 
 						}
 						elseif(!empty($champs) and intval($champs->tksc__sujet) == 1 ){
@@ -529,6 +535,7 @@ public function get_dp_client($tk__id){
 						break;
 				}
 		}
+		
   }
 
   public function cloture_ticket($id , $user_id , $date , $commentaire){
@@ -1367,7 +1374,6 @@ public function search_in_ticket(string  $filtre){
 			}
 			
 		}
-		
 		return $tickets_array;
 	}
 
@@ -1385,7 +1391,6 @@ public function get_tickets_with_line(array $line){
 			$data = $request->fetchAll(PDO::FETCH_OBJ);
 			return $data;
 		}
-	    
 }
 
 public function searchTicket(string $input, array $config){

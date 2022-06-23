@@ -254,10 +254,11 @@ class TicketsFormsController extends BasicController
         self::init();
         self::security();
         self::handleForms($_POST, $_FILES);
-        return header('location: tickets-display-list?searchTickets=&StateFilter[]=Lus&&StateFilter[]=NonLus&AuthorFilter=2&TypeFilter=DP');
+        return header('location: tickets-display-list?searchTickets=&StateFilter[]=Lus&&StateFilter[]=NonLus&AuthorFilter=1&TypeFilter=DP');
     }
 
     public static function handleForms(array $post , array $files){
+       
             $Ticket = new Tickets(self::$Db);
             if (!empty($post['creaForms'])){
                 //si un titre est donné : 

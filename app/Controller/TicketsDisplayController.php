@@ -247,26 +247,39 @@ class TicketsDisplayController extends BasicController
             $other_fields = [];
             foreach ($ligne->fields as $key => $field){   
                     if (stripos($field->tklc__memo , $pattern)){
+                        
                         foreach($config as  $entitie) {
                            $secondary_entities = $Ticket->create_secondary_entities($entitie , $field->tklc__memo);
+                           
                            if(!empty($secondary_entities)){
-                               array_push($entitites_array, $secondary_entities );
+                            $secondary_entities['tklc__ordre'] = $field->tklc__ordre;
+                            array_push($other_fields,  (object) $secondary_entities);
                            }
                         }
+                      
                     }else{
                         array_push($other_fields,$field);
                     } 
                     $ligne->fields =  $other_fields;
             }
+          
+            
+            if (!empty($ligne->fields)) 
+                usort($ligne->fields, function($a, $b) {return strcmp( $a->tklc__ordre, $b->tklc__ordre);});
+            
             if (!empty($entitites_array)) {
+               
                 $ligne->entities = $entitites_array;
             }
+         
             $files = $Ticket->getFiles($ligne->tkl__id);
             if (!empty($files)) {
              $ligne->path = 'upload/'.$ligne->tkl__id.'/';
              $ligne->files = $files;
             }
+           
         }
+       
         $user_destinataire = $Ticket->getCurrentUser($Request['id']);
         $next_action = $Ticket->getNextAction($Request['id']);
         foreach ($config as  $entitie){
