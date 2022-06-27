@@ -150,7 +150,8 @@ class TicketsDisplayController extends BasicController
         if (!empty($list)){
             $temp_list = $list;
             foreach ($list as $key => $ticket){
-                $ticket->demandeur = $Ticket->return_demandeur($ticket->tk__id);
+                if (!empty($ticket)) {
+                    $ticket->demandeur = $Ticket->return_demandeur($ticket->tk__id);
                 // foreach ($config as  $entitie){
                 //     if (!empty($ticket->sujet)){
                 //         $subject_identifier = $ticket->sujet->tksc__option;
@@ -165,17 +166,20 @@ class TicketsDisplayController extends BasicController
                 if (!empty($ticket->tk__groupe)){
                     $array_groups = []; 
                     foreach ( $temp_list as $index => $other_tickets){
+                        
+                        if (is_object($other_tickets)) {
                             if ($other_tickets->tk__groupe === $ticket->tk__groupe and  $ticket->tk__id != $other_tickets->tk__id ){
                                 $temp = $other_tickets ;
                                 array_push($array_groups  , $temp);
                                 unset($temp_list[$key]);
                                 unset($list[$index]);
                             }
+                        }     
                     }
                     $ticket->groups = $array_groups;
                 }
                 // $ticket->client = $Ticket->get_dp_client($ticket->tk__id);
-               
+                }
             }
         }
         return self::$twig->render(
