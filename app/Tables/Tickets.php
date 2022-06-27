@@ -181,9 +181,12 @@ public function get_dp_client($tk__id){
 	LEFT JOIN keyword as k ON ( k.kw__value = t.tk__motif AND  k.kw__type= "tmoti") 
 	WHERE t.tk__id = "'.$id.'" ');
 	$ticket = $request->fetch(PDO::FETCH_OBJ);
-	$ticket->last_line = $this->get_last_line($id);
-	$ticket->first_line = $this->get_first_line($id);
-	return $ticket;
+	if (!empty($ticket)) {
+		$ticket->last_line = $this->get_last_line($id);
+		$ticket->first_line = $this->get_first_line($id);
+		return $ticket;
+	}
+	
   }
 
   public function findOne($id){
@@ -877,7 +880,9 @@ public function find_by_client($text){
 	$Client = new Client($this->Db);
 	$client_results = $Client->search_client_return_id($text);
 
-	$request = $this->Db->Pdo->query('SELECT  tklc__memo , tklc__id FROM ticket_ligne_champ WHERE tklc__nom_champ =  "Client"');
+	$request = $this->Db->Pdo->query('SELECT  tklc__memo , tklc__id 
+	LEFT JOIN 
+	FROM ticket_ligne_champ WHERE tklc__nom_champ =  "Client"');
 	$client__field = $request->fetchAll(PDO::FETCH_OBJ);
 	$text_in = '';
 
