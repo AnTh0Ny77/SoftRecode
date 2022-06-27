@@ -7,6 +7,7 @@ use App\Database;
 use App\Tables\General;
 use App\Tables\Article;
 use App\Tables\UserGroup;
+use App\Tables\Client;
 use DateTime;
 use PDO;
 use stdClass;
@@ -868,6 +869,33 @@ public function findTicket($text){
 				$results =  $this->my_array_unique($results);
 				return $results;
 			break;
+	}
+}
+
+
+public function find_by_client($text){
+	$Client = new Client($this->Db);
+	$client_results = $Client->search_client_return_id($text);
+
+	$request = $this->Db->Pdo->query('SELECT  tklc__memo , tklc__id FROM ticket_ligne_champ WHERE tklc__nom_champ =  "Client"');
+	$client__field = $request->fetchAll(PDO::FETCH_OBJ);
+	$text_in = '';
+
+	foreach ($client__field as $field) {
+		if (!empty($field->tklc__memo)) {
+			$id_client = explode('@', $field->tklc__memo);
+			$id_client = end($id_client);
+			foreach ($client_results as $key => $client) {
+					if (intval($client->id_utilisateur) == intval($id_client)){
+						if ($key === array_key_last($client_results)){
+							$text_in .= $field->tklc__id . ' ';
+						} else {
+
+							$text_in .= $field->tklc__id . ', ';
+						}
+					}
+			}
+		}	
 	}
 }
 

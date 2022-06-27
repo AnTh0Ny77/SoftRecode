@@ -195,4 +195,53 @@ class Client extends Table
         $data = $send->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }
+
+
+
+    public function search_client_return_id($recherche)
+    {
+        $filtre = str_replace("-", ' ', $recherche);
+        $filtre = str_replace("'", ' ', $filtre);
+        $nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+
+        $mots_filtre = str_word_count($filtre, 1, '0123456789');
+
+        switch ($nb_mots_filtre) 
+        {
+            case  0:
+                $mode_filtre = false;
+                break;
+
+            default:
+                $mode_filtre = true;
+                break;
+        }
+
+
+        $operateur = "AND ";
+        $request = "SELECT  LPAD(client__id,6,0) as client__id
+        FROM client 
+        WHERE client__id  > 10 ";
+
+        if ($mode_filtre) {
+            $request .=   $operateur . "( CONCAT('0000',client__id) LIKE '%" . $mots_filtre[0] . "%' 
+        OR client__societe LIKE '%" . $mots_filtre[0] . "%' 
+        OR client__ville LIKE '%" . $mots_filtre[0] . "%' 
+        OR client__cp LIKE '%" . $mots_filtre[0] . "%') ";
+
+            for ($i = 1; $i < $nb_mots_filtre; $i++) {
+                $request .=  $operateur . " ( client__id LIKE '%" . $mots_filtre[$i] . "%' 
+        OR client__societe LIKE '%" . $mots_filtre[$i] . "%' 
+        OR client__ville LIKE '%" . $mots_filtre[$i] . "%' 
+        OR client__cp LIKE '%" . $mots_filtre[$i] . "%') ";
+            }
+            $request .= "ORDER BY  client__societe ASC  LIMIT 50";
+        } else {
+            $request .=  "ORDER BY  client__societe ASC  LIMIT 50";
+        }
+
+        $send = $this->Db->Pdo->query($request);
+        $data = $send->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
 }
