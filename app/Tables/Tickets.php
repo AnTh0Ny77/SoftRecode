@@ -847,7 +847,7 @@ public function findTicket($text){
 	
 			$list = $this->search_in_ticket($text);
 			$list_in_ligne = $this->search_in_ticket_ligne($text);
-			$list_with_client = $this->search_in_client_field($text);
+			$list_with_client = $this->find_by_client($text);
 		
 			if (!empty($list_in_ligne) && !empty($list)) 
 				$list = array_merge($list, $list_in_ligne);
@@ -880,28 +880,42 @@ public function find_by_client($text){
 	$Client = new Client($this->Db);
 	$client_results = $Client->search_client_return_id($text);
 
-	$request = $this->Db->Pdo->query('SELECT  tklc__memo , tklc__id 
-	LEFT JOIN 
-	FROM ticket_ligne_champ WHERE tklc__nom_champ =  "Client"');
+	$request = $this->Db->Pdo->query('SELECT  tklc__memo , tklc__id , l.tkl__tk_id as tk__id 
+	FROM ticket_ligne_champ
+	LEFT JOIN ticket_ligne as l ON ( l.tkl__id =  tklc__id  ) 
+	WHERE tklc__nom_champ =  "Client"');
 	$client__field = $request->fetchAll(PDO::FETCH_OBJ);
-	$text_in = '';
-
-	foreach ($client__field as $field) {
+	$array_results = [];
+	$string ='';
+	foreach ($client__field as  $key => $field) {
 		if (!empty($field->tklc__memo)) {
 			$id_client = explode('@', $field->tklc__memo);
 			$id_client = end($id_client);
-			foreach ($client_results as $key => $client) {
-					if (intval($client->id_utilisateur) == intval($id_client)){
-						if ($key === array_key_last($client_results)){
-							$text_in .= $field->tklc__id . ' ';
+			foreach ($client_results as $client) {
+				
+					if (intval($client->client__id) == intval($id_client)){
+					
+						if ($key === array_key_last($client__field)) {
+						
+							$string .= $field->tk__id . ' ';
 						} else {
-
-							$text_in .= $field->tklc__id . ', ';
+							
+							$string .= $field->tk__id . ', ';
 						}
+						
 					}
 			}
 		}	
 	}
+
+	if (strlen($string) > 0 ) {
+		$request = $this->Db->Pdo->query('SELECT tkl__tk_id as  tk__id  
+		FROM ticket_ligne  
+		WHERE tkl__tk_id  IN ( ' . $string . ' ) ');
+		$results = $request->fetchAll(PDO::FETCH_OBJ);
+		return  $results ;
+	} else return [];
+
 }
 
 
