@@ -291,6 +291,34 @@ public function get_dp_client($tk__id){
   }
 
 
+  public function get_next_action_by_userGroup($id_user , $ticket_id){
+		$userGroup = new UserGroup($this->Db);
+		$groupList = $userGroup->get_groups_id_by_user($id_user);
+		
+		$text  = '';
+		foreach ($groupList as $group) {
+			
+			if (!empty($group->id_utilisateur)) {
+				$text .=  $group ->id_utilisateur . ',';
+			}
+			
+		}
+		$text .= '3000';
+		$request = $this->Db->Pdo->query('SELECT  MAX(tkl__dt) as dateLigne  FROM ticket_ligne 
+		WHERE tkl__tk_id = "' . $ticket_id . '" ');
+		$ligne = $request->fetch(PDO::FETCH_OBJ);
+		$request = $this->Db->Pdo->query('SELECT  tkl__motif_ligne   FROM ticket_ligne 
+		WHERE tkl__dt = "' . $ligne->dateLigne . '" ');
+		$ligne = $request->fetch(PDO::FETCH_OBJ);
+		$request = $this->Db->Pdo->query('SELECT  * FROM ticket_scenario
+		WHERE tks__motif_ligne_preced = "' . $ligne->tkl__motif_ligne . '" AND tks__access IN ( '.$text. ' )  ');
+		$scenario = $request->fetchAll(PDO::FETCH_OBJ);
+		return $scenario;
+
+
+  }
+
+
   public function createEntities(object $entitie, string $identifier ,  $id){
 		$pattern = "@";
 		if (stripos($identifier, $pattern)){

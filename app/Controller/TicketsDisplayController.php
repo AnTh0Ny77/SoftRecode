@@ -281,7 +281,7 @@ class TicketsDisplayController extends BasicController
         }
        
         $user_destinataire = $Ticket->getCurrentUser($Request['id']);
-        $next_action = $Ticket->getNextAction($Request['id']);
+        $next_action = $Ticket->get_next_action_by_userGroup($_SESSION['user']->id_utilisateur ,$Request['id']);
         foreach ($config as  $entitie){
            if (!empty($ticket->sujet)){
                 $subject_identifier = $ticket->sujet->tksc__option;

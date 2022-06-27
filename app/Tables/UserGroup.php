@@ -42,6 +42,16 @@ class UserGroup extends Table {
             return $data;
   }
 
+  public function get_groups_id_by_user($user){
+	$request = $this->Db->Pdo->query("SELECT u.id_utilisateur 
+	FROM utilisateur_grp as g
+	LEFT JOIN utilisateur as u ON ( g.id_groupe = u.id_utilisateur )
+	WHERE ( ".$user." =  g.id_utilisateur  )
+	ORDER BY prenom");
+	$data = $request->fetchAll(PDO::FETCH_CLASS);
+	return $data;
+}
+
   public function ticket_notifier($id_user){
 		$request = $this->Db->Pdo->query('SELECT
 		ticket_ligne.tkl__id,
