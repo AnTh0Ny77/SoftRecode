@@ -166,7 +166,7 @@ public function get_dp_client($tk__id){
 
 	$request = $this->Db->Pdo->query('SELECT tk__groupe  as groupe  FROM ticket WHERE tk__id = '.$id.'');
 	$data = $request->fetch(PDO::FETCH_OBJ);
-	if (!empty($data->groupe)){
+	if (!empty($data) and  !empty($data->groupe)){
 		return intval($data->groupe);
 	}else{
 		$request = $this->Db->Pdo->query('SELECT MAX( tk__groupe ) as groupe  FROM ticket');
@@ -463,7 +463,7 @@ public function get_dp_client($tk__id){
 	return $id;
   }
 
-  public function return_demandeur(int $ticket_id){
+  public function return_demandeur( $ticket_id){
 		$request = $this->Db->Pdo->query('SELECT  MIN(tkl__dt) as dateLigne  FROM ticket_ligne 
 		WHERE tkl__tk_id = "' . $ticket_id . '" ');
 		$ligne = $request->fetch(PDO::FETCH_OBJ);
