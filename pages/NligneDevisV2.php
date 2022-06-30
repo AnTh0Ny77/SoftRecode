@@ -571,6 +571,7 @@ if (!empty($modif))
 }
 
 $etatList = $Keywords->getEtat();
+$pn_list = $Article->get_pn_list();
 
 
 // Donnée transmise au template : 
@@ -581,6 +582,7 @@ echo $twig->render('NligneDevisV2.twig',[
     'articleList' => $articleTypeList,
     'garanties' => $garanties,
     'etatList'=> $etatList,
+    'pn_list' => $pn_list ,
     'devisLignes' => $devisLigne,
     'modif' => $modif,
     'duplicate' => $duplicate,

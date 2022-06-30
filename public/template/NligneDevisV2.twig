@@ -51,9 +51,14 @@
                                     {% endif %}
                                     {% endfor %}
                                 </select>
+                             
                             </div>
+                            <button class="btn btn-recode-mini-devis btn-sm my-auto mx-auto" type="button" id="recherchePnButton" data-toggle="tooltip" data-placement="top" title="Selectionner directement un pn" ><i class="fas fa-fast-forward"></i></button>
+
                             <div class="col-8 ">
+                              
                                 <label for="choixDesignation"><b>Modèle:</b></label>
+                               
                                     <select class=" border selectpicker col-12"  data-live-search="true" data-size="10" data-width="100%" name="fmm" id="fmm" required>
                                         <option class="  optionSelect modelSelect" value="">..</option>
                                         {% for article in articleList %} 
@@ -64,6 +69,7 @@
                                             {% endif %}
                                         {% endfor %}
                                     </select> 
+                                  
                                     <div class="d-none mt-2" id="wrapper-pn">
                                         <label for="pn-select"><b>PN :</b></label>
                                             <select class="  border selectpicker col-12" data-live-search="true" data-size="10" data-width="100%"
@@ -71,8 +77,9 @@
                                                 <option class="optionSelect " value="0">Non spécifié</option>
                                             </select>
                                     </div>
-                                   
+                                    
                             </div>
+                           
                         </div>
                         <div class="d-flex flex-row justify-content-between col-12 my-4">
                             {% if user.user__devis_acces > 30  %}
@@ -629,6 +636,35 @@
         </div>
     </div>
 
+<!--modal de recherche par pn -->
+    <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"  id="modalPnRecherche">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Recherche par PN</h5>
+                        <button type="button" class="close" aria-label="Close" id="CloseModalRecherche">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group ">
+                            <label><b>P/N:</b></label>
+                            <select class=" border selectpicker col-12" data-live-search="true" data-size="10"
+                                data-width="100%" id="select_pn_search" name="select_sous_ref" required>
+                                {% for pn in pn_list %}
+                                    <option class="optionSelect modelSelect" value={{pn.id__pn}}>
+                                        {{pn.apn__pn_long ~ " " ~ pn.apn__desc_short }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>  
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"  id="SearchPnModal" class="btn btn-recode">Selectionner</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+
     <!--modal de creation de sous ref-->
     <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="modal_sous_ref">
         <div class="modal-dialog modal-lg">
@@ -776,6 +812,7 @@
 <script type="text/javascript" src="public/js/ligneV2/nDevisLigne.js"></script>
 <script type="text/javascript" src="public/js/ligneV2/scenario.js"></script>
 <script type="text/javascript" src="public/js/ligneV2/sous_ref.js"></script>
+<script type="text/javascript" src="public/js/ligneV2/recherchePn.js"></script>
 <script type="text/javascript" src="public/js/custom/button/custom-button-quantite.js"></script>
 
 <!-- <script type="text/javascript" src="public/js/ligneV2/ligne_admin.js"></script> -->

@@ -440,6 +440,35 @@ class Article extends Table
 		return $data;
   }
 
+  public function return_id_fmm_for_devis($pn_id){
+		
+		$pn_court = preg_replace("#[^!A-Za-z0-9%]+#", "", $pn_id);
+		$pn_court = strtoupper($pn_court);
+		$SQL = 'SELECT *
+		FROM liaison_fmm_pn 
+		WHERE id__pn = "' . $pn_court . '"
+		ORDER BY id__fmm';
+		$request = $this->Db->Pdo->query($SQL);
+		$data = $request->fetchAll(PDO::FETCH_OBJ);
+		if (empty($data)) {
+			return 100 ;
+		}else {
+			return $data[0]->id__fmm;
+		}
+		
+  }
+
+	public function get_pn_list(): array
+	{
+
+		$SQL = 'SELECT a.apn__pn as id__pn , a.apn__pn_long , a.apn__desc_short
+		FROM art_pn as a
+		WHERE 1 = 1   ORDER BY id__pn';
+		$request = $this->Db->Pdo->query($SQL);
+		$data = $request->fetchAll(PDO::FETCH_OBJ);
+		return $data;
+	}
+
   public function get_line_pn_and_return_liaison_list($id_ligne) : array 
   {
 	  	$response = [] ; 
@@ -483,6 +512,21 @@ class Article extends Table
 
 		return $data;
   }
+
+	public function get_pn_for_devis($pn_name)
+	{
+		$SQL = 'SELECT a.* ,  l.id__fmm
+		FROM art_pn as a  
+		LEFT JOIN liaison_fmm_pn as l ON ( a.apn__pn  = l.id__pn ) 
+		WHERE apn__pn = "' . $pn_name . '"';
+		$request = $this->Db->Pdo->query($SQL);
+		$data = $request->fetch(PDO::FETCH_OBJ);
+
+		if (!empty($data->apn__image))
+		$data->apn__image = base64_encode($data->apn__image);
+
+		return $data;
+	}
 
   public function get_pn_byID($pn_name)
   {
