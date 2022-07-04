@@ -28,13 +28,13 @@ $(document).ready(function () {
                         $('.selectpicker').selectpicker('refresh');
                         console.log(dataSet);
                         get_pn_and_refresh(selectedPn);
-                        if (dataSet.apn__design_com.length > 0) {
+                        if (dataSet.apn__design_com.length) {
                             $('#designation').val(dataSet.apn__design_com);
                         } else { $('#designation').val(dataSet.apn__desc_short); }
-                        if (dataSet.apn__desc_long.length > 0) {
+                        if (dataSet.apn__desc_long.length ) {
                             CKEDITOR.instances['comClient'].insertHtml(dataSet.apn__desc_long);
+                        }else { CKEDITOR.instances['comClient'].setData(''); }
 
-                        }
                         $('#modalPnRecherche').modal('hide');
                        
                     },
