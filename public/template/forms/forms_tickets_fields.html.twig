@@ -128,7 +128,7 @@
                 <select class=" selectpicker  show-tick " data-width="100%" data-live-search="true" data-size="10"
                     name="{{form.tksc__nom_champ}}" required>
                     {% if tickets.tks__motif == 'dp' and tickets.tks__motif_ligne != 'dp_ouverture' and tickets.tks__motif_ligne !=  'dp_dcottation'  %}
-                        {# <option value="9999" selected>Renvoyer au demandeur</option> #}
+                        <option value="9999" selected>Renvoyer au demandeur</option>
                     {% endif %}
                     {% for subject in form.tksc__option %}
                         {% if tickets.tks__a_qui == 1001 %}
