@@ -118,7 +118,7 @@ class TicketsDisplayController extends BasicController
         $filters = $_SESSION['filters'];
         //si un ticket à été cloturé : 
         if (!empty($_POST['ticketsCloture'])){
-            $Ticket->cloture_ticket($_POST['ticketsCloture'], $_SESSION['user']->id_utilisateur , date('Y-m-d H:i:s') , $_POST['commentaire']);
+            $Ticket->cloture_ticket($_POST['ticketsCloture'], $_SESSION['user']->id_utilisateur , date('Y-m-d H:i:s') , 'Cloture du ticket');
         }
         $config = file_get_contents('configDisplay.json');
         $config = json_decode($config);

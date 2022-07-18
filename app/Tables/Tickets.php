@@ -638,6 +638,13 @@ public function get_destinataire_by_groups(array $groups){
 				ORDER BY id_utilisateur');
 				$data = $request->fetchAll(PDO::FETCH_ASSOC);
 				break;
+			case 1005:
+				$request = $this->Db->Pdo->query('SELECT id_utilisateur , nom , prenom
+				FROM utilisateur
+				WHERE  ( id_utilisateur  IN ( 1005)  ) 
+				ORDER BY id_utilisateur');
+				$data = $request->fetchAll(PDO::FETCH_ASSOC);
+				break;
 			case 1011:
 				$request = $this->Db->Pdo->query('SELECT id_utilisateur , nom , prenom
 				FROM utilisateur
@@ -848,6 +855,8 @@ public function findTicket($text){
 			$list = $this->search_in_ticket($text);
 			$list_in_ligne = $this->search_in_ticket_ligne($text);
 			$list_with_client = $this->find_by_client($text);
+			$list_with_pn = $this->find_by_pn($text);
+			
 		
 			if (!empty($list_in_ligne) && !empty($list)) 
 				$list = array_merge($list, $list_in_ligne);
@@ -860,6 +869,12 @@ public function findTicket($text){
 			
 			if (empty($list) && !empty($list_with_client))
 				$list = $list_with_client;
+
+			if (!empty($list)&&  !empty($list_with_pn) )
+				$list = array_merge($list, $list_with_pn);
+			
+			if (empty($list) && !empty($list_with_pn))
+				$list = $list_with_pn;
 			
 				
 				$results = [];
@@ -916,6 +931,46 @@ public function find_by_client($text){
 		return  $results ;
 	} else return [];
 
+}
+
+public function find_by_pn($text){
+
+	$Article = new Stock($this->Db);
+	$pn_results = $Article->find_pn_list($text);
+	
+	$request = $this->Db->Pdo->query('SELECT  tklc__memo , tklc__id , l.tkl__tk_id as tk__id 
+	FROM ticket_ligne_champ
+	LEFT JOIN ticket_ligne as l ON ( l.tkl__id =  tklc__id  ) 
+	WHERE tklc__nom_champ =  "Pn"');
+	$pn__field = $request->fetchAll(PDO::FETCH_OBJ);
+	$string ='';
+	foreach ($pn__field as  $key => $field) {
+		if (!empty($field->tklc__memo)) {
+			$id_pn = explode('@', $field->tklc__memo);
+			$id_pn = end($id_pn);
+			foreach ($pn_results as $pn) {
+				
+					if ($pn->apn__pn == intval($id_pn)){
+					
+						if ($key === array_key_last($pn__field)) {
+						
+							$string .= $field->tk__id . ' ';
+						} else {
+							
+							$string .= $field->tk__id . ', ';
+						}
+						
+					}
+			}
+		}	
+	}
+	if (strlen($string) > 0 ) {
+		$request = $this->Db->Pdo->query('SELECT tkl__tk_id as  tk__id  
+		FROM ticket_ligne  
+		WHERE tkl__tk_id  IN ( ' . $string . ' ) ');
+		$results = $request->fetchAll(PDO::FETCH_OBJ);
+		return  $results ;
+	} else return [];
 }
 
 
