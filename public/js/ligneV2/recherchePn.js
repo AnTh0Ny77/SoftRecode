@@ -15,6 +15,7 @@ $(document).ready(function () {
 
     $('#SearchPnModal').on('click' , function(){
         var selectedPn = $('#select_pn_search').children("option:selected").val();
+        console.log(selectedPn);
         if (selectedPn != null) {
             $.ajax(
                 {
@@ -44,7 +45,7 @@ $(document).ready(function () {
                 })  
         }
     })
-
+    
     let get_pn_and_refresh = function ($pn) {
         let modele = $('#fmm').children("option:selected").val();
         $.ajax({

@@ -262,7 +262,8 @@ class TicketsDisplayController extends BasicController
                         }
                       
                     }else{
-                        array_push($other_fields,$field);
+                        $field->tklc__memo = nl2br($field->tklc__memo);
+                        array_push($other_fields, $field);
                     } 
                     $ligne->fields =  $other_fields;
             }
