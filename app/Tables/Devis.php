@@ -4,6 +4,7 @@
 namespace App\Tables;
 use App\Tables\Table;
 use App\Database;
+use App\Tables\General;
 use App\Methods\Pdfunctions;
 use PDO;
 
@@ -288,6 +289,57 @@ class Devis extends Table {
       return false ;
     }
   }
+
+  public function set_order($idCmd){
+    $list = $this->Db->Pdo->query("SELECT cmdl__ordre ,   cmdl__id
+    from cmd_ligne 
+    WHERE cmdl__cmd__id = '" . $idCmd . "' AND cmdl__sous_ref IS NULL ORDER BY cmdl__ordre ");
+    $list = $list->fetchAll(PDO::FETCH_OBJ);
+
+    if (!empty($list)) {
+		$i = 0 ;
+		foreach($list as $line){
+			$i ++;
+				$update = $this->Db->Pdo->prepare('UPDATE cmd_ligne 
+					SET cmdl__ordre=? 
+					WHERE cmdl__id =?');
+				$update->execute([$i, $line->cmdl__id]);
+		}
+		return true;
+    }
+	return false;
+  }
+
+  public function new_order($idCmd , $idLine , $index){
+		$General = new General($this->Db);
+
+		$lineIndex  =$this->Db->Pdo->query("SELECT cmdl__ordre ,   cmdl__id
+		from cmd_ligne 
+		WHERE  cmdl__id = '" . $idLine . "' AND cmdl__sous_ref IS NULL");
+		$lineIndex = $lineIndex->fetch(PDO::FETCH_OBJ);
+		$General->updateAll('cmd_ligne', intval($index), 'cmdl__ordre', 'cmdl__id', $lineIndex->cmdl__id);
+	
+		if ($lineIndex->cmdl__ordre > $index ) {
+			$up = $this->Db->Pdo->query("SELECT cmdl__ordre ,   cmdl__id
+			from cmd_ligne 
+			WHERE cmdl__id <> '" . $lineIndex->cmdl__id . "'  AND   cmdl__ordre < '" . $index . "' AND  cmdl__cmd__id = '" . $idCmd . "' AND cmdl__sous_ref IS NULL ORDER BY cmdl__ordre ");
+			$up = $up->fetchAll(PDO::FETCH_OBJ);
+			foreach ($up as $line) {
+					$General->updateAll('cmd_ligne', intval($line->cmdl__id + 1), 'cmdl__ordre', 'cmdl__id', $line->cmdl__id);
+			}
+		}elseif($lineIndex->cmdl__ordre < $index){
+			$down = $this->Db->Pdo->query("SELECT cmdl__ordre ,   cmdl__id
+			from cmd_ligne 
+			WHERE  cmdl__id <> '" . $lineIndex->cmdl__id . "'  AND cmdl__ordre > '" . $index . "' AND  cmdl__cmd__id = '" . $idCmd . "' AND cmdl__sous_ref IS NULL ORDER BY cmdl__ordre ");
+			$down = $down->fetchAll(PDO::FETCH_OBJ);
+			foreach ($down as $line) {
+					$General->updateAll('cmd_ligne',intval($line->cmdl__id -  1), 'cmdl__ordre', 'cmdl__id', $line->cmdl__id);
+			}
+		}
+
+		
+  }
+
 
   public function deleteLine($lineId)
   {

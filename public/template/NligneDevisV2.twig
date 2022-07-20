@@ -411,7 +411,22 @@
                 
                 <div class="col-3 d-flex flex-column justify-content-between">
                     <div class="d-flex justify-content-end ">
-                        {% if loop.first %}
+                        <div class="align-content-end my-1">
+                          
+                                <select class="form-select select-order" value='{{ligne.devl__id}}' aria-label="Default select example" name="{{ligne.devl__id}}">
+                                    {% for option in devisLignes %}
+                                        {% if option.devl__ordre == ligne.devl__ordre %}
+                                            <option value="{{option.devl__ordre}}" selected>{{option.devl__ordre}}</option>
+                                        {% else %}
+                                            <option value="{{option.devl__ordre}}" >{{option.devl__ordre}}</option>
+                                        {% endif %}
+                                        
+                                    {% endfor %}
+                                </select>
+                                
+                            
+                        </div>
+                        {# {% if loop.first %}
                         <div class="align-content-end my-1">
                             <form action="ligneDevisV2" method="POST">
                                 <input type="hidden" name="up[]" value="{{ligne.devl__ordre}}"/>
@@ -429,7 +444,7 @@
                                 <button type="submit" class="btn btn-recode-mini btn-sm" data-toggle="tooltip" data-placement="top" title="Monter"><i class="far fa-arrow-to-top"></i></button>
                             </form>
                         </div> 
-                        {% endif %}    
+                        {% endif %}     #}
                     </div>
                     <div class="d-flex justify-content-end">
                         <form action="ligneDevisV2" method="POST">
@@ -438,7 +453,7 @@
                             <button type="submit" class="btn btn-recode-mini-danger btn-sm" data-toggle="tooltip" data-placement="top" title="Supprimer"><i class="far fa-trash-alt"></i></button>
                         </form>
                     </div> 
-                    {% if loop.last %}
+                    {# {% if loop.last %}
                     <div class="d-flex justify-content-end ">
                         <div class="align-content-end my-1">
                             <form action="ligneDevisV2" method="POST">
@@ -460,7 +475,7 @@
                             </form>
                         </div> 
                     </div>  
-                    {% endif %}
+                    {% endif %} #}
                     
                 </div>
                 
@@ -797,6 +812,11 @@
         <input type="hidden" id="value_activate" name="value_activate" value="">
         <input type="hidden" id="cmd__id_activate" name="cmd__id_activate" value="{{devis.devis__id}}">
     </form>
+    <form action="ligneDevisV2" id="newOrderForm" method="POST">
+        <input type="hidden" name="idDevisNewOrder" value="{{devis.devis__id}}">
+        <input type="hidden" id="idNewOrder" name="idNewOrder" value="">
+        <input type="hidden" id="valueNewOrder" name="valueNewOrder" value="">
+    </form>
     {% endif %}
 
 </main>
@@ -814,6 +834,7 @@
 <script type="text/javascript" src="public/js/ligneV2/scenario.js"></script>
 <script type="text/javascript" src="public/js/ligneV2/sous_ref.js"></script>
 <script type="text/javascript" src="public/js/ligneV2/recherchePn.js"></script>
+<script type="text/javascript" src="public/js/ligneV2/newOrder.js"></script>
 <script type="text/javascript" src="public/js/custom/button/custom-button-quantite.js"></script>
 
 <!-- <script type="text/javascript" src="public/js/ligneV2/ligne_admin.js"></script> -->

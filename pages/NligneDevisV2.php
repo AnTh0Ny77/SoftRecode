@@ -171,6 +171,13 @@ if (!empty($_POST['deleteId']))
   
 }
 
+
+//reatribut lordre des lignes : 
+if (!empty($_POST['idDevisNewOrder'])) {
+    $idDevis = $_POST['idDevisNewOrder'];
+    $Devis->new_order($_POST['idDevisNewOrder'] , $_POST['idNewOrder'] , $_POST['valueNewOrder'] );
+}
+
 //modification de ligne demandée :
 $modif = null; 
 $duplicate = null;
@@ -520,6 +527,7 @@ if (!empty($_POST['boolModif']) )
 
 
 $devis = $Cmd->GetById($idDevis);
+$set_order = $Devis->set_order($idDevis);
 $lignes_totaux = $Cmd->devisLigne_actif($idDevis);
 $devisLigne = $Cmd->devisLigne_sous_ref($idDevis);
 $totaux  = Pdfunctions::totalFacturePRO($devis, $lignes_totaux);
