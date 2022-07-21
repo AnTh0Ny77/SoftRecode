@@ -311,33 +311,40 @@ class Devis extends Table {
   }
 
   public function new_order($idCmd , $idLine , $index){
-		$General = new General($this->Db);
+			$General = new General($this->Db);
 
-		$lineIndex  =$this->Db->Pdo->query("SELECT cmdl__ordre ,   cmdl__id
-		from cmd_ligne 
-		WHERE  cmdl__id = '" . $idLine . "' AND cmdl__sous_ref IS NULL");
-		$lineIndex = $lineIndex->fetch(PDO::FETCH_OBJ);
-		$General->updateAll('cmd_ligne', intval($index), 'cmdl__ordre', 'cmdl__id', $lineIndex->cmdl__id);
+			$lineIndex  =$this->Db->Pdo->query("SELECT cmdl__ordre ,   cmdl__id
+			from cmd_ligne 
+			WHERE  cmdl__id = '" . $idLine . "' AND cmdl__sous_ref IS NULL");
+			$lineIndex = $lineIndex->fetch(PDO::FETCH_OBJ);
+			$General->updateAll('cmd_ligne', intval($index), 'cmdl__ordre', 'cmdl__id', $lineIndex->cmdl__id);
+
+			$lignes = $this->Db->Pdo->query("SELECT cmdl__ordre ,   cmdl__id
+			from cmd_ligne 
+			WHERE cmdl__id <> '" . $lineIndex->cmdl__id . "' AND  cmdl__cmd__id = '" . $idCmd . "' AND cmdl__sous_ref IS NULL ORDER BY cmdl__ordre ");
+			$lignes = $lignes->fetchAll(PDO::FETCH_OBJ);
+
+			foreach ($lignes as  $value){
+					if ($value->cmdl__ordre  == $index ){
+							if ($lineIndex->cmdl__ordre > $value->cmdl__ordre ) {
+								$General->updateAll('cmd_ligne', $value->cmdl__ordre + 1 , 'cmdl__ordre', 'cmdl__id', $value->cmdl__id);
+								foreach ($lignes as $lines_who_is_bigger) {
+										if ($lines_who_is_bigger->cmdl__ordre > $index and $lines_who_is_bigger->cmdl__id != $value->cmdl__id ) {
+											$General->updateAll('cmd_ligne', $lines_who_is_bigger->cmdl__ordre + 1 , 'cmdl__ordre', 'cmdl__id', $lines_who_is_bigger->cmdl__id);
+										}
+								}
+							}else if($lineIndex->cmdl__ordre < $value->cmdl__ordre){
+								$General->updateAll('cmd_ligne', $value->cmdl__ordre - 1 , 'cmdl__ordre', 'cmdl__id', $value->cmdl__id);
+								foreach ($lignes as $lines_who_is_smaller) {
+									if ($lines_who_is_smaller->cmdl__ordre > $index and $lines_who_is_smaller->cmdl__id != $value->cmdl__id ) {
+										$General->updateAll('cmd_ligne', $lines_who_is_smaller->cmdl__ordre + 1 , 'cmdl__ordre', 'cmdl__id', $lines_who_is_smaller->cmdl__id);
+									}
+								}
+							}
+					}
+			}
 	
-		if ($lineIndex->cmdl__ordre > $index ) {
-			$up = $this->Db->Pdo->query("SELECT cmdl__ordre ,   cmdl__id
-			from cmd_ligne 
-			WHERE cmdl__id <> '" . $lineIndex->cmdl__id . "'  AND   cmdl__ordre < '" . $index . "' AND  cmdl__cmd__id = '" . $idCmd . "' AND cmdl__sous_ref IS NULL ORDER BY cmdl__ordre ");
-			$up = $up->fetchAll(PDO::FETCH_OBJ);
-			foreach ($up as $line) {
-					$General->updateAll('cmd_ligne', intval($line->cmdl__id + 1), 'cmdl__ordre', 'cmdl__id', $line->cmdl__id);
-			}
-		}elseif($lineIndex->cmdl__ordre < $index){
-			$down = $this->Db->Pdo->query("SELECT cmdl__ordre ,   cmdl__id
-			from cmd_ligne 
-			WHERE  cmdl__id <> '" . $lineIndex->cmdl__id . "'  AND cmdl__ordre > '" . $index . "' AND  cmdl__cmd__id = '" . $idCmd . "' AND cmdl__sous_ref IS NULL ORDER BY cmdl__ordre ");
-			$down = $down->fetchAll(PDO::FETCH_OBJ);
-			foreach ($down as $line) {
-					$General->updateAll('cmd_ligne',intval($line->cmdl__id -  1), 'cmdl__ordre', 'cmdl__id', $line->cmdl__id);
-			}
-		}
-
-		
+    return true ;
   }
 
 
