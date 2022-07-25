@@ -282,6 +282,15 @@
                            
                                     </div>
                                     <div class="col-6 my-4 d-flex flex-column justify-content-start" >
+                                        <div class=" my-3">
+                                            <label for="validationCustom04"><b>Numéro de DP </b></label>
+                                            {% if modif.cmdl__dp %}
+                                                <input class="form-control" type="text" name="dp_number" value='{{modif.cmdl__dp }}' >
+                                            {% else %}
+                                                <input class="form-control" type="text" name="dp_number">
+                                            {% endif %}
+                                            
+                                        </div>
                                                 {% if modif.modif and not duplicate %}
                                                     <input type='hidden' name='boolModif' id="boolModif" value='{{modif.cmdl__id}}'>
                                                     <input type='hidden' name='boolIdCmd' value='{{modif.cmdl__cmd__id}}'>
@@ -406,6 +415,11 @@
                             Pas d'extensions de garanties
                             {% endif %}
                         </p>
+                    </div>  
+                    <div class="">
+                        {% if ligne.cmdl__dp %}
+                            <b>Numéro de demande de prix : </b>{{ligne.cmdl__dp}}
+                        {% endif %}
                     </div>  
                 </div>
                 
@@ -733,8 +747,8 @@
                             <label class="custom-control-label" for="sous_ref_garantie">Etendre la garantie</label>
                         </div>     
                 </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Valider</button>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Valider</button>
                   </div>
               </form>
           </div>

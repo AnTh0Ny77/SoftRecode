@@ -394,6 +394,9 @@ if (!empty($_POST['devis']) && empty($_POST['boolModif']))
     {
         $General->updateAll('cmd_ligne' , 2   , 'cmdl__image' , 'cmdl__id' , $newLines);
     }
+    if ($_POST['dp_number']) {
+        $General->updateAll('cmd_ligne' , $_POST['dp_number'] , 'cmdl__dp' , 'cmdl__id' , $newLines);
+    }
 
     //extension de garanties : 
     foreach ($_POST['xtendP'] as $key => $value) 
@@ -445,6 +448,8 @@ if (!empty($_POST['boolModif']) )
         $General->updateAll('cmd_ligne' , floatval($_POST['prix']) , 'cmdl__puht' , 'cmdl__id' , $_POST['boolModif']);
         $General->updateAll('cmd_ligne' , $_POST['commentaire'] , 'cmdl__note_client' , 'cmdl__id' , $_POST['boolModif']);
         $General->updateAll('cmd_ligne' , $_POST['interne'] , 'cmdl__note_interne' , 'cmdl__id' , $_POST['boolModif']);
+        $General->updateAll('cmd_ligne' , $_POST['dp_number'] , 'cmdl__dp' , 'cmdl__id' , $_POST['boolModif']);
+        
 
 
         //gere le pn : 

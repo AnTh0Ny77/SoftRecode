@@ -87,25 +87,13 @@ $formated_date = $date_time->format('d/m/Y H:i');
 ob_start();
 ?>
 <style type="text/css">
-	strong {
-		color: #000;
-	}
-
-	h3 {
-		color: #666666;
-	}
-
-	h2 {
-		color: #3b3b3b;
-	}
-
+	strong {color: #000;}h3 {color: #666666;}h2 {color: #3b3b3b;}
 	table {
 		font-size: 13;
 		font-style: normal;
 		font-variant: normal;
 		border-collapse: separate;
-		border-spacing: 0 15px;
-	}
+		border-spacing: 0 15px;}
 </style>
 <page backtop="10mm" backleft="5mm" backright="5mm" backbottom='15%' footer="page">
 	<page_footer>
@@ -151,51 +139,37 @@ ob_start();
 
 				Commandé le : <strong><?php echo $formated_date ?></strong><br>
 				Commercial : <strong><?php
-										if (!empty($user)) {
-											echo  $user->nom . ' ' . $user->prenom;
-										} else {
-											echo 'Non renseigné';
-										}
-										?>
+					if (!empty($user)){
+						echo  $user->nom . ' ' . $user->prenom;
+					}else{
+						echo 'Non renseigné';
+					}
+				?>
 				</strong>
-				<?php
-				if (!empty($user->postefix)) {
+		<?php
+			if (!empty($user->postefix)){
 					echo ' (Tél: ' . $user->postefix . ')';
-				}
-
-
-				?>
-
-
-				<?php
-				if (!empty($userCMD)) {
-					echo  '<br>Commandé par : <strong>' . $userCMD->nom . ' ' . $userCMD->prenom . '</strong> ';
-				}
-				?>
-
-				<?php
-				if (!empty($userCMD->postefix)) {
-					echo ' (Tél: ' . $userCMD->postefix . ')';
-				}
-
-
-				?>
+			}
+			if (!empty($userCMD)) {
+				echo  '<br>Commandé par : <strong>' . $userCMD->nom . ' ' . $userCMD->prenom . '</strong> ';
+			}
+			if (!empty($userCMD->postefix)) {
+				echo ' (Tél: ' . $userCMD->postefix . ')';
+			}
+		?>
 			</td>
 			<td style="text-align: left; width:50%"><strong>
 				<?php
-					if ($societeLivraison) 
-					{
-
-						if ($command->devis__contact__id) 
-						{
+					if ($societeLivraison) {
+						if ($command->devis__contact__id) {
 							if ($command->devis__contact_livraison) {
 								$contact2 = $Contact->getOne($command->devis__contact_livraison);
 								echo " <small>livraison : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
 								echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-								if (!empty($societeLivraison->client__tel)) {
+								if (!empty($societeLivraison->client__tel)){
 									echo '<br> TEL : ' . $societeLivraison->client__tel . '';
 								}
-							} else {
+							} else{
 								echo "<small>livraison :</small><strong><br>";
 								echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
 								if (!empty($societeLivraison->client__tel)) {
@@ -205,58 +179,48 @@ ob_start();
 								$contact = $Contact->getOne($command->devis__contact__id);
 								echo "<br><small>facturation : " . $contact->contact__civ . " " . $contact->contact__nom . " " . $contact->contact__prenom . "</small><strong><br>";
 								echo Pdfunctions::showSociete($clientView) . " </strong> ";
-								if (!empty($clientView->client__tel)) 
-								{
+								if (!empty($clientView->client__tel)) {
 									echo '<br> TEL : ' . $clientView->client__tel . '';
 								}
 								
-							} 
-						else 
-						{
+						} 
+						else{
 							if ($command->devis__contact_livraison) {
 								$contact2 = $Contact->getOne($command->devis__contact_livraison);
 								echo " <small>livraison : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
 								echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-								if (!empty($societeLivraison->client__tel)) {
+								if (!empty($societeLivraison->client__tel)){
 									echo '<br> TEL : ' . $societeLivraison->client__tel . '';
 								}
 							} else {
 								echo " <small>livraison :</small><strong><br>";
 								echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-								if (!empty($societeLivraison->client__tel)) {
+								if (!empty($societeLivraison->client__tel)){
 									echo '<br> TEL : ' . $societeLivraison->client__tel . '';
 								}
 							}
 							echo "<br><small>facturation :</small><strong><br>";
 							echo Pdfunctions::showSociete($clientView) . " </strong>";
-							
 						}
 					} 
-					else 
-					{
-						if ($command->devis__contact__id) 
-						{
+					else{
+						if ($command->devis__contact__id){
 							$contact = $Contact->getOne($command->devis__contact__id);
 							echo "<small>livraison & facturation : " . $contact->contact__civ . " " . $contact->contact__nom . " " . $contact->contact__prenom . "</small><strong><br>";
 							echo Pdfunctions::showSociete($clientView)  . "</strong>";
-							if (!empty($clientView->client__tel)) 
-							{
+							if (!empty($clientView->client__tel)){
 								echo '<br> TEL : ' . $clientView->client__tel . '';
 							}
 						} 
-						else 
-						{
+						else{
 							echo "<small>livraison & facturation : </small><strong><br>";
 							echo Pdfunctions::showSociete($clientView)  . "</strong>";
-							if(!empty($clientView->client__tel)) 
-							{
+							if(!empty($clientView->client__tel)) {
 								echo '<br>TEL : ' . $clientView->client__tel . '';
 							}
 						}
 					}
-
-					if ($command->cmd__code_cmd_client) 
-					{
+					if ($command->cmd__code_cmd_client) {
 						echo "<br> Code cmd: " . $command->cmd__code_cmd_client;
 					}
 ?>
@@ -264,8 +228,6 @@ ob_start();
 			</td>
 		</tr>
 	</table>
-
-
 	<table CELLSPACING=0 style="width: 100%;  margin-top: 80px; ">
 		<tr style=" margin-top : 50px; background-color: #dedede;">
 			<td style="width: 21%; text-align: left;">Presta<br>Type<br>Gar.</td>
@@ -274,54 +236,44 @@ ob_start();
 			<td style="text-align: center; width: 7%"><strong>Dispo</strong></td>
 			<td style="text-align: center; width: 7%"><strong>Livré</strong></td>
 		</tr>
-		<?php
-
-		foreach ($commandLignes as $item) 
-		{
+<?php
+		foreach ($commandLignes as $item) {
 			if (empty($ligne->devl__note_client)) $ligne->devl__note_client = "";
 			if (empty($ligne->devl__note_interne)) $ligne->devl__note_interne = "";
 			
-			if ($item->cmdl__garantie_option > $item->devl__mois_garantie) 
-			{
+			if ($item->cmdl__garantie_option > $item->devl__mois_garantie){
 				$temp = $item->cmdl__garantie_option;
 			} 
-			else 
-			{
-				if (!empty($item->devl__mois_garantie)) 
-				{
+			else {
+				if (!empty($item->devl__mois_garantie)) {
 					$temp = $item->devl__mois_garantie;
 				} 
-				else 
-				{
+				else{
 					$temp = "";
 				}
 			}
-
-			if (!empty($item->cmdl__sous_ref)) 
-			{
+			if (!empty($item->cmdl__sous_ref)){
 				$background_color = 'background-color: #F1F1F1;';
 			} 
-			else 
-			{
+			else{
 				$background_color = '';
 			}
-
-			if (!empty($item->devl__modele)) 
-			{
+			if (!empty($item->devl__modele)) {
 				$spec = $Stocks->select_empty_heritage($item->devl__modele , true , false);
 				$pn =  '<br>PN: '.$item->apn__pn_long . " <br>" .  $spec   ;
-				
 			}
-			else 
-			{
+			else {
 				$pn = '';
 			}
+			if (!empty($item->cmdl__dp)) {
+				$item->cmdl__dp  = '<br> Numéro de DP: ' .$item->cmdl__dp ;
+			}else $item->cmdl__dp = '';
 
 			echo "<tr style='font-size: 100%; " . $background_color . "'>
 						<td style='border-bottom: 1px #ccc solid'> " . $item->prestaLib . " <br> " . $item->kw__lib . " <br> " . $temp . " mois</td>
 						<td style='border-bottom: 1px #ccc solid; width: 55%;'> 
 							<br> <small>désignation :</small> <b>" . $item->devl__designation . "</b><br>"
-				. $item->famille__lib . " " . $item->marque . " Modèle:" . $item->modele . "  " . $pn .  " " . $item->devl__note_interne . " ". $item->devl__note_client."
+				. $item->famille__lib . " " . $item->marque . " Modèle:" . $item->modele . "  " . $pn .  " " . $item->devl__note_interne . " ". $item->devl__note_client. $item->cmdl__dp."
 				</td>
 						 <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite . " </strong></td>
 						  <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
@@ -330,7 +282,6 @@ ob_start();
 		}
 		?>
 	</table>
-
 	<table style=" margin-top: 50px; width: 100%">
 		<tr style=" margin-top: 200px; width: 100%">
 			<td><small>Commentaire:</small></td>
@@ -339,34 +290,23 @@ ob_start();
 			<td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%'> <?php echo  $command->devis__note_interne  . " " .  $command->devis__note_client ; ?> </td>
 		</tr>
 	</table>
-
-
-
 </page>
-
 <?php
 $content = ob_get_contents();
-
-try 
-{
+try {
 	$doc = new Html2Pdf('P', 'A4', 'fr');
 	$doc->setDefaultFont('gothic');
 	$doc->pdf->SetDisplayMode('fullpage');
 	$doc->writeHTML($content);
 	ob_clean();
-
-	if ($_SERVER['HTTP_HOST'] != "localhost:8080") 
-	{
+	if ($_SERVER['HTTP_HOST'] != "localhost:8080") {
 		$doc->output('O:\intranet\Auto_Print\FT\Ft_' . $command->devis__id . '.pdf', 'F');
 	}
 	else {
 		$doc->output('C:\laragon\www\ficheTravail\Ft_' . $command->devis__id . '.pdf', 'F');
 	}
-
-	header('location: ficheTravail');
-	
+	header('location: ficheTravail');	
 } 
-catch (Html2PdfException $e) 
-{
+catch (Html2PdfException $e){
 	die($e);
 }
