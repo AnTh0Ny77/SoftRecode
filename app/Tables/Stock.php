@@ -870,7 +870,7 @@ class Stock extends Table
 		ORDER BY a.afmm__dt_modif LIMIT 50 ');
 
 		$data = $request->fetchAll(PDO::FETCH_OBJ);
-
+		
 		foreach ($data as $model) {
 			$SQL = 'SELECT  id__pn 
 			FROM liaison_fmm_pn 
@@ -889,34 +889,33 @@ class Stock extends Table
 				$model->pn = null;
 				$model->count_relation =  intval(count($liaison));
 
-				if ($model->count_relation > 1 )
-			 {
-
+				if ($model->count_relation > 1 ){
 					$list_pn = '';
-
-						foreach ($model->pn as $keys => $spec) {
-							if ($keys === array_key_last($model->pn)) {
-								$list_pn .=  ' "'. $spec->id__pn . '" ';
-							}
-							else $list_pn .=  ' "' .  $spec->id__pn . '", ';
-							
-						}
+					if(!empty($model->pn)){
 						
-					$SQL = 'SELECT a.apn__pn_long , a.apn__pn , a.apn__famille  
-					FROM art_pn as a  
-					WHERE a.apn__pn IN  (' . $list_pn . ')';
+						foreach ($model->pn as $keys => $spec) {
+						var_dump($spec);
+							if ($keys === array_key_last($model->pn)) {
+								$list_pn .=  ' "' . $spec->id__pn . '" ';
+							} else $list_pn .=  ' "' .  $spec->id__pn . '", ';
+						}
+						$SQL = 'SELECT a.apn__pn_long , a.apn__pn , a.apn__famille  
+						FROM art_pn as a  
+						WHERE a.apn__pn IN  ( ' . $list_pn . ' )';
+					}else{
+						$SQL = 'SELECT a.apn__pn_long , a.apn__pn , a.apn__famille  
+						FROM art_pn as a  
+						WHERE a.apn__pn IN  (  0000 )';
+					}
+					
 				}
-			else {
-				$SQL = 'SELECT  a.apn__pn_long , a.apn__pn , a.apn__famille  
-				FROM art_pn as a   
-				WHERE a.apn__pn = "' . $model->pn . '"
-				';
-			}
-				
+				else {
+					$SQL = 'SELECT  a.apn__pn_long , a.apn__pn , a.apn__famille  
+					FROM art_pn as a   
+					WHERE a.apn__pn = "' . $model->pn . '"';
+				}		
 				$request = $this->Db->Pdo->query($SQL);
 				$model_data = $request->fetchAll(PDO::FETCH_OBJ);
-				
-			
 				if (!empty($model_data) and count($model_data) == 1)
 				{
 					$model->pn = $model_data[0]->apn__pn; 
@@ -925,11 +924,7 @@ class Stock extends Table
 					
 					$model->relations = $model_data;
 				}
-
-		
-		
 		}
-
 		return $data;
 	}
 }
