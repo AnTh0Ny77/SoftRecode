@@ -216,10 +216,10 @@ switch ($_SERVER['REQUEST_URI'])
 
 		
 
-	case "/SoftRecode/create-pn-third":
-
+	default:
 		// if (empty($_POST['id_pn']))  header('location: create-pn-second');
 		if (!empty($_GET['pn'])) {
+			
 			$_POST['id_pn'] = $_GET['pn'];
 		}
 
@@ -242,7 +242,6 @@ switch ($_SERVER['REQUEST_URI'])
 		{
 			$pn = $Article->get_pn_byID($_POST['id_pn']);
 		
-			
 			$forms_data = $Stocks->get_famille_forms($pn->apn__famille);
 			
 			$count = 0 ;
