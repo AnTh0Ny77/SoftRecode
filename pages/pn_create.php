@@ -219,6 +219,9 @@ switch ($_SERVER['REQUEST_URI'])
 	case "/SoftRecode/create-pn-third":
 
 		// if (empty($_POST['id_pn']))  header('location: create-pn-second');
+		if (!empty($_GET['pn'])) {
+			$_POST['id_pn'] = $_GET['pn'];
+		}
 
 		if (!empty($_POST['retour_pn'])) 
 		{

@@ -93,7 +93,7 @@ use App\Controller\ExtranetController;
 		case '/SoftRecode/create-pn-second';
 			require __DIR__ . '/pages/pn_create.php'; break;
 		
-		case '/SoftRecode/create-pn-third';
+		case '/SoftRecode/create-pn-third'.$get_data;
 			require __DIR__ . '/pages/pn_create.php'; break;
 
 		case '/SoftRecode/create-pn-specs';
