@@ -968,6 +968,7 @@ public function find_by_pn($text){
 		$request = $this->Db->Pdo->query('SELECT tkl__tk_id as  tk__id  
 		FROM ticket_ligne  
 		WHERE tkl__tk_id  IN ( ' . $string . ' ) ');
+		var_dump($request);
 		$results = $request->fetchAll(PDO::FETCH_OBJ);
 		return  $results ;
 	} else return [];
