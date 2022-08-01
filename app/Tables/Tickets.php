@@ -948,26 +948,18 @@ public function find_by_pn($text){
 		if (!empty($field->tklc__memo)) {
 			$id_pn = explode('@', $field->tklc__memo);
 			$id_pn = end($id_pn);
-			foreach ($pn_results as $pn) {
-					if ($pn->apn__pn == $id_pn){
-					
-						if ( $key === array_key_last($pn__field) and count($pn__field) > 1) {
-						
-							$string .= $field->tk__id . ' ';
-						} else {
-							
-							$string .= $field->tk__id . ', ';
-						}
-						
+			foreach ($pn_results as $index  => $pn) {
+					if ($pn->apn__pn == $id_pn){	
+							$string .= $field->tk__id . ',';
 					}
 			}
 		}	
 	}
-		var_dump($string);
+	
 	if (strlen($string) > 0 ) {
 		$request = $this->Db->Pdo->query('SELECT tkl__tk_id as  tk__id  
 		FROM ticket_ligne  
-		WHERE tkl__tk_id  IN ( ' . $string . ' ) ');
+		WHERE tkl__tk_id  IN ( ' . substr_replace($string ,"", -1) . ' ) ');
 		var_dump($request);
 		$results = $request->fetchAll(PDO::FETCH_OBJ);
 		return  $results ;
