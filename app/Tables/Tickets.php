@@ -951,7 +951,7 @@ public function find_by_pn($text){
 			foreach ($pn_results as $pn) {
 					if ($pn->apn__pn == $id_pn){
 					
-						if ($key === array_key_last($pn__field)) {
+						if ($key === array_key_last($pn__field) and count($pn__field) > 1) {
 						
 							$string .= $field->tk__id . ' ';
 						} else {
