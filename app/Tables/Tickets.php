@@ -937,20 +937,19 @@ public function find_by_pn($text){
 
 	$Article = new Stock($this->Db);
 	$pn_results = $Article->find_pn_list($text);
-	
 	$request = $this->Db->Pdo->query('SELECT  tklc__memo , tklc__id , l.tkl__tk_id as tk__id 
 	FROM ticket_ligne_champ
 	LEFT JOIN ticket_ligne as l ON ( l.tkl__id =  tklc__id  ) 
-	WHERE tklc__nom_champ =  "Pn"');
+	WHERE tklc__nom_champ =  "Pn" OR tklc__nom_champ =  "1Pn" ');
 	$pn__field = $request->fetchAll(PDO::FETCH_OBJ);
+
 	$string ='';
 	foreach ($pn__field as  $key => $field) {
 		if (!empty($field->tklc__memo)) {
 			$id_pn = explode('@', $field->tklc__memo);
 			$id_pn = end($id_pn);
 			foreach ($pn_results as $pn) {
-				
-					if ($pn->apn__pn == intval($id_pn)){
+					if ($pn->apn__pn == $id_pn){
 					
 						if ($key === array_key_last($pn__field)) {
 						
@@ -964,6 +963,7 @@ public function find_by_pn($text){
 			}
 		}	
 	}
+	var_dump($string);
 	if (strlen($string) > 0 ) {
 		$request = $this->Db->Pdo->query('SELECT tkl__tk_id as  tk__id  
 		FROM ticket_ligne  
@@ -1406,16 +1406,14 @@ public function search_in_ticket(string  $filtre){
 		$operateur = "AND ";
 
 		$request = "SELECT tk__id  FROM ticket WHERE  ( tk__id = '" . $mots_filtre[0] . "' 
-		OR tk__motif LIKE '%" . $mots_filtre[0] . "%' 
-		OR tk__titre LIKE '%" . $mots_filtre[0] . "%' )";
+		OR tk__motif LIKE '%" . $mots_filtre[0] . "%')";
 
 		if (count($mots_filtre) >  1 ) {
 			$request .= $operateur . " ( ";
 			for ($i = 1; $i < $nb_mots_filtre; $i++){
 				if ($i == 1) {
 					$request .= " tk__motif LIKE '%" . $mots_filtre[$i] . "%'"; 
-				}else $request .= "OR  tk__motif LIKE '%" . $mots_filtre[$i] . "%'
-				OR tk__titre LIKE '%" . $mots_filtre[$i] . "%' "; 	
+				}else $request .= "OR  tk__motif LIKE '%" . $mots_filtre[$i] . "%'"; 	
 			}
 			$request .= ' )';
 		}

@@ -685,8 +685,8 @@ class Stock extends Table
   public function find_pn_list($string)
   {
 	//traitement du champs recheche : 
-    $filtre = str_replace("-", ' ', $string);
-    $filtre = str_replace("'", ' ', $filtre);
+    $filtre = str_replace("-", '', $string);
+    $filtre = str_replace("'", '', $filtre);
 	//nombre de mots pour itérations : 
     $nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
     $mots_filtre = str_word_count($filtre, 1, '0123456789');
@@ -698,8 +698,9 @@ class Stock extends Table
     $operateur = ' AND ';
     $request = "SELECT  a.apn__pn  FROM art_pn as a ";
       
+
     if ($mode_filtre){
-      	$request .=  "WHERE ( a.apn__pn LIKE '%". preg_replace("#[^!A-Za-z0-9_%]+#", "", $mots_filtre[0])."%' )";
+      	$request .=  "WHERE ( a.apn__pn LIKE '%". strtoupper(preg_replace("#[^!A-Za-z0-9_%]+#", "", $mots_filtre[0]))."%' )";
 
 		for ($i = 1; $i < $nb_mots_filtre; $i++) {
 			$request .=  $operateur . " ( a.apn__pn LIKE '%".preg_replace("#[^!A-Za-z0-9_%]+#", "", $mots_filtre[$i])."%' )";
@@ -707,7 +708,9 @@ class Stock extends Table
     	$request .= " ORDER BY  apn__pn   LIMIT 25";
 		
 		$send = $this->Db->Pdo->query($request);
+		
 		$data = $send->fetchAll(PDO::FETCH_OBJ);
+		
 		return $data;
     } 
 	else return [];
@@ -894,7 +897,7 @@ class Stock extends Table
 					if(!empty($model->pn)){
 						
 						foreach ($model->pn as $keys => $spec) {
-						var_dump($spec);
+					
 							if ($keys === array_key_last($model->pn)) {
 								$list_pn .=  ' "' . $spec->id__pn . '" ';
 							} else $list_pn .=  ' "' .  $spec->id__pn . '", ';
