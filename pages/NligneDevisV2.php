@@ -270,6 +270,10 @@ if (!empty($_POST['input_id_ref']) && !empty($_POST['select_sous_ref']) && !empt
    {
         $General->updateAll('cmd_ligne', null, 'cmdl__pn', 'cmdl__id', $daugther_line);
    }
+
+   if (!empty($_POST['etat_sr']))
+        $General->updateAll('cmd_ligne', $_POST['etat_sr'], 'cmdl__etat', 'cmdl__id', $daugther_line);
+   
   
    $idDevis = $mother_line->cmdl__cmd__id;
   
@@ -307,6 +311,11 @@ if (!empty($_POST['input_modif_sous_ref']) && !empty($_POST['input_modif_sous_re
     {
         $General->updateAll('cmd_ligne', null, 'cmdl__pn', 'cmdl__id', $_POST['input_modif_sous_ref']);
     }
+
+    if (!empty($_POST['etat_m_sr']))
+        $General->updateAll('cmd_ligne', $_POST['etat_m_sr'], 'cmdl__etat', 'cmdl__id', $_POST['input_modif_sous_ref']);
+
+
     $idDevis = $_POST['input_modif_sous_ref_cmd'];
     
 }    
@@ -437,7 +446,6 @@ if (!empty($_POST['boolModif']) )
             $General->updateAll('art_fmm' , $_POST['designation'] , 'afmm__design_com' , 'afmm__id' , $_POST['fmm']);
         }
 
-        
         $General->updateAll('cmd_ligne' , $_POST['presta'] , 'cmdl__prestation' , 'cmdl__id' , $_POST['boolModif']);
         $General->updateAll('cmd_ligne' , $_POST['fmm'] , 'cmdl__id__fmm' , 'cmdl__id' , $_POST['boolModif']);
         $General->updateAll('cmd_ligne' , $_POST['designation'] , 'cmdl__designation' , 'cmdl__id' , $_POST['boolModif']);
@@ -450,8 +458,6 @@ if (!empty($_POST['boolModif']) )
         $General->updateAll('cmd_ligne' , $_POST['interne'] , 'cmdl__note_interne' , 'cmdl__id' , $_POST['boolModif']);
         $General->updateAll('cmd_ligne' , $_POST['dp_number'] , 'cmdl__dp' , 'cmdl__id' , $_POST['boolModif']);
         
-
-
         //gere le pn : 
         if ($_POST['pn_select'] != '0' ) 
         {
@@ -527,8 +533,6 @@ if (!empty($_POST['boolModif']) )
         }
        
     }
-
-
 
 
 $devis = $Cmd->GetById($idDevis);

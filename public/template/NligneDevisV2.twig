@@ -726,6 +726,15 @@
                                 <option class="optionSelect " value="0">Non spécifié</option>
                             </select>
                         </div>
+                        <div class=" mt-2 form-group">
+                            <label  for="etatRow"><b>Etat</b></label>
+                            <select class="form-control" name="etat_sr" data-size="10">
+                            {% for etat in etatList %}
+                                    <option   value="{{etat.kw__value}}" >{{etat.kw__lib}}</option>
+                               
+                            {% endfor %}
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label><b>Désignation sur le devis/facture:</b></label>
                               <input type="text" class="form-control"  id="designation_sous_ref" name="designation_sous_ref" required>
@@ -784,6 +793,15 @@
                             <select class="  border selectpicker col-12" data-live-search="true" data-size="10" data-width="100%"
                                 name="pn_select-sr-m" id="pn-select-sr-m">
                                 <option class="optionSelect " value="0">Non spécifié</option>
+                            </select>
+                        </div>
+                        <div class=" mt-2 form-group">
+                            <label  for="etatRow"><b>Etat</b></label>
+                            <select class="form-control" id="etat_m_sr" name="etat_m_sr" data-size="10">
+                            {% for etat in etatList %}
+                                    <option   value="{{etat.kw__value}}" >{{etat.kw__lib}}</option>
+                               
+                            {% endfor %}
                             </select>
                         </div>
                         <div class="form-group">

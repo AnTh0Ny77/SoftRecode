@@ -32,6 +32,9 @@ session_start();
  $alert = null;
  $devisLigne = null;
 // variable qui determine la liste des devis à afficher:
+if (!empty($_GET['cmd'])) {
+    $_POST['rechercheF'] = $_GET['cmd'] ;
+}
 if (!empty($_POST['rechercheF'])) 
 {          
            $devisSeul = $Cmd->GetById(intval($_POST['rechercheF']));

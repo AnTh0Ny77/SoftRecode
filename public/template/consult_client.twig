@@ -9,10 +9,7 @@
 {% endblock %}
 {% block main %}
 <main role="main" class=" container-fluid my-3 col-11 container-body">
-        <div class="alert alert-warning" role="alert">
-               <b> les fonctionnalités de cette page sont actuellement en cours de developpement</b>
-        </div>
-        
+       
         {% if client %}
         <!-- 1ere ligne -->
         <div class="d-flex flex-wrap flex-row justify-content-between col-12">
@@ -249,7 +246,7 @@
 
                                 {% else %}
                                         <div class="alert alert-warning" role="alert">
-                                                <h5><span class="text-muted font-italic">
+                                                <h5><span class=" font-italic">
                                                                 Aucune commande n'existe pour ce client ( facturé )
                                                         </span>
                                                 </h5>

@@ -18,6 +18,7 @@ $(document).ready(function()
                     dataSet = JSON.parse(data);
                     $('#select_sous_ref').selectpicker('val' , dataSet.id__fmm);
                     $('#quantite_sous_ref').val( dataSet.devl_quantite);
+                   
                     get_pn_sousRef_and_refresh();
                 },
                 error: function (err) 
@@ -138,6 +139,7 @@ $(document).ready(function()
                     $('#input_modif_sous_ref_cmd').val(dataSet.cmdl__cmd__id);
                     $('#quantite_modif_sous_ref').val(parseInt(dataSet.devl_quantite));
                     $('#designation_modif_sous_ref').val(dataSet.devl__designation);
+                    $('#etat_m_sr').val( dataSet.devl__etat);
                     // editor_modif_sous_ref.setData(dataSet.devl__note_interne);
                     CKEDITOR.instances.com_modif_sous_ref.setData(dataSet.devl__note_interne);
                     let sous_garantie = parseInt(dataSet.cmdl__sous_garantie);
@@ -146,8 +148,6 @@ $(document).ready(function()
                         $('#modif_sous_ref_garantie').prop('checked', true);
                     }
                     else $('#modif_sous_ref_garantie').prop('checked', false );
-
-
                     get_pn_line_sr_and_refresh(id_ligne);
                  
                 },

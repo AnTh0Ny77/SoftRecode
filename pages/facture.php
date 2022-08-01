@@ -229,7 +229,7 @@ if (empty($devisList) && isset($_POST['rechercheF'])  && strlen($_POST['recherch
         break;
 
         case 'CMD':
-          $visuelFiche = 'pas encore expédiée';
+          $visuelFiche = 'pas encore expédiée :  <a href="/SoftRecode/transport?cmd='.$_POST['rechercheF'].'">Faire la saisie expédition</a>';
         break;
 
         case 'NFT':

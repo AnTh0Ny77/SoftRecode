@@ -184,7 +184,7 @@ use App\Controller\ExtranetController;
 			require __DIR__ .'/pages/admin_contact.php'; break;
 			
 		//transport / fiches de travail->
-		case '/SoftRecode/transport';
+		case '/SoftRecode/transport'.$get_data;
 			require __DIR__ .'/pages/transport2.php'; break;
 
 		case '/SoftRecode/transport2';

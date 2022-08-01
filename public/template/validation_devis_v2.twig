@@ -186,7 +186,7 @@
                                                                         
                                                                         <div class="form-check form-check-inline">
                                                                                 {% if ligne.devl__prix_barre %}
-                                                                                        <div class="border rounded border-danger px-3 article">
+                                                                                        <div class="border rounded border-danger px-3 my-4 article">
                                                                                                 {% for xtend in ligne.devl__prix_barre %}
                                                                                                         <input type="hidden" class="radioCmdP" value="{{xtend.devg__prix}}">
                                                                                                         <input class="form-check-input mx-1 radioCmd " name="{{ligne.devl__id}}" id="{{ligne.devl__ordre}}" type="radio" value="{{xtend.devg__type}}">
