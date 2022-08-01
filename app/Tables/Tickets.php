@@ -951,7 +951,7 @@ public function find_by_pn($text){
 			foreach ($pn_results as $pn) {
 					if ($pn->apn__pn == $id_pn){
 					
-						if ($key === array_key_last($pn__field) and count($pn__field) > 1) {
+						if ($key === end($pn__field) and count($pn__field) > 1) {
 						
 							$string .= $field->tk__id . ' ';
 						} else {
@@ -963,7 +963,7 @@ public function find_by_pn($text){
 			}
 		}	
 	}
-	var_dump($pn__field);
+
 	if (strlen($string) > 0 ) {
 		$request = $this->Db->Pdo->query('SELECT tkl__tk_id as  tk__id  
 		FROM ticket_ligne  
