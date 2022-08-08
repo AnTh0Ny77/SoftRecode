@@ -39,6 +39,7 @@
 				</div>
 			</div> #}
             {% for ligne in ticket.lignes %}
+			
               {{ include('display/display_ticket_ligne.html.twig')}}
             {% endfor %}
 			<div class="d-flex flex-column align-items-center my-4">

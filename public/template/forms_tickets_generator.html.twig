@@ -15,7 +15,6 @@
 <main role="main" class="col-12 container-body background-recode-list ">
   <div class="container pt-4 ">
       {% if multiparts %}
-      
       <form action="tickets-post-data" method="POST" class="col-12 col-sm-9 mx-auto" enctype="multipart/form-data">
       {% else %}
       <form action="tickets-post-data" method="POST" class="col-12 col-sm-9 mx-auto">
@@ -35,8 +34,8 @@
           </div>
           <div class="card-recode d-flex flex-column col-12 col-lg-8">
               <h2 class="recode-orange-title">Nouveau ticket</h2>
-              <p class="recode-p">{{libelle}}<br>
-              </p>
+                <p class="recode-p">{{libelle}}<br>
+                </p>
           </div>
       </div>
         {% for form in forms %}

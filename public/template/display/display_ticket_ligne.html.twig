@@ -20,11 +20,11 @@
         <div>
             <h5 class="recode-display-field">  <span class="font-weight-bold"> {{entitie.name}} : </span> </h5>
         </div>
-                <div class="card-recode-secondary  col-10 d-flex ">
+                <div class="card-recode-secondary  col-10 d-flex">
                     <div class=" col-10 col-md-6 col-lg-3 d-fex   align-items-center recode-div-pic">
                         {% if entitie.picture %}
                         <div class="d-flex justify-content-center ">
-                            <figure class="image col-6 col-md-10"><img class="subject-image" src="data:image/jpeg;base64,{{ entitie.picture|raw}}"></figure>
+                            <figure class="image col-6 col-md-10"><img class="subject-image" src="data:image/jpeg;base64,{{entitie.picture|raw}}"></figure>
                         </div>
                         {% else %}
                         <div class="d-flex justify-content-center">
@@ -87,7 +87,7 @@
                         {% if field.tksc__visible >= user.user__ticket_acces  %}
                             <i class="fas fa-lock"></i>
                         {% else %}
-                            {{field.tklc__memo |striptags('<br>') | raw }}
+                            {{field.tklc__memo  | raw }}
                         {% endif %}
                 </h5>
             {% endif %}
@@ -108,7 +108,6 @@
         {% if ligne.tkl__motif_ligne != 'cloture' %}
             <h5>   <span class="font-weight-bold"> Destinataire :  </span>
                     {{ligne.prenom_dest ~ " " ~ ligne.nom_dest}}
-                
             </h5>
         {% endif %}
     </div>
