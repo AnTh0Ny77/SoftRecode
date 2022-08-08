@@ -21,6 +21,7 @@
               <div class="card-recode d-flex flex-column col-12 col-lg-8">
                 	<h2 class="recode-orange-title"> Ticket {{ticket.tk__id}}</h2>
 					<p class="recode-p">{{ticket.kw__lib}}<br> 
+						
 						<span class="text-dark font-weight-bold text-uppercase">En cours chez {{ destinataire.prenom ~ " " ~ destinataire.nom }}</span>
 					</p>
               </div>
@@ -46,6 +47,17 @@
                         <option value="hello" >test esthétique</option>
                 </select> #}
 				{% if ticket.tk__lu != 2 %}
+				{% if next_action %}
+						{% for group in user_groups %}
+								{% if group.id_groupe  == 1012  and ticket.tk__motif =='DP' %}
+									<form action="tickets-handle-forms" method="POST" id="action_directe_DCOM">
+												<input type="hidden" name="tickets" value="{{ticket.tk__id}}">
+												<input type="hidden"  name="scenario" value="137">
+									</form>
+									<button type="button" id="action_directe_DCOM_button" class="btn btn-recode-yellow-custom my-2 col-12 col-md-6 col-lg-4">Répondre au demandeur</button>
+								{% endif %}
+						{% endfor %}
+					{% endif %}
 					{% if next_action %}
 						<button type="button" class="btn btn-recode my-2 col-12 col-md-6 col-lg-4" data-toggle="modal"
 							data-target=".modal-validation-ticket">Modifier le ticket</button>
@@ -71,7 +83,7 @@
 							<div class=" col-12 d-flex justify-content-center my-5">
 								<select class=" col-11 col-md-10 col-lg-7 custom-select form-control-lg input-recode" name="scenario" required>
 									{% for action in next_action %}
-											<option value="{{action.tks__id}}">{{action.tks__lib}}</option>
+											<option value="{{action.tks__id}}">{{action.tks__lib}} {{ dump(action) }}</option>
 									{% endfor %}
 								</select>
 							</div>
@@ -115,5 +127,6 @@
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/js/display_ticket.js"></script>
 
 {% endblock %}

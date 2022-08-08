@@ -201,6 +201,7 @@ class TicketsDisplayController extends BasicController
         self::security();
         $Ticket = new Tickets(self::$Db);
         $General = new General(self::$Db);
+        $User = new UserGroup(self::$Db);
         $sujet = null;
         $user_destinataire = null;
         $next_action = null;
@@ -296,10 +297,14 @@ class TicketsDisplayController extends BasicController
                 }
            }
         }
+
+        $user_groups = $User->get_groups($_SESSION['user']->id_utilisateur);
+
         return self::$twig->render(
             'display_ticket.html.twig',
             [
                 'user' => $_SESSION['user'],
+                'user_groups' => $user_groups ,
                 'destinataire' => $user_destinataire, 
                 'sujet' =>  $sujet ,
                 'ticket' => $ticket , 

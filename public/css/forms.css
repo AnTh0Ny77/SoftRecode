@@ -173,6 +173,20 @@
     display: inline-block;
     font-size: 14px;
 }
+
+.btn-recode-yellow-custom{
+    background-color: #FFE4B5; /* Green */
+    border: none;
+    color: black;
+    padding: 12px 27px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+}
+.btn-recode-yellow-custom:hover{
+    background-color: peachpuff; /* Green */
+}
 .btn-recode-primary:hover{
     background-color: #007dc5; /* Green */
 }
