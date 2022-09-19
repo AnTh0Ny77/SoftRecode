@@ -81,19 +81,19 @@ if (!empty($_POST['exportStart']) && !empty($_POST['exportEnd']))
         //determine les première ligne par rapport au taux de tva: 
         if (intval($commande->tva_value)  == 10 ) 
         {
-            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$libelle.';411'.$commande->client__id.';'. number_format($total[3] , 2 , ',', ' ').'; ;'. $libelle.'
+            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$libelle.';411'.$commande->client__id.';'. number_format($total[3] , 2 , ',', ' ').'; ;
 VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571200; ;'.number_format($total[2] , 2 ,',', ' ').'
 ' ;
         }
         elseif (intval($commande->tva_value)  == 20) 
         {
-            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$libelle.';411'.$commande->client__id.';'.number_format($total[3] , 2 ,  ',' ,  ' ').'; ;'. $libelle.'
+            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$libelle.';411'.$commande->client__id.';'.number_format($total[3] , 2 ,  ',' ,  ' ').'; ;
 VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571101; ;'.number_format($total[2] , 2 ,',', ' ').'
 ' ;
         }
         else 
         {
-            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$libelle.';411'.$commande->client__id.';'.number_format($total[3] , 2 , ',' , ' ').'; ;'. $libelle.'
+            $txt.=  'VE;' . $commande->cmd__id_facture .';'.$commande->cmd__date_fact.';'.$echeance.';'.$libelle.';411'.$commande->client__id.';'.number_format($total[3] , 2 , ',' , ' ').'; ;
 ';
         }
        
