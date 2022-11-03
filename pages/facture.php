@@ -146,12 +146,12 @@ if(!empty($_POST['rechercheF']) && strlen($_POST['rechercheF'])  == 8 )
 
 $rest = substr($_POST['rechercheF'] , 0 , 1); 
 
-//si le reste est * : 
+// si le reste est * : 
 if(!empty($rest) && $rest == '*') 
 {
   $idFacturable = substr($_POST['rechercheF'] , 1 , 7); 
   $verif = $Cmd->GetById($idFacturable);
-  if (!empty($verif)) 
+  if (!empty($verif) and  $verif->devis__etat == 'IMP') 
   {
     $_SESSION['factureEtoile'] = $idFacturable;
     header('location: printFTC');
