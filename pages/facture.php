@@ -155,7 +155,9 @@ if(!empty($rest) && $rest == '*')
   {
     $_SESSION['factureEtoile'] = $idFacturable;
     header('location: printFTC');
-  }     
+  }else {
+    $visuelFiche = 'Deja facturée automatiquement';
+  }    
 }
 //si le reste est - : 
 elseif(!empty($rest) && $rest == '-') 
