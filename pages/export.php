@@ -83,7 +83,7 @@ VE;'.$commande->cmd__id_facture.';'.$commande->cmd__date_fact.'; ;T.V.A;44571101
         foreach ($value as $test){ 
             $libelle_ligne = "";
             if ($commande->devis__etat == "VLA"){
-                $libelle_ligne = substr($test->devl__designation, 32); 
+                $libelle_ligne = substr($test->devl__designation, 33); 
             }
            
             if (floatval($test->devl_puht) != 00.00){
