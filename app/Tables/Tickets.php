@@ -179,7 +179,7 @@ public function get_dp_client($tk__id){
 	$request = $this->Db->Pdo->query('SELECT  t.* , k.kw__lib 
 	FROM ticket as t
 	LEFT JOIN keyword as k ON ( k.kw__value = t.tk__motif AND  k.kw__type= "tmoti") 
-	WHERE t.tk__id = "'.$id.'" ');
+	WHERE t.tk__id = "'.$id.'" AND t.tk__motif = "DP" ');
 	$ticket = $request->fetch(PDO::FETCH_OBJ);
 	if (!empty($ticket)) {
 		$ticket->last_line = $this->get_last_line($id);
@@ -1166,7 +1166,7 @@ public function search_tickets_filters($filters , $search , $user ){
 			
 				$request = $this->Db->Pdo->query('SELECT  t.* , MAX(l.tkl__dt) as last_date  FROM ticket as t
 					LEFT JOIN ticket_ligne as l ON ( L.tkl__tk_id = t.tk__id ) 
-					WHERE  ( t.tk__id IN  ' . $text . ')  GROUP BY t.tk__id 
+					WHERE  ( t.tk__id IN  ' . $text . ') AND ( t.tk__motif = "DP" ) GROUP BY t.tk__id 
 					ORDER BY last_date DESC  LIMIT 50');
 				$data = $request->fetchAll(PDO::FETCH_OBJ);
 				$results = [];
