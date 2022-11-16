@@ -5,6 +5,7 @@ use App\Controller\RechercheController;
 use App\Controller\TicketsFormsController;
 use App\Controller\TicketsDisplayController;
 use App\Controller\ExtranetController;
+use App\Apiservice\ApiTest;
 
 
  
@@ -144,6 +145,10 @@ use App\Controller\ExtranetController;
 		
 		case '/SoftRecode/recherche-articles-results';
 			echo RechercheController::recherche_results();
+			break;
+
+		case '/SoftRecode/apitest';
+			echo ApiTest::login('anthonybs.pro@gmail.com' , 'hello1H.test8');
 			break;
 			
 		//devis-> 
@@ -405,6 +410,7 @@ use App\Controller\ExtranetController;
 		
 		case '/SoftRecode/font';
 			require __DIR__ .'/vendor/tecnickcom/tcpdf/fonts/convertfont.php'; break;
+
 
 		//404::
 		default:
