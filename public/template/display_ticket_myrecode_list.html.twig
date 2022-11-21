@@ -1,0 +1,36 @@
+{% extends 'new_layout.twig' %}
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" type="text/css" href="public/chosen/chosen.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="public/css/forms.css">
+<link rel="stylesheet" href="public/css/cards.css">
+<link rel="stylesheet" href="public/css/font-family.css">
+<link rel="stylesheet" href="public/multislct/bootstrap-multiselect.min.css">
+{% endblock %}
+{% block main %}
+<main role="main" class=" container-body background-recode-list">
+  <div class="container pt-2 ">
+    <div class="d-flex flex-column align-items-center ">
+          {% for ticket in list %}
+            	{{ include('display/display_myrecode_list.html.twig')}}
+          {% endfor %}
+    </div>    
+  </div>
+  <form id="editTicket" method="POST" action="tickets-display">
+    <input type="hidden" id="idTicket" name="id" value="" required>
+  </form>
+</main>
+{% endblock %}
+{% block script %}
+<!-- jQuery first, then Bootstrap JS -->
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/multislct/bootstrap-multiselect.min.js"></script>
+<script type="text/javascript" src="public/js/tickets_module_list.js"></script>
+<script type="text/javascript" src="public/js/tickets-filters-list.js"></script>
+{% endblock %}

@@ -6,6 +6,7 @@ use App\Controller\TicketsFormsController;
 use App\Controller\TicketsDisplayController;
 use App\Controller\ExtranetController;
 use App\Apiservice\ApiTest;
+use App\Controller\MyRecodeController;
 
 
  
@@ -147,8 +148,8 @@ use App\Apiservice\ApiTest;
 			echo RechercheController::recherche_results();
 			break;
 
-		case '/SoftRecode/apitest';
-			echo ApiTest::login('anthonybs.pro@gmail.com' , 'hello1H.test8');
+		case '/SoftRecode/myRecode';
+			echo MyRecodeController::displayList();
 			break;
 			
 		//devis-> 
