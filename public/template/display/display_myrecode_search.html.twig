@@ -2,46 +2,45 @@
     <form method="GET" action="myRecode">
         <div class="d-flex justify-content-between">
             <input type="text" class="form-control form-control-lg input-recode col-8 col-lg-10"
-                placeholder=" titre, client, Pn, Sn etc.." name="searchTickets"
-                value="{{text_results}}" minlength="2" maxlength="100">
+                placeholder=" titre, client, Pn, Sn etc.." name="search"
+                value="{{filters.search}}" minlength="2" maxlength="100">
             <button class="btn btn-recode "><i class="fas fa-search"></i></button>
         </div>
         <div class="d-flex my-2 justify-content-start">
-            <input type="text" class="form-control form-control input-recode col-6" placeholder="Numero de ticket" name="IdTicket" value="{{text_results}}" minlength="2" maxlength="100">
-            <input type="text" class="form-control mx-2 form-control input-recode col-6" placeholder="Numero de groupe" name="IdGroupe" value="{{text_results}}" minlength="2" maxlength="100">
+            <input type="text" class="form-control form-control input-recode col-6" placeholder="Numero de ticket" name="tk__id" value="{{filters.tk__id}}" minlength="2" maxlength="100">
+            <input type="text" class="form-control mx-2 form-control input-recode col-6" placeholder="Numero de groupe" name="tk__groupe" value="{{filters.tk__groupe}}" minlength="2" maxlength="100">
         </div>
-        <div class="d-flex justify-content-around">
-            <div class=" ">
-                <select id="filtersType" name="TypeFilter">
+        <div class="d-flex justify-content-start">
+            <div class="">
+                <select id="filtersType" name="TypeFilter" class="">
                     <optgroup label="Motif">
                         <option value="DP" >Demande de prix</option>
                         <option value="TKM" selected>Ticket myRecode</option>
                     </optgroup>
                 </select>
             </div>
-            <div class=" ">
-                <select id="filtersTickets" name="StateFilter[]" multiple>
+            <div class="mx-4">
+                <select id="filtersTickets" name="tk__lu[]" multiple>
                     <optgroup label="Etat">
-                        {% if filters['Cloture'] == 1 %}
-                        <option value="Cloture" selected>Cloturés</option>
+                        {% if filters.cloture %}
+                        <option value="2" selected>Cloturés</option>
                         {% else %}
-                        <option value="Cloture">Cloturés</option>
+                        <option value="2">Cloturés</option>
                         {% endif %}
-                        {% if filters['Lus'] == 1 %}
-                        <option value="Lus" selected>Lus</option>
+                        {% if filters.lu %}
+                        <option value="1" selected>Lus</option>
                         {% else %}
-                        <option value="Lus">Lus</option>
+                        <option value="1">Lus</option>
                         {% endif %}
-                        {% if filters['NonLus'] == 1 %}
-                        <option value="NonLus" selected>Non lus</option>
+                        {% if filters.nonLu %}
+                        <option value="0" selected>Non lus</option>
                         {% else %}
-                        <option value="NonLus">Non lus</option>
+                        <option value="0">Non lus</option>
                         {% endif %}
-
                     </optgroup>
                 </select>
             </div>
-            <div class=" ">
+            {# <div class=" ">
                 <select id="filtersEtat" name="AuthorFilter">
                     <optgroup label="Auteur">
                         {% if filters['Author'] == 1 %}
@@ -56,7 +55,7 @@
                         {% endif %}
                     </optgroup>
                 </select>
-            </div>
+            </div> #}
         </div>
     </form>
 </div>

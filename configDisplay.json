@@ -32,6 +32,20 @@
             ],
             "picture": "apn__image",
             "alternative": "public/img/pn2.jpg"
+        }, {
+            "name": "mat",
+            "table": "materiel",
+            "identifier": "mat__pn",
+            "identifier_type": "string",
+            "label": [
+                "mat__model"
+            ],
+            "additionals": [
+                "mat__pn" ,
+                "mat__sn" 
+            ],
+            "picture": null,
+            "alternative": "public/img/pn2.jpg"
         }
     ]
 }

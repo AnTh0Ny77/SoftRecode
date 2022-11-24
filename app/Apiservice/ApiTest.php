@@ -29,7 +29,7 @@ class ApiTest {
 
     public static function login($username, $password){
 
-        $client = new Client(['base_uri' => 'http://82.65.12.112:59085', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        $client = new Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
         try {
             $response = $client->post('/api/login',  ['json' => ['user__mail' => $username, 'user__password' => $password]]);
         } catch (ClientException $exeption){
@@ -37,7 +37,8 @@ class ApiTest {
         }
         $response =  [
                 'code' => $response->getStatusCode(),
-                'data' => (array) json_decode($response->getBody()->read(16384), TRUE)
+                'data' => (array) json_decode($response->getBody()->read(16384), TRUE), 
+                'http_errors' => false
             ];
 
         return $response;
@@ -45,7 +46,7 @@ class ApiTest {
 
     public static function postTicketLigne(){
         
-        $client = new \GuzzleHttp\Client(['base_uri' => 'http://82.65.12.112:59085', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
         try {
             $response = $client->post('/api/login',  ['json' => ['user__mail' => $username, 'user__password' => $password]]);
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
@@ -53,14 +54,15 @@ class ApiTest {
         }
         $response =  [
             'code' => $response->getStatusCode(),
-            'data' => (array) json_decode($response->getBody()->read(16384), TRUE)
+            'data' => (array) json_decode($response->getBody()->read(16384), TRUE), 
+            'http_errors' => false
         ];
     }
 
 
     public static function getMateriel($token , $query){
 
-        $client = new \GuzzleHttp\Client(['base_uri' => 'http://82.65.12.112:59085', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
         try {
             $response = $client->get('/api/materiel', 
             ['headers' => self::makeHeaders($token) ,
@@ -79,7 +81,7 @@ class ApiTest {
     public static function getClient($token, $query)
     {
 
-        $client = new \GuzzleHttp\Client(['base_uri' => 'http://82.65.12.112:59085', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
         try {
             $response = $client->get('/api/client',[
             'headers' => self::makeHeaders($token),
@@ -97,13 +99,16 @@ class ApiTest {
 
 
 
-        $client = new \GuzzleHttp\Client(['base_uri' => 'http://82.65.12.112:59085', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
 
         try {
             $debug = fopen("path_and_filename.txt", "a+");
-            var_dump($client->get('/api/ticket', ['headers' => self::makeHeaders($token), 'query' => $query , 'debug' => $debug]));
-            die();
-            $response = $client->get('/api/ticket', ['headers' => self::makeHeaders($token) , 'query' => $query]);
+          
+            $response = $client->get('/api/ticket', [
+                'headers' => self::makeHeaders($token) ,
+                 'query' => $query, 
+                 'http_errors' => false
+                ]);
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
         }

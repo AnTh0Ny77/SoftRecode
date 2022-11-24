@@ -1,0 +1,97 @@
+
+
+
+{% if user.id_utilisateur == ligne.tkl__user_id.user__id %}
+<div class="card-recode-ligne d-flex flex-column my-2 bg-dialog-self ml-5">
+{% else %}
+<div class="card-recode-ligne d-flex flex-column my-2 mr-5">
+{% endif %}
+<div class="recode-ligne-header mt-2 mb-4">
+    <h5>
+        <span class="font-weight-bold">
+            {{ligne.tkl__user_id.user__prenom ~ " " ~ ligne.tkl__user_id.user__nom ~  "  : " ~ ligne.tkl__memo}}
+        </span>
+        <span class="text-upercase">
+            le : {{ligne.tkl__dt}}
+        </span>
+    </h5>
+</div>
+{% if ligne.entities %}
+    {% for entitie in ligne.entities %}
+            <div class="card-recode-secondary my-2 col-10 d-flex">
+                <div class=" col-10 col-md-6 col-lg-3 d-fex   align-items-center recode-div-pic">
+                    {% if entitie.picture %}
+                    <div class="d-flex justify-content-center ">
+                        <figure class="image col-6 col-md-10"><img class="subject-image" src="data:image/jpeg;base64,{{entitie.picture|raw}}"></figure>
+                    </div>
+                    {% else %}
+                    <div class="d-flex justify-content-center">
+                        <figure class="image col-6 col-md-10"><img class="subject-image" src="{{entitie.alternative}}"></figure>
+                    </div>
+                    {% endif %}
+                </div>
+                <div>
+                    <div class="mt-2">
+                        <h3 class="title-sujet">  <span class=" recode-p text-uppercase"> {{entitie.name}}  </span> {{entitie.label}}</h3>
+                    </div>
+                    <div class="d-fex align-item-center">
+                        {{entitie.additionals}}
+                    </div>
+                </div>
+            </div>
+    {% endfor %}
+{% endif %}
+<div class="mt-1">
+    {% for field in ligne.champs %}
+        {% if field.label %}
+        <div>
+            <h5 class="recode-display-field">  <span class="font-weight-bold"> {{field.tklc__nom_champ}} : </span> </h5>
+        </div>
+                <div class="card-recode-secondary  my-3 col-10 d-flex ">
+                    <div class=" col-10 col-md-6 col-lg-3 d-fex   align-items-center recode-div-pic">
+                        {% if field.picture %}
+                        <div class="d-flex justify-content-center ">
+                            <figure class="image col-6 col-md-10"><img class="subject-image" src="data:image/jpeg;base64,{{ field.picture|raw}}"></figure>
+                        </div>
+                        {% else %}
+                        <div class="d-flex justify-content-center">
+                            <figure class="image col-6 col-md-10"><img class="subject-image" src="{{field.alternative}}"></figure>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <div class="mt-2">
+                            <h3 class="title-sujet">{{field.label}}</h3>
+                        </div>
+                        <div class="d-fex align-item-center">
+                            {{field.additionals}}
+                        </div>
+                    </div>
+                </div>
+        {% endif %}
+    {% if field.tklc__memo %}
+            <h5>
+                <span class="font-weight-bold">{{field.tklc__nom_champ}} : </span>
+                        {{field.tklc__nom_champ  | raw }}
+            </h5>
+        {% endif %}
+    {% endfor %}
+    {% if ligne.files %}
+    <div class="my-3">
+        {# <h5><i class="fas fa-paperclip"></i> Pièce jointes</h5> #}
+        <div class="d-flex justify-content-start flex-wrap">
+        {% for file in ligne.files %}
+            <div class="col-3">
+                <a target="_blank" class="btn btn-link" href="{{ligne.path ~ file }}"><i class="fas fa-download"></i> {{file}} </a>
+            </div>
+        {% endfor %}
+    </div>
+    </div>
+    {% endif %}
+    {% if ligne.tkl__motif_ligne != 'cloture' %}
+        <h5>   <span class="font-weight-bold"> Destinataire :  </span>
+                {{ligne.tkl__user_id_dest.user__prenom ~ " " ~ ligne.tkl__user_id_dest.user__nom}}
+        </h5>
+    {% endif %}
+</div>
+</div>

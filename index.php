@@ -148,8 +148,12 @@ use App\Controller\MyRecodeController;
 			echo RechercheController::recherche_results();
 			break;
 
-		case '/SoftRecode/myRecode';
+		case '/SoftRecode/myRecode'.$get_data;
 			echo MyRecodeController::displayList();
+			break;
+
+		case '/SoftRecode/myRecode-ticket'.$get_data;
+			echo MyRecodeController::displayTickets();
 			break;
 			
 		//devis-> 

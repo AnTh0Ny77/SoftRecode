@@ -36,3 +36,23 @@ Accept: application/json
 < Content-Type: application/json; charset=utf-8
 < 
 * Closing connection 0
+*   Trying 82.65.12.112:59085...
+* TCP_NODELAY set
+* Connected to 82.65.12.112 (82.65.12.112) port 59085 (#0)
+> GET /api/ticket?tk__id%5B0%5D=10044&tk__id%5B1%5D=10045 HTTP/1.1
+Host: 82.65.12.112:59085
+User-Agent: GuzzleHttp/7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NjkyNzY5MjcsInVpZCI6NywiZXhwIjoxNjY5MjgwNTI3fQ.2DaNwoZIP7HRxT9i2VTaVWukTq8Bwo8nPTp3yzVjZXA
+Accept: application/json
+
+* Mark bundle as not supporting multiuse
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 bad request
+< Date: Thu, 24 Nov 2022 08:02:07 GMT
+< Server: Apache/2.4.52 (Ubuntu)
+< Access-Control-Allow-Origin: *
+< Content-Length: 2323
+< Connection: close
+< Content-Type: application/json; charset=utf-8
+< 
+* Closing connection 0
