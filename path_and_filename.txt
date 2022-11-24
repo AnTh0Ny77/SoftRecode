@@ -1,0 +1,38 @@
+*   Trying 82.65.12.112:59085...
+* Connected to 82.65.12.112 (82.65.12.112) port 59085 (#0)
+> GET /api/ticket?tk__id%5B%5D%5B0%5D=10044&tk__id%5B%5D%5B1%5D=10045 HTTP/1.1
+Host: 82.65.12.112:59085
+User-Agent: GuzzleHttp/7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NjkyMTcxOTAsInVpZCI6NywiZXhwIjoxNjY5MjIwNzkwfQ.caXbqCd5m0EjBui5OCQWTU8mkMao8WzGa_KVCrOOwZo
+Accept: application/json
+
+* Mark bundle as not supporting multiuse
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 bad request
+< Date: Wed, 23 Nov 2022 15:26:30 GMT
+< Server: Apache/2.4.52 (Ubuntu)
+< Access-Control-Allow-Origin: *
+< Content-Length: 11
+< Connection: close
+< Content-Type: application/json; charset=utf-8
+< 
+* Closing connection 0
+*   Trying 82.65.12.112:59085...
+* Connected to 82.65.12.112 (82.65.12.112) port 59085 (#0)
+> GET /api/ticket?tk__id%5B0%5D=10044&tk__id%5B1%5D=10045 HTTP/1.1
+Host: 82.65.12.112:59085
+User-Agent: GuzzleHttp/7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NjkyMTc0MTIsInVpZCI6NywiZXhwIjoxNjY5MjIxMDEyfQ.A0IKgWgxYd-aYbv5oGqoOmr3VMweTg9afAyj0yzFxh0
+Accept: application/json
+
+* Mark bundle as not supporting multiuse
+* HTTP 1.0, assume close after body
+< HTTP/1.0 200 bad request
+< Date: Wed, 23 Nov 2022 15:30:12 GMT
+< Server: Apache/2.4.52 (Ubuntu)
+< Access-Control-Allow-Origin: *
+< Content-Length: 2323
+< Connection: close
+< Content-Type: application/json; charset=utf-8
+< 
+* Closing connection 0

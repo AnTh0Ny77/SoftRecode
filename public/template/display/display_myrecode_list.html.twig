@@ -1,14 +1,4 @@
 {% if ticket.tk__id %}
-
-{% if ticket.groups %}
-    {% if ticket.tk__lu == 1  %}
-        <div class="card-recode-groups card-recode-cursor d-flex flex-column mt-2 col-12 col-lg-8">
-    {% elseif ticket.tk__lu == 2  %}
-        <div class="card-recode-lu card-recode-cursor d-flex flex-column mt-2 col-12 col-lg-8">
-    {% else %}
-        <div class="card-recode-groups-green-shadow card-recode-cursor d-flex flex-column mt-2 col-12 col-lg-8">
-    {% endif %}
-{% else %}
     {% if ticket.tk__lu == 1  %}
         <div class="card-recode card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
     {% elseif ticket.tk__lu == 2  %}
@@ -16,7 +6,6 @@
     {% else %}
         <div class="card-recode-green-shadow card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
     {% endif %}
-{% endif %}
 <input type="hidden" value="{{ticket.tk__id}}">
     <div class="d-flex">
         <div class="col-6">
@@ -51,15 +40,15 @@
                         </span>
                     </span>
                 {% endif %}
-                {% if ticket.client %}
-                    <br>
-                    <span class="text-dark font-weight-bold text-uppercase">
-                        <span class=" recode-p text-uppercase">
-                            {{  " (" ~ ticket.client.client__id ~ ") " ~ ticket.client.client__societe}}
-                            {{ ticket.client.client__cp ~ " " ~  ticket.client.client__ville }}
-                        </span>
+                {% if ticket.cli %}
+                <br>
+                <span class="text-dark font-weight-bold text-uppercase">
+                    <span class=" recode-p text-uppercase">
+                        {{ " (" ~ ticket.cli.cli__id ~ ") " ~ ticket.cli.cli__nom}}
+                        {{ ticket.cli.cli__cp ~ " " ~ ticket.cli.cli__ville }}
                     </span>
-                {% endif %}    
+                </span>
+                {% endif %}
             </p>
         </div>
        
@@ -67,9 +56,16 @@
             <p class="recode-p">{{ticket.memo}}<br>
             <span class="text-dark font-weight-bold text-uppercase">Le {{ticket.date}}<br>
                 <span class="recode-orange-title">
-                    {{ticket.last_line.prenom ~ " " ~ ticket.last_line.nom}}
+                    {{ticket.last.user__prenom ~ " " ~ ticket.last.user__nom}}
                 </span>
             </span>
+            {% if ticket.mat %}
+                <span class="text-dark font-weight-bold text-uppercase">Le {{ticket.date}}<br>
+                    <span class="recode-orange-title">
+                        {{ticket.mat.mat__model}}
+                    </span>
+                </span>
+            {% endif %}
             </p>
         </div>
     </div> 

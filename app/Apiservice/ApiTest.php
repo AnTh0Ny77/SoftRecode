@@ -62,18 +62,47 @@ class ApiTest {
 
         $client = new \GuzzleHttp\Client(['base_uri' => 'http://82.65.12.112:59085', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
         try {
-            $response = $client->get('/api/materiel', ['headers' => self::makeHeaders($token) , 'query' => $query]);
+            $response = $client->get('/api/materiel', 
+            ['headers' => self::makeHeaders($token) ,
+             'query' => $query,
+            'http_errors' => false
+            ]);
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
+            exit();
         }
         
         return self::handleResponse($response);
     }
 
-    public static function getTicketList($token , $query){
+
+    public static function getClient($token, $query)
+    {
 
         $client = new \GuzzleHttp\Client(['base_uri' => 'http://82.65.12.112:59085', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
         try {
+            $response = $client->get('/api/client',[
+            'headers' => self::makeHeaders($token),
+            'query' => $query,
+            'http_errors' => false
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
+      
+        return self::handleResponse($response);
+    }
+
+    public static function getTicketList($token , $query){
+
+
+
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://82.65.12.112:59085', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+
+        try {
+            $debug = fopen("path_and_filename.txt", "a+");
+            var_dump($client->get('/api/ticket', ['headers' => self::makeHeaders($token), 'query' => $query , 'debug' => $debug]));
+            die();
             $response = $client->get('/api/ticket', ['headers' => self::makeHeaders($token) , 'query' => $query]);
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();

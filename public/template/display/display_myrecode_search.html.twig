@@ -1,0 +1,62 @@
+<div class=" my-2 col-12 col-lg-8">
+    <form method="GET" action="myRecode">
+        <div class="d-flex justify-content-between">
+            <input type="text" class="form-control form-control-lg input-recode col-8 col-lg-10"
+                placeholder=" titre, client, Pn, Sn etc.." name="searchTickets"
+                value="{{text_results}}" minlength="2" maxlength="100">
+            <button class="btn btn-recode "><i class="fas fa-search"></i></button>
+        </div>
+        <div class="d-flex my-2 justify-content-start">
+            <input type="text" class="form-control form-control input-recode col-6" placeholder="Numero de ticket" name="IdTicket" value="{{text_results}}" minlength="2" maxlength="100">
+            <input type="text" class="form-control mx-2 form-control input-recode col-6" placeholder="Numero de groupe" name="IdGroupe" value="{{text_results}}" minlength="2" maxlength="100">
+        </div>
+        <div class="d-flex justify-content-around">
+            <div class=" ">
+                <select id="filtersType" name="TypeFilter">
+                    <optgroup label="Motif">
+                        <option value="DP" >Demande de prix</option>
+                        <option value="TKM" selected>Ticket myRecode</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class=" ">
+                <select id="filtersTickets" name="StateFilter[]" multiple>
+                    <optgroup label="Etat">
+                        {% if filters['Cloture'] == 1 %}
+                        <option value="Cloture" selected>Cloturés</option>
+                        {% else %}
+                        <option value="Cloture">Cloturés</option>
+                        {% endif %}
+                        {% if filters['Lus'] == 1 %}
+                        <option value="Lus" selected>Lus</option>
+                        {% else %}
+                        <option value="Lus">Lus</option>
+                        {% endif %}
+                        {% if filters['NonLus'] == 1 %}
+                        <option value="NonLus" selected>Non lus</option>
+                        {% else %}
+                        <option value="NonLus">Non lus</option>
+                        {% endif %}
+
+                    </optgroup>
+                </select>
+            </div>
+            <div class=" ">
+                <select id="filtersEtat" name="AuthorFilter">
+                    <optgroup label="Auteur">
+                        {% if filters['Author'] == 1 %}
+                        <option value="1" selected>Tous les tickets</option>
+                        {% else %}
+                        <option value="1">Tous les tickets</option>
+                        {% endif %}
+                        {% if filters['Author'] == 2 %}
+                        <option value="2" selected>En cours chez recode</option>
+                        {% else %}
+                        <option value="2">En cours chez recode</option>
+                        {% endif %}
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+    </form>
+</div>
