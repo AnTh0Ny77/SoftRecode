@@ -305,7 +305,7 @@
 }
 
 .shake-n-steak{
-    animation: tilt-n-move-shaking  0.35s infinite;
+    animation: tilt-n-move-shaking  0.75s infinite;
 }
 
 @keyframes tilt-n-move-shaking {

@@ -15,6 +15,8 @@ class MyRecodeController extends BasicController {
         self::init();
         self::security();
         $Api = new ApiTest();
+        $Api->getFiles("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Njk2NDgzOTYsInVpZCI6NywiZXhwIjoxNjY5NjUxOTk2fQ.-1GvqcPJGfD8OmJ6w9SMMQAl9OG8CsgDOA1IckVpjHY");
+        die();
         $token = $Api->login('anthonybs.pro@gmail.com' , 'hello1H.test8');
         if ($token['code'] != 200) {
            

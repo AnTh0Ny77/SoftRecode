@@ -5,6 +5,7 @@ require_once  '././vendor/autoload.php';
 use App\Database;
 use \GuzzleHttp\Client;
 use \GuzzleHttp\ClientException;
+use ZipArchive;
 
 class ApiTest {
 
@@ -42,6 +43,38 @@ class ApiTest {
             ];
 
         return $response;
+    }
+
+
+    public static function getFiles($token){
+
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://localhost:8080', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->get('/RESTapi//files', 
+            ['headers' => self::makeHeaders($token) ,
+             'query' =>  ['tkl__id' => 12117 ],
+            'http_errors' => false
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+            exit();
+        }
+        $myfile = fopen("test.zip", "w") or die("Unable to open file!");
+        fwrite($myfile, $response->getBody()->read(163840708));
+        fclose($myfile);
+        $zip = new ZipArchive;
+  
+        // Zip File Name
+        if ($zip->open('test.zip') === TRUE) {
+        
+            // Unzip Path
+            $zip->extractTo('public/img');
+            $zip->close();
+            echo 'Unzipped Process Successful!';
+        } else {
+            echo 'Unzipped Process failed';
+        }
+        
     }
 
     public static function postTicketLigne(){
