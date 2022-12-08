@@ -29,38 +29,19 @@
             {% for ligne in ticket.lignes %}
               {{ include('display/display_ticket_lignes_myrecode.html.twig')}}
             {% endfor %}
-            {{ include('forms/forms_myrecode.html.twig')}}
-			<div class="d-flex flex-row align-items-center my-4">
-				{% if ticket.tk__lu != 2 %}
-					{% if ticket.tk__lu != 0 %}
-						<a href="/SoftRecode/tickets-display-list?nonLu={{ticket.tk__id}}" class="btn btn-recode-primary mx-1 col-12 col-md-6 col-lg-4" >Repasser en non lu</a>
-					{% endif %}
-                    <button type="button" class="btn btn-recode-important col-12  mx-1 col-md-6 col-lg-4" data-toggle="modal" data-target="#modalCloture">Envoyer </button>
-				{% endif %}
-			</div>
+            <form action="myRecode-ticket" method="post">
+                <input type="hidden" name="ticket" value="{{ticket.tk__id}}">
+                {{ include('forms/forms_myrecode.html.twig')}}
+                <div class="d-flex flex-row align-items-center my-4">
+                    {% if ticket.tk__lu != 2 %}
+                        {% if ticket.tk__lu != 0 %}
+                            <a href="/SoftRecode/tickets-display-list?nonLu={{ticket.tk__id}}" class="btn btn-recode-primary mx-1 col-12 col-md-6 col-lg-4" >Repasser en non lu</a>
+                        {% endif %}
+                        <button type="submit" class="btn btn-recode-important col-12  mx-1 col-md-6 col-lg-4" >Envoyer </button>
+                    {% endif %}
+                </div>
+            </form>
           </div>
-		  {# modal de cloture  #}
-		  <div class="modal fade modal-cloture-ticket" id="modalCloture" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered  modal-lg  ">
-			  <div class="modal-content modal-recode ">
-				  <form action="tickets-display-list" method="POST">
-					  	<div class="d-flex flex-column my-5 justify-content-center align-items-center">
-							<div class="d-flex justify-content-center text-center">
-								<h1 class="font-weight-bold">Confirmation de cloture du ticket  </h1>
-								<input type="hidden" name="ticketsCloture" value="{{ticket.tk__id}}">
-							</div>
-							{# <div class=" col-12 col-lg-9 d-flex justify-content-center my-5">
-								<textarea class="form-control  form-control-lg input-recode" name="commentaire"  placeholder="Laisser un commentaire"  rows="3" required></textarea>
-							</div> #}
-							<div class=" col-12 d-flex justify-content-center my-5">
-								<button type="submit" class="btn btn-recode-danger my-2 col-xs-7 col-md-4">Cloturer</button>
-							</div>
-                           
-						</div>	
-				  </form>
-			  </div>
-			</div>
-		  </div>
         </div>
     </div>
        

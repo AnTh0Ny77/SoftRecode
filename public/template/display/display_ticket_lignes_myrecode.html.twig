@@ -71,8 +71,8 @@
         {% endif %}
     {% if field.tklc__memo %}
             <h5>
-                <span class="font-weight-bold">{{field.tklc__nom_champ}} : </span>
-                        {{field.tklc__nom_champ  | raw }}
+                <span class="font-weight-bold"></span>
+                        {{field.tklc__memo | raw }}
             </h5>
         {% endif %}
     {% endfor %}

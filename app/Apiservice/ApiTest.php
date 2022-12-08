@@ -63,7 +63,7 @@ class ApiTest {
         fwrite($myfile, $response->getBody()->read(163840708));
         fclose($myfile);
         $zip = new ZipArchive;
-  
+        
         // Zip File Name
         if ($zip->open('test.zip') === TRUE) {
         
@@ -77,19 +77,31 @@ class ApiTest {
         
     }
 
-    public static function postTicketLigne(){
+    public static function postTicketLigne($token , $ligne){
         
         $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
         try {
-            $response = $client->post('/api/login',  ['json' => ['user__mail' => $username, 'user__password' => $password]]);
+            $response = $client->post('/api/ticketligne',  
+            ['headers' => self::makeHeaders($token)  ,
+             'json' => $ligne]);
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
         }
-        $response =  [
-            'code' => $response->getStatusCode(),
-            'data' => (array) json_decode($response->getBody()->read(16384), TRUE), 
-            'http_errors' => false
-        ];
+        return self::handleResponse($response);
+    }
+
+    public static function postTicketLigneChamps($token , $ligne){
+        
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->post('/api/ticketchamps',  
+            ['headers' => self::makeHeaders($token)  ,
+             'json' => $ligne]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
+        
+        return self::handleResponse($response);
     }
 
 
@@ -146,6 +158,7 @@ class ApiTest {
             $response = $exeption->getResponse();
         }
         
-        return self::handleResponse($response);
+     return self::handleResponse($response);
+     
     }
 }

@@ -15,8 +15,7 @@ class MyRecodeController extends BasicController {
         self::init();
         self::security();
         $Api = new ApiTest();
-        $Api->getFiles("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Njk2NDgzOTYsInVpZCI6NywiZXhwIjoxNjY5NjUxOTk2fQ.-1GvqcPJGfD8OmJ6w9SMMQAl9OG8CsgDOA1IckVpjHY");
-        die();
+        
         $token = $Api->login('anthonybs.pro@gmail.com' , 'hello1H.test8');
         if ($token['code'] != 200) {
            
@@ -143,6 +142,12 @@ class MyRecodeController extends BasicController {
         if ($token['code'] != 200) {
            //pas de connexion à l 'api : 
         }
+        $token = $token['data']['token'];
+        if (!empty($_POST['ticket'])){
+            $id_ligne =  self::PostLigne($_POST ,7 , $Api, $token);
+           var_dump($id_ligne);
+            $ticket = self::PostChamps($id_ligne  , $_POST,  $Api , $token );
+        }
 
         if (!empty($_GET['tk__id'])) {
             $query_exemple = [
@@ -151,7 +156,7 @@ class MyRecodeController extends BasicController {
             if (is_numeric($_GET['tk__id']) and strlen($_GET['tk__id']) ==  5 ) {
                 array_push( $query_exemple['tk__id'] ,$_GET['tk__id']);
 
-                $token = $token['data']['token'];
+               
                 $list = $Api->getTicketList($token , $query_exemple);
                 $list = $list['data'];
                 $definitive_edition = [];
@@ -205,13 +210,38 @@ class MyRecodeController extends BasicController {
                 header('location: myRecode');
                 exit;
             }
-            
+
         }else{
             header('location: myRecode');
             exit;
         }
+    }
 
-        
+    public static function PostLigne($post , $dest , $api , $token){
+        $visible = 0 ;
+        if ($post['what'] == 'SEC') {
+            $visible = 1 ;
+        }
+        $tkl = [
+            'tkl__tk_id' => $post['ticket'],
+            'tkl__motif_ligne' => $post['what'], 
+            'tkl__memo' => 'Réponse Recode' ,
+            'tkl__user_id' => $_SESSION['user']->id_utilisateur,
+            'tkl__user_id_dest' => $dest , 
+            'tkl__visible' => $visible
+        ];     
+        return $api->postTicketLigne($token,  $tkl)['data']['tkl__id'];
+    }
+
+    public static function PostChamps($ligne , $post , $api , $token){
+
+        $tklc = [
+            'tklc__id' =>  $ligne, 
+            'tklc__nom_champ' => 'INF', 
+            'tklc__ordre' =>  1 , 
+            'tklc__memo' => $post['content']
+        ];
+        return $api->postTicketLigneChamps($token , $tklc);
     }
 
     
