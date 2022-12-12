@@ -17,7 +17,7 @@ class MyRecodeController extends BasicController {
         self::security();
         $Api = new ApiTest();
         
-        $token = $Api->login('anthonybs.pro@gmail.com' , 'hello1H.test8');
+        $token = $Api->login($_SESSION['user']->email , 'test');
         if ($token['code'] != 200) {
            
         }
