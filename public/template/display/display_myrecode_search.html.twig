@@ -1,5 +1,6 @@
 <div class=" my-2 col-12 col-lg-8">
     <form method="GET" action="myRecode">
+        <h2 class="h2-myrecode">Ticket MyRecode</h2>
         <div class="d-flex justify-content-between">
             <input type="text" class="form-control form-control-lg input-recode col-8 col-lg-10"
                 placeholder=" titre, client, Pn, Sn etc.." name="search"
@@ -23,19 +24,19 @@
                 <select id="filtersTickets" name="tk__lu[]" multiple>
                     <optgroup label="Etat">
                         {% if filters.cloture %}
-                        <option value="2" selected>Cloturés</option>
+                        <option value="9" selected>Cloturés</option>
                         {% else %}
-                        <option value="2">Cloturés</option>
+                        <option value="9">Cloturés</option>
                         {% endif %}
                         {% if filters.lu %}
-                        <option value="1" selected>Lus</option>
+                        <option value="5" selected>Lus</option>
                         {% else %}
-                        <option value="1">Lus</option>
+                        <option value="5">Lus</option>
                         {% endif %}
                         {% if filters.nonLu %}
-                        <option value="0" selected>Non lus</option>
+                        <option value="3" selected>Non lus</option>
                         {% else %}
-                        <option value="0">Non lus</option>
+                        <option value="3">Non lus</option>
                         {% endif %}
                     </optgroup>
                 </select>

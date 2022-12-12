@@ -29,13 +29,13 @@
             {% for ligne in ticket.lignes %}
               {{ include('display/display_ticket_lignes_myrecode.html.twig')}}
             {% endfor %}
-            <form action="myRecode-ticket" method="post">
-                <input type="hidden" name="ticket" value="{{ticket.tk__id}}">
+            <form action="myRecode-ticket?tk__id={{ticket.tk__id}}" method="post">
+                <input type="hidden" name="tk__id" value="{{ticket.tk__id}}">
                 {{ include('forms/forms_myrecode.html.twig')}}
                 <div class="d-flex flex-row align-items-center my-4">
                     {% if ticket.tk__lu != 2 %}
                         {% if ticket.tk__lu != 0 %}
-                            <a href="/SoftRecode/tickets-display-list?nonLu={{ticket.tk__id}}" class="btn btn-recode-primary mx-1 col-12 col-md-6 col-lg-4" >Repasser en non lu</a>
+                            <a href="/SoftRecode/myRecode?nonLu={{ticket.tk__id}}" class="btn btn-recode-primary mx-1 col-12 col-md-6 col-lg-4" >Repasser en non lu</a>
                         {% endif %}
                         <button type="submit" class="btn btn-recode-important col-12  mx-1 col-md-6 col-lg-4" >Envoyer </button>
                     {% endif %}
@@ -55,6 +55,18 @@
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="public/js/display_ticket.js"></script>
-<script type="text/javascript" src="public/js/file_upload.js"></script>
+{# <script type="text/javascript" src="public/js/file_upload.js"></script> #}
+<script type="text/javascript">
+  $(function(ready){
+      $('#actionInput').on('change' , function(){
+        var type = $('#actionInput').find(":selected").val();
+        if(type === 'CIN'){
+              $('#dest').removeClass('d-none');
+        }else{
+			$('#dest').addClass('d-none');
+		}
+      })
+	})
+</script>
 
 {% endblock %}

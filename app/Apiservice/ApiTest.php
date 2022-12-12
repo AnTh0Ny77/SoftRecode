@@ -140,6 +140,19 @@ class ApiTest {
         return self::handleResponse($response);
     }
 
+    public static function updateTicket($token , $json){
+
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->put('/api/ticket',  
+            ['headers' => self::makeHeaders($token)  ,
+             'json' => $json]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
+        return self::handleResponse($response);
+    }
+
     public static function getTicketList($token , $query){
 
 

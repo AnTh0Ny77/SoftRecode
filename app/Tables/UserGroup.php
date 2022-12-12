@@ -139,7 +139,7 @@ public function get_ticket_for_user($id_user){
 	Max(ticket_ligne.tkl__dt) , ticket_ligne.tkl__tk_id
 	FROM ticket_ligne
 	LEFT JOIN ticket ON ticket_ligne.tkl__tk_id = ticket.tk__id
-	WHERE tkl__user_id_dest  IN('.$string.') AND ( ticket.tk__lu = 0  )
+	WHERE tkl__user_id_dest  IN('.$string.') AND ( ticket.tk__lu = 0 ) AND  ( ticket.tk__motif = "DP" )
 	AND  ticket_ligne.tkl__dt = ( SELECT Max(t.tkl__dt) FROM ticket_ligne as t WHERE t.tkl__tk_id = ticket.tk__id )
 	GROUP BY ticket_ligne.tkl__tk_id');
 	$user_ticket = $request->fetchAll(PDO::FETCH_OBJ);
@@ -166,7 +166,7 @@ public function get_all_ticket_for_user($id_user , $cloture){
 			Max(ticket_ligne.tkl__dt) , ticket_ligne.tkl__tk_id
 			FROM ticket_ligne
 			LEFT JOIN ticket ON ticket_ligne.tkl__tk_id = ticket.tk__id
-			WHERE tkl__user_id_dest  IN(' . $string . ') AND ( ticket.tk__lu = 0 or ticket.tk__lu = 1 or ticket.tk__lu = 2 )
+			WHERE tkl__user_id_dest  IN(' . $string . ') AND ( ticket.tk__lu = 0 or ticket.tk__lu = 1 or ticket.tk__lu = 2 )  AND  ( ticket.tk__motif = "DP" ) 
 			AND  ticket_ligne.tkl__dt = ( SELECT Max(t.tkl__dt) FROM ticket_ligne as t WHERE t.tkl__tk_id = ticket.tk__id )
 			GROUP BY ticket_ligne.tkl__tk_id');
 			$user_ticket = $request->fetchAll(PDO::FETCH_OBJ);
@@ -176,7 +176,75 @@ public function get_all_ticket_for_user($id_user , $cloture){
 			Max(ticket_ligne.tkl__dt) , ticket_ligne.tkl__tk_id
 			FROM ticket_ligne
 			LEFT JOIN ticket ON ticket_ligne.tkl__tk_id = ticket.tk__id
-			WHERE tkl__user_id_dest  IN(' . $string . ') AND ( ticket.tk__lu = 0 or ticket.tk__lu = 1 )
+			WHERE tkl__user_id_dest  IN(' . $string . ') AND ( ticket.tk__lu = 0 or ticket.tk__lu = 1 )  AND  ( ticket.tk__motif = "DP" )
+			AND  ticket_ligne.tkl__dt = ( SELECT Max(t.tkl__dt) FROM ticket_ligne as t WHERE t.tkl__tk_id = ticket.tk__id )
+			GROUP BY ticket_ligne.tkl__tk_id');
+			$user_ticket = $request->fetchAll(PDO::FETCH_OBJ);
+			return $user_ticket;
+	}
+	
+}
+
+public function get_myRecode_for_user($id_user){
+
+	$array_groups = $this->get_groups_by_user($id_user);
+	if (!empty($array_groups)){
+		$string = "";
+		foreach ($array_groups as $key => $value){
+			if ($key === array_key_last($array_groups)){
+				$string .= $value->id_utilisateur . ' ';
+			}else{
+				$string .= $value->id_utilisateur . ', ';
+			}
+		}
+	}else{
+		$string = $id_user;
+	}
+	
+	$request = $this->Db->Pdo->query('SELECT 
+	Max(ticket_ligne.tkl__dt) , ticket_ligne.tkl__tk_id
+	FROM ticket_ligne
+	LEFT JOIN ticket ON ticket_ligne.tkl__tk_id = ticket.tk__id
+	WHERE tkl__user_id_dest  IN('.$string.') AND ( ticket.tk__lu = 3 AND  ticket.tk__motif = "TKM" )  
+	AND  ticket_ligne.tkl__dt = ( SELECT Max(t.tkl__dt) FROM ticket_ligne as t WHERE t.tkl__tk_id = ticket.tk__id )
+	GROUP BY ticket_ligne.tkl__tk_id');
+	$user_ticket = $request->fetchAll(PDO::FETCH_OBJ);
+	return $user_ticket;
+}
+
+
+public function get_all_MyRecode_for_user($id_user , $cloture){
+	
+	$array_groups = $this->get_groups_by_user($id_user);
+	if (!empty($array_groups)){
+		$string = "";
+		foreach ($array_groups as $key => $value){
+			if ($key === array_key_last($array_groups)){
+				$string .= $value->id_utilisateur . ' ';
+			}else{
+				$string .= $value->id_utilisateur . ', ';
+			}
+		}
+	}else{
+		$string = $id_user;
+	}
+	
+	if ($cloture == 1 ) {
+			$request = $this->Db->Pdo->query('SELECT 
+			Max(ticket_ligne.tkl__dt) , ticket_ligne.tkl__tk_id
+			FROM ticket_ligne
+			LEFT JOIN ticket ON ticket_ligne.tkl__tk_id = ticket.tk__id
+			WHERE tkl__user_id_dest  IN(' . $string . ') AND ( ticket.tk__lu = 3 or ticket.tk__lu = 5 or ticket.tk__lu = 9 )  AND  ( ticket.tk__motif = "TKM" )
+			AND  ticket_ligne.tkl__dt = ( SELECT Max(t.tkl__dt) FROM ticket_ligne as t WHERE t.tkl__tk_id = ticket.tk__id )
+			GROUP BY ticket_ligne.tkl__tk_id');
+			$user_ticket = $request->fetchAll(PDO::FETCH_OBJ);
+			return $user_ticket;
+	}else{
+			$request = $this->Db->Pdo->query('SELECT 
+			Max(ticket_ligne.tkl__dt) , ticket_ligne.tkl__tk_id
+			FROM ticket_ligne
+			LEFT JOIN ticket ON ticket_ligne.tkl__tk_id = ticket.tk__id
+			WHERE tkl__user_id_dest  IN(' . $string . ') AND ( ticket.tk__lu = 3 or ticket.tk__lu = 5 ) AND  ( ticket.tk__motif = "TKM" )
 			AND  ticket_ligne.tkl__dt = ( SELECT Max(t.tkl__dt) FROM ticket_ligne as t WHERE t.tkl__tk_id = ticket.tk__id )
 			GROUP BY ticket_ligne.tkl__tk_id');
 			$user_ticket = $request->fetchAll(PDO::FETCH_OBJ);

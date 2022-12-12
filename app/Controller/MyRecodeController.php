@@ -4,6 +4,7 @@ namespace App\Controller;
 require_once  '././vendor/autoload.php';
 use App\Controller\BasicController;
 use App\Tables\Keyword;
+use App\Tables\User;
 use DateTime;
 use App\Tables\Tickets;
 use App\Apiservice\ApiTest;
@@ -29,6 +30,7 @@ class MyRecodeController extends BasicController {
             'search' => ''
         ];
 
+        
         if (!empty($_GET)){
             if (!empty($_GET['search'])) {
                 $query_exemple['search'] = $_GET['search'] ;
@@ -60,6 +62,16 @@ class MyRecodeController extends BasicController {
         }
        
         $token = $token['data']['token'];
+        if (!empty($_GET['nonLu'])) {
+            $nonLus = [
+                'tk__id' => $_GET['nonLu'] , 
+                'tk__lu' => 3
+            ];
+            $Api->updateTicket($token , $nonLus);
+            header('location: myRecode');
+            die();
+        }
+
         $list = $Api->getTicketList($token , $query_exemple);
         $list = $list['data'];
         $definitive_edition = [];
@@ -93,13 +105,13 @@ class MyRecodeController extends BasicController {
         $filters['tk__groupe'] = false ;
         foreach ($query_exemple['tk__lu'] as $value) {
            switch ( $value) {
-               case  0 :
+               case  3 :
                    $filters['nonLu'] =  true ;
                    break;
-                case  1 :
+                case  5 :
                     $filters['lu'] = true;
                     break;
-                case  2 :
+                case  9 :
                     $filters['cloture'] = true;
                     break; 
            }
@@ -136,23 +148,21 @@ class MyRecodeController extends BasicController {
     public static function displayTickets(){
         self::init();
         self::security();
+        $Users = new User(self::$Db);
         $Api = new ApiTest();
-        $token = $Api->login('anthonybs.pro@gmail.com' , 'hello1H.test8');
+        $token = $Api->login($_SESSION['user']->email , 'test');
 
         if ($token['code'] != 200) {
            //pas de connexion à l 'api : 
         }
         $token = $token['data']['token'];
-        if (!empty($_POST['ticket'])){
-            $id_ligne =  self::PostLigne($_POST ,7 , $Api, $token);
-           var_dump($id_ligne);
-            $ticket = self::PostChamps($id_ligne  , $_POST,  $Api , $token );
-        }
+       
 
         if (!empty($_GET['tk__id'])) {
             $query_exemple = [
                 'tk__id' => []
              ] ;
+            
             if (is_numeric($_GET['tk__id']) and strlen($_GET['tk__id']) ==  5 ) {
                 array_push( $query_exemple['tk__id'] ,$_GET['tk__id']);
 
@@ -161,6 +171,7 @@ class MyRecodeController extends BasicController {
                 $list = $list['data'];
                 $definitive_edition = [];
                 foreach ($list as $ticket){
+                    self::updateTicket($ticket , $token , 5 , $Api );
                     $ticket['user'] = reset($ticket['lignes']);
                     $ticket['user'] = $ticket['user']['tkl__user_id'];
                     $ticket['dest'] = end($ticket['lignes']);
@@ -199,10 +210,32 @@ class MyRecodeController extends BasicController {
                     "alternative" => "public/img/client_image.png"
                 ];
 
+              
+
+                if (!empty($_POST['tk__id']) and !empty($_POST['what'])){
+                  
+                    switch ($_POST['what']) {
+                        case 'RPD':
+                            $dest = intval($ticket['last']['user__id']);
+                            break;
+                        case 'CIN':
+                            $dest = intval($_POST['dest']);
+                            break;
+                        case 'CLO':
+                            $dest = intval($ticket['last']['user__id']);
+                            break;
+                    }
+                    $id_ligne =  self::PostLigne($_POST ,$dest , $Api, $token);
+                    $ticket = self::PostChamps($id_ligne  , $_POST,  $Api , $token );
+                    header('location: myRecode');
+                    exit;
+                }
+
                 return self::$twig->render(
                     'display_ticket_myrecode.html.twig',[
                         'user' => $_SESSION['user'],
-                        'ticket' => $ticket 
+                        'ticket' => $ticket , 
+                        'users_list' => $Users->getAll()
                     ]
                 );
 
@@ -223,7 +256,7 @@ class MyRecodeController extends BasicController {
             $visible = 1 ;
         }
         $tkl = [
-            'tkl__tk_id' => $post['ticket'],
+            'tkl__tk_id' => $post['tk__id'],
             'tkl__motif_ligne' => $post['what'], 
             'tkl__memo' => 'Réponse Recode' ,
             'tkl__user_id' => $_SESSION['user']->id_utilisateur,
@@ -242,6 +275,12 @@ class MyRecodeController extends BasicController {
             'tklc__memo' => $post['content']
         ];
         return $api->postTicketLigneChamps($token , $tklc);
+    }
+
+    public static function updateTicket($ticket , $token , $lu , $api){
+        $ticket['tk__lu'] = $lu ;
+
+        return $api->updateTicket($token , $ticket);
     }
 
     

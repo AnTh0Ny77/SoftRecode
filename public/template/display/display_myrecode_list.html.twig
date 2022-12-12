@@ -1,7 +1,7 @@
 {% if ticket.tk__id %}
-    {% if ticket.tk__lu == 1  %}
+    {% if ticket.tk__lu == 5  %}
         <div class="card-recode card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
-    {% elseif ticket.tk__lu == 2  %}
+    {% elseif ticket.tk__lu == 9  %}
         <div class="card-recode-lu card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
     {% else %}
         <div class="card-recode-green-shadow card-recode-cursor d-flex flex-column my-2 col-12 col-lg-8">
@@ -10,10 +10,10 @@
     <div class="d-flex">
         <div class="col-6">
             <h3 class="recode-orange-title"> Ticket {{ticket.tk__id}}
-                {% if ticket.tk__lu == 2 %}
+                {% if ticket.tk__lu == 9 %}
                     <small class="font-weight-bold text-muted"> cloturé</small>
                 {% endif %}
-                {% if ticket.tk__lu == 0 %}
+                {% if ticket.tk__lu == 3 %}
                     <small class="text-danger mx-2"><i class="fas fa-bell shake-n-steak"></i></small>
                 {% endif %}
             </h3>

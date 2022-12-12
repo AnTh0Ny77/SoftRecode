@@ -9,6 +9,12 @@
     border-radius: 10px;
 }
 
+.h2-myrecode{
+    color: #cccccc;
+    font-size: 45px;
+    font-weight: bold;
+}
+
 .card-recode {
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.16);
     border-radius: 10px;

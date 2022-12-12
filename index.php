@@ -300,6 +300,10 @@ use App\Controller\MyRecodeController;
 		case '/SoftRecode/ajaxTicket';
 			require __DIR__ . '/pages/ajax/ajaxTicket.php';
 			break;
+
+		case '/SoftRecode/ajaxMyrecode';
+			require __DIR__ . '/pages/ajax/ajaxMyRecode.php';
+			break;
 		
 		case '/SoftRecode/AjaxSaisie';
 			require __DIR__ .'/pages/ajax/ajaxSaisie.php'; break;

@@ -34,4 +34,14 @@
 <script type="text/javascript" src="public/multislct/bootstrap-multiselect.min.js"></script>
 <script type="text/javascript" src="public/js/tickets-module-myrecode.js"></script>
 <script type="text/javascript" src="public/js/tickets-filters-list.js"></script>
+<script  type="text/javascript">
+	$(function(ready){
+		$('#filtersType').on('change' , function(){
+			var type = $('#filtersType').find(":selected").val();
+			if(type === 'DP'){
+				window.location.href = 'tickets-display-list?searchTickets=&StateFilter[]=Lus&StateFilter[]=NonLus&AuthorFilter=1&TypeFilter=DP';
+			}
+		})
+	})
+</script>
 {% endblock %}
