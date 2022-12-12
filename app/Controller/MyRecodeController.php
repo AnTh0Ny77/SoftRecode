@@ -16,11 +16,27 @@ class MyRecodeController extends BasicController {
         self::init();
         self::security();
         $Api = new ApiTest();
-        
-        $token = $Api->login($_SESSION['user']->email , 'test');
-        if ($token['code'] != 200) {
-           
+
+       
+        if (empty($_SESSION['user']->refresh_token)) {
+            $token = $Api->login($_SESSION['user']->email , 'test');
+            if ($token['code'] != 200) {
+                echo 'Connexion LOGIN à L API IMPOSSIBLE';
+                die();
+            }
+            $_SESSION['user']->refresh_token = $token['data']['refresh_token'] ; 
+            $token =  $token['data']['token'];
+        }else{
+            $refresh = $Api->refresh($_SESSION['user']->refresh_token);
+            if ( $refresh['code'] != 200) {
+                echo 'Rafraichissemnt de jeton API IMPOSSIBLE';
+                die();
+            }
+            $token =  $refresh['token']['token'];
         }
+
+        // $_SESSION['user']->refreshToken = $token['data']['refresh_token'];
+        // $token = self::handleToken($Api);
 
         $query_exemple = [
             'tk__id' =>  [],
@@ -61,7 +77,6 @@ class MyRecodeController extends BasicController {
             }
         }
        
-        $token = $token['data']['token'];
         if (!empty($_GET['nonLu'])) {
             $nonLus = [
                 'tk__id' => $_GET['nonLu'] , 
@@ -150,12 +165,24 @@ class MyRecodeController extends BasicController {
         self::security();
         $Users = new User(self::$Db);
         $Api = new ApiTest();
-        $token = $Api->login($_SESSION['user']->email , 'test');
 
-        if ($token['code'] != 200) {
-           //pas de connexion à l 'api : 
+        
+        if (empty($_SESSION['user']->refresh_token)) {
+            $token = $Api->login($_SESSION['user']->email , 'test');
+            if ($token['code'] != 200) {
+                echo 'Connexion LOGIN à L API IMPOSSIBLE';
+                die();
+            }
+            $_SESSION['user']->refresh_token = $token['data']['refresh_token'] ; 
+            $token =  $token['data']['token'];
+        }else{
+            $refresh = $Api->refresh($_SESSION['user']->refresh_token);
+            if ( $refresh['code'] != 200) {
+                echo 'Rafraichissemnt de jeton API IMPOSSIBLE';
+                die();
+            }
+            $token =  $refresh['token']['token'];
         }
-        $token = $token['data']['token'];
        
 
         if (!empty($_GET['tk__id'])) {

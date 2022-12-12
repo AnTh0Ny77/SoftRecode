@@ -19,12 +19,28 @@ class ApiTest {
         if($response->getStatusCode() <300){
         return [
         'code' => $response->getStatusCode(),
-        'data' => json_decode($response->getBody()->read(163840),true)['data']
+        'data' => json_decode($response->getBody()->read(163840),true)['data'] , 
+        'http_errors' => false
         ];
         }
         return [
         'code' => $response->getStatusCode(),
-        'msg' => json_decode($response->getBody()->read(16384),true)['msg']
+        'msg' => json_decode($response->getBody()->read(16384),true)['msg'] , 
+        'http_errors' => false
+        ];
+    }
+
+    public static function refresh($refreshToken){
+        $client = new Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->post('/api/refresh',  ['json' => ['refresh_token' => $refreshToken]]);
+        } catch (ClientException $exeption){
+            $response = $exeption->getResponse();
+        }
+       return  $response =  [
+            'code' => $response->getStatusCode(),
+            'token' => (array) json_decode($response->getBody()->read(16384), TRUE), 
+            'http_errors' => false
         ];
     }
 
