@@ -43,7 +43,8 @@ class MyRecodeController extends BasicController {
             'tk__groupe' => [] ,
             'tk__lu' => [], 
             'tk__motif' => ['TKM'] , 
-            'search' => ''
+            'search' => '', 
+            'RECODE__PASS' => "secret"
         ];
 
         
@@ -187,7 +188,8 @@ class MyRecodeController extends BasicController {
 
         if (!empty($_GET['tk__id'])) {
             $query_exemple = [
-                'tk__id' => []
+                'tk__id' => [],
+                'RECODE__PASS' => "secret"
              ] ;
             
             if (is_numeric($_GET['tk__id']) and strlen($_GET['tk__id']) ==  5 ) {
