@@ -171,8 +171,6 @@ class ApiTest {
 
     public static function getTicketList($token , $query){
 
-
-
         $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
 
         try {
@@ -186,6 +184,8 @@ class ApiTest {
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
         }
+
+    
         
      return self::handleResponse($response);
      
