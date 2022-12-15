@@ -17,8 +17,6 @@ class ApiTest {
 
     public static  function handleResponse($response){
         if($response->getStatusCode() <300){
-            var_dump(json_decode($response->getBody()->read(163840),true));
-            die();
         return [
         'code' => $response->getStatusCode(),
         'data' => json_decode($response->getBody()->read(163840),true)['data'] , 
