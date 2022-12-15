@@ -291,7 +291,8 @@ class MyRecodeController extends BasicController {
             'tkl__user_id' => $_SESSION['user']->id_utilisateur,
             'tkl__user_id_dest' => $dest , 
             'tkl__visible' => $visible
-        ];     
+        ];  
+        
         return $api->postTicketLigne($token,  $tkl)['data']['tkl__id'];
     }
 
