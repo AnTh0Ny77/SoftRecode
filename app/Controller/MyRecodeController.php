@@ -100,7 +100,7 @@ class MyRecodeController extends BasicController {
             $ticket['dest'] =  $ticket['dest']['tkl__user_id_dest'];
             $ticket['info'] = end($ticket['lignes']);
             $ticket['memo']  =  $ticket['info']['tkl__memo'];
-            $mat_request = $Api->getMateriel($token, ['mat__id[]' =>  $ticket['tk__motif_id']]);
+            $mat_request = $Api->getMateriel($token, ['mat__id[]' =>  $ticket['tk__motif_id'] , 'RECODE__PASS' => 'secret']);
 
             if ($mat_request['code'] == 200) {
                 $ticket['mat'] =  $mat_request['data'][0];
@@ -209,7 +209,7 @@ class MyRecodeController extends BasicController {
                     $ticket['dest'] =  $ticket['dest']['tkl__user_id_dest'];
                     $ticket['info'] = end($ticket['lignes']);
                     $ticket['memo']  =  $ticket['info']['tkl__memo'];
-                    $mat_request = $Api->getMateriel($token, ['mat__id[]' =>  $ticket['tk__motif_id']]);
+                    $mat_request = $Api->getMateriel($token, ['mat__id[]' =>  $ticket['tk__motif_id'] , 'RECODE__PASS' => 'secret']);
         
                     if ($mat_request['code'] == 200) {
                         $ticket['mat'] =  $mat_request['data'][0];
@@ -292,7 +292,8 @@ class MyRecodeController extends BasicController {
             'tkl__user_id' => $_SESSION['user']->id_utilisateur,
             'tkl__user_id_dest' => $dest , 
             'tkl__visible' => $visible
-        ];     
+        ];  
+        
         return $api->postTicketLigne($token,  $tkl)['data']['tkl__id'];
     }
 

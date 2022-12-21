@@ -23,6 +23,7 @@ class ApiTest {
         'http_errors' => false
         ];
         }
+       
         return [
         'code' => $response->getStatusCode(),
         'msg' => json_decode($response->getBody()->read(16384),true)['msg'] , 
@@ -64,7 +65,7 @@ class ApiTest {
 
     public static function getFiles($token){
 
-        $client = new \GuzzleHttp\Client(['base_uri' => 'http://localhost:8080', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
         try {
             $response = $client->get('/RESTapi//files', 
             ['headers' => self::makeHeaders($token) ,
@@ -91,6 +92,22 @@ class ApiTest {
             echo 'Unzipped Process failed';
         }
         
+    }
+
+    public static function postFile($token, $files , $ligne){
+
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->post('/api/files',  
+            ['headers' => self::makeHeaders($token),
+             'multipart' => [
+                 'tkl__id' => $ligne, 
+                 'file' => $files
+             ]]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
+        return self::handleResponse($response);
     }
 
     public static function postTicketLigne($token , $ligne){
@@ -171,8 +188,6 @@ class ApiTest {
 
     public static function getTicketList($token , $query){
 
-
-
         $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
 
         try {
@@ -186,6 +201,8 @@ class ApiTest {
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
         }
+
+    
         
      return self::handleResponse($response);
      
