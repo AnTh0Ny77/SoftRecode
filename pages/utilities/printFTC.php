@@ -95,7 +95,7 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
     }
     else 
     {
-                    //  2  changer le status de la commande et attribuer un numero de facture:
+            // 2 changer le status de la commande et attribuer un numero de facture:
             $Cmd->commande2facture($_POST['hiddenCommentaire']);
             $General->updateAll('cmd', $date , 'cmd__date_fact' , 'cmd__id', $_POST['hiddenCommentaire'] );
             $General->updateAll('cmd', $_SESSION['user']->id_utilisateur , 'cmd__user__id_fact' , 'cmd__id', $_POST['hiddenCommentaire'] );

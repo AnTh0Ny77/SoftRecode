@@ -87,6 +87,7 @@ class MyRecodeController extends BasicController {
             header('location: myRecode');
             die();
         }
+        $query_exemple['RECODE__PASS'] = "secret" ;
 
         $list = $Api->getTicketList($token , $query_exemple);
         $list = $list['data'];
@@ -195,7 +196,7 @@ class MyRecodeController extends BasicController {
             if (is_numeric($_GET['tk__id']) and strlen($_GET['tk__id']) ==  5 ) {
                 array_push( $query_exemple['tk__id'] ,$_GET['tk__id']);
 
-               
+                $query_exemple['RECODE__PASS'] = "secret";
                 $list = $Api->getTicketList($token , $query_exemple);
                 $list = $list['data'];
                 $definitive_edition = [];

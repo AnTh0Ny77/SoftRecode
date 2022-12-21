@@ -1,6 +1,12 @@
 <?php
 
 require "vendor/autoload.php";
+
+use App\Api\ApiBL;
+use App\Api\ApiDevis;
+use App\Api\ApiFacture;
+use App\Api\ApiList;
+use App\Api\ApiTickets;
 use App\Controller\RechercheController;
 use App\Controller\TicketsFormsController;
 use App\Controller\TicketsDisplayController;
@@ -155,6 +161,33 @@ use App\Controller\MyRecodeController;
 		case '/SoftRecode/myRecode-ticket'.$get_data;
 			echo MyRecodeController::displayTickets();
 			break;
+
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////API////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		case '/SoftRecode/apiTickets'.$get_data;
+			echo ApiTickets::index($_SERVER['REQUEST_METHOD']);
+			break;
+
+		case '/SoftRecode/apiDevis'. $get_data;
+			echo ApiDevis::index($_SERVER['REQUEST_METHOD']);
+			break;
+
+		case '/SoftRecode/apiFacture' . $get_data;
+			echo ApiFacture::index($_SERVER['REQUEST_METHOD']);
+			break;
+
+		case '/SoftRecode/apiBL' . $get_data;
+			echo ApiBL::index($_SERVER['REQUEST_METHOD']);
+			break;
+
+		case '/SoftRecode/apiList' . $get_data;
+			echo ApiList::index($_SERVER['REQUEST_METHOD']);
+			break;
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////API//////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			
 		//devis-> 
 		case '/SoftRecode/nouveauDevis';
