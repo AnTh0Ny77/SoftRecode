@@ -3,16 +3,17 @@
 require "vendor/autoload.php";
 
 use App\Api\ApiBL;
+use App\Api\ApiList;
 use App\Api\ApiDevis;
 use App\Api\ApiFacture;
-use App\Api\ApiList;
 use App\Api\ApiTickets;
+use App\Apiservice\ApiTest;
+use App\Api\ApiListDocTickets;
+use App\Controller\ExtranetController;
+use App\Controller\MyRecodeController;
 use App\Controller\RechercheController;
 use App\Controller\TicketsFormsController;
 use App\Controller\TicketsDisplayController;
-use App\Controller\ExtranetController;
-use App\Apiservice\ApiTest;
-use App\Controller\MyRecodeController;
 
 
  
@@ -185,6 +186,9 @@ use App\Controller\MyRecodeController;
 			echo ApiList::index($_SERVER['REQUEST_METHOD']);
 			break;
 
+		case '/SoftRecode/apiListDocuments' . $get_data;
+			echo ApiListDocTickets::index($_SERVER['REQUEST_METHOD']);
+			break;
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////API//////////////////////////////////////////////////////////////////
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
