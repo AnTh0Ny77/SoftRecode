@@ -28,7 +28,7 @@ class ApiTickets {
     public static function post(){
         $responseHandler = new ResponseHandler;
         //controle du client 
-
+        
         if (empty($_FILES['file'])) {
             return $responseHandler->handleJsonResponse([
                 'msg' =>  ' Le fichier est vide'
@@ -64,6 +64,7 @@ class ApiTickets {
     public static function get(){
         $responseHandler = new ResponseHandler;
         //controle du client 
+       
         if (empty($_GET['tkl__id'])) {
             return $responseHandler->handleJsonResponse([
                 'msg' =>  ' lID de la ligne  semble etre vide  '
