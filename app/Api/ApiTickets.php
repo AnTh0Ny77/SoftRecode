@@ -28,13 +28,14 @@ class ApiTickets {
     public static function post(){
         $responseHandler = new ResponseHandler;
         //controle du client 
-        
+      
+
         if (empty($_FILES['file'])) {
             return $responseHandler->handleJsonResponse([
                 'msg' =>  ' Le fichier est vide'
             ], 404, 'bad request');
         }
-        if (empty($_POST['tkl__id'])) {
+        if (empty($_GET['tkl__id'])) {
             return $responseHandler->handleJsonResponse([
                 'msg' =>  ' La ligne de ticket n est pas précisée'
             ], 404, 'bad request');
@@ -44,7 +45,7 @@ class ApiTickets {
         $tempPath = $_FILES['file']['tmp_name'];
         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-        $pathToFile = 'public/img/tickets/' . $_POST['tkl__id'];
+        $pathToFile = 'public/img/tickets/' . $_GET['tkl__id'];
         $uniquename = preg_replace("/[^a-zA-Z]+/", "", $fileName) . '.' . $fileExtension ; 
         if (!is_dir($pathToFile)) {
             mkdir($pathToFile, 7777);
