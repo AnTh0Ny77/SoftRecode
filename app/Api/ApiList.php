@@ -73,7 +73,7 @@ class ApiList
         foreach ($list as  $value) {
             switch ($value->cmd__etat) {
                 case 'ABN':
-                    $response = [
+                    $temp = [
                         "cmd__id" => $value->cmd__id , 
                         "cmd__date_cmd" =>  $value->cmd__date_cmd,
                         "cmd__date_envoi" =>  $value->cmd__date_envoi,
@@ -82,10 +82,10 @@ class ApiList
                         "cmd__nom_devis" =>  $value->cmd__nom_devis,
                         "cmd__id_facture" =>  $value->cmd__id_facture
                     ];
-                    array_push($response['ABN'],$response);
+                    array_push($response['ABN'], $temp);
                     break;
                 case 'CMD':
-                    $response = [
+                    $temp = [
                         "cmd__id" => $value->cmd__id , 
                         "cmd__date_cmd" =>  $value->cmd__date_cmd,
                         "cmd__date_envoi" =>  $value->cmd__date_envoi,
@@ -94,10 +94,10 @@ class ApiList
                         "cmd__nom_devis" =>  $value->cmd__nom_devis,
                         "cmd__id_facture" =>  $value->cmd__id_facture
                     ];
-                    array_push($response['CMD'], $response);
+                    array_push($response['CMD'],  $temp);
                     break;
                 case 'ATN':
-                    $response = [
+                    $temp = [
                         "cmd__id" => $value->cmd__id , 
                         "cmd__date_cmd" =>  $value->cmd__date_cmd,
                         "cmd__date_envoi" =>  $value->cmd__date_envoi,
@@ -106,9 +106,9 @@ class ApiList
                         "cmd__nom_devis" =>  $value->cmd__nom_devis,
                         "cmd__id_facture" =>  $value->cmd__id_facture
                     ];
-                    array_push($response['ATN'], $response);
+                    array_push($response['ATN'], $temp);
                 case 'VLA':
-                    $response = [
+                    $temp = [
                         "cmd__id" => $value->cmd__id , 
                         "cmd__date_cmd" =>  $value->cmd__date_cmd,
                         "cmd__date_envoi" =>  $value->cmd__date_envoi,
@@ -117,10 +117,10 @@ class ApiList
                         "cmd__nom_devis" =>  $value->cmd__nom_devis,
                         "cmd__id_facture" =>  $value->cmd__id_facture
                     ];
-                    array_push($response['VLA'], $response);
+                    array_push($response['VLA'], $temp);
                     break;
                 case 'VLD':
-                    $response = [
+                    $temp = [
                         "cmd__id" => $value->cmd__id , 
                         "cmd__date_cmd" =>  $value->cmd__date_cmd,
                         "cmd__date_envoi" =>  $value->cmd__date_envoi,
@@ -129,10 +129,10 @@ class ApiList
                         "cmd__nom_devis" =>  $value->cmd__nom_devis,
                         "cmd__id_facture" =>  $value->cmd__id_facture
                     ];
-                    array_push($response['VLD'], $response);
+                    array_push($response['VLD'],  $temp);
                     break;
                 case 'IMP':
-                    $response = [
+                    $temp = [
                         "cmd__id" => $value->cmd__id , 
                         "cmd__date_cmd" =>  $value->cmd__date_cmd,
                         "cmd__date_envoi" =>  $value->cmd__date_envoi,
@@ -141,7 +141,7 @@ class ApiList
                         "cmd__nom_devis" =>  $value->cmd__nom_devis,
                         "cmd__id_facture" =>  $value->cmd__id_facture
                     ];
-                    array_push($response['IMP'] , $response );
+                    array_push($response['IMP'] ,  $temp );
                     break;
             }
         }
