@@ -62,7 +62,6 @@ class ApiList
         }
 
         $response = [
-            'ATN' => [], 
             'CMD' => [] , 
             'IMP' => [] , 
             'VLD' => [], 
@@ -96,6 +95,7 @@ class ApiList
                     ];
                     array_push($response['CMD'],  $temp);
                     break;
+
                 case 'VLA':
                     $temp = [
                         "cmd__id" => $value->cmd__id , 
