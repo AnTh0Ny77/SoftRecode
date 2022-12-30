@@ -7,6 +7,7 @@ use App\Api\ApiList;
 use App\Api\ApiDevis;
 use App\Api\ApiFacture;
 use App\Api\ApiTickets;
+use App\Api\Demo as test;
 use App\Apiservice\ApiTest;
 use App\Api\ApiListDocTickets;
 use App\Controller\ExtranetController;
@@ -14,6 +15,7 @@ use App\Controller\MyRecodeController;
 use App\Controller\RechercheController;
 use App\Controller\TicketsFormsController;
 use App\Controller\TicketsDisplayController;
+
 
 
  
@@ -188,6 +190,10 @@ use App\Controller\TicketsDisplayController;
 
 		case '/SoftRecode/apiListDocuments' . $get_data;
 			echo ApiListDocTickets::index($_SERVER['REQUEST_METHOD']);
+			break;
+
+		case '/SoftRecode/demo' . $get_data;
+			var_dump(test::testFilesRequest());
 			break;
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////API//////////////////////////////////////////////////////////////////

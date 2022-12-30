@@ -73,21 +73,75 @@ class ApiList
         foreach ($list as  $value) {
             switch ($value->cmd__etat) {
                 case 'ABN':
-                    array_push($response['ABN'], $value->cmd__id);
+                    $response = [
+                        "cmd__id" => $value->cmd__id , 
+                        "cmd__date_cmd" =>  $value->cmd__date_cmd,
+                        "cmd__date_envoi" =>  $value->cmd__date_envoi,
+                        "cmd__date_fact" =>  $value->cmd__date_fact,
+                        "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
+                        "cmd__nom_devis" =>  $value->cmd__nom_devis,
+                        "cmd__id_facture" =>  $value->cmd__id_facture
+                    ];
+                    array_push($response['ABN'],$response);
                     break;
                 case 'CMD':
-                    array_push($response['CMD'], $value->cmd__id);
+                    $response = [
+                        "cmd__id" => $value->cmd__id , 
+                        "cmd__date_cmd" =>  $value->cmd__date_cmd,
+                        "cmd__date_envoi" =>  $value->cmd__date_envoi,
+                        "cmd__date_fact" =>  $value->cmd__date_fact,
+                        "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
+                        "cmd__nom_devis" =>  $value->cmd__nom_devis,
+                        "cmd__id_facture" =>  $value->cmd__id_facture
+                    ];
+                    array_push($response['CMD'], $response);
                     break;
                 case 'ATN':
-                    array_push($response['ATN'], $value->cmd__id);
+                    $response = [
+                        "cmd__id" => $value->cmd__id , 
+                        "cmd__date_cmd" =>  $value->cmd__date_cmd,
+                        "cmd__date_envoi" =>  $value->cmd__date_envoi,
+                        "cmd__date_fact" =>  $value->cmd__date_fact,
+                        "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
+                        "cmd__nom_devis" =>  $value->cmd__nom_devis,
+                        "cmd__id_facture" =>  $value->cmd__id_facture
+                    ];
+                    array_push($response['ATN'], $response);
                 case 'VLA':
-                    array_push($response['VLA'], $value->cmd__id);
+                    $response = [
+                        "cmd__id" => $value->cmd__id , 
+                        "cmd__date_cmd" =>  $value->cmd__date_cmd,
+                        "cmd__date_envoi" =>  $value->cmd__date_envoi,
+                        "cmd__date_fact" =>  $value->cmd__date_fact,
+                        "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
+                        "cmd__nom_devis" =>  $value->cmd__nom_devis,
+                        "cmd__id_facture" =>  $value->cmd__id_facture
+                    ];
+                    array_push($response['VLA'], $response);
                     break;
                 case 'VLD':
-                    array_push($response['VLD'], $value->cmd__id);
+                    $response = [
+                        "cmd__id" => $value->cmd__id , 
+                        "cmd__date_cmd" =>  $value->cmd__date_cmd,
+                        "cmd__date_envoi" =>  $value->cmd__date_envoi,
+                        "cmd__date_fact" =>  $value->cmd__date_fact,
+                        "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
+                        "cmd__nom_devis" =>  $value->cmd__nom_devis,
+                        "cmd__id_facture" =>  $value->cmd__id_facture
+                    ];
+                    array_push($response['VLD'], $response);
                     break;
                 case 'IMP':
-                    array_push($response['IMP'] , $value->cmd__id );
+                    $response = [
+                        "cmd__id" => $value->cmd__id , 
+                        "cmd__date_cmd" =>  $value->cmd__date_cmd,
+                        "cmd__date_envoi" =>  $value->cmd__date_envoi,
+                        "cmd__date_fact" =>  $value->cmd__date_fact,
+                        "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
+                        "cmd__nom_devis" =>  $value->cmd__nom_devis,
+                        "cmd__id_facture" =>  $value->cmd__id_facture
+                    ];
+                    array_push($response['IMP'] , $response );
                     break;
             }
         }
