@@ -101,7 +101,7 @@ class Abonnement extends Table
         LEFT JOIN keyword as k2 ON k2.kw__value = abl__type_repair AND  ( k2.kw__type = 'abl' OR k2.kw__type = 'abm' OR k2.kw__type = 'abt')
         LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
         WHERE abl__cmd__id = ".$id."
-        ORDER BY  abl__ligne ASC LIMIT 500 ");
+        ORDER BY  abl__ligne ASC LIMIT 500");
         $data = $request->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }
@@ -120,7 +120,7 @@ class Abonnement extends Table
         LEFT JOIN keyword as k ON f.afmm__famille = k.kw__value AND k.kw__type = 'famil'
         LEFT JOIN art_marque as a ON f.afmm__marque = a.am__id
         WHERE abl__cmd__id = ".$id." AND abl__actif = 1 
-        ORDER BY  abl__ligne ASC LIMIT 200 ");
+        ORDER BY  abl__ligne ASC LIMIT 500 ");
         $data = $request->fetchAll(PDO::FETCH_OBJ);
         return $data;
     }
