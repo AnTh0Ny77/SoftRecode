@@ -38,6 +38,10 @@
                                                         data-toggle="tooltip" data-placement="top" title="faire une demande de prix pour {{client.client__societe}} ">
                                                         <i class="fas fa-dollar-sign"></i>
                                                 </a>
+                                                <form method="post" action="transfertClient">
+                                                        <input type="hidden" value="{{client.client__id}}" name="client__id">
+                                                        <button class="btn btn-primary mx-1" data-toggle="tooltip" data-placement="top" title="Transferer les données du client dans MyRecode" ><i class="fas fa-exchange-alt"></i></button>
+                                                </form>
                                         </div>
                                       
                                 </div>
