@@ -11,6 +11,7 @@ use Spipu\Html2Pdf\Html2Pdf;
 use App\Methods\Pdfunctions;
 use App\Methods\Devis_functions;
 use App\Tables\Cmd;
+use App\Tables\Contact;
 use App\Api\ResponseHandler;
 
 class ApiBL
@@ -80,7 +81,7 @@ class ApiBL
         $Client = new \App\Tables\Client($database);
         $Contact = new \App\Tables\Contact($database);
         $Keyword = new \App\Tables\Keyword($database);
-       
+        $Contact = new Contact($database);
         $Cmd = new Cmd($database);
         $command = $Cmd->getById($id);
         
