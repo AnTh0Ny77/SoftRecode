@@ -3,6 +3,7 @@ namespace App\Apiservice;
 
 require_once  '././vendor/autoload.php';
 use App\Database;
+use App\Tables\Client as TablesClient;
 use \GuzzleHttp\Client;
 use \GuzzleHttp\ClientException;
 use ZipArchive;
@@ -200,11 +201,85 @@ class ApiTest {
                 ]);
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
+        }  
+        return self::handleResponse($response);
+    }
+
+
+
+    //contient user__password et confirm__key dans le body ///////////////
+    public static function PostForgotPassword($token, $body) {
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+          $response = $client->post('/api/ticket', [
+            'headers' => makeHeaders($token),
+            'json' => $body,
+            'http_errors' => false
+          ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+          $response = $exeption->getResponse();
+        }
+        return handleResponse($response);
+    }
+
+
+   
+
+    public static function transfertClient(){
+        session_start();
+
+        if (empty($_SESSION['user']->refresh_token)) {
+            $token = self::login($_SESSION['user']->email , 'test');
+            if ($token['code'] != 200) {
+                echo 'Connexion LOGIN à L API IMPOSSIBLE';
+                die();
+            }
+            $_SESSION['user']->refresh_token = $token['data']['refresh_token'] ; 
+            $token =  $token['data']['token'];
+        }else{
+            $refresh = self::refresh($_SESSION['user']->refresh_token);
+            if ( $refresh['code'] != 200) {
+                echo 'Rafraichissemnt de jeton API IMPOSSIBLE';
+                die();
+            }
+            $token =  $refresh['token']['token'];
         }
 
+        if (empty($_POST['client__id'])) {
+            header('location: search_switch');
+            die();
+        }
     
-        
-     return self::handleResponse($response);
-     
+        $database = new Database('devis');
+        $database->DbConnect();
+        $clientTable = new TablesClient($database);
+
+        $clientSoft = $clientTable->getOne($_POST['client__id']);
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+
+        $body = [
+            "cli__id" => $clientSoft->client__id,
+            "cli__nom" => $clientSoft->client__societe,
+            "cli__id_mere" => $clientSoft->client__id,
+            "cli__adr1" => $clientSoft->client__adr1,
+            "cli__adr2" => $clientSoft->client__adr2,
+            "cli__cp" => $clientSoft->client__cp,
+            "cli__ville" => $clientSoft->client__ville,
+            "cli__pays" => $clientSoft->client__pays,
+            'cli__tel' => $clientSoft->client__tel
+        ];
+    
+        try {
+            $response = $client->post('/api/transfert', [
+                'headers' => self::makeHeaders($token),
+                'json' => $body,
+                'http_errors' => false
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
+        $_SESSION['search_switch'] = $clientSoft->client__id ;
+        header('location: search_switch');
+        die();
     }
 }

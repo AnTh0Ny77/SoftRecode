@@ -192,6 +192,10 @@ use App\Controller\TicketsDisplayController;
 			echo ApiListDocTickets::index($_SERVER['REQUEST_METHOD']);
 			break;
 
+		case '/SoftRecode/transfertClient' . $get_data;
+			echo ApiTest::transfertClient();
+			break;
+
 		case '/SoftRecode/demo' . $get_data;
 			var_dump(test::testFilesRequest());
 			break;
