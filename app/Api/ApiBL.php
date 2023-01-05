@@ -74,8 +74,6 @@ class ApiBL
         }
     }
 
-
-
     public static function renderBL($id, $database)
     {
         $Client = new \App\Tables\Client($database);
