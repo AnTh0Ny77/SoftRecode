@@ -9,8 +9,7 @@ use App\Tables\Stock;
 Class RechercheController extends BasicController
 {
 
-	public static function recherche_famille() : string
-	{
+	public static function recherche_famille() : string {
 		self::init();
 		self::security();
 
@@ -27,8 +26,7 @@ Class RechercheController extends BasicController
 	}
 
 
-	public static function recherche_spec() : string
-	{
+	public static function recherche_spec() : string {
 		self::init();
 		self::security();
 		self::check_post(['famille'],'recherche-articles-famille');
@@ -50,8 +48,6 @@ Class RechercheController extends BasicController
 					}
 			}
 		}
-
-		
 		return self::$twig->render(
 				'recherches_specs.twig',
 			[
@@ -68,7 +64,6 @@ Class RechercheController extends BasicController
 		self::init();
 		self::security();
 		self::check_post(['famille'],'recherche-articles-specs');
-
 		$Stocks = new Stock(self::$Db);
 		$Keyword = new Keyword(self::$Db);
 		$Article = new Article(self::$Db);
@@ -83,8 +78,6 @@ Class RechercheController extends BasicController
 			$article->specs = $specs;
 			array_push($results_models , $article );
 		}
-		
-	
 		return self::$twig->render(
 				'recherches_results.twig',
 			[

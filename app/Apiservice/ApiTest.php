@@ -5,10 +5,11 @@ require_once  '././vendor/autoload.php';
 use App\Database;
 use App\Tables\Client as TablesClient;
 use \GuzzleHttp\Client;
+use App\Controller\BasicController;
 use \GuzzleHttp\ClientException;
 use ZipArchive;
 
-class ApiTest {
+class ApiTest extends BasicController {
 
 
     public static function makeHeaders($token){
@@ -206,8 +207,6 @@ class ApiTest {
         return self::handleResponse($response);
     }
 
-
-
     //contient user__password et confirm__key dans le body ///////////////
     public static function PostForgotPassword($token, $body) {
         $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
@@ -223,12 +222,8 @@ class ApiTest {
         return handleResponse($response);
     }
 
-
-   
-
     public static function transfertClient(){
-        session_start();
-
+        
         if (empty($_SESSION['user']->refresh_token)) {
             $token = self::login($_SESSION['user']->email , 'test');
             if ($token['code'] != 200) {
@@ -245,19 +240,29 @@ class ApiTest {
             }
             $token =  $refresh['token']['token'];
         }
-
         if (empty($_POST['client__id'])) {
             header('location: search_switch');
             die();
         }
-    
         $database = new Database('devis');
         $database->DbConnect();
         $clientTable = new TablesClient($database);
-
         $clientSoft = $clientTable->getOne($_POST['client__id']);
-        $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        
+        //on affiche le formulaire : 
+        if(empty($_POST['user__mail'])){
+            self::init();
+            self::security();
 
+            return self::$twig->render(
+                'transfertMyRecode.html.twig',[
+                    'user' => $_SESSION['user'] , 
+                    'client' =>  $clientSoft
+                ]
+            );
+        }
+
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
         $body = [
             "cli__id" => $clientSoft->client__id,
             "cli__nom" => $clientSoft->client__societe,
@@ -269,7 +274,6 @@ class ApiTest {
             "cli__pays" => $clientSoft->client__pays,
             'cli__tel' => $clientSoft->client__tel
         ];
-    
         try {
             $response = $client->post('/api/transfert', [
                 'headers' => self::makeHeaders($token),
@@ -279,8 +283,125 @@ class ApiTest {
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
         }
+
+        $body_client = [
+            "user__password" => $_POST['user__password'],
+            "user__mail" => $_POST['user__mail'], 
+            "user__nom" => $_POST['user__nom'] , 
+            "user__prenom" => $_POST['user__prenom'] , 
+            "user__fonction" => $_POST['user__fonction'] 
+        ];
+
+        try {
+            $response = $client->post('/api/user', [
+                'headers' => self::makeHeaders($token),
+                'json' => $body_client,
+                'http_errors' => false
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
+
+        if ($response->getStatusCode() > 300){
+            self::init();
+            self::security();
+
+            return self::$twig->render(
+                'transfertMyRecode.html.twig',[
+                    'user' => $_SESSION['user'] , 
+                    'client' =>  $clientSoft
+                ]
+            );
+        }
+        var_dump($response->getBody()->read(158962));
+        die();
         $_SESSION['search_switch'] = $clientSoft->client__id ;
         header('location: search_switch');
         die();
+    }
+
+
+    public static function transfertClientGpt(){
+        // Si l'ID du client n'est pas défini, on redirige vers la page de recherche
+        if (empty($_POST['client__id'])) {
+            header('location: search_switch');
+            die();
+        }
+        // On récupère le client en question dans la base de données
+        $database = new Database('devis');
+        $database->DbConnect();
+        $clientTable = new TablesClient($database);
+        $clientSoft = $clientTable->getOne($_POST['client__id']);
+        // Si les informations du nouvel utilisateur n'ont pas été postées, on affiche le formulaire de transfert
+        if(empty($_POST['user__mail'])){
+            self::init();
+            self::security();
+            return self::$twig->render(
+                'transfertMyRecode.html.twig',[
+                    'user' => $_SESSION['user'] , 
+                    'client' =>  $clientSoft
+                ]
+            );
+        }
+        //On initialise un client Guzzle pour effectuer des requêtes HTTP
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        // On prépare le corps de la requête avec les informations du client
+        $body = [
+            "cli__id" => $clientSoft->client__id,
+            "cli__nom" => $clientSoft->client__societe,
+            "cli__id_mere" => $clientSoft->client__id,
+            "cli__adr1" => $clientSoft->client__adr1,
+            "cli__adr2" => $clientSoft->client__adr2,
+            "cli__cp" => $clientSoft->client__cp,
+            "cli__ville" => $clientSoft->client__ville,
+            "cli__pays" => $clientSoft->client__pays,
+            'cli__tel' => $clientSoft->client__tel
+        ];
+        //On envoie une requête POST à l'URL '/api/transfert' avec les informations du client
+        try {
+            $response = $client->post('/api/transfert', [
+                'headers' => self::makeHeaders($token),
+                'json' => $body,
+                'http_errors' => false
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
+        //On prépare le corps de la requête avec les informations du nouvel utilisateur
+        $body_client = [
+            "user__password" => $_POST['user__password'],
+            "user__mail" => $_POST['user__mail'], 
+            "user__nom" => $_POST['user__nom'] , 
+            "user__prenom" => $_POST['user__prenom']
+
+        ];
+        //On envoie une requête POST à l'URL '/api/user' avec les informations du nouvel utilisateur
+        try {
+            $response = $client->post('/api/user', [
+                'headers' => self::makeHeaders($token),
+                'json' => $body_client,
+                'http_errors' => false
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
+        //Si la réponse a un statut supérieur à 300 (erreur), on affiche à nouveau le formulaire de transfert
+        if ($response->getStatusCode() > 300){
+            self::init();
+            self::security();
+
+            return self::$twig->render(
+                'transfertMyRecode.html.twig',[
+                    'user' => $_SESSION['user'] , 
+                    'client' =>  $clientSoft
+                ]
+            );
+        }
+        //On affiche les 158962 premiers octets du corps de la réponse
+        var_dump($response->getBody()->read(158962));
+        die();
+        //On enregistre l'ID du client dans la variable de session 'search_switch' et on redirige vers la page de recherche
+        $_SESSION['search_switch'] = $clientSoft->client__id ;
+        header('location: search_switch');
     }
 }

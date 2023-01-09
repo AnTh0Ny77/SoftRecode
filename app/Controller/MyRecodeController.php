@@ -10,14 +10,10 @@ use App\Tables\Tickets;
 use App\Apiservice\ApiTest;
 
 class MyRecodeController extends BasicController {
-
-
     public static function displayList(){
         self::init();
         self::security();
         $Api = new ApiTest();
-
-        
         if (empty($_SESSION['user']->refresh_token)) {
             $token = $Api->login($_SESSION['user']->email , 'test');
             if ($token['code'] != 200) {
@@ -34,10 +30,8 @@ class MyRecodeController extends BasicController {
             }
             $token =  $refresh['token']['token'];
         }
-
         // $_SESSION['user']->refreshToken = $token['data']['refresh_token'];
         // $token = self::handleToken($Api);
-
         $query_exemple = [
             'tk__id' =>  [],
             'tk__groupe' => [] ,
@@ -46,8 +40,6 @@ class MyRecodeController extends BasicController {
             'search' => '', 
             'RECODE__PASS' => "secret"
         ];
-
-        
         if (!empty($_GET)){
             if (!empty($_GET['search'])) {
                 $query_exemple['search'] = $_GET['search'] ;
@@ -77,7 +69,6 @@ class MyRecodeController extends BasicController {
                 }
             }
         }
-       
         if (!empty($_GET['nonLu'])) {
             $nonLus = [
                 'tk__id' => $_GET['nonLu'] , 
@@ -88,7 +79,6 @@ class MyRecodeController extends BasicController {
             die();
         }
         $query_exemple['RECODE__PASS'] = "secret" ;
-
         $list = $Api->getTicketList($token , $query_exemple);
         $list = $list['data'];
         $definitive_edition = [];
@@ -106,12 +96,10 @@ class MyRecodeController extends BasicController {
                 $ticket['mat'] =  $mat_request['data'][0];
                 $ticket['cli'] =  $Api->getClient($token, ['cli__id' => $ticket['mat']['mat__cli__id']])['data'];
             }
-           
             $date_time = new DateTime($ticket['info']['tkl__dt']);
 			$ticket['date'] = $date_time->format('d/m/Y H:i');
             array_push($definitive_edition , $ticket );
         }
-        
         //////////////////filters
         $filters = [];
         $filters['lu'] = false ;
@@ -133,7 +121,6 @@ class MyRecodeController extends BasicController {
                     break; 
            }
         }
-
         if (!empty($_GET['search']))
             $filters['search'] = $_GET['search'];
 
@@ -143,14 +130,12 @@ class MyRecodeController extends BasicController {
                 $filters['tk__id'] .= " " . $value . " ";
             }
         }
-
         if (!empty($query_exemple['tk__groupe'])) {
             $filters['tk__groupe'] = " ";
             foreach ($query_exemple['tk__groupe'] as  $value) {
                 $filters['tk__groupe'] .= " " . $value . " ";
             }
         }
-        
         return self::$twig->render(
             'display_ticket_myrecode_list.html.twig',[
                 'user' => $_SESSION['user'],
@@ -160,14 +145,11 @@ class MyRecodeController extends BasicController {
         );
     }
 
-
-
     public static function displayTickets(){
         self::init();
         self::security();
         $Users = new User(self::$Db);
         $Api = new ApiTest();
-
         
         if (empty($_SESSION['user']->refresh_token)) {
             $token = $Api->login($_SESSION['user']->email , 'test');
@@ -186,7 +168,6 @@ class MyRecodeController extends BasicController {
             $token =  $refresh['token']['token'];
         }
        
-
         if (!empty($_GET['tk__id'])) {
             $query_exemple = [
                 'tk__id' => [],
@@ -240,8 +221,6 @@ class MyRecodeController extends BasicController {
                     "additionals" => $ticket['cli']['cli__cp'] . ' ' . $ticket['cli']['cli__ville'] , 
                     "alternative" => "public/img/client_image.png"
                 ];
-
-              
 
                 if (!empty($_POST['tk__id']) and !empty($_POST['what'])){
                   
