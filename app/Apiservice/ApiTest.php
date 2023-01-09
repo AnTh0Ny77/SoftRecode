@@ -139,7 +139,6 @@ class ApiTest extends BasicController {
         return self::handleResponse($response);
     }
 
-
     public static function getMateriel($token , $query){
 
         $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
@@ -156,7 +155,6 @@ class ApiTest extends BasicController {
         
         return self::handleResponse($response);
     }
-
 
     public static function getClient($token, $query)
     {
@@ -189,7 +187,6 @@ class ApiTest extends BasicController {
     }
 
     public static function getTicketList($token , $query){
-
         $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
 
         try {
@@ -319,7 +316,6 @@ class ApiTest extends BasicController {
         header('location: search_switch');
         die();
     }
-
 
     public static function transfertClientGpt(){
         // Si l'ID du client n'est pas défini, on redirige vers la page de recherche
