@@ -20,7 +20,7 @@ class ApiTest {
         if($response->getStatusCode() <300){
         return [
         'code' => $response->getStatusCode(),
-        'data' => json_decode($response->getBody()->read(163840),true)['data'] , 
+        'data' => json_decode($response->getBody()->read(16384087),true)['data'] , 
         'http_errors' => false
         ];
         }
@@ -202,6 +202,7 @@ class ApiTest {
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
         }  
+        
         return self::handleResponse($response);
     }
 

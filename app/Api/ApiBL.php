@@ -74,26 +74,25 @@ class ApiBL
         }
     }
 
-    public static function renderBL($id, $database)
-    {
+    public static function renderBL($id, $database){
         $Client = new \App\Tables\Client($database);
         $Contact = new \App\Tables\Contact($database);
         $Keyword = new \App\Tables\Keyword($database);
         $Contact = new Contact($database);
         $Cmd = new Cmd($database);
         $command = $Cmd->getById($id);
-        
         $societe = $Client->getOne($command->devis__id_client_livraison);
         //si il s'agit d'une fiche de garantie ou d'un reliquat facturé à l'avance  elle ne passera pas par la facturation:
         if (intval($command->client__id) < 10)
             $Cmd->updateGarantieToArchive($command->devis__id);
 
+        
         $date_time = new DateTime($command->cmd__date_envoi);
         //formate la date pour l'utilisateur:
         $formated_date = $date_time->format('d/m/Y');
         $command->cmd__date_envoi = $formated_date;
         $commandLignes = $Cmd->devisLigne($id);
-        $dateTemp = new DateTime($command->cmd__date_envoi);
+        // $dateTemp = new DateTime($command->cmd__date_envoi);
         //cree une variable pour la date de commande du devis
         ob_start();
 ?>

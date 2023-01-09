@@ -198,6 +198,7 @@ class MyRecodeController extends BasicController {
 
                 $query_exemple['RECODE__PASS'] = "secret";
                 $list = $Api->getTicketList($token , $query_exemple);
+              
                 $list = $list['data'];
                 $definitive_edition = [];
                 foreach ($list as $ticket){
