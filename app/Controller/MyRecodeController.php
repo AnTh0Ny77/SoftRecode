@@ -9,6 +9,7 @@ use DateTime;
 use App\Tables\Tickets;
 use App\Apiservice\ApiTest;
 
+
 class MyRecodeController extends BasicController {
     public static function displayList(){
         self::init();
@@ -44,13 +45,11 @@ class MyRecodeController extends BasicController {
             if (!empty($_GET['search'])) {
                 $query_exemple['search'] = $_GET['search'] ;
             }
-
             if (!empty($_GET['tk__lu'])) {
                 foreach ($_GET['tk__lu']  as  $value) {
                     array_push($query_exemple['tk__lu'], $value);
                 }
             }
-
             if (!empty($_GET['tk__id'])) {
                 $tempo = explode(' ' ,$_GET['tk__id']  );
                 foreach ($tempo as  $value) {
@@ -59,7 +58,6 @@ class MyRecodeController extends BasicController {
                     }
                 }
             }
-
             if (!empty($_GET['tk__groupe'])) {
                 $tempo = explode(' ' ,$_GET['tk__groupe']  );
                 foreach ($tempo as  $value) {
@@ -91,7 +89,6 @@ class MyRecodeController extends BasicController {
             $ticket['info'] = end($ticket['lignes']);
             $ticket['memo']  =  $ticket['info']['tkl__memo'];
             $mat_request = $Api->getMateriel($token, ['mat__id[]' =>  $ticket['tk__motif_id'] , 'RECODE__PASS' => 'secret']);
-
             if ($mat_request['code'] == 200) {
                 $ticket['mat'] =  $mat_request['data'][0];
                 $ticket['cli'] =  $Api->getClient($token, ['cli__id' => $ticket['mat']['mat__cli__id']])['data'];
@@ -123,7 +120,6 @@ class MyRecodeController extends BasicController {
         }
         if (!empty($_GET['search']))
             $filters['search'] = $_GET['search'];
-
         if (!empty($query_exemple['tk__id'])) {
             $filters['tk__id'] = " ";
             foreach ($query_exemple['tk__id'] as  $value) {
@@ -248,12 +244,10 @@ class MyRecodeController extends BasicController {
                         'users_list' => $Users->getAll()
                     ]
                 );
-
             }else{
                 header('location: myRecode');
                 exit;
             }
-
         }else{
             header('location: myRecode');
             exit;
@@ -278,7 +272,6 @@ class MyRecodeController extends BasicController {
     }
 
     public static function PostChamps($ligne , $post , $api , $token){
-
         $tklc = [
             'tklc__id' =>  $ligne, 
             'tklc__nom_champ' => 'INF', 
@@ -290,10 +283,6 @@ class MyRecodeController extends BasicController {
 
     public static function updateTicket($ticket , $token , $lu , $api){
         $ticket['tk__lu'] = $lu ;
-
         return $api->updateTicket($token , $ticket);
     }
-
-    
-
 }

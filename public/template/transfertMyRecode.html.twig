@@ -72,8 +72,7 @@
                 </div>
             </div>
             <div class="alert alert-warning collapse col-7" role="alert" id="alert__user">
-                <strong id="alert_content ">  </strong> 
-               
+                <strong id="alert_content "> </strong>     
             </div>
             <button type="button" class="btn-recode-important" id="post">Transferer</button>
         </form> 
@@ -82,10 +81,12 @@
 {% endblock %}
 
 {% block script %}
+
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
 <script type="text/javascript">
+  
     $(document).ready(function() {
         $("#post").click(function() {
           // Récupération des valeurs des champs de formulaire

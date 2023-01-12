@@ -156,6 +156,22 @@ class ApiTest extends BasicController {
         return self::handleResponse($response);
     }
 
+    public static function getPromo($token ){
+
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->get('/api/add', 
+            ['headers' => self::makeHeaders($token) ,
+            'http_errors' => false
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+            exit();
+        }
+        
+        return self::handleResponse($response);
+    }
+
     public static function getClient($token, $query)
     {
 
@@ -245,19 +261,18 @@ class ApiTest extends BasicController {
         $database->DbConnect();
         $clientTable = new TablesClient($database);
         $clientSoft = $clientTable->getOne($_POST['client__id']);
-        
+
         //on affiche le formulaire : 
         if(empty($_POST['user__mail'])){
             self::init();
             self::security();
-
             return self::$twig->render(
                 'transfertMyRecode.html.twig',[
                     'user' => $_SESSION['user'] , 
                     'client' =>  $clientSoft
                 ]
             );
-        }
+        } 
 
         $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
         $body = [
@@ -297,7 +312,7 @@ class ApiTest extends BasicController {
             ]);
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
-        }
+        }   
 
         if ($response->getStatusCode() > 300){
             self::init();
@@ -385,7 +400,6 @@ class ApiTest extends BasicController {
         if ($response->getStatusCode() > 300){
             self::init();
             self::security();
-
             return self::$twig->render(
                 'transfertMyRecode.html.twig',[
                     'user' => $_SESSION['user'] , 
@@ -394,8 +408,7 @@ class ApiTest extends BasicController {
             );
         }
         //On affiche les 158962 premiers octets du corps de la réponse
-        var_dump($response->getBody()->read(158962));
-        die();
+        
         //On enregistre l'ID du client dans la variable de session 'search_switch' et on redirige vers la page de recherche
         $_SESSION['search_switch'] = $clientSoft->client__id ;
         header('location: search_switch');
