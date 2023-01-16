@@ -35,17 +35,19 @@ class ApiTickets {
                 'msg' =>  ' Le fichier est vide'
             ], 404, 'bad request');
         }
-        if (empty($_FILES['tkl__id'])) {
+        if (empty($_POST['tkl__id'])) {
             return $responseHandler->handleJsonResponse([
                 'msg' =>  ' La ligne de ticket n est pas précisée'
             ], 404, 'bad request');
         }
 
+      
+
         $fileName = $_FILES['file']['name'];
         $tempPath = $_FILES['file']['tmp_name'];
         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-        $pathToFile = 'public/img/tickets/' . $_FILES['tkl__id'];
+        $pathToFile = 'public/img/tickets/' .$_POST['tkl__id'];
         $uniquename = preg_replace("/[^a-zA-Z]+/", "", $fileName) . '.' . $fileExtension ; 
         if (!is_dir($pathToFile)) {
             mkdir($pathToFile, 7777);
