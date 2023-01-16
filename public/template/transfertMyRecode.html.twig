@@ -41,7 +41,8 @@
         </div>
         <form id="forms_id" action="transfertClient" method="post">
             <div class="col-7 my-4">
-                <p>Un mail de confirmation contenant un lien sécurisé sera envoyé au client afin qu'il crée sont mot de passe. </p>
+                <p>Un mail de confirmation contenant un lien sécurisé sera envoyé au client afin qu'il crée sont mot de passe. <br/>
+                Si l utilisateur est déja présent dans MyRecode un lien d administrateur sera ajouté avec la société {{client.client__societe}}</p>
                 <input type="hidden" name="client__id" value="{{client.client__id}}">
                 <input type="hidden" name="user__password" id="user__password" value="" required>
                 <div class="form-row">

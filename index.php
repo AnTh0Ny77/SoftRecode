@@ -15,11 +15,9 @@ use App\Controller\MyRecodeController;
 use App\Controller\RechercheController;
 use App\Controller\TicketsFormsController;
 use App\Controller\TicketsDisplayController;
+use App\Controller\UserMyRecodeController;
 
-
-
- 
-	$request = $_SERVER['REQUEST_URI'];
+$request = $_SERVER['REQUEST_URI'];
 
 // recuperations des param de GET
 	$get_request = explode('?' ,$request, 2);
@@ -172,30 +170,34 @@ use App\Controller\TicketsDisplayController;
 			echo ApiTickets::index($_SERVER['REQUEST_METHOD']);
 			break;
 
-		case '/SoftRecode/apiDevis'. $get_data;
+		case '/SoftRecode/apiDevis'.$get_data;
 			echo ApiDevis::index($_SERVER['REQUEST_METHOD']);
 			break;
 
-		case '/SoftRecode/apiFacture' . $get_data;
+		case '/SoftRecode/apiFacture'.$get_data;
 			echo ApiFacture::index($_SERVER['REQUEST_METHOD']);
 			break;
 
-		case '/SoftRecode/apiBL' . $get_data;
+		case '/SoftRecode/apiBL'.$get_data;
 			echo ApiBL::index($_SERVER['REQUEST_METHOD']);
 			break;
 
-		case '/SoftRecode/apiList' . $get_data;
+		case '/SoftRecode/apiList'.$get_data;
 			echo ApiList::index($_SERVER['REQUEST_METHOD']);
 			break;
 
-		case '/SoftRecode/apiListDocuments' . $get_data;
+		case '/SoftRecode/apiListDocuments'.$get_data;
 			echo ApiListDocTickets::index($_SERVER['REQUEST_METHOD']);
 			break;
 
-		case '/SoftRecode/transfertClient' . $get_data;
+		case '/SoftRecode/transfertClient'.$get_data;
 			echo ApiTest::transfertClient();
 			break;
 
+		case '/SoftRecode/myRecodeverifyUser'.$get_data;
+			echo UserMyRecodeController::VerifyUser();
+			break;
+			
 		case '/SoftRecode/demo' . $get_data;
 			var_dump(test::testFilesRequest());
 			break;

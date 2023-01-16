@@ -1,0 +1,85 @@
+{% extends 'new_layout.twig' %}
+
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css"> 
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="public/css/forms-myrecode.css">
+<link rel="stylesheet" href="public/css/cards-myrecode.css">
+<link rel="stylesheet" href="public/css/font-family.css">
+{% endblock %}
+{% block main %}
+    <main role="main" class="container-fluid my-3 col-11 container-body">
+        <form id="forms_id" action="myRecodeverifyUser" method="get">
+            <div class="col-7 my-4">
+                <div class="form-row">
+                    <div class="form-group col-7">
+                      <label for="inputCity">Mail de l'utilisateur</label>
+                      <input type="email" class="form-control input-recode"  name="user__mail" maxlength="200" id="user__mail" required>
+                    </div>
+                </div>
+                <div class="form-row my-4">
+                    <div class="form-group col-7">
+                        <label for="exampleInputEmail1">Société</label>   
+                        <select class="selectpicker  show-tick"  data-live-search="true" data-size="10" data-width="100%" id="clientSelect" name="cli__id" required> 
+                        {% for client in clientList %}
+                            <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                        {% endfor %}
+					</select>
+                    </div>
+                </div>
+                <div class="form-row my-4">
+                    <div class="form-group col-7">
+                        <label for="exampleInputEmail1">Droits</label>   
+                        <select class="selectpicker  show-tick" multiple  data-live-search="true" data-size="10" data-width="100%" id="clientSelect" name="cli__id" required> 
+                            <option value="ADUSER" selected>Administrateur</option>
+					</select>
+                    </div>
+
+                </div>
+                <button type="button" class="btn-recode-important my-2" id="post">Exporter</button>
+            </div>
+           
+           
+        </form> 
+    </main>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+    <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+
+        $("#post").click(function(){
+            var secret_key = "YVAQz781T5PPmaANTrR895ApMMnwgfksd66877";
+            $.ajax({
+               type: "GET",
+               url: "http://192.168.1.105:80/api/user",
+               data: {secret_key: secret_key},
+               success: function(response) {
+                  var json = JSON.parse(response); 
+                  if(json.data === false) {
+                     createForms();
+                  } else {
+                     $("#forms_id").submit();
+                  }
+               }
+            });
+         });
+
+         //supprime la classe hide des éléments passés en parametres 
+         function createForms(subjects) {
+            for(var i = 0; i < subjects.length; i++) {
+               $("#" + subjects[i]).removeClass("hide");
+            }
+         }
+
+
+    });
+</script>
+{% endblock %}

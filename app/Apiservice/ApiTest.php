@@ -125,6 +125,7 @@ class ApiTest extends BasicController {
         return self::handleResponse($response);
     }
 
+ 
     public static function postTicketLigneChamps($token , $ligne){
         
         $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
@@ -146,6 +147,22 @@ class ApiTest extends BasicController {
             $response = $client->get('/api/materiel', 
             ['headers' => self::makeHeaders($token) ,
              'query' => $query,
+            'http_errors' => false
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+            exit();
+        }
+        
+        return self::handleResponse($response);
+    }
+
+    public static function postRelation($token, $json){
+        $client = new \GuzzleHttp\Client(['base_uri' => 'http://192.168.1.105:80', 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->post('/api/usersites', 
+            ['headers' => self::makeHeaders($token),
+            'json' =>  $json,
             'http_errors' => false
             ]);
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
@@ -312,21 +329,17 @@ class ApiTest extends BasicController {
             ]);
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
-        }   
+        } 
 
-        if ($response->getStatusCode() > 300){
-            self::init();
-            self::security();
-
-            return self::$twig->render(
-                'transfertMyRecode.html.twig',[
-                    'user' => $_SESSION['user'] , 
-                    'client' =>  $clientSoft
-                ]
-            );
-        }
-        var_dump($response->getBody()->read(158962));
-        die();
+        $response = self::handleResponse($response);
+     
+        $body = [
+            'luc__user__id' => intval($response['data']) , 
+            'luc__cli__id' => intval($clientSoft->client__id) , 
+            'luc__order' => 1 
+        ];
+        $response = self::postRelation($token,  $body);
+        $_SESSION['transfert'] = ' Opérations effectuées avec succès !';
         $_SESSION['search_switch'] = $clientSoft->client__id ;
         header('location: search_switch');
         die();
