@@ -41,7 +41,7 @@ function sql_1_an($sql, $option=false)
 	return $sql_1; // indique la valeur à renvoyer 
 } 
 
-function lg_tab_html($sql, $prestation, $etat, $base='sosuke')
+function lg_tab_html($sql, $prestation, $etat, $base='sosuke', $bold=FALSE)
 {
 	global $Database; // Rend la variable accessible dans la fonction.
 	global $Totoro;
@@ -65,13 +65,17 @@ function lg_tab_html($sql, $prestation, $etat, $base='sosuke')
 	if ($somme_1) // pour eviter le divizion par 0
 		$variation = (($somme-$somme_1)/$somme_1)*100;
 	else
-		$variation = '0'; 
+		$variation = '0';
+	if ($bold)
+		{ $bold_on = '<b>'; $bold_off = '</b>';}
+	else
+		{ $bold_on = $bold_off = '';}
 	$lg_tab   .= '<tr> ';
-	$lg_tab   .= '<td>'.$prestation.'</td> ';
-	$lg_tab   .= '<td>'.$etat.'</td> ';
-	$lg_tab   .= '<td align=right>'.number_format($somme, 2, ',', ' ').'</td> ';
-	$lg_tab   .= '<td align=right>'.number_format($somme_1, 2, ',', ' ').'</td> ';
-	$lg_tab   .= '<td align=right>'.number_format($variation, 2, ',', ' ').' %</td> ';
+	$lg_tab   .= '<td>'.$bold_on.$prestation.$bold_off.'</td> ';
+	$lg_tab   .= '<td>'.$bold_on.$etat.$bold_off.'</td> ';
+	$lg_tab   .= '<td align=right>'.$bold_on.number_format($somme, 2, ',', ' ').$bold_off.'</td> ';
+	$lg_tab   .= '<td align=right>'.$bold_on.number_format($somme_1, 2, ',', ' ').$bold_off.'</td> ';
+	$lg_tab   .= '<td align=right>'.$bold_on.number_format($variation, 2, ',', ' ').$bold_off.' %</td> ';
 	$lg_tab   .= '</tr> ';
 
 	return $lg_tab; // renvoie la ligne complette de tableau en html
@@ -135,6 +139,8 @@ $sql_w_loc        = "AND cmdl__prestation = 'LOC' ";
 $sql_w_int        = "AND cmdl__prestation IN ('INT','DEP') ";
 $sql_w_mnt        = "AND cmdl__prestation = 'MNT' ";
 $sql_w_prt        = "AND cmdl__prestation = 'PRT' ";
+$sql_w_pre        = "AND cmdl__prestation = 'PRE' ";
+$sql_w_bro        = "AND cmdl__prestation = 'BRO' ";
 $sql_w_neu        = "AND cmdl__etat = 'NEU' ";
 $sql_w_occ        = "AND cmdl__etat = 'OCC' ";
 $sql_w_cdb        = "AND keyword.kw__info = 'CDB' ";
@@ -178,7 +184,7 @@ $tql_stk_fin_occ .= "OR ( id_etat in (21,22) AND down_datetime >= '".$date_fin."
 $titre_stat  = 'Chiffre d\'affaires facturé pour etude de marges';
 
 $tab_html .= lg_tab_separateur('Ventes de marchandises');
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_vte.$sql_w_neu,"01 Ventes (Tout)","Neuf");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_vte.$sql_w_neu,"01 Ventes (Tout)","Neuf","sosuke",TRUE);
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_cdb,"01b Ventes CDB","Neuf");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_imp,"01c Ventes IMPRIMANTES","Neuf");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_mic,"01d Ventes MICRO","Neuf");
@@ -187,7 +193,7 @@ $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sq
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_acc,"01g Ventes Accessoires","Neuf");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_ser,"01h Ventes Services","Neuf");
 $debug_info .= "01h -------------- <br>".$sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_ser.'<br>';
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_vte.$sql_w_occ,"02 Ventes (Tout)","Occasion");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_vte.$sql_w_occ,"02 Ventes (Tout)","Occasion","sosuke",TRUE);
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_cdb,"02b Ventes CDB","Occasion");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_imp,"02c Ventes IMPRIMANTES","Occasion");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_mic,"02d Ventes MICRO","Occasion");
@@ -200,6 +206,8 @@ $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_ech.$sql_
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_rpr.$sql_w_neu,"05 Reprise","Neuf");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_rpr.$sql_w_occ,"05b Reprise","Occasion");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_rem,"06 & 07 Remise","NC.");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_pre,"07b Prêt","Tout état");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_bro,"07c Broke","Tout état");
 $tab_html .= lg_tab_separateur('Achats de marchandises');
 $tab_html .= lg_tab_html($tql_select_achat.$tql_from.$tql_where.$tql_w_achat,"00 Achats matériels","Tout état","totoro");
 $tab_html .= lg_tab_html($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_neuf,"08 Achats matériels","Neuf","totoro");
