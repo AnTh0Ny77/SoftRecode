@@ -41,9 +41,7 @@ class ApiTickets {
             ], 404, 'bad request');
         }
 
-      var_dump($_POST['tkl__id']);
-      die();
-
+    
         $fileName = $_FILES['file']['name'];
         $tempPath = $_FILES['file']['tmp_name'];
         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
