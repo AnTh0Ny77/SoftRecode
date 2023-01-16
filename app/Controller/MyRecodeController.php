@@ -9,15 +9,12 @@ use DateTime;
 use App\Tables\Tickets;
 use App\Apiservice\ApiTest;
 
+
 class MyRecodeController extends BasicController {
-
-
     public static function displayList(){
         self::init();
         self::security();
         $Api = new ApiTest();
-
-        
         if (empty($_SESSION['user']->refresh_token)) {
             $token = $Api->login($_SESSION['user']->email , 'test');
             if ($token['code'] != 200) {
@@ -34,10 +31,8 @@ class MyRecodeController extends BasicController {
             }
             $token =  $refresh['token']['token'];
         }
-
         // $_SESSION['user']->refreshToken = $token['data']['refresh_token'];
         // $token = self::handleToken($Api);
-
         $query_exemple = [
             'tk__id' =>  [],
             'tk__groupe' => [] ,
@@ -46,19 +41,15 @@ class MyRecodeController extends BasicController {
             'search' => '', 
             'RECODE__PASS' => "secret"
         ];
-
-        
         if (!empty($_GET)){
             if (!empty($_GET['search'])) {
                 $query_exemple['search'] = $_GET['search'] ;
             }
-
             if (!empty($_GET['tk__lu'])) {
                 foreach ($_GET['tk__lu']  as  $value) {
                     array_push($query_exemple['tk__lu'], $value);
                 }
             }
-
             if (!empty($_GET['tk__id'])) {
                 $tempo = explode(' ' ,$_GET['tk__id']  );
                 foreach ($tempo as  $value) {
@@ -67,7 +58,6 @@ class MyRecodeController extends BasicController {
                     }
                 }
             }
-
             if (!empty($_GET['tk__groupe'])) {
                 $tempo = explode(' ' ,$_GET['tk__groupe']  );
                 foreach ($tempo as  $value) {
@@ -77,7 +67,6 @@ class MyRecodeController extends BasicController {
                 }
             }
         }
-       
         if (!empty($_GET['nonLu'])) {
             $nonLus = [
                 'tk__id' => $_GET['nonLu'] , 
@@ -88,7 +77,6 @@ class MyRecodeController extends BasicController {
             die();
         }
         $query_exemple['RECODE__PASS'] = "secret" ;
-
         $list = $Api->getTicketList($token , $query_exemple);
         $list = $list['data'];
         $definitive_edition = [];
@@ -101,17 +89,14 @@ class MyRecodeController extends BasicController {
             $ticket['info'] = end($ticket['lignes']);
             $ticket['memo']  =  $ticket['info']['tkl__memo'];
             $mat_request = $Api->getMateriel($token, ['mat__id[]' =>  $ticket['tk__motif_id'] , 'RECODE__PASS' => 'secret']);
-
             if ($mat_request['code'] == 200) {
                 $ticket['mat'] =  $mat_request['data'][0];
                 $ticket['cli'] =  $Api->getClient($token, ['cli__id' => $ticket['mat']['mat__cli__id']])['data'];
             }
-           
             $date_time = new DateTime($ticket['info']['tkl__dt']);
 			$ticket['date'] = $date_time->format('d/m/Y H:i');
             array_push($definitive_edition , $ticket );
         }
-        
         //////////////////filters
         $filters = [];
         $filters['lu'] = false ;
@@ -133,24 +118,20 @@ class MyRecodeController extends BasicController {
                     break; 
            }
         }
-
         if (!empty($_GET['search']))
             $filters['search'] = $_GET['search'];
-
         if (!empty($query_exemple['tk__id'])) {
             $filters['tk__id'] = " ";
             foreach ($query_exemple['tk__id'] as  $value) {
                 $filters['tk__id'] .= " " . $value . " ";
             }
         }
-
         if (!empty($query_exemple['tk__groupe'])) {
             $filters['tk__groupe'] = " ";
             foreach ($query_exemple['tk__groupe'] as  $value) {
                 $filters['tk__groupe'] .= " " . $value . " ";
             }
         }
-        
         return self::$twig->render(
             'display_ticket_myrecode_list.html.twig',[
                 'user' => $_SESSION['user'],
@@ -160,14 +141,11 @@ class MyRecodeController extends BasicController {
         );
     }
 
-
-
     public static function displayTickets(){
         self::init();
         self::security();
         $Users = new User(self::$Db);
         $Api = new ApiTest();
-
         
         if (empty($_SESSION['user']->refresh_token)) {
             $token = $Api->login($_SESSION['user']->email , 'test');
@@ -186,7 +164,6 @@ class MyRecodeController extends BasicController {
             $token =  $refresh['token']['token'];
         }
        
-
         if (!empty($_GET['tk__id'])) {
             $query_exemple = [
                 'tk__id' => [],
@@ -241,8 +218,6 @@ class MyRecodeController extends BasicController {
                     "alternative" => "public/img/client_image.png"
                 ];
 
-              
-
                 if (!empty($_POST['tk__id']) and !empty($_POST['what'])){
                   
                     switch ($_POST['what']) {
@@ -269,12 +244,10 @@ class MyRecodeController extends BasicController {
                         'users_list' => $Users->getAll()
                     ]
                 );
-
             }else{
                 header('location: myRecode');
                 exit;
             }
-
         }else{
             header('location: myRecode');
             exit;
@@ -299,7 +272,6 @@ class MyRecodeController extends BasicController {
     }
 
     public static function PostChamps($ligne , $post , $api , $token){
-
         $tklc = [
             'tklc__id' =>  $ligne, 
             'tklc__nom_champ' => 'INF', 
@@ -311,10 +283,6 @@ class MyRecodeController extends BasicController {
 
     public static function updateTicket($ticket , $token , $lu , $api){
         $ticket['tk__lu'] = $lu ;
-
         return $api->updateTicket($token , $ticket);
     }
-
-    
-
 }

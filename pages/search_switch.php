@@ -55,8 +55,7 @@ if (!empty($search))
 		case ($search == 6 and ctype_digit($search)):
 			//je fais une recherche par id 
 			$client = $Client->search_client_devis($search);
-			foreach ($client as $client_results) 
-			{
+			foreach ($client as $client_results) {
 				$date_modif = new DateTime($client_results->client__dt_last_modif);
 				$client_results->client__dt_last_modif = $date_modif->format('d/m/Y');
 			}
@@ -82,6 +81,11 @@ if (!empty($search))
 					$date =  new DateTime($cmd->cmd__date_devis);
 					$cmd->cmd__date_devis =  $date->format('d/m/Y');
 				}
+				$alert = false;
+				if (isset($_SESSION['transfert']) and !empty($_SESSION['transfert'])) {
+					$alert = $_SESSION['transfert'];
+					$_SESSION['transfert'] = "";
+				}
 				// Donnée transmise au template : 
 				echo $twig->render(
 					'consult_client.twig',
@@ -90,7 +94,8 @@ if (!empty($search))
 						'client' => $client ,
 						'contact_list' => $contact_list ,
 						'etendre_contact' =>  $extendre_contacts ,
-						'commandes_list' => $cmd_list
+						'commandes_list' => $cmd_list , 
+						'alert' => $alert
 					]);
 			}
 			else 

@@ -9,8 +9,7 @@ use App\Tables\Stock;
 Class RechercheController extends BasicController
 {
 
-	public static function recherche_famille() : string
-	{
+	public static function recherche_famille() : string {
 		self::init();
 		self::security();
 
@@ -27,19 +26,17 @@ Class RechercheController extends BasicController
 	}
 
 
-	public static function recherche_spec() : string
-	{
+	public static function recherche_spec() : string {
 		self::init();
 		self::security();
 		self::check_post(['famille'],'recherche-articles-famille');
-
 		$Stocks = new Stock(self::$Db);
 		$Keyword = new Keyword(self::$Db);
-
 		$forms_data = 	$Stocks->get_famille_forms($_POST['famille']);
         $object     = 	$Keyword->get_kw_by_typeAndValue('famil', $_POST['famille'] );
 		$forms = null;
 		
+
 		if (!empty($_POST['rechercheJSON'])) {
 			$forms = json_decode($_POST['rechercheJSON']);
 			$forms = (array)$forms;
@@ -50,8 +47,6 @@ Class RechercheController extends BasicController
 					}
 			}
 		}
-
-		
 		return self::$twig->render(
 				'recherches_specs.twig',
 			[
@@ -63,12 +58,10 @@ Class RechercheController extends BasicController
 		);	
 	}
 
-	public static function recherche_results() : string
-	{
+	public static function recherche_results() : string{
 		self::init();
 		self::security();
 		self::check_post(['famille'],'recherche-articles-specs');
-
 		$Stocks = new Stock(self::$Db);
 		$Keyword = new Keyword(self::$Db);
 		$Article = new Article(self::$Db);
@@ -83,8 +76,6 @@ Class RechercheController extends BasicController
 			$article->specs = $specs;
 			array_push($results_models , $article );
 		}
-		
-	
 		return self::$twig->render(
 				'recherches_results.twig',
 			[
