@@ -27,6 +27,9 @@ $Totoro    = new App\Totoro('euro');
 $Totoro->DbConnect();
 $UserClass = new App\Tables\User($Database);
 
+// Variables
+	$somme_ca = $somme_ca_1 = 0;
+
 /*8888  dP"Yb  88b 88  dP""b8 888888 88  dP"Yb  88b 88 .dP"Y8 
 88__   dP   Yb 88Yb88 dP   `"   88   88 dP   Yb 88Yb88 `Ybo." 
 88""   Yb   dP 88 Y88 Yb        88   88 Yb   dP 88 Y88 o.`Y8b 
@@ -43,8 +46,10 @@ function sql_1_an($sql, $option=false)
 
 function lg_tab_html($sql, $prestation, $etat, $base='sosuke', $bold=FALSE)
 {
+	// info($sql);
 	global $Database; // Rend la variable accessible dans la fonction.
 	global $Totoro;
+	global $somme_ca, $somme_ca_1;
 	$lg_tab    = '';
 	if ($base == 'totoro')
 	{
@@ -62,12 +67,12 @@ function lg_tab_html($sql, $prestation, $etat, $base='sosuke', $bold=FALSE)
 		$T_data    = $Database->Pdo->query($sql_1)->fetch(PDO::FETCH_ASSOC);
 		$somme_1   = $T_data['SOMME'];
 	}
-	if ($somme_1) // pour eviter le divizion par 0
+	if ($somme_1 > 0) // pour eviter le divizion par 0
 		$variation = (($somme-$somme_1)/$somme_1)*100;
 	else
 		$variation = '0';
 	if ($bold)
-		{ $bold_on = '<b>'; $bold_off = '</b>';}
+		{ $bold_on = '<b>'; $bold_off = '</b>'; $somme_ca += $somme; $somme_ca_1 += $somme_1;}
 	else
 		{ $bold_on = $bold_off = '';}
 	$lg_tab   .= '<tr> ';
@@ -142,7 +147,7 @@ $sql_w_prt        = "AND cmdl__prestation = 'PRT' ";
 $sql_w_pre        = "AND cmdl__prestation = 'PRE' ";
 $sql_w_bro        = "AND cmdl__prestation = 'BRO' ";
 $sql_w_neu        = "AND cmdl__etat = 'NEU' ";
-$sql_w_occ        = "AND cmdl__etat = 'OCC' ";
+$sql_w_occ        = "AND cmdl__etat <> 'NEU' ";
 $sql_w_cdb        = "AND keyword.kw__info = 'CDB' ";
 $sql_w_imp        = "AND keyword.kw__info IN ('ILM', 'IT') ";
 $sql_w_mic        = "AND keyword.kw__info = 'MICRO' ";
@@ -182,9 +187,9 @@ $tql_stk_fin_occ .= "OR ( id_etat in (21,22) AND down_datetime >= '".$date_fin."
 //  YboodP dP""""Yb
 
 $titre_stat  = 'Chiffre d\'affaires facturé pour etude de marges';
-
+$gras = TRUE;
 $tab_html .= lg_tab_separateur('Ventes de marchandises');
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_vte.$sql_w_neu,"01 Ventes (Tout)","Neuf","sosuke",TRUE);
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_vte.$sql_w_neu,"01 Ventes (Tout)","Neuf","sosuke",$gras);
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_cdb,"01b Ventes CDB","Neuf");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_imp,"01c Ventes IMPRIMANTES","Neuf");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_mic,"01d Ventes MICRO","Neuf");
@@ -193,7 +198,7 @@ $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sq
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_acc,"01g Ventes Accessoires","Neuf");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_ser,"01h Ventes Services","Neuf");
 $debug_info .= "01h -------------- <br>".$sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_ser.'<br>';
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_vte.$sql_w_occ,"02 Ventes (Tout)","Occasion","sosuke",TRUE);
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_vte.$sql_w_occ,"02 Ventes (Tout)","Occasion","sosuke",$gras);
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_cdb,"02b Ventes CDB","Occasion");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_imp,"02c Ventes IMPRIMANTES","Occasion");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_mic,"02d Ventes MICRO","Occasion");
@@ -201,13 +206,13 @@ $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sq
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_pid,"02f Ventes Pieces détachées","Occasion");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_acc,"02g Ventes Accessoires","Occasion");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_ser,"02h Ventes Services","Occasion");
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_ech.$sql_w_neu,"03 Echange matériels","Neuf");
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_ech.$sql_w_occ,"04 Echange matériels","Occasion");
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_rpr.$sql_w_neu,"05 Reprise","Neuf");
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_rpr.$sql_w_occ,"05b Reprise","Occasion");
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_rem,"06 & 07 Remise","NC.");
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_pre,"07b Prêt","Tout état");
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_bro,"07c Broke","Tout état");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_ech.$sql_w_neu,"03 Echange matériels","Neuf","sosuke",$gras);
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_ech.$sql_w_occ,"04 Echange matériels","Occasion","sosuke",$gras);
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_rpr.$sql_w_neu,"05 Reprise","Neuf","sosuke",$gras);
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_rpr.$sql_w_occ,"05b Reprise","Occasion","sosuke",$gras);
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_rem,"06 & 07 Remise","NC.","sosuke",$gras);
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_pre,"07b Prêt","Tout état","sosuke",$gras);
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_bro,"07c Broke","Tout état","sosuke",$gras);
 $tab_html .= lg_tab_separateur('Achats de marchandises');
 $tab_html .= lg_tab_html($tql_select_achat.$tql_from.$tql_where.$tql_w_achat,"00 Achats matériels","Tout état","totoro");
 $tab_html .= lg_tab_html($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_neuf,"08 Achats matériels","Neuf","totoro");
@@ -215,16 +220,16 @@ $tab_html .= lg_tab_html($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tq
 $tab_html .= lg_tab_html($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_conso,"09b Achats matériels","Consommables","totoro");
 $tab_html .= lg_tab_html($tql_sel_po_port.$tql_from_po.$tql_where_po,"10 & 11 Transport matériels","Tout état","totoro");
 $tab_html .= lg_tab_separateur('Production');
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_rep,"12 Réparation","NC.");
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_loc.$sql_w_neu,"13 Location","Neuf");
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_loc.$sql_w_occ,"14 Location","Occasion");
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_mnt,"15 Maintenance","NC.");
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_int,"16 Intervention et Dep.","NC.");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_rep,"12 Réparation","NC.","sosuke",$gras);
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_loc.$sql_w_neu,"13 Location","Neuf","sosuke",$gras);
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_loc.$sql_w_occ,"14 Location","Occasion","sosuke",$gras);
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_mnt,"15 Maintenance","NC.","sosuke",$gras);
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_int,"16 Intervention et Dep.","NC.","sosuke",$gras);
 $debug_info .= "16 --------------- <br>".$sql_select_vente.$sql_from.$sql_where.$sql_w_int.'<br>';
-$tab_html .= lg_tab_html($sql_select_v_gar.$sql_from.$sql_where.$sql_w_neu,"17 Extension de garantie","Neuf");
-$tab_html .= lg_tab_html($sql_select_v_gar.$sql_from.$sql_where.$sql_w_occ,"18 Extension de garantie","Occasion");
+$tab_html .= lg_tab_html($sql_select_v_gar.$sql_from.$sql_where.$sql_w_neu,"17 Extension de garantie","Neuf","sosuke",$gras);
+$tab_html .= lg_tab_html($sql_select_v_gar.$sql_from.$sql_where.$sql_w_occ,"18 Extension de garantie","Occasion ou NC.","sosuke",$gras);
 $tab_html .= lg_tab_separateur('Transport sur vente');
-$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_prt,"19 Port facturé","NC.");
+$tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_prt,"19 Port facturé","NC.","sosuke",$gras);
 // $tab_html .= lg_tab_separateur('Stock');
 // $tab_html .= lg_tab_html($tql_stk_sql.$tql_stk_deb_neuf,"21 Stock début","Neuf","totoro");
 // $tab_html .= lg_tab_html($tql_stk_sql.$tql_stk_deb_occ,"22 Stock début","Occasion","totoro");
@@ -232,6 +237,7 @@ $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_where.$sql_w_prt,"19 P
 // $tab_html .= lg_tab_html($tql_stk_sql.$tql_stk_fin_occ,"24 Stock fin","Occasion","totoro");
 
 $debug_info = '';
+$somme_ca_evol = (($somme_ca-$somme_ca_1)/$somme_ca_1)*100;
 
 // Donnée transmise au template : 
 echo $twig->render('statistique_marge.twig',
@@ -242,5 +248,8 @@ echo $twig->render('statistique_marge.twig',
 'date_fin_fr'      => $date_fin_fr,
 'titre_stat'       => $titre_stat,
 'debug_info'       => $debug_info,
-'tab_html'         => $tab_html
+'tab_html'         => $tab_html,
+'somme_ca'         => number_format($somme_ca, 2, ',', ' '),
+'somme_ca_1'       => number_format($somme_ca_1, 2, ',', ' '),
+'somme_ca_evol'    => number_format($somme_ca_evol, 2, ',', ' ')
 ]);
