@@ -32,9 +32,9 @@ class MyRecodeController extends BasicController {
             $token =  $refresh['token']['token'];
         }
 
-        $test = $Api->postFile($token ,  fopen(__DIR__ . '/test.pdf' ,'r') ,10539);
-        return var_dump($test);
-        die();
+        // $test = $Api->postFile($token ,  fopen(__DIR__ . '/test.pdf' ,'r') ,10539);
+        // return var_dump($test);
+        // die();
         // $_SESSION['user']->refreshToken = $token['data']['refresh_token'];
         // $token = self::handleToken($Api);
         $query_exemple = [
