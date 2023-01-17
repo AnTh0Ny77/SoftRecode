@@ -41,8 +41,7 @@ class ApiTickets {
             ], 404, 'bad request');
         }
 
-      
-
+    
         $fileName = $_FILES['file']['name'];
         $tempPath = $_FILES['file']['tmp_name'];
         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
