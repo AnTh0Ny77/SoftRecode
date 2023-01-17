@@ -61,6 +61,6 @@
 /web/css/
 /web/js/
 /upload/*
-/public/img/tickets/*
+/public/img/tickets/
 
 # End of https://www.gitignore.io/api/symfony
