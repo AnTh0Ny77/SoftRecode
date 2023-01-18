@@ -197,8 +197,13 @@ $request = $_SERVER['REQUEST_URI'];
 		case '/SoftRecode/myRecodeverifyUser'.$get_data;
 			echo UserMyRecodeController::VerifyUser();
 			break;
+
+		case '/SoftRecode/updateUserMyRecode' . $get_data;
+			echo UserMyRecodeController::updateUserMyrecode();
+			break;
+		
 			
-		case '/SoftRecode/demo' . $get_data;
+		case '/SoftRecode/demo'.$get_data;
 			var_dump(test::testFilesRequest());
 			break;
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////

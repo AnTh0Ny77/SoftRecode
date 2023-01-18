@@ -1,0 +1,69 @@
+{% extends 'new_layout.twig' %}
+
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="public/css/forms-myrecode.css">
+<link rel="stylesheet" href="public/css/cards-myrecode.css">
+<link rel="stylesheet" href="public/css/font-family.css">
+{% endblock %}
+{% block main %}
+<main role="main" class="container-fluid my-3 col-11 container-body">
+
+    <form id="forms_id" action="myRecodeverifyUser" method="get">
+        <div class="col-7 my-4">
+            <h3 class="recode-p"><i class="fas fa-user-edit"></i> Utilisateur MyRecode</h3>
+            <div class="form-row col-7">
+
+                <p><i class="far fa-question-circle"></i> Une vérification de l'adresse e-mail va etre effectuée afin de
+                    determiner si il s 'agit d'un utilisateur
+                    existant ou d'un nouvel utilisateur </p>
+                <div class="form-group col-12">
+                    <input type="email" class="form-control input-recode"
+                        placeholder="Rentrez l'adresse e-mail de l'utilisateur" value="{{value}}" name="user__mail"
+                        maxlength="200" id="user__mail" required>
+                </div>
+            </div>
+            {# <div class="form-row my-4">
+                <div class="form-group col-7">
+                    <label for="exampleInputEmail1">Société</label>
+                    <select class="selectpicker  show-tick" data-live-search="true" data-size="10" data-width="100%"
+                        id="clientSelect" name="cli__id" required>
+                        {% for client in clientList %}
+                        <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ')
+                            -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-row my-4">
+                <div class="form-group col-7">
+                    <label for="exampleInputEmail1">Droits</label>
+                    <select class="selectpicker  show-tick" multiple data-live-search="true" data-size="10"
+                        data-width="100%" id="clientSelect" name="cli__id" required>
+                        <option value="ADUSER" selected>Administrateur</option>
+                    </select>
+                </div>
+
+            </div>
+
+        </div> #}
+        <button type="submit" class="btn-recode-important my-2" id="post">Vérifier</button>
+    </form>
+</main>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+</script>
+{% endblock %}

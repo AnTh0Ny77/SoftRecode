@@ -13,15 +13,19 @@
 {% endblock %}
 {% block main %}
     <main role="main" class="container-fluid my-3 col-11 container-body">
+      
         <form id="forms_id" action="myRecodeverifyUser" method="get">
             <div class="col-7 my-4">
-                <div class="form-row">
-                    <div class="form-group col-7">
-                      <label for="inputCity">Mail de l'utilisateur</label>
-                      <input type="email" class="form-control input-recode"  name="user__mail" maxlength="200" id="user__mail" required>
+                <h3 class="recode-p"><i class="fas fa-user-edit"></i> Utilisateur MyRecode</h3>
+                <div class="form-row col-7">
+                    
+                    <p><i class="far fa-question-circle"></i> Une vérification de l'adresse e-mail va etre effectuée afin de determiner si il s 'agit d'un utilisateur
+                        existant  ou d'un nouvel utilisateur </p>
+                    <div class="form-group col-12">
+                      <input type="email" class="form-control input-recode" placeholder="Rentrez l'adresse e-mail de l'utilisateur" value="{{value}}" name="user__mail" maxlength="200" id="user__mail" required>
                     </div>
                 </div>
-                <div class="form-row my-4">
+                {# <div class="form-row my-4">
                     <div class="form-group col-7">
                         <label for="exampleInputEmail1">Société</label>   
                         <select class="selectpicker  show-tick"  data-live-search="true" data-size="10" data-width="100%" id="clientSelect" name="cli__id" required> 
@@ -40,10 +44,9 @@
                     </div>
 
                 </div>
-                <button type="button" class="btn-recode-important my-2" id="post">Exporter</button>
-            </div>
-           
-           
+                
+            </div> #}
+            <button type="submit" class="btn-recode-important my-2" id="post">Vérifier</button>
         </form> 
     </main>
 {% endblock %}
@@ -54,31 +57,6 @@
     <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
     <script type="text/javascript">
     $(document).ready(function(){
-
-        $("#post").click(function(){
-            var secret_key = "YVAQz781T5PPmaANTrR895ApMMnwgfksd66877";
-            $.ajax({
-               type: "GET",
-               url: "http://192.168.1.105:80/api/user",
-               data: {secret_key: secret_key},
-               success: function(response) {
-                  var json = JSON.parse(response); 
-                  if(json.data === false) {
-                     createForms();
-                  } else {
-                     $("#forms_id").submit();
-                  }
-               }
-            });
-         });
-
-         //supprime la classe hide des éléments passés en parametres 
-         function createForms(subjects) {
-            for(var i = 0; i < subjects.length; i++) {
-               $("#" + subjects[i]).removeClass("hide");
-            }
-         }
-
 
     });
 </script>
