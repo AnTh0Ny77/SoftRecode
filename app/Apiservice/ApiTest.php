@@ -68,7 +68,7 @@ class ApiTest extends BasicController {
     }
 
 
-    public static function getFiles($token){
+    public static function getListFiles($token , $id_ligne){
         $config =json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
         $base_uri = $config->api->host;
         $env_uri = $config->api->env_uri;
@@ -77,28 +77,34 @@ class ApiTest extends BasicController {
             $response = $client->get(
                 $env_uri . '/files', 
             ['headers' => self::makeHeaders($token) ,
-             'query' =>  ['tkl__id' => 12117 ]
+             'query' =>  ['tkl__id' => $id_ligne  , 'list' => true]
             ]);
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
             exit();
         }
-        $myfile = fopen("test.zip", "w") or die("Unable to open file!");
-        fwrite($myfile, $response->getBody()->read(163840708));
-        fclose($myfile);
-        $zip = new ZipArchive;
-        
-        // Zip File Name
-        if ($zip->open('test.zip') === TRUE) {
-        
-            // Unzip Path
-            $zip->extractTo('public/img');
-            $zip->close();
-            echo 'Unzipped Process Successful!';
-        } else {
-            echo 'Unzipped Process failed';
+        return $response->getBody()->read(12048);  
+    }
+
+    public static function getFiles($token , $id_ligne , $name){
+        $config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->get(
+                $env_uri . '/files',
+                [
+                    'headers' => self::makeHeaders($token),
+                    'query' =>  ['tkl__id' => $id_ligne, 'name' => $name]
+                ]
+            );
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+            exit();
         }
-        
+
+        return $response->getBody()->getContents();
     }
 
     public static function postFile($token, $files , $ligne){

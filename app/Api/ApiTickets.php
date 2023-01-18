@@ -51,10 +51,9 @@ class ApiTickets {
         $fileName = $_POST['nom'];
         $tempPath = $_FILES['file']['tmp_name'];
         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-
         $pathToFile = 'public/img/tickets/' .$_POST['tkl__id'];
         $uniquename = preg_replace("/[^a-zA-Z]+/", "", $fileName) . '.' . $fileExtension ; 
-        
+
         if (!is_dir($pathToFile)) {
             mkdir($pathToFile, 7777);
         }
@@ -73,11 +72,22 @@ class ApiTickets {
     public static function get(){
         $responseHandler = new ResponseHandler;
         //controle du client 
-       
         if (empty($_GET['tkl__id'])) {
             return $responseHandler->handleJsonResponse([
                 'msg' =>  ' lID de la ligne  semble etre vide  '
             ], 404, 'bad request');
+        }
+        //renvoi la list des documents si le répertoire est trouvé :
+        if (!empty($_GET['list'])) {
+            $scanned_directory = array_diff(scandir('public/img/tickets/' . $_GET['tkl__id']), array('..', '.'));
+            if (!empty($scanned_directory)) {
+                return $responseHandler->handleJsonResponse([
+                    'data' => $scanned_directory
+                ], 200, 'bad request');
+            }
+            return $responseHandler->handleJsonResponse([
+                'msg' => 'aucun répertoire trouvé'
+            ], 404, 'Not found');     
         }
 
         if (empty($_GET['name'])){

@@ -31,8 +31,9 @@ class MyRecodeController extends BasicController {
             }
             $token =  $refresh['token']['token'];
         }
-
-        // $test = $Api->postFile($token ,  fopen(__DIR__ . '/test.pdf' ,'r') ,10539);
+        // $test = $Api->getFiles($token , 105333 , 'scoreJPG.jpg');
+        // var_dump($test);
+        // die();
         // return var_dump($test);
         // die();
         // $_SESSION['user']->refreshToken = $token['data']['refresh_token'];
