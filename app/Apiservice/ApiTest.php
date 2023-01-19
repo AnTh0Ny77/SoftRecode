@@ -327,6 +327,25 @@ class ApiTest extends BasicController {
         return self::handleResponse($response);
     }
 
+    public static function PostListClient($token,  $one) {
+        $config =json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $body = ["secret" => "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528"] ; 
+        if ($one == true) { $body = ["secret" => "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528" ,"one" => true ];}
+        $client = new \GuzzleHttp\Client(['base_uri' =>$base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+          $response = $client->post(  $env_uri .  '/sossuke', [
+            'headers' => self::makeHeaders($token),
+            'json' => $body,
+            'http_errors' => false
+          ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+          $response = $exeption->getResponse();
+        }
+        return self::handleResponse($response);
+    }
+
     public static function transfertClient(){
         
         if (empty($_SESSION['user']->refresh_token)) {

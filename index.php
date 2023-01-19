@@ -16,6 +16,7 @@ use App\Controller\RechercheController;
 use App\Controller\TicketsFormsController;
 use App\Controller\TicketsDisplayController;
 use App\Controller\UserMyRecodeController;
+use App\Controller\MyRecodeSocieteController;
 
 $request = $_SERVER['REQUEST_URI'];
 
@@ -201,6 +202,13 @@ $request = $_SERVER['REQUEST_URI'];
 		case '/SoftRecode/updateUserMyRecode' . $get_data;
 			echo UserMyRecodeController::updateUserMyrecode();
 			break;
+
+		case '/SoftRecode/SocieteMyRecode'.$get_data;
+			echo MyRecodeSocieteController::displayList();
+			break;
+
+
+			
 		
 			
 		case '/SoftRecode/demo'.$get_data;

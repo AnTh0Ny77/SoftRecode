@@ -1,0 +1,57 @@
+{% extends 'new_layout.twig' %}
+
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css"> 
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="public/css/forms-myrecode.css">
+<link rel="stylesheet" href="public/css/cards-myrecode.css">
+<link rel="stylesheet" href="public/css/font-family.css">
+{% endblock %}
+{% block main %}
+    <main role="main" class="container-fluid my-3 col-11 container-body">
+       
+        <h3 class="recode-p"><i class="fad fa-building"></i></i> Société MyRecode</h3>
+        <p><i class="far fa-question-circle"></i> Liste des societe déja présente dans MyRecode.fr </p>
+               
+        <div class="mt-5 col-7">
+            <div>
+                <table id="table_id" class="display">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Société</th>
+                            <th>Adresse</th>
+                            <th>Ville</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for client in list %}
+                        <tr>
+                            <td>{{client.cli__id}}</td>
+                            <td>{{client.cli__nom}}</td>
+                            <td>{{client.cli__adr1}}</td>
+                            <td>{{client.cli__ville}}</td>
+                        </tr>
+                        {% endfor %}
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+    <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $('#table_id').DataTable();
+    });
+</script>
+{% endblock %}
