@@ -52,13 +52,12 @@ class ApiTickets {
         $tempPath = $_FILES['file']['tmp_name'];
         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         $pathToFile = 'public/img/tickets/' .$_POST['tkl__id'];
-        $uniquename = preg_replace("/[^a-zA-Z]+/", "", $fileName) . '.' . $fileExtension ; 
 
         if (!is_dir($pathToFile)) {
             mkdir($pathToFile, 7777);
         }
 
-        if (!move_uploaded_file($tempPath, $pathToFile . '/' . $uniquename)) {
+        if (!move_uploaded_file($tempPath, $pathToFile . '/' . $fileName)) {
             return $responseHandler->handleJsonResponse([
                 'msg' =>  'Un problème est survenu dans la sauvergarde du fichier'
             ], 500, 'Internal server error');
@@ -68,6 +67,8 @@ class ApiTickets {
             'data' =>  'OK !'
         ], 201, 'ressource created');
     }
+
+
 
     public static function get(){
         $responseHandler = new ResponseHandler;
@@ -101,6 +102,8 @@ class ApiTickets {
                 'msg' =>  ' le fichier demandé n existe pas'
             ], 404, 'bad request');
         }
+
+
 
         $finfo = finfo_open(FILEINFO_MIME_TYPE);
         header('Content-Type: ' . finfo_file($finfo, 'public/img/tickets/' . $_GET['tkl__id'] . '/' . $_GET['name']));

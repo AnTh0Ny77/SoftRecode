@@ -107,6 +107,23 @@ class ApiTest extends BasicController {
         return $response->getBody()->getContents();
     }
 
+    function nom_fichier_propre($nom_fichier){
+    $nom_fichier = trim($nom_fichier);
+    $nom_fichier = str_replace(" ",          '_', $nom_fichier);
+    $nom_fichier = str_replace("-",          '_', $nom_fichier);
+    $nom_fichier = str_replace("'",          '_', $nom_fichier);
+    $nom_fichier = str_replace("iso-8859-1", '',  $nom_fichier);
+    $nom_fichier = str_replace('=E9',        'e', $nom_fichier);
+    $nom_fichier = str_replace('=Q',         '',  $nom_fichier);
+    $nom_fichier = str_replace('=',          '',  $nom_fichier);
+    $nom_fichier = str_replace('?',          '',  $nom_fichier);
+    $search =array('À','Á','Â','Ã','Ä','Å','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ò','Ó','Ô','Õ','Ö','Ù','Ú','Û','Ü','Ý','à','á','â','ã','ä','å','ç','è','é','ê','ë','ì','í','î','ï','ð','ò','ó','ô','õ','ö','ù','ú','û','ü','ý','ÿ');
+    $replace=array('A','A','A','A','A','A','C','E','E','E','E','I','I','I','I','O','O','O','O','O','U','U','U','U','Y','a','a','a','a','a','a','c','e','e','e','e','i','i','i','i','o','o','o','o','o','o','u','u','u','u','y','y');
+    $nom_fichier = str_replace($search, $replace, $nom_fichier); // supprime les accents
+    $nom_fichier = preg_replace('/([^_.a-zA-Z0-9]+)/', '', $nom_fichier);
+    return $nom_fichier;
+    }
+
     public static function postFile($token, $files , $ligne){
         $config =json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
         $base_uri = $config->api->host;
@@ -403,5 +420,52 @@ class ApiTest extends BasicController {
         $_SESSION['search_switch'] = $clientSoft->client__id ;
         header('location: search_switch');
         die();
+    }
+
+    public static function les_fichiers($dirname, $option=false){
+        // recherche les fichiers dans un repertoire
+        $icones_fichiers = "";
+        $small = $return = $poubelle = $visu = FALSE;
+        $fa_taille       = 'fa-2x';
+        if (strpos($option, 'VISU')     !== FALSE) $visu = TRUE;
+        if (strpos($option, 'SMALL')    !== FALSE) $small = TRUE;
+        if (strpos($option, 'RETURN')   !== FALSE) $return = TRUE;
+        if (strpos($option, 'POUBELLE') !== FALSE) $poubelle = TRUE;
+        if ($small) $fa_taille = '';
+        $_SESSION['from_page'] = $_SERVER['REQUEST_URI']; //page d'appel
+        $from_page = $_SERVER['REQUEST_URI'];
+        if (is_dir($dirname)) // c'est bien un dossier qui existe
+        {
+            $dir = opendir($dirname);
+            while($file = readdir($dir)){
+                if($file != '.' && $file != '..' && !is_dir($dirname.$file)){
+                    if($visu)
+                    { // j'affiche l'image et non une iconne
+                        $icones_fichiers .= '<img src="/'.$dirname.$file.'" width=100 > ';
+                    }
+                    else{
+                        // recerche le type de fichier pour y mettre le bon icone.
+                        $nom_ico = '<i class="fa fa-file-o '.$fa_taille.'"></i>'; // par defaut
+                        $pos = (strlen($file) - (strrpos($file, '.') + 1));  // recherche le dernier . et renvoie la long de l'extention
+                        $extention = strtoupper(substr($file,$pos*-1)); // retourne les derniers caracteres apres le .
+                        switch ($extention)
+                        {
+                            case "DOC": case "DOCX":        $nom_ico = '<i class="fas fa-file-word       '.$fa_taille.'"></i>'; break;
+                            case "XLS": case "XLSX":        $nom_ico = '<i class="fas fa-file-excel      '.$fa_taille.'"></i>'; break;
+                            case "JPG": case "JPEG":        $nom_ico = '<i class="fas fa-image      '.$fa_taille.'"></i>'; break;
+                            case "GIF": case "PNG":            $nom_ico = '<i class="fas fa-image      '.$fa_taille.'"></i>'; break;
+                            case "PDF":                        $nom_ico = '<i class="fas fa-file-pdf        '.$fa_taille.'"></i>'; break;
+                            case "PPT":                        $nom_ico = '<i class="fas fa-file-powerpoint '.$fa_taille.'"></i>'; break;
+                            case "ZIP":                        $nom_ico = '<i class="fas fa-file-zipper     '.$fa_taille.'"></i>'; break;
+                        }
+                        $icones_fichiers .= '<a href="'.$dirname. '/' .$file.'" target=_blank data-toggle=tooltip title="'.$file.'">'.$nom_ico.'</a>&nbsp;';
+                    }
+                    if ($poubelle) $icones_fichiers .= "<a href='supprim_fic.php?file=/$dirname".$file."&from=$from_page'><span class='text-warning glyphicon glyphicon-trash' aria-hidden=true></span></a> - ";
+                }
+            }
+            closedir($dir);
+        } // je ne fait rien si ce n'est pas un dossier (c'est qu'il n'y a pas de fichier en pieces jointes)
+        if ($icones_fichiers > "" and $return) $icones_fichiers .= '<br>';
+        return $icones_fichiers;
     }
 }

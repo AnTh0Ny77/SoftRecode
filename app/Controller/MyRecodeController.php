@@ -151,8 +151,9 @@ class MyRecodeController extends BasicController {
         self::security();
         $Users = new User(self::$Db);
         $Api = new ApiTest();
+        $alert = false;
         
-        if (empty($_SESSION['user']->refresh_token)) {
+        if (empty($_SESSION['user']->refresh_token)){
             $token = $Api->login($_SESSION['user']->email , 'test');
             if ($token['code'] != 200) {
                 echo 'Connexion LOGIN à L API IMPOSSIBLE';
@@ -169,7 +170,7 @@ class MyRecodeController extends BasicController {
             $token =  $refresh['token']['token'];
         }
        
-        if (!empty($_GET['tk__id'])) {
+        if (!empty($_GET['tk__id'])){
             $query_exemple = [
                 'tk__id' => [],
                 'RECODE__PASS' => "secret"
@@ -194,17 +195,21 @@ class MyRecodeController extends BasicController {
                     $ticket['memo']  =  $ticket['info']['tkl__memo'];
                     $mat_request = $Api->getMateriel($token, ['mat__id[]' =>  $ticket['tk__motif_id'] , 'RECODE__PASS' => 'secret']);
         
-                    if ($mat_request['code'] == 200) {
+                    if ($mat_request['code'] == 200){
                         $ticket['mat'] =  $mat_request['data'][0];
                         $ticket['cli'] =  $Api->getClient($token, ['cli__id' => $ticket['mat']['mat__cli__id']])['data'];
                     }
-                   
+
+                    foreach ($ticket['lignes'] as $key  => $entry) {
+                        $ticket['lignes'][$key]['logos'] = $Api->les_fichiers('public/img/tickets/'.$entry['tkl__id'] , null);
+                    }
+                    
                     $date_time = new DateTime($ticket['info']['tkl__dt']);
                     $ticket['date'] = $date_time->format('d/m/Y H:i');
-                    array_push($definitive_edition , $ticket );
+                    array_push($definitive_edition , $ticket);
                 }
 
-                if (empty($definitive_edition)) {
+                if (empty($definitive_edition)){
                     header('location: myRecode');
                     exit;
                 }
@@ -223,8 +228,7 @@ class MyRecodeController extends BasicController {
                     "alternative" => "public/img/client_image.png"
                 ];
 
-                if (!empty($_POST['tk__id']) and !empty($_POST['what'])){
-                  
+                if (!empty($_POST['tk__id']) and !empty($_POST['what'])){ 
                     switch ($_POST['what']) {
                         case 'RPD':
                             $dest = intval($ticket['last']['user__id']);
@@ -236,17 +240,53 @@ class MyRecodeController extends BasicController {
                             $dest = intval($ticket['last']['user__id']);
                             break;
                     }
+
+                    if (!empty($_FILES)){
+                        $fileName = $_FILES['file']['name'];
+                        $tempPath = $_FILES['file']['tmp_name'];
+                        $fileSize = $_FILES['file']['size'];
+                        if (empty($fileName)){
+                           $_SESSION['file_alert'] = ' Merci de télécharger un fichier';
+                           header('location: myRecode-ticket?tk__id='.$_GET['tk__id']);
+                           die();
+                        }
+                        $fileExtension = strtolower(pathinfo($fileName,PATHINFO_EXTENSION));
+                        $validExtension = array('jpeg','jpg','png','gif','pdf','txt');
+                        if (!in_array($fileExtension, $validExtension)) {
+                            $_SESSION['file_alert']  = '  Merci de télécharger un fichier au format : jpeg , jpg , png , gif , pdf ou txt';
+                            header('location: myRecode-ticket?tk__id='.$_GET['tk__id']);
+                            die();
+                        }
+                        if ($fileSize > 10000000) {
+                             $_SESSION['file_alert']  = 'Fichier trop volumineux';
+                             header('location: myRecode-ticket?tk__id='.$_GET['tk__id']);
+                             die();
+                        }
+                    }
+                    
                     $id_ligne =  self::PostLigne($_POST ,$dest , $Api, $token);
-                    $ticket = self::PostChamps($id_ligne  , $_POST,  $Api , $token );
+                    $ticket = self::PostChamps($id_ligne,$_POST,$Api,$token);
+                    if (!empty($_FILES)){
+                        move_uploaded_file($tempPath, __DIR__ .'/' .$fileName);
+                        $file = $Api->postFile($token, fopen(__DIR__ . '/' .$fileName , 'r') ,$id_ligne);
+                        unlink(__DIR__ .'/' .$fileName);
+                       
+                    }
                     header('location: myRecode');
                     exit;
+                }
+
+                if (!empty($_SESSION['file_alert'])) {
+                    $alert = $_SESSION['file_alert'];
+                    $_SESSION['file_alert'] = '';
                 }
 
                 return self::$twig->render(
                     'display_ticket_myrecode.html.twig',[
                         'user' => $_SESSION['user'],
                         'ticket' => $ticket , 
-                        'users_list' => $Users->getAll()
+                        'users_list' => $Users->getAll() , 
+                        'alert' => $alert
                     ]
                 );
             }else{
