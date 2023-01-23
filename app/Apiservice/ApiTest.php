@@ -152,10 +152,11 @@ class ApiTest extends BasicController {
         $base_uri = $config->api->host;
         $env_uri = $config->api->env_uri;
         $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+		
         try {
             $response = $client->post(
                 $env_uri . '/ticketligne',  
-            ['headers' => self::makeHeaders($token)  ,
+            ['headers' => self::makeHeaders($token),
              'json' => $ligne]);
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
@@ -176,7 +177,6 @@ class ApiTest extends BasicController {
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
         }
-        
         return self::handleResponse($response);
     }
 
@@ -195,7 +195,6 @@ class ApiTest extends BasicController {
             $response = $exeption->getResponse();
             exit();
         }
-        
         return self::handleResponse($response);
     }
 
@@ -214,7 +213,6 @@ class ApiTest extends BasicController {
             $response = $exeption->getResponse();
             exit();
         }
-        
         return self::handleResponse($response);
     }
 
@@ -233,7 +231,6 @@ class ApiTest extends BasicController {
             $response = $exeption->getResponse();
             exit();
         }
-        
         return self::handleResponse($response);
     }
 
@@ -252,7 +249,6 @@ class ApiTest extends BasicController {
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
         }
-      
         return self::handleResponse($response);
     }
 
@@ -271,7 +267,6 @@ class ApiTest extends BasicController {
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
         }
-
         return self::handleResponse($response);
     }
 

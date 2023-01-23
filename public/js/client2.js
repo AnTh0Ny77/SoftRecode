@@ -57,9 +57,7 @@ let saisieTable = $("#saisieTable").DataTable({
             "last":       "Dernière",
             "next":       "Suivante",
             "previous":   "Précédente"
-        }
-          
-            
+        }     
     },
     "paging": true,
     "info": true,

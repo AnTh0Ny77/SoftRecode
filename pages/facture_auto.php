@@ -27,10 +27,8 @@ if ($_SESSION['user']->user__facture_acces < 10 )
  
  
 //si une facturation auto a été demandée :
- if (!empty($_POST['trimestre']) ) 
- {  
-    $mois = $_POST['trimestre'];
-   
+ if (!empty($_POST['trimestre']) ) {  
+   $mois = $_POST['trimestre'];
    //recupère les abonnements actif :
    $abonnement_liste = $Abonnement->get_actif_for_fact($mois);
    $total_price = [];
@@ -38,20 +36,16 @@ if ($_SESSION['user']->user__facture_acces < 10 )
    $abonnement_facturable = [];
    $array_premiere_echeance = [];
    $date = date("".$_POST['anneAuto']."-".$mois."-d H:i:s");
-   foreach ($abonnement_liste as $key => $abn) 
-   {
-
+   foreach ($abonnement_liste as $key => $abn){
       $effectiveDate = strtotime("+".$abn->ab__fact_periode." months", strtotime($abn->ab__date_anniv));
       $effectiveDate = date('Y-m-d',$effectiveDate);
       $automateDate =  date("".$_POST['anneAuto']."-".$mois."-d ");
-
       if (strtotime($effectiveDate) >= strtotime($automateDate)){
          $abn->client = $Client->getOne($abn->ab__client__id_fact);
          $ligne = $Abonnement->getLigneFacturableAuto($abn->ab__cmd__id , $date);
          $abn->nbMachine =  sizeof($ligne);
          $abn->total = 00.00;
-         foreach($ligne as $machine)
-         {
+         foreach($ligne as $machine){
             $machine->totalTrim =  number_format($machine->abl__prix_mois * $abn->ab__fact_periode , 2 , ',', ' ') ;
             $abn->total += $machine->abl__prix_mois * $abn->ab__fact_periode  ;
          }
@@ -72,7 +66,6 @@ if ($_SESSION['user']->user__facture_acces < 10 )
          }
          array_push( $total_price , $abn->total);
          $abn->total = number_format($abn->total , 2 , ',', ' ') ;
-        
          $abn->array = $ligne;
          if (!empty($ligne)){
             array_push($abonnement_facturable , $abn);
@@ -83,8 +76,6 @@ if ($_SESSION['user']->user__facture_acces < 10 )
       }
    }
    
-   
-   
    $text = $_POST['anneAuto'] . '-' . $mois .'-' . '1' ;
    $date = new DateTime($text);
    $date = date_format($date,'m-Y');
@@ -93,8 +84,7 @@ if ($_SESSION['user']->user__facture_acces < 10 )
    $total_price = array_sum($total_price);
    $total_price =  number_format($total_price, 2, ',', ' ');
     // Donnée transmise au template : 
-    echo $twig->render('factureAuto.twig',
-    [
+    echo $twig->render('factureAuto.twig',[
     'user'=>$user,
     'ABNList'=>$abonnement_liste, 
     'arrayfacturable'=> $arrayFacturable, 
@@ -103,7 +93,6 @@ if ($_SESSION['user']->user__facture_acces < 10 )
     'count_list' => $count_list , 
     'total_price' => $total_price
     ]);
-  
  }
 //sinon redirection : 
  else 

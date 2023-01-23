@@ -10,11 +10,62 @@
 <link rel="stylesheet" href="public/css/forms-myrecode.css">
 <link rel="stylesheet" href="public/css/cards-myrecode.css">
 <link rel="stylesheet" href="public/css/font-family.css">
+<style type="text/css">
+    .past_purple{
+        background-color: #A7BFE3;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_pink{
+        background-color: #F9D7E7;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_greeen{
+        background-color: #CBE5BE;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_yellow{
+        background-color: #FFF681;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_blue{
+        background-color: #90A4C3;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_pastel{
+        background-color: #FBDEDA;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_orange{
+        background-color:  #F1CB9D;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_red{
+        background-color:  #2D2B76;
+        float: left;
+        color: antiquewhite;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+</style>
 {% endblock %}
 {% block main %}
     <main role="main" class="container-fluid my-3 col-11 container-body">
         <h3 class="recode-p"><i class="fad fa-building"></i></i> Société MyRecode</h3>
-        <p><i class="far fa-question-circle"></i> Liste des societe déja présente dans MyRecode.fr </p>
+        <p><i class="far fa-question-circle"></i> Liste des societe présentes dans MyRecode.fr </p>
         <div class="mt-5 col-7">
             <div>
                 <table id="table_id" class="display">
@@ -22,17 +73,75 @@
                         <tr>
                             <th>ID</th>
                             <th>Société</th>
-                            <th>Adresse</th>
-                            <th>Ville</th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for client in list %}
                         <tr>
-                            <td>{{client.cli__id}}</td>
-                            <td>{{client.cli__nom}}</td>
-                            <td>{{client.cli__adr1}}</td>
-                            <td>{{client.cli__ville}}</td>
+                            <td>({{client.cli__id}})</td>
+                            <td><b>{{client.cli__nom}}</b><br><i>{{client.cli__adr1 ~ " " ~ client.cli__ville}}</i></td>
+                            <td>{% if client.users|length > 0 %}
+                                    {% if client.users|length == 1 %}
+                                        <div class="past_purple">
+                                            {{client.users|length}} utilisateur
+                                        </div>
+                                    {% elseif client.users|length == 2 %}
+                                        <div class="past_pink">
+                                            {{client.users|length}} utilisateurs
+                                        </div>
+                                    {% elseif client.users|length == 3 %}
+                                        <div class="past_greeen">
+                                            {{client.users|length}} utilisateurs
+                                        </div>
+                                    {% elseif client.users|length == 4 %}
+                                        <div class="past_yellow">
+                                            {{client.users|length}} utilisateurs
+                                        </div>
+                                    {% elseif client.users|length > 4 %}
+                                        <div class="past_blue">
+                                            {{client.users|length}} utilisateurs
+                                        </div>
+                                    {% endif %}
+                                {% else %}
+                                    <div class="past_pastel">
+                                        Aucun utilisateur
+                                    </div>
+                                {% endif %}
+                               
+                                {% if client.tickets|length > 0 %}
+                                    <div class="past_orange mx-2">
+                                        {{ client.tickets|length  ~ " tickets en cours" }}
+                                    </div>
+                                {% endif %}
+                                {% if client.materiels|length > 0 %}
+                                    {% if client.materiels|length > 0 and client.materiels|length < 5 %}
+                                        <div class="past_orange mx-2">
+                                            {{ client.materiels|length  ~ " Machines" }}
+                                        </div>
+                                    {% elseif client.materiels|length >= 5 and client.materiels|length < 10 %}
+                                        <div class="past_orange mx-2">
+                                            {{ client.materiels|length  ~ " Machines" }}
+                                        </div>
+                                    {% elseif client.materiels|length >= 10 and client.materiels|length < 25 %}
+                                        <div class="past_orange mx-2">
+                                            {{ client.materiels|length  ~ " Machines" }}
+                                        </div>
+                                    {% elseif client.materiels|length > 25 and client.materiels|length < 50 %}
+                                        <div class="past_orange mx-2">
+                                            {{ client.materiels|length  ~ " Machines" }}
+                                        </div>
+                                    {% elseif client.materiels|length >= 50 %}
+                                        <div class="past_red mx-2">
+                                            {{ client.materiels|length  ~ " Machines" }}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href=""> <i class="fas fa-pen"></i> Editer</a>
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -48,7 +157,18 @@
     <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
     <script type="text/javascript">
     $(document).ready(function(){
-        $('#table_id').DataTable();
+        $('#table_id').DataTable({
+            paging: true , 
+            lengthMenu: [ 10, 25, 50, 75, 100 ] , 
+            language: {
+                lengthMenu: "Voir _MENU_ sociétés par page",
+                zeroRecords: "Aucuns résultats",
+                info : "Page: _PAGE_ sur _PAGES_ au total",
+                infoEmpty: "Aucuns résultats",
+                infoFiltered: "(résultats sur _MAX_ sociétés disponibles)",
+                search: "Rechercher"
+            }
+        });
     });
 </script>
 {% endblock %}
