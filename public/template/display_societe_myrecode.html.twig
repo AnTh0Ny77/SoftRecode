@@ -1,0 +1,276 @@
+{% extends 'new_layout.twig' %}
+
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="public/css/forms-myrecode.css">
+<link rel="stylesheet" href="public/css/cards-myrecode.css">
+<link rel="stylesheet" href="public/css/font-family.css">
+<style type="text/css">
+    .past_purple {
+        background-color: #A7BFE3;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+
+    .past_pink {
+        background-color: #F9D7E7;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+
+    .past_greeen {
+        background-color: #CBE5BE;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_yellow {
+        background-color: #FFF681;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_blue {
+        background-color: #90A4C3;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_pastel {
+        background-color: #FBDEDA;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_orange {
+        background-color: #F1CB9D;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_red {
+        background-color: #2D2B76;
+        float: left;
+        color: antiquewhite;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+</style>
+{% endblock %}
+{% block main %}
+<main role="main" class="container-fluid my-3 col-11 container-body">
+    <h3 class="recode-p"><i class="fad fa-building"></i></i>Administration MyRecode.fr </h3>
+    <p><i class="far fa-question-circle"></i> Société/Utilisateurs/Machines</p>
+    <div class="d-flex justify-content-start flex-wrap mt-4">
+            <div class="col-4 card-recode">
+                <h4 class="recode-p"><i class="fas fa-building"></i> ({{client.cli__id}}) {{client.cli__nom}}</h4>
+                <p>
+                    {{client.cli__adr1 ~ " " ~ client.cli__adr2 ~ " " ~  client.cli__cp ~ " " ~ client.cli__ville }}
+                </p>
+            </div>
+            <div class="col-7 card-recode mx-4">
+                <h4 class="recode-p"><i class="fas fa-users"></i> Utilisateurs</h4>
+                <table id="table_id" class="display mt-3">
+                    <div class="my-2 float-right">
+                        <button class="btn btn-recode-important" data-toggle="modal" data-target="#modalUser">Ajouter</button>
+                    </div>
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>E-mail</th>
+                            <th>Fonction</th>
+                            <th>Roles</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in client.users %}
+                        <tr>
+                            <td>{{user.user__nom ~ " " ~ user.user__prenom}}</td>
+                            <td>{{user.user__mail}}</td>
+                            <td>{{user.user__fonction}}</td>
+                            <td>
+                                {% if user.roles|length == 0 %}
+                                    <div class="past_orange mx-2">
+                                        Aucun Roles
+                                    </div>
+                                {% else %}
+                                    {% for row in user.roles %}
+                                        {% if row == 'ADMIN' %}
+                                            <div class="past_blue mx-2">
+                                                {{row}}
+                                            </div>
+                                        {% elseif row == 'ACHAT' %}
+                                            <div class="past_pink mx-2">
+                                                {{row}}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}    
+                            </td>
+                            <td>
+                                <a href="displaySocieteMyRecode?cli__id={{client.cli__id}}"> <i class="fas fa-pen"></i> Editer</a><br>
+                                <a href="displaySocieteMyRecode?cli__id={{client.cli__id}}"> <i class="fas fa-stop-circle"></i> Suspendre</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="col-8 card-recode mt-4">
+                <h4 class="recode-p"><i class="fas fa-layer-group"></i> Parc Matériel</h4>
+                <table id="table_mat" class="display mt-3">
+                    <div class="my-2 float-right">
+                        <button class="btn btn-recode-important" data-toggle="modal" data-target="#modalUser">Ajouter</button>
+                    </div>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Type/Model</th>
+                            <th>SN/PN</th>
+                            <th>Memo</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in client.materiels %}
+                            <tr>
+                                <td>{{row.mat__id}}</td>
+                                <td>
+                                    {% if row.mat__type == "Imprimante Thermique" %}
+                                            <div class="past_blue mx-2">
+                                                {{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}
+                                            </div>
+                                    {% elseif row.mat__type == "Lecteur Code Barre" %}
+                                            <div class="past_greeen mx-2">
+                                                {{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}
+                                            </div>
+                                    {% else %}
+                                            <div class="past_pastel mx-2">
+                                                {{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}
+                                            </div>
+                                    {% endif %}
+                                    
+                                </td>
+                                <td>S/N: <b>{{row.mat__sn}}</b><br>
+                                    P/N: <b>{{row.mat__pn}}</b><br>
+                                </td>
+                                <td>
+                                   {{row.mat__memo}}
+                                </td>
+                                <td>
+                                    <a href="displaySocieteMyRecode?cli__id={{client.cli__id}}"> <i class="fas fa-pen"></i> Editer</a><br>
+                                    <a href="displaySocieteMyRecode?cli__id={{client.cli__id}}"> <i class="far fa-exchange"></i> Remplacer</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        
+                    </tbody>
+                </table>
+            </div>
+
+    </div>
+</main>
+
+
+
+<!-- Modal  Utilisateur-->
+<div class="modal fade" id="modalUser" tabindex="-1" role="dialog" aria-labelledby="modalUser"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title">Ajout d'un nouvel utilisateur</h5>
+                    <p class="my-2"><i class="far fa-question-circle"></i> Un e-mail sera envoyé a l'utilisateur afin qu'il puisse confirmer son
+                        adresse e-mail et définir son mot de passe</p>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-11 d-flex justify-content-start">
+                    <div class="col-8">
+                        <input class="form-control my-2 input-recode" type="email" name="user__mail" placeholder="Email" rows="2"></input>
+                    </div>
+                </div>
+                <div class="col-11 d-flex justify-content-start">
+                    <div class="col-6">
+                        <input class="form-control my-2 input-recode" name="user__nom" placeholder="Nom" rows="2"></input>
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control my-2 input-recode" name="user__prenom" placeholder="Prénom" rows="2"></input>
+                    </div>
+                </div>
+                <div class="col-11 d-flex justify-content-start">
+                    <div class="col-6">
+                        <input class="form-control my-2 input-recode" name="user__service" placeholder="Service" rows="2"></input>
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control my-2 input-recode" name="user__fonction" placeholder="Fonction" rows="2"></input>
+                    </div>
+                </div>
+                <div class="col-11 d-flex justify-content-start">
+                    <div class="col-6">
+                        <input class="form-control my-2 input-recode" name="user__gsm" placeholder="Téléphone" rows="2"></input>
+                    </div>
+                    <div class="col-6">
+                        <input class="form-control my-2 input-recode" name="Roles" placeholder="Fonction" rows="2"></input>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+               
+                <button class="btn btn-recode-important">Ajouter</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+         $('#table_mat').DataTable({
+            paging: true,
+            lengthMenu: [10, 25],
+            language: {
+                lengthMenu: "Voir _MENU_ utilisateurs par page",
+                zeroRecords: "Aucuns résultats",
+                info: "Page: _PAGE_ sur _PAGES_ au total",
+                infoEmpty: "Aucuns résultats",
+                infoFiltered: "(résultats sur _MAX_ utilisateurs disponibles)",
+                search: "Rechercher"
+            }
+        });
+
+
+
+        $('#table_id').DataTable({
+            paging: true,
+            lengthMenu: [10, 25],
+            language: {
+                lengthMenu: "Voir _MENU_ machines par page",
+                zeroRecords: "Aucuns résultats",
+                info: "Page: _PAGE_ sur _PAGES_ au total",
+                infoEmpty: "Aucuns résultats",
+                infoFiltered: "(résultats sur _MAX_ machines disponibles)",
+                search: "Rechercher"
+            }
+        });
+    });
+</script>
+{% endblock %}

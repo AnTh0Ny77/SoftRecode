@@ -327,7 +327,7 @@ class ApiTest extends BasicController {
         $base_uri = $config->api->host;
         $env_uri = $config->api->env_uri;
         $body = ["secret" => "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528"] ; 
-        if ($one == true) { $body = ["secret" => "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528" ,"one" => true ];}
+        if (!empty($one) ) { $body = ["secret" => "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528" ,"one" => $one ];}
         $client = new \GuzzleHttp\Client(['base_uri' =>$base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
         try {
 			$response = $client->post(  $env_uri .  '/sossuke', [

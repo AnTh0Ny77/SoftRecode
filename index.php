@@ -203,6 +203,10 @@ $request = $_SERVER['REQUEST_URI'];
 		case '/SoftRecode/SocieteMyRecode'.$get_data;
 			echo MyRecodeSocieteController::displayList();
 			break;
+
+		case '/SoftRecode/displaySocieteMyRecode'.$get_data;
+			echo MyRecodeSocieteController::display();
+			break;
 			
 		case '/SoftRecode/demo'.$get_data;
 			var_dump(test::testFilesRequest());
