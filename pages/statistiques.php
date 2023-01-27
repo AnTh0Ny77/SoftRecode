@@ -67,7 +67,7 @@ if(!$COS AND !$CAS AND !$MNT AND !$CAM AND !$VOL) // si rien de precisé je choi
 // dates par default 
 $date = new DateTime();
 if(!$date_debut) $date_debut = $date->format('Y-m-01');
-if(!$date_fin)   $date_fin   = $date->format('Y-m-t');
+if(!$date_fin)   $date_fin   = $date->format('Y-m-d');
 
 // Date format calendrier
 $date_debut_fr = date_format(date_create($date_debut),'d/m/Y');
