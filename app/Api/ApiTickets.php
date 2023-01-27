@@ -28,8 +28,7 @@ class ApiTickets {
     public static function post(){
         $responseHandler = new ResponseHandler;
         //controle du client 
-      
-
+    
         if (empty($_FILES['file'])) {
             return $responseHandler->handleJsonResponse([
                 'msg' =>  ' Le fichier est vide'
@@ -47,13 +46,12 @@ class ApiTickets {
             ], 404, 'bad request');
         }
 
-    
         $fileName = $_POST['nom'];
         $tempPath = $_FILES['file']['tmp_name'];
         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         $pathToFile = 'public/img/tickets/' .$_POST['tkl__id'];
 
-        if (!is_dir($pathToFile)) {
+        if (!is_dir($pathToFile)){
             mkdir($pathToFile, 7777);
         }
 

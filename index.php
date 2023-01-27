@@ -16,6 +16,7 @@ use App\Controller\RechercheController;
 use App\Controller\TicketsFormsController;
 use App\Controller\TicketsDisplayController;
 use App\Controller\UserMyRecodeController;
+use App\Controller\MyRecodeSocieteController;
 
 $request = $_SERVER['REQUEST_URI'];
 
@@ -27,10 +28,8 @@ $request = $_SERVER['REQUEST_URI'];
 		$get_data = "";
 
 	$global_request = $get_request[0] . $get_data ; 
-	switch($global_request)
-	{
-		
-		//pages :: 
+	switch($global_request){
+		//pages:: 
 		case '/SoftRecode/'.'':
 			require __DIR__ .'/pages/login.php'; break;
 
@@ -162,7 +161,6 @@ $request = $_SERVER['REQUEST_URI'];
 		case '/SoftRecode/myRecode-ticket'.$get_data;
 			echo MyRecodeController::displayTickets();
 			break;
-
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////API////////////////////////////////////////////////////////////////
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -198,18 +196,24 @@ $request = $_SERVER['REQUEST_URI'];
 			echo UserMyRecodeController::VerifyUser();
 			break;
 
-		case '/SoftRecode/updateUserMyRecode' . $get_data;
+		case '/SoftRecode/updateUserMyRecode'.$get_data;
 			echo UserMyRecodeController::updateUserMyrecode();
 			break;
-		
+
+		case '/SoftRecode/SocieteMyRecode'.$get_data;
+			echo MyRecodeSocieteController::displayList();
+			break;
+
+		case '/SoftRecode/displaySocieteMyRecode'.$get_data;
+			echo MyRecodeSocieteController::display();
+			break;
 			
 		case '/SoftRecode/demo'.$get_data;
 			var_dump(test::testFilesRequest());
 			break;
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////API//////////////////////////////////////////////////////////////////
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-			
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 		//devis-> 
 		case '/SoftRecode/nouveauDevis';
 			require __DIR__ .'/pages/nouveauDevis.php';break;
@@ -259,8 +263,7 @@ $request = $_SERVER['REQUEST_URI'];
 
 		case '/SoftRecode/etiquettes';
 			require __DIR__ . '/pages/etiquettes.php';break;
-			
-
+		
 		case '/SoftRecode/validation_devis';
 			require __DIR__ .'/pages/validation_devis_v2.php'; break;
 		

@@ -1,0 +1,474 @@
+{% extends 'new_layout.twig' %}
+
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="public/css/forms-myrecode.css">
+<link rel="stylesheet" href="public/css/cards-myrecode.css">
+<link rel="stylesheet" href="public/css/font-family.css">
+<style type="text/css">
+    .past_purple {
+        background-color: #A7BFE3;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+
+    .past_pink {
+        background-color: #F9D7E7;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+
+    .past_greeen {
+        background-color: #CBE5BE;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_yellow {
+        background-color: #FFF681;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_blue {
+        background-color: #90A4C3;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_pastel {
+        background-color: #FBDEDA;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_orange {
+        background-color: #F1CB9D;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_red {
+        background-color: #2D2B76;
+        float: left;
+        color: antiquewhite;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .text-calm{
+        font-family: 'Times New Roman', Times, serif !important;
+        font-weight: 300 !important;
+        box-shadow: none !important;
+    }
+</style>
+{% endblock %}
+{% block main %}
+<main role="main" class="container-fluid my-3 col-11 container-body">
+    <h3 class="recode-p"><i class="fad fa-building"></i></i>Administration MyRecode.fr </h3>
+    <p><i class="far fa-question-circle"></i> Société/Utilisateurs/Machines</p>
+    <div class="d-flex justify-content-start flex-wrap mt-4">
+            <div class="col-4 card-recode">
+                <h4 class="recode-p"><i class="fas fa-building"></i> ({{client.cli__id}}) {{client.cli__nom}}</h4>
+                <p>
+                    {{client.cli__adr1 ~ " " ~ client.cli__adr2 ~ " " ~  client.cli__cp ~ " " ~ client.cli__ville }}
+                </p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><div class="past_pastel">
+                        <i class="fas fa-users"></i>  {{client.users|length}} utilisateurs
+                    </div></li>
+                    <li class="list-group-item">
+                        <div class="past_orange">
+                            <i class="fas fa-layer-group"></i> {{ client.materiels|length  ~ " Machines" }}
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="past_greeen">
+                            <i class="fas fa-ticket"></i>  {{ client.tickets|length  ~ " tickets en cours" }}
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="past_blue">
+                            <i class="fas fa-pen"></i> Editer dans Soft-Recode
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <p><i class="far fa-question-circle"></i> Les changements effectués sur Soft-Recode sont directement mis à jour sur myrecode.fr</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-7 card-recode mx-4">
+                <h4 class="recode-p"><i class="fas fa-users"></i> Utilisateurs</h4>
+                <i class="far fa-question-circle"></i> Dans myrecode.fr les e-mails sont uniques et doivent etre confirmés par l'utilisateur.
+                <table id="table_id" class="display mt-3">
+                    <div class="my-2 float-right">
+                        <button class="btn btn-recode-important" data-toggle="modal" data-target="#modalUser">Ajouter</button>
+                    </div>
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>E-mail</th>
+                            <th>Fonction</th>
+                            <th>Roles</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in client.users %}
+                        <tr>
+                            <td>{{user.user__nom ~ " " ~ user.user__prenom}}</td>
+                            <td>{{user.user__mail}}</td>
+                            <td>{{user.user__fonction}}</td>
+                            <td>
+                                {% if user.roles|length == 0 %}
+                                    <div class="past_orange mx-2">
+                                        Aucun Roles
+                                    </div>
+                                {% else %}
+                                    {% for row in user.roles %}
+                                        {% if row == 'ADUSR' %}
+                                            <div class="past_blue mx-2">
+                                                Administrateur
+                                            </div>
+                                        {% elseif row == 'ACHAT' %}
+                                            <div class="past_pink mx-2">
+                                                {{row}}
+                                            </div>
+                                        {% elseif row == 'SUMYR' %}
+                                            <div class="past_yellow mx-2">
+                                                Administrateur MyRecode
+                                            </div>
+                                        {% elseif row == 'USER' %}
+                                            <div class="past_blue mx-2">
+                                                Utilisateurs
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}    
+                            </td>
+                            <td>
+                                <a href="displaySocieteMyRecode?cli__id={{client.cli__id}}"> <i class="fas fa-pen"></i> Editer</a><br>
+                                <a href="displaySocieteMyRecode?cli__id={{client.cli__id}}"> <i class="fas fa-stop-circle"></i> Suspendre</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="col-10 card-recode mt-4">
+                <h4 class="recode-p"><i class="fas fa-layer-group"></i> Parc Matériel</h4>
+                <i class="far fa-question-circle"></i> Vous pouvez directement remplacer un matériel en renseignant un nouveau numéro de série
+                <table id="table_mat" class="display mt-3">
+                    <div class="my-2 float-right">
+                        <button class="btn btn-recode-important" data-toggle="modal" data-target="#modalUser">Ajouter</button>
+                    </div>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Type/Model</th>
+                            <th>SN/PN</th>
+                            <th>Memo</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in client.materiels %}
+                            <tr>
+                                <td>{{row.mat__id}}</td>
+                                <td>
+                                    {% if row.mat__type == "ITH" %}
+                                            <div class="past_blue mx-2">
+                                                {{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}
+                                            </div>
+                                    {% elseif row.mat__type == "BTM" %}
+                                            <div class="past_greeen mx-2">
+                                                {{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}
+                                            </div>
+                                    {% else %}
+                                            <div class="past_pastel mx-2">
+                                                {{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}
+                                            </div>
+                                    {% endif %}
+                                    
+                                </td>
+                                <td>S/N: <b>{{row.mat__sn}}</b><br>
+                                    P/N: <b>{{row.mat__pn}}</b><br>
+                                </td>
+                                <td>
+                                   {{row.mat__memo}}
+                                </td>
+                                <td>
+                                    <a href="displaySocieteMyRecode?cli__id={{client.cli__id}}"> <i class="fas fa-pen"></i> Editer</a><br>
+                                    <a href="displaySocieteMyRecode?cli__id={{client.cli__id}}"><i class="far fa-exchange"></i>Remplacer</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        
+                    </tbody>
+                </table>
+            </div>
+
+    </div>
+</main>
+
+
+
+<!-- Modal  Utilisateur création-->
+<div class="modal fade" id="modalUser" tabindex="-1" role="dialog" aria-labelledby="modalUser"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <form action="displaySocieteMyRecode?cli__id={{client.cli__id}}" method="post" id="forms_user_crea">
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title">Ajout d'un nouvel utilisateur</h5>
+                        <p class="my-2"><i class="far fa-question-circle"></i> Un e-mail sera envoyé a l'utilisateur afin qu'il puisse confirmer son
+                            adresse e-mail et définir son mot de passe</p>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-8">
+                            <input class="form-control my-2 input-recode" type="email" name="user__mail" id="user__mail" placeholder="Email" rows="2" ></input>
+                        </div>
+                    </div>
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" name="user__nom" id="user__nom" placeholder="Nom" rows="2" ></input>
+                        </div>
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" name="user__prenom" id="user__prenom" placeholder="Prénom" rows="2" ></input>
+                        </div>
+                    </div>
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" name="user__service" id="user__service" placeholder="Service" rows="2" ></input>
+                        </div>
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" name="user__fonction" id="user__fonction" placeholder="Fonction" rows="2" ></input>
+                        </div>
+                    </div>
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" name="user__gsm" id="user__gsm" placeholder="Téléphone" rows="2" ></input>
+                        </div>
+                        <div class="col-6">
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" multiple  name="user__role" id="user__role"  >
+                                <option value="ADUSR" selected>Administrateur</option>
+                                <option value="ACHAT" >Achat</option>
+                                <option value="SUMYR">Administrateur Recode</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="alert alert-secondary past_pastel" id="alert_user" role="alert">
+                        
+                    </div>
+                    <button class="btn btn-recode-important"  type="button" id="button_user_crea">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        $('#table_id').DataTable({
+            paging: true,
+            lengthMenu: [4],
+            bLengthChange : false ,
+            language: {
+                lengthMenu: "Voir _MENU_ utilisateurs par page",
+                zeroRecords: "Aucuns résultats",
+                info: "Page: _PAGE_ sur _PAGES_ au total",
+                infoEmpty: "Aucuns résultats",
+                infoFiltered: "(résultats sur _MAX_ utilisateurs disponibles)",
+                search: "Rechercher"
+            }
+        });
+
+         $('#table_mat').DataTable({
+            paging: true,
+            lengthMenu: [5 , 10 , 25 , 50 , 75],
+            language: {
+                lengthMenu: "Voir _MENU_ machines par page",
+                zeroRecords: "Aucuns résultats",
+                info: "Page: _PAGE_ sur _PAGES_ au total",
+                infoEmpty: "Aucuns résultats",
+                infoFiltered: "(résultats sur _MAX_ machines disponibles)",
+                search: "Rechercher"
+            }
+        });
+
+
+        $('user__role').selectpicker();
+
+
+
+        $('#button_user_crea').on('click' , function(){
+            let verification = PostUser();
+            if(verification) {
+                $('#alert_user').text(verification);
+            }
+            
+           
+        })
+
+        let PostUser = function(){
+            let body = returnBodyUser()
+            let verif = handleFormsUser(body)
+            if(verif) {return verif}
+            let response = verifyMailRequest(body)
+            if(response.user__id) { return 'cette adresse email est deja utilisée pour un autre compte utilisateur !'}
+            let randomPassword =  Math.random().toString(36).slice(-8);
+            randomPassword += 'A8';
+            body['user__password'] = randomPassword;
+            let post = postUserRequest(body)
+            console.log(post);
+            let role = returnRole();
+            if(role.length > 0){
+                for(let i = 0;i<role.length;i++){
+                    let roles= {
+                        'user__id' : post, 
+                        'role' : role[i], 
+                        'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528'
+                    }
+                    postRoleRequest(roles);
+                }
+            }
+           
+            console.log(role);
+            console.log(randomPassword);
+           
+           
+        }
+        let returnBodyUser = function(){
+            let body = {
+                'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528', 
+                'user__mail' : $('#user__mail').val() , 
+                'user__nom' : $('#user__nom').val(), 
+                'user__prenom' : $('#user__prenom').val(), 
+                'user__service' : $('#user__service').val(),
+                'user__fonction' : $('#user__fonction').val(), 
+                'user__gsm' : $('#user__gsm').val()
+            } 
+            return body;
+        }
+
+        let returnRole = function(){
+           return  $('#user__role').val();
+        }
+
+        //si faux je ne peux pas continuer sinon je peux afficher le message :
+         let  verifyMailRequest = function (body) {
+            let results = false ; 
+            $.ajax('http://192.168.1.105/api/verifymail', {
+                type: 'POST',  
+                async: false,
+                data: JSON.stringify(body), 
+                success: function (data, status, xhttp) {
+                    results = data.data
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    results = jqXhr.responseJSON.msg;
+                }
+            });
+            return results;
+        }
+
+        let postUserRequest = function(body){
+            let results = false ; 
+            $.ajax('http://192.168.1.105/api/usersossuke', {
+                type: 'POST',  
+                async: false,
+                data: JSON.stringify(body), 
+                success: function (data, status, xhttp) {
+                   
+                    results = data.data
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    results = jqXhr.responseJSON.msg;
+                }
+            });
+            return results;
+        }
+
+        let postRoleRequest = function(body){
+            let results = false ; 
+            $.ajax('http://192.168.1.105/api/rolesossuke', {
+                type: 'POST',  
+                async: false,
+                data: JSON.stringify(body), 
+                success: function (data, status, xhttp) {
+                    
+                    results = data.data
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    results = jqXhr.responseJSON.msg;
+                }
+            });
+            return results;
+        }
+
+       
+        let handleFormsUser = function($forms){
+            if(!ValideEmail($forms['user__mail'])){
+                return 'L email saisie est invalide  ';
+            }
+            if(!valideNom($forms['user__nom'])){
+                return 'Le nom est incorrect ';
+            }
+            if(!valideNom($forms['user__prenom'])){
+                return 'Le prénom est incorrect ';
+            }
+            if(!valideNom($forms['user__fonction'])){
+                return 'La fonction est obligatoire  ';
+            }
+            return false;
+          
+        }
+        let removeforms = function(){
+
+        }
+        let postForms = function(id){
+            $(id).submit();
+        }
+
+        let ValideEmail = function (mail){
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)){
+            return (true)
+        }
+            return (false)
+        }
+
+        let valideNom = function($nom){
+            if($nom.length < 2 || $nom.length > 50){
+                return (false)
+            }
+            return (true)
+        }
+
+
+        
+    });
+</script>
+{% endblock %}
