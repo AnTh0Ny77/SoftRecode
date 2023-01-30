@@ -111,7 +111,7 @@
                         <button class="btn btn-recode-important" data-toggle="modal" data-target="#modalUser">Ajouter</button>
                     </div>
                     <thead>
-                        <tr>
+                        <tr >
                             <th>Nom</th>
                             <th>E-mail</th>
                             <th>Fonction</th>
@@ -121,7 +121,7 @@
                     </thead>
                     <tbody>
                         {% for user in client.users %}
-                        <tr>
+                        <tr data-toggle="modal" data-target="#modalUserEdit" >
                             <td>{{user.user__nom ~ " " ~ user.user__prenom}}</td>
                             <td>{{user.user__mail}}</td>
                             <td>{{user.user__fonction}}</td>
@@ -152,10 +152,7 @@
                                     {% endfor %}
                                 {% endif %}    
                             </td>
-                            <td>
-                                <a href="displaySocieteMyRecode?cli__id={{client.cli__id}}"> <i class="fas fa-pen"></i> Editer</a><br>
-                                <a href="displaySocieteMyRecode?cli__id={{client.cli__id}}"> <i class="fas fa-stop-circle"></i> Suspendre</a>
-                            </td>
+                            <td>{{user|json_encode() }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -168,7 +165,7 @@
                 <i class="far fa-question-circle"></i> Vous pouvez directement remplacer un matériel en renseignant un nouveau numéro de série
                 <table id="table_mat" class="display mt-3">
                     <div class="my-2 float-right">
-                        <button class="btn btn-recode-important" data-toggle="modal" data-target="#modalUser">Ajouter</button>
+                        <button class="btn btn-recode-important"  data-toggle="modal" data-target="#modalUser">Ajouter</button>
                     </div>
                     <thead>
                         <tr>
@@ -215,10 +212,8 @@
                     </tbody>
                 </table>
             </div>
-
     </div>
 </main>
-
 
 
 <!-- Modal  Utilisateur création-->
@@ -274,8 +269,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="alert alert-secondary past_pastel" id="alert_user" role="alert">
-                        
+                    <div class="alert alert-secondary past_pastel" id="alert_user" role="alert">  
                     </div>
                     <button class="btn btn-recode-important"  type="button" id="button_user_crea">Ajouter</button>
                 </div>
@@ -283,8 +277,72 @@
         </div>
     </div>
 </div>
-{% endblock %}
 
+
+
+<!-- Modal  Utilisateur Edit-->
+<div class="modal fade" id="modalUserEdit" tabindex="-1" role="dialog" aria-labelledby="modalUser"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <form action="displaySocieteMyRecode?cli__id={{client.cli__id}}" method="post" id="forms_user_edit">
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title">Edition de l'utilisateur</h5>
+                        <p class="my-2"><i class="far fa-question-circle"></i> L' email n'est pas administrable / Le changement des droits d'utilisation affecte directement l'experience de l'utilisateur</p>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="user__id_edit">
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-8">
+                            <input class="form-control my-2 input-recode" type="email" name="user__mail" id="user__mail_edit" placeholder="Email" rows="2" disabled ></input>
+                        </div>
+                    </div>
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" name="user__nom" id="user__nom_edit" placeholder="Nom" rows="2" ></input>
+                        </div>
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" name="user__prenom" id="user__prenom_edit" placeholder="Prénom" rows="2" ></input>
+                        </div>
+                    </div>
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" name="user__service" id="user__service_edit" placeholder="Service" rows="2" ></input>
+                        </div>
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" name="user__fonction" id="user__fonction_edit" placeholder="Fonction" rows="2" ></input>
+                        </div>
+                    </div>
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" name="user__gsm" id="user__gsm_edit" placeholder="Téléphone" rows="2" ></input>
+                        </div>
+                        <div class="col-6">
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" multiple  name="user__role" id="user__role_edit"  >
+                                <option value="ADUSR" >Administrateur</option>
+                                <option value="ACHAT" >Achat</option>
+                                <option value="SUMYR">Administrateur Recode</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="alert alert-secondary past_pastel" id="alert_user_edit" role="alert">
+                        
+                    </div>
+                    <button class="btn btn-recode-important"  type="button" id="button_user_edit">Editer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
 {% block script %}
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -292,10 +350,17 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
-        $('#table_id').DataTable({
+       var userTable =  $('#table_id').DataTable({
             paging: true,
             lengthMenu: [4],
             bLengthChange : false ,
+            columns: [
+                null,
+                null,
+                null,
+                null,
+                { "visible": false }
+            ],
             language: {
                 lengthMenu: "Voir _MENU_ utilisateurs par page",
                 zeroRecords: "Aucuns résultats",
@@ -319,19 +384,51 @@
             }
         });
 
+        $("#table_id tr").css('cursor', 'pointer');
+
+        $('#table_id tbody').on( 'click', 'tr', function (){
+            var data = userTable.row(this).data();
+            data = JSON.parse(data[4]);
+            $('#user__role_edit').selectpicker('deselectAll');
+            $('#user__id_edit').val(data.user__id);
+            $('#user__mail_edit').val(data.user__mail);
+            $('#user__nom_edit').val(data.user__nom);
+            $('#user__prenom_edit').val(data.user__prenom);
+            $('#user__service_edit').val(data.user__service);
+            $('#user__fonction_edit').val(data.user__fonction);
+            $('#user__gsm_edit').val(data.user__gsm);
+            var arraySelect = [];
+            $("#user__role_edit > option").each(function(){
+                for(i = 0 ; i < data.roles.length; i ++ ){
+                    if(this.value === data.roles[i]){
+                        arraySelect.push(this.value);
+                    }
+                }
+            });
+            $('#user__role_edit').selectpicker('val', arraySelect);
+            $('#user__role_edit').selectpicker('refresh');
+        });
 
         $('user__role').selectpicker();
-
-
 
         $('#button_user_crea').on('click' , function(){
             let verification = PostUser();
             if(verification) {
                 $('#alert_user').text(verification);
+            }else {
+                 // redirige sur la meme page avec un get en plus : 
             }
-            
-           
         })
+
+        $('#button_user_edit').on('click' , function(){
+            let verification = updateUser();
+            if(verification){
+                $('#alert_user_edit').text(verification);
+            }else {
+                // redirige sur la meme page avec un get en plus : 
+            }
+
+        });
 
         let PostUser = function(){
             let body = returnBodyUser()
@@ -355,12 +452,26 @@
                     postRoleRequest(roles);
                 }
             }
-           
-            console.log(role);
-            console.log(randomPassword);
-           
-           
+           return false ;
         }
+
+        let updateUser = function(){
+            let body = returnBodyUpdateUser()
+            
+            let verif = handleFormsUserEdit(body)
+            if(verif) {return verif}
+            //met a jour les données de l utilisateur :
+            let put = updateUserRequest(body);
+            
+            //efface les vieux roles :  
+            //let role = ('#user__role_edit').val();
+            //boucle et post les nouveaux roles :  
+            
+            return false ;
+        }
+
+
+
         let returnBodyUser = function(){
             let body = {
                 'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528', 
@@ -373,6 +484,21 @@
             } 
             return body;
         }
+
+        let returnBodyUpdateUser = function (){
+            let body = {
+                'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528', 
+                'user__id' : $('#user__id_edit').val() ,
+                'user__nom' : $('#user__nom_edit').val(), 
+                'user__prenom' : $('#user__prenom_edit').val(), 
+                'user__service' : $('#user__service_edit').val(),
+                'user__fonction' : $('#user__fonction_edit').val(), 
+                'user__gsm' : $('#user__gsm_edit').val()
+            } 
+            return body;
+        }
+
+        
 
         let returnRole = function(){
            return  $('#user__role').val();
@@ -412,6 +538,30 @@
             return results;
         }
 
+
+        let updateUserRequest = function(body){
+            let results = false ; 
+          
+            $.ajax('http://192.168.1.105/api/usersossuke', {
+                type: 'PUT',  
+                dataType: 'jsonp' ,
+                async: false,
+                headers: {
+                    "Access-Control-Allow-Origin":"*" , 
+                    "X-Content-Type-Options": "application/json"
+                },
+                data: JSON.stringify(body), 
+                success: function (data, status, xhttp) {
+                    results = data.data
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    results = jqXhr;
+                }
+            });
+          
+            return results;
+        }
+
         let postRoleRequest = function(body){
             let results = false ; 
             $.ajax('http://192.168.1.105/api/rolesossuke', {
@@ -429,11 +579,25 @@
             return results;
         }
 
-       
         let handleFormsUser = function($forms){
             if(!ValideEmail($forms['user__mail'])){
                 return 'L email saisie est invalide  ';
             }
+            if(!valideNom($forms['user__nom'])){
+                return 'Le nom est incorrect ';
+            }
+            if(!valideNom($forms['user__prenom'])){
+                return 'Le prénom est incorrect ';
+            }
+            if(!valideNom($forms['user__fonction'])){
+                return 'La fonction est obligatoire  ';
+            }
+            return false;
+          
+        }
+
+        let handleFormsUserEdit = function($forms){
+           
             if(!valideNom($forms['user__nom'])){
                 return 'Le nom est incorrect ';
             }
@@ -466,9 +630,9 @@
             }
             return (true)
         }
-
-
-        
     });
+
+
+
 </script>
 {% endblock %}
