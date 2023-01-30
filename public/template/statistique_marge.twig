@@ -36,13 +36,19 @@
 								<input type="date" class="form-control" name="date_fin" value='{{date_fin}}' required>
 							</div>
 						</div>
-						<br>
+						<div class="col-12">
+							<br>
+							<a href="stat_marge?date_debut=2021-10-01&date_fin=2022-09-30" data-toggle="tooltip" data-html="true">Année fisc 2021-22</a> - 
+							<a href="stat_marge?date_debut=2022-10-01&date_fin={{date_jour}}" data-toggle="tooltip" data-html="true">Année fisc en cours</a> - 
+							<a href="stat_marge?date_debut={{date_debut_mec}}&date_fin={{date_fin_mec}}" data-toggle="tooltip" data-html="true">Mois en cours</a>
+						</div>
 						<div class="d-flex flex-column col-12">
+							<br>
 							<button type="submit" class="btn btn-success ">Compter...</button>
 						</div>
 						<br>
 						<h5>Autres Chiffres</h5>
-						<div class="d-flex flex-column col-12">
+						<div class="col-12">
 							<div class="h6 bg-sm"><a href="stat?date_debut={{date_debut}}&date_fin={{date_fin}}" data-toggle="tooltip" data-html="true"><i class="fad fa-file-contract fa-lg"></i> Chiffre affaires </a></div>
 						</div>
 					</form>
@@ -52,12 +58,11 @@
 					<div class="alert alert-info" role="alert">
 						<span  class="btn btn-lg btn-link"><i class="far fa-info-circle"></i></span><br>
 						{{debug_info|raw}}
-						Pour info Stock voir : O:\Comptabilité\STOCK<br>
+						Pour info Stock voir : O:\Finance Comptabilité\NEC RECODE\Bilans Situations NEC\Stocks<br>
 					</div>
 				</div>
 			</div>
 		</div>
-
 
 		<div class="col-8">
 			{# Tuile des Résulta de comptages #}
@@ -77,6 +82,15 @@
 						<div class="row">
 							<div class="col-12">
 								<table class="table table-striped table-sm">
+									<thead>
+										<tr class="table-success h4" >
+											<th>Total CA</th>
+											<th></th>
+											<th style="text-align:right">{{somme_ca}}</th>
+											<th style="text-align:right">{{somme_ca_1}}</th>
+											<th style="text-align:right">{{somme_ca_evol}} %</th>
+										</tr>
+									</thead>
 									<thead>
 										<tr>
 											<th>Prestations</th>
@@ -98,7 +112,30 @@
 											<th style="text-align:right">{{somme_ca_evol}} %</th>
 										</tr>
 									</thead>
-
+								</table>
+								<br>
+								<table class="table table-striped table-sm">
+									<thead>
+										<tr class="table-warning h4" >
+											<th>Total Achat</th>
+											<th></th>
+											<th style="text-align:right">{{somme_achat}}</th>
+											<th style="text-align:right">{{somme_achat_1}}</th>
+											<th style="text-align:right">{{somme_achat_evol}} %</th>
+										</tr>
+									</thead>
+									<thead>
+										<tr>
+											<th>Prestations</th>
+											<th>Etat</th>
+											<th style="text-align:right">Achat ht / période</th>
+											<th style="text-align:right">Achat ht / - 1 an</th>
+											<th style="text-align:right">Evolution %</th>
+										</tr>
+									</thead>
+									<tbody>
+										{{tab_html_achat|raw}}
+									</tbody>
 								</table>
 							</div>
 						</div>
