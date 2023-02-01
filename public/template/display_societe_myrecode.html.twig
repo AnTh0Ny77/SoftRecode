@@ -116,13 +116,23 @@
                             <th>E-mail</th>
                             <th>Fonction</th>
                             <th>Roles</th>
+                            <th>Sociétés</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for user in client.users %}
                         <tr data-toggle="modal" data-target="#modalUserEdit" >
-                            <td>{{user.user__nom ~ " " ~ user.user__prenom}}</td>
+                            <td> {% if user.user__confirm == 1  %}
+                                        <div class="past_greeen mx-2">
+                                            <i class="fas fa-user"></i> {{ " " ~ user.user__nom ~ " " ~ user.user__prenom}}
+                                        </div> 
+                                    {% else %}
+                                        <div class="past_orange mx-2">
+                                            <i class="fas fa-user"></i> {{ " " ~ user.user__nom ~ " " ~ user.user__prenom}}
+                                        </div>
+                                {% endif %} 
+                            </td>
                             <td>{{user.user__mail}}</td>
                             <td>{{user.user__fonction}}</td>
                             <td>
@@ -151,6 +161,18 @@
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}    
+                            </td>
+                            <td> 
+                                {% set count = 0 %}
+                                {% for row in user.clients %}
+                                    {% if row.cli__id != client.cli__id %}
+                                            {% set count = 1 %}
+                                            <a href="displaySocieteMyRecode?cli__id={{row.cli__id}}">{{row.cli__nom}}</a><br>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if count == 0 %}
+                                    Aucune autre société 
+                                {% endif %}
                             </td>
                             <td>{{user|json_encode() }}</td>
                         </tr>
@@ -222,6 +244,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <form action="displaySocieteMyRecode?cli__id={{client.cli__id}}" method="post" id="forms_user_crea">
+                <input type="hidden" id="cli__id" value="{{client.cli__id}}">
                 <div class="modal-header">
                     <div>
                         <h5 class="modal-title">Ajout d'un nouvel utilisateur</h5>
@@ -359,6 +382,7 @@
                 null,
                 null,
                 null,
+                null,
                 { "visible": false }
             ],
             language: {
@@ -388,7 +412,7 @@
 
         $('#table_id tbody').on( 'click', 'tr', function (){
             var data = userTable.row(this).data();
-            data = JSON.parse(data[4]);
+            data = JSON.parse(data[5]);
             $('#user__role_edit').selectpicker('deselectAll');
             $('#user__id_edit').val(data.user__id);
             $('#user__mail_edit').val(data.user__mail);
@@ -416,7 +440,7 @@
             if(verification) {
                 $('#alert_user').text(verification);
             }else {
-                 // redirige sur la meme page avec un get en plus : 
+                document.location.href = "displaySocieteMyRecode?cli__id=" +  $('#cli__id').val()
             }
         })
 
@@ -425,7 +449,7 @@
             if(verification){
                 $('#alert_user_edit').text(verification);
             }else {
-                // redirige sur la meme page avec un get en plus : 
+                document.location.href = "displaySocieteMyRecode?cli__id=" +  $('#cli__id').val()
             }
 
         });
@@ -440,7 +464,6 @@
             randomPassword += 'A8';
             body['user__password'] = randomPassword;
             let post = postUserRequest(body)
-            console.log(post);
             let role = returnRole();
             if(role.length > 0){
                 for(let i = 0;i<role.length;i++){
@@ -452,7 +475,14 @@
                     postRoleRequest(roles);
                 }
             }
-           return false ;
+            let relation_data = {
+                "secret":  'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528', 
+                "luc__cli__id" : $('#cli__id').val() , 
+                "luc__user__id" : post , 
+                "luc__order" : 1 
+            }
+            let relation = postUserRelation(relation_data);
+            return false ;
         }
 
         let updateUser = function(){
@@ -462,10 +492,23 @@
             if(verif) {return verif}
             //met a jour les données de l utilisateur :
             let put = updateUserRequest(body);
-            
-            //efface les vieux roles :  
-            //let role = ('#user__role_edit').val();
-            //boucle et post les nouveaux roles :  
+
+            let deleteBody = { 
+                'user__id': $('#user__id_edit').val() ,
+                'secret': 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528' 
+            };
+            deleteRole(deleteBody);
+            let role = $('#user__role_edit').val();
+           if (role.length > 0) {
+                for (let i = 0; i < role.length; i++) {
+                    let roles = {
+                        'user__id': $('#user__id_edit').val(),
+                        'role': role[i],
+                        'secret': 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528'
+                    }
+                    postRoleRequest(roles);
+                }
+            }
             
             return false ;
         }
@@ -504,10 +547,12 @@
            return  $('#user__role').val();
         }
 
+        const prod = "http://192.168.1.105/api" ; 
+        const local = "http://localhost/RESTapi/";
         //si faux je ne peux pas continuer sinon je peux afficher le message :
          let  verifyMailRequest = function (body) {
             let results = false ; 
-            $.ajax('http://192.168.1.105/api/verifymail', {
+            $.ajax( local + '/verifymail', {
                 type: 'POST',  
                 async: false,
                 data: JSON.stringify(body), 
@@ -523,7 +568,7 @@
 
         let postUserRequest = function(body){
             let results = false ; 
-            $.ajax('http://192.168.1.105/api/usersossuke', {
+            $.ajax( local +  '/usersossuke', {
                 type: 'POST',  
                 async: false,
                 data: JSON.stringify(body), 
@@ -538,18 +583,49 @@
             return results;
         }
 
+        let postUserRelation = function (body) {
+            let results = false;
+            $.ajax(local + '/usersitessossuke', {
+                type: 'POST',
+                async: false,
+                data: JSON.stringify(body),
+                success: function (data, status, xhttp){
+                    results = data.data
+                },
+                error: function (jqXhr, textStatus, errorMessage){
+                    results = jqXhr.responseJSON.msg;
+                }
+            });
+            return results;
+        }
+
+        let deleteRole = function(body){
+            let results = false;
+
+            $.ajax(local + '/rolesossuke', {
+                type: 'DELETE',
+                dataType: 'JSON',
+                async: false,
+                data: JSON.stringify(body),
+                success: function (data, status, xhttp) {
+                    results = data.data
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    results = jqXhr;
+                }
+            });
+
+            return results;
+        }
+
 
         let updateUserRequest = function(body){
             let results = false ; 
           
-            $.ajax('http://192.168.1.105/api/usersossuke', {
+            $.ajax( local +  '/usersossuke', {
                 type: 'PUT',  
-                dataType: 'jsonp' ,
+                dataType: 'JSON' ,
                 async: false,
-                headers: {
-                    "Access-Control-Allow-Origin":"*" , 
-                    "X-Content-Type-Options": "application/json"
-                },
                 data: JSON.stringify(body), 
                 success: function (data, status, xhttp) {
                     results = data.data
@@ -564,16 +640,15 @@
 
         let postRoleRequest = function(body){
             let results = false ; 
-            $.ajax('http://192.168.1.105/api/rolesossuke', {
+            $.ajax( local +  '/rolesossuke', {
                 type: 'POST',  
                 async: false,
                 data: JSON.stringify(body), 
                 success: function (data, status, xhttp) {
-                    
                     results = data.data
                 },
                 error: function (jqXhr, textStatus, errorMessage) {
-                    results = jqXhr.responseJSON.msg;
+                    results = jqXhr;
                 }
             });
             return results;
