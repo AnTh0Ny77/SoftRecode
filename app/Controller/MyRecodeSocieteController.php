@@ -71,6 +71,7 @@ class MyRecodeSocieteController extends BasicController {
 
         if (empty($client)){header('location SocieteMyRecode');die();}
 
+        header("Access-Control-Allow-Origin: *");
         return self::$twig->render(
             'display_societe_myrecode.html.twig',
             [

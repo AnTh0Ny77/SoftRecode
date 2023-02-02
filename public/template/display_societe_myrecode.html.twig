@@ -143,21 +143,21 @@
                                 {% else %}
                                     {% for row in user.roles %}
                                         {% if row == 'ADUSR' %}
-                                            <div class="past_blue mx-2">
+                                            <div class="past_blue mx-2 my-1">
                                                 Administrateur
-                                            </div>
+                                            </div><br>
                                         {% elseif row == 'ACHAT' %}
-                                            <div class="past_pink mx-2">
+                                            <div class="past_pink mx-2 my-1">
                                                 {{row}}
-                                            </div>
+                                            </div><br>
                                         {% elseif row == 'SUMYR' %}
-                                            <div class="past_yellow mx-2">
+                                            <div class="past_yellow mx-2 my-1">
                                                 Administrateur MyRecode
-                                            </div>
+                                            </div><br>
                                         {% elseif row == 'USER' %}
-                                            <div class="past_blue mx-2">
+                                            <div class="past_blue mx-2 my-1">
                                                 Utilisateurs
-                                            </div>
+                                            </div><br>
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}    
@@ -385,6 +385,14 @@
                 null,
                 { "visible": false }
             ],
+            createdRow: function (row, data, index) {
+                $(row).attr('data-toggle' , "modal");
+                $(row).attr('data-target' , "#modalUserEdit");
+                $(row).css('cursor', 'pointer');
+                $(row).on('click' , function(){
+                    functionUserTableModal($(data));
+                })
+            },
             language: {
                 lengthMenu: "Voir _MENU_ utilisateurs par page",
                 zeroRecords: "Aucuns résultats",
@@ -410,9 +418,10 @@
 
         $("#table_id tr").css('cursor', 'pointer');
 
-        $('#table_id tbody').on( 'click', 'tr', function (){
-            var data = userTable.row(this).data();
+        let functionUserTableModal = function (data){
+            
             data = JSON.parse(data[5]);
+            console.log(data);
             $('#user__role_edit').selectpicker('deselectAll');
             $('#user__id_edit').val(data.user__id);
             $('#user__mail_edit').val(data.user__mail);
@@ -431,7 +440,9 @@
             });
             $('#user__role_edit').selectpicker('val', arraySelect);
             $('#user__role_edit').selectpicker('refresh');
-        });
+        }
+
+       
 
         $('user__role').selectpicker();
 
@@ -440,7 +451,8 @@
             if(verification) {
                 $('#alert_user').text(verification);
             }else {
-                document.location.href = "displaySocieteMyRecode?cli__id=" +  $('#cli__id').val()
+                
+            
             }
         })
 
@@ -449,7 +461,7 @@
             if(verification){
                 $('#alert_user_edit').text(verification);
             }else {
-                document.location.href = "displaySocieteMyRecode?cli__id=" +  $('#cli__id').val()
+                
             }
 
         });
@@ -494,26 +506,24 @@
             let put = updateUserRequest(body);
 
             let deleteBody = { 
+                '_METHOD' : 'DELETE' ,
                 'user__id': $('#user__id_edit').val() ,
                 'secret': 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528' 
             };
             deleteRole(deleteBody);
             let role = $('#user__role_edit').val();
-           if (role.length > 0) {
-                for (let i = 0; i < role.length; i++) {
-                    let roles = {
-                        'user__id': $('#user__id_edit').val(),
-                        'role': role[i],
-                        'secret': 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528'
+            if (role.length > 0) {
+                    for (let i = 0; i < role.length; i++) {
+                        let roles = {
+                            'user__id': $('#user__id_edit').val(),
+                            'role': role[i],
+                            'secret': 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528'
+                        }
+                        postRoleRequest(roles);
                     }
-                    postRoleRequest(roles);
                 }
-            }
-            
             return false ;
         }
-
-
 
         let returnBodyUser = function(){
             let body = {
@@ -530,6 +540,7 @@
 
         let returnBodyUpdateUser = function (){
             let body = {
+                '_METHOD':'PUT' ,
                 'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528', 
                 'user__id' : $('#user__id_edit').val() ,
                 'user__nom' : $('#user__nom_edit').val(), 
@@ -552,12 +563,14 @@
         //si faux je ne peux pas continuer sinon je peux afficher le message :
          let  verifyMailRequest = function (body) {
             let results = false ; 
-            $.ajax( local + '/verifymail', {
+            $.ajax( prod + '/verifymail', {
                 type: 'POST',  
-                async: false,
+                method : "POST" ,
+                crossDomain: true ,
                 data: JSON.stringify(body), 
                 success: function (data, status, xhttp) {
                     results = data.data
+                    renderUserTable()
                 },
                 error: function (jqXhr, textStatus, errorMessage) {
                     results = jqXhr.responseJSON.msg;
@@ -568,12 +581,13 @@
 
         let postUserRequest = function(body){
             let results = false ; 
-            $.ajax( local +  '/usersossuke', {
-                type: 'POST',  
+            $.ajax( prod +  '/usersossuke', {
+                type: 'POST', 
+                method : "POST" ,
+                crossDomain: true , 
                 async: false,
                 data: JSON.stringify(body), 
-                success: function (data, status, xhttp) {
-                   
+                success: function (data, status, xhttp) { 
                     results = data.data
                 },
                 error: function (jqXhr, textStatus, errorMessage) {
@@ -583,11 +597,54 @@
             return results;
         }
 
+        let updateUserRequest = function(body){
+            let results = false ; 
+            $.ajax( prod +  '/usersossuke', {
+                type: 'POST',  
+                crossDomain: true ,
+                async: false,
+                data: JSON.stringify(body), 
+                success: function (data, status, xhttp) {
+                    results = data.data
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    results = jqXhr;
+                }
+            });
+          
+            return results;
+        }
+
+        let getUserSossukeRequest = function(){
+            let results = false ; 
+            let body = {
+                'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528', 
+                'one': $('#cli__id').val(),
+            };
+            $.ajax( prod +  '/sossuke', {
+                type: 'POST',  
+                crossDomain: true ,
+                async: false,
+                data: JSON.stringify(body), 
+                success: function (data, status, xhttp) {
+                    results = data.data
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    results = jqXhr;
+                }
+            });
+            results = results.users;
+            return results;
+        }
+
+        
+
         let postUserRelation = function (body) {
             let results = false;
-            $.ajax(local + '/usersitessossuke', {
+            $.ajax(prod + '/usersitessossuke', {
                 type: 'POST',
-                async: false,
+                method : "POST" ,
+                crossDomain: true ,
                 data: JSON.stringify(body),
                 success: function (data, status, xhttp){
                     results = data.data
@@ -602,9 +659,9 @@
         let deleteRole = function(body){
             let results = false;
 
-            $.ajax(local + '/rolesossuke', {
-                type: 'DELETE',
-                dataType: 'JSON',
+            $.ajax(prod + '/rolesossuke', {
+                type: 'POST',
+                crossDomain: true ,
                 async: false,
                 data: JSON.stringify(body),
                 success: function (data, status, xhttp) {
@@ -619,33 +676,17 @@
         }
 
 
-        let updateUserRequest = function(body){
-            let results = false ; 
-          
-            $.ajax( local +  '/usersossuke', {
-                type: 'PUT',  
-                dataType: 'JSON' ,
-                async: false,
-                data: JSON.stringify(body), 
-                success: function (data, status, xhttp) {
-                    results = data.data
-                },
-                error: function (jqXhr, textStatus, errorMessage) {
-                    results = jqXhr;
-                }
-            });
-          
-            return results;
-        }
+        
 
         let postRoleRequest = function(body){
             let results = false ; 
-            $.ajax( local +  '/rolesossuke', {
+            $.ajax( prod +  '/rolesossuke', {
                 type: 'POST',  
-                async: false,
+                crossDomain: true ,
                 data: JSON.stringify(body), 
                 success: function (data, status, xhttp) {
                     results = data.data
+                    renderUserTable()
                 },
                 error: function (jqXhr, textStatus, errorMessage) {
                     results = jqXhr;
@@ -704,6 +745,76 @@
                 return (false)
             }
             return (true)
+        }
+
+        let closeAndCleanModalsUsers =function(){
+            $('.modal').modal('hide');
+            $('#user__mail').val("") , 
+            $('#user__nom').val(""), 
+            $('#user__prenom').val(""), 
+            $('#user__service').val(""),
+            $('#user__fonction').val(""), 
+            $('#user__gsm').val("")
+        }
+
+        let renderUserTable = function(){
+            //recup les users :
+            let user = getUserSossukeRequest();
+            //vide la table : 
+            userTable.clear().draw();
+            //insere la data :
+            for(i =0 ; i<user.length; i++ ){
+                //nom et prenom :
+                let nameText = "";
+                let role = '';
+                let societe = '';
+                if(user[i].user__confirm == 1){
+                     nameText = '<div class="past_greeen mx-2"><i class="fas fa-user"></i> ' + user[i].user__nom + ' ' + user[i].user__prenom +'</div>' ;
+                }else{
+                    nameText = '<div class="past_orange mx-2"><i class="fas fa-user"></i> ' + user[i].user__nom + ' ' + user[i].user__prenom +'</div>' ;
+                }
+                //role : 
+                if(user[i].roles.length > 0){
+                    for(y=0; y<user[i].roles.length; y++ ){
+                        if(user[i].roles[y] == "SUMYR"){
+                            role += '<div class="past_yellow mx-2 my-1"> Administrateur Recode</div><br>';
+                        }else if(user[i].roles[y] == "ADUSR"){
+                            role += '<div class="past_blue mx-2 my-1"> Administrateur</div><br>';
+                        }else if(user[i].roles[y] == "ACHAT"){
+                            role += '<div class="past_pink mx-2 my-1"> Achat</div><br>';
+                        }else if(user[i].roles[y] == "USER"){
+                            role += '<div class="past_blue mx-2 my-1"> Utilisateur</div><br>';
+                        }
+                    }
+
+                }else{
+                    role = '<div class="past_orange mx-2"><i class="fas fa-user"></i> Aucun roles</div>' ;
+                }
+                if(user[i].clients.length > 0){
+                    let count = 0 ;
+                    for(y=0; y<user[i].clients.length; y++ ){
+                        if(user[i].clients[y].cli__id != $('#cli__id').val() ){
+                            societe += '<a href="displaySocieteMyRecode?cli__id='+ user[i].clients[y].cli__id +'">'+ user[i].clients[y].cli__nom +'</a><br>';
+                            count ++ ;
+                        }
+                       
+                    }
+                    if(count ==  0 ){
+                        societe = "Aucune autre société ";
+                    }
+                }          
+                userTable.row.add([
+                    nameText , 
+                    user[i].user__mail , 
+                    user[i].user__fonction , 
+                    role , 
+                    societe , 
+                    JSON.stringify(user[i])
+                ]
+                )
+            }
+            userTable.draw();
+            closeAndCleanModalsUsers();
         }
     });
 

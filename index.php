@@ -205,6 +205,7 @@ $request = $_SERVER['REQUEST_URI'];
 			break;
 
 		case '/SoftRecode/displaySocieteMyRecode'.$get_data;
+			
 			echo MyRecodeSocieteController::display();
 			break;
 			
