@@ -120,20 +120,16 @@ if (empty($_SESSION['user']->id_utilisateur)) {
 	// si une modif de client à été effectué : 
 	if (!empty($_POST['modif__id']) && !empty($_POST['nom_societe']) && !empty($_POST['ville']) && !empty($_POST['code_postal'])) {
 
-		if (!empty($_POST['telephone'])) 
-		{
+		if (!empty($_POST['telephone'])){
 			$telephone = preg_replace('`[^0-9]`', '', $_POST['telephone']); 
 		}
-		else 
-		{
+		else {
 			$telephone = '';
 		}
-		if (!empty($_POST['fax'])) 
-		{
+		if (!empty($_POST['fax'])){
 			$fax = preg_replace('`[^0-9]`', '', $_POST['fax']); 
 		}
-		else 
-		{
+		else{
 			$fax = '';
 		}
 		//on met dabord à jour dans sossuke : 
@@ -150,19 +146,16 @@ if (empty($_SESSION['user']->id_utilisateur)) {
 		$General->updateAll('client', $_POST['vendeur'], 'client__id_vendeur', 'client__id', $_POST['modif__id']);
 		$General->updateAll('client', $_POST['siret_number'], 'client__siret', 'client__id', $_POST['modif__id']);
 		
-		if (!empty($_POST['ckeck_bloque'])) 
-		{
+		if (!empty($_POST['ckeck_bloque'])){
 			$General->updateAll('client', 1 , 'client__bloque', 'client__id', $_POST['modif__id']);
 		}
-		else
-		{
+		else{
 			$General->updateAll('client', 0 , 'client__bloque', 'client__id', $_POST['modif__id']);
 		}
-
 		$pays = mb_strtoupper($_POST['input_pays'], 'UTF8');
-		if ($pays === "FRANCE") {
+		if ($pays === "FRANCE"){
 			$pays = '';
-		} else {
+		}else{
 			$pays = $pays;
 		}
 		$General->updateAll('client',  $pays, 'client__pays', 'client__id', $_POST['modif__id']);
@@ -181,22 +174,16 @@ if (empty($_SESSION['user']->id_utilisateur)) {
 		$ContactTotoro->updateAll('client', $_POST['select_tva'],                         'code_tva',   'id_client', $_POST['modif__id']);
 		$ContactTotoro->updateAll('client', $_POST['intracom_input'],                     'tva',        'id_client', $_POST['modif__id']);
 		$ContactTotoro->updateAll('client', $_POST['vendeur'],                            'id_vendeur', 'id_client', $_POST['modif__id']);
-
 		$Contact->update_facturation_auto($_POST['facturation_auto'], $_POST['modif__id']);
 		$ContactTotoro->totoro_delete_contact_facturation_and_update($_POST['facturation_auto'], $_POST['modif__id']);
-
 		$facturation_auto = $Contact->get_facturation_auto($_POST['modif__id']);
-
 		$date = date("Y-m-d H:i:s");
 		$Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date, $_POST['modif__id'], ' modification de societe: ');
 		$alertModif = true;
 		//redirection vers la page de consultation : 
 		$_SESSION['search_switch'] = $_POST['modif__id'];
 		header('location: search_switch');
-		
 	}
-
-	
 	// Donnée transmise au template : 
 	echo $twig->render('societe_crea.twig', [
 		'user' => $user,
