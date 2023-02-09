@@ -528,6 +528,19 @@ class Article extends Table
 		return $data;
 	}
 
+	public function get_pn_for_myrecode(){
+		$SQL = 'SELECT a.apn__pn , a.apn__pn_long , a.apn__desc_short , a.apn__famille ,  l.id__fmm , f.afmm__famille , f.afmm__marque  , f.afmm__modele , k.kw__lib as famille , m.am__marque as marque
+		FROM art_pn as a  
+		LEFT JOIN liaison_fmm_pn as l ON ( a.apn__pn  = l.id__pn ) 
+		LEFT JOIN art_fmm as f ON ( f.afmm__id = l.id__fmm )
+		LEFT JOIN keyword as k ON ( k.kw__type = "famil"  and k.kw__value = a.apn__famille ) 
+		LEFT JOIN art_marque as m ON ( m.am__id = f.afmm__marque ) 
+		WHERE 1 = 1   ORDER BY id__pn';
+		$request = $this->Db->Pdo->query($SQL);
+		$data = $request->fetchAll(PDO::FETCH_OBJ);
+		return $data;
+	}
+
   public function get_pn_byID($pn_name)
   {
 	  	//compare le champs input dénué de caractère spéciaux et en majuscules : 

@@ -182,41 +182,31 @@
             </div>
 
 
-            {# <div class="col-10 card-recode mt-4">
+            <div class="col-10 card-recode mt-4">
                 <h4 class="recode-p"><i class="fas fa-layer-group"></i> Parc Matériel</h4>
                 <i class="far fa-question-circle"></i> Vous pouvez directement remplacer un matériel en renseignant un nouveau numéro de série
                 <table id="table_mat" class="display mt-3">
                     <div class="my-2 float-right">
-                        <button class="btn btn-recode-important"  data-toggle="modal" data-target="#modalUser">Ajouter</button>
+                        <button class="btn btn-recode-important"  data-toggle="modal" data-target="#modalmatosAjout">Ajouter</button>
                     </div>
                     <thead>
                         <tr>
+                            <th></th>
                             <th>ID</th>
                             <th>Type/Model</th>
                             <th>SN/PN</th>
                             <th>Memo</th>
-                            <th></th>
+                            <th>Commande/Contrat</th>
+                            <th>Garantie</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for row in client.materiels %}
                             <tr>
+                                <td>{{row|json_encode() }}</td>
                                 <td>{{row.mat__id}}</td>
                                 <td>
-                                    {% if row.mat__type == "ITH" %}
-                                            <div class="past_blue mx-2">
-                                                {{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}
-                                            </div>
-                                    {% elseif row.mat__type == "BTM" %}
-                                            <div class="past_greeen mx-2">
-                                                {{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}
-                                            </div>
-                                    {% else %}
-                                            <div class="past_pastel mx-2">
-                                                {{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}
-                                            </div>
-                                    {% endif %}
-                                    
+                                    <b>{{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}</b>
                                 </td>
                                 <td>S/N: <b>{{row.mat__sn}}</b><br>
                                     P/N: <b>{{row.mat__pn}}</b><br>
@@ -225,15 +215,29 @@
                                    {{row.mat__memo}}
                                 </td>
                                 <td>
-                                    <a href="displaySocieteMyRecode?cli__id={{client.cli__id}}"> <i class="fas fa-pen"></i> Editer</a><br>
-                                    <a href="displaySocieteMyRecode?cli__id={{client.cli__id}}"><i class="far fa-exchange"></i>Remplacer</a>
+                                   Commande N°: <b>{{row.mat__ident}}</b><br>
+                                   Contrat N°:  <b>{{row.mat__contrat_id}}</b>
                                 </td>
+                                <td>
+                                    {% if row.mat__kw_tg == "MNT" %}
+                                        Maintenance {{row.mat__date_offg}}
+                                    {% elseif  row.mat__kw_tg == "GRE"   %}
+                                        Garantie RECODE {{row.mat__date_offg}}
+                                    {% elseif  row.mat__kw_tg == "GCO"   %}
+                                        Garantie constructeur {{row.mat__date_offg}}
+                                    {% elseif  row.mat__kw_tg == "LOC"   %}
+                                        Location Recode {{row.mat__date_offg}}
+                                    {% else %}
+                                        Aucune garantie {{row.mat__date_offg}}
+                                    {% endif %}
+                                </td>
+                            
                             </tr>
                         {% endfor %}
                         
                     </tbody>
                 </table>
-            </div> #}
+            </div>
     </div>
 </main>
 
@@ -364,18 +368,87 @@
         </div>
     </div>
 </div>
-{# $('#table_mat').DataTable({
-    paging: true,
-    lengthMenu: [5 , 10 , 25 , 50 , 75],
-    language: {
-        lengthMenu: "Voir _MENU_ machines par page",
-        zeroRecords: "Aucuns résultats",
-        info: "Page: _PAGE_ sur _PAGES_ au total",
-        infoEmpty: "Aucuns résultats",
-        infoFiltered: "(résultats sur _MAX_ machines disponibles)",
-        search: "Rechercher"
-    }
-}); #}
+
+
+<!-- Modal  Matos ajout-->
+<div class="modal fade" id="modalmatosAjout" tabindex="-1" role="dialog" aria-labelledby="modalmatosAjout"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <form  method="post" >
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title">Ajout de matériel</h5>
+                        <p class="my-2"><i class="far fa-question-circle"></i> Le S/N est obligatoire et doit etre unique</p>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-12">
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" id="mat__pn">
+                                   {% for pn in pn_list %}
+                                        <option value="{{pn|json_encode()}}" >{{pn.famille ~ " " ~  pn.apn__pn_long ~ " " ~ pn.apn__desc_short ~ " " ~ pn.marque  }} </option>
+                                   {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-11 mb-2 d-flex justify-content-start">
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" id="mat__sn" placeholder="S/N" rows="2" required ></input>
+                            <small class="form-text text-muted"> Doit etre unique</small>
+                        </div>
+                        <div class="col-6  mb-1">
+                            <input class="form-control my-2 input-recode" id="mat__memo" placeholder="Mémo" rows="2" ></input>
+                            <small class="form-text text-muted"> Complément d'information diverses</small>
+                        </div>
+                    </div>
+                    <div class="col-11 mb-2 d-flex justify-content-start">
+                        <div class="col-6 mb-1">
+                            <input class="form-control my-2 input-recode" id="mat__idnec" placeholder="Numéro fiche Eurocomputeur" rows="2"  ></input>
+                            <small class="form-text text-muted"> Numero de la commande recode </small>
+                        </div>
+                        <div class="col-6">
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="mat__kw_tg">
+                                <option value="GNO">Pas de garantie</option>
+                                <option value="GCO">Garantie constructeur</option>
+                                <option value="LOC">Location Recode</option>
+                                <option value="GRE">Garantie Recode</option>
+                                <option value="MNT">Maintenance Recode</option>
+                         </select>
+                         <small class="form-text text-muted"> préciser la date si un contrat existe</small>
+                        </div>
+                    </div>
+                    <div class="col-11 mb-2 d-flex justify-content-start">
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" id="mat__contrat_id" placeholder="Numéro du contrat chez Recode" rows="2"  ></input>
+                            <small class="form-text text-muted"> Si un abonnement existe pour cette machine</small>
+                        </div>
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" id="mat__ident" placeholder="Numéro identification du client" rows="2" ></input>
+                            <small class="form-text text-muted"> Correspond Numero du client</small>
+                        </div>
+                    </div>
+                    <div class="col-11 mb-2 d-flex justify-content-start">
+                        <div class="col-7">
+                            <input class="form-control my-2 input-recode" type="date" id="mat__date_offg" ></input>
+                            <small class="form-text text-muted"> La date sera prise en compte si une garantie est présente </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="alert alert-secondary past_pastel" id="alert_matos_crea" role="alert">
+                        
+                    </div>
+                    <button class="btn btn-recode-important"  type="button" id="button_matos_crea">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}
 {% block script %}
@@ -414,6 +487,38 @@
                 search: "Rechercher"
             }
         });
+
+
+        var matosTable =  $('#table_mat').DataTable({
+            paging: true,
+            lengthMenu: [5 , 10 , 25 , 50 , 75],
+            columns: [
+                { "visible": false },
+                null,
+                null,
+                null,
+                null,
+                null, 
+                null
+               
+            ],
+            createdRow: function (row, data, index) {
+                $(row).attr('data-toggle' , "modal");
+                $(row).attr('data-target' , "#modalUserEdit");
+                $(row).css('cursor', 'pointer');
+                $(row).on('click' , function(){
+    
+                })
+            },
+            language: {
+                lengthMenu: "Voir _MENU_ machines par page",
+                zeroRecords: "Aucuns résultats",
+                info: "Page: _PAGE_ sur _PAGES_ au total",
+                infoEmpty: "Aucuns résultats",
+                infoFiltered: "(résultats sur _MAX_ machines disponibles)",
+                search: "Rechercher"
+            }
+        }); 
 
         
 
@@ -817,9 +922,136 @@
             userTable.draw();
             closeAndCleanModalsUsers();
         }
+
+        let renderMatosTable = function (){
+            let matos = getParcSossukeRequest();
+          
+            matosTable.clear().draw();
+           
+            for(i = 0 ; i < matos.length; i ++){
+                
+                let fmm =  matos[i].mat__type + " " + matos[i].mat__marque + '<br>' + matos[i].mat__model ;
+                let PN = 'S/N: <b>' +  matos[i].mat__sn + '</b><br>' + 'P/N: <b>' +  matos[i].mat__pn + '</b>'; 
+                let cmd = 'Commande N°: <b>' +  matos[i].mat__ident +  '</b><br>' + 'Contrat N°: ' +  matos[i].mat__contrat_id  + '</b>'; 
+                let garantie = 'Aucune garantie';
+                if(matos[i].mat__kw_tg == "GRE"){
+                    garantie = 'garantie RECODE';
+                }else if(matos[i].mat__kw_tg == "GCO"){
+                    garantie = 'garantie constructeur';
+                }else if(matos[i].mat__kw_tg == "LOC"){
+                    garantie = 'LOCATION RECODE';
+                }
+                matosTable.row.add([
+                    JSON.stringify(matos[i]), 
+                    fmm ,
+                    PN, 
+                    matos[i].mat__memo,
+                    cmd , 
+                    garantie
+                ])
+            }
+            matosTable.draw();
+            closeAndCleanModalsMatos();
+        }
+
+
+        $('#button_matos_crea').on('click' , function(){
+           let verification =  handleFmm()
+           if(verification){
+            $('#alert_matos_crea').text(verification);
+           }
+          
+        })
+
+        let handleFmm =function() {
+            let value = JSON.parse($('#mat__pn').val());
+            let results = {
+                'mat__pn' : value.apn__pn , 
+                'mat__marque': value.marque ,
+                'mat__type': value.famille , 
+                'mat__model' : value.afmm__modele, 
+                'mat__sn' : $('#mat__sn').val(), 
+                'mat__cli__id' : $('#cli__id').val(),
+                'mat__memo' : $('#mat__memo').val(),
+                'mat__kw_tg': $('#mat__kw_tg').val(),
+                'mat__date_offg': $('#mat__date_offg').val() , 
+                'mat__contrat_id' : $('#mat__contrat_id').val(), 
+                "mat__ident" : $('#mat__ident').val(),
+                'mat__idnec' : $('#mat__idnec').val() , 
+                'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528'
+            };
+            let verif = handleMatosForms(results)
+            if(verif) {return verif}
+            postMatosRequest(results)
+            
+        }
+
+        let postMatosRequest = function(body){
+            let results = false ; 
+            $.ajax( prod +  '/materiel', {
+                type: 'POST',  
+                crossDomain: true ,
+                async: true ,
+                data: JSON.stringify(body), 
+                success: function (data, status, xhttp) {
+                    results = data.data
+                    renderMatosTable()   
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    results = jqXhr;
+                }
+            });
+
+            return results;
+        }
+
+        let handleMatosForms = function($forms){
+
+            if(!valideNom($forms['mat__sn'])){
+                return 'Merci de renseigner le numéro de S/N';
+            }
+            if(!valideNom($forms['mat__idnec'])){
+                return 'Merci de renseigner le numéro de commande recode';
+            }
+            return false ;
+        }
+
+        let closeAndCleanModalsMatos =function(){
+            $('.modal').modal('hide');
+            $('#mat__sn').val("") , 
+            $('#mat__kw_tg').val("GARVEN"), 
+            $('#mat__date_offg').val(""), 
+            $('#mat__contrat_id').val(""),
+            $('#mat__idnec').val(""), 
+            $('#user__gsm').val(""),
+            $('#mat__ident').val(""), 
+            $('#mat__memo').val("")
+        }
+
+        let getParcSossukeRequest = function(){
+            let results = false ; 
+            let query = {  
+                'cli__id': $('#cli__id').val(),
+                'RECODE__PASS' : 'testtfvgz4564564**zatyf§§/tettavapouuzvcaQQZAcvrtestdetestrapondre'
+            };
+            $.ajax( prod +  '/materiel', {
+                type: 'GET',  
+                crossDomain: true ,
+                async: false,
+                data: query, 
+                success: function (data, status, xhttp) {
+                    results = data.data
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    results = jqXhr;
+                }
+            });
+            return results;
+        }
+
+       
+        
     });
-
-
 
 </script>
 {% endblock %}
