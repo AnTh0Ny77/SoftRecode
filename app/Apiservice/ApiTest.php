@@ -86,6 +86,28 @@ class ApiTest extends BasicController {
         return $response->getBody()->read(12048);  
     }
 
+
+    public static function getShopConditions($token, $sco__cli_id)
+    {
+        $config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->get(
+                $env_uri . '/ShopConditions',
+                [
+                    'headers' => self::makeHeaders($token),
+                    'query' =>  ['sco__cli_id' => $sco__cli_id]
+                ]
+            );
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+            exit();
+        }
+        return $response->getBody()->read(12048);
+    }
+
     public static function getFiles($token , $id_ligne , $name){
         $config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
         $base_uri = $config->api->host;
