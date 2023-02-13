@@ -202,7 +202,12 @@
                     </thead>
                     <tbody>
                         {% for row in client.materiels %}
-                            <tr>
+                            {% if row.mat__actif == 1  %}
+                                <tr style="background-color: #DCEDC2;">
+                            {% else %}
+                                <tr style="background-color: #FFD4D4;">
+                            {% endif %}
+                            
                                 <td>{{row|json_encode() }}</td>
                                 <td>{{row.mat__id}}</td>
                                 <td>
@@ -231,16 +236,13 @@
                                         Aucune garantie {{row.mat__date_offg}}
                                     {% endif %}
                                 </td>
-                            
                             </tr>
                         {% endfor %}
-                        
                     </tbody>
                 </table>
             </div>
     </div>
 </main>
-
 
 <!-- Modal  Utilisateur création-->
 <div class="modal fade" id="modalUser" tabindex="-1" role="dialog" aria-labelledby="modalUser"
@@ -388,11 +390,11 @@
                 <div class="modal-body">
                     <div class="col-11 d-flex justify-content-start">
                         <div class="col-12">
-                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" id="mat__pn">
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" id="mat__model">
                                    {% for pn in pn_list %}
-                                        <option value="{{pn|json_encode()}}" >{{pn.famille ~ " " ~  pn.apn__pn_long ~ " " ~ pn.apn__desc_short ~ " " ~ pn.marque  }} </option>
+                                        <option value="{{pn|json_encode()}}" >{{pn.famille ~ " " ~  pn.Marque ~ " " ~ pn.afmm__modele }}  </option>
                                    {% endfor %}
-                            </select>
+                            </select> 
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
@@ -400,25 +402,20 @@
                             <input class="form-control my-2 input-recode" id="mat__sn" placeholder="S/N" rows="2" required ></input>
                             <small class="form-text text-muted"> Doit etre unique</small>
                         </div>
-                        <div class="col-6  mb-1">
-                            <input class="form-control my-2 input-recode" id="mat__memo" placeholder="Mémo" rows="2" ></input>
-                            <small class="form-text text-muted"> Complément d'information diverses</small>
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" id="mat__pn" placeholder="P/N" rows="2" required ></input>
+                            <small class="form-text text-muted"> Optionnel</small>
                         </div>
+                       
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6 mb-1">
                             <input class="form-control my-2 input-recode" id="mat__idnec" placeholder="Numéro fiche Eurocomputeur" rows="2"  ></input>
                             <small class="form-text text-muted"> Numero de la commande recode </small>
                         </div>
-                        <div class="col-6">
-                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="mat__kw_tg">
-                                <option value="GNO">Pas de garantie</option>
-                                <option value="GCO">Garantie constructeur</option>
-                                <option value="LOC">Location Recode</option>
-                                <option value="GRE">Garantie Recode</option>
-                                <option value="MNT">Maintenance Recode</option>
-                         </select>
-                         <small class="form-text text-muted"> préciser la date si un contrat existe</small>
+                        <div class="col-6  mb-1">
+                            <input class="form-control my-2 input-recode" id="mat__memo" placeholder="Mémo" rows="2" ></input>
+                            <small class="form-text text-muted"> Complément d'information diverses</small>
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
@@ -432,10 +429,21 @@
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
-                        <div class="col-7">
+                        <div class="col-6">
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="mat__kw_tg">
+                                <option value="GNO">Pas de garantie</option>
+                                <option value="GCO">Garantie constructeur</option>
+                                <option value="LOC">Location Recode</option>
+                                <option value="GRE">Garantie Recode</option>
+                                <option value="MNT">Maintenance Recode</option>
+                         </select>
+                         <small class="form-text text-muted">Type de garantie/préciser la date de fin </small>
+                        </div>
+                        <div class="col-6">
                             <input class="form-control my-2 input-recode" type="date" id="mat__date_offg" ></input>
                             <small class="form-text text-muted"> La date sera prise en compte si une garantie est présente </small>
                         </div>
+                        
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -443,6 +451,95 @@
                         
                     </div>
                     <button class="btn btn-recode-important"  type="button" id="button_matos_crea">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal  Matos edit-->
+<div class="modal fade" id="modalmatosEdit" tabindex="-1" role="dialog" aria-labelledby="modalmatosAjout"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <form  method="post" >
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title">Modification de matériel</h5>
+                        <p class="my-2"><i class="far fa-question-circle"></i> Le S/N est obligatoire et doit etre unique</p>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-12">
+                            <input type="hidden" id="mat__id_edit">
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" id="mat__model_edit" >
+                                   {% for pn in pn_list %}
+                                        <option value="{{pn|json_encode()}}" >{{pn.famille ~ " " ~  pn.Marque ~ " " ~ pn.afmm__modele }} </option>
+                                   {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-11 mb-2 d-flex justify-content-start">
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" id="mat__sn_edit" placeholder="S/N" rows="2" required readonly></input>
+                            <small class="form-text text-muted"> Doit etre unique</small>
+                        </div>
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" id="mat__pn_edit" placeholder="P/N" rows="2" required ></input>
+                            <small class="form-text text-muted"> Optionnel</small>
+                        </div>
+                    </div>
+                    <div class="col-11 mb-2 d-flex justify-content-start">
+                        <div class="col-6 mb-1">
+                            <input class="form-control my-2 input-recode" id="mat__idnec_edit" placeholder="Numéro fiche Eurocomputeur" rows="2"  ></input>
+                            <small class="form-text text-muted"> Numero de la commande recode </small>
+                        </div>
+                        <div class="col-6  mb-1">
+                            <input class="form-control my-2 input-recode" id="mat__memo_edit" placeholder="Mémo" rows="2" ></input>
+                            <small class="form-text text-muted"> Complément d'information diverses</small>
+                        </div>
+                    </div>
+                    <div class="col-11 mb-2 d-flex justify-content-start">
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" id="mat__contrat_id_edit" placeholder="Numéro du contrat chez Recode" rows="2"  ></input>
+                            <small class="form-text text-muted"> Si un abonnement existe pour cette machine</small>
+                        </div>
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" id="mat__ident_edit" placeholder="Numéro identification du client" rows="2" ></input>
+                            <small class="form-text text-muted"> Correspond Numero du client</small>
+                        </div>
+                    </div>
+                    <div class="col-11 mb-2 d-flex justify-content-start">
+                        <div class="col-6">
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="mat__kw_tg_edit">
+                                <option value="GNO">Pas de garantie</option>
+                                <option value="GCO">Garantie constructeur</option>
+                                <option value="LOC">Location Recode</option>
+                                <option value="GRE">Garantie Recode</option>
+                                <option value="MNT">Maintenance Recode</option>
+                         </select>
+                         <small class="form-text text-muted"> préciser la date si un contrat existe</small>
+                        </div>
+                        <div class="col-6">
+                            <input class="form-control my-2 input-recode" type="date" id="mat__date_offg_edit" ></input>
+                            <small class="form-text text-muted"> La date sera prise en compte si une garantie est présente </small>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="alert alert-secondary past_pastel" id="alert_matos_edit" role="alert">
+                        
+                    </div>
+                    <button class="btn btn-recode-danger"  type="button" id="button_matos_delete">Désactiver</button>
+                    <button class="btn btn-recode-warning"  type="button" id="button_matos_delete">Remplacer</button>
+                    <button class="btn btn-recode-important"  type="button" id="button_matos_edit">Modifier</button>
                 </div>
             </form>
         </div>
@@ -500,14 +597,21 @@
                 null,
                 null, 
                 null
-               
             ],
             createdRow: function (row, data, index) {
-               // $(row).attr('data-toggle' , "modal");
-               // $(row).attr('data-target' , "#modalUserEdit");
+                $(row).attr('data-toggle' , "modal");
+                $(row).attr('data-target' , "#modalmatosEdit");
                 $(row).css('cursor', 'pointer');
-                $(row).on('click' , function(){
-    
+                datax = JSON.parse($(data)[0]);
+                if(datax.mat__actif != 1 ){
+                    $(row).css('background-color', '#FFD4D4');
+                }else{
+                    $(row).css('background-color', '#C0EDA6');
+                }
+                $(row).on('click' , function(){   
+                    functionMatosTableModal($(data)); 
+                    
+                   
                 })
             },
             language: {
@@ -519,8 +623,6 @@
                 search: "Rechercher"
             }
         }); 
-
-        
 
         $("#table_id tr").css('cursor', 'pointer');
 
@@ -548,11 +650,33 @@
             $('#user__role_edit').selectpicker('refresh');
         }
 
-       
+
+        let functionMatosTableModal = function (data){
+           
+            data = JSON.parse(data[0]);
+            let fmm = JSON.stringify({
+                'famille': data.mat__type,
+                'Marque': data.mat__marque,
+                'afmm__modele' : data.mat__model, 
+            })
+            $('#mat__model_edit').selectpicker('deselectAll');
+            $('#mat__kw_tg_edit').selectpicker('deselectAll');
+            $('#mat__id_edit').val(data.mat__id);
+            $('#mat__sn_edit').val(data.mat__sn);
+            $('#mat__memo_edit').val(data.mat__memo);
+            $('#mat__idnec_edit').val(data.mat__idnec);
+            $('#mat__ident_edit').val(data.mat__ident);
+            $('#mat__date_offg_edit').val(data.mat__date_offg);
+            $('#mat__contrat_id_edit').val(data.mat__contrat_id);
+            $('#mat__model_edit').selectpicker('val',fmm);
+            $('#mat__kw_tg_edit').selectpicker('val', data.mat__kw_tg);
+            $('#mat__model_edit').selectpicker('refresh');
+            $('#mat__kw_tg_edit').selectpicker('refresh');
+        }
 
         $('user__role').selectpicker();
 
-        $('#button_user_crea').on('click' , function(){
+         $('#button_user_crea').on('click' , function(){
             let verification = PostUser();
             if(verification) {
                 $('#alert_user').text(verification);
@@ -569,8 +693,12 @@
             }else {
                 
             }
-
         });
+
+
+        let UpdateMatos = function(){
+
+        }
 
         let PostUser = function(){
             let body = returnBodyUser()
@@ -665,11 +793,11 @@
         }
 
         const prod = "http://192.168.1.105/api" ; 
-        const local = "http://localhost/RESTapi/";
+        const local = "http://prodhost/RESTapi/";
         //si faux je ne peux pas continuer sinon je peux afficher le message :
          let  verifyMailRequest = function (body) {
             let results = false ; 
-            $.ajax( local + '/verifymail', {
+            $.ajax( prod + '/verifymail', {
                 type: 'POST',  
                 method : "POST" ,
                 crossDomain: true ,
@@ -687,7 +815,7 @@
 
         let postUserRequest = function(body){
             let results = false ; 
-            $.ajax( local +  '/usersossuke', {
+            $.ajax( prod +  '/usersossuke', {
                 type: 'POST', 
                 method : "POST" ,
                 crossDomain: true , 
@@ -705,7 +833,7 @@
 
         let updateUserRequest = function(body){
             let results = false ; 
-            $.ajax( local +  '/usersossuke', {
+            $.ajax( prod +  '/usersossuke', {
                 type: 'POST',  
                 crossDomain: true ,
                 async: false,
@@ -727,7 +855,7 @@
                 'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528', 
                 'one': $('#cli__id').val(),
             };
-            $.ajax( local +  '/sossuke', {
+            $.ajax( prod +  '/sossuke', {
                 type: 'POST',  
                 crossDomain: true ,
                 async: false,
@@ -747,7 +875,7 @@
 
         let postUserRelation = function (body) {
             let results = false;
-            $.ajax(local + '/usersitessossuke', {
+            $.ajax(prod + '/usersitessossuke', {
                 type: 'POST',
                 method : "POST" ,
                 crossDomain: true ,
@@ -765,7 +893,7 @@
         let deleteRole = function(body){
             let results = false;
 
-            $.ajax(local + '/rolesossuke', {
+            $.ajax(prod + '/rolesossuke', {
                 type: 'POST',
                 crossDomain: true ,
                 async: false,
@@ -781,12 +909,9 @@
             return results;
         }
 
-
-        
-
         let postRoleRequest = function(body){
             let results = false ; 
-            $.ajax( local +  '/rolesossuke', {
+            $.ajax( prod +  '/rolesossuke', {
                 type: 'POST',  
                 crossDomain: true ,
                 data: JSON.stringify(body), 
@@ -965,10 +1090,11 @@
         })
 
         let handleFmm =function() {
-            let value = JSON.parse($('#mat__pn').val());
+            let value = JSON.parse($('#mat__model').val());
+            
             let results = {
-                'mat__pn' : value.apn__pn , 
-                'mat__marque': value.marque ,
+                'mat__pn' : $('#mat__pn').val() , 
+                'mat__marque': value.Marque ,
                 'mat__type': value.famille , 
                 'mat__model' : value.afmm__modele, 
                 'mat__sn' : $('#mat__sn').val(), 
@@ -989,7 +1115,7 @@
 
         let postMatosRequest = function(body){
             let results = false ; 
-            $.ajax( local +  '/materiel', {
+            $.ajax( prod +  '/materiel', {
                 type: 'POST',  
                 crossDomain: true ,
                 async: true ,
@@ -1002,12 +1128,10 @@
                     results = jqXhr;
                 }
             });
-
             return results;
         }
 
         let handleMatosForms = function($forms){
-
             if(!valideNom($forms['mat__sn'])){
                 return 'Merci de renseigner le numéro de S/N';
             }
@@ -1035,7 +1159,7 @@
                 'cli__id': $('#cli__id').val(),
                 'RECODE__PASS' : 'testtfvgz4564564**zatyf§§/tettavapouuzvcaQQZAcvrtestdetestrapondre'
             };
-            $.ajax( local +  '/materiel', {
+            $.ajax( prod +  '/materiel', {
                 type: 'GET',  
                 crossDomain: true ,
                 async: false,
@@ -1049,9 +1173,6 @@
             });
             return results;
         }
-
-       
-        
     });
 
 </script>

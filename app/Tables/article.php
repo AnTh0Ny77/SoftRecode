@@ -812,6 +812,20 @@ public function getModels()
 	return $data ; 
 }
 
+
+public function getModelsMyRecode()
+{
+	$request = $this->Db->Pdo->query(
+	'SELECT   k.kw__lib as famille , m.am__marque as Marque , afmm__modele
+	FROM art_fmm
+	INNER JOIN art_marque as m ON afmm__marque = m.am__id
+	INNER JOIN keyword as k on afmm__famille = k.kw__value 
+	WHERE afmm__actif > 0 
+	order by k.kw__ordre ASC, afmm__modele ASC');
+	$data = $request->fetchAll(PDO::FETCH_OBJ);
+	return $data ; 
+}
+
 public function find_models_byFamille($famille_char_3)
 {
 	$request = $this->Db->Pdo->query(
@@ -837,7 +851,6 @@ public function find_models( string $find_by , string  $value) : array
 	order by k.kw__ordre ASC, afmm__modele ASC');
 	$data = $request->fetchAll(PDO::FETCH_OBJ);
 	return $data ; 
-	
 }
 
 public function find_model( string $find_by , string  $value) 
@@ -849,14 +862,11 @@ public function find_model( string $find_by , string  $value)
 	INNER JOIN keyword as k on afmm__famille = k.kw__value 
 	WHERE afmm__actif > 0 AND ( '. $find_by .' = "'. $value .'"  )');
 	$data = $request->fetch(PDO::FETCH_OBJ);
-	
-	return $data ; 
-	
+	return $data; 
 }
 
 //recupère la désignation commerciale pour les suggestions aux commerciaux lors des devis : 
-public function get_article_devis(int  $id_fmm) 
-{
+public function get_article_devis(int  $id_fmm){
 	$request = $this->Db->Pdo->query(
 	'SELECT a.afmm__id , a.afmm__design_com , a.afmm__image , k.kw__lib , a.afmm__modele , m.am__marque 
 	FROM art_fmm as a

@@ -56,6 +56,18 @@
     font-size: 14px !important;
 }
 
+.btn-recode-danger {
+    background-color: #e93e20 !important;
+    /* Green */
+    border: none !important;
+    color: white !important;
+    padding: 12px 27px !important;
+    text-align: center !important;
+    text-decoration: none !important;
+    display: inline-block !important;
+    font-size: 14px !important;
+}
+
 .btn-recode-warning {
     background-color: #F77D24;
     /* Green */

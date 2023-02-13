@@ -77,8 +77,7 @@ class MyRecodeSocieteController extends BasicController {
 
         if (empty($client)){header('location SocieteMyRecode');die();}
 
-        $pn_list = $Article->get_pn_for_myrecode();
-       
+        $pn_list = $Article->getModelsMyRecode();
 
         header("Access-Control-Allow-Origin: *");
         return self::$twig->render(
