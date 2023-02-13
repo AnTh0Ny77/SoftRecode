@@ -86,6 +86,28 @@ class ApiTest extends BasicController {
         return $response->getBody()->read(12048);  
     }
 
+
+    public static function getShopConditions($token, $sco__cli_id)
+    {
+        $config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->get(
+                $env_uri . '/ShopConditions',
+                [
+                    'headers' => self::makeHeaders($token),
+                    'query' =>  ['sco__cli_id' => $sco__cli_id]
+                ]
+            );
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+            exit();
+        }
+        return $response->getBody()->read(12048);
+    }
+
     public static function getFiles($token , $id_ligne , $name){
         $config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
         $base_uri = $config->api->host;
@@ -301,6 +323,72 @@ class ApiTest extends BasicController {
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
         }  
+        return self::handleResponse($response);
+    }
+
+    
+    // les parapametres de query peuvent etre :  sar__famille[] , search ( texte de recherche )  , sav__id[] qui est la uniquement pour les recherche par id , les sav__cli_id[] sont retrouvés uniquement a partir des client dispo pour l utilisateur connecté 
+    //exemple de query  [
+    //        'sar__famille[]' => 'ITH' ,
+    //         'search'  => 'test de recherche'
+    //]
+    public static function getShopAVendre($token, $query){
+        $config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+
+            $response = $client->get($env_uri . '/ShopAVendre', [
+                'headers' => self::makeHeaders($token),
+                'query' => $query,
+                'http_errors' => false
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
+        return self::handleResponse($response);
+    }
+
+    //contient post une shopCMd /
+    // pas besoin de préciser la date et le user ( auto ) pour reste respecter le champs de la base de donnée dans le body : ex :
+    // $body = [ 'scm__client_id_livr' => 213458 , 'scm__client_id_fact' => 5166546 , 'scm__prix_port' => 32.59 , 'scm__ref_client' => 'blablabla ]; 
+    public static function PostShopCmd($token, $body)
+    {
+        $config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->post($env_uri .  '/Shopcmd', [
+                'headers' => self::makeHeaders($token),
+                'json' => $body,
+                'http_errors' => false
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
+        return self::handleResponse($response);
+    }
+
+    //contient post une shopCMdLigne /
+    // respecter le champs de la base de donnée dans le body : ex :
+    // $body = [ 'scl__scm_id' => 213458 , 'scl__ref_id' => 5166546 , 'scl__prix_unit' => 32.59 , 'scl__qte' => 3 ]; 
+    public static function PostShopCmdLigne($token, $body)
+    {
+        $config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->post($env_uri .  '/ShopcmdLigne', [
+                'headers' => self::makeHeaders($token),
+                'json' => $body,
+                'http_errors' => false
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
         return self::handleResponse($response);
     }
 

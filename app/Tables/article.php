@@ -528,6 +528,19 @@ class Article extends Table
 		return $data;
 	}
 
+	public function get_pn_for_myrecode(){
+		$SQL = 'SELECT a.apn__pn , a.apn__pn_long , a.apn__desc_short , a.apn__famille ,  l.id__fmm , f.afmm__famille , f.afmm__marque  , f.afmm__modele , k.kw__lib as famille , m.am__marque as marque
+		FROM art_pn as a  
+		LEFT JOIN liaison_fmm_pn as l ON ( a.apn__pn  = l.id__pn ) 
+		LEFT JOIN art_fmm as f ON ( f.afmm__id = l.id__fmm )
+		LEFT JOIN keyword as k ON ( k.kw__type = "famil"  and k.kw__value = a.apn__famille ) 
+		LEFT JOIN art_marque as m ON ( m.am__id = f.afmm__marque ) 
+		WHERE 1 = 1   ORDER BY id__pn';
+		$request = $this->Db->Pdo->query($SQL);
+		$data = $request->fetchAll(PDO::FETCH_OBJ);
+		return $data;
+	}
+
   public function get_pn_byID($pn_name)
   {
 	  	//compare le champs input dénué de caractère spéciaux et en majuscules : 
@@ -799,6 +812,20 @@ public function getModels()
 	return $data ; 
 }
 
+
+public function getModelsMyRecode()
+{
+	$request = $this->Db->Pdo->query(
+	'SELECT   k.kw__lib as famille , m.am__marque as Marque , afmm__modele
+	FROM art_fmm
+	INNER JOIN art_marque as m ON afmm__marque = m.am__id
+	INNER JOIN keyword as k on afmm__famille = k.kw__value 
+	WHERE afmm__actif > 0 
+	order by k.kw__ordre ASC, afmm__modele ASC');
+	$data = $request->fetchAll(PDO::FETCH_OBJ);
+	return $data ; 
+}
+
 public function find_models_byFamille($famille_char_3)
 {
 	$request = $this->Db->Pdo->query(
@@ -824,7 +851,6 @@ public function find_models( string $find_by , string  $value) : array
 	order by k.kw__ordre ASC, afmm__modele ASC');
 	$data = $request->fetchAll(PDO::FETCH_OBJ);
 	return $data ; 
-	
 }
 
 public function find_model( string $find_by , string  $value) 
@@ -836,14 +862,11 @@ public function find_model( string $find_by , string  $value)
 	INNER JOIN keyword as k on afmm__famille = k.kw__value 
 	WHERE afmm__actif > 0 AND ( '. $find_by .' = "'. $value .'"  )');
 	$data = $request->fetch(PDO::FETCH_OBJ);
-	
-	return $data ; 
-	
+	return $data; 
 }
 
 //recupère la désignation commerciale pour les suggestions aux commerciaux lors des devis : 
-public function get_article_devis(int  $id_fmm) 
-{
+public function get_article_devis(int  $id_fmm){
 	$request = $this->Db->Pdo->query(
 	'SELECT a.afmm__id , a.afmm__design_com , a.afmm__image , k.kw__lib , a.afmm__modele , m.am__marque 
 	FROM art_fmm as a

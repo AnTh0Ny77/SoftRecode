@@ -8,6 +8,8 @@ use App\Tables\User;
 use DateTime;
 use App\Tables\Tickets;
 use App\Apiservice\ApiTest;
+use App\Tables\Article;
+use App\Database;
 
 
 class MyRecodeSocieteController extends BasicController {
@@ -47,7 +49,11 @@ class MyRecodeSocieteController extends BasicController {
     {
         self::init();
         self::security();
+        $Database = new Database('devis');
+        $Database->DbConnect();
         $Api = new ApiTest();
+        $Article = new Article($Database);
+
         if (empty($_SESSION['user']->refresh_token)) {
             $token = $Api->login($_SESSION['user']->email, 'test');
             if ($token['code'] != 200) {
@@ -71,12 +77,15 @@ class MyRecodeSocieteController extends BasicController {
 
         if (empty($client)){header('location SocieteMyRecode');die();}
 
+        $pn_list = $Article->getModelsMyRecode();
+
         header("Access-Control-Allow-Origin: *");
         return self::$twig->render(
             'display_societe_myrecode.html.twig',
             [
                 'user' => $_SESSION['user'],
-                'client' => $client
+                'client' => $client , 
+                'pn_list' => $pn_list
             ]
         );
     }
