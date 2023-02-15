@@ -840,8 +840,7 @@ public function find_models_byFamille($famille_char_3)
 }
 
 
-public function find_models( string $find_by , string  $value) : array
-{
+public function find_models(string $find_by,string  $value) : array{
 	$request = $this->Db->Pdo->query(
 	'SELECT afmm__id ,  afmm__image ,  afmm__modele, k.kw__lib as famille , m.am__marque as Marque 
 	FROM art_fmm

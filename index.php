@@ -17,6 +17,7 @@ use App\Controller\TicketsFormsController;
 use App\Controller\TicketsDisplayController;
 use App\Controller\UserMyRecodeController;
 use App\Controller\MyRecodeSocieteController;
+use App\Controller\MyRecodeBoutiqueController;
 
 $request = $_SERVER['REQUEST_URI'];
 
@@ -205,9 +206,15 @@ $request = $_SERVER['REQUEST_URI'];
 			break;
 
 		case '/SoftRecode/displaySocieteMyRecode'.$get_data;
-			
 			echo MyRecodeSocieteController::display();
 			break;
+
+		case '/SoftRecode/displayBoutiqueMyRecode' . $get_data;
+			echo MyRecodeBoutiqueController::displayList();
+			break;
+
+
+		
 			
 		case '/SoftRecode/demo'.$get_data;
 			var_dump(test::testFilesRequest());
