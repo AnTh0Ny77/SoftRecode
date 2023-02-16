@@ -1,0 +1,6 @@
+{
+    "api": {
+        "host": "http://localhost/" ,
+        "env_uri" : "/RESTapi/"
+    }
+}

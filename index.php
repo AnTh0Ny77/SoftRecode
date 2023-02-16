@@ -7,6 +7,7 @@ use App\Api\ApiList;
 use App\Api\ApiDevis;
 use App\Api\ApiFacture;
 use App\Api\ApiTickets;
+use App\Api\ApiBoutique;
 use App\Api\Demo as test;
 use App\Apiservice\ApiTest;
 use App\Api\ApiListDocTickets;
@@ -187,6 +188,10 @@ $request = $_SERVER['REQUEST_URI'];
 
 		case '/SoftRecode/apiListDocuments'.$get_data;
 			echo ApiListDocTickets::index($_SERVER['REQUEST_METHOD']);
+			break;
+
+		case '/SoftRecode/apiBoutique'.$get_data;
+			echo ApiBoutique::index($_SERVER['REQUEST_METHOD']);
 			break;
 
 		case '/SoftRecode/transfertClient'.$get_data;

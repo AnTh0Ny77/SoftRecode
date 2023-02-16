@@ -238,6 +238,24 @@ class ApiTest extends BasicController {
         return self::handleResponse($response);
     }
 
+    public static function postShopArticle($token, $json){
+        $config =json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->post( $env_uri . '/ShopArticle', 
+            ['headers' => self::makeHeaders($token),
+            'json' =>  $json,
+            'http_errors' => false
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+            exit();
+        }
+        return self::handleResponse($response);
+    }
+
     public static function getPromo($token ){
         $config =json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
         $base_uri = $config->api->host;

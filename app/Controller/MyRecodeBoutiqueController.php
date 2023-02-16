@@ -17,7 +17,11 @@ class MyRecodeBoutiqueController extends BasicController {
     public static function displayList(){
         self::init();
         self::security();
+        $Database = new Database('devis');
+        $Database->DbConnect();
         $Api = new ApiTest();
+        $Article = new Article($Database);
+
         if (empty($_SESSION['user']->refresh_token)) {
             $token = $Api->login($_SESSION['user']->email , 'test');
             if ($token['code'] != 200) {
@@ -35,8 +39,8 @@ class MyRecodeBoutiqueController extends BasicController {
             $token =  $refresh['token']['token'];
         }
 
-        $list = [];
-       
+        $list = $Article->get_pn_for_myrecode();
+
         return self::$twig->render(
             'display_boutique_myrecode.html.twig',[
                 'user' => $_SESSION['user'] , 
