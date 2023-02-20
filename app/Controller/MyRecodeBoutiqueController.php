@@ -41,10 +41,14 @@ class MyRecodeBoutiqueController extends BasicController {
 
         $list = $Article->get_pn_for_myrecode();
 
+      
+
+       
+
         return self::$twig->render(
             'display_boutique_myrecode.html.twig',[
                 'user' => $_SESSION['user'] , 
-                'pn_list' => $list
+                'pn_list' => $list 
             ]
         );
     }

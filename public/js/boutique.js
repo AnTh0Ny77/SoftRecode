@@ -7,6 +7,13 @@ $(document).ready(function(){
     }
 
     var Table = null;
+
+
+    let renderSAVTable = function(){
+        
+    }
+
+    
     $.ajax(prod + '/boutiqueSossuke', {
             type: 'POST',
             method: "POST",
@@ -23,16 +30,16 @@ $(document).ready(function(){
                    let gar = 'Aucune '
                    if (element[7] != null) {
                     gar = element[7] + ' mois ' +  element[8] + ' € HT'
-                   }
-                  
+                   }              
                    let temp = [ref , etatFinal ,  '<b>' + element[4] + '€</b> HT' ,  element[5] , gar , element[12].sar__image]; 
                    results.push(temp);
                 });
-                console.log(dataSet);
+                
                 Table = $('#table_bot').DataTable({
                     paging: true,
                     order: [[0, 'desc']] ,
                     lengthMenu: [ 5],
+                    bLengthChange : false ,
                     data: results,
                     columns: [
                         { title: 'Reference' },
@@ -75,6 +82,125 @@ $(document).ready(function(){
         });
 
 
+        let conditionRequest = function(){
+            let body = {
+                "secret" : "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528", 
+                'sco__cli_id' :  $('#cli__id').val()
+            }
+            $.ajax(prod + '/boutiqueSossuke', {
+                type: 'POST',
+                method: "POST",
+                crossDomain: true,
+                data: JSON.stringify(body),
+                success: function (data, status, xhttp) {
+                    let dataSet = data.data;
+                    let string = 'Non renseigné';
+                    if (dataSet.sco__type_port != null) {
+                        $('#sco__type_port').val(dataSet.sco__type_port);
+                    }
+                    
+                    $('#sco__cli_id_fact').val(dataSet.sco__cli_id_fact);
+                    
+                    if(dataSet.sco__type_port == 'FRNCO'){
+                        string = 'Franco de port'
+                    }else if(dataSet.sco__type_port == 'FRCOA'){
+                       string = 'Franco à '+ dataSet.sco__francoa + ' €';
+                       if (dataSet.sco__francoa) {
+                        $('#sco__francoa').val(dataSet.sco__francoa);
+                       }
+                      
+                    }else if(dataSet.sco__type_port == 'NOFRC'){
+                        string = 'Pas de Franco';
+                    }
+                    let prix = 'Non Renseigné';
+                    if (dataSet.sco__prix_port > 0) {
+                        prix = dataSet.sco__prix_port + ' €';
+                        $('#sco__prix_port').val(dataSet.sco__prix_port);
+                    }
+                    let vue = 'Non Renseigné' ;
+                    $('#sco__vue_ref').val('NON');
+                    if (dataSet.sco__vue_ref) {
+                        $('#sco__vue_ref').val(dataSet.sco__vue_ref);
+                        vue =  dataSet.sco__vue_ref;
+                    }
+                    $('#sco__type_port_d').html('<i class="fas fa-fighter-jet"></i> Type de port : <b>' + string + '</b>');
+                    $('#sco__prix_port_d').html('<i class="fas fa-euro-sign"></i> prix port :  <b>' + prix + '</b>');
+                    $('#sco__vue_ref_d').html('<i class="fas fa-eye"></i> Vue sur les ref : <b>' + vue + '</b>'); 
+                    $('#alert_condition').text('');
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    results = jqXhr.responseJSON.msg;
+                    console.log(results);
+                }
+            });
+        }
+
+        conditionRequest();
+
+        $('#button_condition_modal').on('click' , function(){
+            conditionRequest();
+        })
+
+        $('#boutton_condition').on('click' , function(){
+            let verif = verifyCondition()
+            if (verif) {
+                $('#alert_condition').text(verif);
+            }else {
+                let body = {
+                    "sco__cli_id_r": $('#cli__id').val() , 
+                    "sco__type_port" : $('#sco__type_port').val(),
+                    "sco__cli_id_fact" : $('#sco__cli_id_fact').val() ,
+                    "sco__francoa" : $('#sco__francoa').val(),
+                    "sco__prix_port" : $('#sco__prix_port').val(),
+                    "sco__vue_ref" : $('#sco__vue_ref').val() , 
+                    "secret" : "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528"
+                };
+                $.ajax(prod + '/boutiqueSossuke', {
+                    type: 'POST',
+                    method: "POST",
+                    crossDomain: true,
+                    async: false ,
+                    data: JSON.stringify(body),
+                    success: function (data){
+                        console.log(data)
+                        conditionRequest();
+                        $('.modal').modal('hide');
+                        $('#alert_condition').text('');
+                    },
+                    error: function (jqXhr) {
+                        results = jqXhr.responseJSON.msg;
+                        console.log(results);
+                    }
+                });
+            }
+           
+        })
+
+        
+
+        let verifyCondition = function(){
+            if ( !valideNom($('#sco__cli_id_fact').val()) || isNaN($('#sco__cli_id_fact').val())) {
+                return 'L ID de la societe facturée semble etre erroné'
+            }
+            if ($('#sco__prix_port').val() && isNaN($('#sco__prix_port').val())) {
+                return 'Le prix du port n est pas un nombre '
+            }
+            if ($('#sco__type_port').val() == 'FRCOA' ) {
+                if ( !$('#sco__francoa').val() || isNaN($('#sco__francoa').val())) {
+                    return 'Le prix à partir duquel le franco s applique n est pas correctement renseigné'
+                }
+                
+            }
+            return false;
+        }
+
+        let valideNom = function($nom){
+            if($nom.length > 6 &&  $nom.length <= 0){
+                return (false)
+            }
+            return (true)
+        }
+
         let renderImage = function(name){
             $.ajax({
                 url : 'public/img/boutique/' + name,
@@ -89,7 +215,7 @@ $(document).ready(function(){
 
         let renderDivEtat = function(etat , string  ){
 
-            switch (etat ) {
+            switch (etat) {
                 case 'NEU':
                     return '<div class="past_pink"> '+string+'</div>'
                     break;
@@ -122,7 +248,111 @@ $(document).ready(function(){
             }
           }
 
+        
+        $('#boutton_sav').on('click' , function(){
 
+                let verif  = verifySavForm();
+                if (verif) {
+                    $('#alert_sav').text(verif);
+                }else {
+                    verif  = verifyGarantie();
+                    if (verif) {
+                        $('#alert_sav').text(verif);
+                    }else{
+                        let body =  renderBodySav()
+                        $.ajax(prod + '/boutiqueSossuke', {
+                            type: 'POST',
+                            method: "POST",
+                            crossDomain: true,
+                            async: false ,
+                            data: JSON.stringify(body),
+                            success: function (data){
+                                console.log(data)
+                                
+                                $('.modal').modal('hide');
+                                $('#alert_sav').text('');
+                            },
+                            error: function (jqXhr) {
+                                results = jqXhr.responseJSON.msg;
+                                console.log(results);
+                            }
+                        });
+                        
+                    }
+                }
+        })
+
+
+        let renderBodySav = function(){
+            let gar1 = null ;
+            let prix1 = null;
+            let gar2 = null; 
+            let prix2 = null ;
+
+            if ($('#sav__gar2_mois').val() > 0 &&  $('#sav__gar1_mois').val() == 0) {
+                gar1 = $('#sav__gar2_mois').val() 
+                prix1 = $('#sav__gar2_prix').val()
+            }else if ($('#sav__gar2_mois').val() > 0 &&  $('#sav__gar1_mois').val() > 0){
+                gar1 = $('#sav__gar1_mois').val() 
+                prix1 = $('#sav__gar1_prix').val()
+                gar2 = $('#sav__gar2_mois').val() 
+                prix2 = $('#sav__gar2_prix').val()
+            }else if ($('#sav__gar2_mois').val() == 0 &&  $('#sav__gar1_mois').val() > 0){
+                gar1 = $('#sav__gar1_mois').val() 
+                prix1 = $('#sav__gar1_prix').val()
+            }
+            $body = {
+                "secret" : "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528" , 
+                "sav__cli_id" : $('#cli__id').val() , 
+                "sav__ref_id" : $('#sav__ref_id').val(),
+                "sav__etat" : $('#sav__etat').val(),
+                "sav__prix" : $('#sav__prix').val(),
+                "sav__memo_recode" : $('#sav__memo_recode').val(),
+                "sav__gar_std" : $('#sav__gar_std').val(),
+                "sav__dlv" : $('#sav__dlv').val() , 
+                'sav__gar1_mois' : gar1 , 
+                'sav__gar1_prix' : prix1 ,
+                'sav__gar2_mois' : gar2 , 
+                'sav__gar2_prix' : prix2 , 
+                'sav__post' : true 
+            }
+            return $body;
+        }
+
+        let verifySavForm = function(){
+            if (!$('#sav__prix').val()) {
+                return 'Le prix n est pas indiqué'
+            }
+            if ($('#sav__prix').val() && isNaN($('#sav__prix').val())) {
+                return 'Le prix nest pas indiqué ou est incorrect'
+            }
+            if (!$('#sav__dlv').val()) {
+                return 'La date limite de vente est obligatoire'
+            }
+            return false;
+        }
+
+        let verifyGarantie = function(){
+                let value1 = $('#sav__gar1_mois').val();
+                if(value1> 0 ){
+                    if (!$('#sav__gar1_prix').val()) {
+                        return 'Le prix de la garantie n est pas indiqué'
+                    }
+                    if ($('#sav__gar1_prix').val() && isNaN($('#sav__gar1_prix').val())) {
+                        return 'Le prix de la garantie n est pas correct'
+                    }
+                }
+                let value2 = $('#sav__gar2_mois').val();
+                if(value2 > 0 ){
+                    if (!$('#sav__gar2_prix').val()) {
+                        return 'Le prix de la garantie n est pas indiqué'
+                    }
+                    if ($('#sav__gar2_prix').val() && isNaN($('#sav__gar2_prix').val())) {
+                        return 'Le prix de la garantie n est pas correct'
+                    }
+                }
+                return false ;
+        }
 
     const familles =  {
         'ACC' :	'Accessoire / Option',	

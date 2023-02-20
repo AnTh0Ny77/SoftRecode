@@ -192,39 +192,34 @@
 
             <div class="col-4 card-recode">
                 <h4 class="recode-p"><i class="fas fa-file-signature"></i> Conditions de ventes en ligne</h4>
-               
+                <i class="far fa-question-circle"></i> Conditions de vente en ligne 
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><div class="past_pastel">
-                        <i class="fas fa-fighter-jet"></i> Type de port
+                    <li class="list-group-item">
+                        <div class="past_pastel" id="sco__type_port_d">
+                        <i class="fas fa-fighter-jet"></i> Type de port : 
                     </div></li>
                     <li class="list-group-item">
-                        <div class="past_orange">
-                            <i class="fas fa-flag"></i> Franco à : 
-                        </div>
-                    </li>
-                    <li class="list-group-item">
-                            <div class="past_greeen">
+                            <div class="past_greeen"  id="sco__prix_port_d">
                                 <i class="fas fa-euro-sign"></i> prix port : 
                             </div>
                     </li>
                     <li class="list-group-item">
-                        <div class="past_blue">
+                        <div class="past_blue"  id="sco__vue_ref_d">
                             <i class="fas fa-eye"></i> Vue sur les ref : 
                         </div>
                     </li>
                     <li class="list-group-item">
-                        <button class="btn btn-recode-important"  type="button" id="button_user_crea">Modifier</button>
+                        <button class="btn btn-recode-important" data-toggle="modal" data-target="#modalConditionEdit"  type="button" id="button_condition_modal">Modifier</button>
                     </li>
                 </ul>
             </div>
-
 
             <div class="col-7 card-recode mx-4">
                 <h4 class="recode-p"><i class="fas fa-shopping-cart"></i> Boutique en ligne</h4>
                 <i class="far fa-question-circle"></i> liste des articles présent dans la boutique MyRecode pour le client 
                 <table id="table_bot" class="display mt-3">
                     <div class="my-2 float-right">
-                        <button class="btn btn-recode-important"  data-toggle="modal" data-target="#modalmatosAjout">Ajouter</button>
+                        <button class="btn btn-recode-important"  data-toggle="modal" data-target="#modalSav">Ajouter</button>
                     </div>
                     <thead>
                         <tr>
@@ -365,7 +360,6 @@
 </div>
 
 
-
 <!-- Modal  Utilisateur Edit-->
 <div class="modal fade" id="modalUserEdit" tabindex="-1" role="dialog" aria-labelledby="modalUser"
     aria-hidden="true">
@@ -428,7 +422,6 @@
     </div>
 </div>
 
-
 <!-- Modal  Matos ajout-->
 <div class="modal fade" id="modalmatosAjout" tabindex="-1" role="dialog" aria-labelledby="modalmatosAjout"
     aria-hidden="true">
@@ -456,37 +449,44 @@
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6">
-                            <input class="form-control my-2 input-recode" id="mat__sn" placeholder="S/N" rows="2" required ></input>
                             <small class="form-text text-muted"> Doit etre unique</small>
+                            <input class="form-control my-2 input-recode" id="mat__sn" placeholder="S/N" rows="2" required ></input>
+                            
                         </div>
                         <div class="col-6">
-                            <input class="form-control my-2 input-recode" id="mat__pn" placeholder="P/N" rows="2" required ></input>
                             <small class="form-text text-muted"> Optionnel</small>
+                            <input class="form-control my-2 input-recode" id="mat__pn" placeholder="P/N" rows="2" required ></input>
+                            
                         </div>
                        
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6 mb-1">
-                            <input class="form-control my-2 input-recode" id="mat__idnec" placeholder="Numéro fiche Eurocomputeur" rows="2"  ></input>
                             <small class="form-text text-muted"> Numero de la commande recode </small>
+                            <input class="form-control my-2 input-recode" id="mat__idnec" placeholder="Numéro fiche Eurocomputeur" rows="2"  ></input>
+                            
                         </div>
                         <div class="col-6  mb-1">
-                            <input class="form-control my-2 input-recode" id="mat__memo" placeholder="Mémo" rows="2" ></input>
                             <small class="form-text text-muted"> Complément d'information diverses</small>
+                            <input class="form-control my-2 input-recode" id="mat__memo" placeholder="Mémo" rows="2" ></input>
+                            
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6">
-                            <input class="form-control my-2 input-recode" id="mat__contrat_id" placeholder="Numéro du contrat chez Recode" rows="2"  ></input>
                             <small class="form-text text-muted"> Si un abonnement existe pour cette machine</small>
+                            <input class="form-control my-2 input-recode" id="mat__contrat_id" placeholder="Numéro du contrat chez Recode" rows="2"  ></input>
+                            
                         </div>
                         <div class="col-6">
-                            <input class="form-control my-2 input-recode" id="mat__ident" placeholder="Numéro identification du client" rows="2" ></input>
                             <small class="form-text text-muted"> Correspond Numero du client</small>
+                            <input class="form-control my-2 input-recode" id="mat__ident" placeholder="Numéro identification du client" rows="2" ></input>
+                            
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6">
+                            <small class="form-text text-muted">Type de garantie/préciser la date de fin </small>
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="mat__kw_tg">
                                 <option value="GNO">Pas de garantie</option>
                                 <option value="GCO">Garantie constructeur</option>
@@ -494,11 +494,12 @@
                                 <option value="GRE">Garantie Recode</option>
                                 <option value="MNT">Maintenance Recode</option>
                          </select>
-                         <small class="form-text text-muted">Type de garantie/préciser la date de fin </small>
+                         
                         </div>
                         <div class="col-6">
-                            <input class="form-control my-2 input-recode" type="date" id="mat__date_offg" ></input>
                             <small class="form-text text-muted"> La date sera prise en compte si une garantie est présente </small>
+                            <input class="form-control my-2 input-recode" type="date" id="mat__date_offg" ></input>
+                           
                         </div>
                         
                     </div>
@@ -544,36 +545,42 @@
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6">
-                            <input class="form-control my-2 input-recode" id="mat__sn_edit" placeholder="S/N" rows="2" required readonly></input>
                             <small class="form-text text-muted"> Doit etre unique</small>
+                            <input class="form-control my-2 input-recode" id="mat__sn_edit" placeholder="S/N" rows="2" required readonly></input>     
                         </div>
                         <div class="col-6">
-                            <input class="form-control my-2 input-recode" id="mat__pn_edit" placeholder="P/N" rows="2" required ></input>
                             <small class="form-text text-muted"> Optionnel</small>
+                            <input class="form-control my-2 input-recode" id="mat__pn_edit" placeholder="P/N" rows="2" required ></input>
+                            
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6 mb-1">
-                            <input class="form-control my-2 input-recode" id="mat__idnec_edit" placeholder="Numéro fiche Eurocomputeur" rows="2"  ></input>
                             <small class="form-text text-muted"> Numero de la commande recode </small>
+                            <input class="form-control my-2 input-recode" id="mat__idnec_edit" placeholder="Numéro fiche Eurocomputeur" rows="2"  ></input>
+                            
                         </div>
                         <div class="col-6  mb-1">
-                            <input class="form-control my-2 input-recode" id="mat__memo_edit" placeholder="Mémo" rows="2" ></input>
                             <small class="form-text text-muted"> Complément d'information diverses</small>
+                            <input class="form-control my-2 input-recode" id="mat__memo_edit" placeholder="Mémo" rows="2" ></input>
+                            
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6">
-                            <input class="form-control my-2 input-recode" id="mat__contrat_id_edit" placeholder="Numéro du contrat chez Recode" rows="2"  ></input>
                             <small class="form-text text-muted"> Si un abonnement existe pour cette machine</small>
+                            <input class="form-control my-2 input-recode" id="mat__contrat_id_edit" placeholder="Numéro du contrat chez Recode" rows="2"  ></input>
+                            
                         </div>
                         <div class="col-6">
-                            <input class="form-control my-2 input-recode" id="mat__ident_edit" placeholder="Numéro identification du client" rows="2" ></input>
                             <small class="form-text text-muted"> Correspond Numero du client</small>
+                            <input class="form-control my-2 input-recode" id="mat__ident_edit" placeholder="Numéro identification du client" rows="2" ></input>
+                            
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6">
+                            <small class="form-text text-muted"> préciser la date si un contrat existe</small>
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="mat__kw_tg_edit">
                                 <option value="GNO">Pas de garantie</option>
                                 <option value="GCO">Garantie constructeur</option>
@@ -581,11 +588,12 @@
                                 <option value="GRE">Garantie Recode</option>
                                 <option value="MNT">Maintenance Recode</option>
                          </select>
-                         <small class="form-text text-muted"> préciser la date si un contrat existe</small>
+                        
                         </div>
                         <div class="col-6">
-                            <input class="form-control my-2 input-recode" type="date" id="mat__date_offg_edit" ></input>
                             <small class="form-text text-muted"> La date sera prise en compte si une garantie est présente </small>
+                            <input class="form-control my-2 input-recode" type="date" id="mat__date_offg_edit" ></input>
+                            
                         </div>
                         
                     </div>
@@ -597,6 +605,175 @@
                     <button class="btn btn-recode-danger"  type="button" value="" id="button_matos_actif">Désactiver</button>
                     {# <button class="btn btn-recode-warning"  type="button" id="button_matos_delete">Remplacer</button> #}
                     <button class="btn btn-recode-important"  type="button" id="button_matos_edit">Modifier</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal  condition Edit-->
+<div class="modal fade" id="modalConditionEdit" tabindex="-1" role="dialog" aria-labelledby="modalUser"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <form action="" >
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title">Conditions de ventes en ligne </h5>
+                        <p class="my-2"><i class="far fa-question-circle"></i> Conditons de ventes sur la boutique en ligne MyRecode.fr</p>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-6">
+                            <small class="form-text text-muted">A modifier uniquement si différent</small>
+                            <input class="form-control my-2 input-recode" id="sco__cli_id_fact" placeholder="ID du client facturé" rows="2" ></input>
+                            
+                        </div>
+                        <div class="col-6">
+                            <small class="form-text text-muted">Type de port</small>
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="sco__type_port"  >
+                                <option value="FRCOA" >Franco à </option>
+                                <option value="FRNCO" >Franco de port</option>
+                                <option value="NOFRC">Pas de franco (toujours du port)</option>
+                            </select>
+                           
+                        </div>
+                    </div>
+                    <div class="col-11 d-flex justify-content-start " id="wrapperFrancoa">
+                        <div class="col-6">
+                            <small class="form-text text-muted">Franco à partir de  ( prix ) </small>
+                            <input class="form-control my-2 input-recode" id="sco__francoa" placeholder="" rows="2" ></input>
+                            
+                        </div>
+                        <div class="col-6">
+                            <small class="form-text text-muted">Prix du port</small>
+                            <input class="form-control my-2 input-recode" id="sco__prix_port" placeholder="" rows="2" ></input>
+                            
+                        </div>
+                    </div>
+                   
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-6">
+                            <small class="form-text text-muted">Vue sur les garanties</small>
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="sco__vue_ref"  >
+                                <option value="NON" >NON</option>
+                                <option value="OUI" >OUI</option>
+                            </select>
+                           
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="alert alert-secondary past_pastel" id="alert_condition" role="alert">  
+                    </div>
+                    <button class="btn btn-recode-important"  type="button" id="boutton_condition">Editer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal  Boutique ajout Edit-->
+<div class="modal fade" id="modalSav" tabindex="-1" role="dialog" aria-labelledby="modalUser"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <form action="" >
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title">Ajout d article à la boutique en ligne pour le client </h5>
+                        <p class="my-2"><i class="far fa-question-circle"></i> Présent dans le catalogue </p>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-12">
+                            <small class="form-text text-muted">Article à ajouter</small>
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" id="sav__ref_id"  >
+                                {% for row in avendre_list %}
+                                    <option value="{{row.sar__ref_id}}"> {{row.famille ~ "  " ~  row.sar__marque ~ " " ~ row.sar__model  ~ " " ~ row.sar__ref_constructeur }}
+                                    
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-11 d-flex justify-content-start " >
+                        <div class="col-6">
+                            <small class="form-text text-muted">Etat</small>
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="sav__etat">
+                                <option value="NEU" >Neuf </option>
+                                <option value="OCC" >Reconditionné </option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <small class="form-text text-muted">Garantie de base</small>
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="sav__gar_std">
+                                <option value="0" >Aucune</option>
+                                <option value="6" >6</option>
+                                <option value="12" >12</option>
+                                <option value="24" >24</option>
+                                <option value="36" >36</option>
+                                <option value="60" >60</option>
+                            </select>
+                        </div>
+                       
+                    </div>
+                   
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-5">
+                            <small class="form-text text-muted">Memo Recode </small>
+                            <input class="form-control my-2 input-recode" id="sav__memo_recode" placeholder="" rows="2" ></input>
+                        </div>
+                        <div class="col-4">
+                            <small class="form-text text-muted">Prix </small>
+                            <input class="form-control my-2 input-recode" id="sav__prix" placeholder="" rows="2" ></input>
+                        </div>
+                        
+                        <div class="col-3">
+                            <small class="form-text text-muted">Date de fin de vente</small>
+                            <input class="form-control my-2 input-recode" type="date" id="sav__dlv" placeholder="" rows="2" ></input>
+                        </div>
+                       
+                    </div>
+                    <div class="col-11 d-flex justify-content-start">
+                       
+                        <div class="col-6">
+                            <small class="form-text text-muted">Extension de Garantie</small>
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="sav__gar1_mois">
+                                <option value="0" >Aucune</option>
+                                <option value="12" >12</option>
+                                <option value="24" >24</option>
+                                <option value="36" >36</option>
+                                <option value="60" >60</option>
+                            </select>
+                            <input class="form-control my-2 input-recode" id="sav__gar1_prix" placeholder="Prix" rows="2" ></input>
+                        </div>
+                        <div class="col-6">
+                            <small class="form-text text-muted">Extension de Garantie</small>
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="sav__gar2_mois">
+                                <option value="0" >Aucune</option>
+                                <option value="12" >12</option>
+                                <option value="24" >24</option>
+                                <option value="36" >36</option>
+                                <option value="60" >60</option>
+                            </select>
+                            <input class="form-control my-2 input-recode" id="sav__gar2_prix" placeholder="Prix" rows="2" ></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="alert alert-secondary past_pastel" id="alert_sav" role="alert">  
+                    </div>
+                    <button class="btn btn-recode-important"  type="button" id="boutton_sav">Editer</button>
                 </div>
             </form>
         </div>
@@ -667,8 +844,6 @@
                 }
                 $(row).on('click' , function(){   
                     functionMatosTableModal($(data)); 
-                    
-                   
                 })
             },
             language: {
