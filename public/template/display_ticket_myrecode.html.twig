@@ -20,21 +20,21 @@
               </div>
           </div>
 		  {% if alert %}
-		  <div class="alert alert-danger my-5" role="alert">
-			<h4 class="alert-heading">Attention</h4>
-			<p>{{alert}}</p>
-			<hr>
-		  </div>
+			<div class="alert alert-danger my-5" role="alert">
+					<h4 class="alert-heading">Attention</h4>
+					<p>{{alert}}</p>
+					<hr>
+			</div>
 		  {% endif %}
           <div class="form-group pt-2">
-			<div class="card-recode d-flex flex-column col-12 ">
-				<h2 class="recode-orange-title"> Ticket {{ticket.tk__id}}</h2>
-			  <p class="recode-p">{{ticket.tk__memo}}<br> 
-				<span class="text-dark font-weight-bold text-uppercase">En cours chez {{ ticket.last.user__prenom ~ " " ~ ticket.last.user__nom }}</span>
-			  </p>
-		  </div>
+				<div class="card-recode d-flex flex-column col-12 ">
+					<h2 class="recode-orange-title"> Ticket {{ticket.tk__id}}</h2>
+					<p class="recode-p">{{ticket.tk__memo}}<br> 
+						<span class="text-dark font-weight-bold text-uppercase">En cours chez {{ ticket.dest.user__prenom ~ " " ~ ticket.dest.user__nom }}</span>
+					</p>
+				</div>
             {% for ligne in ticket.lignes %}
-              {{ include('display/display_ticket_lignes_myrecode.html.twig')}}
+              	{{ include('display/display_ticket_lignes_myrecode.html.twig')}}
             {% endfor %}
             <form action="myRecode-ticket?tk__id={{ticket.tk__id}}" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="tk__id" value="{{ticket.tk__id}}">

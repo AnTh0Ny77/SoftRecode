@@ -196,6 +196,7 @@ class MyRecodeController extends BasicController {
                 $list = $list['data'];
                 $definitive_edition = [];
                 foreach ($list as $ticket){
+                    
                     if ($ticket['tk__lu'] == 9 ) {
                         self::updateTicket($ticket , $token , 9 , $Api );
                     }else{
@@ -210,7 +211,7 @@ class MyRecodeController extends BasicController {
                     $ticket['info'] = end($ticket['lignes']);
                     $ticket['memo']  =  $ticket['info']['tkl__memo'];
                     $mat_request = $Api->getMateriel($token, ['mat__id[]' =>  $ticket['tk__motif_id'] , 'RECODE__PASS' => 'secret']);
-        
+                    
                     if ($mat_request['code'] == 200){
                         $ticket['mat'] =  $mat_request['data'][0];
                         $ticket['cli'] =  $Api->getClient($token, ['cli__id' => $ticket['mat']['mat__cli__id']])['data'];
@@ -256,11 +257,13 @@ class MyRecodeController extends BasicController {
                 }
                 $ticket['lignes'][0]['entities'][0] = [
                     "gar" => $gar ,
-                    'dateof' => $ticket['mat']['mat__date_offg'] ,
+                    'dateof' => $ticket['mat']['mat__date_offg'],
                     "name" => $ticket['mat']['mat__model'], 
                     "label" => $ticket['mat']['mat__pn'], 
-                    "additionals" => $ticket['mat']['mat__sn']  , 
-                    "alternative" => "public/img/pn2.jpg" ,
+                    'bl' => $ticket['mat']['mat__idnec'],
+                    'dt_off' => date("d/m/Y", strtotime($ticket['mat']['mat__date_offg'])),
+                    "additionals" => $ticket['mat']['mat__sn'], 
+                    "alternative" => "public/img/pn2.jpg",
                 ];
                 $ticket['lignes'][0]['entities'][1] = [
                     "identifier" => $ticket['cli']['cli__id'],
@@ -310,13 +313,11 @@ class MyRecodeController extends BasicController {
                         $file = $Api->postFile($token, fopen(__DIR__ . '/' .$fileName , 'r') ,$id_ligne);
                         unlink(__DIR__ .'/' .$fileName);
                     }
-                    
-                   
                     header('location: myRecode');
                     exit;
                 }
 
-                if (!empty($_SESSION['file_alert'])) {
+                if (!empty($_SESSION['file_alert'])){
                     $alert = $_SESSION['file_alert'];
                     $_SESSION['file_alert'] = '';
                 }

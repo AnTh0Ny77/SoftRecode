@@ -31,16 +31,26 @@
                     {% endif %}
                 </div>
                 <div>
-                    <div class="mt-2">
-                        
-                        <h3 class="title-sujet">  <span class=" recode-p text-uppercase"> {% if entitie.identifier %}
-                            {{    "(" ~ entitie.identifier ~ ")" }} 
-                        {% endif %} {{   entitie.name}}  </span> {{entitie.label}}</h3>
+                    <div class="mt-2"> 
+                        <h3 class="title-sujet">  <span class=" recode-p text-uppercase"> 
+                            {% if entitie.identifier %}
+                                {{  "(" ~ entitie.identifier ~ ")" }} 
+                            {% endif %} {{   entitie.name}}  </span> </h3>
                     </div>
                     <div class="d-fex align-item-center">
-                        {{entitie.additionals }}{% if entitie.gar %}
-                            <br>{{entitie.gar}}
-                        {% endif %}
+                            {% if entitie.label %}
+                                {{entitie.label}}<br>
+                            {% endif %}
+                                {{entitie.additionals}} 
+                            {% if entitie.bl %}
+                              - BL N° <b> {{ entitie.bl }}</b>
+                            {% endif %}
+                            {% if entitie.gar %}
+                                <br>{{entitie.gar}}
+                                {% if entitie.dt_off %}
+                                    Fin le {{entitie.dt_off}}
+                                {% endif %}
+                            {% endif %}
                     </div>
                 </div>
             </div>
