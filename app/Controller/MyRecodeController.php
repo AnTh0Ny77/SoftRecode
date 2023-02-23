@@ -278,7 +278,7 @@ class MyRecodeController extends BasicController {
                             break;
                     }
 
-                    if (!empty($_FILES)){
+                    if (isset($_FILES)){
                         $fileName = $_FILES['file']['name'];
                         $tempPath = $_FILES['file']['tmp_name'];
                         $fileSize = $_FILES['file']['size'];
