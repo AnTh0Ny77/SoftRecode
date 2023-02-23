@@ -30,6 +30,8 @@ $UserClass = new App\Tables\User($Database);
 // Variables
 	$somme_ca = $somme_ca_1 = 0;
 	$somme_achat = $somme_achat_1 = 0;
+	$somme_stk_deb = $somme_stk_fin = 0;
+
 
 /*8888  dP"Yb  88b 88  dP""b8 888888 88  dP"Yb  88b 88 .dP"Y8 
 88__   dP   Yb 88Yb88 dP   `"   88   88 dP   Yb 88Yb88 `Ybo." 
@@ -93,6 +95,34 @@ function lg_tab_html($sql, $prestation, $etat, $base='sosuke', $option=FALSE)
 	return $lg_tab; // renvoie la ligne complette de tableau en html
 } 
 
+function lg_tab_stock_html($sql, $prestation, $etat)
+{
+	global $Totoro;
+	global $date_debut, $date_fin;
+	global $somme_stk_deb, $somme_stk_fin;
+	
+	$sql_deb = str_replace('##DT##',$date_debut.' 00:00:00', $sql);
+	$sql_fin = str_replace('##DT##',$date_fin.' 23:59:59', $sql);
+	// var_dump($sql_fin);
+	$lg_tab    = '';
+	$T_data    = $Totoro->Pdo->query($sql_deb)->fetch(PDO::FETCH_ASSOC);
+	$val_stk_deb = $T_data['SOMME'];
+	$T_data    = $Totoro->Pdo->query($sql_fin)->fetch(PDO::FETCH_ASSOC);
+	$val_stk_fin = $T_data['SOMME'];
+	$variation = $val_stk_fin - $val_stk_deb;
+	$lg_tab   .= '<tr> ';
+	$lg_tab   .= '<td>'.$prestation.'</td> ';
+	$lg_tab   .= '<td>'.$etat.'</td> ';
+	$lg_tab   .= '<td align=right>'.number_format($val_stk_deb, 2, ',', ' ').'</td> ';
+	$lg_tab   .= '<td align=right>'.number_format($val_stk_fin, 2, ',', ' ').'</td> ';
+	$lg_tab   .= '<td align=right>'.number_format($variation  , 2, ',', ' ').'</td> ';
+	$lg_tab   .= '</tr> ';
+	$somme_stk_deb += $val_stk_deb;
+	$somme_stk_fin += $val_stk_fin;
+
+	return $lg_tab; // renvoie la ligne complette de tableau en html
+} 
+
 function lg_tab_separateur($titre, $option=false)
 {
 	$lg_tab    = '';
@@ -103,7 +133,7 @@ function lg_tab_separateur($titre, $option=false)
 
 
 //declaration des variables diverses : 
-$debug_info = $tab_html = $tab_html_achat = '';
+$debug_info = $tab_html = $tab_html_achat = $tab_html_stock = '';
 
 // recuperations des GET ou POST
 $date_debut     = get_post('date_debut', 1, 'GETPOST');
@@ -191,18 +221,16 @@ $tql_sel_po_port  = "SELECT SUM(po_frais_port_euro) AS SOMME ";
 $tql_from_po      = "FROM po ";
 $tql_where_po     = "WHERE ";
 $tql_where_po    .= "po_dt_cmd BETWEEN '".$date_debut."' AND '".$date_fin."' ";
-$tql_stk_sql      = "SELECT sum(locator.pu_ht) AS SOMME FROM locator WHERE ";
-$tql_stk_deb      = "( id_etat in (0,1,11,31,32) AND in_datetime < '".$date_debut."' AND (out_datetime is NULL OR out_datetime >= '".$date_debut."') ) ";
-$tql_stk_deb     .= "OR ( id_etat in (21,22) AND down_datetime >= '".$date_debut."' AND	in_datetime < '".$date_debut."' AND (out_datetime is NULL OR out_datetime >= '".$date_debut."') ) ";
-$tql_stk_deb_neuf = "( id_etat in (1,31,32) AND in_datetime < '".$date_debut."' AND (out_datetime is NULL OR out_datetime >= '".$date_debut."') ) ";
-$tql_stk_deb_occ  = "( id_etat in (0,11) AND in_datetime < '".$date_debut."' AND (out_datetime is NULL OR out_datetime >= '".$date_debut."') ) ";
-$tql_stk_deb_occ .= "OR ( id_etat in (21,22) AND down_datetime >= '".$date_debut."' AND	in_datetime < '".$date_debut."' AND (out_datetime is NULL OR out_datetime >= '".$date_debut."') ) ";
-$tql_stk_fin      = "( id_etat in (0,1,11,31,32) AND in_datetime < '".$date_fin."' AND (out_datetime is NULL OR out_datetime >= '".$date_fin."') ) ";
-$tql_stk_fin     .= "OR ( id_etat in (21,22) AND down_datetime >= '".$date_fin."' AND	in_datetime < '".$date_fin."' AND (out_datetime is NULL OR out_datetime >= '".$date_fin."') ) ";
-$tql_stk_fin_neuf = "( id_etat in (1,31,32) AND in_datetime < '".$date_fin."' AND (out_datetime is NULL OR out_datetime >= '".$date_fin."') ) ";
-$tql_stk_fin_occ  = "( id_etat in (0,11) AND in_datetime < '".$date_fin."' AND (out_datetime is NULL OR out_datetime >= '".$date_fin."') ) ";
-$tql_stk_fin_occ .= "OR ( id_etat in (21,22) AND down_datetime >= '".$date_fin."' AND	in_datetime < '".$date_fin."' AND (out_datetime is NULL OR out_datetime >= '".$date_fin."') ) ";
-
+$tql_stk_sql      = "SELECT sum(locator.pu_ht) AS SOMME FROM locator ";
+$tql_stk_sql     .= "LEFT JOIN articles2 ON locator.article = articles2.art_model ";
+$tql_stk_sql     .= "LEFT JOIN keyword ON articles2.art_type = keyword.keyword AND keyword.type = 'supfa' ";
+$tql_stk_sql     .= "WHERE ";
+$tql_stk_dt       = "( in_datetime < '##DT##' AND (out_datetime is NULL OR out_datetime >= '##DT##') ) "; // les ##DT## sont remplacé par date fin et debut dans la fonction lg_tab_stock_html
+$tql_stk_neuf     = "AND ( id_etat = 1 ) ";
+$tql_stk_occ      = "AND ( id_etat in (0,11) ) ";
+$tql_stk_mrk      = "AND ( id_etat = 31 ) ";
+$tql_stk_com      = "AND ( id_etat = 32 ) ";
+$tql_stk_type     = "AND keyword.`value` = ";
 
 //  dP""b8    db
 // dP   `"   dPYb
@@ -220,8 +248,6 @@ $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sq
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_pid,"01f Ventes Pieces détachées","Neuf");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_acc,"01g Ventes Accessoires","Neuf");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_ser,"01h Ventes Services","Neuf");
-// $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_con,"02e Ventes CONSO","Occasion");
-// $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_con,"01e Ventes CONSO","Neuf");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_no_con,"02 Ventes (Tout)","Occasion","sosuke",$gras);
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_cdb,"02b Ventes CDB","Occasion");
 $tab_html .= lg_tab_html($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_imp,"02c Ventes IMPRIMANTES","Occasion");
@@ -274,16 +300,34 @@ $tab_html_achat .= lg_tab_html($tql_select_achat.$tql_from.$tql_where.$tql_w_ach
 $tab_html_achat .= lg_tab_html($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_autre.$tql_w_occ,"02x Achats Autre (NC, Embal, Gar)","Occasion","totoro",$achat);
 $tab_html_achat .= lg_tab_html($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_conso.$tql_w_conso,"01e Achats Conso","Marque & comp.","totoro",$achat);
 
+/*P"Y8 888888  dP"Yb   dP""b8 88  dP 
+`Ybo."   88   dP   Yb dP   `" 88odP  
+o.`Y8b   88   Yb   dP Yb      88"Yb  
+8bodP'   88    YbodP   YboodP 88  Y*/ 
+$tab_html_stock .= lg_tab_separateur('Stock de marchandise');
+$tab_html_stock .= lg_tab_stock_html($tql_stk_sql.$tql_stk_dt.$tql_stk_neuf.$tql_stk_type."'CDB'",  "51b Stock CDB","Neuf");
+$tab_html_stock .= lg_tab_stock_html($tql_stk_sql.$tql_stk_dt.$tql_stk_neuf.$tql_stk_type."'IMP'",  "51c Stock Imprimante","Neuf");
+$tab_html_stock .= lg_tab_stock_html($tql_stk_sql.$tql_stk_dt.$tql_stk_neuf.$tql_stk_type."'MICRO'","51d Stock Micro","Neuf");
+$tab_html_stock .= lg_tab_stock_html($tql_stk_sql.$tql_stk_dt.$tql_stk_neuf.$tql_stk_type."'PCE'",  "51f Stock Pièces détaché","Neuf");
+$tab_html_stock .= lg_tab_stock_html($tql_stk_sql.$tql_stk_dt.$tql_stk_neuf.$tql_stk_type."'ACC'",  "51g Stock Accessoires","Neuf");
+$tab_html_stock .= lg_tab_stock_html($tql_stk_sql.$tql_stk_dt.$tql_stk_occ.$tql_stk_type."'CDB'",  "52b Stock CDB","Occasion");
+$tab_html_stock .= lg_tab_stock_html($tql_stk_sql.$tql_stk_dt.$tql_stk_occ.$tql_stk_type."'IMP'",  "52c Stock Imprimante","Occasion");
+$tab_html_stock .= lg_tab_stock_html($tql_stk_sql.$tql_stk_dt.$tql_stk_occ.$tql_stk_type."'MICRO'","52d Stock Micro","Occasion");
+$tab_html_stock .= lg_tab_stock_html($tql_stk_sql.$tql_stk_dt.$tql_stk_occ.$tql_stk_type."'PCE'",  "52f Stock Pièces détaché","Occasion");
+$tab_html_stock .= lg_tab_stock_html($tql_stk_sql.$tql_stk_dt.$tql_stk_occ.$tql_stk_type."'ACC'",  "52g Stock Accessoires","Occasion");
+$tab_html_stock .= lg_tab_stock_html($tql_stk_sql.$tql_stk_dt.$tql_stk_mrk.$tql_stk_type."'CONSO'","54a Stock Consomable","Marque");
+$tab_html_stock .= lg_tab_stock_html($tql_stk_sql.$tql_stk_dt.$tql_stk_com.$tql_stk_type."'CONSO'","55a Stock Consomable","Compatible");
 
 
 
 $debug_info = '<br>';
-// $debug_info = $tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_conso.$tql_w_neuf;
+$debug_info = $tql_stk_sql.$tql_stk_dt.$tql_stk_neuf.$tql_stk_type."'CDB'";
 $somme_ca_evol = (($somme_ca-$somme_ca_1)/$somme_ca_1)*100;
 $somme_achat_evol = (($somme_achat-$somme_achat_1)/$somme_achat_1)*100;
+$somme_stk_evol = $somme_stk_fin - $somme_stk_deb;
 
 // Donnée transmise au template : 
-echo $twig->render('statistique_marge.twig',
+echo $twig->render('statistique_marge_v2.twig',
 [
 'date_debut'       => $date_debut, 
 'date_fin'         => $date_fin,
@@ -296,10 +340,14 @@ echo $twig->render('statistique_marge.twig',
 'debug_info'       => $debug_info,
 'tab_html'         => $tab_html,
 'tab_html_achat'   => $tab_html_achat,
+'tab_html_stock'   => $tab_html_stock,
 'somme_ca'         => number_format($somme_ca, 2, ',', ' '),
 'somme_ca_1'       => number_format($somme_ca_1, 2, ',', ' '),
 'somme_ca_evol'    => number_format($somme_ca_evol, 2, ',', ' '),
 'somme_achat'      => number_format($somme_achat, 2, ',', ' '),
 'somme_achat_1'    => number_format($somme_achat_1, 2, ',', ' '),
-'somme_achat_evol' => number_format($somme_achat_evol, 2, ',', ' ')
+'somme_achat_evol' => number_format($somme_achat_evol, 2, ',', ' '),
+'somme_stk_deb'    => number_format($somme_stk_deb, 2, ',', ' '),
+'somme_stk_fin'    => number_format($somme_stk_fin, 2, ',', ' '),
+'somme_stk_evol'   => number_format($somme_stk_evol, 2, ',', ' ')
 ]);
