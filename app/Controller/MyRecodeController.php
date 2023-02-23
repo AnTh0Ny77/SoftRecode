@@ -196,7 +196,12 @@ class MyRecodeController extends BasicController {
                 $list = $list['data'];
                 $definitive_edition = [];
                 foreach ($list as $ticket){
-                    self::updateTicket($ticket , $token , 5 , $Api );
+                    if ($ticket['tk__lu'] == 9 ) {
+                        self::updateTicket($ticket , $token , 9 , $Api );
+                    }else{
+                        self::updateTicket($ticket , $token , 5 , $Api );
+                    }
+                    
                     $ticket['user'] = reset($ticket['lignes']);
                     $ticket['user'] = $ticket['user']['tkl__user_id'];
                     $ticket['dest'] = end($ticket['lignes']);

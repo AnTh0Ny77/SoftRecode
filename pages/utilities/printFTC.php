@@ -129,8 +129,7 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
 
             //ligne de devis : 
             $arrayOfDevisLigne = $Cmd->devisLigne_actif($_POST['hiddenCommentaire']);
-            foreach($arrayOfDevisLigne as $ligne) 
-            {
+            foreach($arrayOfDevisLigne as $ligne) {
                 $xtendArray = $Cmd->xtenGarantie($ligne->devl__id);
                 $ligne->ordre2 = $xtendArray;
             } 
