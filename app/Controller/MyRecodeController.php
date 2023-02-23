@@ -298,7 +298,10 @@ class MyRecodeController extends BasicController {
                     }
                     
                     $id_ligne =  self::PostLigne($_POST ,$dest , $Api, $token);
-                    $ticket = self::PostChamps($id_ligne,$_POST,$Api,$token);
+                    if ($fileSize > 111) {
+                        $ticket = self::PostChamps($id_ligne,$_POST,$Api,$token);
+                    }
+                    
                     if (!empty($_FILES)){
                         move_uploaded_file($tempPath, __DIR__ .'/' .$fileName);
                         $file = $Api->postFile($token, fopen(__DIR__ . '/' .$fileName , 'r') ,$id_ligne);
