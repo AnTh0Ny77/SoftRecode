@@ -1,15 +1,16 @@
 <div class=" my-2 col-12 col-lg-8">
     <form method="GET" action="myRecode">
         <h2 class="h2-myrecode">Ticket MyRecode</h2>
+        <span class="text-results my-2 font-weight-bold text-uppercase">{{results}}</span>
         <div class="d-flex justify-content-between">
             <input type="text" class="form-control form-control-lg input-recode col-8 col-lg-10"
-                placeholder=" titre, client, Pn, Sn etc.." name="search"
+                placeholder=" ID , groupe , titre, client, Pn, Sn etc.." name="search"
                 value="{{filters.search}}" minlength="2" maxlength="100">
             <button class="btn btn-recode "><i class="fas fa-search"></i></button>
         </div>
         <div class="d-flex my-2 justify-content-start">
-            <input type="text" class="form-control form-control input-recode col-6" placeholder="Numero de ticket" name="tk__id" value="{{filters.tk__id}}" minlength="2" maxlength="100">
-            <input type="text" class="form-control mx-2 form-control input-recode col-6" placeholder="Numero de groupe" name="tk__groupe" value="{{filters.tk__groupe}}" minlength="2" maxlength="100">
+            {# <input type="text" class="form-control form-control input-recode col-6" placeholder="Numero de ticket" name="tk__id" value="{{filters.tk__id}}" minlength="2" maxlength="100">
+            <input type="text" class="form-control mx-2 form-control input-recode col-6" placeholder="Numero de groupe" name="tk__groupe" value="{{filters.tk__groupe}}" minlength="2" maxlength="100"> #}
         </div>
         <div class="d-flex justify-content-start">
             <div class="">

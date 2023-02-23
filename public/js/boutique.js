@@ -13,8 +13,8 @@ $(document).ready(function(){
         
     }
 
-    
-    $.ajax(local + '/boutiqueSossuke', {
+
+    $.ajax(prod + '/boutiqueSossuke', {
             type: 'POST',
             method: "POST",
             crossDomain: true,
@@ -82,7 +82,6 @@ $(document).ready(function(){
                         
                        
                         $(row).on('click', function () {
-                            console.log(data);
                             
                             data = JSON.parse(data[0]);
                             console.log(data);
@@ -96,11 +95,24 @@ $(document).ready(function(){
                             $('#sav__gar_std_r').selectpicker('val', data[6]);
                             $('#sav__gar_std_r').selectpicker('refresh');
                             $('#sav__gar1_mois_r').selectpicker('deselectAll');
-                            $('#sav__gar1_mois_r').selectpicker('val', data[7]);
+                            if (data[7] != null) {
+                                $('#sav__gar1_mois_r').selectpicker('val', data[7]);
+                            }else{
+                                $('#sav__gar1_mois_r').selectpicker('val', 0);
+                            }
                             $('#sav__gar1_mois_r').selectpicker('refresh');
                             $('#sav__gar2_mois_r').selectpicker('deselectAll');
-                            $('#sav__gar2_mois_r').selectpicker('val', data[9]);
+                            if (data[9] != null) {
+                                $('#sav__gar2_mois_r').selectpicker('val', data[9]);
+                            }else {
+                                $('#sav__gar2_mois_r').selectpicker('val', 0);
+                            }
                             $('#sav__gar2_mois_r').selectpicker('refresh');
+                            $('#sav__gar1_prix_r').val(data[8]);
+                            $('#sav__gar2_prix_r').val(data[10]);
+                            $('#sav__memo_recode_r').val(data[5]);
+                            $('#sav__prix_r').val(data[4]);
+                            $('#sav__dlv_r').val(data[11]);
                         })
                     },
                     language: {
@@ -133,7 +145,7 @@ $(document).ready(function(){
                 "secret" : "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528", 
                 'sco__cli_id' :  $('#cli__id').val()
             }
-            $.ajax(local + '/boutiqueSossuke', {
+            $.ajax(prod + '/boutiqueSossuke', {
                 type: 'POST',
                 method: "POST",
                 crossDomain: true,
@@ -205,7 +217,7 @@ $(document).ready(function(){
                     "sco__vue_ref" : $('#sco__vue_ref').val() , 
                     "secret" : "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528"
                 };
-                $.ajax(local + '/boutiqueSossuke', {
+                $.ajax(prod + '/boutiqueSossuke', {
                     type: 'POST',
                     method: "POST",
                     crossDomain: true,
@@ -310,7 +322,7 @@ $(document).ready(function(){
                         $('#alert_sav').text(verif);
                     }else{
                         let body =  renderBodySav()
-                        $.ajax(local + '/boutiqueSossuke', {
+                        $.ajax(prod + '/boutiqueSossuke', {
                             type: 'POST',
                             method: "POST",
                             crossDomain: true,

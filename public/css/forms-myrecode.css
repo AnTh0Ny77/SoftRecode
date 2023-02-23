@@ -15,6 +15,11 @@
     font-weight: bold;
 }
 
+.text-results{
+    color: #cccccc;
+    font-weight: bold;
+}
+
 .card-recode {
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.16);
     border-radius: 10px;
