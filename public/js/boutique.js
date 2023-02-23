@@ -14,13 +14,16 @@ $(document).ready(function(){
     }
 
     
-    $.ajax(prod + '/boutiqueSossuke', {
+    $.ajax(local + '/boutiqueSossuke', {
             type: 'POST',
             method: "POST",
             crossDomain: true,
             data: JSON.stringify(body),
             success: function (data, status, xhttp) {
                 let dataSet = extractObjectValues(data.data);
+                console.log(dataSet);
+               
+               
                 let results = [];
                 dataSet.forEach(element => {
                    let familleString =  trouverValeur(familles, element[12].sar__famille );
@@ -29,9 +32,23 @@ $(document).ready(function(){
                    let ref =  familleString + ' <br>  <b>' +   element[12].sar__ref_constructeur + ' ' +  element[12].sar__marque + '</b>';
                    let gar = 'Aucune '
                    if (element[7] != null) {
-                    gar = element[7] + ' mois ' +  element[8] + ' € HT'
-                   }              
-                   let temp = [ref , etatFinal ,  '<b>' + element[4] + '€</b> HT' ,  element[5] , gar , element[12].sar__image]; 
+                    gar = element[7] + ' mois ' +  element[8] + ' € HT<br>'
+                   } 
+                    if (element[9] != null) {
+                        gar += element[9] + ' mois ' + element[10] + ' € HT'
+                   }   
+                    let dataN = new Date();
+                    dataN = dataN.getFullYear() + "-" + (dataN.getMonth() + 1) + "-" + dataN.getDate()
+                    let background = comparerDates(dataN, element[11])
+                    
+                    let date = '';
+                    if (background) {
+                         date = '<span style="color:red">' + element[11] + '</span>';    
+                    }else{
+                        date = '<span>' + element[11] + '</span>'; 
+                    }
+                   
+                    let temp = [JSON.stringify(element) , ref, etatFinal, '<b>' + element[4] + '€</b> HT<br>' + date ,  element[5] , gar , element[12].sar__image]; 
                    results.push(temp);
                 });
                 
@@ -42,11 +59,12 @@ $(document).ready(function(){
                     bLengthChange : false ,
                     data: results,
                     columns: [
+                        { "visible": false },
                         { title: 'Reference' },
                         { title: 'Etat' },
-                        { title: 'Prix' },
+                        { title: 'Prix/date' },
                         { title: 'Memo' },
-                        { title: 'Garantie ' },
+                        { title: 'EXT de Garantie' },
                         { title: '' , 'render' : function(data){
                             if(data != "" && data != null){
                                 return '<img src="public/img/boutique/'+ data +'"  width="40px">';
@@ -59,9 +77,30 @@ $(document).ready(function(){
                     ],
                     createdRow: function (row, data, index) {
                         $(row).attr('data-toggle', "modal");
-                        $(row).attr('data-target', "#modalModif");
+                        $(row).attr('data-target', "#modalSavEdit");
                         $(row).css('cursor', 'pointer');
+                        
+                       
                         $(row).on('click', function () {
+                            console.log(data);
+                            
+                            data = JSON.parse(data[0]);
+                            console.log(data);
+                            $('#sav__ref_id_r').selectpicker('deselectAll');
+                            $('#sav__ref_id_r').selectpicker('val', data[2]);
+                            $('#sav__ref_id_r').selectpicker('refresh');
+                            $('#sav__etat_r').selectpicker('deselectAll');
+                            $('#sav__etat_r').selectpicker('val', data[3]);
+                            $('#sav__etat_r').selectpicker('refresh');
+                            $('#sav__gar_std_r').selectpicker('deselectAll');
+                            $('#sav__gar_std_r').selectpicker('val', data[6]);
+                            $('#sav__gar_std_r').selectpicker('refresh');
+                            $('#sav__gar1_mois_r').selectpicker('deselectAll');
+                            $('#sav__gar1_mois_r').selectpicker('val', data[7]);
+                            $('#sav__gar1_mois_r').selectpicker('refresh');
+                            $('#sav__gar2_mois_r').selectpicker('deselectAll');
+                            $('#sav__gar2_mois_r').selectpicker('val', data[9]);
+                            $('#sav__gar2_mois_r').selectpicker('refresh');
                         })
                     },
                     language: {
@@ -81,52 +120,63 @@ $(document).ready(function(){
 
         });
 
+        function comparerDates(date1, date2) {
+            const timestamp1 = new Date(date1).getTime();
+            const timestamp2 = new Date(date2).getTime();
+
+            return timestamp1 > timestamp2;
+        }
+
 
         let conditionRequest = function(){
             let body = {
                 "secret" : "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528", 
                 'sco__cli_id' :  $('#cli__id').val()
             }
-            $.ajax(prod + '/boutiqueSossuke', {
+            $.ajax(local + '/boutiqueSossuke', {
                 type: 'POST',
                 method: "POST",
                 crossDomain: true,
                 data: JSON.stringify(body),
                 success: function (data, status, xhttp) {
+                    
                     let dataSet = data.data;
-                    let string = 'Non renseigné';
-                    if (dataSet.sco__type_port != null) {
-                        $('#sco__type_port').val(dataSet.sco__type_port);
+                    if (dataSet) {
+                        let string = 'Non renseigné';
+                        if (dataSet.sco__type_port != null) {
+                            $('#sco__type_port').val(dataSet.sco__type_port);
+                        }
+
+                        $('#sco__cli_id_fact').val(dataSet.sco__cli_id_fact);
+
+                        if (dataSet.sco__type_port == 'FRNCO') {
+                            string = 'Franco de port'
+                        } else if (dataSet.sco__type_port == 'FRCOA') {
+                            string = 'Franco à ' + dataSet.sco__francoa + ' €';
+                            if (dataSet.sco__francoa) {
+                                $('#sco__francoa').val(dataSet.sco__francoa);
+                            }
+
+                        } else if (dataSet.sco__type_port == 'NOFRC') {
+                            string = 'Pas de Franco';
+                        }
+                        let prix = 'Non Renseigné';
+                        if (dataSet.sco__prix_port > 0) {
+                            prix = dataSet.sco__prix_port + ' €';
+                            $('#sco__prix_port').val(dataSet.sco__prix_port);
+                        }
+                        let vue = 'Non Renseigné';
+                        $('#sco__vue_ref').val('NON');
+                        if (dataSet.sco__vue_ref) {
+                            $('#sco__vue_ref').val(dataSet.sco__vue_ref);
+                            vue = dataSet.sco__vue_ref;
+                        }
+                        $('#sco__type_port_d').html('<i class="fas fa-fighter-jet"></i> Type de port : <b>' + string + '</b>');
+                        $('#sco__prix_port_d').html('<i class="fas fa-euro-sign"></i> prix port :  <b>' + prix + '</b>');
+                        $('#sco__vue_ref_d').html('<i class="fas fa-eye"></i> Vue sur les ref : <b>' + vue + '</b>');
+                        $('#alert_condition').text('');
                     }
                     
-                    $('#sco__cli_id_fact').val(dataSet.sco__cli_id_fact);
-                    
-                    if(dataSet.sco__type_port == 'FRNCO'){
-                        string = 'Franco de port'
-                    }else if(dataSet.sco__type_port == 'FRCOA'){
-                       string = 'Franco à '+ dataSet.sco__francoa + ' €';
-                       if (dataSet.sco__francoa) {
-                        $('#sco__francoa').val(dataSet.sco__francoa);
-                       }
-                      
-                    }else if(dataSet.sco__type_port == 'NOFRC'){
-                        string = 'Pas de Franco';
-                    }
-                    let prix = 'Non Renseigné';
-                    if (dataSet.sco__prix_port > 0) {
-                        prix = dataSet.sco__prix_port + ' €';
-                        $('#sco__prix_port').val(dataSet.sco__prix_port);
-                    }
-                    let vue = 'Non Renseigné' ;
-                    $('#sco__vue_ref').val('NON');
-                    if (dataSet.sco__vue_ref) {
-                        $('#sco__vue_ref').val(dataSet.sco__vue_ref);
-                        vue =  dataSet.sco__vue_ref;
-                    }
-                    $('#sco__type_port_d').html('<i class="fas fa-fighter-jet"></i> Type de port : <b>' + string + '</b>');
-                    $('#sco__prix_port_d').html('<i class="fas fa-euro-sign"></i> prix port :  <b>' + prix + '</b>');
-                    $('#sco__vue_ref_d').html('<i class="fas fa-eye"></i> Vue sur les ref : <b>' + vue + '</b>'); 
-                    $('#alert_condition').text('');
                 },
                 error: function (jqXhr, textStatus, errorMessage) {
                     results = jqXhr.responseJSON.msg;
@@ -155,7 +205,7 @@ $(document).ready(function(){
                     "sco__vue_ref" : $('#sco__vue_ref').val() , 
                     "secret" : "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528"
                 };
-                $.ajax(prod + '/boutiqueSossuke', {
+                $.ajax(local + '/boutiqueSossuke', {
                     type: 'POST',
                     method: "POST",
                     crossDomain: true,
@@ -260,17 +310,16 @@ $(document).ready(function(){
                         $('#alert_sav').text(verif);
                     }else{
                         let body =  renderBodySav()
-                        $.ajax(prod + '/boutiqueSossuke', {
+                        $.ajax(local + '/boutiqueSossuke', {
                             type: 'POST',
                             method: "POST",
                             crossDomain: true,
                             async: false ,
                             data: JSON.stringify(body),
                             success: function (data){
-                                console.log(data)
-                                
                                 $('.modal').modal('hide');
                                 $('#alert_sav').text('');
+                                window.location.href = 'displaySocieteMyRecode?cli__id=' + $('#cli__id').val();
                             },
                             error: function (jqXhr) {
                                 results = jqXhr.responseJSON.msg;

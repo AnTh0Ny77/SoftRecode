@@ -773,7 +773,127 @@
                 <div class="modal-footer">
                     <div class="alert alert-secondary past_pastel" id="alert_sav" role="alert">  
                     </div>
-                    <button class="btn btn-recode-important"  type="button" id="boutton_sav">Editer</button>
+                    <button class="btn btn-recode-important"  type="button" id="boutton_sav">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- Modal  Boutique  Edit-->
+<div class="modal fade" id="modalSavEdit" tabindex="-1" role="dialog" aria-labelledby="modalUser" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <form action="">
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title">Modification d article à la boutique en ligne pour le client </h5>
+                        <p class="my-2"><i class="far fa-question-circle"></i> Présent dans le catalogue </p>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-12">
+                            <small class="form-text text-muted">Article à ajouter</small>
+                            <select
+                                class="form-control my-2 form-control input-recode selectpicker text-calm text-muted"
+                                data-live-search="true" id="sav__ref_id_r">
+                                {% for row in avendre_list %}
+                                <option value="{{row.sar__ref_id}}"> {{row.famille ~ " " ~ row.sar__marque ~ " " ~
+                                    row.sar__model ~ " " ~ row.sar__ref_constructeur }}
+
+                                    {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-11 d-flex justify-content-start ">
+                        <div class="col-6">
+                            <small class="form-text text-muted">Etat</small>
+                            <select
+                                class="form-control my-2 form-control input-recode selectpicker text-calm text-muted"
+                                id="sav__etat_r">
+                                <option value="NEU">Neuf </option>
+                                <option value="OCC">Reconditionné </option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <small class="form-text text-muted">Garantie de base</small>
+                            <select
+                                class="form-control my-2 form-control input-recode selectpicker text-calm text-muted"
+                                id="sav__gar_std_r">
+                                <option value="0">Aucune</option>
+                                <option value="6">6</option>
+                                <option value="12">12</option>
+                                <option value="24">24</option>
+                                <option value="36">36</option>
+                                <option value="60">60</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-5">
+                            <small class="form-text text-muted">Memo Recode </small>
+                            <input class="form-control my-2 input-recode" id="sav__memo_recode_r" placeholder=""
+                                rows="2"></input>
+                        </div>
+                        <div class="col-4">
+                            <small class="form-text text-muted">Prix </small>
+                            <input class="form-control my-2 input-recode" id="sav__prix_r" placeholder=""
+                                rows="2"></input>
+                        </div>
+
+                        <div class="col-3">
+                            <small class="form-text text-muted">Date de fin de vente</small>
+                            <input class="form-control my-2 input-recode" type="date" id="sav__dlv_r" placeholder=""
+                                rows="2"></input>
+                        </div>
+
+                    </div>
+                    <div class="col-11 d-flex justify-content-start">
+
+                        <div class="col-6">
+                            <small class="form-text text-muted">Extension de Garantie</small>
+                            <select
+                                class="form-control my-2 form-control input-recode selectpicker text-calm text-muted"
+                                id="sav__gar1_mois_r">
+                                <option value="0">Aucune</option>
+                                <option value="12">12</option>
+                                <option value="24">24</option>
+                                <option value="36">36</option>
+                                <option value="60">60</option>
+                            </select>
+                            <input class="form-control my-2 input-recode" id="sav__gar1_prix_r" placeholder="Prix"
+                                rows="2"></input>
+                        </div>
+                        <div class="col-6">
+                            <small class="form-text text-muted">Extension de Garantie</small>
+                            <select
+                                class="form-control my-2 form-control input-recode selectpicker text-calm text-muted"
+                                id="sav__gar2_mois_r">
+                                <option value="0">Aucune</option>
+                                <option value="12">12</option>
+                                <option value="24">24</option>
+                                <option value="36">36</option>
+                                <option value="60">60</option>
+                            </select>
+                            <input class="form-control my-2 input-recode" id="sav__gar2_prix_r" placeholder="Prix"
+                                rows="2"></input>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="alert alert-secondary past_pastel" id="alert_sav_r" role="alert">
+                    </div>
+                    <button class="btn btn-recode-important" type="button" id="boutton_sav_r">Editer</button>
                 </div>
             </form>
         </div>
@@ -964,7 +1084,7 @@
             let verif = handleFormsUser(body)
 
             if(verif) {return verif}
-            $.ajax(prod + '/verifymail', {
+            $.ajax(local + '/verifymail', {
                 type: 'POST',
                 method: "POST",
                 dataType: "text",
@@ -1064,7 +1184,7 @@
         //si faux je ne peux pas continuer sinon je peux afficher le message :
          let  verifyMailRequest = function (body) {
             let results = false ; 
-            $.ajax( prod + '/verifymail', {
+            $.ajax( local + '/verifymail', {
                 type: 'POST',  
                 method : "POST" ,
                 crossDomain: true ,
@@ -1083,7 +1203,7 @@
 
         let postUserRequest = function(body){
             let results = false ; 
-            $.ajax( prod +  '/usersossuke', {
+            $.ajax( local +  '/usersossuke', {
                 type: 'POST', 
                 method : "POST" ,
                 crossDomain: true , 
@@ -1101,7 +1221,7 @@
 
         let updateUserRequest = function(body){
             let results = false ; 
-            $.ajax( prod +  '/usersossuke', {
+            $.ajax( local +  '/usersossuke', {
                 type: 'POST',  
                 crossDomain: true ,
                 async: false,
@@ -1123,7 +1243,7 @@
                 'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528', 
                 'one': $('#cli__id').val(),
             };
-            $.ajax( prod +  '/sossuke', {
+            $.ajax( local +  '/sossuke', {
                 type: 'POST',  
                 crossDomain: true ,
                 async: false,
@@ -1143,7 +1263,7 @@
 
         let postUserRelation = function (body) {
             let results = false;
-            $.ajax(prod + '/usersitessossuke', {
+            $.ajax(local + '/usersitessossuke', {
                 type: 'POST',
                 method : "POST" ,
                 crossDomain: true ,
@@ -1161,7 +1281,7 @@
         let deleteRole = function(body){
             let results = false;
 
-            $.ajax(prod + '/rolesossuke', {
+            $.ajax(local + '/rolesossuke', {
                 type: 'POST',
                 crossDomain: true ,
                 async: false,
@@ -1179,7 +1299,7 @@
 
         let postRoleRequest = function(body){
             let results = false ; 
-            $.ajax( prod +  '/rolesossuke', {
+            $.ajax( local +  '/rolesossuke', {
                 type: 'POST',  
                 crossDomain: true ,
                 data: JSON.stringify(body), 
@@ -1383,7 +1503,7 @@
 
         let postMatosRequest = function(body){
             let results = false ; 
-            $.ajax( prod +  '/materiel', {
+            $.ajax( local +  '/materiel', {
                 type: 'POST',  
                 crossDomain: true ,
                 async: true ,
@@ -1401,7 +1521,7 @@
 
         let ActifMatos = function(body){
             let results = false;
-            $.ajax(prod + '/materielSossuke', {
+            $.ajax(local + '/materielSossuke', {
                 type: 'POST',
                 crossDomain: true,
                 async: true,
@@ -1445,7 +1565,7 @@
                 'cli__id': $('#cli__id').val(),
                 'RECODE__PASS' : 'testtfvgz4564564**zatyf§§/tettavapouuzvcaQQZAcvrtestdetestrapondre'
             };
-            $.ajax( prod +  '/materiel', {
+            $.ajax( local +  '/materiel', {
                 type: 'GET',  
                 crossDomain: true ,
                 async: false,
