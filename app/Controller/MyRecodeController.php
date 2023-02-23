@@ -282,7 +282,7 @@ class MyRecodeController extends BasicController {
                             $dest = intval($_POST['dest']);
                             break;
                         case 'CLO':
-                            $dest = intval($ticket['user']['tkl__user_id']);
+                            $dest = intval($ticket['user']);
                             break;
                     }
 
