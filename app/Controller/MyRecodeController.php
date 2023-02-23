@@ -196,7 +196,7 @@ class MyRecodeController extends BasicController {
                 $list = $list['data'];
                 $definitive_edition = [];
                 foreach ($list as $ticket){
-                    
+
                     if ($ticket['tk__lu'] == 9 ) {
                         self::updateTicket($ticket , $token , 9 , $Api );
                     }else{
@@ -282,7 +282,7 @@ class MyRecodeController extends BasicController {
                             $dest = intval($_POST['dest']);
                             break;
                         case 'CLO':
-                            $dest = intval($ticket['last']['user__id']);
+                            $dest = intval($ticket['user']['tkl__user_id']);
                             break;
                     }
 
@@ -305,7 +305,7 @@ class MyRecodeController extends BasicController {
                         }
                     }
                     
-                    $id_ligne =  self::PostLigne($_POST ,$dest , $Api, $token);
+                        $id_ligne =  self::PostLigne($_POST ,$dest , $Api, $token);
                    
                         $ticket = self::PostChamps($id_ligne,$_POST,$Api,$token);
                     if ($fileSize > 111) {
