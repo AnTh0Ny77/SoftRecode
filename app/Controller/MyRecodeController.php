@@ -226,13 +226,39 @@ class MyRecodeController extends BasicController {
                 }
 
                 $ticket = $definitive_edition[0];
+                switch ($ticket['mat']['mat__kw_tg']) {
+                    case 'AUT':
+                        $gar = 'Autre';
+                        break;
+                    case 'GCO':
+                        $gar = 'Garantie constructeur';
+                        break;
+                    case 'GNO':
+                        $gar = 'NON garantie';
+                        break;
+                    case 'GRE':
+                        $gar = 'Garantie RECODE';
+                        break;
+                    case 'LOC':
+                        $gar = 'Location RECODE';
+                        break;
+                    case 'MNT':
+                        $gar = 'Maintenance RECODE';
+                        break;
+                    default:
+                        $gar = 'NON garantie';
+                        break;
+                }
                 $ticket['lignes'][0]['entities'][0] = [
+                    "gar" => $gar ,
+                    'dateof' => $ticket['mat']['mat__date_offg'] ,
                     "name" => $ticket['mat']['mat__model'], 
                     "label" => $ticket['mat']['mat__pn'], 
                     "additionals" => $ticket['mat']['mat__sn']  , 
-                    "alternative" => "public/img/pn2.jpg"
+                    "alternative" => "public/img/pn2.jpg" ,
                 ];
                 $ticket['lignes'][0]['entities'][1] = [
+                    "identifier" => $ticket['cli']['cli__id'],
                     "name" => $ticket['cli']['cli__nom'], 
                     "label" => $ticket['cli']['cli__adr1'], 
                     "additionals" => $ticket['cli']['cli__cp'] . ' ' . $ticket['cli']['cli__ville'] , 
@@ -256,11 +282,7 @@ class MyRecodeController extends BasicController {
                         $fileName = $_FILES['file']['name'];
                         $tempPath = $_FILES['file']['tmp_name'];
                         $fileSize = $_FILES['file']['size'];
-                        if (empty($fileName)){
-                           $_SESSION['file_alert'] = ' Merci de télécharger un fichier';
-                           header('location: myRecode-ticket?tk__id='.$_GET['tk__id']);
-                           die();
-                        }
+                       
                         $fileExtension = strtolower(pathinfo($fileName,PATHINFO_EXTENSION));
                         $validExtension = array('jpeg','jpg','png','gif','pdf','txt');
                         if (!in_array($fileExtension, $validExtension)) {

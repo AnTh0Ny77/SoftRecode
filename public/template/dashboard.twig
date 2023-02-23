@@ -72,6 +72,14 @@
 		</button>
 		
 	      </div>
+		  <div class="mx-4">
+			<button class="btn btn-link ">
+			<a href="myRecode" >
+				<i class="fas fa-comment-alt-check fa-3x"></i>
+				<p>My Recode</p>
+			</a>
+			</button>
+	      </div>
 
 	      {% if user.user__cmd_acces > 0  %}
 		<div class="mx-4">
@@ -95,13 +103,12 @@
 	      {% endif %}
 	      
 	      <div class="mx-4">
-		<button class="btn btn-link">
-		  <a href="admin_client" >
-		    <i class="fas fa-user-tie fa-3x"></i>
-		    <p>Nouveau client</p>
-		  </a>
-		</button>
-		
+			<button class="btn btn-link">
+			<a href="admin_client" >
+				<i class="fas fa-user-tie fa-3x"></i>
+				<p>Nouveau client</p>
+			</a>
+			</button>
 	      </div>
 			<div class="mx-4">
 				<button class="btn btn-link">
@@ -160,12 +167,7 @@
 		    <span class="mx-5 text-primary"><span class="mx-1 badge badge-primary ">{{devis_envoyes}}</span>  Devis envoyés les 15 derniers jours</span>
 		</li>
 		<li class="list-group-item">
-		  <div class="alert alert-info" role="alert">
-		    <h5><span class=" font-italic">
-		    En cours de développement 
-		    </span>
-		    </h5>
-	    </div>
+		 
 		</li>
 	      </ul>
 	    </div>
