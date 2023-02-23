@@ -21,9 +21,6 @@ $(document).ready(function(){
             data: JSON.stringify(body),
             success: function (data, status, xhttp) {
                 let dataSet = extractObjectValues(data.data);
-                console.log(dataSet);
-               
-               
                 let results = [];
                 dataSet.forEach(element => {
                    let familleString =  trouverValeur(familles, element[12].sar__famille );
@@ -51,7 +48,7 @@ $(document).ready(function(){
                     let temp = [JSON.stringify(element) , ref, etatFinal, '<b>' + element[4] + '€</b> HT<br>' + date ,  element[5] , gar , element[12].sar__image]; 
                    results.push(temp);
                 });
-                
+                console.log(results);
                 Table = $('#table_bot').DataTable({
                     paging: true,
                     order: [[0, 'desc']] ,
@@ -82,37 +79,41 @@ $(document).ready(function(){
                         
                        
                         $(row).on('click', function () {
-                            
-                            data = JSON.parse(data[0]);
-                            console.log(data);
+                            temp = JSON.parse($(data)[0]);
+                           
                             $('#sav__ref_id_r').selectpicker('deselectAll');
-                            $('#sav__ref_id_r').selectpicker('val', data[2]);
+                            $('#sav__ref_id_r').selectpicker('val', temp[2]);
                             $('#sav__ref_id_r').selectpicker('refresh');
                             $('#sav__etat_r').selectpicker('deselectAll');
-                            $('#sav__etat_r').selectpicker('val', data[3]);
+                            $('#sav__etat_r').selectpicker('val', temp[3]);
                             $('#sav__etat_r').selectpicker('refresh');
                             $('#sav__gar_std_r').selectpicker('deselectAll');
-                            $('#sav__gar_std_r').selectpicker('val', data[6]);
+                            if (  temp[6]!= null ) {
+                                $('#sav__gar_std_r').selectpicker('val', temp[6]);
+                            }else {
+                                $('#sav__gar_std_r').selectpicker('val', 0);
+                            }
                             $('#sav__gar_std_r').selectpicker('refresh');
                             $('#sav__gar1_mois_r').selectpicker('deselectAll');
-                            if (data[7] != null) {
-                                $('#sav__gar1_mois_r').selectpicker('val', data[7]);
+                            if (temp[7] != null) {
+                                $('#sav__gar1_mois_r').selectpicker('val', temp[7]);
                             }else{
                                 $('#sav__gar1_mois_r').selectpicker('val', 0);
                             }
                             $('#sav__gar1_mois_r').selectpicker('refresh');
                             $('#sav__gar2_mois_r').selectpicker('deselectAll');
-                            if (data[9] != null) {
-                                $('#sav__gar2_mois_r').selectpicker('val', data[9]);
+                            if (temp[9] != null) {
+                                $('#sav__gar2_mois_r').selectpicker('val', temp[9]);
                             }else {
                                 $('#sav__gar2_mois_r').selectpicker('val', 0);
                             }
                             $('#sav__gar2_mois_r').selectpicker('refresh');
-                            $('#sav__gar1_prix_r').val(data[8]);
-                            $('#sav__gar2_prix_r').val(data[10]);
-                            $('#sav__memo_recode_r').val(data[5]);
-                            $('#sav__prix_r').val(data[4]);
-                            $('#sav__dlv_r').val(data[11]);
+                            $('#sav__gar1_prix_r').val(temp[8]);
+                            $('#sav__gar2_prix_r').val(temp[10]);
+                            $('#sav__id_r').val(temp[0]);
+                            $('#sav__memo_recode_r').val(temp[5]);
+                            $('#sav__prix_r').val(temp[4]);
+                            $('#sav__dlv_r').val(temp[11]);
                         })
                     },
                     language: {
@@ -192,7 +193,7 @@ $(document).ready(function(){
                 },
                 error: function (jqXhr, textStatus, errorMessage) {
                     results = jqXhr.responseJSON.msg;
-                    console.log(results);
+                    
                 }
             });
         }
@@ -343,6 +344,38 @@ $(document).ready(function(){
                 }
         })
 
+        $('#boutton_sav_r').on('click' , function(){
+
+            let verif  = verifySavForm_r();
+            if (verif) {
+                $('#alert_sav_r').text(verif);
+            }else {
+                verif  = verifyGarantie_r();
+                if (verif) {
+                    $('#alert_sav_r').text(verif);
+                }else{
+                    let body =  renderBodySav_r()
+                    $.ajax(prod + '/boutiqueSossuke', {
+                        type: 'POST',
+                        method: "POST",
+                        crossDomain: true,
+                        async: false ,
+                        data: JSON.stringify(body),
+                        success: function (data){
+                            $('.modal').modal('hide');
+                            $('#alert_sav').text('');
+                            window.location.href = 'displaySocieteMyRecode?cli__id=' + $('#cli__id').val();
+                        },
+                        error: function (jqXhr) {
+                            results = jqXhr.responseJSON.msg;
+                            console.log(results);
+                        }
+                    });
+                    
+                }
+            }
+    })
+
 
         let renderBodySav = function(){
             let gar1 = null ;
@@ -380,6 +413,44 @@ $(document).ready(function(){
             return $body;
         }
 
+
+        let renderBodySav_r = function(){
+            let gar1 = null ;
+            let prix1 = null;
+            let gar2 = null; 
+            let prix2 = null ;
+
+            if ($('#sav__gar2_mois_r').val() > 0 &&  $('#sav__gar1_mois_r').val() == 0) {
+                gar1 = $('#sav__gar2_mois_r').val() 
+                prix1 = $('#sav__gar2_prix_r').val()
+            }else if ($('#sav__gar2_mois_r').val() > 0 &&  $('#sav__gar1_mois_r').val() > 0){
+                gar1 = $('#sav__gar1_mois_r').val() 
+                prix1 = $('#sav__gar1_prix_r').val()
+                gar2 = $('#sav__gar2_mois_r').val() 
+                prix2 = $('#sav__gar2_prix_r').val()
+            }else if ($('#sav__gar2_mois_r').val() == 0 &&  $('#sav__gar1_mois_r').val() > 0){
+                gar1 = $('#sav__gar1_mois_r').val() 
+                prix1 = $('#sav__gar1_prix_r').val()
+            }
+            $body = {
+                "secret" : "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528" , 
+                'sav__id' : $('#sav__id_r').val() ,
+                "sav__put" : 'ok',
+                "sav__cli_id" : $('#cli__id').val() , 
+                "sav__ref_id" : $('#sav__ref_id_r').val(),
+                "sav__etat" : $('#sav__etat_r').val(),
+                "sav__prix" : $('#sav__prix_r').val(),
+                "sav__memo_recode" : $('#sav__memo_recode_r').val(),
+                "sav__gar_std" : $('#sav__gar_std_r').val(),
+                "sav__dlv" : $('#sav__dlv_r').val() , 
+                'sav__gar1_mois' : gar1 , 
+                'sav__gar1_prix' : prix1 ,
+                'sav__gar2_mois' : gar2 , 
+                'sav__gar2_prix' : prix2 
+            }
+            return $body;
+        }
+
         let verifySavForm = function(){
             if (!$('#sav__prix').val()) {
                 return 'Le prix n est pas indiqué'
@@ -392,6 +463,41 @@ $(document).ready(function(){
             }
             return false;
         }
+
+        let verifySavForm_r = function(){
+            if (!$('#sav__prix_r').val()) {
+                return 'Le prix n est pas indiqué'
+            }
+            if ($('#sav__prix_r').val() && isNaN($('#sav__prix').val())) {
+                return 'Le prix nest pas indiqué ou est incorrect'
+            }
+            if (!$('#sav__dlv_r').val()) {
+                return 'La date limite de vente est obligatoire'
+            }
+            return false;
+        }
+
+        let verifyGarantie_r = function(){
+            let value1 = $('#sav__gar1_mois_r').val();
+            if(value1> 0 ){
+                if (!$('#sav__gar1_prix_r').val()) {
+                    return 'Le prix de la garantie n est pas indiqué'
+                }
+                if ($('#sav__gar1_prix_r').val() && isNaN($('#sav__gar1_prix_r').val())) {
+                    return 'Le prix de la garantie n est pas correct'
+                }
+            }
+            let value2 = $('#sav__gar2_mois_r').val();
+            if(value2 > 0 ){
+                if (!$('#sav__gar2_prix_r').val()) {
+                    return 'Le prix de la garantie n est pas indiqué'
+                }
+                if ($('#sav__gar2_prix_r').val() && isNaN($('#sav__gar2_prix_r').val())) {
+                    return 'Le prix de la garantie n est pas correct'
+                }
+            }
+            return false ;
+    }
 
         let verifyGarantie = function(){
                 let value1 = $('#sav__gar1_mois').val();

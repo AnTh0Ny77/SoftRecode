@@ -150,19 +150,55 @@
                                     {% for row in user.roles %}
                                         {% if row == 'ADUSR' %}
                                             <div class="past_blue mx-2 my-1">
-                                                Administrateur
+                                                Administrateur d autres utilisateurs
                                             </div><br>
                                         {% elseif row == 'ACHAT' %}
                                             <div class="past_pink mx-2 my-1">
-                                                {{row}}
+                                                Peut passer des commandes
                                             </div><br>
                                         {% elseif row == 'SUMYR' %}
                                             <div class="past_yellow mx-2 my-1">
-                                                Administrateur MyRecode
+                                                Super administrateur RECODE
                                             </div><br>
                                         {% elseif row == 'USER' %}
                                             <div class="past_blue mx-2 my-1">
                                                 Utilisateurs
+                                            </div><br>
+                                        {% elseif row == 'CMAIL' %}
+                                            <div class="past_pink mx-2 my-1">
+                                                Recevoir commandes par email
+                                            </div><br>
+                                        {% elseif row == 'ACHPX' %}
+                                            <div class="past_yellow mx-2 my-1">
+                                                Visu des prix dans commandes
+                                            </div><br>
+                                        {% elseif row == 'USRAC' %}
+                                            <div class="past_orange mx-2 my-1">
+                                                Utilisateur Actif
+                                            </div><br>
+                                        {% elseif row == 'VUBLS' %}
+                                            <div class="past_pink mx-2 my-1">
+                                                Voir les Bons de Livraisons
+                                            </div><br>
+                                        {% elseif row == 'VUFAC' %}
+                                            <div class="past_yellow mx-2 my-1">
+                                                Voir les Factures
+                                            </div><br>
+                                        {% elseif row == 'VUREF' %}
+                                            <div class="past_orange mx-2 my-1">
+                                                Voir les ref constructeur (dans catalogue)
+                                            </div><br>
+                                        {% elseif row == 'VUREF' %}
+                                            <div class="past_pink mx-2 my-1">
+                                                Voir les ref constructeur (dans catalogue)
+                                            </div><br>
+                                        {% elseif row == 'VUSOC' %}
+                                            <div class="past_blue mx-2 my-1">
+                                                Voir les Doc sur la socitété 
+                                            </div><br>
+                                        {% elseif row == 'VUTEC' %}
+                                            <div class="past_orange mx-2 my-1">
+                                                Voir les Infos technique
                                             </div><br>
                                         {% endif %}
                                     {% endfor %}
@@ -342,9 +378,17 @@
                         </div>
                         <div class="col-6">
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" multiple  name="user__role" id="user__role"  >
-                                <option value="ADUSR" selected>Administrateur</option>
-                                <option value="ACHAT" >Achat</option>
-                                <option value="SUMYR">Administrateur Recode</option>
+                                <option value="ADUSR" selected>Administrateur d autres utilisateurs</option>
+                                <option value="ACHAT" >Peut passer des commandes</option>
+                                <option value="SUMYR">Super administrateur RECODE</option>
+                                <option value="CMAIL" >Recevoir commandes par email</option>
+                                <option value="TMAIL" >Recevoir les infos tickets par email</option>
+                                <option value="USRAC">Utilisateur Actif</option>
+                                <option value="VUBLS">Voir les Bons de Livraisons</option>
+                                <option value="VUFAC" >Voir les Factures</option>
+                                <option value="VUREF" >Voir les ref constructeur (dans catalogue)</option>
+                                <option value="VUSOC">Voir les Doc sur la socitété </option>
+                                <option value="VUTEC">Voir les Infos technique </option>
                             </select>
                         </div>
                     </div>
@@ -405,8 +449,16 @@
                         <div class="col-6">
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" multiple  name="user__role" id="user__role_edit"  >
                                 <option value="ADUSR" >Administrateur</option>
-                                <option value="ACHAT" >Achat</option>
-                                <option value="SUMYR">Administrateur Recode</option>
+                                <option value="ACHAT" >Peut passer des commandes</option>
+                                <option value="SUMYR">Super administrateur RECODE</option>
+                                <option value="CMAIL" >Recevoir commandes par email</option>
+                                <option value="TMAIL" >Recevoir les infos tickets par email</option>
+                                <option value="USRAC">Utilisateur Actif</option>
+                                <option value="VUBLS">Voir les Bons de Livraisons</option>
+                                <option value="VUFAC" >Voir les Factures</option>
+                                <option value="VUREF" >Voir les ref constructeur (dans catalogue)</option>
+                                <option value="VUSOC">Voir les Doc sur la socitété </option>
+                                <option value="VUTEC">Voir les Infos technique </option>
                             </select>
                         </div>
                     </div>
@@ -836,7 +888,6 @@
                                 <option value="60">60</option>
                             </select>
                         </div>
-
                     </div>
 
                     <div class="col-11 d-flex justify-content-start">
@@ -895,6 +946,7 @@
                     </div>
                     <button class="btn btn-recode-important" type="button" id="boutton_sav_r">Editer</button>
                 </div>
+                <input type="hidden" id="sav__id_r">
             </form>
         </div>
     </div>
