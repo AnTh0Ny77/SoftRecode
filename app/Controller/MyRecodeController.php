@@ -278,14 +278,14 @@ class MyRecodeController extends BasicController {
                             break;
                     }
 
-                    if (isset($_FILES)){
+                    if (!empty($_FILES)){
                         $fileName = $_FILES['file']['name'];
                         $tempPath = $_FILES['file']['tmp_name'];
                         $fileSize = $_FILES['file']['size'];
                        
                         $fileExtension = strtolower(pathinfo($fileName,PATHINFO_EXTENSION));
                         $validExtension = array('jpeg','jpg','png','gif','pdf','txt');
-                        if (!in_array($fileExtension, $validExtension)) {
+                        if (!in_array($fileExtension, $validExtension) and $fileSize > 111) {
                             $_SESSION['file_alert']  = '  Merci de télécharger un fichier au format : jpeg , jpg , png , gif , pdf ou txt';
                             header('location: myRecode-ticket?tk__id='.$_GET['tk__id']);
                             die();
