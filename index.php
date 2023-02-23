@@ -7,6 +7,7 @@ use App\Api\ApiList;
 use App\Api\ApiDevis;
 use App\Api\ApiFacture;
 use App\Api\ApiTickets;
+use App\Api\ApiBoutique;
 use App\Api\Demo as test;
 use App\Apiservice\ApiTest;
 use App\Api\ApiListDocTickets;
@@ -17,6 +18,7 @@ use App\Controller\TicketsFormsController;
 use App\Controller\TicketsDisplayController;
 use App\Controller\UserMyRecodeController;
 use App\Controller\MyRecodeSocieteController;
+use App\Controller\MyRecodeBoutiqueController;
 
 $request = $_SERVER['REQUEST_URI'];
 
@@ -188,6 +190,10 @@ $request = $_SERVER['REQUEST_URI'];
 			echo ApiListDocTickets::index($_SERVER['REQUEST_METHOD']);
 			break;
 
+		case '/SoftRecode/apiBoutique'.$get_data;
+			echo ApiBoutique::index($_SERVER['REQUEST_METHOD']);
+			break;
+
 		case '/SoftRecode/transfertClient'.$get_data;
 			echo ApiTest::transfertClient();
 			break;
@@ -205,9 +211,15 @@ $request = $_SERVER['REQUEST_URI'];
 			break;
 
 		case '/SoftRecode/displaySocieteMyRecode'.$get_data;
-			
 			echo MyRecodeSocieteController::display();
 			break;
+
+		case '/SoftRecode/displayBoutiqueMyRecode' . $get_data;
+			echo MyRecodeBoutiqueController::displayList();
+			break;
+
+
+		
 			
 		case '/SoftRecode/demo'.$get_data;
 			var_dump(test::testFilesRequest());

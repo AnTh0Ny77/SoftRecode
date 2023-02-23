@@ -547,7 +547,7 @@ class Article extends Table
 	  	$pn_court = preg_replace("#[^!A-Za-z0-9%]+#", "", $pn_name);
 		$pn_court = strtoupper($pn_court);
 
-		$SQL = 'SELECT a.* , u.prenom , u.nom , k.kw__lib as famille  , l.id__fmm as modele
+		$SQL = 'SELECT a.* , u.prenom , u.nom , k.kw__lib as famille , k.kw__value as fam  , l.id__fmm as modele
 		FROM art_pn as a  
 		LEFT JOIN utilisateur as u on  u.id_utilisateur = apn__id_user_modif
 		LEFT JOIN keyword as k ON ( k.kw__type = "famil" AND k.kw__value =  a.apn__famille ) 
@@ -580,6 +580,56 @@ class Article extends Table
 
 			if (!empty($model_data)) 
 			{
+				$data->modele = $model_data->afmm__modele ; 
+			}
+		
+		}
+
+
+		if (!empty($data->apn__image))
+				$data->apn__image = base64_encode($data->apn__image);
+				
+		return $data;
+  }
+
+  public function get_pn_by_id_api($pn_name)
+  {
+	  	//compare le champs input dénué de caractère spéciaux et en majuscules : 
+	  	$pn_court = preg_replace("#[^!A-Za-z0-9%]+#", "", $pn_name);
+		$pn_court = strtoupper($pn_court);
+
+		$SQL = 'SELECT a.* , u.prenom , u.nom , k.kw__lib as famille , k.kw__value as fam  , l.id__fmm as modele , l.id__fmm as marque
+		FROM art_pn as a  
+		LEFT JOIN utilisateur as u on  u.id_utilisateur = apn__id_user_modif
+		LEFT JOIN keyword as k ON ( k.kw__type = "famil" AND k.kw__value =  a.apn__famille ) 
+		LEFT JOIN liaison_fmm_pn as l ON ( a.apn__pn  = l.id__pn ) 
+		WHERE apn__pn = "'. $pn_court .'"';
+		$request = $this->Db->Pdo->query($SQL);
+		$data = $request->fetch(PDO::FETCH_OBJ);
+	
+		if (!empty($data)){
+			$request = $this->Db->Pdo->query(
+				'SELECT  m.am__marque as marque
+				FROM art_fmm as a
+				INNER JOIN art_marque as m ON a.afmm__marque = m.am__id
+				WHERE a.afmm__id =  "' .$data->marque.'"
+				LIMIT 10');
+				$marque = $request->fetch(PDO::FETCH_OBJ);
+			
+			if (!empty($marque)) {
+				$data->marque = $marque->marque ; 
+			}else{
+				$data->marque ="" ;
+			}
+			
+
+			$SQL = 'SELECT a.afmm__modele
+			FROM art_fmm as a  
+			WHERE a.afmm__id = "'. $data->modele .'"';
+			$request = $this->Db->Pdo->query($SQL);
+			$model_data = $request->fetch(PDO::FETCH_OBJ);
+
+			if (!empty($model_data)) {
 				$data->modele = $model_data->afmm__modele ; 
 			}
 		
@@ -840,8 +890,7 @@ public function find_models_byFamille($famille_char_3)
 }
 
 
-public function find_models( string $find_by , string  $value) : array
-{
+public function find_models(string $find_by,string  $value) : array{
 	$request = $this->Db->Pdo->query(
 	'SELECT afmm__id ,  afmm__image ,  afmm__modele, k.kw__lib as famille , m.am__marque as Marque 
 	FROM art_fmm

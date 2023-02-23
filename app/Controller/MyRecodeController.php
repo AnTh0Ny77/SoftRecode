@@ -47,30 +47,23 @@ class MyRecodeController extends BasicController {
             'RECODE__PASS' => "secret"
         ];
         if (!empty($_GET)){
-            if (!empty($_GET['search'])) {
-                $query_exemple['search'] = $_GET['search'] ;
-            }
+
             if (!empty($_GET['tk__lu'])) {
                 foreach ($_GET['tk__lu']  as  $value) {
                     array_push($query_exemple['tk__lu'], $value);
                 }
             }
-            if (!empty($_GET['tk__id'])) {
-                $tempo = explode(' ' ,$_GET['tk__id']  );
-                foreach ($tempo as  $value) {
-                    if (is_numeric($value) and strlen($value) ==  5 ) {
-                        array_push( $query_exemple['tk__id'] , $value);
+            if (!empty($_GET['search'])) {
+                    if (is_numeric($_GET['search']) and strlen($_GET['search']) ==  5 ) {
+                        array_push( $query_exemple['tk__id'] , $_GET['search']);
                     }
-                }
-            }
-            if (!empty($_GET['tk__groupe'])) {
-                $tempo = explode(' ' ,$_GET['tk__groupe']  );
-                foreach ($tempo as  $value) {
-                    if (is_numeric($value) and strlen($value) ==  4 ) {
-                        array_push( $query_exemple['tk__groupe'] , $value);
+                    elseif (is_numeric($_GET['search']) and strlen($_GET['search']) ==  4 ) {
+                        array_push( $query_exemple['tk__groupe'] ,$_GET['search']);
+                    }else{
+                        $query_exemple['search'] = $_GET['search'] ;
                     }
-                }
             }
+           
         }
         if (!empty($_GET['nonLu'])) {
             $nonLus = [
@@ -85,7 +78,21 @@ class MyRecodeController extends BasicController {
         $list = $Api->getTicketList($token , $query_exemple);
         $list = $list['data'];
         $definitive_edition = [];
+        $t_lu = 0;
+        $t_nlu = 0;
+        $t_clo = 0 ;
         foreach ($list as $ticket){
+            switch ($ticket['tk__lu']) {
+                case 5:
+                    $t_lu ++;
+                    break;
+                case 9:
+                    $t_clo ++;
+                    break;
+                default:
+                    $t_nlu ++;
+                    break;
+            }
             $ticket['user'] = reset($ticket['lignes']);
             $ticket['user'] = $ticket['user']['tkl__user_id'];
             $ticket['dest'] = end($ticket['lignes']);
@@ -125,23 +132,27 @@ class MyRecodeController extends BasicController {
         }
         if (!empty($_GET['search']))
             $filters['search'] = $_GET['search'];
-        if (!empty($query_exemple['tk__id'])) {
-            $filters['tk__id'] = " ";
-            foreach ($query_exemple['tk__id'] as  $value) {
-                $filters['tk__id'] .= " " . $value . " ";
-            }
-        }
-        if (!empty($query_exemple['tk__groupe'])) {
-            $filters['tk__groupe'] = " ";
-            foreach ($query_exemple['tk__groupe'] as  $value) {
-                $filters['tk__groupe'] .= " " . $value . " ";
-            }
-        }
+        // if (!empty($query_exemple['tk__id'])) {
+        //     $filters['tk__id'] = " ";
+        //     foreach ($query_exemple['tk__id'] as  $value) {
+        //         $filters['tk__id'] .= " " . $value . " ";
+        //     }
+        // }
+        // if (!empty($query_exemple['tk__groupe'])) {
+        //     $filters['tk__groupe'] = " ";
+        //     foreach ($query_exemple['tk__groupe'] as  $value) {
+        //         $filters['tk__groupe'] .= " " . $value . " ";
+        //     }
+        // }
+        $total = count($definitive_edition);
+        $nb_resultats = $t_nlu . ' NON LUS - ' . $t_lu . ' LUS - ' . $t_clo . ' CLOTURES SUR ' . $total . ' RESULTATS' ;
+      
         return self::$twig->render(
             'display_ticket_myrecode_list.html.twig',[
                 'user' => $_SESSION['user'],
                 'list' => $definitive_edition , 
-                'filters' => $filters
+                'filters' => $filters , 
+                'results' => $nb_resultats
             ]
         );
     }

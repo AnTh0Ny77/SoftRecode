@@ -79,13 +79,21 @@ class MyRecodeSocieteController extends BasicController {
 
         $pn_list = $Article->getModelsMyRecode();
 
+        $body  = [
+            'secret' => "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528" , 
+            'shop_avendre' => true
+        ];
+
+        $list_avendre = $Api->getShopVendre($token,$body)['data'];
+        
         header("Access-Control-Allow-Origin: *");
         return self::$twig->render(
             'display_societe_myrecode.html.twig',
             [
                 'user' => $_SESSION['user'],
                 'client' => $client , 
-                'pn_list' => $pn_list
+                'pn_list' => $pn_list , 
+                'avendre_list' => $list_avendre
             ]
         );
     }

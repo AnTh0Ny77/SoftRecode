@@ -18,15 +18,6 @@
               <div class="col-4 text-white display-logo">
 				{{ include('display/display_logo_ticket.html.twig')}}
               </div>
-			 
-              <div class="card-recode d-flex flex-column col-12 col-lg-8">
-			
-				
-                	<h2 class="recode-orange-title"> Ticket {{ticket.tk__id}}</h2>
-					<p class="recode-p">{{ticket.tk__memo}}<br> 
-						<span class="text-dark font-weight-bold text-uppercase">En cours chez {{ ticket.last.user__prenom ~ " " ~ ticket.last.user__nom }}</span>
-					</p>
-              </div>
           </div>
 		  {% if alert %}
 		  <div class="alert alert-danger my-5" role="alert">
@@ -36,6 +27,12 @@
 		  </div>
 		  {% endif %}
           <div class="form-group pt-2">
+			<div class="card-recode d-flex flex-column col-12 ">
+				<h2 class="recode-orange-title"> Ticket {{ticket.tk__id}}</h2>
+			  <p class="recode-p">{{ticket.tk__memo}}<br> 
+				<span class="text-dark font-weight-bold text-uppercase">En cours chez {{ ticket.last.user__prenom ~ " " ~ ticket.last.user__nom }}</span>
+			  </p>
+		  </div>
             {% for ligne in ticket.lignes %}
               {{ include('display/display_ticket_lignes_myrecode.html.twig')}}
             {% endfor %}

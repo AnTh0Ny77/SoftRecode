@@ -1,0 +1,348 @@
+{% extends 'new_layout.twig' %}
+
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="public/css/forms-myrecode.css">
+<link rel="stylesheet" href="public/css/cards-myrecode.css">
+<link rel="stylesheet" href="public/css/font-family.css">
+<style type="text/css">
+
+    .past_purple {
+        background-color: #A7BFE3;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+
+    .past_pink {
+        background-color: #F9D7E7;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+
+    .past_greeen {
+        background-color: #CBE5BE;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+
+    .past_yellow {
+        background-color: #FFF681;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+
+    .past_blue {
+        background-color: #90A4C3;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+
+    .past_pastel {
+        background-color: #FBDEDA;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+
+    .past_orange {
+        background-color: #F1CB9D;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+
+    .past_red {
+        background-color: #2D2B76;
+        float: left;
+        color: antiquewhite;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .loader {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        display: inline-block;
+        position: relative;
+        border: 3px solid;
+        border-color: #FFF #FFF transparent transparent;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+      }
+      .loader::after,
+      .loader::before {
+        content: '';  
+        box-sizing: border-box;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        border: 3px solid;
+        border-color: transparent transparent #FF3D00 #FF3D00;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        box-sizing: border-box;
+        animation: rotationBack 0.5s linear infinite;
+        transform-origin: center center;
+      }
+      .loader::before {
+        width: 32px;
+        height: 32px;
+        border-color: #FFF #FFF transparent transparent;
+        animation: rotation 1.5s linear infinite;
+      }
+          
+      @keyframes rotation {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      } 
+      @keyframes rotationBack {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(-360deg);
+        }
+      }
+      #loader{
+          display: none;
+      }
+      .link-reco{
+        text-decoration: none;
+        color: black;
+    }
+</style>
+{% endblock %}
+{% block main %}
+<main role="main" class="container-fluid my-3 col-11 container-body">
+    <h3 class="recode-p"><i class="fad fa-building"></i></i> Boutique MyRecode</h3>
+    <p><i class="far fa-question-circle"></i> Liste des articles présents dans MyRecode.fr </p>
+    <div class="d-flex flex-row justify-content-between">
+      
+    <div class="mt-5 col-7">
+        <div class="">
+            <table id="table_id" class="display">
+                <div class="my-2 float-right">
+                    <button class="btn btn-recode-important" data-toggle="modal" data-target="#modalAjout">Ajouter</button>
+                </div>
+                <thead>
+                    <tr>
+                    </tr>
+                </thead>
+                <tbody>
+                        
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    </div>
+    
+</main>
+
+<!-- Modal   création-->
+<div class="modal fade" id="modalAjout" tabindex="-1" role="dialog" aria-labelledby="modalUser" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <form action="displaySocieteMyRecode?cli__id={{client.cli__id}}" method="post" id="forms_user_crea">
+                <input type="hidden" id="cli__id" value="{{client.cli__id}}">
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title">Ajout d'un nouvel article</h5>
+                        <p class="my-2"><i class="far fa-question-circle"></i> la photo présente dans le catalogue myrecode sera utilisée par défault ainsi que la description commerciale</p>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-10">
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted"  data-live-search="true"  id="pn">
+                                {% for pn in pn_list %}
+                                    <option value="{{pn.apn__pn}}">{{  pn.famille  ~ " " ~ pn.marque  ~  " " ~ pn.apn__pn_long}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="spinner-grow text-success" style="visibility: hidden" id="spinner" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <button class="btn btn-recode-important" type="button" id="button_ajout">
+                       
+                        Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+    const prod = "http://192.168.1.105/api";
+    const local = "http://localhost/RESTapi/";
+    let body = {
+        "secret" : "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528", 
+        'shop_avendre' : true 
+    }
+    var Table = null;
+    $.ajax(prod + '/boutiqueSossuke', {
+            type: 'POST',
+            method: "POST",
+            crossDomain: true,
+            data: JSON.stringify(body),
+            success: function (data, status, xhttp) {
+                let dataSet = extractObjectValues(data.data);
+                Table = $('#table_id').DataTable({
+                    paging: true,
+                    order: [[0, 'desc']] ,
+                    lengthMenu: [ 10, 25, 50, 75],
+                    data: dataSet,
+                    columns: [
+                        { title: 'Ref ID' },
+                        { title: 'Ref contructeur' },
+                        { title: 'Description' },
+                        { title: 'Marque' },
+                        { title: 'Famille' },
+                        { title: '' , 'render' : function(data){
+                            if(data != "" && data != null){
+                                return '<img src="public/img/boutique/'+ data +'"  width="40px">';
+                            }else {
+                                return '<img src="public/img/boutique/no.png"  width="40px">';
+                            }
+                            
+                        }  }
+                    ],
+                    createdRow: function (row, data, index) {
+                        $(row).attr('data-toggle', "modal");
+                        $(row).attr('data-target', "#modalModif");
+                        $(row).css('cursor', 'pointer');
+                        $(row).on('click', function () {
+                        })
+                    },
+                    language: {
+                        lengthMenu: "Voir _MENU_ articles par page",
+                        zeroRecords: "Aucuns résultats",
+                        info: "Page: _PAGE_ sur _PAGES_ au total",
+                        infoEmpty: "Aucuns articles",
+                        infoFiltered: "(résultats sur _MAX_ articles disponibles)",
+                        search: "Rechercher"
+                    }
+                });
+            },
+            error: function (jqXhr, textStatus, errorMessage) {
+                results = jqXhr.responseJSON.msg;
+
+            }
+
+        });
+
+        $('#button_ajout').on('click' , function(){
+            let apn__pn = {
+                "apn__pn" :   $('#pn').val()
+            };
+
+            $.ajax('apiBoutique', {
+                type: 'POST',
+                method: "POST",
+                crossDomain: true,
+                data: JSON.stringify(apn__pn),
+                success: function (data, status, xhttp) {
+                    let spinner = document.getElementById("spinner");
+                    spinner.style.visibility = 'visible'; //'hidden'
+                    
+                    renderTable(body); 
+                    $('.modal').modal('hide');
+                    spinner.style.visibility = 'hidden'; //'hidden'
+                    
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    console.log(jqXhr);
+                    results = jqXhr.responseJSON.msg;
+                }
+            });
+        })
+
+        let getBoutique = function (body){
+            $.ajax(prod + '/boutiqueSossuke', {
+                type: 'POST',
+                method: "POST",
+                async: false ,
+                crossDomain: true,
+                data: JSON.stringify(body),
+                success: function (data, status, xhttp) {
+                   
+
+                    results = data.data;
+                },error: function (jqXhr, textStatus, errorMessage) {
+                    results =jqXhr;
+                }
+            });     
+            return results;
+        }
+
+
+        let renderTable = function(body){
+            
+            let boutique  = getBoutique(body);
+            Table.clear().draw();
+            for(i = 0 ; i < boutique.length; i ++){
+                    let img = renderImage(boutique[i].sar__image);
+                    Table.row.add([
+                    boutique[i].sar__ref_id, 
+                    boutique[i].sar__ref_constructeur, 
+                    boutique[i].sar__description , 
+                    boutique[i].sar__marque , 
+                    boutique[i].famille , 
+                    boutique[i].sar__image
+                ])
+            }
+            Table.draw();
+            
+        }
+
+        let renderImage = function(name){
+            $.ajax({
+                url : 'public/img/boutique/' + name,
+                async: false ,
+                success: function (data) {
+                    var img = $('<img >');
+                    img.attr('src', data);
+                    return img;
+                }
+            });
+        }
+        
+        let extractObjectValues = function (arr) {
+            const result = arr.map(obj => Object.values(obj));
+            return result;
+        }
+
+
+    
+
+</script>
+{% endblock %}

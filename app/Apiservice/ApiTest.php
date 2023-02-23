@@ -238,6 +238,42 @@ class ApiTest extends BasicController {
         return self::handleResponse($response);
     }
 
+    public static function getShopVendre($token, $json){
+        $config =json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->post( $env_uri . '/boutiqueSossuke', 
+            ['headers' => self::makeHeaders($token),
+            'json' =>  $json,
+            'http_errors' => false
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+            exit();
+        }
+        return self::handleResponse($response);
+    }
+
+    public static function postShopArticle($token, $json){
+        $config =json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->post( $env_uri . '/ShopArticle', 
+            ['headers' => self::makeHeaders($token),
+            'json' =>  $json,
+            'http_errors' => false
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+            exit();
+        }
+        return self::handleResponse($response);
+    }
+
     public static function getPromo($token ){
         $config =json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
         $base_uri = $config->api->host;
@@ -429,6 +465,26 @@ class ApiTest extends BasicController {
         return self::handleResponse($response);
     }
 
+
+    public static function PostListBoutique($token)
+    {
+        $config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $body = ["secret" => "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528" , 'shop_avendre' => true ];
+        $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->post($env_uri .  '/boutiqueSossuke', [
+                'headers' => self::makeHeaders($token),
+                'json' => $body,
+                'http_errors' => false
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
+        return self::handleResponse($response);
+    }
+
     public static function transfertClient(){
         
         if (empty($_SESSION['user']->refresh_token)) {
@@ -457,16 +513,16 @@ class ApiTest extends BasicController {
         $clientSoft = $clientTable->getOne($_POST['client__id']);
 
         //on affiche le formulaire : 
-        if(empty($_POST['user__mail'])){
-            self::init();
-            self::security();
-            return self::$twig->render(
-                'transfertMyRecode.html.twig',[
-                    'user' => $_SESSION['user'] , 
-                    'client' =>  $clientSoft
-                ]
-            );
-        }
+        // if(empty($_POST['user__mail'])){
+        //     self::init();
+        //     self::security();
+        //     return self::$twig->render(
+        //         'transfertMyRecode.html.twig',[
+        //             'user' => $_SESSION['user'] , 
+        //             'client' =>  $clientSoft
+        //         ]
+        //     );
+        // }
         $config =json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
         $base_uri = $config->api->host;
         $env_uri = $config->api->env_uri;
@@ -492,35 +548,7 @@ class ApiTest extends BasicController {
             $response = $exeption->getResponse();
         }
 
-        $body_client = [
-            "user__password" => $_POST['user__password'],
-            "user__mail" => $_POST['user__mail'], 
-            "user__nom" => $_POST['user__nom'] , 
-            "user__prenom" => $_POST['user__prenom'] , 
-            "user__fonction" => $_POST['user__fonction'] 
-        ];
-
-        try {
-            $response = $client->post($env_uri . '/user', [
-                'headers' => self::makeHeaders($token),
-                'json' => $body_client,
-                'http_errors' => false
-            ]);
-        } catch (GuzzleHttp\Exception\ClientException $exeption) {
-            $response = $exeption->getResponse();
-        } 
-
-        $response = self::handleResponse($response);
-     
-        $body = [
-            'luc__user__id' => intval($response['data']) , 
-            'luc__cli__id' => intval($clientSoft->client__id) , 
-            'luc__order' => 1 
-        ];
-        $response = self::postRelation($token,  $body);
-        $_SESSION['transfert'] = ' Opérations effectuées avec succès !';
-        $_SESSION['search_switch'] = $clientSoft->client__id ;
-        header('location: search_switch');
+        header('location: displaySocieteMyRecode?cli__id='. $clientSoft->client__id.'');
         die();
     }
 

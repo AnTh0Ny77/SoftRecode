@@ -85,6 +85,8 @@ if (!empty($search))
 				if (isset($_SESSION['transfert']) and !empty($_SESSION['transfert'])) {
 					$alert = $_SESSION['transfert'];
 					$_SESSION['transfert'] = "";
+					header('location displaySocieteMyRecode?cli__id='. $client->client__id.'');
+					die();
 				}
 				// Donnée transmise au template : 
 				echo $twig->render(
