@@ -205,6 +205,8 @@ class MyRecodeController extends BasicController {
                     $ticket['info'] = end($ticket['lignes']);
                     $ticket['memo']  =  $ticket['info']['tkl__memo'];
 
+                    
+
                     if ($ticket['tk__lu'] == 9 ) {
                         self::updateTicket($ticket , $token , 9 , $Api );
                     }else{
@@ -290,14 +292,14 @@ class MyRecodeController extends BasicController {
                             $dest = intval($ticket['last']['user__id']);
                             break;
                         case 'RPC':
-                            $dest = intval($ticket['user']);
+                            $dest = intval($ticket['user']['user__id']);
                             $_POST['what'] = 'RPD';
                             break;
                         case 'CIN':
                             $dest = intval($_POST['dest']);
                             break;
                         case 'CLO':
-                            $dest = intval($ticket['user']);
+                            $dest = intval($ticket['user']['user__id']);
                             break;
                     }
 
@@ -319,7 +321,7 @@ class MyRecodeController extends BasicController {
                              die();
                         }
                     }
-                    
+                   
                         $id_ligne =  self::PostLigne($_POST ,$dest , $Api, $token);
                    
                         $ticket = self::PostChamps($id_ligne,$_POST,$Api,$token);
