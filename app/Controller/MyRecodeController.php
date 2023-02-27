@@ -6,6 +6,8 @@ use App\Controller\BasicController;
 use App\Tables\Keyword;
 use App\Tables\User;
 Use App\Tables\UserGroup;
+Use App\Tables\TotoroRequest;
+Use App\Totoro;
 use DateTime;
 use App\Tables\Tickets;
 use App\Apiservice\ApiTest;
@@ -159,6 +161,9 @@ class MyRecodeController extends BasicController {
     public static function displayTickets(){
         self::init();
         self::security();
+        $totoro = new Totoro();
+        $totoro->DbConnect();
+        $totoro_request = new TotoroRequest($totoro);
         $Users = new User(self::$Db);
         $groups = new UserGroup(self::$Db);
         $Api = new ApiTest();
@@ -268,11 +273,27 @@ class MyRecodeController extends BasicController {
                         $gar = 'NON garantie';
                         break;
                 }
+                $date_sortie = '';
+                if (!empty($ticket['mat']['mat__sn'])) {
+                    $date_sortie = $totoro_request->get_sortie_sn($ticket['mat']['mat__sn']);
+                    
+                    if (!empty($date_sortie)) {
+                        if (!empty($date_sortie['sortie'])) {
+                            $date_sortie = new DateTime($date_sortie['sortie']);
+                            $date_sortie = $date_sortie->format('d/m/Y');
+                            $date_sortie =  'Dernière sortie le ' . $date_sortie;
+                        }else{
+                            $date_sortie = '';
+                        }
+                       
+                    }
+                }
                 $ticket['lignes'][0]['entities'][0] = [
                     "gar" => $gar ,
                     'dateof' => $ticket['mat']['mat__date_offg'],
                     "name" => $ticket['mat']['mat__model'], 
                     "label" => $ticket['mat']['mat__pn'], 
+                    "sortie" => $date_sortie ,
                     'bl' => $ticket['mat']['mat__idnec'],
                     'dt_off' => date("d/m/Y", strtotime($ticket['mat']['mat__date_offg'])),
                     "additionals" => $ticket['mat']['mat__sn'], 

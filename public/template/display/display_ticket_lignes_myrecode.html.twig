@@ -41,15 +41,26 @@
                             {% if entitie.label %}
                                 {{entitie.label}}<br>
                             {% endif %}
-                                {{entitie.additionals}} 
+                            {% if entitie.dt_off %}
+                               <a href="http://intranet/locator_query.php?filtre=sn{{entitie.additionals}}" target="_blank">{{entitie.additionals}} </a> 
+                            {% else %}
+                            {{entitie.additionals}} 
+                                
+                            {% endif %}
+                               
                             {% if entitie.bl %}
                               - BL N° <b> {{ entitie.bl }}</b>
                             {% endif %}
                             {% if entitie.gar %}
                                 <br>{{entitie.gar}}
-                                {% if entitie.dt_off %}
+                                {% if entitie.dt_off  and entitie.dt_off != '01/01/1970'%}
                                     Fin le {{entitie.dt_off}}
+                                {% elseif entitie.dt_off and  entitie.dt_off == '01/01/1970' and  gar != 'NON garantie' %}
+                                    <b>Vérifier la garantie</b>
                                 {% endif %}
+                            {% endif %}
+                            {% if entitie.sortie %}
+                                <br> {{entitie.sortie}}
                             {% endif %}
                     </div>
                 </div>
