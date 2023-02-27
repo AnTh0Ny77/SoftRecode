@@ -23,13 +23,13 @@
                 <div class="card-recode-secondary  col-10 d-flex">
                     <div class=" col-10 col-md-6 col-lg-3 d-fex   align-items-center recode-div-pic">
                         {% if entitie.picture %}
-                        <div class="d-flex justify-content-center ">
-                            <figure class="image col-6 col-md-10"><img class="subject-image" src="data:image/jpeg;base64,{{entitie.picture|raw}}"></figure>
-                        </div>
+                            <div class="d-flex justify-content-center ">
+                                <figure class="image col-6 col-md-10"><img class="subject-image" src="data:image/jpeg;base64,{{entitie.picture|raw}}"></figure>
+                            </div>
                         {% else %}
-                        <div class="d-flex justify-content-center">
-                            <figure class="image col-6 col-md-10"><img class="subject-image" src="{{entitie.alternative}}"></figure>
-                        </div>
+                            <div class="d-flex justify-content-center">
+                                <figure class="image col-6 col-md-10"><img class="subject-image" src="{{entitie.alternative}}"></figure>
+                            </div>
                         {% endif %}
                     </div>
                     <div>
