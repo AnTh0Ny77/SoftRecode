@@ -29,12 +29,15 @@
           <div class="form-group pt-2">
 				<div class="card-recode d-flex flex-column col-12 ">
 					<h2 class="recode-orange-title"> Ticket {{ticket.tk__id}}</h2>
+					{% if ticket.tk__groupe %}
+							<a class="recode-p" href="myRecode?search={{ticket.tk__groupe}}"> groupe N°{{ticket.tk__groupe}}</a><br>       
+					{% endif %}
 					<p class="recode-p">{{ticket.tk__memo}}<br> 
 						<span class="text-dark font-weight-bold text-uppercase">En cours chez {{ ticket.dest.user__prenom ~ " " ~ ticket.dest.user__nom }}</span>
 					</p>
 				</div>
             {% for ligne in ticket.lignes %}
-              	{{ include('display/display_ticket_lignes_myrecode.html.twig')}}
+              		{{ include('display/display_ticket_lignes_myrecode.html.twig')}}
             {% endfor %}
             <form action="myRecode-ticket?tk__id={{ticket.tk__id}}" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="tk__id" value="{{ticket.tk__id}}">

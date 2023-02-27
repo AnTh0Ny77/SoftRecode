@@ -27,7 +27,7 @@
         <div class="col-6">
             <p class="recode-p">Ticket My-Recode <span class="text-dark font-weight-bold"> : </span><span class="recode-orange-title"> {{ticket.user.user__prenom ~ " " ~ ticket.user.user__nom}}</span><br>
                 {% if ticket.tk__groupe %}
-                          groupe N°{{ticket.tk__groupe}}<br>
+                            <a href="myRecode?search={{ticket.tk__groupe}}"> groupe N°{{ticket.tk__groupe}}</a><br>       
                  {% endif %}
                 {% if ticket.sujet %}
                     <span class="text-dark font-weight-bold">{{ticket.memo }}

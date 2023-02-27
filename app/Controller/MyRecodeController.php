@@ -47,7 +47,6 @@ class MyRecodeController extends BasicController {
             'RECODE__PASS' => "secret"
         ];
         if (!empty($_GET)){
-
             if (!empty($_GET['tk__lu'])) {
                 foreach ($_GET['tk__lu']  as  $value) {
                     array_push($query_exemple['tk__lu'], $value);
@@ -63,7 +62,6 @@ class MyRecodeController extends BasicController {
                         $query_exemple['search'] = $_GET['search'] ;
                     }
             }
-           
         }
         if (!empty($_GET['nonLu'])) {
             $nonLus = [
@@ -342,13 +340,22 @@ class MyRecodeController extends BasicController {
 
     public static function PostLigne($post , $dest , $api , $token){
         $visible = 0 ;
-        if ($post['what'] == 'SEC') {
+        if ($post['what'] == 'CIN') {
             $visible = 1 ;
+        }
+        $tlk_memo = 'Réponse Recode';
+        switch ($post['what']) {
+            case 'CIN':
+                $tlk_memo = 'Echange interne';
+                break;
+            case 'CLO':
+                $tlk_memo = 'Cloture du ticket';
+                break;
         }
         $tkl = [
             'tkl__tk_id' => $post['tk__id'],
             'tkl__motif_ligne' => $post['what'], 
-            'tkl__memo' => 'Réponse Recode' ,
+            'tkl__memo' => $tlk_memo ,
             'tkl__user_id' => $_SESSION['user']->id_utilisateur,
             'tkl__user_id_dest' => $dest , 
             'tkl__visible' => $visible
