@@ -5,6 +5,7 @@ require_once  '././vendor/autoload.php';
 use App\Controller\BasicController;
 use App\Tables\Keyword;
 use App\Tables\User;
+Use App\Tables\UserGroup;
 use DateTime;
 use App\Tables\Tickets;
 use App\Apiservice\ApiTest;
@@ -118,7 +119,7 @@ class MyRecodeController extends BasicController {
         foreach ($query_exemple['tk__lu'] as $value) {
            switch ( $value) {
                case  3 :
-                   $filters['nonLu'] =  true ;
+                   $filters['nonLu'] = true;
                    break;
                 case  5 :
                     $filters['lu'] = true;
@@ -159,6 +160,7 @@ class MyRecodeController extends BasicController {
         self::init();
         self::security();
         $Users = new User(self::$Db);
+        $groups = new UserGroup(self::$Db);
         $Api = new ApiTest();
         $alert = false;
         
@@ -195,12 +197,6 @@ class MyRecodeController extends BasicController {
                 $definitive_edition = [];
                 foreach ($list as $ticket){
 
-                    if ($ticket['tk__lu'] == 9 ) {
-                        self::updateTicket($ticket , $token , 9 , $Api );
-                    }else{
-                        self::updateTicket($ticket , $token , 5 , $Api );
-                    }
-                    
                     $ticket['user'] = reset($ticket['lignes']);
                     $ticket['user'] = $ticket['user']['tkl__user_id'];
                     $ticket['dest'] = end($ticket['lignes']);
@@ -208,6 +204,23 @@ class MyRecodeController extends BasicController {
                     $ticket['dest'] =  $ticket['dest']['tkl__user_id_dest'];
                     $ticket['info'] = end($ticket['lignes']);
                     $ticket['memo']  =  $ticket['info']['tkl__memo'];
+
+                    if ($ticket['tk__lu'] == 9 ) {
+                        self::updateTicket($ticket , $token , 9 , $Api );
+                    }else{
+                        if ($_SESSION['user']->id_utilisateur ==  $ticket['last']) {
+                            self::updateTicket($ticket , $token , 5 , $Api );
+                        }
+                        $groups_array = $groups->get_groups($_SESSION['user']->id_utilisateur);
+                        if (!empty($groups_array)) {
+                            foreach ($groups_array as  $value) {
+                                    if ( intval($value->id_groupe) ==  intval($ticket['last'])) {
+                                        self::updateTicket($ticket , $token , 5 , $Api );
+                                    }
+                            }
+                        }
+                    }
+                    
                     $mat_request = $Api->getMateriel($token, ['mat__id[]' =>  $ticket['tk__motif_id'] , 'RECODE__PASS' => 'secret']);
                     
                     if ($mat_request['code'] == 200){
