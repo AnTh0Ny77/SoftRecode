@@ -289,6 +289,10 @@ class MyRecodeController extends BasicController {
                         case 'RPD':
                             $dest = intval($ticket['last']['user__id']);
                             break;
+                        case 'RPC':
+                            $dest = intval($ticket['user']);
+                            $_POST['what'] = 'RPD';
+                            break;
                         case 'CIN':
                             $dest = intval($_POST['dest']);
                             break;
@@ -360,6 +364,9 @@ class MyRecodeController extends BasicController {
         switch ($post['what']) {
             case 'CIN':
                 $tlk_memo = 'Echange interne';
+                break;
+            case 'RPC':
+                $post['what'] ='RPD';
                 break;
             case 'CLO':
                 $tlk_memo = 'Cloture du ticket';
