@@ -54,6 +54,11 @@ class MyRecodeSocieteController extends BasicController {
         $Api = new ApiTest();
         $Article = new Article($Database);
 
+        if ($_SESSION['user']->user__cmd_acces < 10 ){
+            header('location: noAccess');
+            die();
+        }
+
         if (empty($_SESSION['user']->refresh_token)) {
             $token = $Api->login($_SESSION['user']->email, 'test');
             if ($token['code'] != 200) {

@@ -290,15 +290,34 @@
                     <tbody>
                         {% for row in client.materiels %}
                             {% if row.mat__actif == 1  %}
-                                <tr style="background-color: #DCEDC2;">
+                                <tr>
                             {% else %}
-                                <tr style="background-color: #FFD4D4;">
+                                <tr >
                             {% endif %}
-                            
-                                <td>{{row|json_encode() }}</td>
+                                <td>{{row|json_encode()}}</td>
                                 <td>{{row.mat__id}}</td>
                                 <td>
-                                    <b>{{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}</b>
+                                   {% if row.mat__type %}
+                                        {% if row.mat__actif == 1  %}
+                                            <div class="past_greeen mx-2 my-1">
+                                                <b>{{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}</b>
+                                            </div>
+                                        {% else %}
+                                            <div class="past_yellow mx-2 my-1">
+                                                <b>{{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}</b> <span class="text-danger">INACTIF</span>
+                                            </div>
+                                        {% endif %}
+                                    {% else %}
+                                    {% if row.mat__actif == 1  %}
+                                            <div class="past_greeen mx-2 my-1">
+                                                <b>Non renseigné</b>
+                                            </div>
+                                        {% else %}
+                                            <div class="past_yellow mx-2 my-1">
+                                                <b>Non renseigné</b> <span class="text-danger">INACTIF</span>
+                                            </div>
+                                        {% endif %}
+                                   {% endif %}
                                 </td>
                                 <td>S/N: <b>{{row.mat__sn}}</b><br>
                                     P/N: <b>{{row.mat__pn}}</b><br>
@@ -307,18 +326,39 @@
                                    {{row.mat__memo}}
                                 </td>
                                 <td>
-                                   Commande N°: <b>{{row.mat__ident}}</b><br>
-                                   Contrat N°:  <b>{{row.mat__contrat_id}}</b>
+                                    {% if row.mat__ident %}
+                                        Commande N°: <b>{{row.mat__ident}}</b><br>
+                                    {% else %}
+                                        Commande non renseignée
+                                    {% endif %}
+                                    {% if row.mat__contrat_id %}
+                                        Contrat N°:  <b>{{row.mat__contrat_id}}</b>
+                                    {% else %}
+                                        Contrat non renseigné
+                                    {% endif %}
+                                   
+                                  
                                 </td>
                                 <td>
+                                  
                                     {% if row.mat__kw_tg == "MNT" %}
-                                        Maintenance {{row.mat__date_offg}}
-                                    {% elseif  row.mat__kw_tg == "GRE"   %}
-                                        Garantie RECODE {{row.mat__date_offg}}
+                                        <div class="past_yellow mx-2 my-1">
+                                            Maintenance {{row.mat__date_offg}}
+                                        </div>
+                                    {% elseif  row.mat__kw_tg == "GRE"  %}
+                                        <div class="past_orange mx-2 my-1">
+                                            Garantie RECODE {{row.mat__date_offg}}
+                                        </div>
+                                        
                                     {% elseif  row.mat__kw_tg == "GCO"   %}
-                                        Garantie constructeur {{row.mat__date_offg}}
-                                    {% elseif  row.mat__kw_tg == "LOC"   %}
-                                        Location Recode {{row.mat__date_offg}}
+                                        <div class="past_pink mx-2 my-1">
+                                            Garantie constructeur {{row.mat__date_offg}}
+                                        </div>
+                                       
+                                    {% elseif  row.mat__kw_tg == "LOC"  %}
+                                        <div class="past_pink mx-2 my-1">
+                                            Location Recode {{row.mat__date_offg}}
+                                        </div>
                                     {% else %}
                                         Aucune garantie {{row.mat__date_offg}}
                                     {% endif %}
@@ -590,7 +630,7 @@
                             <input type="hidden" id="mat__id_edit">
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" id="mat__model_edit" >
                                    {% for pn in pn_list %}
-                                        <option value="{{pn|json_encode()}}" >{{pn.famille ~ " " ~  pn.Marque ~ " " ~ pn.afmm__modele }} {{ dump(pn|json_encode()) }}</option>
+                                        <option value="{{pn|json_encode()}}" >{{pn.famille ~ " " ~  pn.Marque ~ " " ~ pn.afmm__modele }}</option>
                                    {% endfor %}
                             </select>
                         </div>
@@ -994,7 +1034,8 @@
 
         var matosTable =  $('#table_mat').DataTable({
             paging: true,
-            lengthMenu: [ 25 , 50 , 75],
+            lengthMenu: [ 10 , 25 , 50 , 75],
+            order: [[1, 'desc']],
             columns: [
                 { "visible": false },
                 null,
@@ -1009,11 +1050,6 @@
                 $(row).attr('data-target' , "#modalmatosEdit");
                 $(row).css('cursor', 'pointer');
                 datax = JSON.parse($(data)[0]);
-                if(datax.mat__actif != 1 ){
-                    $(row).css('background-color', '#FFD4D4');
-                }else{
-                    $(row).css('background-color', '#C0EDA6');
-                }
                 $(row).on('click' , function(){   
                     functionMatosTableModal($(data)); 
                 })
