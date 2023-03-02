@@ -197,6 +197,26 @@
     padding-left: 1%;
     padding-right: 5px;
 }
+.card-recode-ligne-recode {
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.16);
+   
+    background: white;
+    border-radius: 10px;
+    padding-top: 5px;
+    padding-bottom: 2%;
+    padding-left: 1%;
+    padding-right: 5px;
+}
+.card-recode-ligne-client {
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.16);
+   
+    background: #FF9F9F;
+    border-radius: 10px;
+    padding-top: 5px;
+    padding-bottom: 2%;
+    padding-left: 1%;
+    padding-right: 5px;
+}
 .card-recode-green{
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.16);
     background-color: #96db99;

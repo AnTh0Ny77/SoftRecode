@@ -25,39 +25,39 @@
                 <select id="filtersTickets" name="tk__lu[]" multiple>
                     <optgroup label="Etat">
                         {% if filters.cloture %}
-                        <option value="9" selected>Cloturés</option>
+                            <option value="9" selected>Cloturés</option>
                         {% else %}
-                        <option value="9">Cloturés</option>
+                            <option value="9">Cloturés</option>
                         {% endif %}
                         {% if filters.lu %}
-                        <option value="5" selected>Lus</option>
+                            <option value="5" selected>Lus</option>
                         {% else %}
-                        <option value="5">Lus</option>
+                            <option value="5">Lus</option>
                         {% endif %}
                         {% if filters.nonLu %}
-                        <option value="3" selected>Non lus</option>
+                            <option value="3" selected>Non lus</option>
                         {% else %}
-                        <option value="3">Non lus</option>
+                            <option value="3">Non lus</option>
                         {% endif %}
                     </optgroup>
                 </select>
             </div>
-            {# <div class=" ">
+            <div class=" ">
                 <select id="filtersEtat" name="AuthorFilter">
                     <optgroup label="Auteur">
                         {% if filters['Author'] == 1 %}
-                        <option value="1" selected>Tous les tickets</option>
+                            <option value="1" selected>Tous les tickets</option>
                         {% else %}
-                        <option value="1">Tous les tickets</option>
+                            <option value="1">Tous les tickets</option>
                         {% endif %}
                         {% if filters['Author'] == 2 %}
-                        <option value="2" selected>En cours chez recode</option>
+                            <option value="2" selected>En cours chez moi</option>
                         {% else %}
-                        <option value="2">En cours chez recode</option>
+                            <option value="2">En cours chez moi</option>
                         {% endif %}
                     </optgroup>
                 </select>
-            </div> #}
+            </div>
         </div>
     </form>
 </div>

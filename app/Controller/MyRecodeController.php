@@ -18,6 +18,8 @@ class MyRecodeController extends BasicController {
         self::init();
         self::security();
         $Api = new ApiTest();
+        $groups = new UserGroup(self::$Db);
+        $me = false ;
         if (empty($_SESSION['user']->refresh_token)) {
             $token = $Api->login($_SESSION['user']->email , 'test');
             if ($token['code'] != 200) {
@@ -45,6 +47,7 @@ class MyRecodeController extends BasicController {
             'tk__id' =>  [],
             'tk__groupe' => [] ,
             'tk__lu' => [], 
+            'tkl__user_id_dest' => [],
             'tk__motif' => ['TKM'] , 
             'search' => '', 
             'RECODE__PASS' => "secret"
@@ -64,6 +67,20 @@ class MyRecodeController extends BasicController {
                     }else{
                         $query_exemple['search'] = $_GET['search'] ;
                     }
+            }
+
+            if (!empty($_GET['AuthorFilter'])) {
+                if ($_GET['AuthorFilter'] == 2 ) {
+
+                    $groups_array = $groups->get_groups($_SESSION['user']->id_utilisateur);
+                        if (!empty($groups_array)) {
+                            foreach ($groups_array as  $value) {
+                                array_push( $query_exemple['tkl__user_id_dest'] ,$value->id_groupe);            
+                            }
+                        }
+                    array_push( $query_exemple['tkl__user_id_dest'] ,$_SESSION['user']->id_utilisateur);       
+                    $me = true ;   
+                }
             }
         }
         if (!empty($_GET['nonLu'])) {
@@ -209,8 +226,6 @@ class MyRecodeController extends BasicController {
                     $ticket['dest'] =  $ticket['dest']['tkl__user_id_dest'];
                     $ticket['info'] = end($ticket['lignes']);
                     $ticket['memo']  =  $ticket['info']['tkl__memo'];
-
-                    
 
                     if ($ticket['tk__lu'] == 9 ) {
                         self::updateTicket($ticket , $token , 9 , $Api );
