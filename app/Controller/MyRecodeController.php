@@ -69,9 +69,8 @@ class MyRecodeController extends BasicController {
                     }
             }
 
-            if (!empty($_GET['AuthorFilter'])) {
-                if ($_GET['AuthorFilter'] == 2 ) {
-
+            if(!empty($_GET['AuthorFilter'])){
+                if ($_GET['AuthorFilter'] == 2 ){
                     $groups_array = $groups->get_groups($_SESSION['user']->id_utilisateur);
                         if (!empty($groups_array)) {
                             foreach ($groups_array as  $value) {
@@ -99,6 +98,7 @@ class MyRecodeController extends BasicController {
         $t_lu = 0;
         $t_nlu = 0;
         $t_clo = 0 ;
+
         foreach ($list as $ticket){
             switch ($ticket['tk__lu']) {
                 case 5:
@@ -150,25 +150,39 @@ class MyRecodeController extends BasicController {
         }
         if (!empty($_GET['search']))
             $filters['search'] = $_GET['search'];
-        // if (!empty($query_exemple['tk__id'])) {
-        //     $filters['tk__id'] = " ";
-        //     foreach ($query_exemple['tk__id'] as  $value) {
-        //         $filters['tk__id'] .= " " . $value . " ";
-        //     }
-        // }
-        // if (!empty($query_exemple['tk__groupe'])) {
-        //     $filters['tk__groupe'] = " ";
-        //     foreach ($query_exemple['tk__groupe'] as  $value) {
-        //         $filters['tk__groupe'] .= " " . $value . " ";
-        //     }
-        // }
+        
+        if(!empty($_GET['AuthorFilter'])){
+            if ($_GET['AuthorFilter'] == 2 ){
+                $def_list = [];
+                $temp = [];
+                $groups_array = $groups->get_groups($_SESSION['user']->id_utilisateur);
+                if(!empty($groups_array)){
+                        foreach ($groups_array as  $value) {
+                            array_push( $temp ,$value->id_groupe);            
+                        }
+                }
+                array_push($temp,$_SESSION['user']->id_utilisateur); 
+                foreach($definitive_edition as $entry){
+                    if (in_array($entry['dest'] , $temp)) {
+                        array_push($def_list , $entry );
+                    }
+                }
+                $definitive_edition =  $def_list ;
+            }
+        }
+        
         $total = count($definitive_edition);
-        $nb_resultats = $t_nlu . ' NON LUS - ' . $t_lu . ' LUS - ' . $t_clo . ' CLOTURES SUR ' . $total . ' RESULTATS' ;
+        if ($total  == 0  and  $t_lu > 0 ) {
+            $nb_resultats = $total . ' RESULTATS' ;
+        }else{
+            $nb_resultats = $t_nlu . ' NON LUS - ' . $t_lu . ' LUS - ' . $t_clo . ' CLOTURES SUR ' . $total . ' RESULTATS' ;
+        }
       
         return self::$twig->render(
             'display_ticket_myrecode_list.html.twig',[
                 'user' => $_SESSION['user'],
-                'list' => $definitive_edition , 
+                'list' => $definitive_edition ,
+                "me" => $me , 
                 'filters' => $filters , 
                 'results' => $nb_resultats
             ]

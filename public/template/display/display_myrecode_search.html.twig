@@ -42,7 +42,7 @@
                     </optgroup>
                 </select>
             </div>
-            <div class=" ">
+            <div class="">
                 <select id="filtersEtat" name="AuthorFilter">
                     <optgroup label="Auteur">
                         {% if filters['Author'] == 1 %}
@@ -50,7 +50,7 @@
                         {% else %}
                             <option value="1">Tous les tickets</option>
                         {% endif %}
-                        {% if filters['Author'] == 2 %}
+                        {% if me %}
                             <option value="2" selected>En cours chez moi</option>
                         {% else %}
                             <option value="2">En cours chez moi</option>
