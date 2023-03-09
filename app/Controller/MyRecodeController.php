@@ -192,9 +192,9 @@ class MyRecodeController extends BasicController {
     public static function displayTickets(){
         self::init();
         self::security();
-        $totoro = new Totoro();
-        $totoro->DbConnect();
-        $totoro_request = new TotoroRequest($totoro);
+        // $totoro = new Totoro();
+        // $totoro->DbConnect();
+        // $totoro_request = new TotoroRequest($totoro);
         $Users = new User(self::$Db);
         $groups = new UserGroup(self::$Db);
         $Api = new ApiTest();
@@ -218,14 +218,16 @@ class MyRecodeController extends BasicController {
         }
        
         if (!empty($_GET['tk__id'])){
+            
             $query_exemple = [
                 'tk__id' => [],
                 'RECODE__PASS' => "secret"
              ] ;
             
-            if (is_numeric($_GET['tk__id']) and strlen($_GET['tk__id']) ==  5 ) {
+            if (is_numeric($_GET['tk__id'])  ) {
+                //is_numeric($_GET['tk__id']) and strlen($_GET['tk__id']) ==  5
                 array_push( $query_exemple['tk__id'] ,$_GET['tk__id']);
-
+             
                 $query_exemple['RECODE__PASS'] = "secret";
                 $list = $Api->getTicketList($token , $query_exemple);
               
@@ -274,10 +276,11 @@ class MyRecodeController extends BasicController {
                 }
 
                 if (empty($definitive_edition)){
+                  
                     header('location: myRecode');
                     exit;
                 }
-
+               
                 $ticket = $definitive_edition[0];
                 switch ($ticket['mat']['mat__kw_tg']) {
                     case 'AUT':
@@ -304,7 +307,7 @@ class MyRecodeController extends BasicController {
                 }
                 $date_sortie = '';
                 if (!empty($ticket['mat']['mat__sn'])) {
-                    $date_sortie = $totoro_request->get_sortie_sn($ticket['mat']['mat__sn']);
+                    // $date_sortie = $totoro_request->get_sortie_sn($ticket['mat']['mat__sn']);
                     
                     if (!empty($date_sortie)) {
                         if (!empty($date_sortie['sortie'])) {

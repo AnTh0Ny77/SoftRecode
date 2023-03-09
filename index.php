@@ -19,6 +19,7 @@ use App\Controller\TicketsDisplayController;
 use App\Controller\UserMyRecodeController;
 use App\Controller\MyRecodeSocieteController;
 use App\Controller\MyRecodeBoutiqueController;
+use App\Controller\MachineController;
 
 $request = $_SERVER['REQUEST_URI'];
 
@@ -154,6 +155,10 @@ $request = $_SERVER['REQUEST_URI'];
 		
 		case '/SoftRecode/recherche-articles-results';
 			echo RechercheController::recherche_results();
+			break;
+
+		case '/SoftRecode/replaceMat'.$get_data;
+			echo MachineController::forms();
 			break;
 
 		case '/SoftRecode/myRecode'.$get_data;

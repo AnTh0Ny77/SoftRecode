@@ -60,6 +60,10 @@
                                     <b>Vérifier la garantie</b>
                                 {% endif %}
                             {% endif %}
+                            {% if entitie.gar %}
+                            
+                                    <br><a href="replaceMat?tk__id={{ticket.tk__id}}">Remplacer la Machine</a>
+                            {% endif %}
                             {% if entitie.sortie %}
                                 <br> {{entitie.sortie}}
                             {% endif %}
