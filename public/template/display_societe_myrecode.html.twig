@@ -1258,7 +1258,7 @@
         const prod = "http://192.168.1.105/api" ; 
         const local = "http://localhost/RESTapi/";
         //si faux je ne peux pas continuer sinon je peux afficher le message :
-         let  verifyMailRequest = function (body) {
+        let  verifyMailRequest = function (body) {
             let results = false ; 
             $.ajax( prod + '/verifymail', {
                 type: 'POST',  
@@ -1335,8 +1335,6 @@
             return results;
         }
 
-        
-
         let postUserRelation = function (body) {
             let results = false;
             $.ajax(prod + '/usersitessossuke', {
@@ -1369,7 +1367,6 @@
                     results = jqXhr;
                 }
             });
-
             return results;
         }
 
@@ -1404,11 +1401,9 @@
                 return 'La fonction est obligatoire  ';
             }
             return false;
-          
         }
 
-        let handleFormsUserEdit = function($forms){
-           
+        let handleFormsUserEdit = function($forms){ 
             if(!valideNom($forms['user__nom'])){
                 return 'Le nom est incorrect ';
             }
@@ -1419,8 +1414,8 @@
                 return 'La fonction est obligatoire  ';
             }
             return false;
-          
         }
+        
         let removeforms = function(){
 
         }

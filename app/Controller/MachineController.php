@@ -6,9 +6,14 @@ require_once  '././vendor/autoload.php';
 
 use App\Controller\BasicController;
 use App\Api\ResponseHandler;
+use App\Tables\Keyword;
+use App\Tables\User;
 use DateTime;
+use App\Tables\Tickets;
+use App\Apiservice\ApiTest;
+use App\Tables\Article;
 use App\Database;
-use App\ApiService\ApiTest;
+
 
 class MachineController  extends BasicController {
 
@@ -36,10 +41,29 @@ class MachineController  extends BasicController {
         $Database->DbConnect();
         $Abonnement = new App\Tables\Abonnement($Database);
         $machine = [];
-        //post une machine dans sossuke///
-        $new_machine_sossuke = $Abonnement->insertMachine($machine);
-        //post une machine dans MyRecode//
-        $new_machine_myrecode = $Api->postMachine($token,$machine);
+
+        //recup la data du forms : 
+        if (!empty($_POST['mat__id']) and !empty($_POST['mat__sn']) and !empty($_POST['mat__idnec'])) {
+
+            $body_new_machine = [
+                'mat__sn' => $_POST['mat__sn'],
+                'mat__pn' => $_POST['mat__pn'], 
+                'mat__type' => $_POST['mat__type'], 
+                'mat__model' => $_POST['mat__model'], 
+                'mat__cli__id' => $_POST['mat__cli__id'],
+                'mat__memo' => $_POST['mat__memo'], 
+                'mat__kw_tg' => $_POST['mat__kw_tg'], 
+                'mat__date_offg' => $_POST['mat__date_offg'] , 
+                'mat__contrat_id' => $_POST['mat__contrat_id'] , 
+                'mat__ident' => $_POST['mat__ident'] , 
+                'mat__idnec' => $_POST['mat__idnec'] , 
+                ''
+            ];
+            //post une machine dans sossuke///
+            //post une machine dans MyRecode//
+        }
+        // $new_machine_sossuke = $Abonnement->insertMachine($machine);
+        // $new_machine_myrecode = $Api->postMachine($token,$machine);
         //desactive dans les 2 systèmes///
         //reactive dans les 2 systèmes////
     }
@@ -47,11 +71,15 @@ class MachineController  extends BasicController {
     public static function forms(){
         self::init();
         self::security();
+        $Database = new Database('devis');
+        $Database->DbConnect();
+        $Api = new ApiTest();
+        $Article = new Article($Database);
+
         if (empty($_GET['tk__id'])) {
             header('location: myRecode');
             exit;
         }
-        $Api = new ApiTest();
         //API MYRECODE CONNECTION/////////
         if (empty($_SESSION['user']->refresh_token)) {$token = $Api->login($_SESSION['user']->email, 'test'); if ($token['code'] != 200) {echo 'Connexion LOGIN à L API IMPOSSIBLE';die();}$_SESSION['user']->refresh_token = $token['data']['refresh_token'];$token =  $token['data']['token'];} else {$refresh = $Api->refresh($_SESSION['user']->refresh_token);if ($refresh['code'] != 200) {echo 'Rafraichissemnt de jeton API IMPOSSIBLE';die();}$token =  $refresh['token']['token'];}
         /////////////////////////////////
@@ -98,8 +126,7 @@ class MachineController  extends BasicController {
         }
         $date_sortie = '';
         if (!empty($ticket['mat']['mat__sn'])) {
-            // $date_sortie = $totoro_request->get_sortie_sn($ticket['mat']['mat__sn']);
-
+         
             if (!empty($date_sortie)) {
                 if (!empty($date_sortie['sortie'])) {
                     $date_sortie = new DateTime($date_sortie['sortie']);
@@ -110,7 +137,7 @@ class MachineController  extends BasicController {
                 }
             }
         }
-        $ticket['entitie']=[
+        $ticket['entitie'] = [
             "gar" => $gar,
             'dateof' => $ticket['mat']['mat__date_offg'],
             "name" => $ticket['mat']['mat__model'],
@@ -121,11 +148,13 @@ class MachineController  extends BasicController {
             "additionals" => $ticket['mat']['mat__sn'],
             "alternative" => "public/img/pn2.jpg",
         ];
+
+        $pn_list = $Article->getModelsMyRecode();
        
         return self::$twig->render(
-            'display_ticket_machine.html.twig',
-            [
+            'display_ticket_machine.html.twig',[
                 'user' => $_SESSION['user'],
+                'pn_list' => $pn_list, 
                 'ticket' => $ticket
             ]
         );

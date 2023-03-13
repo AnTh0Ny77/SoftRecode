@@ -84,14 +84,10 @@
 <main role="main" class="container-fluid my-3 col-11 container-body">
     <h3 class="recode-p"><i class="fad fa-building"></i></i>Remplacement de machine</h3>
 <div class="d-flex justify-content-around flex-wrap mt-4">
-    <div class="col-6 card-recode">
+    <div class="col-7 card-recode">
         <h3 class="recode-p">Nouvelle machine</h3>
         <form method="post">
             <div class="modal-header">
-                <div>
-                    <h5 class="modal-title">Modification de matériel</h5>
-                    <p class="my-2"><i class="far fa-question-circle"></i> Le S/N est obligatoire et doit etre unique</p>
-                </div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -99,61 +95,50 @@
             <div class="modal-body">
                 <div class="col-11 d-flex justify-content-start">
                     <div class="col-12">
-                        <input type="hidden" id="mat__id_edit">
+                        <input type="hidden" id="mat__id">
                         <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted"
-                            data-live-search="true" id="mat__model_edit">
-                            {% for pn in pn_list %}
-                            <option value="{{pn|json_encode()}}">{{pn.famille ~ " " ~ pn.Marque ~ " " ~ pn.afmm__modele }}
-                            </option>
-                            {% endfor %}
+                            data-live-search="true" id="mat__model">
+                                {% for pn in pn_list %}
+                                    <option value="{{pn|json_encode()}}">{{pn.famille ~ " " ~ pn.Marque ~ " " ~ pn.afmm__modele}}</option>
+                                {% endfor %}
                         </select>
                     </div>
                 </div>
                 <div class="col-11 mb-2 d-flex justify-content-start">
                     <div class="col-6">
                         <small class="form-text text-muted"> Doit etre unique</small>
-                        <input class="form-control my-2 input-recode" id="mat__sn_edit" placeholder="S/N" rows="2" required
-                            readonly></input>
+                        <input class="form-control my-2 input-recode"  id="mat__sn" placeholder="S/N" rows="2" required ></input>
                     </div>
                     <div class="col-6">
-                        <small class="form-text text-muted"> Optionnel</small>
-                        <input class="form-control my-2 input-recode" id="mat__pn_edit" placeholder="P/N" rows="2"
-                            required></input>
-        
+                        <small class="form-text text-muted">PN Optionnel</small>
+                        <input class="form-control my-2 input-recode" value="{{ticket.mat.mat__pn}}" id="mat__pn" placeholder="P/N" rows="2" required></input>
                     </div>
                 </div>
                 <div class="col-11 mb-2 d-flex justify-content-start">
                     <div class="col-6 mb-1">
                         <small class="form-text text-muted"> Numero de la commande recode </small>
-                        <input class="form-control my-2 input-recode" id="mat__idnec_edit"
-                            placeholder="Numéro fiche Eurocomputeur" rows="2"></input>
-        
+                        <input class="form-control my-2 input-recode" id="mat__idnec" placeholder="Numéro fiche Eurocomputeur" rows="2"></input>
                     </div>
                     <div class="col-6  mb-1">
                         <small class="form-text text-muted"> Complément d'information diverses</small>
-                        <input class="form-control my-2 input-recode" id="mat__memo_edit" placeholder="Mémo" rows="2"></input>
-        
+                        <input class="form-control my-2 input-recode" id="mat__memo" value="{{ticket.mat.mat__memo}}" placeholder="Mémo" rows="2"></input>
                     </div>
                 </div>
                 <div class="col-11 mb-2 d-flex justify-content-start">
                     <div class="col-6">
                         <small class="form-text text-muted"> Si un abonnement existe pour cette machine</small>
-                        <input class="form-control my-2 input-recode" id="mat__contrat_id_edit"
-                            placeholder="Numéro du contrat chez Recode" rows="2"></input>
-        
+                        <input class="form-control my-2 input-recode" id="mat__contrat_id" value="{{ticket.mat.mat__contrat_id}}" placeholder="Numéro du contrat chez Recode" rows="2"></input>
                     </div>
                     <div class="col-6">
                         <small class="form-text text-muted"> Correspond Numero du client</small>
-                        <input class="form-control my-2 input-recode" id="mat__ident_edit"
-                            placeholder="Numéro identification du client" rows="2"></input>
-        
+                        <input class="form-control my-2 input-recode" id="mat__ident" value="{{ticket.mat.mat__ident}}" placeholder="Numéro identification du client" rows="2"></input>
                     </div>
                 </div>
                 <div class="col-11 mb-2 d-flex justify-content-start">
                     <div class="col-6">
                         <small class="form-text text-muted"> préciser la date si un contrat existe</small>
                         <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted"
-                            id="mat__kw_tg_edit">
+                            id="mat__kw_tg" value="{{ticket.mat.mat__kw_tg}}">
                             <option value="GNO">Pas de garantie</option>
                             <option value="GCO">Garantie constructeur</option>
                             <option value="LOC">Location Recode</option>
@@ -162,8 +147,8 @@
                         </select>
                     </div>
                     <div class="col-6">
-                        <small class="form-text text-muted"> La date sera prise en compte si une garantie est présente </small>
-                        <input class="form-control my-2 input-recode" type="date" id="mat__date_offg_edit"></input>
+                        <small class="form-text text-muted">date de fin</small>
+                        <input class="form-control my-2 input-recode" value="{{ticket.mat.mat__date_offg}}" type="date" id="mat__date_offg_edit"></input>
                     </div>
                 </div>
             </div>
@@ -171,7 +156,7 @@
                 <div class="alert alert-secondary past_pastel" id="alert_matos_edit" role="alert">
         
                 </div>
-                <button class="btn btn-recode-important" type="button" id="button_matos_edit">Remplacer</button>
+                <button class="btn btn-recode-important" type="button" id="button_matos">Remplacer</button>
             </div>
         </form>
     </div>
@@ -190,31 +175,83 @@
             </div>
             <div class="d-fex align-item-center">
                 {% if ticket.entitie.label %}
-                {{ticket.entitie.label}}<br>
+                    {{ticket.entitie.label}}<br>
                 {% endif %}
                 {% if ticket.entitie.dt_off %}
-                <a href="http://intranet/locator_query.php?filtre=sn{{ticket.entitie.additionals}}"
-                    target="_blank">{{ticket.entitie.additionals}} </a>
+                    <a href="http://intranet/locator_query.php?filtre=sn{{ticket.entitie.additionals}}" target="_blank">{{ticket.entitie.additionals}} </a>
                 {% else %}
-                {{ticket.entitie.additionals}}
-    
+                    {{ticket.entitie.additionals}}
                 {% endif %}
     
                 {% if ticket.entitie.bl %}
-                - BL N° <b> {{ ticket.entitie.bl }}</b>
+                    - BL N° <b> {{ ticket.entitie.bl }}</b>
                 {% endif %}
                 {% if ticket.entitie.gar %}
-                <br>{{ticket.entitie.gar}}
-                {% if ticket.entitie.dt_off and ticket.entitie.dt_off != '01/01/1970'%}
-                Fin le {{ticket.entitie.dt_off}}
-                {% elseif ticket.entitie.dt_off and ticket.entitie.dt_off == '01/01/1970' and gar != 'NON garantie' %}
-                <b>Vérifier la garantie</b>
+                        <br>{{ticket.entitie.gar}}
+                            {% if ticket.entitie.dt_off and ticket.entitie.dt_off != '01/01/1970' %}
+                                Fin le {{ticket.entitie.dt_off}}
+                            {% elseif ticket.entitie.dt_off and ticket.entitie.dt_off == '01/01/1970' and gar != 'NON garantie' %}
+                            <b>Vérifier la garantie</b>
                 {% endif %}
                 {% endif %}
-                
             </div>
         </div>
     </div>
     </div>
 </main>
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        let handleFmm =function() {
+            let value = JSON.parse($('#mat__model').val());
+            console.log(value);
+            let results = {
+                'mat__pn' : $('#mat__pn').val(),
+                'mat__marque': value.Marque ,
+                'mat__type': value.famille , 
+                'mat__model' : value.afmm__modele, 
+                'mat__sn' : $('#mat__sn').val(), 
+                'mat__cli__id' : $('#cli__id').val(),
+                'mat__memo' : $('#mat__memo').val(),
+                'mat__kw_tg': $('#mat__kw_tg').val(),
+                'mat__date_offg': $('#mat__date_offg').val() , 
+                'mat__contrat_id' : $('#mat__contrat_id').val(), 
+                "mat__ident" : $('#mat__ident').val(),
+                'mat__idnec' : $('#mat__idnec').val(), 
+                'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528'
+            };
+            let verif = handleMatosForms(results)
+            if(verif) {return verif}
+        }
+
+        let handleMatosForms = function($forms){
+            if(!valideNom($forms['mat__sn'])){
+                return 'Merci de renseigner le numéro de S/N';
+            }
+            if(!valideNom($forms['mat__idnec'])){
+                return 'Merci de renseigner le numéro de commande recode';
+            }
+            return false ;
+        }
+
+        let valideNom = function($nom){
+            if($nom.length < 2 || $nom.length > 50){
+                return (false)
+            }
+            return (true)
+        }
+
+        
+
+        $('#button_matos').on('click' , function(){
+            console.log(handleFmm());
+        })
+      
+    })
+</script>
 {% endblock %}
