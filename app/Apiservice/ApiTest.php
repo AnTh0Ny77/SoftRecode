@@ -186,6 +186,24 @@ class ApiTest extends BasicController {
         return self::handleResponse($response);
     }
 
+
+    public static function postMachine($token , $ligne){
+        $config =json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+		
+        try {
+            $response = $client->post(
+                $env_uri . '/materiel',  
+            ['headers' => self::makeHeaders($token),
+             'json' => $ligne]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
+        return self::handleResponse($response);
+    }
+
  
     public static function postTicketLigneChamps($token , $ligne){
         $config =json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));

@@ -681,6 +681,128 @@ class Stock extends Table
     return $data;
   }
 
+  public function get_pn_list_cata($string)
+  {
+	//traitement du champs recheche : 
+    $filtre = str_replace("-", ' ', $string);
+    $filtre = str_replace("'", ' ', $filtre);
+	//nombre de mots pour itérations : 
+    $nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+    $mots_filtre = str_word_count($filtre, 1, '0123456789');
+	$mode_filtre = false;
+
+	if ($nb_mots_filtre > 0) 
+		$mode_filtre = true;
+
+    $operateur = ' AND ';
+    $request = "SELECT DISTINCT 
+      	a.apn__pn , a.apn__pn_long , a.apn__desc_short , a.apn__desc_long  , a.apn__doc , a.apn__design_com , a.apn__id_user_modif , a.apn__date_modif ,
+		a.apn__niveau , a.apn__actif , a.apn__famille  , u.nom , u.prenom  , k.kw__lib as famille  
+		FROM art_pn as a
+		LEFT JOIN utilisateur as u on  u.id_utilisateur = apn__id_user_modif
+		LEFT JOIN keyword as k ON ( k.kw__type = 'famil' AND k.kw__value =  a.apn__famille ) 
+		LEFT JOIN liaison_fmm_pn as l ON ( a.apn__pn  = l.id__pn )
+		LEFT JOIN art_fmm as t ON ( l.id__fmm = t.afmm__id ) 
+		LEFT JOIN art_marque as m ON ( t.afmm__marque = m.am__id ) 
+		LEFT JOIN art_attribut_pn as s ON ( a.apn__pn = s.aap__pn )
+		LEFT JOIN art_attribut_cle as c ON ( s.aap__cle = c.aac__cle ) 
+		LEFT JOIN art_attribut_valeur as v ON( s.aap__valeur = v.aav__valeur AND s.aap__cle = v.aav__cle )";
+      
+    if ($mode_filtre) {
+      $request .=  "WHERE ( apn__pn LIKE '%". preg_replace("#[^!A-Za-z0-9_%]+#", "", $mots_filtre[0])."%' 
+        OR apn__desc_short LIKE '%".$mots_filtre[0]."%' 
+        OR u.prenom LIKE  '%".$mots_filtre[0]."%' 
+        OR u.nom LIKE  '%".$mots_filtre[0]."%' 
+        OR k.kw__lib LIKE '%".$mots_filtre[0]. "%' 
+      	OR m.am__marque LIKE '%" . $mots_filtre[0] . "%' 
+		OR t.afmm__modele LIKE '%" . $mots_filtre[0] . "%'
+        OR v.aav__valeur_txt LIKE '%" . $mots_filtre[0] . "%'
+		)";
+
+      for ($i = 1; $i < $nb_mots_filtre; $i++) {
+        $request .=  $operateur . " ( apn__pn LIKE '%".preg_replace("#[^!A-Za-z0-9_%]+#", "", $mots_filtre[$i])."%' 
+        OR apn__desc_short LIKE '%".$mots_filtre[$i]."%' 
+        OR u.prenom LIKE '%".$mots_filtre[$i]."%' 
+        OR u.nom LIKE '%".$mots_filtre[$i]."%'
+        OR k.kw__lib LIKE '%".$mots_filtre[$i]. "%'
+        OR m.am__marque LIKE '%" . $mots_filtre[$i] . "%'
+		OR t.afmm__modele LIKE '%" . $mots_filtre[$i] . "%'
+        OR v.aav__valeur_txt LIKE '%" . $mots_filtre[$i] . "%'
+		)";
+    }
+    $request .= " ORDER BY  apn__pn   LIMIT 25";
+    } 
+	else
+	if ($nb_mots_filtre > 0) {
+
+	} else 
+	 $request .= " ORDER BY  apn__date_modif DESC  LIMIT 25";
+
+	
+    $send = $this->Db->Pdo->query($request);
+    $data = $send->fetchAll(PDO::FETCH_OBJ);
+
+	//pour chaque pn trouvé
+    foreach ($data as $pn) 
+		{
+			//recup les id fmm depuis la liaison
+			$SQL = 'SELECT  id__fmm 
+			FROM liaison_fmm_pn 
+			WHERE id__pn = "'.$pn->apn__pn.'"
+			LIMIT 5';
+			$request = $this->Db->Pdo->query($SQL);
+			$liaison = $request->fetchAll(PDO::FETCH_OBJ);
+
+			
+			//compte le nombre de liaison :
+			if(count($liaison) > 1 )
+				$pn->modele = $liaison ; $pn->count_relation =  intval(count($liaison));
+			if(count($liaison) == 1 )
+				$pn->modele = $liaison[0]->id__fmm ; $pn->count_relation =  intval(count($liaison));
+			if(count($liaison) == 0 )
+				$pn->modele = null ; $pn->count_relation =  intval(count($liaison));
+
+			//si plusieurs modèle sont présents : 
+			if ($pn->count_relation > 1 ) {
+				//crée un string depuis le tableau 
+				$list_models = '';
+					foreach ($pn->modele as $keys => $spec) {
+						if ($keys === array_key_last($pn->modele)) {
+							$list_models .=  ' "'. $spec->id__fmm . '" ';
+						}
+						else $list_models .=  ' "' .  $spec->id__fmm . '", ';	
+					}
+				//recupère les données des modèles depuis art__fmm : IN si plusieurs = si 1 seul 
+				$SQL = 'SELECT a.afmm__modele ,  a.afmm__id , m.am__marque as marque
+				FROM art_fmm as a  
+				LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
+				WHERE a.afmm__id IN  (' . $list_models . ')';
+			}
+			else {
+				$SQL = 'SELECT a.afmm__modele ,  a.afmm__id , m.am__marque as marque
+				FROM art_fmm as a  
+				LEFT JOIN art_marque as m on ( m.am__id = a.afmm__marque ) 
+				WHERE a.afmm__id = "' . $pn->modele . '"
+				';
+			}
+			
+			$request = $this->Db->Pdo->query($SQL);
+			$model_data = $request->fetchAll(PDO::FETCH_OBJ);
+			
+			if (!empty($model_data) and count($model_data) == 1)
+			{
+				
+				$pn->modele = $model_data[0]->afmm__modele; 
+				$pn->marque = $model_data[0]->marque;
+			}elseif(!empty($model_data) and count($model_data) > 1){
+				
+				$pn->relations = $model_data;
+			}
+				
+		}
+    return $data;
+  }
+
 
   public function find_pn_list($string)
   {
@@ -732,6 +854,120 @@ class Stock extends Table
 		$operateur = ' AND ';
 		$request = "SELECT DISTINCT 
       	a.* , u.nom , u.prenom  , k.kw__lib as famille ,   m.am__marque 
+		FROM art_fmm as a
+			LEFT JOIN utilisateur as u on  u.id_utilisateur = afmm__id_user_creat 
+			LEFT JOIN keyword as k ON ( k.kw__type = 'famil' AND k.kw__value =  a.afmm__famille ) 
+			LEFT JOIN liaison_fmm_pn as l ON ( a.afmm__id  = l.id__fmm )
+			LEFT JOIN art_marque as m ON ( a.afmm__marque = m.am__id ) 
+			LEFT JOIN art_attribut_modele as s ON ( a.afmm__id = s.aam__id_fmm )
+			LEFT JOIN art_attribut_cle as c ON ( s.aam__cle = c.aac__cle ) 
+			LEFT JOIN art_attribut_valeur as v ON( s.aam__valeur = v.aav__valeur AND s.aam__cle = v.aav__cle )";
+
+		if ($mode_filtre) {
+			$request .=  "WHERE ( afmm__modele LIKE '%" . preg_replace("#[^!A-Za-z0-9_%]+#", "", $mots_filtre[0]) . "%' 
+			OR u.prenom LIKE  '%" . $mots_filtre[0] . "%' 
+			OR u.nom LIKE  '%" . $mots_filtre[0] . "%' 
+			OR k.kw__lib LIKE '%" . $mots_filtre[0] . "%' 
+			OR m.am__marque LIKE '%" . $mots_filtre[0] . "%' 
+			OR v.aav__valeur_txt LIKE '%" . $mots_filtre[0] . "%'
+			)";
+
+			for ($i = 1; $i < $nb_mots_filtre; $i++) {
+				$request .=  $operateur . " ( afmm__modele LIKE '%" . preg_replace("#[^!A-Za-z0-9_%]+#", "", $mots_filtre[$i]) . "%' 
+				OR u.prenom LIKE '%" . $mots_filtre[$i] . "%' 
+				OR u.nom LIKE '%" . $mots_filtre[$i] . "%'
+				OR k.kw__lib LIKE '%" . $mots_filtre[$i] . "%'
+				OR m.am__marque LIKE '%" . $mots_filtre[$i] . "%'
+				OR v.aav__valeur_txt LIKE '%" . $mots_filtre[$i] . "%'
+		)";
+			}
+			$request .= " ORDER BY  afmm__modele ASC  LIMIT 25";
+		} else {
+			$request .= " ORDER BY  afmm__dt_modif  DESC  LIMIT 25";
+		}
+
+		$send = $this->Db->Pdo->query($request);
+		$data = $send->fetchAll(PDO::FETCH_OBJ);
+
+
+	
+		foreach ($data as $model) {
+			$SQL = 'SELECT  id__pn 
+			FROM liaison_fmm_pn 
+			WHERE id__fmm = "' . $model->afmm__id . '"
+			LIMIT 5';
+			$request = $this->Db->Pdo->query($SQL);
+			$liaison = $request->fetchAll(PDO::FETCH_OBJ);
+
+			
+			if (count($liaison) > 1)
+			$model->pn = $liaison;
+				$model->count_relation =  intval(count($liaison));
+			if (count($liaison) == 1)
+			$model->pn = $liaison[0]->id__pn;
+				$model->count_relation =  intval(count($liaison));
+			if (count($liaison) == 0)
+			$model->pn = null;
+				$model->count_relation =  intval(count($liaison));
+
+
+			if ($model->count_relation > 1 )
+			 {
+
+					$list_pn = '';
+
+						foreach ($model->pn as $keys => $spec) {
+							if ($keys === array_key_last($model->pn)) {
+								$list_pn .=  ' "'. $spec->id__pn . '" ';
+							}
+							else $list_pn .=  ' "' .  $spec->id__pn . '", ';
+							
+						}
+						
+					$SQL = 'SELECT a.apn__pn_long , a.apn__pn , a.apn__famille  
+					FROM art_pn as a  
+					WHERE a.apn__pn IN  (' . $list_pn . ')';
+				}
+			else {
+				$SQL = 'SELECT  a.apn__pn_long , a.apn__pn , a.apn__famille  
+				FROM art_pn as a   
+				WHERE a.apn__pn = "' . $model->pn . '"
+				';
+			}
+				
+				$request = $this->Db->Pdo->query($SQL);
+				$model_data = $request->fetchAll(PDO::FETCH_OBJ);
+				
+				if (!empty($model_data) and count($model_data) == 1)
+				{
+					$model->pn = $model_data[0]->apn__pn; 
+
+				}elseif(!empty($model_data) and count($model_data) > 1){
+					
+					$model->relations = $model_data;
+				}
+		}
+
+		return $data;
+	}
+
+
+	public function get_model_list_cata($string)
+	{
+
+		$filtre = str_replace("-", ' ', $string);
+		$filtre = str_replace("'", ' ', $filtre);
+		$nb_mots_filtre = str_word_count($filtre, 0, "0123456789");
+		$mots_filtre = str_word_count($filtre, 1, '0123456789');
+		$mode_filtre = false;
+
+		if ($nb_mots_filtre > 0)
+		$mode_filtre = true;
+
+		$operateur = ' AND ';
+		$request = "SELECT DISTINCT 
+      	a.afmm__id , a.afmm__famille , a.afmm__marque , a.afmm__modele , a.afmm__doc , a.afmm__prix_conseil , a.afmm__design_com , 
+		a.afmm__actif , a.afmm__dt_creat , a.afmm__id_user_creat , a.afmm__dt_modif , a.afmm__id_user_modif   , u.nom , u.prenom  , k.kw__lib as famille ,   m.am__marque 
 		FROM art_fmm as a
 			LEFT JOIN utilisateur as u on  u.id_utilisateur = afmm__id_user_creat 
 			LEFT JOIN keyword as k ON ( k.kw__type = 'famil' AND k.kw__value =  a.afmm__famille ) 

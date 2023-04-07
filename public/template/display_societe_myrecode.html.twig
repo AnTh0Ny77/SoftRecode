@@ -336,11 +336,8 @@
                                     {% else %}
                                         Contrat non renseigné
                                     {% endif %}
-                                   
-                                  
                                 </td>
                                 <td>
-                                  
                                     {% if row.mat__kw_tg == "MNT" %}
                                         <div class="past_yellow mx-2 my-1">
                                             Maintenance {{row.mat__date_offg}}
@@ -368,7 +365,6 @@
                     </tbody>
                 </table>
             </div>
-
         </div>
 </main>
 
@@ -543,14 +539,11 @@
                         <div class="col-6">
                             <small class="form-text text-muted"> Doit etre unique</small>
                             <input class="form-control my-2 input-recode" id="mat__sn" placeholder="S/N" rows="2" required ></input>
-                            
                         </div>
                         <div class="col-6">
                             <small class="form-text text-muted"> Optionnel</small>
                             <input class="form-control my-2 input-recode" id="mat__pn" placeholder="P/N" rows="2" required ></input>
-                            
                         </div>
-                       
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6 mb-1">
@@ -606,8 +599,6 @@
         </div>
     </div>
 </div>
-
-
 
 <!-- Modal  Matos edit-->
 <div class="modal fade" id="modalmatosEdit" tabindex="-1" role="dialog" aria-labelledby="modalmatosAjout"
@@ -673,21 +664,18 @@
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6">
                             <small class="form-text text-muted"> préciser la date si un contrat existe</small>
-                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="mat__kw_tg_edit">
+                        <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="mat__kw_tg_edit">
                                 <option value="GNO">Pas de garantie</option>
                                 <option value="GCO">Garantie constructeur</option>
                                 <option value="LOC">Location Recode</option>
                                 <option value="GRE">Garantie Recode</option>
                                 <option value="MNT">Maintenance Recode</option>
                          </select>
-                        
                         </div>
                         <div class="col-6">
                             <small class="form-text text-muted"> La date sera prise en compte si une garantie est présente </small>
                             <input class="form-control my-2 input-recode" type="date" id="mat__date_offg_edit" ></input>
-                            
                         </div>
-                        
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -737,7 +725,7 @@
                     </div>
                     <div class="col-11 d-flex justify-content-start " id="wrapperFrancoa">
                         <div class="col-6">
-                            <small class="form-text text-muted">Franco à partir de  ( prix ) </small>
+                            <small class="form-text text-muted">Franco à partir de ( prix )</small>
                             <input class="form-control my-2 input-recode" id="sco__francoa" placeholder="" rows="2" ></input>
                             
                         </div>
@@ -750,7 +738,7 @@
                    
                     <div class="col-11 d-flex justify-content-start">
                         <div class="col-6">
-                            <small class="form-text text-muted">Vue sur les garanties</small>
+                            <small class="form-text text-muted">Vue sur les références</small>
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="sco__vue_ref"  >
                                 <option value="NON" >NON</option>
                                 <option value="OUI" >OUI</option>
@@ -1270,7 +1258,7 @@
         const prod = "http://192.168.1.105/api" ; 
         const local = "http://localhost/RESTapi/";
         //si faux je ne peux pas continuer sinon je peux afficher le message :
-         let  verifyMailRequest = function (body) {
+        let  verifyMailRequest = function (body) {
             let results = false ; 
             $.ajax( prod + '/verifymail', {
                 type: 'POST',  
@@ -1347,8 +1335,6 @@
             return results;
         }
 
-        
-
         let postUserRelation = function (body) {
             let results = false;
             $.ajax(prod + '/usersitessossuke', {
@@ -1381,7 +1367,6 @@
                     results = jqXhr;
                 }
             });
-
             return results;
         }
 
@@ -1416,11 +1401,9 @@
                 return 'La fonction est obligatoire  ';
             }
             return false;
-          
         }
 
-        let handleFormsUserEdit = function($forms){
-           
+        let handleFormsUserEdit = function($forms){ 
             if(!valideNom($forms['user__nom'])){
                 return 'Le nom est incorrect ';
             }
@@ -1431,8 +1414,8 @@
                 return 'La fonction est obligatoire  ';
             }
             return false;
-          
         }
+        
         let removeforms = function(){
 
         }

@@ -1,11 +1,12 @@
 
 
 
-{% if user.id_utilisateur == ligne.tkl__user_id.user__id %}
-<div class="card-recode-ligne d-flex flex-column my-2 bg-dialog-self ml-5">
+{% if  ligne.tkl__user_id.user__id  < 2000 %}
+<div class="card-recode-ligne-recode d-flex flex-column my-2 bg-dialog-self ml-5">
 {% else %}
-<div class="card-recode-ligne d-flex flex-column my-2 mr-5">
+<div class="card-recode-ligne-client d-flex flex-column my-2 mr-5">
 {% endif %}
+
 <div class="recode-ligne-header mt-2 mb-4">
     <h5>
         <span class="font-weight-bold">
@@ -58,6 +59,10 @@
                                 {% elseif entitie.dt_off and  entitie.dt_off == '01/01/1970' and  gar != 'NON garantie' %}
                                     <b>Vérifier la garantie</b>
                                 {% endif %}
+                            {% endif %}
+                            {% if entitie.gar %}
+                            
+                                    <br><a href="replaceMat?tk__id={{ticket.tk__id}}">Remplacer la Machine</a>
                             {% endif %}
                             {% if entitie.sortie %}
                                 <br> {{entitie.sortie}}

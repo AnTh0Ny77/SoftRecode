@@ -163,7 +163,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 					</th>
 					<th>
 						<div class="d-flex justify-content-center">
-							Picto
+							
 						</div>
 					</th>
 				</tr>
@@ -172,6 +172,7 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 					{% if model.afmm__actif < 9  %}
 					<tr>
 						<th style="width: 290px">
+							
 							<b>
 								<h4 class="text-success"><small>MODELE : </small> {{ model.afmm__modele }} </h4>
 							</b>
@@ -211,9 +212,12 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 								{% endfor %}
 							</div>
 						</td>
-							<td>
-								{% if model.afmm__image %}<figure class="image"><img src="data:image/jpeg;base64,{{ model.afmm__image|raw}}" width=110>
-								</figure>{% endif %}
+							<td   >
+								<input type="hidden" value="{{model.afmm__id}}" class="modelList">
+								{# {% if model.afmm__image %}
+									<figure class="image"><img src="data:image/jpeg;base64,{{ model.afmm__image|raw}}" width=110>
+									</figure>
+								{% endif %} #}
 							</td>
 							<td style="width: 270px">
 								<div class="d-flex flex-wrap justify-content-start">
@@ -400,7 +404,8 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 						</div>
 					</td>
 					<td>
-						{% if pn.apn__image  %}<figure class="image" ><img src="data:image/jpeg;base64,{{ pn.apn__image|raw}}" width=110></figure>{% endif %}
+						<input type="hidden" value="{{pn.apn__pn}}" class="PnList">
+						{# {% if pn.apn__image  %}<figure class="image" ><img src="data:image/jpeg;base64,{{ pn.apn__image|raw}}" width=110></figure>{% endif %} #}
 					</td>
 				
 					<td style="width: 270px">
@@ -488,9 +493,6 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 									</button>
 								</form>
 							</div>
-							
-							
-							
 							<div class="d-flex col-2">
 								<div data-toggle="tooltip" data-placement="top" title="Demande D'achat">
 									<a href=" http://intranet/locator_catalogue.php?filtre={{pn.apn__pn}}" target="_blank">
@@ -574,6 +576,52 @@ Yb       dP__Yb    88    dP__Yb  88  .o Yb   dP Yb  "88 Y8   8P 88""       88"""
 <script type="text/javascript" src="public/mdb/js/mdb-file-upload.min.js"></script>
 
 <script>
-
-	$('.file_upload').file_upload();</script> {# pour le file_upload #}
+$( document ).ready(function() {
+	$('.file_upload').file_upload();
+	$('.modelList').each(function(index){
+		let object = $(this);
+		$.ajax({
+			url: 'ajax_idfmm',
+			data: {
+				idfmm :  this.value
+			},
+			error: function() {
+			   console.log('error for : ' +  this.value);
+			},
+			success: function(data){
+				let image_data = JSON.parse(data);
+				image_data = image_data.afmm__image;
+				if(image_data.length > 50 ){
+					let html = '<figure class="image"><img src="data:image/jpeg;base64,'+image_data+'" width=110></figure>';
+					object.parent("td:first").append(html);
+				}	
+			},
+			type: 'POST'
+		 });
+	});
+	$('.PnList').each(function(index){
+		let object = $(this);
+		console.log( object);
+		$.ajax({
+			url: 'Ajax-pn-id',
+			data: {
+				pn_id :  this.value
+			},
+			error: function() {
+			   console.log('error for : ' +  this.value);
+			},
+			success: function(data){
+				let image_data = JSON.parse(data);
+				image_data = image_data.apn__image;
+				if(image_data.length > 50 ){
+					let html = '<figure class="image"><img src="data:image/jpeg;base64,'+ image_data +'" width=110></figure>';
+					object.parent("td:first").append(html);
+				}	
+			},
+			type: 'POST'
+		});
+	})
+});
+</script> {# pour le file_upload #}
   {% endblock %}
+  
