@@ -141,12 +141,12 @@ elseif (!empty($_GET['art_filtre']) && empty($_POST['recherche_guide'])) {
    
 	$_SESSION['config']['search'] = $_GET['art_filtre'];
 	$ArtFiltre = $_GET['art_filtre'];
-	$pn_list = $Stocks->get_pn_list($ArtFiltre);
-	$model_list = $Stocks->get_model_list($ArtFiltre);
+	$pn_list = $Stocks->get_pn_list_cata($ArtFiltre);
+	$model_list = $Stocks->get_model_list_cata($ArtFiltre);
  }
 else{
-	$pn_list = $Stocks->get_pn_list('');
-	$model_list = $Stocks->get_model_list('');
+	$pn_list = $Stocks->get_pn_list_cata('');
+	$model_list = $Stocks->get_model_list_cata('');
 } 
 
 if (!isset($_SESSION['config'])) {
@@ -174,7 +174,7 @@ $temp_pn = [];
 foreach ($pn_list as $key => $pn) 
 {
 	$pn->specs = $Stocks->get_specs_pn_show($pn->apn__pn);
-	$pn->apn__image  = base64_encode($pn->apn__image);
+	// $pn->apn__image  = base64_encode($pn->apn__image);
    
 	$count_stock = $Stocks->count_from_totoro($Totoro, $pn->apn__pn);
 	$date_time = new DateTime($pn->apn__date_modif);
@@ -231,7 +231,7 @@ $temp = [];
 foreach ($model_list as $key => $model) 
 {
 	$model->specs = $Stocks->get_specs_modele_show($model->afmm__id);
-	$model->afmm__image = base64_encode($model->afmm__image);
+	// $model->afmm__image = base64_encode($model->afmm__image);
 
 	$date_model = new DateTime($model->afmm__dt_modif);
 	$date_model = $date_model->format('d/m/Y');

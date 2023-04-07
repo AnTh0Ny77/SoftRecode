@@ -25,6 +25,7 @@ $Cmd = new App\Tables\Cmd($Database);
 $Contact = new \App\Tables\Contact($Database);
 $Client = new \App\Tables\Client($Database);
 $General = new App\Tables\General($Database);
+$Pistage = new App\Tables\Pistage($Database);
 
 if(empty($_SESSION['user']))
 {
@@ -342,6 +343,8 @@ $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);
 
                 if (!empty($facturation_auto)) 
                 {
+                    $date = date("Y-m-d H:i:s");
+                    $Pistage->addPiste($_SESSION['user']->id_utilisateur , $date, $temp->devis__id , 'facture envoyé automatiquement à ' . $facturation_auto->contact__email);
                     $config_json = file_get_contents("vendor/config/security.json");
                     $config_json = json_decode($config_json);
                     //Instantiation and passing `true` enables exceptions
