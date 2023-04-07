@@ -38,8 +38,13 @@ $UserClass = new App\Tables\User($Database);
 	$v11  = $v12  = $v13  = $v14  = $v15  = $v16  = $v17  = $v18  = $v19  = array();
 	$a01b = $a01c = $a01d = $a01f = $a01g = $a01x = array();
 	$a02b = $a02c = $a02d = $a02f = $a02g = $a02x = $a02e = array();
+	$a50  = $exm  = $exp  = $odm  = $odp  = array(); // achat de port et extourne (saisie par compta)
 	$s51b = $s51c = $s51d = $s51f = $s51g = array();
 	$s52b = $s52c = $s52d = $s52f = $s52g = $s54a = $s55a = array();
+	$s51b[0] = $s51c[0] = $s51d[0] = $s51f[0] = $s51g[0] = 0;
+	$s52b[0] = $s52c[0] = $s52d[0] = $s52f[0] = $s52g[0] = $s54a[0] = $s55a[0] = 0;
+	$s51b[1] = $s51c[1] = $s51d[1] = $s51f[1] = $s51g[1] = 0;
+	$s52b[1] = $s52c[1] = $s52d[1] = $s52f[1] = $s52g[1] = $s54a[1] = $s55a[1] = 0;
 
 
 /*8888  dP"Yb  88b 88  dP""b8 888888 88  dP"Yb  88b 88 .dP"Y8 
@@ -54,7 +59,6 @@ function sql_1_an($sql)
 	$sql_1   = str_replace($search, $replace, $sql);
 	return $sql_1; // indique la valeur à renvoyer 
 } 
-
 
 function stat_sql($sql, $base='sosuke')
 {
@@ -87,73 +91,106 @@ function stock_sql($sql)
 {
 	global $Totoro;
 	global $date_debut, $date_fin;
-	$ret = array();
-	$sql_deb = str_replace('##DT##',$date_debut.' 00:00:00', $sql);
-	$sql_fin = str_replace('##DT##',$date_fin.' 23:59:59', $sql);
-	$lg_tab    = '';
-	$T_data    = $Totoro->Pdo->query($sql_deb)->fetch(PDO::FETCH_ASSOC);
+	$ret         = array();
+	$sql_deb     = str_replace('##DT##',$date_debut.' 00:00:00', $sql);
+	$sql_fin     = str_replace('##DT##',$date_fin.' 23:59:59', $sql);
+	$T_data      = $Totoro->Pdo->query($sql_deb)->fetch(PDO::FETCH_ASSOC);
 	$val_stk_deb = $T_data['SOMME'];
-	$T_data    = $Totoro->Pdo->query($sql_fin)->fetch(PDO::FETCH_ASSOC);
+	$T_data      = $Totoro->Pdo->query($sql_fin)->fetch(PDO::FETCH_ASSOC);
 	$val_stk_fin = $T_data['SOMME'];
-	$ret[0] = $val_stk_deb;
-	$ret[1] = $val_stk_fin;
-	return $ret; // renvoie le tableau avec chiffre n et n-1
+	$ret[0]      = $val_stk_deb;
+	$ret[1]      = $val_stk_fin;
+	// 1 ans de moins meme periode
+	$sql_deb     = Sql_1_an($sql_deb);
+	$sql_fin     = Sql_1_an($sql_fin);
+	$T_data      = $Totoro->Pdo->query($sql_deb)->fetch(PDO::FETCH_ASSOC);
+	$val_stk_deb = $T_data['SOMME'];
+	$T_data      = $Totoro->Pdo->query($sql_fin)->fetch(PDO::FETCH_ASSOC);
+	$val_stk_fin = $T_data['SOMME'];
+	$ret[2]      = $val_stk_deb;
+	$ret[3]      = $val_stk_fin;
+
+	return $ret; // renvoie le tableau avec chiffre debut et fin de periode n et n-1 (soit 4 chiffres)
 } 
 
 
 
-function lg_tab_html($nn1, $prestation, $etat, $option=FALSE, $variation=FALSE)
+function lg_tab_html($nn1, $tt1, $prestation, $etat, $option=FALSE, $class = '')
 {
-	$somme   = $nn1[0];
-	$somme_1 = $nn1[1];
-	if (isset($nn1[2]))
-		$mc  = $nn1[2];
-	else 
-		$mc  = FALSE;
-	$mc_pc = ' ';
-	if ($variation) // variation en valeur et non en %
-		{ $evol = $somme_1 - $somme; $signe_var = ''; }
-	else
-	{ 
-		$signe_var = '%'; 
-		if ($somme_1 > 0) // pour eviter le divizion par 0
-			$evol = (($somme-$somme_1)/$somme_1)*100;
-		else
-			$evol = '0';
-	}
+	$somme      = $nn1[0];
+	$somme_1    = $nn1[1];
+	$tot        = $tt1[0];
+	$tot_1      = $tt1[1];
+	$var        = $somme - $somme_1;
+	$var_tot    = $tot - $tot_1;
+	// calcule du % sur le total.
+	$pc_n = $pc_n1 = $pc_var = 0;
+	if($tot > 0)
+		$pc_n = $somme/$tot*100;
+	if($tot_1 > 0)
+		$pc_n1 = $somme_1/$tot_1*100;
+	if($var_tot <> 0)
+		$pc_var = $var/$var_tot*100;
+	// gestion du gras
 	$bold = FALSE;
 	if ($option == 1) $bold = TRUE;
 	if ($bold)
 		{ $bold_on = '<b>'; $bold_off = '</b>';}
 	else
 		{ $bold_on = $bold_off = '';}
-	$lg_tab    = '<tr> ';
-	$lg_tab   .= '<td>'.$bold_on.$prestation.$bold_off.'</td> ';
-	$lg_tab   .= '<td>'.$bold_on.$etat.$bold_off.'</td> ';
+	$lg_tab    = '<tr '.$class.'> ';
+	$lg_tab   .= '<td>'.$bold_on.$prestation.' - '.$etat.$bold_off.'</td> ';
 	$lg_tab   .= '<td align=right>'.$bold_on.number_format($somme, 2, ',', ' ').$bold_off.'</td> ';
+	$lg_tab   .= '<td align=right>'.number_format($pc_n, 2, ',', ' ').' %</td> ';
 	$lg_tab   .= '<td align=right>'.$bold_on.number_format($somme_1, 2, ',', ' ').$bold_off.'</td> ';
-	$lg_tab   .= '<td align=right>'.$bold_on.number_format($evol, 2, ',', ' ').$bold_off.' '.$signe_var.'</td> ';
-	$lg_tab   .= '<td align=right>';
-	if ($mc !== FALSE)
-	{
-		$lg_tab   .= $bold_on.number_format($mc, 2, ',', ' ').$bold_off;
-		if ($somme > 0) // pour eviter Division by zero
-			$mc_pc = $bold_on.number_format(($mc / $somme)*100, 2, ',', ' ').' %'.$bold_off;
-		else
-			$mc_pc = '-';
-	}
-	$lg_tab   .= '</td> ';
-	$lg_tab   .= '<td align=right>'.$mc_pc.'</td> ';
+	$lg_tab   .= '<td align=right>'.number_format($pc_n1, 2, ',', ' ').' %</td> ';
+	$lg_tab   .= '<td align=right>'.$bold_on.number_format($var, 2, ',', ' ').$bold_off.'</td> ';
+	$lg_tab   .= '<td align=right>'.number_format($pc_var, 2, ',', ' ').' %</td> ';
 	$lg_tab   .= '</tr> ';
 
 	return $lg_tab; // renvoie la ligne complette de tableau en html
 } 
 
-function lg_tab_desc($t1,$t2,$t3,$t4,$t5,$t6,$t7)
+
+function lg_mc_tab_html($nn1, $prestation, $etat, $tot_ca)
 {
+	$somme   = $nn1[0];
+	$somme_1 = $nn1[1];
+	$mc      = $nn1[2];
+	$mc_1    = $nn1[3];
+	$var     = $mc - $mc_1;;
+	$tot     = $tot_ca[0];
+	$tot_1   = $tot_ca[1];
+	$pc_var  = (($mc-$mc_1)/$mc_1)*100;
+	if ($tot > 0) // pour eviter Division by zero
+		$mc_pc = ($mc / $tot)*100;
+	else
+		$mc_pc = '-';
+	if ($tot_1 > 0) // pour eviter Division by zero
+		$mc_pc_1 = ($mc_1 / $tot_1)*100;
+	else
+		$mc_pc_1 = '-';
+
 	$lg_tab    = '<tr> ';
+	$lg_tab   .= '<td><b>'.$prestation.' - '.$etat.'</b></td> ';
+	$lg_tab   .= '<td align=right><b>'.number_format($mc, 2, ',', ' ').'</b></td> ';
+	$lg_tab   .= '<td align=right>'.number_format($mc_pc, 2, ',', ' ').' %</td> ';
+	$lg_tab   .= '<td align=right><b>'.number_format($mc_1, 2, ',', ' ').'</b></td> ';
+	$lg_tab   .= '<td align=right>'.number_format($mc_pc_1, 2, ',', ' ').' %</td> ';
+	$lg_tab   .= '<td align=right><b>'.number_format($var, 2, ',', ' ').'</b></td> ';
+	$lg_tab   .= '<td align=right>'.number_format($pc_var, 2, ',', ' ').' %</td> ';
+	$lg_tab   .= '</tr> ';
+
+	return $lg_tab; // renvoie la ligne complette de tableau en html
+} 
+
+
+
+function lg_tab_desc($t1,$t2,$t3,$t4,$t5='',$t6='',$t7='')
+{
+	$lg_tab    = '<tr class="table-secondary"> ';
 	$lg_tab   .= '<td style="text-align:left "><b>'.$t1.'</b></td> ';
-	$lg_tab   .= '<td style="text-align:left "><b>'.$t2.'</b></td> ';
+	$lg_tab   .= '<td style="text-align:right"><b>'.$t2.'</b></td> ';
 	$lg_tab   .= '<td style="text-align:right"><b>'.$t3.'</b></td> ';
 	$lg_tab   .= '<td style="text-align:right"><b>'.$t4.'</b></td> ';
 	$lg_tab   .= '<td style="text-align:right"><b>'.$t5.'</b></td> ';
@@ -194,7 +231,7 @@ function lg_tab_stock_html($sql, $prestation, $etat)
 } 
 
 
-function lg_tab_titre($nn1, $titre, $class, $variation=FALSE)
+function lg_tab_titre($nn1, $titre, $class, $taille='h4')
 {
 	$lg_tab    = '';
 	$somme   = $nn1[0];
@@ -203,24 +240,37 @@ function lg_tab_titre($nn1, $titre, $class, $variation=FALSE)
 		$mc  = $nn1[2];
 	else 
 		$mc  = FALSE;
-	if ($variation) // variation en valeur et non en %
-		{ $evol = $somme_1 - $somme; $signe_var = ''; }
-	else
-		{ $evol = (($somme - $somme_1)/ $somme_1 ) * 100; $signe_var = '%'; }
+	$var = $somme-$somme_1;
+	$pc_var = (($somme-$somme_1)/$somme_1)*100;
 	$lg_tab   .= '
+	<thead>
+	<tr class="table-'.$class.' '.$taille.'" >
+		<th>'.$titre.'</th>
+		<th WIDTH="13%" style="text-align:right">'.number_format($somme, 2, ',', ' ').'</th>
+		<th WIDTH="07%"></th>
+		<th WIDTH="13%" style="text-align:right">'.number_format($somme_1, 2, ',', ' ').'</th>
+		<th WIDTH="07%" ></th>
+		<th WIDTH="13%" style="text-align:right">'.number_format($var, 2, ',', ' ').'</th>
+		<th WIDTH="07%" style="text-align:right">'.number_format($pc_var, 2, ',', ' ').' %</th>
+	</tr>
+	</thead>';
+
+	return $lg_tab; // renvoie la ligne complette de tableau en html
+}
+
+function lg_tab_titre_simple($titre, $class)
+{
+	$lg_tab   = '
 	<thead>
 	<tr class="table-'.$class.' h4" >
 		<th>'.$titre.'</th>
-		<th></th>
-		<th style="text-align:right">'.number_format($somme, 2, ',', ' ').'</th>
-		<th style="text-align:right">'.number_format($somme_1, 2, ',', ' ').'</th>
-		<th style="text-align:right">'.number_format($evol, 2, ',', ' ').' '.$signe_var.'</th>
-		<th style="text-align:right">';
-		if ($mc !== FALSE)
-			$lg_tab   .= number_format($mc, 2, ',', ' ');
-		$lg_tab .= '
+		<th WIDTH="13%" style="text-align:right"></th>
+		<th WIDTH="07%"></th>
+		<th WIDTH="13%" style="text-align:right"></th>
+		<th WIDTH="07%" ></th>
+		<th WIDTH="13%" style="text-align:right"></th>
+		<th WIDTH="07%" style="text-align:right"></th>
 		</th>
-		<th style="text-align:right"></th>
 	</tr>
 	</thead>';
 
@@ -318,9 +368,11 @@ $tql_w_sf_acc     = "AND keyword.`value` = 'ACC' ";
 $tql_w_sf_cdb     = "AND keyword.`value` = 'CDB' ";
 $tql_w_sf_conso   = "AND keyword.`value` = 'CONSO' ";
 $tql_w_sf_autre   = "AND ( keyword.`value` IN ('GARAN','EMBAL') OR keyword.`value` IS NULL ) ";
+$tql_w_sf_tout_nc = "AND keyword.`value` <> 'CONSO' ";
 $tql_w_sf_imp     = "AND keyword.`value` = 'IMP' ";
 $tql_w_sf_micro   = "AND keyword.`value` = 'MICRO' ";
 $tql_w_sf_pce     = "AND keyword.`value` = 'PCE' ";
+$tql_w_sf_embal   = "AND keyword.`value` = 'EMBAL' ";
 $tql_sel_po_port  = "SELECT SUM(po_frais_port_euro) AS SOMME ";
 $tql_from_po      = "FROM po ";
 $tql_where_po     = "WHERE ";
@@ -349,19 +401,7 @@ o888o  o888o `Y8bod8P' `V8bod888   `V88V"V8P' `Y8bod8P'   "888" `Y8bod8P' 8""888
                              "                                                                            */
 
 $v01   = stat_sql($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_no_con);
-$v01b  = stat_sql($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_cdb);
-$v01c  = stat_sql($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_imp);
-$v01d  = stat_sql($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_mic);
-$v01f  = stat_sql($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_pid);
-$v01g  = stat_sql($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_acc);
-$v01h  = stat_sql($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_neu.$sql_w_ser);
 $v02   = stat_sql($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_no_con);
-$v02b  = stat_sql($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_cdb);
-$v02c  = stat_sql($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_imp);
-$v02d  = stat_sql($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_mic);
-$v02f  = stat_sql($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_pid);
-$v02g  = stat_sql($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_acc);
-$v02h  = stat_sql($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_occ.$sql_w_ser);
 $v01e  = stat_sql($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_con);
 $v03   = stat_sql($sql_select_vente.$sql_from.$sql_where.$sql_w_ech.$sql_w_neu);
 $v04   = stat_sql($sql_select_vente.$sql_from.$sql_where.$sql_w_ech.$sql_w_occ);
@@ -370,7 +410,6 @@ $v05b  = stat_sql($sql_select_vente.$sql_from.$sql_where.$sql_w_rpr.$sql_w_occ);
 $v06   = stat_sql($sql_select_vente.$sql_from.$sql_where.$sql_w_rem);
 $v07b  = stat_sql($sql_select_vente.$sql_from.$sql_where.$sql_w_pre);
 $v07c  = stat_sql($sql_select_vente.$sql_from.$sql_where.$sql_w_bro);
-//$v11   = stat_sql($sql_select_vente.$sql_from.$sql_famille.$sql_where.$sql_w_vte.$sql_w_ser); // les services pas une bonne idéede le déplacer ... c'est une vente en mode vente et non en mode service. composé de v01h et v02h
 $v12   = stat_sql($sql_select_vente.$sql_from.$sql_where.$sql_w_rep);
 $v13   = stat_sql($sql_select_vente.$sql_from.$sql_where.$sql_w_loc.$sql_w_neu);
 $v14   = stat_sql($sql_select_vente.$sql_from.$sql_where.$sql_w_loc.$sql_w_occ);
@@ -379,19 +418,53 @@ $v16   = stat_sql($sql_select_vente.$sql_from.$sql_where.$sql_w_int);
 $v17   = stat_sql($sql_select_v_gar.$sql_from.$sql_where.$sql_w_neu);
 $v18   = stat_sql($sql_select_v_gar.$sql_from.$sql_where.$sql_w_occ);
 $v19   = stat_sql($sql_select_vente.$sql_from.$sql_where.$sql_w_prt);
-$a01b  = stat_sql($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_cdb.$tql_w_neuf,"totoro");
-$a01c  = stat_sql($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_imp.$tql_w_neuf,"totoro");
-$a01d  = stat_sql($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_micro.$tql_w_neuf,"totoro");
-$a01f  = stat_sql($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_pce.$tql_w_neuf,"totoro");
-$a01g  = stat_sql($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_acc.$tql_w_neuf,"totoro");
-$a01x  = stat_sql($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_autre.$tql_w_neuf,"totoro");
-$a02b  = stat_sql($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_cdb.$tql_w_occ,"totoro");
-$a02c  = stat_sql($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_imp.$tql_w_occ,"totoro");
-$a02d  = stat_sql($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_micro.$tql_w_occ,"totoro");
-$a02f  = stat_sql($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_pce.$tql_w_occ,"totoro");
-$a02g  = stat_sql($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_acc.$tql_w_occ,"totoro");
-$a02x  = stat_sql($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_autre.$tql_w_occ,"totoro");
+$a01   = stat_sql($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_tout_nc.$tql_w_neuf,"totoro");
+$a02   = stat_sql($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_tout_nc.$tql_w_occ,"totoro");
+
+// conso
 $a01e  = stat_sql($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_conso.$tql_w_conso,"totoro");
+
+// Emballage
+$a01z  = stat_sql($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_sf_embal,"totoro");
+
+// transport sur vente et extournes
+// recuperer l'année de debut, chercher dans keyword type = camrg et value  = p99 pour 99 = année de debut
+$an_debut = substr($date_debut_fr,-2);
+$sql = "SELECT * FROM keyword WHERE kw__type = 'camrg' AND kw__value = 'P".$an_debut."' ";
+$T_data    = $Database->Pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+$a50[0]    = $T_data['kw__lib'];
+$sql = "SELECT * FROM keyword WHERE kw__type = 'camrg' AND kw__value = 'M".$an_debut."' ";
+$T_data    = $Database->Pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+$exm[0]    = $T_data['kw__lib'];
+$sql = "SELECT * FROM keyword WHERE kw__type = 'camrg' AND kw__value = 'R".$an_debut."' ";
+$T_data    = $Database->Pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+$exp[0]    = $T_data['kw__lib'];
+
+$an_avant  = $an_debut - 1;
+$sql = "SELECT * FROM keyword WHERE kw__type = 'camrg' AND kw__value = 'P".$an_avant."' ";
+$T_data    = $Database->Pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+$a50[1]    = $T_data['kw__lib'];
+$sql = "SELECT * FROM keyword WHERE kw__type = 'camrg' AND kw__value = 'M".$an_avant."' ";
+$T_data    = $Database->Pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+$exm[1]    = $T_data['kw__lib'];
+$sql = "SELECT * FROM keyword WHERE kw__type = 'camrg' AND kw__value = 'R".$an_avant."' ";
+$T_data    = $Database->Pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+$exp[1]    = $T_data['kw__lib'];
+
+$an_apres  = $an_debut + 1;
+$sql = "SELECT * FROM keyword WHERE kw__type = 'camrg' AND kw__value = 'M".$an_apres."' ";
+$T_data    = $Database->Pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+$odm[0]    = $T_data['kw__lib'] * -1;
+$sql = "SELECT * FROM keyword WHERE kw__type = 'camrg' AND kw__value = 'R".$an_apres."' ";
+$T_data    = $Database->Pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+$odp[0]    = $T_data['kw__lib'] * -1;
+$an_apres  = $an_debut + 1;
+$sql = "SELECT * FROM keyword WHERE kw__type = 'camrg' AND kw__value = 'M".$an_debut."' ";
+$T_data    = $Database->Pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+$odm[1]    = $T_data['kw__lib'] * -1;
+$sql = "SELECT * FROM keyword WHERE kw__type = 'camrg' AND kw__value = 'R".$an_debut."' ";
+$T_data    = $Database->Pdo->query($sql)->fetch(PDO::FETCH_ASSOC);
+$odp[1]    = $T_data['kw__lib'] * -1;
 
 $s51b  = stock_sql($tql_stk_sql.$tql_stk_dt.$tql_stk_neuf.$tql_stk_type."'CDB'");
 $s51c  = stock_sql($tql_stk_sql.$tql_stk_dt.$tql_stk_neuf.$tql_stk_type."'IMP'");
@@ -406,8 +479,6 @@ $s52g  = stock_sql($tql_stk_sql.$tql_stk_dt.$tql_stk_occ.$tql_stk_type."'ACC'");
 $s54a  = stock_sql($tql_stk_sql.$tql_stk_dt.$tql_stk_mrk.$tql_stk_type."'CONSO'");
 $s55a  = stock_sql($tql_stk_sql.$tql_stk_dt.$tql_stk_com.$tql_stk_type."'CONSO'");
 
-
-
  /*""b8    db    88      dP""b8 88   88 88     
 dP   `"   dPYb   88     dP   `" 88   88 88     
 Yb       dP__Yb  88  .o Yb      Y8   8P 88  .o 
@@ -415,24 +486,36 @@ Yb       dP__Yb  88  .o Yb      Y8   8P 88  .o
 $gras = $variation = 1;
 // Ventes Marchandise
 $tot_vm = array();
-$tot_vm[0] = $v01[0]+$v02[0]+$v01e[0]+$v03[0]+$v04[0]+$v05[0]+$v05b[0]+$v06[0]+$v07b[0]+$v07c[0];
-$tot_vm[1] = $v01[1]+$v02[1]+$v01e[1]+$v03[1]+$v04[1]+$v05[1]+$v05b[1]+$v06[1]+$v07b[1]+$v07c[1];
+$tot_vm[0] = $v01[0]+$v02[0]+$v01e[0]+$v03[0]+$v04[0]+$v05[0]+$v05b[0]+$v06[0]+$v07b[0]+$v07c[0]+$exm[0]+$odm[0];
+$tot_vm[1] = $v01[1]+$v02[1]+$v01e[1]+$v03[1]+$v04[1]+$v05[1]+$v05b[1]+$v06[1]+$v07b[1]+$v07c[1]+$exm[1]+$odm[1];
+// Ventes Neuf
+$tot_vn = array();
+$tot_vn[0] = $v01[0];
+$tot_vn[1] = $v01[1];
+// Ventes occasion
+$tot_vo = array();
+$tot_vo[0] = $v02[0];
+$tot_vo[1] = $v02[1];
 // production
 $tot_pr = array();
-$tot_pr[0] = $v12[0]+$v13[0]+$v14[0]+$v15[0]+$v16[0]+$v17[0]+$v18[0]+$v19[0];
-$tot_pr[1] = $v12[1]+$v13[1]+$v14[1]+$v15[1]+$v16[1]+$v17[1]+$v18[1]+$v19[1];
+$tot_pr[0] = $v12[0]+$v13[0]+$v14[0]+$v15[0]+$v16[0]+$v17[0]+$v18[0]+$v19[0]+$exp[0]+$odp[0];
+$tot_pr[1] = $v12[1]+$v13[1]+$v14[1]+$v15[1]+$v16[1]+$v17[1]+$v18[1]+$v19[1]+$exp[1]+$odp[1];
 // total CA
 $tot_ca = array();
 $tot_ca[0] = $tot_vm[0]+$tot_pr[0];
 $tot_ca[1] = $tot_vm[1]+$tot_pr[1];
 // achat Marchandise neuf
 $tot_hn = array();
-$tot_hn[0] = $a01b[0]+$a01c[0]+$a01d[0]+$a01f[0]+$a01g[0]+$a01x[0];
-$tot_hn[1] = $a01b[1]+$a01c[1]+$a01d[1]+$a01f[1]+$a01g[1]+$a01x[1];
+$tot_hn[0] = $a01[0];
+$tot_hn[1] = $a01[1];
+// $tot_hn[0] = $a01b[0]+$a01c[0]+$a01d[0]+$a01f[0]+$a01g[0]+$a01x[0];
+// $tot_hn[1] = $a01b[1]+$a01c[1]+$a01d[1]+$a01f[1]+$a01g[1]+$a01x[1];
 // achat Marchandise occase
 $tot_ho = array();
-$tot_ho[0] = $a02b[0]+$a02c[0]+$a02d[0]+$a02f[0]+$a02g[0]+$a02x[0];
-$tot_ho[1] = $a02b[1]+$a02c[1]+$a02d[1]+$a02f[1]+$a02g[1]+$a02x[1];
+$tot_ho[0] = $a02[0];
+$tot_ho[1] = $a02[1];
+// $tot_ho[0] = $a02b[0]+$a02c[0]+$a02d[0]+$a02f[0]+$a02g[0]+$a02x[0];
+// $tot_ho[1] = $a02b[1]+$a02c[1]+$a02d[1]+$a02f[1]+$a02g[1]+$a02x[1];
 // achat total
 $tot_ha = array();
 $tot_ha[0] = $tot_hn[0]+$tot_ho[0]+$a01e[0];
@@ -441,41 +524,53 @@ $tot_ha[1] = $tot_hn[1]+$tot_ho[1]+$a01e[1];
 $tot_sn = array();
 $tot_sn[0] = $s51b[0]+$s51c[0]+$s51d[0]+$s51f[0]+$s51g[0];
 $tot_sn[1] = $s51b[1]+$s51c[1]+$s51d[1]+$s51f[1]+$s51g[1];
+$tot_sn[2] = $s51b[2]+$s51c[2]+$s51d[2]+$s51f[2]+$s51g[2];
+$tot_sn[3] = $s51b[3]+$s51c[3]+$s51d[3]+$s51f[3]+$s51g[3];
 // stock Marchandise occasion
 $tot_so = array();
 $tot_so[0] = $s52b[0]+$s52c[0]+$s52d[0]+$s52f[0]+$s52g[0];
 $tot_so[1] = $s52b[1]+$s52c[1]+$s52d[1]+$s52f[1]+$s52g[1];
+$tot_so[2] = $s52b[2]+$s52c[2]+$s52d[2]+$s52f[2]+$s52g[2];
+$tot_so[3] = $s52b[3]+$s52c[3]+$s52d[3]+$s52f[3]+$s52g[3];
 // stock Marchandise consommables
 $tot_sc = array();
 $tot_sc[0] = $s54a[0]+$s55a[0];
 $tot_sc[1] = $s54a[1]+$s55a[1];
+$tot_sc[2] = $s54a[2]+$s55a[2];
+$tot_sc[3] = $s54a[3]+$s55a[3];
 // stock Marchandise total
 $tot_st = array();
 $tot_st[0] = $tot_sc[0]+$tot_sn[0]+$tot_so[0];
 $tot_st[1] = $tot_sc[1]+$tot_sn[1]+$tot_so[1];
+$tot_st[2] = $tot_sc[2]+$tot_sn[2]+$tot_so[2];
+$tot_st[3] = $tot_sc[3]+$tot_sn[3]+$tot_so[3];
 
 /*    d8    db    88""Yb  dP""b8 888888      dP""b8  dP"Yb  8b    d8 
 88b  d88   dPYb   88__dP dP   `" 88__       dP   `" dP   Yb 88b  d88 
 88YbdP88  dP__Yb  88"Yb  Yb  "88 88""       Yb      Yb   dP 88YbdP88 
 88 YY 88 dP""""Yb 88  Yb  YboodP 888888      YboodP  YbodP  88 YY 8*/ 
 
-$v01e[2] = $v01e[0] - $a01e[0] + ($tot_sc[1] - $tot_sc[0]);
-$v02g[2] = $v02g[0] - $a02g[0] + ($s52g[1] - $s52g[0]);
-$v02f[2] = $v02f[0] - $a02f[0] + ($s52f[1] - $s52f[0]);
-$v02d[2] = $v02d[0] - $a02d[0] + ($s52d[1] - $s52d[0]);
-$v02c[2] = $v02c[0] - $a02c[0] + ($s52c[1] - $s52c[0]);
-$v02b[2] = $v02b[0] - $a02b[0] + ($s52b[1] - $s52b[0]);
-$v02[2]  = $v02[0]  - $tot_ho[0] + ($tot_so[1] - $tot_so[0]);
-$v01g[2] = $v01g[0] - $a01g[0] + ($s51g[1] - $s51g[0]);
-$v01f[2] = $v01f[0] - $a01f[0] + ($s51f[1] - $s51f[0]);
-$v01d[2] = $v01d[0] - $a01d[0] + ($s51d[1] - $s51d[0]);
-$v01c[2] = $v01c[0] - $a01c[0] + ($s51c[1] - $s51c[0]);
-$v01b[2] = $v01b[0] - $a01b[0] + ($s51b[1] - $s51b[0]);
-$v01[2]  = $v01[0]  - $tot_hn[0] + ($tot_sn[1] - $tot_sn[0]);
+$v01e[2]   = $v01e[0] - $a01e[0]   + ($tot_sc[1] - $tot_sc[0]);
+$v02[2]    = $v02[0]  - $tot_ho[0] + ($tot_so[1] - $tot_so[0]);
+$v01[2]    = $v01[0]  - $tot_hn[0] + ($tot_sn[1] - $tot_sn[0]);
 $tot_vm[2] = $v01[2] + $v02[2] + $v01e[2];
-
-// debug
-// print '<br>v02g.2<br>'; var_dump($v02g); print '<br>';
+$tot_vn[2] = $v01[2];
+$tot_vo[2] = $v02[2];
+$tot_pr[2] = $tot_pr[0] - $a01z[0] - $a50[0];
+// periode Année -1
+$v01e[3]   = $v01e[1] - $a01e[1]   + ($tot_sc[3] - $tot_sc[2]);
+$v02[3]    = $v02[1]  - $tot_ho[1] + ($tot_so[3] - $tot_so[2]);
+$v01[3]    = $v01[1]  - $tot_hn[1] + ($tot_sn[3] - $tot_sn[2]);
+$tot_vm[3] = $v01[3] + $v02[3] + $v01e[3];
+$tot_vn[3] = $v01[3];
+$tot_vo[3] = $v02[3];
+$tot_pr[3] = $tot_pr[1] - $a01z[1] - $a50[1];
+// total MC et MB
+$tot_mcmb = array();
+$tot_mcmb[0] = $tot_vm[0] + $tot_pr[0];
+$tot_mcmb[1] = $tot_vm[1] + $tot_pr[1];
+$tot_mcmb[2] = $tot_vm[2] + $tot_pr[2];
+$tot_mcmb[3] = $tot_vm[3] + $tot_pr[3];
 
 
    /*    888888 888888 88  dP""b8 88  88    db     dP""b8 888888 
@@ -483,101 +578,68 @@ $tot_vm[2] = $v01[2] + $v02[2] + $v01e[2];
  dP__Yb  88""   88""   88 Yb      888888  dP__Yb  Yb  "88 88""   
 dP""""Yb 88     88     88  YboodP 88  88 dP""""Yb  YboodP 88888*/
 
-$titre_stat  = 'Chiffre d\'affaires facturé pour etude de marges';
+$titre_stat  = 'Chiffre d\'affaires facturé pour etude évolutions marges';
 
 $tab_html .= lg_tab_titre($tot_ca, 'Total CA', 'success');
-$tab_html .= lg_tab_desc('Prestations','Etat','N','N -1','Evolution %','MC','MC en %');
+$tab_html .= lg_tab_desc('Prestations - Etat','N','','N -1','','Variation','','Mix/CA');
+$tab_html .= lg_tab_desc('','valeur','%','valeur','%','valeur','%','');
 
-$tab_html .= lg_tab_html($tot_vm ,"Ventes de marchandises","TOTAL", $gras);
-$tab_html .= lg_tab_separateur('Vente de marchandises');
-	$tab_html .= lg_tab_html($v01    ,"01 Ventes (Tout)","Neuf",$gras);
-	$tab_html .= lg_tab_html($v01b   ,"01b Ventes CDB","Neuf");
-	$tab_html .= lg_tab_html($v01c   ,"01c Ventes IMPRIMANTES","Neuf");
-	$tab_html .= lg_tab_html($v01d   ,"01d Ventes MICRO","Neuf");
-	$tab_html .= lg_tab_html($v01f   ,"01f Ventes Pieces détachées","Neuf");
-	$tab_html .= lg_tab_html($v01g   ,"01g Ventes Accessoires","Neuf");
-	$tab_html .= lg_tab_html($v01h   ,"01h Ventes Services","Neuf");
-	$tab_html .= lg_tab_html($v02    ,"02 Ventes (Tout)","Occasion",$gras);
-	$tab_html .= lg_tab_html($v02b   ,"02b Ventes CDB","Occasion");
-	$tab_html .= lg_tab_html($v02c   ,"02c Ventes IMPRIMANTES","Occasion");
-	$tab_html .= lg_tab_html($v02d   ,"02d Ventes MICRO","Occasion");
-	$tab_html .= lg_tab_html($v02f   ,"02f Ventes Pieces détachées","Occasion");
-	$tab_html .= lg_tab_html($v02g   ,"02g Ventes Accessoires","Occasion");
-	$tab_html .= lg_tab_html($v02h   ,"02h Ventes Services","Occasion");
-	$tab_html .= lg_tab_html($v01e   ,"01e Ventes CONSO","Marque et comp",$gras);
-	$tab_html .= lg_tab_html($v03    ,"03 Echange matériels","Neuf",$gras);
-	$tab_html .= lg_tab_html($v04    ,"04 Echange matériels","Occasion",$gras);
-	$tab_html .= lg_tab_html($v05    ,"05 Reprise","Neuf",$gras);
-	$tab_html .= lg_tab_html($v05b   ,"05b Reprise","Occasion",$gras);
-	$tab_html .= lg_tab_html($v06    ,"06 Remise","NC.",$gras);
-	$tab_html .= lg_tab_html($v07b   ,"07b Prêt","Tout état",$gras);
-	$tab_html .= lg_tab_html($v07c   ,"07c Broke","Tout état",$gras);
-$tab_html .= lg_tab_separateur('Production');
+// $tab_html .= lg_tab_html($tot_vm ,"Ventes de marchandises","TOTAL", $gras);
+$tab_html .= lg_tab_html($tot_vm    ,$tot_ca,"Vente de marchandise","",$gras,'class=table-info');
+	$tab_html .= lg_tab_html($v01    ,$tot_ca,"01 Ventes (Tout)","Neuf",$gras);
+	$tab_html .= lg_tab_html($v02    ,$tot_ca,"02 Ventes (Tout)","Occasion",$gras);
+	$tab_html .= lg_tab_html($v01e   ,$tot_ca,"01e Ventes CONSO","Marque et comp",$gras);
+	$tab_html .= lg_tab_html($v03    ,$tot_ca,"03 Echange matériels","Neuf",$gras);
+	$tab_html .= lg_tab_html($v04    ,$tot_ca,"04 Echange matériels","Occasion",$gras);
+	$tab_html .= lg_tab_html($v05    ,$tot_ca,"05 Reprise","Neuf",$gras);
+	$tab_html .= lg_tab_html($v05b   ,$tot_ca,"05b Reprise","Occasion",$gras);
+	$tab_html .= lg_tab_html($v06    ,$tot_ca,"06 Remise","NC.",$gras);
+	$tab_html .= lg_tab_html($v07b   ,$tot_ca,"07b Prêt","Tout état",$gras);
+	$tab_html .= lg_tab_html($v07c   ,$tot_ca,"07c Broke","Tout état",$gras);
+	$tab_html .= lg_tab_html($exm    ,$tot_ca,"EXM* Extourne Vente bilan n-1","Tout état",$gras);
+	$tab_html .= lg_tab_html($odm    ,$tot_ca,"ODM* OD Bilan Vente n","Tout état",$gras);
+$tab_html .= lg_tab_html($tot_pr    ,$tot_ca,"Production","",$gras,'class=table-info');
 //	$tab_html .= lg_tab_html($v11,"11 Service","NC.",$gras);
-	$tab_html .= lg_tab_html($v12,"12 Réparation","NC.",$gras);
-	$tab_html .= lg_tab_html($v13,"13 Location","Neuf",$gras);
-	$tab_html .= lg_tab_html($v14,"14 Location","Occasion",$gras);
-	$tab_html .= lg_tab_html($v15,"15 Maintenance","NC.",$gras);
-	$tab_html .= lg_tab_html($v16,"16 Intervention et Dep.","NC.",$gras);
-	$tab_html .= lg_tab_html($v17,"17 Extension de garantie","Neuf",$gras);
-	$tab_html .= lg_tab_html($v18,"18 Extension de garantie","Occasion ou NC.",$gras);
-$tab_html .= lg_tab_separateur('Transport sur vente');
-	$tab_html .= lg_tab_html($v19,"19 Port facturé","NC.",$gras);
+	$tab_html .= lg_tab_html($v12    ,$tot_ca,"12 Réparation","NC.",$gras);
+	$tab_html .= lg_tab_html($v13    ,$tot_ca,"13 Location","Neuf",$gras);
+	$tab_html .= lg_tab_html($v14    ,$tot_ca,"14 Location","Occasion",$gras);
+	$tab_html .= lg_tab_html($v15    ,$tot_ca,"15 Maintenance","NC.",$gras);
+	$tab_html .= lg_tab_html($v16    ,$tot_ca,"16 Intervention et Dep.","NC.",$gras);
+	$tab_html .= lg_tab_html($v17    ,$tot_ca,"17 Extension de garantie","Neuf",$gras);
+	$tab_html .= lg_tab_html($v18    ,$tot_ca,"18 Extension de garantie","Occasion ou NC.",$gras);
+	$tab_html .= lg_tab_html($v19    ,$tot_ca,"19 Port facturé","NC.",$gras);
+	$tab_html .= lg_tab_html($exp    ,$tot_ca,"EXP* Extourne Prod bilan n-1","Tout état",$gras);
+	$tab_html .= lg_tab_html($odp    ,$tot_ca,"ODP* OD Bilan Production n","Tout état",$gras);
+	//$tab_html .= lg_tab_separateur('Transport sur vente');
 $tab_html .= lg_tab_titre($tot_ca, 'Total CA', 'success');
 
 
 $tab_html .= lg_tab_separateur('<br><br><br>','light');
 
 $tab_html .= lg_tab_titre($tot_ha, 'Total Achat', 'warning');
-$tab_html .= lg_tab_desc('Prestations','Etat','N','N -1','Evolution %','MC','MC en %');
-
+$tab_html .= lg_tab_desc('Prestations - Etat','N','','N -1','','Variation');
+$tab_html .= lg_tab_desc('','valeur','%','valeur','%','valeur','%','');
 $tab_html .= lg_tab_separateur('Achats de marchandises');
-	$tab_html .= lg_tab_html($a01b,"01b Achats CDB","Neuf");
-	$tab_html .= lg_tab_html($a01c,"01c Achats Imprimante","Neuf");
-	$tab_html .= lg_tab_html($a01d,"01d Achats Micro","Neuf");
-	$tab_html .= lg_tab_html($a01f,"01f Achats Pieces","Neuf");
-	$tab_html .= lg_tab_html($a01g,"01g Achats Accessoires","Neuf");
-	$tab_html .= lg_tab_html($a01x,"01x Achats Autre (NC, Embal, Gar)","Neuf");
-	$tab_html .= lg_tab_html($tot_hn ,"Achats (tout)","Neuf", $gras);
-	$tab_html .= lg_tab_html($a02b,"02b Achats CDB","Occasion");
-	$tab_html .= lg_tab_html($a02c,"02c Achats Imprimante","Occasion");
-	$tab_html .= lg_tab_html($a02d,"02d Achats Micro","Occasion");
-	$tab_html .= lg_tab_html($a02f,"02f Achats Pieces","Occasion");
-	$tab_html .= lg_tab_html($a02g,"02gxx Achats Accessoires","Occasion");
-	$tab_html .= lg_tab_html($a02x,"02x Achats Autre (NC, Embal, Gar)","Occasion");
-	$tab_html .= lg_tab_html($tot_ho ,"Achats (tout)","Occasion", $gras);
-	$tab_html .= lg_tab_html($a01e,"01e Achats Conso","Marque & comp.");
+$tab_html .= lg_tab_html($tot_hn ,$tot_ca,"A01 Achats (tout)","Neuf", $gras);
+$tab_html .= lg_tab_html($tot_ho ,$tot_ca,"A02 Achats (tout)","Occasion", $gras);
+$tab_html .= lg_tab_html($a01e,$tot_ca,"A01e Achats Conso","Marque & comp.", $gras);
+$tab_html .= lg_tab_html($a50,$tot_ca,"A50* Transport Sur Vente","", $gras);
 $tab_html .= lg_tab_titre($tot_ha, 'Total Achat', 'warning');
-
 
 $tab_html .= lg_tab_separateur('<br><br><br>','light');
 
-$tab_html .= lg_tab_titre($tot_st, 'Total Stock', 'primary', $variation);
-$tab_html .= lg_tab_desc('Matériel','Etat','Stock Début période','Stock Fin Période','Variation','','');
-
-$tab_html .= lg_tab_separateur('Stock de marchandises');
-	$tab_html .= lg_tab_html($s51b, "51b Stock CDB","Neuf",FALSE,$variation);
-	$tab_html .= lg_tab_html($s51c, "51c Stock Imprimante","Neuf",FALSE,$variation);
-	$tab_html .= lg_tab_html($s51d, "51d Stock Micro","Neuf",FALSE,$variation);
-	$tab_html .= lg_tab_html($s51f, "51f Stock Pièces détachées","Neuf",FALSE,$variation);
-	$tab_html .= lg_tab_html($s51g, "51g Stock Accessoires","Neuf",FALSE,$variation);
-	$tab_html .= lg_tab_html($tot_sn, "Stock (tout)","Neuf",$gras,$variation);
-	$tab_html .= lg_tab_html($s52b, "52b Stock CDB","Occasion",FALSE,$variation);
-	$tab_html .= lg_tab_html($s52c, "52c Stock Imprimante","Occasion",FALSE,$variation);
-	$tab_html .= lg_tab_html($s52d, "52d Stock Micro","Occasion",FALSE,$variation);
-	$tab_html .= lg_tab_html($s52f, "52f Stock Pièces détachées","Occasion",FALSE,$variation);
-	$tab_html .= lg_tab_html($s52g, "52g Stock Accessoires","Occasion",FALSE,$variation);
-	$tab_html .= lg_tab_html($tot_so, "Stock (tout)","Occasion",$gras,$variation);
-	$tab_html .= lg_tab_html($s54a, "54a Stock Consommable","Marque",FALSE,$variation);
-	$tab_html .= lg_tab_html($s55a, "55a Stock Consommable","Compatible",FALSE,$variation);
-	$tab_html .= lg_tab_html($tot_sc, "Stock consommables","Marque & Comp.",$gras,$variation);
-$tab_html .= lg_tab_titre($tot_st, 'Total Stock', 'primary', $variation);
-
-
+// MARGE COMMERCIAL et BRUT
+$tab_html .= lg_tab_titre_simple('Marges', 'primary');
+$tab_html .= lg_tab_desc('informations','N','','N -1','','Variation');
+$tab_html .= lg_tab_desc('','valeur','%','valeur','%','valeur','%','');
+$tab_html .= lg_mc_tab_html($tot_vm, "MC Marge commercial sur vente","Total",$tot_vm);
+$tab_html .= lg_mc_tab_html($tot_vn, "MC Marge commercial sur vente","Neuf",$v01);
+$tab_html .= lg_mc_tab_html($tot_vo, "MC Marge commercial sur vente","Occasion",$v02);
+$tab_html .= lg_mc_tab_html($tot_pr, "MB de production","",$tot_pr);
+$tab_html .= lg_mc_tab_html($tot_mcmb, "MB + MC","",$tot_ca);
 
 $debug_info = '<br>';
 $somme_stk_evol = $somme_stk_fin - $somme_stk_deb;
-
 
 // en reserve...
 // $tab_html .= lg_tab_html($tql_select_achat.$tql_from.$tql_where.$tql_w_achat.$tql_w_neuf,"08 Achats matériels","Neuf","totoro");
@@ -589,9 +651,6 @@ $somme_stk_evol = $somme_stk_fin - $somme_stk_deb;
 // $tab_html .= lg_tab_html($tql_stk_sql.$tql_stk_deb_occ,"22 Stock début","Occasion","totoro");
 // $tab_html .= lg_tab_html($tql_stk_sql.$tql_stk_fin_neuf,"23 Stock fin","Neuf","totoro");
 // $tab_html .= lg_tab_html($tql_stk_sql.$tql_stk_fin_occ,"24 Stock fin","Occasion","totoro");
-
-
-
 
 // Donnée transmise au template : 
 echo $twig->render('statistique_evol_marge.twig',
