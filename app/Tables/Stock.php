@@ -697,7 +697,7 @@ class Stock extends Table
     $operateur = ' AND ';
     $request = "SELECT DISTINCT 
       	a.apn__pn , a.apn__pn_long , a.apn__desc_short , a.apn__desc_long  , a.apn__doc , a.apn__design_com , a.apn__id_user_modif , a.apn__date_modif ,
-		a.apn__niveau , a.apn__actif , a.apn__famille  , u.nom , u.prenom  , k.kw__lib as famille  
+		 a.apn__actif , a.apn__famille  , u.nom , u.prenom  , k.kw__lib as famille  
 		FROM art_pn as a
 		LEFT JOIN utilisateur as u on  u.id_utilisateur = apn__id_user_modif
 		LEFT JOIN keyword as k ON ( k.kw__type = 'famil' AND k.kw__value =  a.apn__famille ) 
