@@ -1,0 +1,105 @@
+{% extends 'new_layout.twig' %}
+
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+{% endblock %}
+
+{% block main %}
+<main role="main" class="container-fluid my-3 col-11 container-body">
+{# Titre #}
+	<div class="col-11 d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+		<div class="h2">{{titre_stat}} <i class="fas fa-chart-line"></i></div>
+	</div>
+{# Bloc Ombragé #}
+<div class="row">
+	<div class="col-8">
+		<div class="card shadow mb-4">
+			<form action="stat_compta" method='POST'>
+			<div class="input-group mb-3">
+				<span class="input-group-text">{{p20.1}}</span>
+				<input type="number" name="p20" class="form-control" value="{{p20.0}}">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">{{p21.1}}</span>
+				<input type="number" name="p21" class="form-control" value="{{p21.0}}">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">{{p22.1}}</span>
+				<input type="number" name="p22" class="form-control" value="{{p22.0}}">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">{{p23.1}}</span>
+				<input type="number" name="p23" class="form-control" value="{{p23.0}}">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">{{p24.1}}</span>
+				<input type="number" name="p24" class="form-control" value="{{p24.0}}">
+			</div>
+			<br>
+			<div class="input-group mb-3">
+				<span class="input-group-text">{{m20.1}}</span>
+				<input type="number" name="m20" class="form-control" value="{{m20.0}}">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">{{m21.1}}</span>
+				<input type="number" name="m21" class="form-control" value="{{m21.0}}">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">{{m22.1}}</span>
+				<input type="number" name="m22" class="form-control" value="{{m22.0}}">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">{{m23.1}}</span>
+				<input type="number" name="m23" class="form-control" value="{{m23.0}}">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">{{m24.1}}</span>
+				<input type="number" name="m24" class="form-control" value="{{m24.0}}">
+			</div>
+			<br>
+			<div class="input-group mb-3">
+				<span class="input-group-text">{{r20.1}}</span>
+				<input type="number" name="r20" class="form-control" value="{{r20.0}}">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">{{r21.1}}</span>
+				<input type="number" name="r21" class="form-control" value="{{r21.0}}">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">{{r22.1}}</span>
+				<input type="number" name="r22" class="form-control" value="{{r22.0}}">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">{{r23.1}}</span>
+				<input type="number" name="r23" class="form-control" value="{{r23.0}}">
+			</div>
+			<div class="input-group mb-3">
+				<span class="input-group-text">{{r24.1}}</span>
+				<input type="number" name="r24" class="form-control" value="{{r24.0}}">
+			</div>
+			<br>
+			<button type="submit" class="btn btn-success" name="btn_ok">Enregister</button>
+			{{maj.1}} : {{maj.0}}
+			</form>
+			<br>
+			<div class="h7 bg-sm"><a href="stat_evol_marge" data-toggle="tooltip" data-html="true"><i class="fad fa-file-contract fa-lg"></i> Chiffre affaires pour Evolutions Marges</a></div>
+
+		</div>
+	</div>
+</div>
+
+</main>
+{% endblock %}
+{% block script %}
+<!-- jQuery first, then Bootstrap JS -->
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<!-- <script src="https://www.gstatic.com/charts/loader.js"></script> -->
+<script type="text/javascript" src="public/js/statistique.js"></script>
+{% endblock %}

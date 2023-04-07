@@ -489,6 +489,15 @@ $request = $_SERVER['REQUEST_URI'];
 		case '/SoftRecode/stat_marge'.$get_data;
 			require __DIR__ .'/pages/statistique_marge.php'; break;
 
+		case '/SoftRecode/stat_evol_marge'.$get_data;
+			require __DIR__ .'/pages/statistique_evol_marge.php'; break;
+
+		case '/SoftRecode/stat_compta'.$get_data;
+			require __DIR__ .'/pages/statistique_compta.php'; break;
+
+		case '/SoftRecode/time'.$get_data;
+			require __DIR__ .'/pages/time.php'; break;
+
 		case '/SoftRecode/restore';
 			require __DIR__ . '/pages/restore_fact.php';break;
 		

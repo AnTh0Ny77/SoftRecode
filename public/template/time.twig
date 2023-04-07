@@ -1,0 +1,84 @@
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+{% endblock %}
+
+{% block main %}
+<main role="main" class="container-fluid my-3 col-11 container-body">
+{# Titre #}
+	<div class="col-12 d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+		<div class="h2">
+			<i class="fad fa-calendar-alt"></i> {{dt}} 
+			<span id="time"></span>
+		</div>
+		
+	</div>
+{# Bloc Ombragé #}
+<div class="row">
+	<div class="col-12">
+		<div class="card shadow mb-4">
+			<form action="time" method='POST'>
+			<br>
+				<div class="row">
+					<div class="col-3">
+						<div class="input-group input-group-lg ">
+							<span class="input-group-text h3" >Code Pin</span>
+							<input type="password" name="pincode" size="5" maxlength="5" class="form-control" aria-describedby="inputGroup-sizing-lg" Autofocus>
+							<button type="submit" class="btn btn-success" name="btn_ok">Enregister</button>
+						</div>
+					</div>
+					<div class="col-9">
+						<div class="h4">{{msg_info|raw}}</div>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-12">
+						<div class="h2 mx-2">Présents</div>
+						{{present|raw}}
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-12">
+						<div class="h2 mx-2">Pas là</div>
+						{{pasla|raw}}
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+</main>
+{% endblock %}
+{% block script %}
+<!-- jQuery first, then Bootstrap JS -->
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<!-- <script src="https://www.gstatic.com/charts/loader.js"></script> -->
+<script type="text/javascript" src="public/js/statistique.js"></script>
+
+<script type="text/javascript">
+function startTime() {
+  var today = new Date();
+  var h = today.getHours();
+  var m = checkTime(today.getMinutes());
+  var s = checkTime(today.getSeconds());
+  document.getElementById('time').innerHTML =
+  h + ":" + m + ":" + s;
+  var t = setTimeout(startTime, 500);
+}
+function checkTime(i) {
+  if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+  return i;
+}
+startTime();
+</script>
+
+{% endblock %}
