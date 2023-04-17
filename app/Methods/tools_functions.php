@@ -114,6 +114,25 @@ FFFFFFFFFFF           ooooooooooo     nnnnnn    nnnnnn    cccccccccccccccc      
 		return str_replace("<br>", "\n", $text); 
 	}
 
+	// nombre de minutes de diference entre 2 time (hh:mm:ss)
+	function dif2time($time1, $time2)
+	{
+		// pour le meme jour ... (pas de date donc pas de recherche sur le jour.)
+		// ne prend pas en compte les secondes
+		// isole les heures
+		$h1 = substr($time1,0,2);
+		$h2 = substr($time2,0,2);
+		// isole les minutes
+		$m1 = substr($time1,3,2);
+		$m2 = substr($time2,3,2);
+		// multiplie les heures par 60 depuis h00:00 et ajoute a minutes
+		$mj1 = intval($h1)*60 + intval($m1);
+		$mj2 = intval($h2)*60 + intval($m2);
+		// diference
+		$dif_minutes = $mj1 - $mj2;
+		return $dif_minutes;
+	}
+
 	// Limite un txt a un nombre de ligne (\n ou <br>) et un nombre de Characteres
 	function limit_txt($txt, $nb_char=500, $nb_lg=10, $new_lg="<br>")
 	{
