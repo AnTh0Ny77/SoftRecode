@@ -28,12 +28,12 @@ class ApiListDocTickets{
         if (empty($_GET['tkl__id'])) {
             return $responseHandler->handleJsonResponse([
                 'msg' =>  ' lID de la ligne  semble etre vide  '
-            ], 404, 'bad request');
+            ], 200, 'bad request');
         }
         if (!is_dir('public/img/tickets/' . $_GET['tkl__id'])) {
             return $responseHandler->handleJsonResponse([
                 'msg' =>  ' la ligne ne comporte pas documents'
-            ], 404, 'bad request');
+            ], 200, 'bad request');
         }
         $scanned_directory = array_diff(scandir('public/img/tickets/' . $_GET['tkl__id']), array('..', '.'));
         return $responseHandler->handleJsonResponse([
