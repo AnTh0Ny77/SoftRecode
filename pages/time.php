@@ -14,7 +14,6 @@ require "./App/Methods/tools_functions.php"; // fonctions Boites à outils
     o888o     d888b    `Y888""8o `Y8bod8P' o888o o888o     o888o     o888o o888o o888o o888o `Y8bod8P*/ 
 
 if (empty($_SESSION['user']->id_utilisateur)) header('location: login');
-if ($_SESSION['user']->user__facture_acces < 10 ) header('location: noAccess');
 
 //déclaration des instances nécéssaires :
 $user      = $_SESSION['user'];
@@ -32,6 +31,9 @@ $pin     = get_post('pincode', 1);
 $info    = get_post('info', 1);
 $btn_ok  = get_post('btn_ok', 2);
 
+// constantes
+$tolerance_retard_in = 5; // en minutes
+
 // dates par default 
 $semaine       = array("Dimanche","Lundi","Mardi","Mercredi","Jeudi","vendredi","samedi");
 $mois          = array("","janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre");
@@ -39,6 +41,8 @@ $date_fr_long  = $semaine[date('w')]." ".date('j')." ".$mois[date('n')]." ".date
 $date_time     = date('Y-m-d H:i:s');
 $time          = date('H:i:s');
 $thm           = date('Hi'); // time heure minutescolé pour conparaison
+$jour_sem      = date('N');
+$am_pm = 'AM'; if ($thm >= 1300) $am_pm = 'PM';
 
 /*8888 Yb  dP 88""Yb 88     88  dP""b8    db    888888 88  dP"Yb  88b 88 .dP"Y8 
 88__    YbdP  88__dP 88     88 dP   `"   dPYb     88   88 dP   Yb 88Yb88 `Ybo." 
@@ -121,7 +125,7 @@ if ($btn_ok)
 }
 // recherches des presence et abscence
 // SELECT id_utilisateur, user__time_plan FROM utilisateur where user__time_plan IS NOT NULL order by prenom
-$Q_  = "SELECT id_utilisateur, user__time_plan, prenom, nom, icone FROM utilisateur where user__time_plan IS NOT NULL order by prenom";
+$Q_  = "SELECT id_utilisateur, user__time_plan, user__time_pin, prenom, nom, icone FROM utilisateur where user__time_plan IS NOT NULL order by prenom";
 $R_  = mysqli_query($_SOSUKE_MYSQLI, $Q_);
 $grid_present = $grid_pasla = 1; // numero de la case pour le tableau (de 1 à 12)
 $html_present = $html_pasla = '<div class="text-center"><div class="row">';
@@ -133,22 +137,71 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 	$user_prenom     = $A_['prenom'];
 	$user_nom        = $A_['nom'];
 	$user_icone      = $A_['icone'];
+	// derniere action
 	$Q2_  = "SELECT tt__time, tt__move FROM time_track WHERE tt__user = ".$user_id." ORDER BY tt__time DESC LIMIT 1";
 	$R2_  = mysqli_query($_SOSUKE_MYSQLI, $Q2_);
 	$A2_  = mysqli_fetch_array($R2_, MYSQLI_ASSOC);
 	$user_last_dt     = $A2_['tt__time'];
 	$user_last_move   = $A2_['tt__move'];
+	// planing  du jour.
+	$Q3_  = "SELECT * FROM time_plan WHERE tp__name = '".$user_time_plan."' AND tp__jour = ".$jour_sem;
+	$R3_  = mysqli_query($_SOSUKE_MYSQLI, $Q3_);
+	$A3_  = mysqli_fetch_array($R3_, MYSQLI_ASSOC);
+	$tp_am_in    = $A3_['tp__am_in'];
+	$tp_am_out   = $A3_['tp__am_out'];
+	$tp_pm_in    = $A3_['tp__pm_in'];
+	$tp_pm_out   = $A3_['tp__pm_out'];
+	// Abscence prevue.
+	$Q4_  = "SELECT * FROM time_out WHERE to__user = '".$user_id."' AND to__out < '".$date_time."' AND to__in > '".$date_time."' ";
+	$Q4_ .= "AND to__abs_etat <> 'ANNUL' ORDER BY to__out LIMIT 1 ";
+	$R4_  = mysqli_query($_SOSUKE_MYSQLI, $Q4_);
+	$abs_en_cours = $to_etat = $to_in = $to_motif = $to_out = FALSE;
+	if (mysqli_num_rows($R4_) == 1)
+	{	
+		$A4_  = mysqli_fetch_array($R4_, MYSQLI_ASSOC);
+		$to_out       = $A4_['to__out'];
+		$to_in        = $A4_['to__in'];
+		$to_motif     = $A4_['to__motif'];
+		$to_etat      = $A4_['to__abs_etat'];
+		$abs_en_cours = TRUE;
+	}
+	// etude du motif pour la décoration du bonhome  :-)
+	$motif_cp = $motif_malad = $motif_perso = FALSE;
+	if(strpos($to_motif, 'CP') !== FALSE OR strpos($to_motif, 'CONGE') !== FALSE OR strpos($to_motif, 'VACANCE') !== FALSE ) $motif_cp = TRUE;
+	if(strpos($to_motif, 'MALAD') !== FALSE) $motif_malad = TRUE;
+	if(strpos($to_motif, 'PERSO') !== FALSE) $motif_perso = TRUE;
+	// AM ou PM ? pour connaitre les retard avant 13h c'est matin , apres c'est Apres midi...
+	if ($am_pm == 'AM')
+		{ $tp_in = $tp_am_in; $tp_out = $tp_am_out; }
+	else
+		{ $tp_in = $tp_pm_in; $tp_out = $tp_pm_out; }
 	$user_last_time   = substr($user_last_dt,11,5);
-	$user_last_time_j = substr($user_last_dt,8,2).'/'.substr($user_last_dt,5,2).' '.substr($user_last_dt,10,5);
+	$user_last_time_j = substr($user_last_dt,8,2).'/'.substr($user_last_dt,5,2).' '.substr($user_last_dt,11,5);
+	$color_sign = 'seagreen'; $color_user = '#698569';
+	$dif_time = dif2time($user_last_time, $tp_in);
+	$secret_info = $abs_info = '';
+	if ($dif_time > $tolerance_retard_in)
+		{ $color_sign = 'tomato'; $color_user = '#906969';}
+	if ($user_last_move <> 'IN') // le dernier mouvement n'est pas une entrée
+		$color_user = 'CadetBlue';
+	if ($abs_en_cours)
+	{
+		$abs_info = '<br>'.$to_motif.'<br><i class="fad fa-house-return"></i> '.dt2dts($to_in);
+		$color_user = 'Orange';
+	}
+	if ($user_cnx = 56) // c'est francois lemoine
+		$secret_info = ' data-toggle="tooltip" data-placement="top" title="'.$A_['user__time_pin'].'"';
 	// Creation du personage pour page info present / pas la 
 	$html_user  = '<div class="col-1">';
-	$html_user .= '<i class="fad fa-user fa-2x"></i><br>';
+	$html_user .= '<div'.$secret_info.'><i class="fad fa-user fa-2x" style="color:'.$color_user.';"></i></div>';
 	$html_user .= '<span class=h6>'.$user_prenom.' '.substr($user_nom,0,1).'.</span><br>';
 	if ($user_last_move == 'IN') // le dernier mouvement est une entré, donc cette personne est là
-		$html_user .= '<i class="fad fa-sign-in"></i> <em>'.$user_last_time.'</em>';
-	else 
 	{
-		$html_user .= '<i class="fad fa-sign-out"></i> <em>'.$user_last_time_j.'</em>';
+		$html_user .= '<span style="color:'.$color_sign.';"><i class="fad fa-sign-in"></i></span> <em>'.$user_last_time.'</em>';
+	}
+	else // cette presonne n'est pas là
+	{
+		$html_user .= '<i class="fad fa-sign-out"></i> <em>'.$user_last_time_j.'</em>'.$abs_info;
 	}
 	$html_user .= '</div>';
 
@@ -158,7 +211,7 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 		{ $html_pasla .= $html_user; $grid_pasla +=1; }
 }
 
-$empty_grid = '<div class="col">.</div>'; // case vide pour completer si pas 12 cases
+$empty_grid = '<div class="col"> </div>'; // case vide pour completer si pas 12 cases
 $fin_grid   = '</div></div>'; // fin de ROW et fin de CLASS Container
 
 if ($grid_present < 12) $html_present .= $empty_grid;
