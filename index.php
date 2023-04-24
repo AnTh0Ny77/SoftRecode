@@ -20,6 +20,7 @@ use App\Controller\UserMyRecodeController;
 use App\Controller\MyRecodeSocieteController;
 use App\Controller\MyRecodeBoutiqueController;
 use App\Controller\MachineController;
+use App\Controller\SeoController;
 
 $request = $_SERVER['REQUEST_URI'];
 
@@ -167,6 +168,10 @@ $request = $_SERVER['REQUEST_URI'];
 
 		case '/SoftRecode/myRecode-ticket'.$get_data;
 			echo MyRecodeController::displayTickets();
+			break;
+
+		case '/SoftRecode/seo'.$get_data;
+			echo SeoController::home();
 			break;
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/////////////////////////////////////////////API////////////////////////////////////////////////////////////////
