@@ -13,10 +13,23 @@ require "./App/Methods/tools_functions.php"; // fonctions Boites à outils
      888       888     d8(  888  888   .o8  888 `88b.       888       888   888   888   888  888    .o 
     o888o     d888b    `Y888""8o `Y8bod8P' o888o o888o     o888o     o888o o888o o888o o888o `Y8bod8P*/ 
 
-if (empty($_SESSION['user']->id_utilisateur)) header('location: login');
+// if (empty($_SESSION['user']->id_utilisateur)) header('location: login');
+
+// Verif du user (si pas de cnx je simule un faux user)
+if (! isset($_SESSION['user']->id_utilisateur))
+{ // c'est que le user n'existe pas donc pas de log donc machine autonome
+	$_SESSION['user'] = (object)array();
+	$_SESSION['user']->id_utilisateur = 999;
+	$_SESSION['user']->prenom = '';
+	$_SESSION['user']->nom = 'Badgeuse';
+	$user_cnx = $_SESSION['user']->id_utilisateur;
+}
+else
+{
+	$user_cnx = $_SESSION['user']->id_utilisateur;
+}
 
 //déclaration des instances nécéssaires :
-$user      = $_SESSION['user'];
 $Database  = new App\Database('devis');
 $Database->DbConnect();
 $Totoro    = new App\Totoro('euro');
@@ -70,13 +83,18 @@ mysqli_set_charset($_SOSUKE_MYSQLI, "utf8");
 
 if ($btn_ok)
 {
-	// cnx table sur sosuke
-
+	// remplace les faux chiffres (sasisie facon clavier US (donc par exemple un è a la place d'un 7))
+	$pin = mb_strtolower($pin, 'UTF-8');
+	$pin = str_replace(array('&','é','"',"'",'(','-','è','_','ç','à'),array('1','2','3','4','5','6','7','8','9','0'),$pin);
+	$pin = mb_strtoupper($pin, 'UTF-8');
 	// recherche du code PIN dans la table user (si le code pin existe retour du USER_ID si non retour FALSE)
 	$user_id = FALSE;
-	$Q_  = "SELECT * FROM utilisateur WHERE user__time_pin = '".$pin."'";
+	$Q_  = "SELECT * FROM utilisateur WHERE user__time_pin = '".$pin."' OR user__time_rfid = '".$pin."' OR user__time_rfid2 = '".$pin."' ";
 	$R_  = mysqli_query($_SOSUKE_MYSQLI, $Q_);
 	$msg_info = 'Code PIN Non valide';
+	if ($user_cnx == 56)
+		$msg_info .= ' -> '.$pin;
+
 	if (strlen($pin) == 0)
 		$msg_info = 'Bonjour, informations de cette page mise à jour à '.$time;
 	if ($R_ !== false AND mysqli_num_rows($R_))
@@ -86,7 +104,7 @@ if ($btn_ok)
 		$user_move_prenom = $A_['prenom'];
 		$user_cnx = '('.$_SESSION['user']->id_utilisateur.') '.substr($_SESSION['user']->prenom,0,1).' '.$_SESSION['user']->nom;
 		// recherche de derniere action pour ce user
-		$Q_  = "SELECT tt__time, tt__move FROM time_track WHERE tt__user = ".$user_move_id." ORDER BY tt__time DESC LIMIT 1";
+		$Q_  = "SELECT tt__id, tt__time, tt__move FROM time_track WHERE tt__user = ".$user_move_id." ORDER BY tt__time DESC LIMIT 1";
 		$R_  = mysqli_query($_SOSUKE_MYSQLI, $Q_);
 		$A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC);
 		$user_last_time   = $A_['tt__time'];
@@ -114,21 +132,34 @@ if ($btn_ok)
 			if($thm > 1700)
 				$msg_info_2       = ', bonne soirée.<br>';
 		}
-		// ecriture des infos
-		$info_user = '('.$_SESSION['user']->id_utilisateur.') '.$_SESSION['user']->prenom.' '.$_SESSION['user']->nom;
-		$Q_  = "INSERT INTO time_track (tt__user, tt__time, tt__move, tt__info, tt__poste) ";
-		$Q_ .= "VALUES ('$user_move_id', '$date_time', '$move', '$info', '$user_cnx') ";
-		$R_  = mysqli_query($_SOSUKE_MYSQLI, $Q_); // var_dump($Q_);
+		// verification de double saisie ( efface la derniere) pour annuler
+		$sec_last = strtotime($user_last_time);
+		$sec_now  = strtotime($date_time);
+		$sec_dif  = $sec_now - $sec_last;
+		if ($sec_dif < 20) // si il y a moins de 20 secondes entre 2 code je n'enregistre rien.
+		{
+			$msg_info_1       = '! Double saisie ! '.$user_move_prenom;
+			$msg_info_2       = '.<br>';
+			$msg_info_3       = '2eme action non enregistré';
+		}
+		else
+		{
+			// ecriture des infos
+			$info_user = '('.$_SESSION['user']->id_utilisateur.') '.$_SESSION['user']->prenom.' '.$_SESSION['user']->nom;
+			$Q_  = "INSERT INTO time_track (tt__user, tt__time, tt__move, tt__info, tt__poste) ";
+			$Q_ .= "VALUES ('$user_move_id', '$date_time', '$move', '$info', '$user_cnx') ";
+			$R_  = mysqli_query($_SOSUKE_MYSQLI, $Q_); // var_dump($Q_);
+		}
 		// Message pour utilisateur
 		$msg_info = $msg_info_1.$msg_info_2.$msg_info_3;
 	}
 }
 // recherches des presence et abscence
 // SELECT id_utilisateur, user__time_plan FROM utilisateur where user__time_plan IS NOT NULL order by prenom
-$Q_  = "SELECT id_utilisateur, user__time_plan, user__time_pin, prenom, nom, icone FROM utilisateur where user__time_plan IS NOT NULL order by prenom";
+$Q_  = "SELECT id_utilisateur, user__time_plan, user__time_pin, user__time_rfid, user__time_rfid2, prenom, nom, icone FROM utilisateur where user__time_plan IS NOT NULL order by prenom";
 $R_  = mysqli_query($_SOSUKE_MYSQLI, $Q_);
-$grid_present = $grid_pasla = 1; // numero de la case pour le tableau (de 1 à 12)
-$html_present = $html_pasla = '<div class="text-center"><div class="row">';
+$grid_present = $grid_pasla = $grid_abs = 1; // numero de la case pour le tableau (de 1 à 12)
+$html_present = $html_pasla = $html_abs = '<div class="text-center"><div class="row">';
 while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 { // boucle sur les user avec user__time_plan non NULL
 	// recherche de l'etat de la derniere action de chaque user
@@ -189,8 +220,8 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 		$abs_info = '<br>'.$to_motif.'<br><i class="fad fa-house-return"></i> '.dt2dts($to_in);
 		$color_user = 'Orange';
 	}
-	if ($user_cnx = 56) // c'est francois lemoine
-		$secret_info = ' data-toggle="tooltip" data-placement="top" title="'.$A_['user__time_pin'].'"';
+	if ($user_cnx == 56) // c'est francois lemoine
+		$secret_info = ' data-toggle="tooltip" data-placement="top" title="pin : '.$A_['user__time_pin'].'<br>rfid : '.$A_['user__time_rfid'].'<br>rfid2 : '.$A_['user__time_rfid2'].'"';
 	// Creation du personage pour page info present / pas la 
 	$html_user  = '<div class="col-1">';
 	$html_user .= '<div'.$secret_info.'><i class="fad fa-user fa-2x" style="color:'.$color_user.';"></i></div>';
@@ -206,9 +237,20 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 	$html_user .= '</div>';
 
 	if ($user_last_move == 'IN') // le dernier mouvement est une entré, donc cette personne est là
-		{ $html_present .= $html_user; $grid_present += 1; }
+	{ 
+		$html_present .= $html_user; $grid_present += 1; 
+	}
 	else
-		{ $html_pasla .= $html_user; $grid_pasla +=1; }
+	{
+		if ($abs_en_cours)
+		{
+			$html_abs .= $html_user; $grid_abs +=1; 
+		}
+		else
+		{
+			$html_pasla .= $html_user; $grid_pasla +=1; 
+		}
+	}
 }
 
 $empty_grid = '<div class="col"> </div>'; // case vide pour completer si pas 12 cases
@@ -216,9 +258,13 @@ $fin_grid   = '</div></div>'; // fin de ROW et fin de CLASS Container
 
 if ($grid_present < 12) $html_present .= $empty_grid;
 if ($grid_pasla   < 12) $html_pasla   .= $empty_grid;
+if ($grid_abs     < 12) $html_abs     .= $empty_grid;
 $html_present .= $fin_grid;
 $html_pasla   .= $fin_grid;
+$html_abs     .= $fin_grid;
 
+if ($grid_pasla == 1) $html_pasla = ''; // pour ne pas afficher la ligne si il n'y a personne dedans. (1 c'est qu'il n'a personne ! (2 il y a une personne ...))
+if ($grid_abs   == 1) $html_abs   = '';
 
 // Sosuké (SQL)
 $sql_select_maj   = "SELECT * FROM keyword WHERE kw__type = 'camrg' AND kw__value = 'MAJ' ";
@@ -234,6 +280,11 @@ echo $twig->render('time.twig',
 'dt'        => $date_fr_long,
 'msg_info'  => $msg_info,
 'present'   => $html_present,
-'pasla'     => $html_pasla
-
+'pasla'     => $html_pasla,
+'abs'       => $html_abs
 ]);
+
+// supprime le user si c'est 999 (qui est un faux user)
+if ( $_SESSION['user']->id_utilisateur == 999 )
+	unset($_SESSION['user']);
+

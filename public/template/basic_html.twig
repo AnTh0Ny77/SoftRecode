@@ -1,0 +1,42 @@
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+{% endblock %}
+
+{% block main %}
+<main role="main" class="container-fluid my-3 col-11 container-body">
+{# Titre #}
+<br>
+	<div class="col-12 d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+		<div class="h2">
+			<i class="fad fa-info"></i> {{titre}} 
+		</div>
+	</div>
+{# Bloc Ombragé #}
+	<div class="row">
+		<div class="col-12">
+			<div class="card shadow mb-4">
+				<div class="row">
+					<div class="col-12">
+						{{info|raw}}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</main>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+	window.onload=function()
+	{
+		window.setTimeout(function(){window.close()},10);
+	};
+</script>
+{% endblock %}

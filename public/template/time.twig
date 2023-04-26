@@ -27,7 +27,7 @@
 					<div class="col-3">
 						<div class="input-group input-group-lg ">
 							<span class="input-group-text h3" >Code Pin</span>
-							<input type="password" name="pincode" size="5" maxlength="5" class="form-control" aria-describedby="inputGroup-sizing-lg" Autofocus>
+							<input type="password" name="pincode" size="5" maxlength="20" class="form-control" aria-describedby="inputGroup-sizing-lg" Autofocus>
 							<button type="submit" class="btn btn-success" name="btn_ok">Enregister</button>
 						</div>
 					</div>
@@ -42,6 +42,7 @@
 						{{present|raw}}
 					</div>
 				</div>
+				{% if pasla|length > 0 %}
 				<hr>
 				<div class="row">
 					<div class="col-12">
@@ -49,6 +50,16 @@
 						{{pasla|raw}}
 					</div>
 				</div>
+				{% endif %}
+				{% if abs|length > 0 %}
+				<hr>
+				<div class="row">
+					<div class="col-12">
+						<div class="h2 mx-2">Absents</div>
+						{{abs|raw}}
+					</div>
+				</div>
+				{% endif %}
 			</form>
 		</div>
 	</div>
