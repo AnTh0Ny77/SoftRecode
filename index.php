@@ -486,22 +486,20 @@ case '/SoftRecode/create-pn-second';
 case '/SoftRecode/create-pn-third'.$get_data;
 	require __DIR__ . '/pages/pn_create.php'; break;
 
-<<<<<<< HEAD
 case '/SoftRecode/create-pn-specs';
 	require __DIR__ . '/pages/pn_create.php'; break;
-=======
-		case '/SoftRecode/PRINTADMINAVOIR';
+
+case '/SoftRecode/PRINTADMINAVOIR';
 			require __DIR__ .'/pages/utilities/printAvoirAdmin.php'; break;
 		
-		case '/SoftRecode/printContrat';
+case '/SoftRecode/printContrat';
 			require __DIR__ .'/pages/utilities/printContrat.php'; break;
 
-		case '/SoftRecode/printListe';
+case '/SoftRecode/printListe';
 			require __DIR__ . '/pages/utilities/printContratList.php';break;
 
-		case '/SoftRecode/PRINTFORMAT';
+case '/SoftRecode/PRINTFORMAT';
 			require __DIR__ .'/pages/utilities/printFormat.php'; break;
->>>>>>> da8fbf72c86eb62c57f071db2c8050b415231b2a
 
 case '/SoftRecode/create-models';
 	require __DIR__ . '/pages/create_models.php';break;
@@ -912,5 +910,5 @@ default:
 		require  __DIR__ .'/pages/error404.php';
 		break;
 }
-
+}
 ?>
