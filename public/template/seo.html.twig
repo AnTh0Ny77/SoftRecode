@@ -42,7 +42,7 @@
                 </div>
                 <div class="card-recode card-recode-cursor d-flex col-10 flex-column mt-2">
                     <h4 class="recode-orange-title"> 
-                        Mots clefs principaux 
+                        Performance des mots clefs
                      </h4>
 
                      <table class="table table-striped mt-4" id="seo">
@@ -93,34 +93,7 @@
                           
                         </tbody>
                       </table> 
-                </div>
-                <div class="card-recode card-recode-cursor d-flex col-10 flex-column mt-2">
-                    <h4 class="recode-orange-title"> 
-                        Mots clefs satelittes 
-                     </h4>
-
-                     <table class="table table-striped mt-4" id="seoSat">
-                        <thead>
-                          <tr class="text-center">
-                            <th scope="col">Requete</th>
-                            <th scope="col">Impressions</th>
-                            <th scope="col">Clics</th>
-                            <th scope="col">Position</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr class="text-center">
-                            <th >pda zebra</th>
-                            <td>486</td>
-                            <td>2</td>
-                            <td>
-                                13.8
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table> 
-                </div>
-                
+                </div>   
             </div>
             <div class="col-6">
                 <div class="card-recode card-recode-cursor d-flex col-7 flex-column mt-2">
@@ -159,20 +132,28 @@
                         <thead>
                           <tr class="text-center">
                             <th scope="col">Requete</th>
-                            <th scope="col">Impressions</th>
+                            <th scope="col">Couts</th>
                             <th scope="col">Clics</th>
                             <th scope="col">Position</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr class="text-center">
-                            <th >pda zebra</th>
-                            <td>486</td>
-                            <td>2</td>
+                        {% for row in seaData %}
+                        <tr class="text-center">
+                            <th>
+                                {{row[0]}}
+                            </th>
                             <td>
-                                13.8
+                                {{row[1]}}
                             </td>
-                          </tr>
+                            <td>
+                                {{row[2]}}
+                            </td>
+                            <td>
+                                {{row[3]}}
+                            </td>
+                        </tr>
+                        {% endfor %}
                         </tbody>
                       </table> 
                 </div>
@@ -217,6 +198,21 @@
                 search: "Rechercher"
             }
         });
+
+        $('#seaTab').DataTable({
+            paging: true,
+            lengthMenu: [7],
+            order: [[1, 'desc']],
+            bLengthChange: false,
+            language: {
+                lengthMenu: "Voir _MENU_ Requetes par page",
+                zeroRecords: "Aucuns résultats",
+                info: "Page: _PAGE_ sur _PAGES_ au total",
+                infoEmpty: "Aucuns résultats",
+                infoFiltered: "(résultats sur _MAX_ Requetes disponibles)",
+                search: "Rechercher"
+            }
+        })
     });
 </script>
 {% endblock %}

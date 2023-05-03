@@ -22,6 +22,7 @@ class SeoController extends BasicController {
         'Terminal embarqué Zebra' , 'Imprimante etiquette Intermec' ];
 
 
+        $dataSea = self::lire_csv('sea.csv');
         $dataSeoPrincipal = self::csvToTable('seo.csv' ,  $array_principal);
         $totauxSeo = self::getClicsImpressionsPosition('seo.csv' ,   $array_principal);
 
@@ -29,6 +30,7 @@ class SeoController extends BasicController {
             'seo.html.twig',[
                 'user' => $_SESSION['user'] , 
                 'domaine' => $domaine ,
+                'seaData' => $dataSea ,
                 'periode' => $periode , 
                 'seoPrincipal' => $dataSeoPrincipal , 
                 'totauxSeo' => $totauxSeo
@@ -127,4 +129,24 @@ class SeoController extends BasicController {
             return $query;
         }
     }
+
+    public static function lire_csv($nom_fichier)
+    {
+        $tableau = array();
+
+        if (($fichier = fopen($nom_fichier, "r")) !== FALSE) {
+            $ligne = 0; // compteur de ligne
+            while (($donnees = fgetcsv($fichier, 1000, ",")) !== FALSE) {
+                if ($ligne != 0) { // sauter la première ligne
+                    // Sélectionne les colonnes 0, 5, 6 et 7
+                    $donnees_selectionnees = array($donnees[0], $donnees[5], $donnees[6], $donnees[7]);
+                    $tableau[] = $donnees_selectionnees;
+                }
+                $ligne++;
+            }
+            fclose($fichier);
+        }
+        return $tableau;
+    }
+
 }
