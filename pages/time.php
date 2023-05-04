@@ -155,11 +155,11 @@ if ($btn_ok)
 	}
 }
 // recherches des presence et abscence
-// SELECT id_utilisateur, user__time_plan FROM utilisateur where user__time_plan IS NOT NULL order by prenom
+$nb_colonnes = 8;
 $Q_  = "SELECT id_utilisateur, user__time_plan, user__time_pin, user__time_rfid, user__time_rfid2, prenom, nom, icone FROM utilisateur where user__time_plan IS NOT NULL order by prenom";
 $R_  = mysqli_query($_SOSUKE_MYSQLI, $Q_);
-$grid_present = $grid_pasla = $grid_abs = 1; // numero de la case pour le tableau (de 1 à 12)
-$html_present = $html_pasla = $html_abs = '<div class="text-center"><div class="row">';
+$grid_present = $grid_pasla = $grid_abs = 1; // numero de la case pour le tableau (de 1 à x)
+$html_present = $html_pasla = $html_abs = '<table><tr class="text-center">';
 while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 { // boucle sur les user avec user__time_plan non NULL
 	// recherche de l'etat de la derniere action de chaque user
@@ -187,6 +187,7 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 	$Q4_ .= "AND to__abs_etat <> 'ANNUL' ORDER BY to__out LIMIT 1 ";
 	$R4_  = mysqli_query($_SOSUKE_MYSQLI, $Q4_);
 	$abs_en_cours = $to_etat = $to_in = $to_motif = $to_out = FALSE;
+	// print $Q4_.'<br>';
 	if (mysqli_num_rows($R4_) == 1)
 	{	
 		$A4_  = mysqli_fetch_array($R4_, MYSQLI_ASSOC);
@@ -197,10 +198,18 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 		$abs_en_cours = TRUE;
 	}
 	// etude du motif pour la décoration du bonhome  :-)
+	$fa_user = 'fa-user fa-lg';
 	$motif_cp = $motif_malad = $motif_perso = FALSE;
-	if(strpos($to_motif, 'CP') !== FALSE OR strpos($to_motif, 'CONGE') !== FALSE OR strpos($to_motif, 'VACANCE') !== FALSE ) $motif_cp = TRUE;
-	if(strpos($to_motif, 'MALAD') !== FALSE) $motif_malad = TRUE;
-	if(strpos($to_motif, 'PERSO') !== FALSE) $motif_perso = TRUE;
+	if(stripos($to_motif, 'CP')       !== FALSE) $motif_cp    = TRUE;
+	if(stripos($to_motif, 'CONGE')    !== FALSE) $motif_cp    = TRUE;
+	if(stripos($to_motif, 'VACANCE')  !== FALSE) $motif_cp    = TRUE;
+	if(stripos($to_motif, 'MALAD')    !== FALSE) $motif_malad = TRUE;
+	if(stripos($to_motif, 'MEDIC')    !== FALSE) $motif_malad = TRUE;
+	if(stripos($to_motif, 'PERSO')    !== FALSE) $motif_perso = TRUE;
+	if($motif_cp == TRUE)    $fa_user = 'fa-user-astronaut fa-2x';
+	if($motif_malad == TRUE) $fa_user = 'fa-user-injured fa-2x';
+	if($motif_perso == TRUE) $fa_user = 'fa-user-secret fa-2x';
+
 	// AM ou PM ? pour connaitre les retard avant 13h c'est matin , apres c'est Apres midi...
 	if ($am_pm == 'AM')
 		{ $tp_in = $tp_am_in; $tp_out = $tp_am_out; }
@@ -217,14 +226,14 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 		$color_user = 'CadetBlue';
 	if ($abs_en_cours)
 	{
-		$abs_info = '<br>'.$to_motif.'<br><i class="fad fa-house-return"></i> '.dt2dts($to_in);
+		$abs_info = $to_motif.'<br><i class="fad fa-house-return"></i> '.dt2dts($to_in);
 		$color_user = 'Orange';
 	}
 	if ($user_cnx == 56) // c'est francois lemoine
 		$secret_info = ' data-toggle="tooltip" data-placement="top" title="pin : '.$A_['user__time_pin'].'<br>rfid : '.$A_['user__time_rfid'].'<br>rfid2 : '.$A_['user__time_rfid2'].'"';
-	// Creation du personage pour page info present / pas la 
-	$html_user  = '<div class="col-1">';
-	$html_user .= '<div'.$secret_info.'><i class="fad fa-user fa-2x" style="color:'.$color_user.';"></i></div>';
+	// Creation du personage
+	$html_user  = '<td width=12.5%>';
+	$html_user .= '<div'.$secret_info.'><i class="fad '.$fa_user.' " style="color:'.$color_user.';"></i></div>';
 	$html_user .= '<span class=h6>'.$user_prenom.' '.substr($user_nom,0,1).'.</span><br>';
 	if ($user_last_move == 'IN') // le dernier mouvement est une entré, donc cette personne est là
 	{
@@ -232,33 +241,47 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 	}
 	else // cette presonne n'est pas là
 	{
-		$html_user .= '<i class="fad fa-sign-out"></i> <em>'.$user_last_time_j.'</em>'.$abs_info;
+		if ($abs_en_cours)
+		{
+			$html_user .= $abs_info;
+		}
+		else
+		{
+			$html_user .= '<i class="fad fa-sign-out"></i> <em>'.$user_last_time_j.'</em>'.$abs_info;
+		}
 	}
-	$html_user .= '</div>';
+	$html_user .= '</td>';
 
 	if ($user_last_move == 'IN') // le dernier mouvement est une entré, donc cette personne est là
 	{ 
+		if ($grid_present == $nb_colonnes+1) 
+		{ $grid_present = 1; $html_present .= '</tr><tr class="text-center">';}
 		$html_present .= $html_user; $grid_present += 1; 
 	}
 	else
 	{
 		if ($abs_en_cours)
 		{
+			if ($grid_abs == $nb_colonnes+1) 
+			{ $grid_abs = 1; $html_abs .= '</tr><tr class="text-center">';}
 			$html_abs .= $html_user; $grid_abs +=1; 
 		}
 		else
 		{
-			$html_pasla .= $html_user; $grid_pasla +=1; 
+			if ($grid_pasla == $nb_colonnes+1) 
+			{ $grid_pasla = 1; $html_pasla .= '</tr><tr class="text-center">'; }
+			$html_pasla .= $html_user; $grid_pasla += 1; 
 		}
 	}
+
 }
 
-$empty_grid = '<div class="col"> </div>'; // case vide pour completer si pas 12 cases
-$fin_grid   = '</div></div>'; // fin de ROW et fin de CLASS Container
+$empty_grid = '<td width=12.5%> </td>'; // case vide pour completer si pas x cases
+$fin_grid   = '</tr></table>'; // fin de ROW et fin de CLASS Container
 
-if ($grid_present < 12) $html_present .= $empty_grid;
-if ($grid_pasla   < 12) $html_pasla   .= $empty_grid;
-if ($grid_abs     < 12) $html_abs     .= $empty_grid;
+if ($grid_present < $nb_colonnes) $html_present .= $empty_grid;
+if ($grid_pasla   < $nb_colonnes) $html_pasla   .= $empty_grid;
+if ($grid_abs     < $nb_colonnes) $html_abs     .= $empty_grid;
 $html_present .= $fin_grid;
 $html_pasla   .= $fin_grid;
 $html_abs     .= $fin_grid;
