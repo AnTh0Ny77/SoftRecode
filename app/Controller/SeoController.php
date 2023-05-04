@@ -21,6 +21,7 @@ class SeoController extends BasicController {
         'Terminaux mobile Psion' , 'Lecteur code barres Zebra' , 'Lecteur code barres Motorola' ,
         'Terminal embarqué Zebra' , 'Imprimante etiquette Intermec' ];
 
+        if($_SESSION['user']->user__facture_acces < 15 ) { header('location: noAccess'); }
 
         $dataSea = self::lire_csv('sea.csv');
         $dataSeoPrincipal = self::csvToTable('seo.csv' ,  $array_principal);
@@ -51,9 +52,9 @@ class SeoController extends BasicController {
         while ($row = fgetcsv($csvFile)) {
             // Vérifie si la requête est valide en ignorant la casse
             $query = strtolower($row[0]);
-            if (!in_array($query, array_map('strtolower', $validQueries))) {
-                continue; // Ignore cette ligne
-            }
+            // if (!in_array($query, array_map('strtolower', $validQueries))) {
+            //     continue; // Ignore cette ligne
+            // }
             $rowData = array();
             foreach ($headers as $i => $header) {
                 if ($header === "rqt") {
@@ -130,10 +131,8 @@ class SeoController extends BasicController {
         }
     }
 
-    public static function lire_csv($nom_fichier)
-    {
+    public static function lire_csv($nom_fichier){
         $tableau = array();
-
         if (($fichier = fopen($nom_fichier, "r")) !== FALSE) {
             $ligne = 0; // compteur de ligne
             while (($donnees = fgetcsv($fichier, 1000, ",")) !== FALSE) {
