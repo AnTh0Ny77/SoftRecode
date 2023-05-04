@@ -12,8 +12,149 @@
 {% endblock %}
 {% block main %}
     <main role="main" class="col-12 container-body background-recode-list ">
-        <div class="container pt-4">
+        <div class="d-flex justify-content-between pt-4">
+            <div class="col-6" >
+                <div class="card-recode card-recode-cursor d-flex col-7 flex-column mt-2">
+                    <h1 class="recode-orange-title"> 
+                       Résultats SEO
+                    </h1>
+                    <span class="text-dark font-weight-bold text-uppercase">
+                        Sur la période :   <span class="recode-p">{{periode}}</span><br>
+                        Pour le domaine : <span class="recode-p">{{domaine}}</span>
+                    </span>
+                </div>
+                <div class="card-recode card-recode-cursor d-flex col-10 flex-column mt-2">
+                    <h4 class="recode-orange-title"> 
+                       Totaux sur les performances principales
+                     </h4>
+                     <div class="d-flex">
+                        <div class="">
+                            <span class="text-dark font-weight-bold text-uppercase">
+                                Apparitons dans les résultats de recherche ( IMPRESSIONS ) : <span class="text-success">{{totauxSeo['impressions']}}</span><br>
+                                Position moyenne dans les résultats de recherche :   <span class="text-danger">{{totauxSeo['positionAvg']}}</span><br>
+                                Nombre estimé de conversions ( moyenne haute/avantageuse ) :   <span class="text-danger"> ~ 23</span><br>
+                                Nombres Total de clics :   <span class="text-danger">{{totauxSeo['clics']}}</span><br>
+                            </span>
+                        </div>
+                     </div>
+                </div>
+                <div class="card-recode card-recode-cursor d-flex col-10 flex-column mt-2">
+                    <h4 class="recode-orange-title"> 
+                        Performances principales
+                     </h4>
+                     <table class="table table-striped mt-4" id="seo">
+                        <thead>
+                          <tr class="text-center">
+                            <th scope="col">Requete</th>
+                            <th scope="col">Impressions</th>
+                            <th scope="col">Clics</th>
+                            <th scope="col">Position</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                              {% for row in seoPrincipal %}
+                                <tr class="text-center">
+                                    <th >
+                                        {{row.rqt}}
+                                    </th>
+                                    <td>
+                                        {% if row.Impressions == 0  %}
+                                            <b class="text-danger">{{row.Impressions}}</b>
+                                        {% else %}
+                                            {{row.Impressions}}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if row.Clics < 30 and row.Position != 0 %}
+                                          <span class="text-danger">{{row.Clics}}</span>  
+                                        {% elseif  row.Clics > 50 and row.Position != 0 %}
+                                          <span class="text-success">{{row.Clics}}</span>  
+                                        {% endif %}    
+                                    </td>
+                                    <td>
+                                        {% if row.Position < 10 and  row.Position != 0 %}
+                                            {{row.Position}}
+                                        {% elseif row.Position < 5 and  row.Position != 0 %}
+                                            <span class="text-success"> {{row.Position}}</span>     
+                                        {% elseif   row.Position > 10 and   row.Position != 0 %}
+                                            <span class="text-danger">{{row.Position}}</span>  
+                                        {% endif %}  
+                                       
+                                    </td>
+                                </tr>
+                              {% endfor %}
+                        </tbody>
+                      </table> 
+                </div>   
+            </div>
+            <div class="col-6">
+                <div class="card-recode card-recode-cursor d-flex col-7 flex-column mt-2">
+                    <h1 class="recode-orange-title"> 
+                        Résultats SEA
+                     </h1>
+                     <span class="text-dark font-weight-bold text-uppercase">
+                        Sur la période :  <span class="recode-p">{{periode}}</span><br>
+                        Pour le domaine : <span class="recode-p">{{domaine}}</span>
+                     </span>
+                </div>
+                <div class="card-recode card-recode-cursor d-flex col-10 flex-column mt-2">
+                    <h4 class="recode-orange-title"> 
+                       Totaux sur les différentes campagnes 
+                     </h4>
+                     <div class="d-flex">
+                        <div class="">
+                            <span class="text-dark font-weight-bold text-uppercase">
+                                Apparitons dans les résultats de recherche ( IMPRESSIONS ) : <span class="text-success">129000</span><br>
+                                Cout total : <span class="text-danger"> 6180 €</span><br>
+                                Nombre Total de conversions :   <span class="text-success">155</span><br>
+                                Nombre Total de clics :   <span class="text-success">4510</span><br>
+                            </span>
+                        </div>
+                        
+                     </div>
 
+                   
+                </div>
+                <div class="card-recode card-recode-cursor d-flex col-10 flex-column mt-2">
+                    <h4 class="recode-orange-title"> 
+                        Performances principales 
+                     </h4>
+
+                     <table class="table table-striped mt-4" id="seaTab">
+                        <thead>
+                          <tr class="text-center">
+                            <th scope="col">Requete</th>
+                            <th scope="col">Impressions</th>
+                            <th scope="col">Clics</th>
+                            <th scope="col">Conversions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for row in seaData %}
+                        <tr class="text-center">
+                            <th>
+                                {{row[0]}}
+                            </th>
+                            <td>
+                                {{row[1]}}
+                            </td>
+                            <td>
+                                {% if row[2] > 30 %}
+                                    <span class="text-success">{{row[2]}}</span>
+                                {% else %}
+                                    <span class="text-danger">{{row[2]}}</span>  
+                                {% endif %}
+                            </td>
+                            <td>
+                                {{row[3]}}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                      </table> 
+                </div>
+                
+            </div> 
         </div>
     </main>
 {% endblock %}
@@ -22,5 +163,52 @@
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#seo').DataTable({
+            paging: true , 
+            lengthMenu: [  7] , 
+            order: [[2, 'desc']] ,
+            bLengthChange : false ,
+            language: {
+                lengthMenu: "Voir _MENU_ Requetes par page",
+                zeroRecords: "Aucuns résultats",
+                info : "Page: _PAGE_ sur _PAGES_ au total",
+                infoEmpty: "Aucuns résultats",
+                infoFiltered: "(résultats sur _MAX_ Requetes disponibles)",
+                search: "Rechercher"
+            }
+        });
+
+        $('#seoSat').DataTable({
+            paging: true , 
+            lengthMenu: [  7] , 
+            order: [[2, 'desc']] ,
+            bLengthChange : false ,
+            language: {
+                lengthMenu: "Voir _MENU_ Requetes par page",
+                zeroRecords: "Aucuns résultats",
+                info : "Page: _PAGE_ sur _PAGES_ au total",
+                infoEmpty: "Aucuns résultats",
+                infoFiltered: "(résultats sur _MAX_ Requetes disponibles)",
+                search: "Rechercher"
+            }
+        });
+
+        $('#seaTab').DataTable({
+            paging: true,
+            lengthMenu: [7],
+            order: [[2, 'desc']],
+            bLengthChange: false,
+            language: {
+                lengthMenu: "Voir _MENU_ Requetes par page",
+                zeroRecords: "Aucuns résultats",
+                info: "Page: _PAGE_ sur _PAGES_ au total",
+                infoEmpty: "Aucuns résultats",
+                infoFiltered: "(résultats sur _MAX_ Requetes disponibles)",
+                search: "Rechercher"
+            }
+        })
+    });
+</script>
 {% endblock %}
-972001495621-civq9u6q32v48evsnkeef817d5o2nemj.apps.googleusercontent.com
