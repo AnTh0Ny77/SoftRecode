@@ -1166,7 +1166,7 @@
                 dataType: "text",
                 data: JSON.stringify(body),
                 success: function (data, status, xhttp) {
-                    $('#alert_user_edit').text('cette adresse email est deja utilisée pour un autre compte utilisateur !');
+                    $('#alert_user').html('cette adresse email est deja utilisée pour un autre compte utilisateur ! <button>Attribuer</button>');
                 },
                 error: function (jqXhr, textStatus, errorMessage) {
                     let randomPassword = Math.random().toString(36).slice(-8);
@@ -1263,7 +1263,7 @@
             $.ajax( prod + '/verifymail', {
                 type: 'POST',  
                 method : "POST" ,
-                crossDomain: true ,
+                async: false,
                 data: JSON.stringify(body), 
                 success: function (data, status, xhttp) {
                     console.log(data.data)
