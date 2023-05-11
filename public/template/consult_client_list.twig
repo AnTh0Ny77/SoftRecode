@@ -28,7 +28,7 @@
                                         <tr>
                                                 <th > <custom-form-button-mini method='POST' url='search_switch' name='search' value='{{client.client__id}}'
                                                         logo='
-                                                        <div class="d-flex flex-row ">({{client.client__id}}) <b>{{client.client__societe}} {{client.client__cp ~ " " ~ client.client__ville}} </b>        
+                                                        <div class="d-flex flex-row ">({{client.client__id}}) <b>{{client.client__societe}} {{  client.client__adr1 ~ " " ~ client.client__cp ~ " " ~ client.client__ville}} </b>        
                                                         </div>'>
                                                         </custom-form-button-mini></th>
                                                 <td class="text-center align-middle">{{client.nom_vendeur ~ " " ~ client.prenom_vendeur}}</td>

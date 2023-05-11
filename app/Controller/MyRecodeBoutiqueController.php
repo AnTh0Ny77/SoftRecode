@@ -15,8 +15,8 @@ use App\Database;
 class MyRecodeBoutiqueController extends BasicController {
 
     public static function displayList(){
-        self::init();
-        self::security();
+        
+        self::security();self::init();
         $Database = new Database('devis');
         $Database->DbConnect();
         $Api = new ApiTest();
