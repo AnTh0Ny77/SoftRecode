@@ -1121,8 +1121,7 @@
             if(verification) {
                 $('#alert_user').text(verification);
             }else {
-                
-            
+                renderUserTable();
             }
         })
 
@@ -1378,7 +1377,6 @@
                 data: JSON.stringify(body), 
                 success: function (data, status, xhttp) {
                     results = data.data
-                    renderUserTable()
                 },
                 error: function (jqXhr, textStatus, errorMessage) {
                     results = jqXhr;
@@ -1470,6 +1468,26 @@
                             role += '<div class="past_pink mx-2 my-1"> Achat</div><br>';
                         }else if(user[i].roles[y] == "USER"){
                             role += '<div class="past_blue mx-2 my-1"> Utilisateur</div><br>';
+                        }else if(user[i].roles[y] == "CMAIL"){
+                            role += '<div class="past_pink mx-2 my-1"> Recevoir des commandes par email</div><br>';
+                        }else if(user[i].roles[y] == "ACHPX"){
+                            role += '<div class="past_yellow mx-2 my-1"> Visu des prix dans commandes</div><br>';
+                        }else if(user[i].roles[y] == "USRAC"){
+                            role += '<div class="past_orange mx-2 my-1"> Utilisateur Actif</div><br>';
+                        }else if(user[i].roles[y] == "VUBLS"){
+                            role += '<div class="past_pink mx-2 my-1"> Voir les Bons de Livraisons</div><br>';
+                        }else if(user[i].roles[y] == "VUFAC"){
+                            role += '<div class="past_yellow mx-2 my-1"> Voir les Factures</div><br>';
+                        }else if(user[i].roles[y] == "VUREF"){
+                            role += '<div class="past_pink mx-2 my-1"> Voir les ref constructeur (dans catalogue)</div><br>';
+                        }else if(user[i].roles[y] == "VUSOC"){
+                            role += '<div class="past_blue mx-2 my-1"> Voir les Doc sur la socitété </div><br>';
+                        }else if(user[i].roles[y] == "VUTEC"){
+                            role += '<div class="past_orange mx-2 my-1"> Voir les Infos technique</div><br>';
+                        }else if(user[i].roles[y] == "TMAIL"){
+                            role += '<div class="past_orange mx-2 my-1"> Recevoir les infos tickets par email</div><br>';
+                        }else{
+                            role += '<div class="past_blue mx-2 my-1"> + 1 Role présent non configuré dans l affichage ( contacter Anthony ) </div><br>';
                         }
                     }
 
