@@ -1139,12 +1139,11 @@
             if(verification){
                 $('#alert_user_edit').text(verification);
             }else {
-                renderUserTable();
+                renderUserTable(); 
             }
         });
 
-       
-
+        
 
         let UpdateMatos = function(){
 
@@ -1224,6 +1223,7 @@
                 'secret': 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528' 
             };
             deleteRole(deleteBody);
+
             let role = $('#user__role_edit').val();
             if (role.length > 0) {
                     for (let i = 0; i < role.length; i++) {
@@ -1236,7 +1236,13 @@
                     }
             }
             let siteUser = $('#user__site_edit').val();
-            if(siteUser > 0){
+            let deleteRelation = {
+                            'delete': $('#user__id_edit').val(),
+                            'secret': 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528'
+            }
+            postUserRelation(deleteRelation);
+            siteUser.push($('#cli__id').val());
+            if(siteUser.length > 0){
                 for (let i = 0; i < siteUser.length; i++) {
                     let relation_data = {
                         "secret": 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528',
@@ -1374,6 +1380,7 @@
                     results = jqXhr.responseJSON.msg;
                 }
             });
+            
             return results;
         }
 
@@ -1547,6 +1554,92 @@
             closeAndCleanModalsUsers();
         }
 
+
+        let renderUserTableReal = function(){
+            //recup les users :
+            let user = getUserSossukeRequest();
+            //vide la table : 
+            userTable.clear().draw();
+            //insere la data :
+            for(i =0 ; i<user.length; i++ ){
+                //nom et prenom :
+                let nameText = "";
+                let role = '';
+                let societe = '';
+                if(user[i].user__confirm == 1){
+                     nameText = '<div class="past_greeen mx-2"><i class="fas fa-user"></i> ' + user[i].user__nom + ' ' + user[i].user__prenom +'</div>' ;
+                }else{
+                    nameText = '<div class="past_orange mx-2"><i class="fas fa-user"></i> ' + user[i].user__nom + ' ' + user[i].user__prenom +'</div>' ;
+                }
+                //role : 
+                if(user[i].roles.length > 0){
+                    for(y=0; y<user[i].roles.length; y++ ){
+                        if(user[i].roles[y] == "SUMYR"){
+                            role += '<div class="past_yellow mx-2 my-1"> Administrateur Recode</div><br>';
+                        }else if(user[i].roles[y] == "ADUSR"){
+                            role += '<div class="past_blue mx-2 my-1"> Administrateur</div><br>';
+                        }else if(user[i].roles[y] == "ACHAT"){
+                            role += '<div class="past_pink mx-2 my-1"> Achat</div><br>';
+                        }else if(user[i].roles[y] == "USER"){
+                            role += '<div class="past_blue mx-2 my-1"> Utilisateur</div><br>';
+                        }else if(user[i].roles[y] == "CMAIL"){
+                            role += '<div class="past_pink mx-2 my-1"> Recevoir des commandes par email</div><br>';
+                        }else if(user[i].roles[y] == "ACHPX"){
+                            role += '<div class="past_yellow mx-2 my-1"> Visu des prix dans commandes</div><br>';
+                        }else if(user[i].roles[y] == "USRAC"){
+                            role += '<div class="past_orange mx-2 my-1"> Utilisateur Actif</div><br>';
+                        }else if(user[i].roles[y] == "VUBLS"){
+                            role += '<div class="past_pink mx-2 my-1"> Voir les Bons de Livraisons</div><br>';
+                        }else if(user[i].roles[y] == "VUFAC"){
+                            role += '<div class="past_yellow mx-2 my-1"> Voir les Factures</div><br>';
+                        }else if(user[i].roles[y] == "VUREF"){
+                            role += '<div class="past_pink mx-2 my-1"> Voir les ref constructeur (dans catalogue)</div><br>';
+                        }else if(user[i].roles[y] == "VUSOC"){
+                            role += '<div class="past_blue mx-2 my-1"> Voir les Doc sur la socitété </div><br>';
+                        }else if(user[i].roles[y] == "VUTEC"){
+                            role += '<div class="past_orange mx-2 my-1"> Voir les Infos technique</div><br>';
+                        }else if(user[i].roles[y] == "TMAIL"){
+                            role += '<div class="past_orange mx-2 my-1"> Recevoir les infos tickets par email</div><br>';
+                        }else{
+                            role += '<div class="past_blue mx-2 my-1"> + 1 Role présent non configuré dans l affichage ( contacter Anthony ) </div><br>';
+                        }
+                    }
+
+                }else{
+                    role = '<div class="past_orange mx-2"><i class="fas fa-user"></i> Aucun roles</div>' ;
+                }
+                if(user[i].clients.length > 0){
+                    let count = 0 ;
+                    for(y=0; y<user[i].clients.length; y++ ){
+                        if(user[i].clients[y].cli__id != $('#cli__id').val() ){
+                            societe += '<a href="displaySocieteMyRecode?cli__id='+ user[i].clients[y].cli__id +'">'+ user[i].clients[y].cli__nom +'</a><br>';
+                            count ++ ;
+                        }
+                       
+                    }
+                    if(count ==  0 ){
+                        societe = "Aucune autre société ";
+                    }
+                }          
+                userTable.row.add([
+                    nameText , 
+                    user[i].user__mail , 
+                    user[i].user__fonction , 
+                    role , 
+                    societe , 
+                    JSON.stringify(user[i])
+                ]
+                )
+            }
+            userTable.draw();
+        }
+        
+        setInterval(function realTime(){
+            console.log('hey');
+            renderUserTableReal()
+        }, 3000) ;
+        
+      
         let renderMatosTable = function (){
             let matos = getParcSossukeRequest();
           
