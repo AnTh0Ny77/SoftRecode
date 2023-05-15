@@ -48,7 +48,6 @@ $(document).ready(function(){
                     let temp = [JSON.stringify(element) , ref, etatFinal, '<b>' + element[4] + '€</b> HT<br>' + date ,  element[5] , gar , element[12].sar__image]; 
                    results.push(temp);
                 });
-                console.log(results);
                 Table = $('#table_bot').DataTable({
                     paging: true,
                     order: [[0, 'desc']] ,
@@ -68,8 +67,7 @@ $(document).ready(function(){
                             }else {
                                 return '<img src="public/img/boutique/no.png"  width="40px">';
                             }
-                            
-                        }   },
+                        }  },
                           
                     ],
                     createdRow: function (row, data, index) {

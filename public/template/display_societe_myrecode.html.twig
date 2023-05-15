@@ -498,6 +498,15 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-6">
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" multiple  name="user__site" id="user__site_edit"  >
+                                {% for client in list_client %}
+                                    <option value="{{client.cli__id}}" >{{client.cli__nom}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <div class="alert alert-secondary past_pastel" id="alert_user_edit" role="alert">
@@ -1130,7 +1139,7 @@
             if(verification){
                 $('#alert_user_edit').text(verification);
             }else {
-                
+                renderUserTable();
             }
         });
 
@@ -1165,7 +1174,8 @@
                 dataType: "text",
                 data: JSON.stringify(body),
                 success: function (data, status, xhttp) {
-                    $('#alert_user').html('cette adresse email est deja utilisée pour un autre compte utilisateur ! <button>Attribuer</button>');
+                    verif = 'cette adresse email est deja utilisée pour un autre compte utilisateur ! <button type="button" id="addUser">Attribuer</button>';
+                    return verif;
                 },
                 error: function (jqXhr, textStatus, errorMessage) {
                     let randomPassword = Math.random().toString(36).slice(-8);
@@ -1196,6 +1206,10 @@
             return verif;
         }
 
+        $('#addUser').on('click' , function(){
+            console.log('hey');
+        })
+
         let updateUser = function(){
             let body = returnBodyUpdateUser()
             
@@ -1220,7 +1234,19 @@
                         }
                         postRoleRequest(roles);
                     }
+            }
+            let siteUser = $('#user__site_edit').val();
+            if(siteUser > 0){
+                for (let i = 0; i < siteUser.length; i++) {
+                    let relation_data = {
+                        "secret": 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528',
+                        "luc__cli__id": siteUser[i],
+                        "luc__user__id": $('#user__id_edit').val(),
+                        "luc__order": i+1
+                    }
+                    let relation = postUserRelation(relation_data);
                 }
+            }
             return false ;
         }
 

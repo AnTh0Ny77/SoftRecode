@@ -79,6 +79,7 @@ class MyRecodeSocieteController extends BasicController {
         if (empty($_GET['cli__id'])) {header('location SocieteMyRecode');die();}
 
         $client = $Api->PostListClient($token, $_GET['cli__id'])['data'];
+        $list_client = $Api->PostListClient($token,false)['data'];
 
         if (empty($client)){header('location SocieteMyRecode');die();}
 
@@ -98,6 +99,7 @@ class MyRecodeSocieteController extends BasicController {
                 'user' => $_SESSION['user'],
                 'client' => $client , 
                 'pn_list' => $pn_list , 
+                'list_client' => $list_client ,
                 'avendre_list' => $list_avendre
             ]
         );

@@ -134,15 +134,15 @@ ob_start();
                 <td align="right">
                     <table style="border: 1px solid black; background-color: #dedede; padding: 10px 10px 10px 10px; font-size: 120%;">
                         <tbody>
-                            <tr>
+                           <tr>
                                 <?php
-                                $totaux = Pdfunctions::totalContract($abnLignes);
-                                echo "  <td style='text-align: left; width: 200px;'>
-											Total général mensuel : 
-										</td>
-										<td style='text-align: right; '>
-											<b>" . number_format($totaux[0], 2, ',', ' ') . " €</b>
-										</td>";
+                                // $totaux = Pdfunctions::totalContract($abnLignes);
+                                // echo "  <td style='text-align: left; width: 200px;'>
+								// 			Total général mensuel : 
+								// 		</td>
+								// 		<td style='text-align: right; '>
+								// 			<b>" . number_format($totaux[0], 2, ',', ' ') . " €</b>
+								// 		</td>";
                                 ?>
                             </tr>
                         </tbody>
