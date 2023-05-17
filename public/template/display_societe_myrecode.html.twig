@@ -1169,7 +1169,7 @@
             let verif = handleFormsUser(body)
 
             if(verif) {return verif}
-            $.ajax(local + '/verifymail', {
+            $.ajax(prod + '/verifymail', {
                 type: 'POST',
                 method: "POST",
                 dataType: "text",
@@ -1300,7 +1300,7 @@
         //si faux je ne peux pas continuer sinon je peux afficher le message :
         let  verifyMailRequest = function (body) {
             let results = false ; 
-            $.ajax( local + '/verifymail', {
+            $.ajax( prod + '/verifymail', {
                 type: 'POST',  
                 method : "POST" ,
                 async: false,
@@ -1319,7 +1319,7 @@
 
         let postUserRequest = function(body){
             let results = false ; 
-            $.ajax( local +  '/usersossuke', {
+            $.ajax( prod +  '/usersossuke', {
                 type: 'POST', 
                 method : "POST" ,
                 crossDomain: true , 
@@ -1337,7 +1337,7 @@
 
         let updateUserRequest = function(body){
             let results = false ; 
-            $.ajax( local +  '/usersossuke', {
+            $.ajax( prod +  '/usersossuke', {
                 type: 'POST',  
                 crossDomain: true ,
                 async: false,
@@ -1359,7 +1359,7 @@
                 'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528', 
                 'one': $('#cli__id').val(),
             };
-            $.ajax( local +  '/sossuke', {
+            $.ajax( prod +  '/sossuke', {
                 type: 'POST',  
                 crossDomain: true ,
                 async: false,
@@ -1377,7 +1377,7 @@
 
         let postUserRelation = function (body) {
             let results = false;
-            $.ajax(local + '/usersitessossuke', {
+            $.ajax(prod + '/usersitessossuke', {
                 type: 'POST',
                 method : "POST" ,
                 crossDomain: true ,
@@ -1396,7 +1396,7 @@
         let deleteRole = function(body){
             let results = false;
 
-            $.ajax(local + '/rolesossuke', {
+            $.ajax(prod + '/rolesossuke', {
                 type: 'POST',
                 crossDomain: true ,
                 async: false,
@@ -1413,7 +1413,7 @@
 
         let postRoleRequest = function(body){
             let results = false ; 
-            $.ajax( local +  '/rolesossuke', {
+            $.ajax( prod +  '/rolesossuke', {
                 type: 'POST',  
                 crossDomain: true ,
                 data: JSON.stringify(body), 
@@ -1716,7 +1716,7 @@
 
         let postMatosRequest = function(body){
             let results = false ; 
-            $.ajax( local +  '/materiel', {
+            $.ajax( prod +  '/materiel', {
                 type: 'POST',  
                 crossDomain: true ,
                 async: true ,
@@ -1734,7 +1734,7 @@
 
         let ActifMatos = function(body){
             let results = false;
-            $.ajax(local + '/materielSossuke', {
+            $.ajax(prod + '/materielSossuke', {
                 type: 'POST',
                 crossDomain: true,
                 async: true,
@@ -1778,7 +1778,7 @@
                 'cli__id': $('#cli__id').val(),
                 'RECODE__PASS' : 'testtfvgz4564564**zatyf§§/tettavapouuzvcaQQZAcvrtestdetestrapondre'
             };
-            $.ajax( local +  '/materiel', {
+            $.ajax( prod +  '/materiel', {
                 type: 'GET',  
                 crossDomain: true ,
                 async: false,
