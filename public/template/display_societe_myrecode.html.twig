@@ -503,7 +503,7 @@
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" multiple  name="user__site" id="user__site_edit"  >
                                 {% for clientTT in list_client %}
                                     {% if clientTT.cli__id != client.cli__id %}
-                                        <option value="{{clientTT.cli__id}}">{{clientTT.cli__nom}}</option>
+                                        <option value="{{clientTT.cli__id}}">{{ " ( " ~ clientTT.cli__id ~ " ) " ~ clientTT.cli__nom}}</option>
                                     {% endif %}
                                 {% endfor %}
                             </select>
@@ -1075,7 +1075,7 @@
         let functionUserTableModal = function (data){
             
             data = JSON.parse(data[5]);
-            
+            console.log(data);
             $('#user__role_edit').selectpicker('deselectAll');
             $('#user__id_edit').val(data.user__id);
             $('#user__mail_edit').val(data.user__mail);
@@ -1094,6 +1094,16 @@
             });
             $('#user__role_edit').selectpicker('val', arraySelect);
             $('#user__role_edit').selectpicker('refresh');
+            arraySelect = [];
+            $("#user__site_edit > option").each(function () {
+                for (i = 0; i < data.clients.length; i++) {
+                    if (this.value === data.clients[i].cli__id) {
+                        arraySelect.push(this.value);
+                    }
+                }
+            });
+            $('#user__site_edit').selectpicker('val', arraySelect);
+            $('#user__site_edit').selectpicker('refresh');
         }
 
 
