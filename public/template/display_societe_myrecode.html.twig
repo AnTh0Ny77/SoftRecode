@@ -503,17 +503,24 @@
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" multiple  name="user__site" id="user__site_edit"  >
                                 {% for clientTT in list_client %}
                                     {% if clientTT.cli__id != client.cli__id %}
-                                        <option value="{{clientTT.cli__id}}">{{clientTT.cli__nom}}</option>
+                                        <option value="{{clientTT.cli__id}}">{{ " ( " ~ clientTT.cli__id ~ " ) " ~ clientTT.cli__nom}}</option>
                                     {% endif %}
                                 {% endfor %}
                             </select>
                         </div>
+                        {# <div class="col-6">
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" name="user__actif" id="user__site_actif">
+                                <option value="1">Profil actif</option>
+                                <option value="0">Profil inactif</option>
+                            </select>
+                        </div> #}
                     </div>
                 </div>
                 <div class="modal-footer">
                     <div class="alert alert-secondary past_pastel" id="alert_user_edit" role="alert">
                         
                     </div>
+                   
                     <button class="btn btn-recode-important"  type="button" id="button_user_edit">Editer</button>
                 </div>
             </form>
@@ -1068,7 +1075,7 @@
         let functionUserTableModal = function (data){
             
             data = JSON.parse(data[5]);
-            
+            console.log(data);
             $('#user__role_edit').selectpicker('deselectAll');
             $('#user__id_edit').val(data.user__id);
             $('#user__mail_edit').val(data.user__mail);
@@ -1087,6 +1094,16 @@
             });
             $('#user__role_edit').selectpicker('val', arraySelect);
             $('#user__role_edit').selectpicker('refresh');
+            arraySelect = [];
+            $("#user__site_edit > option").each(function () {
+                for (i = 0; i < data.clients.length; i++) {
+                    if (this.value === data.clients[i].cli__id) {
+                        arraySelect.push(this.value);
+                    }
+                }
+            });
+            $('#user__site_edit').selectpicker('val', arraySelect);
+            $('#user__site_edit').selectpicker('refresh');
         }
 
 
@@ -1218,6 +1235,8 @@
             if(verif) {return verif}
             //met a jour les données de l utilisateur :
             let put = updateUserRequest(body);
+          
+           
 
             let deleteBody = { 
                 '_METHOD' : 'DELETE' ,
@@ -1238,20 +1257,14 @@
                     }
             }
             let siteUser = $('#user__site_edit').val();
-            let deleteRelation = {
-                            'delete': $('#user__id_edit').val(),
-                            'secret': 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528'
-            }
-            postUserRelation(deleteRelation);
+            
             if(siteUser.length > 0){
                 siteUser.push($('#cli__id').val());
             }else{
                 siteUser = [$('#cli__id').val()];
             }
 
-            console.log($('#cli__id').val())
-
-            console.log(siteUser);
+           
             
             if(siteUser.length > 0){
                 let relation_data = {
@@ -1644,7 +1657,6 @@
         }
         
         setInterval(function realTime(){
-           console.log('hey');
             renderUserTableReal()
         }, 1000) ;
         
