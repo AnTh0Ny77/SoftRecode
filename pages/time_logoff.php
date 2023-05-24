@@ -61,6 +61,19 @@ if ($am_pm == 'PM')
   - idem pour PM
 */
 
+// CNX base de donnée
+$sosuke_host      = "192.168.1.124";
+$sosuke_user      = "remote";
+$sosuke_passe     = "euro0493";
+$sosuke_database  = "devis";
+$_SOSUKE_MYSQLI   = mysqli_connect($sosuke_host, $sosuke_user, $sosuke_passe, $sosuke_database);
+if (!$_SOSUKE_MYSQLI) die('Erreur de connexion a la base (' . mysqli_connect_errno() . ') Serveur -->'.$_SERVER['SERVER_NAME']);
+mysqli_set_charset($_SOSUKE_MYSQLI, "utf8");
+
+// log
+if($am_pm == 'NO')
+	time_log('LOG_OFF',$twig_titre,$_SOSUKE_MYSQLI);
+
 
 /*""Yb 888888  dP"Yb  88   88 888888 888888 888888 .dP"Y8 
 88__dP 88__   dP   Yb 88   88 88__     88   88__   `Ybo." 
@@ -69,15 +82,7 @@ if ($am_pm == 'PM')
 
 if ($am_pm == 'AM' OR $am_pm == 'PM') // pour verifier que nous somme bien dans le bon timing et non en 'NO'
 {
-	$sosuke_host      = "192.168.1.124";
-	$sosuke_user      = "remote";
-	$sosuke_passe     = "euro0493";
-	$sosuke_database  = "devis";
-	$_SOSUKE_MYSQLI   = mysqli_connect($sosuke_host, $sosuke_user, $sosuke_passe, $sosuke_database);
-	if (!$_SOSUKE_MYSQLI) die('Erreur de connexion a la base (' . mysqli_connect_errno() . ') Serveur -->'.$_SERVER['SERVER_NAME']);
-	mysqli_set_charset($_SOSUKE_MYSQLI, "utf8");
-
-	// boule sur les utilisateurs (qui ont un user__time_plan non NULL) 
+	// boucle sur les utilisateurs (qui ont un user__time_plan non NULL) 
 	$Q_  = "SELECT id_utilisateur, user__time_plan, prenom, nom, tp__am_out, tp__pm_out FROM utilisateur ";
 	$Q_ .= "LEFT JOIN time_plan ON utilisateur.user__time_plan = time_plan.tp__name AND time_plan.tp__jour = ".$jour_sem." ";
 	$Q_ .= "WHERE user__time_plan IS NOT NULL order by id_utilisateur "; // print $Q_.'<br>';
@@ -91,7 +96,7 @@ if ($am_pm == 'AM' OR $am_pm == 'PM') // pour verifier que nous somme bien dans 
 		$A_u  = mysqli_fetch_array($R_u, MYSQLI_ASSOC);
 		$user_last_time   = $A_u['tt__time'];
 		$user_last_move   = $A_u['tt__move'];
-		if ($user_last_move == 'IN')
+		if (substr($user_last_move,0,2) == 'IN')
 		{ // l'utilisateur est present (il a oublié de se débadger) je le débadge a l'heure logic de sortie
 			// son heure logique de sortie est : 
 			if ($am_pm == 'AM') // je prend l'eure de fin de travail le matin
@@ -105,10 +110,14 @@ if ($am_pm == 'AM' OR $am_pm == 'PM') // pour verifier que nous somme bien dans 
 			$Q_out .= "VALUES ('$user_id', '$time_out', 'OUT_A', '', '(990) ".substr($date_time,2)."') "; // 990 est le user crone automatique
 			$R_out  = mysqli_query($_SOSUKE_MYSQLI, $Q_out); // var_dump($Q_);
 			$nb_no_delog += 1;
+			time_log('LOG_OFF','Sortie auto de USER_ID: '.$user_id.' - '.$A_['prenom'].' '.$A_['nom'],$_SOSUKE_MYSQLI);
 		}
 	}
 	if ($nb_no_delog == 0)
+	{
 		$twig_info .= 'Tout le monde était bien sortie. - '.$date_time;
+		time_log('LOG_OFF','Tout le monde était bien Sortie',$_SOSUKE_MYSQLI);
+	}
 }
 
    /*    888888 888888 88  dP""b8 88  88    db     dP""b8 888888 

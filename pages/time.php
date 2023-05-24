@@ -119,7 +119,7 @@ if ($btn_ok)
 			$msg_info_1       = 'Bonne aprés midi '.$user_move_prenom.' ';
 			$msg_info_2       = '.<br>';
 		}
-		if ($user_last_move == 'IN') // le dernier mouvement est une entré, donc cette saisie est pour une sortie (OUT)
+		if (substr($user_last_move,0,2) == 'IN') // le dernier mouvement est une entré, donc cette saisie est pour une sortie (OUT)
 		{
 			$move = 'OUT';
 			$msg_info_1       = 'Au revoir '.$user_move_prenom;
@@ -156,6 +156,7 @@ if ($btn_ok)
 }
 // recherches des presence et abscence
 $nb_colonnes = 8;
+// liste des user concernés par le pointage
 $Q_  = "SELECT id_utilisateur, user__time_plan, user__time_pin, user__time_rfid, user__time_rfid2, prenom, nom, icone FROM utilisateur where user__time_plan IS NOT NULL order by prenom";
 $R_  = mysqli_query($_SOSUKE_MYSQLI, $Q_);
 $grid_present = $grid_pasla = $grid_abs = 1; // numero de la case pour le tableau (de 1 à x)
@@ -182,6 +183,7 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 	$tp_am_out   = $A3_['tp__am_out'];
 	$tp_pm_in    = $A3_['tp__pm_in'];
 	$tp_pm_out   = $A3_['tp__pm_out'];
+	$tp_type     = $A3_['tp__type'];
 	// Abscence prevue.
 	$Q4_  = "SELECT * FROM time_out WHERE to__user = '".$user_id."' AND to__out < '".$date_time."' AND to__in > '".$date_time."' ";
 	$Q4_ .= "AND to__abs_etat <> 'ANNUL' ORDER BY to__out LIMIT 1 ";
@@ -222,8 +224,10 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 	$secret_info = $abs_info = '';
 	if ($dif_time > $tolerance_retard_in)
 		{ $color_sign = 'tomato'; $color_user = '#906969';}
-	if ($user_last_move <> 'IN') // le dernier mouvement n'est pas une entrée
+	if (substr($user_last_move,0,2) <> 'IN') // le dernier mouvement n'est pas une entrée
 		$color_user = 'CadetBlue';
+	$fa_logo_in = 'fa-sign-in';
+	if ($user_last_move == 'IN_TT') $fa_logo_in = 'fa-house'; // logo spécial Télétravail
 	if ($abs_en_cours)
 	{
 		$abs_info = $to_motif.'<br><i class="fad fa-house-return"></i> '.dt2dts($to_in);
@@ -235,9 +239,9 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 	$html_user  = '<td width=12.5%>';
 	$html_user .= '<div'.$secret_info.'><i class="fad '.$fa_user.' " style="color:'.$color_user.';"></i></div>';
 	$html_user .= '<span class=h6>'.$user_prenom.' '.substr($user_nom,0,1).'.</span><br>';
-	if ($user_last_move == 'IN') // le dernier mouvement est une entré, donc cette personne est là
+	if (substr($user_last_move,0,2) == 'IN') // le dernier mouvement est une entré, donc cette personne est là
 	{
-		$html_user .= '<span style="color:'.$color_sign.';"><i class="fad fa-sign-in"></i></span> <em>'.$user_last_time.'</em>';
+		$html_user .= '<span style="color:'.$color_sign.';"><i class="fad '.$fa_logo_in.'"></i></span> <em>'.$user_last_time.'</em>';
 	}
 	else // cette presonne n'est pas là
 	{
@@ -252,7 +256,7 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 	}
 	$html_user .= '</td>';
 
-	if ($user_last_move == 'IN') // le dernier mouvement est une entré, donc cette personne est là
+	if (substr($user_last_move,0,2) == 'IN') // le dernier mouvement est une entré, donc cette personne est là
 	{ 
 		if ($grid_present == $nb_colonnes+1) 
 		{ $grid_present = 1; $html_present .= '</tr><tr class="text-center">';}
@@ -268,9 +272,12 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 		}
 		else
 		{
-			if ($grid_pasla == $nb_colonnes+1) 
-			{ $grid_pasla = 1; $html_pasla .= '</tr><tr class="text-center">'; }
-			$html_pasla .= $html_user; $grid_pasla += 1; 
+			if ($tp_type <> 'OUT') // pour ne pas afficher dans pasla ceux qui sont out (ne travail pas ce jour)
+			{
+				if ($grid_pasla == $nb_colonnes+1) 
+				{ $grid_pasla = 1; $html_pasla .= '</tr><tr class="text-center">'; }
+				$html_pasla .= $html_user; $grid_pasla += 1;
+			}
 		}
 	}
 

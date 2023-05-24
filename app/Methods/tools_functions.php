@@ -525,8 +525,19 @@ o.`Y8b 88""   88  .o 88""   Yb        88              88"Yb    YbdPYbdP
 		}
 		else // pas de fichier contrat
 			$tab[0] = -1; // le fichier n'existe pas !
-		return $tab; // indique la valeur à renvoyer 
+			return $tab; // indique la valeur à renvoyer 
+		}
+	
+	// Lecture de fichier vers variable tableau.
+	function time_log($act, $memo, $_SOSUKE_MYSQLI)
+	{ // ecriture d'un log sur time_log
+		$date_time  = date('Y-m-d H:i:s');
+		$Q_log      = "INSERT INTO time_log (tl__date, tl__act, tl__memo) ";
+		$Q_log     .= "VALUES ('$date_time', '$act', '$memo') "; 
+		$R_log      = mysqli_query($_SOSUKE_MYSQLI, $Q_log);
+		return TRUE; 
 	}
+
 
   $time_start = microtime_float();
 ?>
