@@ -1075,7 +1075,7 @@
         let functionUserTableModal = function (data){
             
             data = JSON.parse(data[5]);
-            console.log(data);
+         
             $('#user__role_edit').selectpicker('deselectAll');
             $('#user__id_edit').val(data.user__id);
             $('#user__mail_edit').val(data.user__mail);
@@ -1095,13 +1095,18 @@
             $('#user__role_edit').selectpicker('val', arraySelect);
             $('#user__role_edit').selectpicker('refresh');
             arraySelect = [];
-            $("#user__site_edit > option").each(function () {
+            
+            $("#user__site_edit > option").each(function (){
+                
                 for (i = 0; i < data.clients.length; i++) {
-                    if (this.value === data.clients[i].cli__id) {
+                    
+                    if (this.value == data.clients[i].cli__id) {
+                      
                         arraySelect.push(this.value);
                     }
                 }
             });
+            
             $('#user__site_edit').selectpicker('val', arraySelect);
             $('#user__site_edit').selectpicker('refresh');
         }
