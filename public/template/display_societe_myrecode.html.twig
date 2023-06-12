@@ -107,6 +107,9 @@
                     <li class="list-group-item">
                         <p><i class="far fa-question-circle"></i> Les changements effectués sur Soft-Recode sont directement mis à jour sur myrecode.fr</p>
                     </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <p class="text-danger"> Aucun logo pour cette société</p> <button data-toggle="modal" data-target="#modalLogo" class="btn btn-recode-important"><i class="fas fa-layer-plus"></i></button>
+                    </li>
                 </ul>
             </div>
             <div class="col-7 card-recode mx-4">
@@ -618,6 +621,38 @@
     </div>
 </div>
 
+
+
+<!--modal logo -->
+<div class="modal fade" id="modalLogo" tabindex="-1" role="dialog" aria-labelledby="modalmatosAjout"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title">Logo</h5>
+                    <p class="my-2"><i class="far fa-question-circle"></i> Le logo doit etre de type .png</p>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="postlogo" id="postlogo" method="post" enctype="multipart/form-data" >
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Choisir un logo</label>
+                        <input class="form-control" name="logoInput" type="file" id="logoInput">
+                      </div>
+                </div>
+              
+                <div class="modal-footer">
+                    <button class="btn btn-recode-important"  type="button">Soumettre</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <!-- Modal  Matos edit-->
 <div class="modal fade" id="modalmatosEdit" tabindex="-1" role="dialog" aria-labelledby="modalmatosAjout"
     aria-hidden="true">
@@ -1097,11 +1132,8 @@
             arraySelect = [];
             
             $("#user__site_edit > option").each(function (){
-                
-                for (i = 0; i < data.clients.length; i++) {
-                    
-                    if (this.value == data.clients[i].cli__id) {
-                      
+                for(i = 0; i < data.clients.length; i++) {
+                    if (this.value == data.clients[i].cli__id){
                         arraySelect.push(this.value);
                     }
                 }
@@ -1809,6 +1841,21 @@
             });
             return results;
         }
+    });
+
+
+    $("#logoInput").change(function(){
+
+        var fileExtension = ['png'];
+        if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+            alert("Merci de choisir un fichier de type:  .png");
+            return $("#logoInput").val('');
+        }
+        if(this.files[0].size > 2000000) {
+            alert("La taille maximum autorisée est de ");
+            return $("#logoInput").val('');
+        }
+        $('#postlogo').submit();
     });
 
 </script>
