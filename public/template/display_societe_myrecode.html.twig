@@ -284,7 +284,7 @@
                                 <div class="past_pastel" id="sco__type_port_d">
                                     <i class="fas fa-folder-open"></i> Documents administratifs
                                 </div> 
-                                <button data-toggle="modal" data-target="#modalLogo"
+                                <button data-toggle="modal" data-target="#modalAd"
                                     class="btn btn-recode-important"><i class="fas fa-layer-plus"></i>
                                 </button>
                             </li>
@@ -672,6 +672,44 @@
                         <label for="formFile" class="form-label">Choisir un logo</label>
                         <input class="form-control" name="logoInput" type="file" id="logoInput">
                       </div>
+                </div>
+              
+                <div class="modal-footer">
+                    <button class="btn btn-recode-important"  type="button">Soumettre</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--modal administratif -->
+<div class="modal fade" id="modalAd" tabindex="-1" role="dialog" aria-labelledby="modalmatosAjout"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title">Documents administratifs</h5>
+                    <p class="my-2"><i class="far fa-question-circle"></i> .pdf uniquement</p>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="postAd" id="postAd" method="post" enctype="multipart/form-data" >
+                <div class="modal-body d-flex justify-content-between">
+                    <div class="mb-3 col-5">
+                        <label for="formFile" class="form-label">Choisir un document </label>
+                        <input class="form-control" name="logoInput" type="file" id="docAd">
+                    </div>
+                    <div class="mb-3 col-5">
+                        <label for="formFile" class="form-label">Liste des documents administratifs présent</label>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Aucun document présent</li>
+                            
+                        </ul>
+                    </div>
                 </div>
               
                 <div class="modal-footer">
@@ -1251,7 +1289,7 @@
             let verif = handleFormsUser(body)
 
             if(verif) {return verif}
-            $.ajax(local + '/verifymail', {
+            $.ajax(prod + '/verifymail', {
                 type: 'POST',
                 method: "POST",
                 dataType: "text",
@@ -1378,7 +1416,7 @@
         //si faux je ne peux pas continuer sinon je peux afficher le message :
         let  verifyMailRequest = function (body) {
             let results = false ; 
-            $.ajax( local + '/verifymail', {
+            $.ajax( prod + '/verifymail', {
                 type: 'POST',  
                 method : "POST" ,
                 async: false,
@@ -1415,7 +1453,7 @@
 
         let updateUserRequest = function(body){
             let results = false ; 
-            $.ajax( local +  '/usersossuke', {
+            $.ajax( prod +  '/usersossuke', {
                 type: 'POST',  
                 crossDomain: true ,
                 async: false,
@@ -1437,7 +1475,7 @@
                 'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528', 
                 'one': $('#cli__id').val(),
             };
-            $.ajax( local +  '/sossuke', {
+            $.ajax( prod +  '/sossuke', {
                 type: 'POST',  
                 crossDomain: true ,
                 async: false,
@@ -1455,7 +1493,7 @@
 
         let postUserRelation = function (body) {
             let results = false;
-            $.ajax(local + '/usersitessossuke', {
+            $.ajax(prod + '/usersitessossuke', {
                 type: 'POST',
                 method : "POST" ,
                 crossDomain: true ,
@@ -1855,7 +1893,7 @@
                 'cli__id': $('#cli__id').val(),
                 'RECODE__PASS' : 'testtfvgz4564564**zatyf§§/tettavapouuzvcaQQZAcvrtestdetestrapondre'
             };
-            $.ajax( local +  '/materiel', {
+            $.ajax( prod +  '/materiel', {
                 type: 'GET',  
                 crossDomain: true ,
                 async: false,
