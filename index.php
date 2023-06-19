@@ -377,7 +377,6 @@ else
 			require __DIR__ . '/pages/ajax/ajax_selected_pn.php';
 			break;
 
-
 		case '/SoftRecode/ajax-delete-files';
 			require __DIR__ . '/pages/ajax/ajax_delete_files.php';
 			break;

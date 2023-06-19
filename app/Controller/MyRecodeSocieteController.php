@@ -45,6 +45,59 @@ class MyRecodeSocieteController extends BasicController {
     }
 
 
+    public static function postLogo(){
+        self::init();
+        self::security();
+        $Database = new Database('devis');
+        $Database->DbConnect();
+
+        $path = "O:\myRecode";
+
+        if (empty($_POST['cli__id'])) {
+            header('Location: myRecode');
+            exit();
+        }
+        if (!isset($_FILES['file']) && $file['logoInput']['error'] === UPLOAD_ERR_OK && file_exists($file['logoInput']['tmp_name'])) {
+            header('Location: myRecode');
+            exit();
+        }
+
+        self::InsereLogo($_POST['cli__id'], '' ,  $file['logoInput']['tmp_name']);
+        header('Location: SocieteMyRecode?cli__id'.$_POST['cli__id']);
+        exit();
+        
+    }
+
+    public static function InsereLogo($id, $path, $file) {
+        $dossier = $path . $id;
+    
+        if (is_dir($dossier)) {
+
+            $dossierTech = $dossier . '/tech';
+            $dossierAdmin = $dossier . '/administratif';
+            if (!is_dir($dossierTech)){
+                mkdir($dossierTech, 0777, true);
+            }
+            if (!is_dir($dossierAdmin)) {
+                mkdir($dossierAdmin, 0777, true);
+            }
+            $nomFichier = $dossier . '/' . $id . '.png';
+            file_put_contents($nomFichier, $file);
+
+        } else {
+
+            mkdir($dossier, 0777, true);
+            $dossierTech = $dossier . '/tech';
+            $dossierAdmin = $dossier . '/administratif';
+            mkdir($dossierTech, 0777, true);
+            mkdir($dossierAdmin, 0777, true);
+            $nomFichier = $dossier . '/' . $id . '.png';
+            file_put_contents($nomFichier, $file);
+        }
+    }
+    
+
+
     public static function display()
     {
         self::init();

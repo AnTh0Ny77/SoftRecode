@@ -73,8 +73,7 @@ if (!empty($_POST['idAbnUpdate'])) {
 
 //si une mise à jour de ligne à été effectuée : 
 if (!empty($_POST['idCmd'])) {
-
- 
+  
     $update = $Abonnement->UpdateMachine(
       $_POST['idCmd'],
       $_POST['numL'],
@@ -94,8 +93,6 @@ if (!empty($_POST['idCmd'])) {
   $abn->ab__date_anniv = date_format($date_anniv, 'd/m/Y');
   $cmd = $Cmd->GetById($abn->ab__cmd__id);
   $lignes = $Abonnement->getLigne($abn->ab__cmd__id);
-
-  
 
   foreach ($lignes as $ligne) {
     $devisDate = date_create($ligne->abl__dt_debut);
