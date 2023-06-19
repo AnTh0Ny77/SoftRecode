@@ -516,6 +516,8 @@ case '/SoftRecode/time'.$get_data;
 	require __DIR__ .'/pages/time.php'; break;
 case '/SoftRecode/time_logoff'.$get_data;
 	require __DIR__ .'/pages/time_logoff.php'; break;
+case '/SoftRecode/time_recap'.$get_data;
+	require __DIR__ .'/pages/time_recap.php'; break;
 
 
 case '/SoftRecode/restore';
