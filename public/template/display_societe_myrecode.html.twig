@@ -1248,12 +1248,11 @@
         $('user__role').selectpicker();
 
          $('#button_user_crea').on('click' , function(){
-            let verification = PostUser();
-            if(verification) {
-                $('#alert_user').text(verification);
-            }else {
+            PostUser().then(function(data){
                 renderUserTable();
-            }
+            }).catch(function(error){
+                $('#alert_user').text(error);
+            });
         })
 
         $('#button_user_edit').on('click' , function(){
@@ -1265,7 +1264,6 @@
             }
         });
 
-        
 
         let UpdateMatos = function(){
 
@@ -1284,48 +1282,67 @@
             ActifMatos(body);
         });
 
-        let PostUser = function(){
-            let body = returnBodyUser()
-            let verif = handleFormsUser(body)
-
-            if(verif) {return verif}
-            $.ajax(prod + '/verifymail', {
+        let PostUser = function() {
+            return new Promise(function(resolve, reject) {
+              let body = returnBodyUser();
+              let verif = handleFormsUser(body);
+              
+              if (verif.length > 2) {
+                reject(verif);
+              }
+              
+              if (verif) {
+                reject(verif);
+              }
+              
+              $.ajax(prod + '/verifymail', {
                 type: 'POST',
                 method: "POST",
                 dataType: "text",
                 data: JSON.stringify(body),
-                success: function (data, status, xhttp) {
-                    verif = 'cette adresse email est deja utilisée pour un autre compte utilisateur ! <button type="button" id="addUser">Attribuer</button>';
-                    return verif;
+                success: function(data, status, xhttp) {
+                  verif = 'cette adresse email est deja utilisée pour un autre compte utilisateur';
+                  
+                  if (verif.length > 2) {
+                    reject(verif);
+                  } else {
+                    resolve(data);
+                  }
                 },
-                error: function (jqXhr, textStatus, errorMessage) {
-                    let randomPassword = Math.random().toString(36).slice(-8);
-                    randomPassword += 'A8';
-                    body['user__password'] = randomPassword;
-                    let post = postUserRequest(body)
-                    let role = returnRole();
-                    if (role.length > 0) {
-                        for (let i = 0; i < role.length; i++) {
-                            let roles = {
-                                'user__id': post,
-                                'role': role[i],
-                                'secret': 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528'
-                            }
-                            postRoleRequest(roles);
-                        }
+                error: function(jqXhr, textStatus, errorMessage) {
+                  console.log('hey');
+                  let randomPassword = Math.random().toString(36).slice(-8);
+                  randomPassword += 'A8';
+                  body['user__password'] = randomPassword;
+                  let post = postUserRequest(body);
+                  let role = returnRole();
+                  
+                  if (role.length > 0) {
+                    for (let i = 0; i < role.length; i++) {
+                      let roles = {
+                        'user__id': post,
+                        'role': role[i],
+                        'secret': 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528'
+                      };
+                      
+                      postRoleRequest(roles);
                     }
-                    let relation_data = {
-                        "secret": 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528',
-                        "luc__cli__id": $('#cli__id').val(),
-                        "luc__user__id": post,
-                        "luc__order": 1
-                    }
-                    let relation = postUserRelation(relation_data);
-                    verif = false;
+                  }
+                  
+                  let relation_data = {
+                    "secret": 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528',
+                    "luc__cli__id": $('#cli__id').val(),
+                    "luc__user__id": post,
+                    "luc__order": 1
+                  };
+                  
+                  let relation = postUserRelation(relation_data);
+                  resolve(relation); // Vous pouvez également résoudre avec relation si nécessaire
                 }
+              });
             });
-            return verif;
-        }
+          };
+          
 
         $('#addUser').on('click' , function(){
             console.log('hey');
