@@ -44,6 +44,13 @@ class User extends Table
     return $data;
   }
 
+  public function getBadgeur()
+  {
+    $request =$this->Db->Pdo->query("SELECT * FROM utilisateur WHERE type_user > 0 and user__time_plan IS NOT null ORDER BY prenom" );
+    $data = $request->fetchAll(PDO::FETCH_CLASS);
+    return $data;
+  }
+
 
   public function getCommerciaux()
   {
