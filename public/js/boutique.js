@@ -1,6 +1,6 @@
 $(document).ready(function(){
     const prod = "http://192.168.1.105/api";
-    const local = "http://localhost/RESTapi/";
+    // const prod = "http://localhost/RESTapi/";
     let body = {
         "secret" : "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528", 
         'sav__cli_id' :  $('#cli__id').val()

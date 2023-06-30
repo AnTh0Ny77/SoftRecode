@@ -30,14 +30,15 @@ $(document).ready(function (){
         success: function (data){
          
             dataSet = JSON.parse(data);
-            console.log(dataSet['1'].length);
-            if (dataSet['1'].length >  0) {
+            console.log(dataSet['2'].length);
+            
+            if (dataSet['2'].length >  0) {
                 $('#NBTKM').text(dataSet['1'].length);
                 $('#notifTKM').removeClass('d-none');
             }
-            if (dataSet['2'].length >  0) {
-                $('#notifcoursTKM').text(dataSet['2'].length);
-                $('#TKMEncours').removeClass('d-none');
+            if (dataSet['1'].length >  0) {
+                $('#NBTKMC').text(dataSet['2'].length);
+                $('#notifcoursTKM').removeClass('d-none');
             }
         },
         error: function (err) {
