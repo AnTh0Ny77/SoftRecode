@@ -78,7 +78,7 @@
     <h3 class="recode-p"><i class="fad fa-building"></i></i>Administration MyRecode.fr </h3>
     <p><i class="far fa-question-circle"></i> Société/Utilisateurs/Machines</p>
     <div class="d-flex justify-content-start flex-wrap mt-4">
-            <div class="col-4 card-recode-admin">
+            <div class=" col-sm-3 col-4 card-recode-admin">
                 <h4 class="recode-p"><i class="fas fa-building"></i> ({{client.cli__id}}) {{client.cli__nom}}</h4>
                 <p>
                     {{client.cli__adr1 ~ " " ~ client.cli__adr2 ~ " " ~  client.cli__cp ~ " " ~ client.cli__ville }}
@@ -107,9 +107,9 @@
                     <li class="list-group-item">
                         <p><i class="far fa-question-circle"></i> Les changements effectués sur Soft-Recode sont directement mis à jour sur myrecode.fr</p>
                     </li>
-                    <li class="list-group-item d-flex justify-content-between">
+                    {# <li class="list-group-item d-flex justify-content-between">
                         <p class="text-danger"> Aucun logo pour cette société</p> <button data-toggle="modal" data-target="#modalLogo" class="btn btn-recode-important"><i class="fas fa-layer-plus"></i></button>
-                    </li>
+                    </li> #}
                 </ul>
             </div>
             <div class="col-7 card-recode-admin mx-5">
@@ -229,7 +229,7 @@
         </div>
         <div class="d-flex justify-content-start flex-wrap mt-4">
 
-            <div class="col-4 card-recode-admin">
+            <div class="col-sm-3 col-4 card-recode-admin">
                 <h4 class="recode-p"><i class="fas fa-file-signature"></i> Conditions de ventes en ligne</h4>
                 <i class="far fa-question-circle"></i> Conditions de vente en ligne 
                 <ul class="list-group list-group-flush">
@@ -273,7 +273,7 @@
         </div>  
                 <div class="d-flex justify-content-start flex-wrap mt-4">
                 
-                    <div class="col-4 card-recode-admin">
+                    {# <div class="col-4 card-recode-admin">
                         <h4 class="recode-p"><i class="fas fa-file-signature"></i> Documents en ligne</h4>
                         <i class="far fa-question-circle"></i> Administratif et techniques
                         <ul class="list-group list-group-flush">
@@ -296,7 +296,7 @@
                                 </button>
                             </li>
                         </ul>
-                    </div>
+                    </div> #}
                 
                     <div class="col-7 card-recode-admin mx-5">
                         <h4 class="recode-p"><i class="fas fa-layer-group"></i> Parc Matériel</h4>
@@ -304,7 +304,7 @@
                         numéro de série
                         <table id="table_mat" class="display mt-3">
                             <div class="my-2 float-right">
-                                <button class="btn btn-recode-important" data-toggle="modal" data-target="#modalmatosAjout">Ajouter</button>
+                                {# <button class="btn btn-recode-important" data-toggle="modal" data-target="#modalmatosAjout">Ajouter</button> #}
                             </div>
                             <thead>
                                 <tr>
@@ -514,6 +514,7 @@
                             <input class="form-control my-2 input-recode" name="user__gsm" id="user__gsm_edit" placeholder="Téléphone" rows="2" ></input>
                         </div>
                         <div class="col-6">
+                            <span class="text-bold mt-1" for="user__site_edit">Droits de l'utilisateur</span>
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" multiple  name="user__role" id="user__role_edit"  >
                                 <option value="ADUSR" >Administrateur</option>
                                 <option value="ACHAT" >Peut passer des commandes</option>
@@ -531,6 +532,7 @@
                     </div>
                     <div class="col-11 d-flex justify-content-start">
                         <div class="col-6">
+                            <span class="text-bold mt-1" for="user__site_edit">Boutique visible ( en plus de la société en cours )</span>
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" multiple  name="user__site" id="user__site_edit"  >
                                 {% for clientTT in list_client %}
                                     {% if clientTT.cli__id != client.cli__id %}
@@ -539,6 +541,16 @@
                                 {% endfor %}
                             </select>
                         </div>
+                        {# <div class="col-6">
+                            <span class="text-bold mt-1" for="user__site_edit">Parc visible ( en plus de la société en cours )</span>
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" multiple  name="user__site" id="user__parc_edit"  >
+                                {% for clientTT in list_client %}
+                                    {% if clientTT.cli__id != client.cli__id %}
+                                        <option value="{{clientTT.cli__id}}">{{ " ( " ~ clientTT.cli__id ~ " ) " ~ clientTT.cli__nom}}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div> #}
                         {# <div class="col-6">
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" name="user__actif" id="user__site_actif">
                                 <option value="1">Profil actif</option>
@@ -1176,7 +1188,7 @@
         let functionUserTableModal = function (data){
             
             data = JSON.parse(data[5]);
-         
+            console.log(data);
             $('#user__role_edit').selectpicker('deselectAll');
             $('#user__id_edit').val(data.user__id);
             $('#user__mail_edit').val(data.user__mail);
@@ -1429,7 +1441,7 @@
         }
  
         const prod = "http://192.168.1.105/api" ; 
-        const local = "http://localhost/RESTapi/";
+        //const prod = "http://localhost/RESTapi/"; 
         //si faux je ne peux pas continuer sinon je peux afficher le message :
         let  verifyMailRequest = function (body) {
             let results = false ; 
@@ -1529,7 +1541,7 @@
         let deleteRole = function(body){
             let results = false;
 
-            $.ajax(local + '/rolesossuke', {
+            $.ajax(prod + '/rolesossuke', {
                 type: 'POST',
                 crossDomain: true ,
                 async: false,
@@ -1546,7 +1558,7 @@
 
         let postRoleRequest = function(body){
             let results = false ; 
-            $.ajax( local +  '/rolesossuke', {
+            $.ajax( prod +  '/rolesossuke', {
                 type: 'POST',  
                 crossDomain: true ,
                 data: JSON.stringify(body), 
@@ -1848,7 +1860,7 @@
 
         let postMatosRequest = function(body){
             let results = false ; 
-            $.ajax( local +  '/materiel', {
+            $.ajax( prod +  '/materiel', {
                 type: 'POST',  
                 crossDomain: true ,
                 async: true ,
@@ -1866,7 +1878,7 @@
 
         let ActifMatos = function(body){
             let results = false;
-            $.ajax(local + '/materielSossuke', {
+            $.ajax(prod + '/materielSossuke', {
                 type: 'POST',
                 crossDomain: true,
                 async: true,

@@ -197,6 +197,32 @@ public function get_myRecode_for_user($id_user){
 				$string .= $value->id_utilisateur . ', ';
 			}
 		}
+	}else{$string = $id_user;}
+	
+	$request = $this->Db->Pdo->query('SELECT 
+	Max(ticket_ligne.tkl__dt) , ticket_ligne.tkl__tk_id
+	FROM ticket_ligne
+	LEFT JOIN ticket ON ticket_ligne.tkl__tk_id = ticket.tk__id
+	WHERE tkl__user_id_dest  IN('.$string.') AND ( ticket.tk__lu = 3 AND  ticket.tk__motif = "TKM" )  
+	AND  ticket_ligne.tkl__dt = ( SELECT Max(t.tkl__dt) FROM ticket_ligne as t WHERE t.tkl__tk_id = ticket.tk__id )
+	GROUP BY ticket_ligne.tkl__tk_id');
+	$user_ticket = $request->fetchAll(PDO::FETCH_OBJ);
+	return $user_ticket;
+}
+
+
+public function get_myRecode_for_tech($id_user){
+
+	$array_groups = $this->get_groups_by_user($id_user);
+	if (!empty($array_groups)){
+		$string = "";
+		foreach ($array_groups as $key => $value){
+			if ($key === array_key_last($array_groups)){
+				$string .= $value->id_utilisateur . ' ';
+			}else{
+				$string .= $value->id_utilisateur . ', ';
+			}
+		}
 	}else{
 		$string = $id_user;
 	}
