@@ -539,6 +539,114 @@ o.`Y8b 88""   88  .o 88""   Yb        88              88"Yb    YbdPYbdP
 	}
 
 
+	function getHolidays($year = FALSE)
+	{
+		if ($year === FALSE)
+		{
+			$year = intval(date('Y'));
+		}
+		$easterDate = easter_date($year);
+		$easterDay = date('j', $easterDate);
+		$easterMonth = date('n', $easterDate);
+		$easterYear = date('Y', $easterDate);
+		$holidays = array(
+			// Jours feries fixes
+			date("Y-m-d",mktime(0, 0, 0, 1, 1, $year)),// 1er janvier
+			date("Y-m-d",mktime(0, 0, 0, 5, 1, $year)),// Fete du travail
+			date("Y-m-d",mktime(0, 0, 0, 5, 8, $year)),// Victoire des allies
+			date("Y-m-d",mktime(0, 0, 0, 7, 14, $year)),// Fete nationale
+			date("Y-m-d",mktime(0, 0, 0, 8, 15, $year)),// Assomption
+			date("Y-m-d",mktime(0, 0, 0, 11, 1, $year)),// Toussaint
+			date("Y-m-d",mktime(0, 0, 0, 11, 11, $year)),// Armistice
+			date("Y-m-d",mktime(0, 0, 0, 12, 25, $year)),// Noel
+			// Jour feries qui dependent de paques
+			date("Y-m-d",mktime(0, 0, 0, $easterMonth, $easterDay + 1, $easterYear)),// Lundi de paques
+			date("Y-m-d",mktime(0, 0, 0, $easterMonth, $easterDay + 39, $easterYear)),// Ascension
+		  //date("Y-m-d",mktime(0, 0, 0, $easterMonth, $easterDay + 50, $easterYear)), // Pentecote n'est plus un jour de congé  :-(
+		);
+		sort($holidays);
+		return $holidays;
+	}
+
+	//The function returns the no. of business days between two dates and it skeeps the holidays
+	function getWorkingDays($startDate,$endDate)
+	{
+		//Example: difference entre 2 dates 
+		//  echo getWorkingDays("2006-12-22","2007-01-06")
+		// => will return 8
+		//The total number of days between the two dates. We compute the no. of seconds and divide it to 60*60*24
+		//We add one to inlude both dates in the interval.
+		$startYear = substr($startDate, 0, 4);
+		$endYear   = substr($endDate, 0, 4);
+		$holidays  = array(); // Si l'interval demande chevauche plusieurs annees on doit avoir les jours feries de toutes ces annees 
+		for ($iYear = $startYear; $iYear <= $endYear; $iYear++)
+		{
+			$holidays = array_merge( $holidays, getHolidays($iYear));
+		}
+		
+		$nb_days = round((strtotime($endDate) - strtotime($startDate))/(60*60*24));
+		for ($i = strtotime($startDate); $i < strtotime($endDate); $i += 86400)
+		{
+			$iDayNum = date('N',$i); // Numero du jour de la semaine, de 1 pour lundi a 7 pour dimanche
+			if (in_array(date('Y-m-d', $i), $holidays) OR $iDayNum == 6 OR $iDayNum == 7) // Si c'est ferie ou samedi ou dimanche, on soustrait le nombre de secondes dans une journee. 
+				$nb_days -= 1;
+		}
+		return (integer) $nb_days;
+	}
+
+	//The function returns the working day after startdate and it skeeps the holidays
+	function NextWorkingDays($startDate)
+	{
+		$startYear = substr($startDate, 0, 4);
+		$endYear   = $startYear + 1;
+		$holidays  = array(); // Si l'interval demande chevauche plusieurs annees on doit avoir les jours feries de toutes ces annees 
+		for ($iYear = $startYear; $iYear <= $endYear; $iYear++)
+		{
+			$holidays = array_merge( $holidays, getHolidays($iYear));
+		}
+		$startTimeStamp = strtotime($startDate)+86400; // lendemain de la date de depart
+		$endTimeStamp   = $startTimeStamp + 86400*5; // il est impossible d'avoir 5 jours de suite de WE ou jour feriés
+		for ($i = $startTimeStamp; $i < $endTimeStamp; $i += 86400)
+		{
+			$iDayNum = date('N',$i); // Numero du jour de la semaine, de 1 pour lundi a 7 pour dimanche
+			if (!in_array(date('Y-m-d', $i), $holidays) AND $iDayNum <> 6 AND $iDayNum <> 7) // pas ferie ni samedi ni dimanche
+				break;
+		}
+		return date('Y-m-d', $i);
+	}
+
+	//mise ne forme de l'heure passage de 8 a : 08:00 (strtotime considere que 8:15 est bien 8h15min mais 8 n'est pas reconue)
+	function good_time($in_time)
+	{
+		if (strlen($in_time) == 0) $in_time = "00:00";
+		if (strpos($in_time, ':') === FALSE) $in_time = $in_time.':00'; // je recherche : dans le time , si il n'est pas la j'ajoute :00
+		$in_time_stamp = strtotime($in_time); 
+		return date('H:i', $in_time_stamp);
+	}
+
+	//ajoute x minutes a une heure... (fonctione avec des -x donc retire x minutes) !! planché a 00:00 (empeche de descendre au dessous de 00:00)
+	function add_minutes($my_time, $minutes)
+	{
+		$today   = strtotime("TODAY");
+		$result  = max(0,strtotime($my_time)-$today+($minutes*60));
+		return date('H:i', $result+$today); // le plus today pour decalage Horaire
+	}
+
+	// renvoie un date avec le jours et moi en lettre
+	function dt_litterale($ma_date)
+	{
+		$jour = array("","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"); 
+		$mois = array("","Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"); 
+		$ts_date        = strtotime($ma_date); // timestamp de la date
+		$litterale_date = $jour[date('N',$ts_date)]." ".date('d',$ts_date)." ".$mois[date('n',$ts_date)]." ".date('Y',$ts_date); 
+		return $litterale_date;
+	}
+
+
+
+
+
+
   $time_start = microtime_float();
 ?>
 
