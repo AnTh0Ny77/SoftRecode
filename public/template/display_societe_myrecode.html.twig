@@ -541,7 +541,7 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        {# <div class="col-6">
+                        <div class="col-6">
                             <span class="text-bold mt-1" for="user__site_edit">Parc visible ( en plus de la société en cours )</span>
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" multiple  name="user__site" id="user__parc_edit"  >
                                 {% for clientTT in list_client %}
@@ -550,13 +550,7 @@
                                     {% endif %}
                                 {% endfor %}
                             </select>
-                        </div> #}
-                        {# <div class="col-6">
-                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" name="user__actif" id="user__site_actif">
-                                <option value="1">Profil actif</option>
-                                <option value="0">Profil inactif</option>
-                            </select>
-                        </div> #}
+                        </div> 
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -1185,6 +1179,11 @@
 
         $("#table_id tr").css('cursor', 'pointer');
 
+
+        let functionSelectParcUser = function(){
+           
+        }
+
         let functionUserTableModal = function (data){
             
             data = JSON.parse(data[5]);
@@ -1208,10 +1207,12 @@
             $('#user__role_edit').selectpicker('val', arraySelect);
             $('#user__role_edit').selectpicker('refresh');
             arraySelect = [];
-            
+            $("#user__parc_edit> option").each(function(){this.remove();});
+           
             $("#user__site_edit > option").each(function (){
                 for(i = 0; i < data.clients.length; i++) {
                     if (this.value == data.clients[i].cli__id){
+                        $('#user__parc_edit').append('<option value="'+data.clients[i].cli__id+'">'+ ' ( ' + data.clients[i].cli__id + ' ) ' + data.clients[i].cli__nom+'</option>');
                         arraySelect.push(this.value);
                     }
                 }
@@ -1219,7 +1220,21 @@
             
             $('#user__site_edit').selectpicker('val', arraySelect);
             $('#user__site_edit').selectpicker('refresh');
+            $('#user__parc_edit').selectpicker('refresh');
+            arraySelect = [];
+            $("#user__parc_edit > option").each(function (){
+                for(i = 0; i < data.clientsParc.length; i++) {
+                    if (this.value == data.clientsParc[i].cli__id){
+                        arraySelect.push(this.value);
+                    }
+                }
+            });
+            $('#user__parc_edit').selectpicker('val', arraySelect);
+           
         }
+
+
+       
 
 
         let functionMatosTableModal = function (data){
@@ -1322,7 +1337,6 @@
                   }
                 },
                 error: function(jqXhr, textStatus, errorMessage) {
-                  console.log('hey');
                   let randomPassword = Math.random().toString(36).slice(-8);
                   randomPassword += 'A8';
                   body['user__password'] = randomPassword;
@@ -1367,8 +1381,6 @@
             if(verif) {return verif}
             //met a jour les données de l utilisateur :
             let put = updateUserRequest(body);
-          
-           
 
             let deleteBody = { 
                 '_METHOD' : 'DELETE' ,
@@ -1395,8 +1407,6 @@
             }else{
                 siteUser = [$('#cli__id').val()];
             }
-
-           
             
             if(siteUser.length > 0){
                 let relation_data = {
@@ -1407,7 +1417,32 @@
                 }
                 let relation = postUserRelation(relation_data);
             }
-            return false ;
+
+            let sitesParc = $('#user__parc_edit').val();
+
+            if(sitesParc.length > 0){
+                sitesParc.push($('#cli__id').val());
+            }else{
+                sitesParc = [$('#cli__id').val()];
+            }
+
+            
+            $body = {
+                "update_parc" : sitesParc , 
+                "secret" : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528' , 
+                "user__id": $('#user__id_edit').val()
+            }
+
+            updateUserRelation(body)
+            .then(function(results) {
+                return false ;
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+
+
+           
         }
 
         let returnBodyUser = function(){
@@ -1528,6 +1563,8 @@
                 crossDomain: true ,
                 data: JSON.stringify(body),
                 success: function (data, status, xhttp){
+                   
+                    
                     results = data.data
                 },
                 error: function (jqXhr, textStatus, errorMessage){
@@ -1536,6 +1573,23 @@
             });
             
             return results;
+        }
+
+        let updateUserRelation =  function (body) {
+            return new Promise(function(resolve, reject) {
+                $.ajax(prod + '/usersitessossuke', {
+                    type: 'POST',
+                    method: "POST",
+                    crossDomain: true,
+                    data: JSON.stringify(body),
+                    success: function (data, status, xhttp) {
+                        resolve(data.data);
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        reject(jqXhr.responseJSON.msg);
+                    }
+                });
+            });
         }
 
         let deleteRole = function(body){
