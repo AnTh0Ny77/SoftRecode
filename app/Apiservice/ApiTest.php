@@ -571,6 +571,9 @@ class ApiTest extends BasicController {
         die();
     }
 
+
+    
+
     public static function les_fichiers($dirname, $option=false){
         // recherche les fichiers dans un repertoire
         $icones_fichiers = "";
