@@ -54,10 +54,26 @@ class MatMyRecodeController extends BasicController {
 
             foreach ($lignes as $key => $value) {
                //incorporre les machines 
-                //boucle chaque machine : sn ? oui maj sinon post
+               $exist = $Api->getMateriel($token, ["mat__sn" => $value->abl__sn]);
+               if (empty($exist)) {
+                    $body = [
+                        "mat__sn" =>        $value->abl__sn,  
+                        "mat__cli__id" =>   $abn->ab__client__id_fact, 
+                        "mat__type" =>     $abn->ab__client__id_fact, 
+                        "mat__marque" =>  $value->marque, 
+                        "mat__model" =>  $value->afmm__modele, 
+                        "mat__pn" =>  $abn->ab__client__id_fact, 
+                        "mat__memo" => $abn->ab__client__id_fact , 
+                        "mat__date_in" =>  $value->abl__dt_debut, 
+                        "mat__kw_tg" => $abn->ab__client__id_fact, 
+                        "mat__date_offg" => $abn->ab__client__id_fact , 
+                        "mat__user_id" =>  $_SESSION['user']->id_utilisateur, 
+                        "mat__contrat_id" =>  $_POST['abn__id'], 
+                        "mat__actif" => $value->abl__actif
+                    ];
+                    $new = $Api->postMachine($token);
+               }
             }
-            
-
         }else{
             return false ;
         }
