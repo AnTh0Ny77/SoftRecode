@@ -49,7 +49,7 @@ class MatMyRecodeController extends BasicController {
             $lignes = $Abonnement->getLigne($abn->ab__cmd__id);
             $myRecodeClient = $Api->getClient($token , ['cli__id' =>  $abn->ab__client__id_fact]);
             if (empty($myRecodeClient['data'])) {
-                # code...
+                $Api->transfertClient2($abn->ab__client__id_fact);
             }
 
             foreach ($lignes as $key => $value) {
