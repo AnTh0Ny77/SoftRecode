@@ -106,8 +106,8 @@ class Abonnement extends Table
         return $data;
     }
 
-    public function getLigneActives($id)
-    {
+    public function getLigneActives($id){
+
         $request =$this->Db->Pdo->query("SELECT 
         abl__cmd__id , abl__ligne , abl__dt_debut , abl__actif, abl__id__fmm, 
         abl__designation, abl__sn, abl__type_repair, abl__prix_mois, abl__note_interne,
@@ -123,12 +123,12 @@ class Abonnement extends Table
         ORDER BY  abl__ligne ASC LIMIT 500 ");
         $data = $request->fetchAll(PDO::FETCH_OBJ);
         return $data;
+
     }
 
     
-
-    public function getOneLigne($id , $num)
-    {
+    public function getOneLigne($id , $num){
+        
         $request =$this->Db->Pdo->query("SELECT 
         abl__cmd__id , abl__ligne , abl__dt_debut , abl__actif, abl__id__fmm, 
         abl__designation, abl__sn, abl__type_repair, abl__prix_mois, abl__note_interne,

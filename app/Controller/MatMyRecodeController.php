@@ -33,7 +33,7 @@ class MatMyRecodeController extends BasicController {
         }
     }
 
-    public static function post(){
+    public static function post($abn__id){
         self::init();
         self::security();
         $Database = new Database('devis');
@@ -42,38 +42,38 @@ class MatMyRecodeController extends BasicController {
         $Api = new ApiTest();
         $Abonnement = new Abonnement($Database);
         $token = self::getToken();
-
-        if (!empty($_POST['abn__id'])){
-
-            $abn = $Abonnement->getById($_POST['abn__id']);
+      
+        if (!empty($abn__id)){
+           
+            $abn = $Abonnement->getById($abn__id);
             $lignes = $Abonnement->getLigne($abn->ab__cmd__id);
             $myRecodeClient = $Api->getClient($token , ['cli__id' =>  $abn->ab__client__id_fact]);
+           
             if (empty($myRecodeClient['data'])) {
-                $Api->transfertClient2($abn->ab__client__id_fact);
+                $Api->transfertClient2($abn->ab__client__id_fact , $token);
             }
 
             foreach ($lignes as $key => $value) {
-               //incorporre les machines 
-               $exist = $Api->getMateriel($token, ["mat__sn" => $value->abl__sn]);
-               if (empty($exist)) {
+            //incorporre les machines 
                     $body = [
                         "mat__sn" =>        $value->abl__sn,  
                         "mat__cli__id" =>   $abn->ab__client__id_fact, 
-                        "mat__type" =>     $abn->ab__client__id_fact, 
+                        "mat__type" =>    $value->marque, 
                         "mat__marque" =>  $value->marque, 
-                        "mat__model" =>  $value->afmm__modele, 
-                        "mat__pn" =>  $abn->ab__client__id_fact, 
-                        "mat__memo" => $abn->ab__client__id_fact , 
-                        "mat__date_in" =>  $value->abl__dt_debut, 
-                        "mat__kw_tg" => $abn->ab__client__id_fact, 
-                        "mat__date_offg" => $abn->ab__client__id_fact , 
+                        "mat__model" =>  $value->modele, 
+                        "mat__pn" =>  "" , 
+                        "mat__memo" =>  '' , 
+                        "mat__date_in" =>  $value->abl__dt_debut , 
+                        "mat__kw_tg" =>  $abn->ab__presta , 
+                        "mat__date_offg" => $abn->ab__date_anniv, 
                         "mat__user_id" =>  $_SESSION['user']->id_utilisateur, 
-                        "mat__contrat_id" =>  $_POST['abn__id'], 
+                        "mat__contrat_id" =>  $abn__id, 
                         "mat__actif" => $value->abl__actif
                     ];
-                    $new = $Api->postMachine($token);
-               }
+                   
+                    $new = $Api->postMachine($token ,  $body);
             }
+            return true;
         }else{
             return false ;
         }
@@ -81,6 +81,7 @@ class MatMyRecodeController extends BasicController {
     }
 
     public static function getToken(){
+        $Api = new ApiTest();
         $token  = null;
         if (empty($_SESSION['user']->refresh_token)) {
             $token = $Api->login($_SESSION['user']->email , 'test');

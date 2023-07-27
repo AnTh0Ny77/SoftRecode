@@ -572,28 +572,9 @@ class ApiTest extends BasicController {
     }
 
 
-    public static function transfertClient2($id){
+    public static function transfertClient2($id , $token){
         
-        if (empty($_SESSION['user']->refresh_token)) {
-            $token = self::login($_SESSION['user']->email , 'test');
-            if ($token['code'] != 200) {
-                echo 'Connexion LOGIN à L API IMPOSSIBLE';
-                die();
-            }
-            $_SESSION['user']->refresh_token = $token['data']['refresh_token'] ; 
-            $token =  $token['data']['token'];
-        }else{
-            $refresh = self::refresh($_SESSION['user']->refresh_token);
-            if ( $refresh['code'] != 200) {
-                echo 'Rafraichissemnt de jeton API IMPOSSIBLE';
-                die();
-            }
-            $token =  $refresh['token']['token'];
-        }
-        if (empty($_POST['client__id'])) {
-            header('location: search_switch');
-            die();
-        }
+       
         $database = new Database('devis');
         $database->DbConnect();
         $clientTable = new TablesClient($database);
@@ -624,8 +605,6 @@ class ApiTest extends BasicController {
             $response = $exeption->getResponse();
         }
 
-        header('location: displaySocieteMyRecode?cli__id='. $clientSoft->client__id.'');
-        die();
     }
 
 

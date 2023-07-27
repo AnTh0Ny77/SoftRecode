@@ -107,9 +107,9 @@
                     <li class="list-group-item">
                         <p><i class="far fa-question-circle"></i> Les changements effectués sur Soft-Recode sont directement mis à jour sur myrecode.fr</p>
                     </li>
-                    {# <li class="list-group-item d-flex justify-content-between">
+                    <li class="list-group-item d-flex justify-content-between">
                         <p class="text-danger"> Aucun logo pour cette société</p> <button data-toggle="modal" data-target="#modalLogo" class="btn btn-recode-important"><i class="fas fa-layer-plus"></i></button>
-                    </li> #}
+                    </li>
                 </ul>
             </div>
             <div class="col-7 card-recode-admin mx-5">
@@ -676,12 +676,13 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="formFile" class="form-label">Choisir un logo</label>
+                        <input type="hidden" name="clicli" value="{{client.cli__id}}">
                         <input class="form-control" name="logoInput" type="file" id="logoInput">
                       </div>
                 </div>
               
                 <div class="modal-footer">
-                    <button class="btn btn-recode-important"  type="button">Soumettre</button>
+                    <button class="btn btn-recode-important"  type="submit">Soumettre</button>
                 </div>
             </form>
         </div>

@@ -2,6 +2,7 @@
 require "./vendor/autoload.php";
 require "./App/twigloader.php";
 use App\Methods\Pdfunctions;
+use App\Controller\MatMyRecodeController;
 
 
 session_start();
@@ -57,8 +58,9 @@ if (!empty($_POST['hiddenId'])) {
 //si une mise a jour d'abonnement a été effectué : 
 if (!empty($_POST['idAbnUpdate'])) {
 
-
+  $MaterielMyRecode = new MatMyRecodeController;
   $update = $Abonnement->UpdateAbn($_POST['idAbnUpdate'], $_POST['actifAbn'],  $_POST['prestationAbn'],  $_POST['comAbnG'],  $_POST['moisAbn']);
+  
   $abn = $Abonnement->getById($_POST['idAbnUpdate']);
   $date_anniv = date_create($abn->ab__date_anniv);
   $abn->ab__date_anniv = date_format($date_anniv, 'd/m/Y');
@@ -69,6 +71,10 @@ if (!empty($_POST['idAbnUpdate'])) {
     $date = date_format($devisDate, 'd/m/Y');
     $ligne->abl__dt_debut = $date;
   }
+   //fonction de mise a jour dans myRecode
+ $MaterielMyRecode->post($_POST['idAbnUpdate']);
+  
+
 }
 
 //si une mise à jour de ligne à été effectuée : 
