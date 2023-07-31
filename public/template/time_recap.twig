@@ -74,9 +74,13 @@
 							<em> </em>
 						</div>
 						<div class="h3">Détail par jours</div>
-						<i class="fad fa-sign-out-alt fa-lg" style="--fa-primary-color: limegreen;"></i> Arrivé en avance ou OK - 
-						<i class="fad fa-sign-out-alt fa-lg" style="--fa-primary-color: darkorange;"></i> Retard de moins de 5 minutes - 
-						<i class="fad fa-sign-out-alt fa-lg" style="--fa-primary-color: red;"></i> Retard de plus de 5 minutes. 
+						<i class="fad fa-sign-in-alt fa-lg" style="--fa-primary-color: limegreen;"></i> Arrivé en avance ou OK - 
+						<i class="fad fa-sign-in-alt fa-lg" style="--fa-primary-color: darkorange;"></i> Retard de moins de 5 minutes - 
+						<i class="fad fa-sign-in-alt fa-lg" style="--fa-primary-color: red;"></i> Retard de plus de 5 minutes. 
+						<br>
+						<i class="fad fa-sign-out-alt fa-lg" style="--fa-primary-color: limegreen;"></i> Parti a l'heure ou aprés - 
+						<i class="fad fa-sign-out-alt fa-lg" style="--fa-primary-color: darkorange;"></i> Parti en avance moins de 5 minutes - 
+						<i class="fad fa-sign-out-alt fa-lg" style="--fa-primary-color: red;"></i> Parti en avance plus de 5 minutes. 
 
 						<div class="row">
 							<div class="col-12">
@@ -86,24 +90,22 @@
 											<th>Jour</th>
 											<th>H Prévue</th>
 											<th>H Efféctif</th>
-											<th>H Delta</th>
-											<th>Ponctualité AM/PM</th>
+											<th>Info.</th>
 										</tr>
 									</thead>
 									<tbody>
 										{% for data in t_data %}
 										<tr>
 											<td>{{data.jour}}</td>
-											<td align=left>{{data.prev}}</td>
-											<td align=left>{{data.effect|raw}}</td>
-											<td align=right>{{data.delta}}</td>
-											<td align=center>{{data.ponct}}</td>
+											<td align=left >{{data.prev}}</td>
+											<td align=left >{{data.effect|raw}} <small><em>{{data.delta|raw}}</em></small></td>
+											<td align=left >{{data.info|raw}}</td>
 										</tr>
 										{% endfor %}
 									</tbody>
 								</table>
 								<br>
-								Temps gagné, perdu {{tot_delta|number_format(2,',',' ')}} 
+								Temps gagné, perdu {{tot_delta|number_format(0,',',' ')}} Min. <em>(chiffre non significatif...)</em>
 							</div>
 						</div>
 					{% endif %}

@@ -68,6 +68,7 @@ $mid_time      = '13:00:00';
 $diffEnSecondes= '';
 $SecondesRetardMax = -300;  //5 minutes
 $color_logo    = '';
+$tot_delta     = 0;
 $color_logo_ok = 'style="--fa-primary-color: limegreen;"';
 $color_logo_no = 'style="--fa-primary-color: red;"';
 $color_logo_mid= 'style="--fa-primary-color: darkorange;"';
@@ -185,10 +186,43 @@ if ($btn_verif)
 				// construction de la chaine d'affichage.
 				$T_data[$T_i]['effect'] .= $i_move.$xtime.' ';
 			}
+			
 			// Delta
-			$T_data[$T_i]['delta']  = $diff_sec_jour.'.';
-			// Ponctualité
-			$T_data[$T_i]['ponct']  = '.';
+			$delta = $diff_sec_jour/60;
+			$tot_delta += $delta;
+			if ($delta <> 0)
+				$T_data[$T_i]['delta'] = '('.round($delta).' Min.)';
+		
+			// Information sur les abs déclaré prévue
+			$Q4_  = "SELECT * FROM time_out WHERE to__user = '".$badgeur['id']."' AND to__out < '".$ce_jour." 24:00:00' AND to__in > '".$ce_jour."' ";
+			$Q4_ .= "AND to__abs_etat <> 'ANNUL' ORDER BY to__out";
+			$R4_  = mysqli_query($_SOSUKE_MYSQLI, $Q4_);
+			$abs_en_cours = FALSE;
+			$info = '';
+			// print $Q4_.'<br>';
+			while ($A4_ = mysqli_fetch_array($R4_, MYSQLI_ASSOC) )
+			{	
+				$time_stamp = mktime(0,0,0,substr($A4_['to__out'],5,2),substr($A4_['to__out'],8,2),substr($A4_['to__out'],0,4));
+				$info        .= '<b>'.$A4_['to__motif'].'</b> - ';
+				// si le jour de debut de time_out = ce jour j'ecrit "de 99:99"
+				if(substr($A4_['to__out'],0,10) == $ce_jour)
+					$info        .= '<em>de '.substr($A4_['to__out'],11,5).'</em> ';
+				// si le jour de fin de time_out = ce jour j'ecrit "à 99:99"
+				if(substr($A4_['to__in'],0,10) == $ce_jour)
+					$info        .= '<em>à '.substr($A4_['to__in'],11,5).'</em> ';
+				// si il y a un commentaire sur l'abscence je le met
+				if (strlen($A4_['to__info']) > 0)
+					$info        .= '<small><em>('.$A4_['to__info'].')</em></small> ';
+				// $info        .= $A4_['to__abs_etat']; // etat de la demande (demande ou accepté)
+				$info .='<br>';
+				$abs_en_cours = TRUE;
+			}
+			if ($t_horaire[$num_jour]['tp__type'] == 'TT')
+				$info        .= '<b>TT</b>';
+			if ($t_horaire[$num_jour]['tp__type'] == 'OUT')
+				$info        .= '<b>Jour OFF</b>';
+
+			$T_data[$T_i]['info']  = $info;
 
 			$T_i ++;
 		}
@@ -201,149 +235,6 @@ if ($btn_verif)
 
 }
 
-// recherches des presence et abscence
-$nb_colonnes = 8;
-// liste des user concernés par le pointage
-$Q_  = "SELECT id_utilisateur, user__time_plan, user__time_pin, user__time_rfid, user__time_rfid2, prenom, nom, icone FROM utilisateur where user__time_plan IS NOT NULL order by prenom";
-$R_  = mysqli_query($_SOSUKE_MYSQLI, $Q_);
-$grid_present = $grid_pasla = $grid_abs = 1; // numero de la case pour le tableau (de 1 à x)
-$html_present = $html_pasla = $html_abs = '<table><tr class="text-center">';
-while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
-{ // boucle sur les user avec user__time_plan non NULL
-	// recherche de l'etat de la derniere action de chaque user
-	$user_id         = $A_['id_utilisateur'];
-	$user_time_plan  = $A_['user__time_plan'];
-	$user_prenom     = $A_['prenom'];
-	$user_nom        = $A_['nom'];
-	$user_icone      = $A_['icone'];
-	// derniere action
-	$Q2_  = "SELECT tt__time, tt__move FROM time_track WHERE tt__user = ".$user_id." ORDER BY tt__time DESC LIMIT 1";
-	$R2_  = mysqli_query($_SOSUKE_MYSQLI, $Q2_);
-	$A2_  = mysqli_fetch_array($R2_, MYSQLI_ASSOC);
-	$user_last_dt     = $A2_['tt__time'];
-	$user_last_move   = $A2_['tt__move'];
-	// planing  du jour.
-	$Q3_  = "SELECT * FROM time_plan WHERE tp__name = '".$user_time_plan."' AND tp__jour = ".$jour_sem;
-	$R3_  = mysqli_query($_SOSUKE_MYSQLI, $Q3_);
-	$A3_  = mysqli_fetch_array($R3_, MYSQLI_ASSOC);
-	$tp_am_in    = $A3_['tp__am_in'];
-	$tp_am_out   = $A3_['tp__am_out'];
-	$tp_pm_in    = $A3_['tp__pm_in'];
-	$tp_pm_out   = $A3_['tp__pm_out'];
-	$tp_type     = $A3_['tp__type'];
-	// Abscence prevue.
-	$Q4_  = "SELECT * FROM time_out WHERE to__user = '".$user_id."' AND to__out < '".$date_time."' AND to__in > '".$date_time."' ";
-	$Q4_ .= "AND to__abs_etat <> 'ANNUL' ORDER BY to__out LIMIT 1 ";
-	$R4_  = mysqli_query($_SOSUKE_MYSQLI, $Q4_);
-	$abs_en_cours = $to_etat = $to_in = $to_motif = $to_out = FALSE;
-	// print $Q4_.'<br>';
-	if (mysqli_num_rows($R4_) == 1)
-	{	
-		$A4_  = mysqli_fetch_array($R4_, MYSQLI_ASSOC);
-		$to_out       = $A4_['to__out'];
-		$to_in        = $A4_['to__in'];
-		$to_motif     = $A4_['to__motif'];
-		$to_etat      = $A4_['to__abs_etat'];
-		$abs_en_cours = TRUE;
-	}
-	// etude du motif pour la décoration du bonhome  :-)
-	$fa_user = 'fa-user fa-lg';
-	$motif_cp = $motif_malad = $motif_perso = FALSE;
-	if(stripos($to_motif, 'CP')       !== FALSE) $motif_cp    = TRUE;
-	if(stripos($to_motif, 'CONGE')    !== FALSE) $motif_cp    = TRUE;
-	if(stripos($to_motif, 'VACANCE')  !== FALSE) $motif_cp    = TRUE;
-	if(stripos($to_motif, 'MALAD')    !== FALSE) $motif_malad = TRUE;
-	if(stripos($to_motif, 'MEDIC')    !== FALSE) $motif_malad = TRUE;
-	if(stripos($to_motif, 'PERSO')    !== FALSE) $motif_perso = TRUE;
-	if($motif_cp == TRUE)    $fa_user = 'fa-user-astronaut fa-2x';
-	if($motif_malad == TRUE) $fa_user = 'fa-user-injured fa-2x';
-	if($motif_perso == TRUE) $fa_user = 'fa-user-secret fa-2x';
-
-	// AM ou PM ? pour connaitre les retard avant 13h c'est matin , apres c'est Apres midi...
-	if ($am_pm == 'AM')
-		{ $tp_in = $tp_am_in; $tp_out = $tp_am_out; }
-	else
-		{ $tp_in = $tp_pm_in; $tp_out = $tp_pm_out; }
-	$user_last_time   = substr($user_last_dt,11,5);
-	$user_last_time_j = substr($user_last_dt,8,2).'/'.substr($user_last_dt,5,2).' '.substr($user_last_dt,11,5);
-	$color_sign = 'seagreen'; $color_user = '#698569';
-	$dif_time = dif2time($user_last_time, $tp_in);
-	$secret_info = $abs_info = '';
-	if ($dif_time > $tolerance_retard_in)
-		{ $color_sign = 'tomato'; $color_user = '#906969';}
-	if (substr($user_last_move,0,2) <> 'IN') // le dernier mouvement n'est pas une entrée
-		$color_user = 'CadetBlue';
-	$fa_logo_in = 'fa-sign-in';
-	if ($user_last_move == 'IN_TT') $fa_logo_in = 'fa-house'; // logo spécial Télétravail
-	if ($abs_en_cours)
-	{
-		$abs_info = $to_motif.'<br><i class="fad fa-house-return"></i> '.dt2dts($to_in);
-		$color_user = 'Orange';
-	}
-	// Creation du personage
-	$html_user  = '<td width=12.5%>';
-	$html_user .= '<div'.$secret_info.'><i class="fad '.$fa_user.' " style="color:'.$color_user.';"></i></div>';
-	$html_user .= '<span class=h6>'.$user_prenom.' '.substr($user_nom,0,1).'.</span><br>';
-	if (substr($user_last_move,0,2) == 'IN') // le dernier mouvement est une entré, donc cette personne est là
-	{
-		$html_user .= '<span style="color:'.$color_sign.';"><i class="fad '.$fa_logo_in.'"></i></span> <em>'.$user_last_time.'</em>';
-	}
-	else // cette presonne n'est pas là
-	{
-		if ($abs_en_cours)
-		{
-			$html_user .= $abs_info;
-		}
-		else
-		{
-			$html_user .= '<i class="fad fa-sign-out"></i> <em>'.$user_last_time_j.'</em>'.$abs_info;
-		}
-	}
-	$html_user .= '</td>';
-
-	if (substr($user_last_move,0,2) == 'IN') // le dernier mouvement est une entré, donc cette personne est là
-	{ 
-		if ($grid_present == $nb_colonnes+1) 
-		{ $grid_present = 1; $html_present .= '</tr><tr class="text-center">';}
-		$html_present .= $html_user; $grid_present += 1; 
-	}
-	else
-	{
-		if ($abs_en_cours)
-		{
-			if ($grid_abs == $nb_colonnes+1) 
-			{ $grid_abs = 1; $html_abs .= '</tr><tr class="text-center">';}
-			$html_abs .= $html_user; $grid_abs +=1; 
-		}
-		else
-		{
-			if ($tp_type <> 'OUT') // pour ne pas afficher dans pasla ceux qui sont out (ne travail pas ce jour)
-			{
-				if ($grid_pasla == $nb_colonnes+1) 
-				{ $grid_pasla = 1; $html_pasla .= '</tr><tr class="text-center">'; }
-				$html_pasla .= $html_user; $grid_pasla += 1;
-			}
-		}
-	}
-
-}
-
-$empty_grid = '<td width=12.5%> </td>'; // case vide pour completer si pas x cases
-$fin_grid   = '</tr></table>'; // fin de ROW et fin de CLASS Container
-
-if ($grid_present < $nb_colonnes) $html_present .= $empty_grid;
-if ($grid_pasla   < $nb_colonnes) $html_pasla   .= $empty_grid;
-if ($grid_abs     < $nb_colonnes) $html_abs     .= $empty_grid;
-$html_present .= $fin_grid;
-$html_pasla   .= $fin_grid;
-$html_abs     .= $fin_grid;
-
-if ($grid_pasla == 1) $html_pasla = ''; // pour ne pas afficher la ligne si il n'y a personne dedans. (1 c'est qu'il n'a personne ! (2 il y a une personne ...))
-if ($grid_abs   == 1) $html_abs   = '';
-
-// Sosuké (SQL)
-$sql_select_maj   = "SELECT * FROM keyword WHERE kw__type = 'camrg' AND kw__value = 'MAJ' ";
-
    /*    888888 888888 88  dP""b8 88  88    db     dP""b8 888888 
   dPYb   88__   88__   88 dP   `" 88  88   dPYb   dP   `" 88__   
  dP__Yb  88""   88""   88 Yb      888888  dP__Yb  Yb  "88 88""   
@@ -352,15 +243,16 @@ dP""""Yb 88     88     88  YboodP 88  88 dP""""Yb  YboodP 88888*/
 // Donnée transmise au template : 
 echo $twig->render('time_recap.twig',
 [
-'titre'     => $msg_titre,
-'info'      => $msg_info,
+'titre'            => $msg_titre,
+'info'             => $msg_info,
 'badgeurList'      => $badgeurList, 
 'badgeurSelect'    => $badgeur,
 'date_debut'       => $date_debut, 
 'date_fin'         => $date_fin,
 'date_debut_fr'    => $date_debut_fr, 
 'date_fin_fr'      => $date_fin_fr,
-'t_data'           => $T_data
+'t_data'           => $T_data,
+'tot_delta'        => round($tot_delta)
 ]);
 
 // supprime le user si c'est 999 (qui est un faux user)

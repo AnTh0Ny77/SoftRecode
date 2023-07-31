@@ -102,7 +102,7 @@ if ($btn_ok)
 		$A_               = mysqli_fetch_array($R_, MYSQLI_ASSOC);
 		$user_move_id     = $A_['id_utilisateur'];
 		$user_move_prenom = $A_['prenom'];
-		$user_cnx = '('.$_SESSION['user']->id_utilisateur.') '.substr($_SESSION['user']->prenom,0,1).' '.$_SESSION['user']->nom;
+		$nom_user_cnx = '('.$_SESSION['user']->id_utilisateur.') '.substr($_SESSION['user']->prenom,0,1).' '.$_SESSION['user']->nom;
 		// recherche de derniere action pour ce user
 		$Q_  = "SELECT tt__id, tt__time, tt__move FROM time_track WHERE tt__user = ".$user_move_id." ORDER BY tt__time DESC LIMIT 1";
 		$R_  = mysqli_query($_SOSUKE_MYSQLI, $Q_);
@@ -147,7 +147,7 @@ if ($btn_ok)
 			// ecriture des infos
 			$info_user = '('.$_SESSION['user']->id_utilisateur.') '.$_SESSION['user']->prenom.' '.$_SESSION['user']->nom;
 			$Q_  = "INSERT INTO time_track (tt__user, tt__time, tt__move, tt__info, tt__poste) ";
-			$Q_ .= "VALUES ('$user_move_id', '$date_time', '$move', '$info', '$user_cnx') ";
+			$Q_ .= "VALUES ('$user_move_id', '$date_time', '$move', '$info', '$nom_user_cnx') ";
 			$R_  = mysqli_query($_SOSUKE_MYSQLI, $Q_); // var_dump($Q_);
 		}
 		// Message pour utilisateur
@@ -188,26 +188,26 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 	$Q4_  = "SELECT * FROM time_out WHERE to__user = '".$user_id."' AND to__out < '".$date_time."' AND to__in > '".$date_time."' ";
 	$Q4_ .= "AND to__abs_etat <> 'ANNUL' ORDER BY to__out LIMIT 1 ";
 	$R4_  = mysqli_query($_SOSUKE_MYSQLI, $Q4_);
-	$abs_en_cours = $to_etat = $to_in = $to_motif = $to_out = FALSE;
+	$abs_en_cours = $to_etat = $to_in = $to_info = $to_out = FALSE;
 	// print $Q4_.'<br>';
 	if (mysqli_num_rows($R4_) == 1)
 	{	
 		$A4_  = mysqli_fetch_array($R4_, MYSQLI_ASSOC);
 		$to_out       = $A4_['to__out'];
 		$to_in        = $A4_['to__in'];
-		$to_motif     = $A4_['to__motif'];
+		$to_info      = $A4_['to__info'];
 		$to_etat      = $A4_['to__abs_etat'];
 		$abs_en_cours = TRUE;
 	}
 	// etude du motif pour la décoration du bonhome  :-)
 	$fa_user = 'fa-user fa-lg';
 	$motif_cp = $motif_malad = $motif_perso = FALSE;
-	if(stripos($to_motif, 'CP')       !== FALSE) $motif_cp    = TRUE;
-	if(stripos($to_motif, 'CONGE')    !== FALSE) $motif_cp    = TRUE;
-	if(stripos($to_motif, 'VACANCE')  !== FALSE) $motif_cp    = TRUE;
-	if(stripos($to_motif, 'MALAD')    !== FALSE) $motif_malad = TRUE;
-	if(stripos($to_motif, 'MEDIC')    !== FALSE) $motif_malad = TRUE;
-	if(stripos($to_motif, 'PERSO')    !== FALSE) $motif_perso = TRUE;
+	if(stripos($to_info, 'CP')       !== FALSE) $motif_cp    = TRUE;
+	if(stripos($to_info, 'CONGE')    !== FALSE) $motif_cp    = TRUE;
+	if(stripos($to_info, 'VACANCE')  !== FALSE) $motif_cp    = TRUE;
+	if(stripos($to_info, 'MALAD')    !== FALSE) $motif_malad = TRUE;
+	if(stripos($to_info, 'MEDIC')    !== FALSE) $motif_malad = TRUE;
+	if(stripos($to_info, 'PERSO')    !== FALSE) $motif_perso = TRUE;
 	if($motif_cp == TRUE)    $fa_user = 'fa-user-astronaut fa-2x';
 	if($motif_malad == TRUE) $fa_user = 'fa-user-injured fa-2x';
 	if($motif_perso == TRUE) $fa_user = 'fa-user-secret fa-2x';
@@ -230,11 +230,11 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 	if ($user_last_move == 'IN_TT') $fa_logo_in = 'fa-house'; // logo spécial Télétravail
 	if ($abs_en_cours)
 	{
-		$abs_info = $to_motif.'<br><i class="fad fa-house-return"></i> '.dt2dts($to_in);
+		$abs_info = $to_info.'<br><i class="fad fa-house-return"></i> '.dt2dts($to_in);
 		$color_user = 'Orange';
 	}
 	if ($user_cnx == 56) // c'est francois lemoine
-		$secret_info = ' data-toggle="tooltip" data-placement="top" title="pin : '.$A_['user__time_pin'].'<br>rfid : '.$A_['user__time_rfid'].'<br>rfid2 : '.$A_['user__time_rfid2'].'"';
+		$secret_info = ' data-toggle="tooltip" data-placement="top" title="ID : '.$user_id.'<br>pin : '.$A_['user__time_pin'].'<br>rfid : '.$A_['user__time_rfid'].'<br>rfid2 : '.$A_['user__time_rfid2'].'"';
 	// Creation du personage
 	$html_user  = '<td width=12.5%>';
 	$html_user .= '<div'.$secret_info.'><i class="fad '.$fa_user.' " style="color:'.$color_user.';"></i></div>';
@@ -245,14 +245,12 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 	}
 	else // cette presonne n'est pas là
 	{
-		if ($abs_en_cours)
-		{
-			$html_user .= $abs_info;
-		}
-		else
-		{
-			$html_user .= '<i class="fad fa-sign-out"></i> <em>'.$user_last_time_j.'</em>'.$abs_info;
-		}
+		if ($tp_type == 'TT')
+			$html_user .= '<i class="fad fa-house"></i> <em>Télé Travail</em>';
+
+		if (!$abs_en_cours AND $tp_type <> 'TT')
+			$html_user .= '<i class="fad fa-sign-out"></i> <em>'.$user_last_time_j.'</em>';
+		$html_user .= $abs_info;
 	}
 	$html_user .= '</td>';
 
@@ -270,14 +268,19 @@ while ($A_  = mysqli_fetch_array($R_, MYSQLI_ASSOC) )
 			{ $grid_abs = 1; $html_abs .= '</tr><tr class="text-center">';}
 			$html_abs .= $html_user; $grid_abs +=1; 
 		}
-		else
+
+		if ($tp_type == 'TT' )
 		{
-			if ($tp_type <> 'OUT') // pour ne pas afficher dans pasla ceux qui sont out (ne travail pas ce jour)
-			{
-				if ($grid_pasla == $nb_colonnes+1) 
-				{ $grid_pasla = 1; $html_pasla .= '</tr><tr class="text-center">'; }
-				$html_pasla .= $html_user; $grid_pasla += 1;
-			}
+			if ($grid_present == $nb_colonnes+1) 
+			{ $grid_present = 1; $html_present .= '</tr><tr class="text-center">';}
+			$html_present .= $html_user; $grid_present +=1; 
+		}
+
+		if (!$abs_en_cours AND ( $tp_type <> 'OUT' AND $tp_type <> 'TT' )) // pour ne pas afficher dans pasla ceux qui sont out (ne travail pas ce jour)
+		{
+			if ($grid_pasla == $nb_colonnes+1) 
+			{ $grid_pasla = 1; $html_pasla .= '</tr><tr class="text-center">'; }
+			$html_pasla .= $html_user; $grid_pasla += 1;
 		}
 	}
 
