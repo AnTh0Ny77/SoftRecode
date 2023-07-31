@@ -68,6 +68,24 @@ class MyRecodeSocieteController extends BasicController {
         
     }
 
+    public static function fichierPNGExiste($dossierPath) {
+        // Vérifier si le dossier existe
+        if (!is_dir($dossierPath)) {
+            // Tenter de créer le dossier
+            if (!mkdir($dossierPath, 0777, true)) {
+                return null; // Échec de création du dossier
+            }
+        }
+    
+        // Obtenir le nom du dossier (sans le chemin)
+        $dossierNom = basename($dossierPath);
+    
+        // Vérifier si le fichier PNG existe
+        $fichierPNGPath = $dossierPath . DIRECTORY_SEPARATOR . $dossierNom . '.png';
+        return file_exists($fichierPNGPath);
+    }
+    
+
     public static function InsereLogo($id, $path, $file) {
         $dossier = $path . $id;
     
@@ -144,7 +162,14 @@ class MyRecodeSocieteController extends BasicController {
         ];
 
         $list_avendre = $Api->getShopVendre($token,$body)['data'];
-        
+
+        $logo = self::fichierPNGExiste("O:\myRecode/".$_GET['cli__id']);
+
+        if (!empty($logo)) {
+            $logo = "data:image/png;base64," . base64_encode(file_get_contents('O:/myRecode/' . $client['cli__id'] . '/' . $client['cli__id'] . '.png'));
+        }
+
+      
         header("Access-Control-Allow-Origin: *");
         return self::$twig->render(
             'display_societe_myrecode.html.twig',
@@ -153,7 +178,8 @@ class MyRecodeSocieteController extends BasicController {
                 'client' => $client , 
                 'pn_list' => $pn_list , 
                 'list_client' => $list_client ,
-                'avendre_list' => $list_avendre
+                'avendre_list' => $list_avendre , 
+                'logo' => $logo
             ]
         );
     }

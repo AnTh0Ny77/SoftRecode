@@ -107,9 +107,13 @@
                     <li class="list-group-item">
                         <p><i class="far fa-question-circle"></i> Les changements effectués sur Soft-Recode sont directement mis à jour sur myrecode.fr</p>
                     </li>
-                    {# <li class="list-group-item d-flex justify-content-between">
-                        <p class="text-danger"> Aucun logo pour cette société</p> <button data-toggle="modal" data-target="#modalLogo" class="btn btn-recode-important"><i class="fas fa-layer-plus"></i></button>
-                    </li> #}
+                    <li class="list-group-item d-flex justify-content-between">
+                        {% if logo %}
+                            <img src="{{logo}}"  width="100px"> <button data-toggle="modal" data-target="#modalLogo" class="btn btn-recode-important"><i class="fas fa-layer-plus"></i></button>
+                        {% else %}
+                            <p class="text-danger"> Aucun logo pour cette société</p> <button data-toggle="modal" data-target="#modalLogo" class="btn btn-recode-important"><i class="fas fa-layer-plus"></i></button>
+                        {% endif %}
+                    </li>
                 </ul>
             </div>
             <div class="col-7 card-recode-admin mx-5">
@@ -320,6 +324,7 @@
                             <tbody>
                                 {% for row in client.materiels %}
                                 {% if row.mat__actif == 1 %}
+                                
                                 <tr>
                                     {% else %}
                                 <tr>
@@ -327,16 +332,16 @@
                                     <td>{{row|json_encode()}}</td>
                                     <td>{{row.mat__id}}</td>
                                     <td>
-                                        {% if row.mat__type %}
+                                        {% if row.mat__model %}
                                         {% if row.mat__actif == 1 %}
-                                        <div class="past_greeen mx-2 my-1">
-                                            <b>{{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}</b>
-                                        </div>
-                                        {% else %}
-                                        <div class="past_yellow mx-2 my-1">
-                                            <b>{{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}</b> <span
-                                                class="text-danger">INACTIF</span>
-                                        </div>
+                                            <div class="past_greeen mx-2 my-1">
+                                                <b>{{row.mat__model}}<br>{{row.mat__type ~ " " ~ row.mat__marque}}</b>
+                                            </div>
+                                            {% else %}
+                                            <div class="past_yellow mx-2 my-1">
+                                                <b>{{row.mat__model}}<br>{{row.mat__type ~ " " ~ row.mat__marque}}</b> <span
+                                                    class="text-danger">INACTIF</span>
+                                            </div>
                                         {% endif %}
                                         {% else %}
                                         {% if row.mat__actif == 1 %}
@@ -541,7 +546,7 @@
                                 {% endfor %}
                             </select>
                         </div>
-                        {# <div class="col-6">
+                        <div class="col-6">
                             <span class="text-bold mt-1" for="user__site_edit">Parc visible ( en plus de la société en cours )</span>
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" multiple  name="user__site" id="user__parc_edit"  >
                                 {% for clientTT in list_client %}
@@ -550,13 +555,7 @@
                                     {% endif %}
                                 {% endfor %}
                             </select>
-                        </div> #}
-                        {# <div class="col-6">
-                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" name="user__actif" id="user__site_actif">
-                                <option value="1">Profil actif</option>
-                                <option value="0">Profil inactif</option>
-                            </select>
-                        </div> #}
+                        </div> 
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -682,12 +681,13 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="formFile" class="form-label">Choisir un logo</label>
+                        <input type="hidden" name="clicli" value="{{client.cli__id}}">
                         <input class="form-control" name="logoInput" type="file" id="logoInput">
                       </div>
                 </div>
               
                 <div class="modal-footer">
-                    <button class="btn btn-recode-important"  type="button">Soumettre</button>
+                    <button class="btn btn-recode-important"  type="submit">Soumettre</button>
                 </div>
             </form>
         </div>
@@ -740,7 +740,7 @@
                 <div class="modal-header">
                     <div>
                         <h5 class="modal-title">Modification de matériel</h5>
-                        <p class="my-2"><i class="far fa-question-circle"></i> Le S/N est obligatoire et doit etre unique</p>
+                        <p class="my-2"><i class="far fa-question-circle"></i>Les champs "grisés" ne sont pas modifiables car synchronisés avec notre système</p>
                     </div>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -750,11 +750,8 @@
                     <div class="col-11 d-flex justify-content-start">
                         <div class="col-12">
                             <input type="hidden" id="mat__id_edit">
-                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" id="mat__model_edit" >
-                                   {% for pn in pn_list %}
-                                        <option value="{{pn|json_encode()}}" >{{pn.famille ~ " " ~  pn.Marque ~ " " ~ pn.afmm__modele }}</option>
-                                   {% endfor %}
-                            </select>
+                            <input type="text" class="form-control my-2 input-recode" id="mat__model_edit" readonly>
+                            
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
@@ -771,41 +768,26 @@
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6 mb-1">
                             <small class="form-text text-muted"> Numero de la commande recode </small>
-                            <input class="form-control my-2 input-recode" id="mat__idnec_edit" placeholder="Numéro fiche Eurocomputeur" rows="2"  ></input>
+                            <input class="form-control my-2 input-recode" id="mat__idnec_edit" placeholder="Numéro fiche Eurocomputeur" rows="2"   ></input>
                             
                         </div>
                         <div class="col-6  mb-1">
                             <small class="form-text text-muted"> Complément d'information diverses</small>
-                            <input class="form-control my-2 input-recode" id="mat__memo_edit" placeholder="Mémo" rows="2" ></input>
+                            <input class="form-control my-2 input-recode" id="mat__memo_edit" placeholder="Mémo" rows="2" readonly ></input>
                             
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6">
                             <small class="form-text text-muted"> Si un abonnement existe pour cette machine</small>
-                            <input class="form-control my-2 input-recode" id="mat__contrat_id_edit" placeholder="Numéro du contrat chez Recode" rows="2"  ></input>
-                            
-                        </div>
-                        <div class="col-6">
-                            <small class="form-text text-muted"> Correspond Numero du client</small>
-                            <input class="form-control my-2 input-recode" id="mat__ident_edit" placeholder="Numéro identification du client" rows="2" ></input>
+                            <input class="form-control my-2 input-recode" id="mat__contrat_id_edit" placeholder="Numéro du contrat chez Recode" rows="2" readonly ></input>
                             
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6">
-                            <small class="form-text text-muted"> préciser la date si un contrat existe</small>
-                        <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="mat__kw_tg_edit">
-                                <option value="GNO">Pas de garantie</option>
-                                <option value="GCO">Garantie constructeur</option>
-                                <option value="LOC">Location Recode</option>
-                                <option value="GRE">Garantie Recode</option>
-                                <option value="MNT">Maintenance Recode</option>
-                         </select>
-                        </div>
-                        <div class="col-6">
-                            <small class="form-text text-muted"> La date sera prise en compte si une garantie est présente </small>
-                            <input class="form-control my-2 input-recode" type="date" id="mat__date_offg_edit" ></input>
+                            <small class="form-text text-muted">Type de garantie</small>
+                            <input type="text" class="form-control my-2 input-recode"  id="mat__kw_tg_edit" readonly>
                         </div>
                     </div>
                 </div>
@@ -991,10 +973,6 @@
     </div>
 </div>
 
-
-
-
-
 <!-- Modal  Boutique  Edit-->
 <div class="modal fade" id="modalSavEdit" tabindex="-1" role="dialog" aria-labelledby="modalUser" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -1124,6 +1102,11 @@
             paging: true,
             lengthMenu: [4],
             bLengthChange : false ,
+           
+            paging: false,             
+            bPaginate: false,  
+            scrollCollapse: true,
+            scrollY: '300px' ,
             columns: [
                 null,
                 null,
@@ -1152,9 +1135,11 @@
 
 
         var matosTable =  $('#table_mat').DataTable({
-            paging: true,
-            lengthMenu: [ 10 , 25 , 50 , 75],
+            paging: false,             
+            bPaginate: false,  
             order: [[1, 'desc']],
+            scrollCollapse: true,
+            scrollY: '300px' ,
             columns: [
                 { "visible": false },
                 null,
@@ -1170,7 +1155,7 @@
                 $(row).css('cursor', 'pointer');
                 datax = JSON.parse($(data)[0]);
                 $(row).on('click' , function(){   
-                    functionMatosTableModal($(data)); 
+                   functionMatosTableModal($(data)); 
                 })
             },
             language: {
@@ -1184,6 +1169,11 @@
         }); 
 
         $("#table_id tr").css('cursor', 'pointer');
+
+
+        let functionSelectParcUser = function(){
+           
+        }
 
         let functionUserTableModal = function (data){
             
@@ -1208,10 +1198,11 @@
             $('#user__role_edit').selectpicker('val', arraySelect);
             $('#user__role_edit').selectpicker('refresh');
             arraySelect = [];
-            
+            $("#user__parc_edit> option").each(function(){this.remove();});
             $("#user__site_edit > option").each(function (){
                 for(i = 0; i < data.clients.length; i++) {
                     if (this.value == data.clients[i].cli__id){
+                        $('#user__parc_edit').append('<option value="'+data.clients[i].cli__id+'">'+ ' ( ' + data.clients[i].cli__id + ' ) ' + data.clients[i].cli__nom+'</option>');
                         arraySelect.push(this.value);
                     }
                 }
@@ -1219,11 +1210,20 @@
             
             $('#user__site_edit').selectpicker('val', arraySelect);
             $('#user__site_edit').selectpicker('refresh');
+            $('#user__parc_edit').selectpicker('refresh');
+            arraySelect = [];
+            $("#user__parc_edit > option").each(function (){
+                for(i = 0; i < data.clientsParc.length; i++) {
+                    if (this.value == data.clientsParc[i].cli__id){
+                        arraySelect.push(this.value);
+                    }
+                }
+            });
+            $('#user__parc_edit').selectpicker('val', arraySelect);
+           
         }
 
-
         let functionMatosTableModal = function (data){
-           
             data = JSON.parse(data[0]);
             if(data.mat__actif == 0){
                 $("#button_matos_actif").removeClass("btn-recode-danger");
@@ -1241,7 +1241,7 @@
                 'afmm__modele' : data.mat__model, 
             })
            
-            $('#mat__model_edit').selectpicker('deselectAll');
+            $('#mat__model_edit').val(data.mat__model);
             $('#mat__kw_tg_edit').selectpicker('deselectAll');
             $('#button_matos_actif').val(data.mat__actif);
             $('#mat__id_edit').val(data.mat__id);
@@ -1251,8 +1251,7 @@
             $('#mat__ident_edit').val(data.mat__ident);
             $('#mat__date_offg_edit').val(data.mat__date_offg);
             $('#mat__contrat_id_edit').val(data.mat__contrat_id);
-            $('#mat__model_edit').selectpicker('val', fmm);
-            $('#mat__kw_tg_edit').selectpicker('val', data.mat__kw_tg);
+            $('#mat__kw_tg_edit').val(data.mat__kw_tg);
             $('#mat__model_edit').selectpicker('refresh');
             $('#mat__kw_tg_edit').selectpicker('refresh');
         }
@@ -1281,7 +1280,7 @@
 
         }
 
-         $('#button_matos_actif').on('click', function () {
+        $('#button_matos_actif').on('click', function () {
             let actif = 0;
             if($('#button_matos_actif').val() == 0 ){
                 actif = 1;
@@ -1322,7 +1321,6 @@
                   }
                 },
                 error: function(jqXhr, textStatus, errorMessage) {
-                  console.log('hey');
                   let randomPassword = Math.random().toString(36).slice(-8);
                   randomPassword += 'A8';
                   body['user__password'] = randomPassword;
@@ -1336,7 +1334,6 @@
                         'role': role[i],
                         'secret': 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528'
                       };
-                      
                       postRoleRequest(roles);
                     }
                   }
@@ -1367,8 +1364,6 @@
             if(verif) {return verif}
             //met a jour les données de l utilisateur :
             let put = updateUserRequest(body);
-          
-           
 
             let deleteBody = { 
                 '_METHOD' : 'DELETE' ,
@@ -1395,8 +1390,6 @@
             }else{
                 siteUser = [$('#cli__id').val()];
             }
-
-           
             
             if(siteUser.length > 0){
                 let relation_data = {
@@ -1407,7 +1400,34 @@
                 }
                 let relation = postUserRelation(relation_data);
             }
-            return false ;
+
+            let sitesParc = $('#user__parc_edit').val();
+
+            if(sitesParc.length > 0){
+                sitesParc.push($('#cli__id').val());
+            }else{
+                sitesParc = [$('#cli__id').val()];
+            }
+
+            
+            
+            $body = {
+                "update" : sitesParc , 
+                "secret" : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528' , 
+                "luc__user__id": $('#user__id_edit').val()
+            }
+
+            console.log(JSON.stringify($body));
+
+            updateUserRelation(body)
+            .then(function(results) {
+                
+                return false ;
+            })
+            .catch(function(error) {
+                console.error(error);
+            });
+
         }
 
         let returnBodyUser = function(){
@@ -1528,6 +1548,8 @@
                 crossDomain: true ,
                 data: JSON.stringify(body),
                 success: function (data, status, xhttp){
+                   
+                    
                     results = data.data
                 },
                 error: function (jqXhr, textStatus, errorMessage){
@@ -1536,6 +1558,23 @@
             });
             
             return results;
+        }
+
+        let updateUserRelation =  function (body) {
+            return new Promise(function(resolve, reject) {
+                $.ajax(prod + '/usersitessossuke', {
+                    type: 'POST',
+                    method: "POST",
+                    crossDomain: true,
+                    data: JSON.stringify(body),
+                    success: function (data, status, xhttp) {
+                        resolve(data.data);
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        reject(jqXhr.responseJSON.msg);
+                    }
+                });
+            });
         }
 
         let deleteRole = function(body){

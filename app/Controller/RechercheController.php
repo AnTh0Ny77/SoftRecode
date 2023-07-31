@@ -35,15 +35,15 @@ Class RechercheController extends BasicController
 		$forms_data = 	$Stocks->get_famille_forms($_POST['famille']);
         $object     = 	$Keyword->get_kw_by_typeAndValue('famil', $_POST['famille'] );
 		$forms = null;
-		
 
 		if (!empty($_POST['rechercheJSON'])) {
 			$forms = json_decode($_POST['rechercheJSON']);
 			$forms = (array)$forms;
-
 			foreach ($forms as $key => $value) {
 					if (!is_array($value)) {
+
 						unset($forms[$key]);
+						
 					}
 			}
 		}

@@ -504,6 +504,40 @@ class ApiTest extends BasicController {
         return self::handleResponse($response);
     }
 
+
+    public static function getMatAbn($token , $mat__sn){
+        $config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $body = ["secret" => "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528" , 'mat__sn' =>  $mat__sn ];
+        $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->get($env_uri .  '/materielSossuke', [
+                'headers' => self::makeHeaders($token),
+                'query' => $body
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
+        return self::handleResponse($response);
+    }
+
+    public static function updateMatAbn($token , $body){
+        $config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->post($env_uri .  '/materielSossuke', [
+                'headers' => self::makeHeaders($token),
+                'json' => $body
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
+        return self::handleResponse($response);
+    }
+
     public static function transfertClient(){
         
         if (empty($_SESSION['user']->refresh_token)) {
@@ -569,6 +603,41 @@ class ApiTest extends BasicController {
 
         header('location: displaySocieteMyRecode?cli__id='. $clientSoft->client__id.'');
         die();
+    }
+
+
+    public static function transfertClient2($id , $token){
+        
+       
+        $database = new Database('devis');
+        $database->DbConnect();
+        $clientTable = new TablesClient($database);
+        $clientSoft = $clientTable->getOne($id);
+
+        $config =json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        $body = [
+            "cli__id" => $clientSoft->client__id,
+            "cli__nom" => $clientSoft->client__societe,
+            "cli__id_mere" => $clientSoft->client__id,
+            "cli__adr1" => $clientSoft->client__adr1,
+            "cli__adr2" => $clientSoft->client__adr2,
+            "cli__cp" => $clientSoft->client__cp,
+            "cli__ville" => $clientSoft->client__ville,
+            "cli__pays" => $clientSoft->client__pays,
+            'cli__tel' => $clientSoft->client__tel
+        ];
+        try {
+            $response = $client->post($env_uri . '/transfert', [
+                'headers' => self::makeHeaders($token),
+                'json' => $body,
+                'http_errors' => false
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
     }
 
     public static function les_fichiers($dirname, $option=false){

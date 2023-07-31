@@ -52,7 +52,10 @@ $(document).ready(function(){
                     paging: true,
                     order: [[0, 'desc']] ,
                     lengthMenu: [ 5],
-                    bLengthChange : false ,
+                    paging: false,             
+                    bPaginate: false,  
+                    scrollCollapse: true,
+                    scrollY: '300px' ,
                     data: results,
                     columns: [
                         { "visible": false },
