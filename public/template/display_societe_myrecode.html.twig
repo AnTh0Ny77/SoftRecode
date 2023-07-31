@@ -108,7 +108,11 @@
                         <p><i class="far fa-question-circle"></i> Les changements effectués sur Soft-Recode sont directement mis à jour sur myrecode.fr</p>
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
-                        <p class="text-danger"> Aucun logo pour cette société</p> <button data-toggle="modal" data-target="#modalLogo" class="btn btn-recode-important"><i class="fas fa-layer-plus"></i></button>
+                        {% if logo %}
+                            <img src="{{logo}}"  width="100px"> <button data-toggle="modal" data-target="#modalLogo" class="btn btn-recode-important"><i class="fas fa-layer-plus"></i></button>
+                        {% else %}
+                            <p class="text-danger"> Aucun logo pour cette société</p> <button data-toggle="modal" data-target="#modalLogo" class="btn btn-recode-important"><i class="fas fa-layer-plus"></i></button>
+                        {% endif %}
                     </li>
                 </ul>
             </div>
@@ -320,6 +324,7 @@
                             <tbody>
                                 {% for row in client.materiels %}
                                 {% if row.mat__actif == 1 %}
+                                
                                 <tr>
                                     {% else %}
                                 <tr>
@@ -327,16 +332,16 @@
                                     <td>{{row|json_encode()}}</td>
                                     <td>{{row.mat__id}}</td>
                                     <td>
-                                        {% if row.mat__type %}
+                                        {% if row.mat__model %}
                                         {% if row.mat__actif == 1 %}
-                                        <div class="past_greeen mx-2 my-1">
-                                            <b>{{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}</b>
-                                        </div>
-                                        {% else %}
-                                        <div class="past_yellow mx-2 my-1">
-                                            <b>{{row.mat__type ~ " " ~ row.mat__marque}}<br>{{row.mat__model}}</b> <span
-                                                class="text-danger">INACTIF</span>
-                                        </div>
+                                            <div class="past_greeen mx-2 my-1">
+                                                <b>{{row.mat__model}}<br>{{row.mat__type ~ " " ~ row.mat__marque}}</b>
+                                            </div>
+                                            {% else %}
+                                            <div class="past_yellow mx-2 my-1">
+                                                <b>{{row.mat__model}}<br>{{row.mat__type ~ " " ~ row.mat__marque}}</b> <span
+                                                    class="text-danger">INACTIF</span>
+                                            </div>
                                         {% endif %}
                                         {% else %}
                                         {% if row.mat__actif == 1 %}
@@ -735,7 +740,7 @@
                 <div class="modal-header">
                     <div>
                         <h5 class="modal-title">Modification de matériel</h5>
-                        <p class="my-2"><i class="far fa-question-circle"></i> Le S/N est obligatoire et doit etre unique</p>
+                        <p class="my-2"><i class="far fa-question-circle"></i>Les champs "grisés" ne sont pas modifiables car synchronisés avec notre système</p>
                     </div>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -745,11 +750,8 @@
                     <div class="col-11 d-flex justify-content-start">
                         <div class="col-12">
                             <input type="hidden" id="mat__id_edit">
-                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" id="mat__model_edit" >
-                                   {% for pn in pn_list %}
-                                        <option value="{{pn|json_encode()}}" >{{pn.famille ~ " " ~  pn.Marque ~ " " ~ pn.afmm__modele }}</option>
-                                   {% endfor %}
-                            </select>
+                            <input type="text" class="form-control my-2 input-recode" id="mat__model_edit" readonly>
+                            
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
@@ -766,41 +768,26 @@
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6 mb-1">
                             <small class="form-text text-muted"> Numero de la commande recode </small>
-                            <input class="form-control my-2 input-recode" id="mat__idnec_edit" placeholder="Numéro fiche Eurocomputeur" rows="2"  ></input>
+                            <input class="form-control my-2 input-recode" id="mat__idnec_edit" placeholder="Numéro fiche Eurocomputeur" rows="2"   ></input>
                             
                         </div>
                         <div class="col-6  mb-1">
                             <small class="form-text text-muted"> Complément d'information diverses</small>
-                            <input class="form-control my-2 input-recode" id="mat__memo_edit" placeholder="Mémo" rows="2" ></input>
+                            <input class="form-control my-2 input-recode" id="mat__memo_edit" placeholder="Mémo" rows="2" readonly ></input>
                             
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6">
                             <small class="form-text text-muted"> Si un abonnement existe pour cette machine</small>
-                            <input class="form-control my-2 input-recode" id="mat__contrat_id_edit" placeholder="Numéro du contrat chez Recode" rows="2"  ></input>
-                            
-                        </div>
-                        <div class="col-6">
-                            <small class="form-text text-muted"> Correspond Numero du client</small>
-                            <input class="form-control my-2 input-recode" id="mat__ident_edit" placeholder="Numéro identification du client" rows="2" ></input>
+                            <input class="form-control my-2 input-recode" id="mat__contrat_id_edit" placeholder="Numéro du contrat chez Recode" rows="2" readonly ></input>
                             
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6">
-                            <small class="form-text text-muted"> préciser la date si un contrat existe</small>
-                        <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="mat__kw_tg_edit">
-                                <option value="GNO">Pas de garantie</option>
-                                <option value="GCO">Garantie constructeur</option>
-                                <option value="LOC">Location Recode</option>
-                                <option value="GRE">Garantie Recode</option>
-                                <option value="MNT">Maintenance Recode</option>
-                         </select>
-                        </div>
-                        <div class="col-6">
-                            <small class="form-text text-muted"> La date sera prise en compte si une garantie est présente </small>
-                            <input class="form-control my-2 input-recode" type="date" id="mat__date_offg_edit" ></input>
+                            <small class="form-text text-muted">Type de garantie</small>
+                            <input type="text" class="form-control my-2 input-recode"  id="mat__kw_tg_edit" readonly>
                         </div>
                     </div>
                 </div>
@@ -1115,6 +1102,11 @@
             paging: true,
             lengthMenu: [4],
             bLengthChange : false ,
+           
+            paging: false,             
+            bPaginate: false,  
+            scrollCollapse: true,
+            scrollY: '300px' ,
             columns: [
                 null,
                 null,
@@ -1143,9 +1135,11 @@
 
 
         var matosTable =  $('#table_mat').DataTable({
-            paging: true,
-            lengthMenu: [ 10 , 25 , 50 , 75],
+            paging: false,             
+            bPaginate: false,  
             order: [[1, 'desc']],
+            scrollCollapse: true,
+            scrollY: '300px' ,
             columns: [
                 { "visible": false },
                 null,
@@ -1161,7 +1155,7 @@
                 $(row).css('cursor', 'pointer');
                 datax = JSON.parse($(data)[0]);
                 $(row).on('click' , function(){   
-                    functionMatosTableModal($(data)); 
+                   functionMatosTableModal($(data)); 
                 })
             },
             language: {
@@ -1247,7 +1241,7 @@
                 'afmm__modele' : data.mat__model, 
             })
            
-            $('#mat__model_edit').selectpicker('deselectAll');
+            $('#mat__model_edit').val(data.mat__model);
             $('#mat__kw_tg_edit').selectpicker('deselectAll');
             $('#button_matos_actif').val(data.mat__actif);
             $('#mat__id_edit').val(data.mat__id);
@@ -1257,8 +1251,7 @@
             $('#mat__ident_edit').val(data.mat__ident);
             $('#mat__date_offg_edit').val(data.mat__date_offg);
             $('#mat__contrat_id_edit').val(data.mat__contrat_id);
-            $('#mat__model_edit').selectpicker('val', fmm);
-            $('#mat__kw_tg_edit').selectpicker('val', data.mat__kw_tg);
+            $('#mat__kw_tg_edit').val(data.mat__kw_tg);
             $('#mat__model_edit').selectpicker('refresh');
             $('#mat__kw_tg_edit').selectpicker('refresh');
         }

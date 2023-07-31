@@ -504,6 +504,40 @@ class ApiTest extends BasicController {
         return self::handleResponse($response);
     }
 
+
+    public static function getMatAbn($token , $mat__sn){
+        $config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $body = ["secret" => "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528" , 'mat__sn' =>  $mat__sn ];
+        $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->get($env_uri .  '/materielSossuke', [
+                'headers' => self::makeHeaders($token),
+                'query' => $body
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
+        return self::handleResponse($response);
+    }
+
+    public static function updateMatAbn($token , $body){
+        $config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+        $base_uri = $config->api->host;
+        $env_uri = $config->api->env_uri;
+        $client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+        try {
+            $response = $client->post($env_uri .  '/materielSossuke', [
+                'headers' => self::makeHeaders($token),
+                'json' => $body
+            ]);
+        } catch (GuzzleHttp\Exception\ClientException $exeption) {
+            $response = $exeption->getResponse();
+        }
+        return self::handleResponse($response);
+    }
+
     public static function transfertClient(){
         
         if (empty($_SESSION['user']->refresh_token)) {
@@ -604,11 +638,7 @@ class ApiTest extends BasicController {
         } catch (GuzzleHttp\Exception\ClientException $exeption) {
             $response = $exeption->getResponse();
         }
-
     }
-
-
-    
 
     public static function les_fichiers($dirname, $option=false){
         // recherche les fichiers dans un repertoire

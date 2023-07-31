@@ -1,7 +1,12 @@
 <?php
 namespace App\Controller;
 require_once  '././vendor/autoload.php';
-session_start();
+
+if (session_status() === PHP_SESSION_NONE) {
+	session_start();
+  }
+  
+  
 use App\Database;
 
 Class BasicController 

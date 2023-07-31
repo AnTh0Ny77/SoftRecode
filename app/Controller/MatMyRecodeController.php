@@ -49,29 +49,63 @@ class MatMyRecodeController extends BasicController {
             $lignes = $Abonnement->getLigne($abn->ab__cmd__id);
             $myRecodeClient = $Api->getClient($token , ['cli__id' =>  $abn->ab__client__id_fact]);
            
-            if (empty($myRecodeClient['data'])) {
+            if (empty($myRecodeClient['data'])){
                 $Api->transfertClient2($abn->ab__client__id_fact , $token);
             }
 
             foreach ($lignes as $key => $value) {
-            //incorporre les machines 
-                    $body = [
-                        "mat__sn" =>        $value->abl__sn,  
-                        "mat__cli__id" =>   $abn->ab__client__id_fact, 
-                        "mat__type" =>    $value->marque, 
-                        "mat__marque" =>  $value->marque, 
-                        "mat__model" =>  $value->modele, 
-                        "mat__pn" =>  "" , 
-                        "mat__memo" =>  '' , 
-                        "mat__date_in" =>  $value->abl__dt_debut , 
-                        "mat__kw_tg" =>  $abn->ab__presta , 
-                        "mat__date_offg" => $abn->ab__date_anniv, 
-                        "mat__user_id" =>  $_SESSION['user']->id_utilisateur, 
-                        "mat__contrat_id" =>  $abn__id, 
-                        "mat__actif" => $value->abl__actif
-                    ];
+                    // incorporre les machines 
+                    $exist = $Api->getMatAbn($token,$value->abl__sn);
+
+                    if (!empty($value->modele)) {
+                        $model = $value->modele;
+                        $marque = $value->marque;
+                        $type = $value->famille;
+                    }else {
+                        $marque = $value->marque;
+                        $model = $value->abl__designation;
+                        $type = "";
+                    }
                    
-                    $new = $Api->postMachine($token ,  $body);
+                    if (!empty($exist['data'])){
+                        $body = [
+                            "secret" => "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528" , 
+                            "__PUT" => 'ok' , 
+                            "mat__id" => $exist['data']['mat__id'] , 
+                            "mat__sn" =>        $value->abl__sn,  
+                            "mat__cli__id" =>   $abn->ab__client__id_fact, 
+                            "mat__type" =>   "", 
+                            "mat__marque" =>  $marque, 
+                            "mat__model" =>  $model, 
+                            "mat__pn" =>  "" , 
+                            "mat__memo" =>  '' , 
+                            "mat__date_in" =>  $value->abl__dt_debut, 
+                            "mat__kw_tg" =>  $abn->ab__presta, 
+                            "mat__date_offg" => $abn->ab__date_anniv, 
+                            "mat__user_id" =>  $_SESSION['user']->id_utilisateur, 
+                            "mat__contrat_id" =>  $abn__id, 
+                            "mat__actif" => $value->abl__actif
+                        ];
+                        $update = $Api->updateMatAbn($token,$body);
+                       
+                    }else{
+                        $body = [
+                            "mat__sn" =>        $value->abl__sn,  
+                            "mat__cli__id" =>   $abn->ab__client__id_fact, 
+                            "mat__type" =>   "", 
+                            "mat__marque" =>  $marque, 
+                            "mat__model" =>  $model, 
+                            "mat__pn" =>  "" , 
+                            "mat__memo" =>  '' , 
+                            "mat__date_in" =>  $value->abl__dt_debut , 
+                            "mat__kw_tg" =>  $abn->ab__presta , 
+                            "mat__date_offg" => $abn->ab__date_anniv, 
+                            "mat__user_id" =>  $_SESSION['user']->id_utilisateur, 
+                            "mat__contrat_id" =>  $abn__id, 
+                            "mat__actif" => $value->abl__actif
+                        ];
+                        $new = $Api->postMachine($token,$body);
+                    }
             }
             return true;
         }else{

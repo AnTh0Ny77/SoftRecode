@@ -3,9 +3,8 @@ require "./vendor/autoload.php";
 require "./App/twigloader.php";
 use App\Methods\Pdfunctions;
 use App\Controller\MatMyRecodeController;
-
-
 session_start();
+
 
 
 //URL bloqué si pas de connexion :
@@ -42,17 +41,16 @@ if (!empty($_SESSION['abn_admin'])) {
 }
 //traite le post avec l'id abonnement: 
 if (!empty($_POST['hiddenId'])) {
-
-  $abn = $Abonnement->getById($_POST['hiddenId']);
-  $date_anniv = date_create($abn->ab__date_anniv);
-  $abn->ab__date_anniv = date_format($date_anniv, 'd/m/Y');
-  $cmd = $Cmd->GetById($abn->ab__cmd__id);
-  $lignes = $Abonnement->getLigne($abn->ab__cmd__id);
-  foreach ($lignes as $ligne) {
-    $devisDate = date_create($ligne->abl__dt_debut);
-    $date = date_format($devisDate, 'd/m/Y');
-    $ligne->abl__dt_debut = $date;
-  }
+    $abn = $Abonnement->getById($_POST['hiddenId']);
+    $date_anniv = date_create($abn->ab__date_anniv);
+    $abn->ab__date_anniv = date_format($date_anniv, 'd/m/Y');
+    $cmd = $Cmd->GetById($abn->ab__cmd__id);
+    $lignes = $Abonnement->getLigne($abn->ab__cmd__id);
+    foreach ($lignes as $ligne) {
+		$devisDate = date_create($ligne->abl__dt_debut);
+		$date = date_format($devisDate, 'd/m/Y');
+		$ligne->abl__dt_debut = $date;
+    }
 }
 
 //si une mise a jour d'abonnement a été effectué : 
