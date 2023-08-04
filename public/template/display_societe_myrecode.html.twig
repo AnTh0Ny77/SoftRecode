@@ -84,9 +84,11 @@
                     {{client.cli__adr1 ~ " " ~ client.cli__adr2 ~ " " ~  client.cli__cp ~ " " ~ client.cli__ville }}
                 </p>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><div class="past_pastel">
-                        <i class="fas fa-users"></i>  {{client.users|length}} utilisateurs
-                    </div></li>
+                    <li class="list-group-item">
+                            <div class="past_pastel">
+                                <i class="fas fa-users"></i>  {{client.users|length}} utilisateurs
+                            </div>
+                </li>
                     <li class="list-group-item">
                         <div class="past_orange">
                             <i class="fas fa-layer-group"></i> {{ client.materiels|length  ~ " Machines" }}
@@ -677,7 +679,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="postlogo" id="postlogo" method="post" enctype="multipart/form-data" >
+            <form action="displaySocieteMyRecode?cli__id={{client.cli__id}}" id="postlogo" method="post" enctype="multipart/form-data" >
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="formFile" class="form-label">Choisir un logo</label>
@@ -687,7 +689,7 @@
                 </div>
               
                 <div class="modal-footer">
-                    <button class="btn btn-recode-important"  type="submit">Soumettre</button>
+                    <button class="btn btn-recode-important"  id="postLogoButton" type="button">Soumettre</button>
                 </div>
             </form>
         </div>
@@ -1279,6 +1281,9 @@
         let UpdateMatos = function(){
 
         }
+
+
+       
 
         $('#button_matos_actif').on('click', function () {
             let actif = 0;
@@ -1978,7 +1983,7 @@
     });
 
 
-    $("#logoInput").change(function(){
+    $("#postLogoButton").on( 'click' , function(){
 
         var fileExtension = ['png'];
         if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {

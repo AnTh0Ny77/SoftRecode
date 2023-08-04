@@ -113,6 +113,17 @@ class MyRecodeSocieteController extends BasicController {
             file_put_contents($nomFichier, $file);
         }
     }
+
+    function sauvegarderFichierPNG($emplacement, $nomFichier, $fichierTemporaire) {
+       
+    
+        // Déplacer le fichier temporaire vers l'emplacement souhaité
+        if (move_uploaded_file($_FILES[$fichierTemporaire]['tmp_name'], $emplacement . '/' . $nomFichier . '.png')) {
+            return true; // Le fichier a été sauvegardé avec succès
+        } else {
+            return false; // Échec de sauvegarde du fichier
+        }
+    }
     
 
 
@@ -146,7 +157,7 @@ class MyRecodeSocieteController extends BasicController {
             }
             $token =  $refresh['token']['token'];
         }
-
+       
         if (empty($_GET['cli__id'])) {header('location SocieteMyRecode');die();}
 
         $client = $Api->PostListClient($token, $_GET['cli__id'])['data'];
@@ -163,12 +174,22 @@ class MyRecodeSocieteController extends BasicController {
 
         $list_avendre = $Api->getShopVendre($token,$body)['data'];
 
+       
+
         $logo = self::fichierPNGExiste("O:\myRecode/".$_GET['cli__id']);
 
         if (!empty($logo)) {
             $logo = "data:image/png;base64," . base64_encode(file_get_contents('O:/myRecode/' . $client['cli__id'] . '/' . $client['cli__id'] . '.png'));
         }
 
+        if (!empty($_POST['clicli'])) {
+
+            $emplacement = "O:\myRecode/".$_GET['cli__id']; 
+            $nomFichier = $_POST['clicli']; 
+            $fichierTemporaire = 'logoInput'; 
+
+            self::sauvegarderFichierPNG($emplacement, $nomFichier, $fichierTemporaire);
+        }
       
         header("Access-Control-Allow-Origin: *");
         return self::$twig->render(
