@@ -76,7 +76,6 @@ class MyRecodeSocieteController extends BasicController {
                 return null; // Échec de création du dossier
             }
         }
-    
         // Obtenir le nom du dossier (sans le chemin)
         $dossierNom = basename($dossierPath);
     
@@ -88,9 +87,7 @@ class MyRecodeSocieteController extends BasicController {
 
     public static function InsereLogo($id, $path, $file) {
         $dossier = $path . $id;
-    
-        if (is_dir($dossier)) {
-
+        if (is_dir($dossier)){
             $dossierTech = $dossier . '/tech';
             $dossierAdmin = $dossier . '/administratif';
             if (!is_dir($dossierTech)){
@@ -101,9 +98,7 @@ class MyRecodeSocieteController extends BasicController {
             }
             $nomFichier = $dossier . '/' . $id . '.png';
             file_put_contents($nomFichier, $file);
-
-        } else {
-
+        }else{
             mkdir($dossier, 0777, true);
             $dossierTech = $dossier . '/tech';
             $dossierAdmin = $dossier . '/administratif';
@@ -114,21 +109,17 @@ class MyRecodeSocieteController extends BasicController {
         }
     }
 
-    function sauvegarderFichierPNG($emplacement, $nomFichier, $fichierTemporaire) {
-       
-    
-        // Déplacer le fichier temporaire vers l'emplacement souhaité
-        if (move_uploaded_file($_FILES[$fichierTemporaire]['tmp_name'], $emplacement . '/' . $nomFichier . '.png')) {
-            return true; // Le fichier a été sauvegardé avec succès
-        } else {
-            return false; // Échec de sauvegarde du fichier
-        }
+    function sauvegarderFichierPNG($emplacement, $nomFichier, $fichierTemporaire){
+            // Déplacer le fichier temporaire vers l'emplacement souhaité
+            if (move_uploaded_file($_FILES[$fichierTemporaire]['tmp_name'], $emplacement . '/' . $nomFichier . '.png')) {
+                return true; // Le fichier a été sauvegardé avec succès
+            } else {
+                return false; // Échec de sauvegarde du fichier
+            }
     }
     
 
-
-    public static function display()
-    {
+    public static function display(){
         self::init();
         self::security();
         $Database = new Database('devis');
@@ -141,7 +132,7 @@ class MyRecodeSocieteController extends BasicController {
             die();
         }
 
-        if (empty($_SESSION['user']->refresh_token)) {
+        if(empty($_SESSION['user']->refresh_token)){
             $token = $Api->login($_SESSION['user']->email, 'test');
             if ($token['code'] != 200) {
                 echo 'Connexion LOGIN à L API IMPOSSIBLE';
@@ -149,7 +140,7 @@ class MyRecodeSocieteController extends BasicController {
             }
             $_SESSION['user']->refresh_token = $token['data']['refresh_token'];
             $token =  $token['data']['token'];
-        } else {
+        }else{
             $refresh = $Api->refresh($_SESSION['user']->refresh_token);
             if ($refresh['code'] != 200) {
                 echo 'Rafraichissemnt de jeton API IMPOSSIBLE';
@@ -166,28 +157,19 @@ class MyRecodeSocieteController extends BasicController {
         if (empty($client)){header('location SocieteMyRecode');die();}
 
         $pn_list = $Article->getModelsMyRecode();
-
         $body  = [
             'secret' => "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528" , 
             'shop_avendre' => true
         ];
-
         $list_avendre = $Api->getShopVendre($token,$body)['data'];
-
-       
-
         $logo = self::fichierPNGExiste("O:\myRecode/".$_GET['cli__id']);
 
-        if (!empty($logo)) {
-            $logo = "data:image/png;base64," . base64_encode(file_get_contents('O:/myRecode/' . $client['cli__id'] . '/' . $client['cli__id'] . '.png'));
-        }
+        if (!empty($logo)){ $logo = "data:image/png;base64," . base64_encode(file_get_contents('O:/myRecode/' . $client['cli__id'] . '/' . $client['cli__id'] . '.png'));}
 
-        if (!empty($_POST['clicli'])) {
-
+        if (!empty($_POST['clicli'])){
             $emplacement = "O:\myRecode/".$_GET['cli__id']; 
             $nomFichier = $_POST['clicli']; 
             $fichierTemporaire = 'logoInput'; 
-
             self::sauvegarderFichierPNG($emplacement, $nomFichier, $fichierTemporaire);
         }
       
