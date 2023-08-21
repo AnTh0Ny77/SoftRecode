@@ -22,7 +22,7 @@ $Cmd = new App\Tables\Cmd($Database);
 $General = new App\Tables\General($Database);
 $Abonnement = new App\Tables\Abonnement($Database);
 $Stats = new App\Tables\Stats($Database);
- $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
+$_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
 $_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
 $prestaList = $Keyword->getPrestaABN();
 $moisList = $Keyword->getGaranties();
@@ -34,23 +34,23 @@ if (!empty($_POST['numCmd'])) {
   $valid = $Cmd->getById($_POST['numCmd']);
   if (!empty($valid)) {
     if (!empty($_POST['idClient'])) {
-      $client = $Client->getOne($_POST['idClient']);
-      if (!empty($client)) {
-        $id = $_POST['idClient'];
-      } else {
-        $id = null;
-      }
+		$client = $Client->getOne($_POST['idClient']);
+		if (!empty($client)) {
+			$id = $_POST['idClient'];
+		} else {
+			$id = null;
+		}
     }
     $verif = $Abonnement->getById($_POST['numCmd']);
     if (empty($verif)) {
-      $abn = $Abonnement->createOne($_POST['numCmd'], $valid->client__id, 1, $_POST['facturationAuto'], $_POST['prestation'], $_POST['comAbn'], $_POST['mois']);
-      $updat =  $General->updateAll('abonnement', $_POST['start'], 'ab__date_anniv', 'ab__cmd__id', $_POST['numCmd']);
-      header('location: abonnement');
+		$abn = $Abonnement->createOne($_POST['numCmd'], $valid->client__id, 1, $_POST['facturationAuto'], $_POST['prestation'], $_POST['comAbn'], $_POST['mois']);
+		$updat =  $General->updateAll('abonnement', $_POST['start'], 'ab__date_anniv', 'ab__cmd__id', $_POST['numCmd']);
+		header('location: abonnement');
     } else {
-      $alert = true;
+      	$alert = true;
     }
   } else {
-    $alert = true;
+    	$alert = true;
   }
 }
 

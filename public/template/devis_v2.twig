@@ -130,8 +130,6 @@
 											class="btn  btn-recode-mini-primary mx-3"><i
 												class="fas fa-search"></i></button>
 									</div>
-
-
 									<div class="mt-2 pt-2">
 										{% if modif.devis__id_client_livraison and modif.devis__id_client_livraison !=
 										modif.client__id %}
@@ -150,15 +148,13 @@
 										<span id="span_livraison" class="text-danger"></span>
 										<input type="hidden" name="clientLivraison" id="clientLivraison" value="">
 										{% endif %}
-
-
 									</div>
 									<div>
 										<div class="mt-2 pt-2 ">
 											<label for="exampleInputEmail1">Contact : </label>
-											{# <button type='button' id="button_contact_crea_livraison"
+											<button type='button' id="button_contact_crea_livraison"
 												data-toggle="modal" data-target="#modal_contact_livraison"
-												class="btn btn-link d-none"><i class="far fa-plus"></i></button> #}
+												class="btn btn-link d-none"><i class="far fa-plus"></i></button>
 										</div>
 										<select class="selectpicker border show-tick" data-live-search="true"
 											data-size="10" data-width="100%" name="contactLivraison"
@@ -179,7 +175,6 @@
 											{% endif %}
 										</select>
 									</div>
-
 								</div>
 							</div>
 						</div>

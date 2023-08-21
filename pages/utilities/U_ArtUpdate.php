@@ -36,10 +36,6 @@ else
 		die();
 	}
 	
-
-
-
-
 	$creat = $modif = $GrpModele = $GrpMarque = $GrpPN = FALSE;
 	if (isset($_POST['Creat']))     $creat = TRUE;
 	if (isset($_POST['Modif']))     $modif = TRUE;
@@ -76,7 +72,7 @@ Yb      88"Yb  88""    dP__Yb    88
 		
 		$last_id_fmm = $Article->fmm_create($famille, $marque, $modele, $blob_image, $nom_doc, $descom);
 
-		$transfert_specs = $last_id_fmm ; 
+		$transfert_specs = $last_id_fmm; 
 		// prefixage des nom de doc avec le id du model (format 00000-) (ID complété par zero)
 		$last_id_fmm = substr('00000'.$last_id_fmm.'-',-6); // pour completer a zero sur 5 positions et - a la fin
 		// Upload de Doc

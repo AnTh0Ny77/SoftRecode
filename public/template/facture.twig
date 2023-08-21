@@ -105,8 +105,6 @@
 									<td> <b>{{  devis.client__societe  }} </b>{{"(" ~ devis.client__id ~ ")" }} <br>{{ devis.client__cp ~ " " ~ " " ~  devis.client__ville}}</td>
 									{% endif %}
 									
-									 
-									
 										
 								</tr>
 								{% endfor %}
@@ -528,12 +526,6 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-
-
-
-
-
-
 				<div class="modal-body">
 					<form action="facture" method="POST">
 					<input type="hidden" name="idDevisAddLigne" id="idDevisAddLigne">

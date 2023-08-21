@@ -41,30 +41,6 @@ class MyRecodeBoutiqueController extends BasicController {
 
         $list = $Article->get_pn_for_myrecode();
 
-      
-
-    //    foreach ($list as $key => $value) {
-    //     $pn = $Article->get_pn_by_id_api($value->apn__pn);
-    //     if(!empty($pn)){
-    //             if (!empty($pn->apn__image)) {
-    //                 $extension = self::getImageMimeType(base64_decode($pn->apn__image));
-    //                 file_put_contents('public/img/boutique/' . $pn->apn__pn . '.' . $extension, base64_decode($pn->apn__image));
-    //                 $name = $pn->apn__pn . '.' . $extension;
-    //             }
-    //             $body = [
-    //                 'sar__model' => $pn->apn__pn_long,
-    //                 'sar__ref_constructeur' => $pn->apn__pn_long,
-    //                 'sar__description' => $pn->apn__desc_short,
-    //                 'sar__marque' => $pn->marque,
-    //                 'sar__famille' => $pn->fam,
-    //                 'sar__image' => $name
-    //             ];
-
-    //             $response  = $Api->postShopArticle($token, $body);
-    //     }
-    //    }
-    //    die();
-
         return self::$twig->render(
             'display_boutique_myrecode.html.twig',[
                 'user' => $_SESSION['user'] , 

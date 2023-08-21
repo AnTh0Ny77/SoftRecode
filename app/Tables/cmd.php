@@ -542,9 +542,6 @@ class Cmd extends Table
     }
   }
 
-
-
-
   // si un ecart est constaté dans les quantité génère des reliquats automatiquement: 
   public function classicReliquat($cmd)
   {
@@ -563,16 +560,14 @@ class Cmd extends Table
     if (!empty($NewLines)) {
 
       $reliquat = $this->GetById($cmd);
-
       $request = $this->Db->Pdo->prepare('INSERT INTO cmd ( cmd__date_cmd, cmd__date_devis, cmd__client__id_fact,
       cmd__client__id_livr, cmd__contact__id_fact,  cmd__contact__id_livr,
       cmd__note_client, cmd__note_interne, cmd__code_cmd_client,
-      cmd__etat, cmd__user__id_devis, cmd__user__id_cmd)
+      cmd__etat, cmd__user__id_devis, cmd__user__id_cmd , cmd__tva)
       VALUES (:cmd__date_cmd, :cmd__date_devis, :cmd__client__id_fact, :cmd__client__id_livr, :cmd__contact__id_fact, :cmd__contact__id_livr,
-      :cmd__note_client, :cmd__note_interne, :cmd__code_cmd_client, :cmd__etat, :cmd__user__id_devis, :cmd__user__id_cmd)');
+      :cmd__note_client, :cmd__note_interne, :cmd__code_cmd_client, :cmd__etat, :cmd__user__id_devis, :cmd__user__id_cmd , :cmd__tva)');
 
       $date = date("Y-m-d H:i:s");
-
       $code_cmd = 'RELIQUAT n°' . $reliquat->devis__id . "  " .  $reliquat->cmd__code_cmd_client;
 
       $request->bindValue(":cmd__date_cmd", $date);
@@ -587,16 +582,10 @@ class Cmd extends Table
       $request->bindValue(":cmd__etat", 'CMD');
       $request->bindValue(":cmd__user__id_devis", $reliquat->devis__user__id);
       $request->bindValue(":cmd__user__id_cmd", $reliquat->cmd__user__id_cmd);
-
-
+      $request->bindValue(":cmd__tva", $reliquat->cmd__tva);
       $request->execute();
-
-
-
       $idReliquat = $this->Db->Pdo->lastInsertId();
       $count = 0;
-
-
 
       foreach ($NewLines as $lines) {
         $count += 1;
@@ -673,70 +662,70 @@ class Cmd extends Table
 			  <?php if (!empty($userCMD->postefix)) { echo ' (Tél: ' . $userCMD->postefix . ')';} ?>
             </td>
             <td style="text-align: left; width:50%"><strong><?php
-                if ($societeLivraison){
-                    if ($command->devis__contact__id){
-						// si un contact est présent dans l'adresse de facturation :
-						$contact = $Contact->getOne($command->devis__contact__id);
-						echo "<small>facturation : " . $contact->contact__civ . " " . $contact->contact__nom . " " . $contact->contact__prenom . "</small><strong><br>";
-						echo Pdfunctions::showSociete($clientView) . " </strong> ";
-						if (!empty($clientView->client__tel)) {
-							echo '<br> TEL : ' . $clientView->client__tel . '';
-						}
-
-						if ($command->devis__contact_livraison) {
-							//si un contact est présent dans l'adresse de livraison : 
-							$contact2 = $Contact->getOne($command->devis__contact_livraison);
-							echo "<br> <small>livraison : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
-							echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-							if (!empty($societeLivraison->client__tel)) {
-								echo '<br> TEL : ' . $societeLivraison->client__tel . '';
-							}
-						} else {
-							// si pas de contact de livraison : 
-							echo "<br> <small>livraison :</small><strong><br>";
-							echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-							if (!empty($societeLivraison->client__tel)) {
-								echo '<br> TEL : ' . $societeLivraison->client__tel . '';
-							}
-						}
-                    } else {
-                        echo "<small>facturation :</small><strong><br>";
-                        echo Pdfunctions::showSociete($clientView) . " </strong>";
-                        if ($command->devis__contact_livraison) {
-                        	$contact2 = $Contact->getOne($command->devis__contact_livraison);
-                            echo "<br> <small>livraison : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
-                            echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-							if (!empty($societeLivraison->client__tel)) {
-								echo '<br> TEL : ' . $societeLivraison->client__tel . '';
-							}
-                        } else {
-							echo "<br> <small>livraison :</small><strong><br>";
-							echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
-							if (!empty($societeLivraison->client__tel)) {
+					if ($societeLivraison) {
+						if ($command->devis__contact__id) {
+							if ($command->devis__contact_livraison) {
+								$contact2 = $Contact->getOne($command->devis__contact_livraison);
+								echo " <small>livraison : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
+								echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+								if (!empty($societeLivraison->client__tel)){
 									echo '<br> TEL : ' . $societeLivraison->client__tel . '';
-                            }
-                       	}
-                    }
-				} else {
-                	if ($command->devis__contact__id) {
-                    	$contact = $Contact->getOne($command->devis__contact__id);
-                        echo "<small>livraison & facturation : " . $contact->contact__civ . " " . $contact->contact__nom . " " . $contact->contact__prenom . "</small><strong><br>";
-                        echo Pdfunctions::showSociete($clientView)  . "</strong>";
-                        if (!empty($clientView->client__tel)) {
-                        	echo '<br> TEL : ' . $clientView->client__tel . '';
-                        }
-                    } else {
-                    	echo "<small>livraison & facturation : </small><strong><br>";
-                        echo Pdfunctions::showSociete($clientView)  . "</strong>";
-						if (!empty($clientView->client__tel)) {
-							echo '<br>TEL : ' . $clientView->client__tel . '';
+								}
+							} else{
+								echo "<small>livraison :</small><strong><br>";
+								echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+								if (!empty($societeLivraison->client__tel)) {
+									echo '<br> TEL : ' . $societeLivraison->client__tel . '';
+								}
+							}
+								$contact = $Contact->getOne($command->devis__contact__id);
+								echo "<br><small>facturation : " . $contact->contact__civ . " " . $contact->contact__nom . " " . $contact->contact__prenom . "</small><strong><br>";
+								echo Pdfunctions::showSociete($clientView) . " </strong> ";
+								if (!empty($clientView->client__tel)) {
+									echo '<br> TEL : ' . $clientView->client__tel . '';
+								}
+								
+						} 
+						else{
+							if ($command->devis__contact_livraison) {
+								$contact2 = $Contact->getOne($command->devis__contact_livraison);
+								echo " <small>livraison : " . $contact2->contact__civ . " " . $contact2->contact__nom . " " . $contact2->contact__prenom . "</small><strong><br>";
+								echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+								if (!empty($societeLivraison->client__tel)){
+									echo '<br> TEL : ' . $societeLivraison->client__tel . '';
+								}
+							} else {
+								echo " <small>livraison :</small><strong><br>";
+								echo Pdfunctions::showSociete($societeLivraison) . "</strong>";
+								if (!empty($societeLivraison->client__tel)){
+									echo '<br> TEL : ' . $societeLivraison->client__tel . '';
+								}
+							}
+							echo "<br><small>facturation :</small><strong><br>";
+							echo Pdfunctions::showSociete($clientView) . " </strong>";
 						}
-                    }
-                }
-                 if ($command->cmd__code_cmd_client) {
-                 	echo "<br> Code cmd: " . $command->cmd__code_cmd_client;
-                }
-                ?>
+					} 
+					else{
+						if ($command->devis__contact__id){
+							$contact = $Contact->getOne($command->devis__contact__id);
+							echo "<small>livraison & facturation : " . $contact->contact__civ . " " . $contact->contact__nom . " " . $contact->contact__prenom . "</small><strong><br>";
+							echo Pdfunctions::showSociete($clientView)  . "</strong>";
+							if (!empty($clientView->client__tel)){
+								echo '<br> TEL : ' . $clientView->client__tel . '';
+							}
+						} 
+						else{
+							echo "<small>livraison & facturation : </small><strong><br>";
+							echo Pdfunctions::showSociete($clientView)  . "</strong>";
+							if(!empty($clientView->client__tel)) {
+								echo '<br>TEL : ' . $clientView->client__tel . '';
+							}
+						}
+					}
+					if ($command->cmd__code_cmd_client) {
+						echo "<br> Code cmd: " . $command->cmd__code_cmd_client;
+					}
+?>
               </strong>
             </td>
           </tr>

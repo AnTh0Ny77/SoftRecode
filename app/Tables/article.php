@@ -785,9 +785,7 @@ class Article extends Table
 dP   `" 88__dP 88__     dPYb     88         dPYb   88__dP   88              88__   88b  d88 88b  d88 
 Yb      88"Yb  88""    dP__Yb    88        dP__Yb  88"Yb    88              88""   88YbdP88 88YbdP88 
  YboodP 88  Yb 888888 dP""""Yb   88       dP""""Yb 88  Yb   88   oooooooooo 88     88 YY 88 88 YY 8*/ 
-public function fmm_create($famille, $marque, $modele, $image, $doc, $descom)
-{
-	
+public function fmm_create($famille, $marque, $modele, $image, $doc, $descom){
 	/* exemple : INSERT INTO art_fmm (afmm__famille, afmm__marque, afmm__modele) VALUES ('btm', '14', 'dddd') */
 	if(!$descom) $descom = NULL; // remplace vide par NULL pour la table SQL
 	$request = $this->Db->Pdo->prepare("
