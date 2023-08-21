@@ -214,6 +214,8 @@ if ($btn_verif)
 				if (strlen($A4_['to__info']) > 0)
 					$info        .= '<small><em>('.$A4_['to__info'].')</em></small> ';
 				// $info        .= $A4_['to__abs_etat']; // etat de la demande (demande ou accepté)
+				if (substr($A4_['to__abs_dt'],0,10) == substr($A4_['to__out'],0,10))
+					$info        .= '<b>! info du jour</b> ';
 				$info .='<br>';
 				$abs_en_cours = TRUE;
 			}
