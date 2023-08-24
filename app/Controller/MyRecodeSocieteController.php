@@ -109,7 +109,7 @@ class MyRecodeSocieteController extends BasicController {
         }
     }
 
-    function sauvegarderFichierPNG($emplacement, $nomFichier, $fichierTemporaire){
+    public static function  sauvegarderFichierPNG($emplacement, $nomFichier, $fichierTemporaire){
             // Déplacer le fichier temporaire vers l'emplacement souhaité
             if (move_uploaded_file($_FILES[$fichierTemporaire]['tmp_name'], $emplacement . '/' . $nomFichier . '.png')) {
                 return true; // Le fichier a été sauvegardé avec succès
@@ -170,7 +170,8 @@ class MyRecodeSocieteController extends BasicController {
             $emplacement = "O:\myRecode/".$_GET['cli__id']; 
             $nomFichier = $_POST['clicli']; 
             $fichierTemporaire = 'logoInput'; 
-            self::sauvegarderFichierPNG($emplacement, $nomFichier, $fichierTemporaire);
+            $temp = self::sauvegarderFichierPNG($emplacement, $nomFichier, $fichierTemporaire);
+            $logo = "data:image/png;base64," . base64_encode(file_get_contents('O:/myRecode/' . $client['cli__id'] . '/' . $client['cli__id'] . '.png'));
         }
       
         header("Access-Control-Allow-Origin: *");

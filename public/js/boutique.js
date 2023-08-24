@@ -7,12 +7,20 @@ $(document).ready(function(){
     }
 
     var Table = null;
+    let renderSAVTable = function(){}
 
-
-    let renderSAVTable = function(){
-        
+    function formatDateToFrench(dateString) {
+        // Sépare la date en année, mois et jour
+        var parts = dateString.split('-');
+        var year = parts[0];
+        var month = parts[1];
+        var day = parts[2];
+    
+        // Formate la date en 'DD/MM/YYYY'
+        var formattedDate = day + '/' + month + '/' + year;
+    
+        return formattedDate;
     }
-
 
     $.ajax(prod + '/boutiqueSossuke', {
             type: 'POST',
@@ -40,9 +48,9 @@ $(document).ready(function(){
                     
                     let date = '';
                     if (background) {
-                         date = '<span style="color:red">' + element[11] + '</span>';    
+                         date = '<span style="color:red">' + formatDateToFrench(element[11]) + '</span>';    
                     }else{
-                        date = '<span>' + element[11] + '</span>'; 
+                        date = '<span>' + formatDateToFrench(element[11]) + '</span>'; 
                     }
                    
                     let temp = [JSON.stringify(element) , ref, etatFinal, '<b>' + element[4] + '€</b> HT<br>' + date ,  element[5] , gar , element[12].sar__image]; 
@@ -71,7 +79,6 @@ $(document).ready(function(){
                                 return '<img src="public/img/boutique/no.png"  width="40px">';
                             }
                         }  },
-                          
                     ],
                     createdRow: function (row, data, index) {
                         $(row).attr('data-toggle', "modal");
@@ -153,7 +160,7 @@ $(document).ready(function(){
                 crossDomain: true,
                 data: JSON.stringify(body),
                 success: function (data, status, xhttp) {
-                    
+                   
                     let dataSet = data.data;
                     if (dataSet) {
                         let string = 'Non renseigné';
@@ -219,6 +226,7 @@ $(document).ready(function(){
                     "sco__vue_ref" : $('#sco__vue_ref').val() , 
                     "secret" : "heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528"
                 };
+                console.log(body)
                 $.ajax(prod + '/boutiqueSossuke', {
                     type: 'POST',
                     method: "POST",

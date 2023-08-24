@@ -28,33 +28,22 @@ session_start();
  $Article = new App\Tables\Article($Database);
  $Stats = new App\Tables\Stats($Database);
  $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user']->id_utilisateur);
-$_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
- 
- 
+ $_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
  $moisList = $Keyword->getGaranties();
  $modeleList = $Article->getModels();
  $alert = false;
 
-
-
 //appel de la page: 
-if (!empty($_POST['idCMD'])  )
-{
-    
+if (!empty($_POST['idCMD'])){
   $valid = $Cmd->getById($_POST['idCMD']);
   $verif = $Abonnement->getById($_POST['idCMD']); 
   $ligne = $Abonnement->getOneLigne($_POST['idCMD'] ,$_POST['numLigne']);
-
-  if ($verif->ab__presta == 'LOC') 
-  {
+  if ($verif->ab__presta == 'LOC'){
     $prestaList = $Keyword->getPrestaABL();
   }
-  else
-  {
+  else{
     $prestaList = $Keyword->getPrestaABM();
   }
-
-
   // Donnée transmise au template : 
   echo $twig->render('adminMachine.twig',
   [

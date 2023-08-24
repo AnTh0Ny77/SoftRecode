@@ -77,7 +77,7 @@
 <main role="main" class="container-fluid my-3 col-11 container-body">
     <h3 class="recode-p"><i class="fad fa-building"></i></i>Administration MyRecode.fr </h3>
     <p><i class="far fa-question-circle"></i> Société/Utilisateurs/Machines</p>
-    <div class="d-flex justify-content-start flex-wrap mt-4">
+    <div class="d-flex justify-content-center flex-wrap mt-4">
             <div class=" col-sm-3 col-4 card-recode-admin">
                 <h4 class="recode-p"><i class="fas fa-building"></i> ({{client.cli__id}}) {{client.cli__nom}}</h4>
                 <p>
@@ -233,7 +233,7 @@
             </div>
 
         </div>
-        <div class="d-flex justify-content-start flex-wrap mt-4">
+        <div class="d-flex justify-content-center flex-wrap mt-4">
 
             <div class="col-sm-3 col-4 card-recode-admin">
                 <h4 class="recode-p"><i class="fas fa-file-signature"></i> Conditions de ventes en ligne</h4>
@@ -277,16 +277,25 @@
                 </table>
             </div>
         </div>  
-                <div class="d-flex justify-content-start flex-wrap mt-4">
+                <div class="d-flex justify-content-center flex-wrap mt-4 mb-5">
                 
-                    {# <div class="col-4 card-recode-admin">
-                        <h4 class="recode-p"><i class="fas fa-file-signature"></i> Documents en ligne</h4>
+                    <div class="col-3 card-recode-admin">
+                        <h4 class="recode-p"><i class="fas fa-file-signature"></i> Documents et imports</h4>
                         <i class="far fa-question-circle"></i> Administratif et techniques
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
                                 
                             </li>
-                            <li class="list-group-item d-flex justify-content-between">
+                            <li class="list-group-item">
+                                <div class="past_blue">
+                                    <a href="abonnement" class="link-reco"><i class="fas fa-pen"></i> Importer depuis les machines sous contrats</a>
+                                </div>
+                                
+                            </li>
+                            <li class="list-group-item">
+                                <p><i class="far fa-question-circle"></i> Les machines sous contrats peuvent etre importées automatiquement depuis la gestion des abonnments</p>
+                            </li>
+                            {# <li class="list-group-item d-flex justify-content-between">
                                 <div class="past_pastel" id="sco__type_port_d">
                                     <i class="fas fa-folder-open"></i> Documents administratifs
                                 </div> 
@@ -300,9 +309,9 @@
                                 </div>
                                 <button data-toggle="modal" data-target="#modalLogo" class="btn btn-recode-important"><i class="fas fa-layer-plus"></i>
                                 </button>
-                            </li>
+                            </li> #}
                         </ul>
-                    </div> #}
+                    </div>
                 
                     <div class="col-7 card-recode-admin mx-5">
                         <h4 class="recode-p"><i class="fas fa-layer-group"></i> Parc Matériel</h4>
@@ -310,7 +319,7 @@
                         numéro de série
                         <table id="table_mat" class="display mt-3">
                             <div class="my-2 float-right">
-                                {# <button class="btn btn-recode-important" data-toggle="modal" data-target="#modalmatosAjout">Ajouter</button> #}
+                                <button class="btn btn-recode-important" data-toggle="modal" data-target="#modalmatosAjout">Ajouter</button>
                             </div>
                             <thead>
                                 <tr>
@@ -341,8 +350,8 @@
                                             </div>
                                             {% else %}
                                             <div class="past_yellow mx-2 my-1">
-                                                <b>{{row.mat__model}}<br>{{row.mat__type ~ " " ~ row.mat__marque}}</b> <span
-                                                    class="text-danger">INACTIF</span>
+                                                <b>{{row.mat__model}}<br>{{row.mat__type ~ " " ~ row.mat__marque}}</b><br> <span
+                                                    class="text-danger"><b>MACHINE DÉSACTIVÉE</b></span>
                                             </div>
                                         {% endif %}
                                         {% else %}
@@ -369,6 +378,7 @@
                                         {% else %}
                                         Commande non renseignée
                                         {% endif %}
+                                        <br>
                                         {% if row.mat__contrat_id %}
                                         Contrat N°: <b>{{row.mat__contrat_id}}</b>
                                         {% else %}
@@ -378,25 +388,38 @@
                                     <td>
                                         {% if row.mat__kw_tg == "MNT" %}
                                         <div class="past_yellow mx-2 my-1">
-                                            Maintenance {{row.mat__date_offg}}
+                                            Maintenance 
+                                            {% if row.mat__date_offg %}
+                                            <br> {{  row.mat__date_offg|date("d/m/Y") }}
+                                        {% endif %}
                                         </div>
                                         {% elseif row.mat__kw_tg == "GRE" %}
                                         <div class="past_orange mx-2 my-1">
-                                            Garantie RECODE {{row.mat__date_offg}}
+                                            Garantie RECODE 
+                                            {% if row.mat__date_offg %}
+                                            <br> {{  row.mat__date_offg|date("d/m/Y") }}
+                                        {% endif %}
                                         </div>
                     
                                         {% elseif row.mat__kw_tg == "GCO" %}
                                         <div class="past_pink mx-2 my-1">
-                                            Garantie constructeur {{row.mat__date_offg}}
+                                            Garantie constructeur 
+                                            {% if row.mat__date_offg %}
+                                            <br> {{  row.mat__date_offg|date("d/m/Y") }}
+                                        {% endif %}
                                         </div>
                     
                                         {% elseif row.mat__kw_tg == "LOC" %}
                                         <div class="past_pink mx-2 my-1">
-                                            Location Recode {{row.mat__date_offg}}
+                                            Location Recode  
+                                            {% if row.mat__date_offg %}
+                                                <br> {{  row.mat__date_offg|date("d/m/Y") }}
+                                            {% endif %}
                                         </div>
                                         {% else %}
-                                        Aucune garantie {{row.mat__date_offg}}
+                                        Aucune garantie {{row.mat__date_offg|date("d/m/Y")}}
                                         {% endif %}
+                                     
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -775,7 +798,7 @@
                         </div>
                         <div class="col-6  mb-1">
                             <small class="form-text text-muted"> Complément d'information diverses</small>
-                            <input class="form-control my-2 input-recode" id="mat__memo_edit" placeholder="Mémo" rows="2" readonly ></input>
+                            <input class="form-control my-2 input-recode" id="mat__memo_edit" placeholder="Mémo" rows="2"  ></input>
                             
                         </div>
                     </div>
@@ -1144,7 +1167,7 @@
             scrollY: '300px' ,
             columns: [
                 { "visible": false },
-                null,
+                { "visible": false },
                 null,
                 null,
                 null,
@@ -1248,6 +1271,7 @@
             $('#button_matos_actif').val(data.mat__actif);
             $('#mat__id_edit').val(data.mat__id);
             $('#mat__sn_edit').val(data.mat__sn);
+            $('#mat__pn_edit').val(data.mat__pn);
             $('#mat__memo_edit').val(data.mat__memo);
             $('#mat__idnec_edit').val(data.mat__idnec);
             $('#mat__ident_edit').val(data.mat__ident);
@@ -1838,33 +1862,34 @@
         
       
         let renderMatosTable = function (){
-            let matos = getParcSossukeRequest();
+            //let matos = getParcSossukeRequest();
           
-            matosTable.clear().draw();
+            //matosTable.clear().draw();
            
-            for(i = 0 ; i < matos.length; i ++){
+            //for(i = 0 ; i < matos.length; i ++){
                 
-                let fmm =  matos[i].mat__type + " " + matos[i].mat__marque + '<br>' + matos[i].mat__model ;
-                let PN = 'S/N: <b>' +  matos[i].mat__sn + '</b><br>' + 'P/N: <b>' +  matos[i].mat__pn + '</b>'; 
-                let cmd = 'Commande N°: <b>' +  matos[i].mat__ident +  '</b><br>' + 'Contrat N°: ' +  matos[i].mat__contrat_id  + '</b>'; 
-                let garantie = 'Aucune garantie';
-                if(matos[i].mat__kw_tg == "GRE"){
-                    garantie = 'garantie RECODE';
-                }else if(matos[i].mat__kw_tg == "GCO"){
-                    garantie = 'garantie constructeur';
-                }else if(matos[i].mat__kw_tg == "LOC"){
-                    garantie = 'LOCATION RECODE';
-                }
-                matosTable.row.add([
-                    JSON.stringify(matos[i]), 
-                    matos[i].mat__id, 
-                    fmm ,
-                    PN, 
-                    matos[i].mat__memo,
-                    cmd , 
-                    garantie
-                ])
-            }
+            //    let fmm =  matos[i].mat__type + " " + matos[i].mat__marque + '<br>' + matos[i].mat__model ;
+            //    let PN = 'S/N: <b>' +  matos[i].mat__sn + '</b><br>' + 'P/N: <b>' +  matos[i].mat__pn + '</b>'; 
+            //    let cmd = 'Commande N°: <b>' +  matos[i].mat__ident +  '</b><br>' + 'Contrat N°: ' +  matos[i].mat__contrat_id  + '</b>'; 
+            //    let garantie = 'Aucune garantie';
+            //    if(matos[i].mat__kw_tg == "GRE"){
+            //       garantie = 'garantie RECODE';
+            //    }else if(matos[i].mat__kw_tg == "GCO"){
+            //        garantie = 'garantie constructeur';
+            //    }else if(matos[i].mat__kw_tg == "LOC"){
+            //        garantie = 'LOCATION RECODE';
+            //    }
+            //    matosTable.row.add([
+            //        JSON.stringify(matos[i]), 
+            //        matos[i].mat__id, 
+            //        fmm ,
+            //        PN, 
+            //        matos[i].mat__memo,
+            //        cmd , 
+            //        garantie
+            //    ])
+            //}
+            window.location.href = 'displaySocieteMyRecode?cli__id=' + $('#cli__id').val();
             matosTable.draw();
             closeAndCleanModalsMatos();
         }
@@ -1876,6 +1901,19 @@
             $('#alert_matos_crea').text(verification);
            }
           
+        })
+
+        $('#button_matos_edit').on('click',function(){
+            let results = {
+                '__PUT' : 'yes' ,
+                'mat__id' : $('#mat__id_edit').val() ,
+                'mat__pn' : $('#mat__pn_edit').val() , 
+                'mat__sn' : $('#mat__sn_edit').val(), 
+                'mat__memo' : $('#mat__memo_edit').val(),
+                'mat__idnec' : $('#mat__idnec_edit').val() , 
+                'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528'
+            };
+            postMatosRequest(results)
         })
 
         let handleFmm =function() {
@@ -1903,6 +1941,7 @@
         }
 
         let postMatosRequest = function(body){
+            console.log(body)
             let results = false ; 
             $.ajax( prod +  '/materiel', {
                 type: 'POST',  
@@ -1942,9 +1981,7 @@
             if(!valideNom($forms['mat__sn'])){
                 return 'Merci de renseigner le numéro de S/N';
             }
-            if(!valideNom($forms['mat__idnec'])){
-                return 'Merci de renseigner le numéro de commande recode';
-            }
+           
             return false ;
         }
 
@@ -1985,17 +2022,23 @@
 
     $("#postLogoButton").on( 'click' , function(){
 
-        var fileExtension = ['png'];
-        if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+        if (!checkFileExtension()) {
             alert("Merci de choisir un fichier de type:  .png");
-            return $("#logoInput").val('');
-        }
-        if(this.files[0].size > 2000000) {
-            alert("La taille maximum autorisée est de ");
             return $("#logoInput").val('');
         }
         $('#postlogo').submit();
     });
+
+
+    function checkFileExtension() {
+        fileName = $('#logoInput').val();
+        extension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        console.log(extension);
+        if(extension === 'png' || extension === 'PNG' ){
+            return true;
+        }
+        return false;
+    };
 
 </script>
 <script type="text/javascript" src="public/js/boutique.js"></script>
