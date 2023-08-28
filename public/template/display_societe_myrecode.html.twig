@@ -664,7 +664,6 @@
                                 <option value="GRE">Garantie Recode</option>
                                 <option value="MNT">Maintenance Recode</option>
                          </select>
-                         
                         </div>
                         <div class="col-6">
                             <small class="form-text text-muted"> La date sera prise en compte si une garantie est présente </small>
@@ -811,9 +810,21 @@
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6">
-                            <small class="form-text text-muted">Type de garantie</small>
-                            <input type="text" class="form-control my-2 input-recode"  id="mat__kw_tg_edit" readonly>
+                            <small class="form-text text-muted">Type de garantie/préciser la date de fin </small>
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" id="mat__kw_tg_edit">
+                                <option value="GNO">Pas de garantie</option>
+                                <option value="GCO">Garantie constructeur</option>
+                                <option value="LOC">Location Recode</option>
+                                <option value="GRE">Garantie Recode</option>
+                                <option value="MNT">Maintenance Recode</option>
+                         </select>
                         </div>
+                        <div class="col-6">
+                            <small class="form-text text-muted"> La date sera prise en compte si une garantie est présente </small>
+                            <input class="form-control my-2 input-recode" type="date" id="mat__date_offg_edit" ></input>
+                           
+                        </div>
+                      
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -1203,7 +1214,7 @@
         let functionUserTableModal = function (data){
             
             data = JSON.parse(data[5]);
-            console.log(data);
+           
             $('#user__role_edit').selectpicker('deselectAll');
             $('#user__id_edit').val(data.user__id);
             $('#user__mail_edit').val(data.user__mail);
@@ -1237,6 +1248,7 @@
             $('#user__site_edit').selectpicker('refresh');
             $('#user__parc_edit').selectpicker('refresh');
             arraySelect = [];
+            
             $("#user__parc_edit > option").each(function (){
                 for(i = 0; i < data.clientsParc.length; i++) {
                     if (this.value == data.clientsParc[i].cli__id){
@@ -1307,8 +1319,6 @@
         }
 
 
-       
-
         $('#button_matos_actif').on('click', function () {
             let actif = 0;
             if($('#button_matos_actif').val() == 0 ){
@@ -1373,9 +1383,11 @@
                     "luc__user__id": post,
                     "luc__order": 1
                   };
+
+                  
                   
                   let relation = postUserRelation(relation_data);
-                  resolve(relation); // Vous pouvez également résoudre avec relation si nécessaire
+                  resolve(relation); 
                 }
               });
             });
@@ -1383,7 +1395,7 @@
           
 
         $('#addUser').on('click' , function(){
-            console.log('hey');
+           
         })
 
         let updateUser = function(){
@@ -1427,35 +1439,36 @@
                     "luc__user__id": $('#user__id_edit').val(),
                     "luc__order":  1
                 }
-                let relation = postUserRelation(relation_data);
-            }
+                postUserRelationAsync(relation_data).then(function(){
+                    let sitesParc = $('#user__parc_edit').val();
 
-            let sitesParc = $('#user__parc_edit').val();
+                        if(sitesParc.length > 0){
+                            sitesParc.push($('#cli__id').val());
+                        }else{
+                            sitesParc = [$('#cli__id').val()];
+                        }
+                        
+                        let bodyB = {
+                            "update" : sitesParc , 
+                            "secret" : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528' , 
+                            "luc__user__id": $('#user__id_edit').val()
+                        }
+                        updateUserRelation(bodyB)
+                        .then(function(results) {
+                            return false ;
+                        })
+                        .catch(function(error) {
+                            console.error(error);
+                        });
 
-            if(sitesParc.length > 0){
-                sitesParc.push($('#cli__id').val());
-            }else{
-                sitesParc = [$('#cli__id').val()];
-            }
 
-            
-            
-            $body = {
-                "update" : sitesParc , 
-                "secret" : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528' , 
-                "luc__user__id": $('#user__id_edit').val()
-            }
-
-            console.log(JSON.stringify($body));
-
-            updateUserRelation(body)
-            .then(function(results) {
+                }).catch(function(error){
+                    console.log(error);
+                })
                 
-                return false ;
-            })
-            .catch(function(error) {
-                console.error(error);
-            });
+            }
+
+            
 
         }
 
@@ -1500,7 +1513,6 @@
                 async: false,
                 data: JSON.stringify(body), 
                 success: function (data, status, xhttp) {
-                    console.log(data.data)
                     results = data.data
                 },
                 error: function (jqXhr, textStatus, errorMessage) {
@@ -1588,6 +1600,23 @@
             
             return results;
         }
+
+        let postUserRelationAsync = function (body) {
+            return new Promise((resolve, reject) => {
+                $.ajax(prod + '/usersitessossuke', {
+                    type: 'POST',
+                    method: 'POST',
+                    crossDomain: true,
+                    data: JSON.stringify(body),
+                    success: function (data, status, xhttp) {
+                        resolve(data.data);
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        reject(jqXhr.responseJSON.msg);
+                    }
+                });
+            });
+        };
 
         let updateUserRelation =  function (body) {
             return new Promise(function(resolve, reject) {
@@ -1890,8 +1919,8 @@
             //    ])
             //}
             window.location.href = 'displaySocieteMyRecode?cli__id=' + $('#cli__id').val();
-            matosTable.draw();
-            closeAndCleanModalsMatos();
+            //matosTable.draw();
+            //closeAndCleanModalsMatos();
         }
 
 
@@ -1911,6 +1940,8 @@
                 'mat__sn' : $('#mat__sn_edit').val(), 
                 'mat__memo' : $('#mat__memo_edit').val(),
                 'mat__idnec' : $('#mat__idnec_edit').val() , 
+                'mat__kw_tg' : $('#mat__kw_tg_edit').val() , 
+                'mat__date_offg' : $('#mat__date_offg_edit').val() ,
                 'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528'
             };
             postMatosRequest(results)
@@ -1941,7 +1972,6 @@
         }
 
         let postMatosRequest = function(body){
-            console.log(body)
             let results = false ; 
             $.ajax( prod +  '/materiel', {
                 type: 'POST',  
@@ -2033,7 +2063,7 @@
     function checkFileExtension() {
         fileName = $('#logoInput').val();
         extension = fileName.substring(fileName.lastIndexOf('.') + 1);
-        console.log(extension);
+      
         if(extension === 'png' || extension === 'PNG' ){
             return true;
         }
