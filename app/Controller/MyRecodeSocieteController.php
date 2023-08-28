@@ -9,6 +9,7 @@ use DateTime;
 use App\Tables\Tickets;
 use App\Apiservice\ApiTest;
 use App\Tables\Article;
+use App\Tables\Abonnement;
 use App\Database;
 
 
@@ -125,7 +126,9 @@ class MyRecodeSocieteController extends BasicController {
         $Database = new Database('devis');
         $Database->DbConnect();
         $Api = new ApiTest();
+
         $Article = new Article($Database);
+        $Abonnement = new Abonnement($Database);
 
         if ($_SESSION['user']->user__cmd_acces < 10 ){
             header('location: noAccess');
@@ -154,6 +157,9 @@ class MyRecodeSocieteController extends BasicController {
         $client = $Api->PostListClient($token, $_GET['cli__id'])['data'];
         $list_client = $Api->PostListClient($token,false)['data'];
 
+        $abn = $Abonnement->getByClinet($_GET['cli__id']);
+        
+
         if (empty($client)){header('location SocieteMyRecode');die();}
 
         $pn_list = $Article->getModelsMyRecode();
@@ -179,6 +185,7 @@ class MyRecodeSocieteController extends BasicController {
             'display_societe_myrecode.html.twig',
             [
                 'user' => $_SESSION['user'],
+                'abn' => $abn ,
                 'client' => $client , 
                 'pn_list' => $pn_list , 
                 'list_client' => $list_client ,

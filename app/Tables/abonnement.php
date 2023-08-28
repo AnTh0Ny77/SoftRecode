@@ -75,6 +75,19 @@ class Abonnement extends Table
         return $data;
     }
 
+    public function getByClinet($id)
+    {
+        $request =$this->Db->Pdo->query("SELECT  ab__cmd__id, ab__client__id_fact,
+        ab__actif, ab__fact_periode,  ab__presta , ab__mois_engagement , ab__note , ab__date_anniv ,
+        k.kw__lib as prestaionAbn
+        FROM abonnement
+        LEFT JOIN keyword as k ON ab__presta = k.Kw__value AND k.kw__type = 'abt'
+        WHERE ab__client__id_fact = ".$id."
+        ORDER BY  ab__cmd__id DESC LIMIT 200 ");
+        $data = $request->fetch(PDO::FETCH_OBJ);
+        return $data;
+    }
+
     public function getAll()
     {
         $request =$this->Db->Pdo->query("SELECT  ab__cmd__id, ab__client__id_fact,

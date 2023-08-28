@@ -77,7 +77,7 @@
 <main role="main" class="container-fluid my-3 col-11 container-body">
     <h3 class="recode-p"><i class="fad fa-building"></i></i>Administration MyRecode.fr </h3>
     <p><i class="far fa-question-circle"></i> Société/Utilisateurs/Machines</p>
-    <div class="d-flex justify-content-center flex-wrap mt-4">
+    <div class="d-flex justify-content-center flex-wrap mt-4" id="sticky-test">
             <div class=" col-sm-3 col-4 card-recode-admin">
                 <h4 class="recode-p"><i class="fas fa-building"></i> ({{client.cli__id}}) {{client.cli__nom}}</h4>
                 <p>
@@ -102,8 +102,13 @@
                             </li>
                         {% endif %}
                     <li class="list-group-item">
-                        <div class="past_blue">
-                            <a href="societe_crea" class="link-reco"><i class="fas fa-pen"></i> Editer dans Soft-Recode</a>
+                        <div class="">
+                            <form method="post" action="societe_crea">
+                                <input type="hidden" name="hidden_client" value="{{client.cli__id}}">
+                                <button class="link-reco btn past_blue"><i class="fas fa-pen"></i> Editer dans Soft-Recode</button>
+                            </form>
+                            
+                           
                         </div>
                     </li>
                     <li class="list-group-item">
@@ -288,7 +293,16 @@
                             </li>
                             <li class="list-group-item">
                                 <div class="past_blue">
-                                    <a href="abonnement" class="link-reco"><i class="fas fa-pen"></i> Importer depuis les machines sous contrats</a>
+                                    {% if abn %}
+                                        <form method="post" action="abonnementAdmin">
+                                            <input type="hidden" name="hiddenId" value="{{abn.ab__cmd__id}}">
+                                            <button class="link-reco btn past_blue"><i class="fas fa-pen"></i> Importer depuis les machines sous contrats</button>
+                                        </form>
+                                    {% else %}
+                                        <i class="fas fa-folder-open"></i> Aucun abonnement n'a été detecté pour ce client !
+                                    {% endif %}
+                                   
+                                  
                                 </div>
                                 
                             </li>
@@ -475,12 +489,12 @@
                         </div>
                         <div class="col-6">
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" multiple  name="user__role" id="user__role"  >
+                                <option value="USRAC" selected>Utilisateur Actif</option>
                                 <option value="ADUSR" selected>Administrateur d autres utilisateurs</option>
                                 <option value="ACHAT" >Peut passer des commandes</option>
                                 <option value="SUMYR">Super administrateur RECODE</option>
                                 <option value="CMAIL" >Recevoir commandes par email</option>
                                 <option value="TMAIL" >Recevoir les infos tickets par email</option>
-                                <option value="USRAC">Utilisateur Actif</option>
                                 <option value="VUBLS">Voir les Bons de Livraisons</option>
                                 <option value="VUFAC" >Voir les Factures</option>
                                 <option value="VUREF" >Voir les ref constructeur (dans catalogue)</option>
@@ -546,12 +560,12 @@
                         <div class="col-6">
                             <span class="text-bold mt-1" for="user__site_edit">Droits de l'utilisateur</span>
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" multiple  name="user__role" id="user__role_edit"  >
+                                <option value="USRAC">Utilisateur Actif</option>
                                 <option value="ADUSR" >Administrateur</option>
                                 <option value="ACHAT" >Peut passer des commandes</option>
                                 <option value="SUMYR">Super administrateur RECODE</option>
                                 <option value="CMAIL" >Recevoir commandes par email</option>
                                 <option value="TMAIL" >Recevoir les infos tickets par email</option>
-                                <option value="USRAC">Utilisateur Actif</option>
                                 <option value="VUBLS">Voir les Bons de Livraisons</option>
                                 <option value="VUFAC" >Voir les Factures</option>
                                 <option value="VUREF" >Voir les ref constructeur (dans catalogue)</option>

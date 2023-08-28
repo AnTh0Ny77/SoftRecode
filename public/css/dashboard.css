@@ -41,6 +41,7 @@ body {
   .sidebar
    {
     position: fixed;
+   
     top: 5;
     bottom: 0;
     left: 0;
@@ -52,10 +53,12 @@ body {
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
   }
   
-  #side-container
-  {
+  #side-container{
+
     
   }
+
+ 
   .sidebar-sticky {
     position: -webkit-sticky;
     position: sticky;
