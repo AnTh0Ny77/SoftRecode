@@ -71,6 +71,9 @@
         text-decoration: none;
         color: black;
     }
+    #mbmax{
+        margin-bottom: 150px !important;
+    }
 </style>
 {% endblock %}
 {% block main %}
@@ -282,7 +285,7 @@
                 </table>
             </div>
         </div>  
-                <div class="d-flex justify-content-center flex-wrap mt-4 mb-5">
+                <div class="d-flex justify-content-center flex-wrap mt-4 mb-5" id="mbmax">
                 
                     <div class="col-3 card-recode-admin">
                         <h4 class="recode-p"><i class="fas fa-file-signature"></i> Documents et imports</h4>
@@ -1152,7 +1155,6 @@
             paging: true,
             lengthMenu: [4],
             bLengthChange : false ,
-           
             paging: false,             
             bPaginate: false,  
             scrollCollapse: true,
