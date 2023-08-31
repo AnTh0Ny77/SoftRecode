@@ -118,6 +118,20 @@ class MyRecodeSocieteController extends BasicController {
                 return false; // Échec de sauvegarde du fichier
             }
     }
+
+    public static function ajouterZeros($chaine) {
+        $longueurChaine = strlen($chaine);
+        
+        if ($longueurChaine < 6) {
+            $nombreZeros = 6 - $longueurChaine;
+            $zeros = str_repeat('0', $nombreZeros);
+            $chaineAvecZeros = $zeros . $chaine;
+            return $chaineAvecZeros;
+        } else {
+            return $chaine;
+        }
+    }
+    
     
 
     public static function display(){
@@ -168,16 +182,18 @@ class MyRecodeSocieteController extends BasicController {
             'shop_avendre' => true
         ];
         $list_avendre = $Api->getShopVendre($token,$body)['data'];
-        $logo = self::fichierPNGExiste("O:\myRecode/".$_GET['cli__id']);
 
-        if (!empty($logo)){ $logo = "data:image/png;base64," . base64_encode(file_get_contents('O:/myRecode/' . $client['cli__id'] . '/' . $client['cli__id'] . '.png'));}
+        $image_name = self::ajouterZeros($_GET['cli__id']);
+        $logo = self::fichierPNGExiste("O:\myRecode/".$image_name);
+
+        if (!empty($logo)){ $logo = "data:image/png;base64," . base64_encode(file_get_contents('O:/myRecode/' . $image_name . '/' . $image_name . '.png'));}
 
         if (!empty($_POST['clicli'])){
-            $emplacement = "O:\myRecode/".$_GET['cli__id']; 
-            $nomFichier = $_POST['clicli']; 
+            $emplacement = "O:\myRecode/".$image_name; 
+            $nomFichier = $image_name; 
             $fichierTemporaire = 'logoInput'; 
             $temp = self::sauvegarderFichierPNG($emplacement, $nomFichier, $fichierTemporaire);
-            $logo = "data:image/png;base64," . base64_encode(file_get_contents('O:/myRecode/' . $client['cli__id'] . '/' . $client['cli__id'] . '.png'));
+            $logo = "data:image/png;base64," . base64_encode(file_get_contents('O:/myRecode/' . $image_name . '/' . $image_name . '.png'));
         }
       
         header("Access-Control-Allow-Origin: *");
