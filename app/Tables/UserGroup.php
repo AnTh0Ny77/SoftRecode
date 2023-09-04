@@ -32,6 +32,62 @@ class UserGroup extends Table {
     }  
   }
 
+  /**
+ * Différence entre bindParam et bindValue :
+ *
+ * bindParam permet de créer un lien direct entre une variable et un paramètre de requête
+ * préparée, ce qui signifie que toute modification de la variable affectera la valeur du
+ * paramètre dans la requête après la liaison. Utile lorsque la variable peut changer de
+ * valeur entre la préparation et l'exécution de la requête.
+ *
+ * bindValue permet de lier directement une valeur à un paramètre de requête préparée, sans
+ * établir de lien direct avec une variable. La valeur utilisée est celle au moment de la
+ * liaison, et les modifications ultérieures de la variable n'affectent pas le paramètre
+ * dans la requête. Utile lorsque vous souhaitez lier une valeur constante à un paramètre
+ * de requête.
+ */
+
+
+  public function get_user_by_groups_lisible($groups){
+    // Vérifier si les groupes ne sont ni 1001 ni 1002
+    if ($groups != 1001 && $groups != 1002) {
+        // Requête SQL pour récupérer les utilisateurs appartenant au groupe spécifié
+        $query = "SELECT u.*
+                  FROM utilisateur AS u
+                  LEFT JOIN utilisateur_grp AS g ON (g.id_groupe = :groups)
+                  WHERE (g.id_groupe = :groups AND u.id_utilisateur = g.id_utilisateur)
+                  ORDER BY prenom";
+
+        // Préparer la requête
+        $statement = $this->Db->Pdo->prepare($query);
+
+        // Binder la valeur de :groups
+        $statement->bindParam(':groups', $groups, PDO::PARAM_INT);
+
+        // Exécuter la requête
+        $statement->execute();
+
+        // Récupérer les données sous forme de classes
+        $data = $statement->fetchAll(PDO::FETCH_CLASS);
+
+        return $data;
+    } else {
+        // Requête SQL pour récupérer tous les utilisateurs
+        $query = "SELECT *
+                  FROM utilisateur
+                  ORDER BY prenom";
+
+        // Exécuter la requête
+        $request = $this->Db->Pdo->query($query);
+
+        // Récupérer les données sous forme de classes
+        $data = $request->fetchAll(PDO::FETCH_CLASS);
+
+        return $data;
+    }
+}
+
+
   public function get_groups_by_user($user){
             $request = $this->Db->Pdo->query("SELECT u.* 
 			FROM utilisateur_grp as g
