@@ -43,41 +43,41 @@ if ($('#commentaire_client').length)
          });     
 }
 
-let chekifitracom = function ()
-{
-   let intracom = $('#intracom_input').val();
-   let selected_option = $('#select_tva').children("option:selected").val();
+// let chekifitracom = function ()
+// {
+//    let intracom = $('#intracom_input').val();
+//    let selected_option = $('#select_tva').children("option:selected").val();
 
-    if (parseInt(selected_option) == 1 || intracom.length > 4 ) 
-   {
-        $('#div_intracom').removeClass('d-none');
-        $('#intracom_input').prop('required', true);
-   }
-   else 
-   {
-        $('#div_intracom').addClass('d-none');
-        $('#intracom_input').prop('required', false);
-    }
-}
+//     if (parseInt(selected_option) == 1 || intracom.length > 4 ) 
+//    {
+//         $('#div_intracom').removeClass('d-none');
+//         $('#intracom_input').prop('required', true);
+//    }
+//    else 
+//    {
+//         $('#div_intracom').addClass('d-none');
+//         $('#intracom_input').prop('required', false);
+//     }
+// }
 
-chekifitracom();
+// chekifitracom();
 
 
-    $('#select_tva').on('change', function()
-    {
-        var selectedOption = parseInt($(this).children("option:selected").val());
-        if (parseInt(selectedOption) ==  1 ) 
-        {
-            $('#div_intracom').removeClass('d-none');
-            $('#intracom_input').prop('required', true);
+//     $('#select_tva').on('change', function()
+//     {
+//         var selectedOption = parseInt($(this).children("option:selected").val());
+//         if (parseInt(selectedOption) ==  1 ) 
+//         {
+//             $('#div_intracom').removeClass('d-none');
+//             $('#intracom_input').prop('required', true);
           
-        } 
-        else
-        {
-            $('#div_intracom').addClass('d-none');
-            $('#intracom_input').prop('required', false);
-        }
-    })
+//         } 
+//         else
+//         {
+//             $('#div_intracom').addClass('d-none');
+//             $('#intracom_input').prop('required', false);
+//         }
+//     })
 
 
   
