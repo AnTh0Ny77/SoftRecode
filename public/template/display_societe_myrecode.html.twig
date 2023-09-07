@@ -173,49 +173,9 @@
                                             <div class="past_pink mx-2 my-1">
                                                 Peut passer des commandes
                                             </div><br>
-                                        {% elseif row == 'SUMYR' %}
-                                            <div class="past_yellow mx-2 my-1">
-                                                Super administrateur RECODE
-                                            </div><br>
-                                        {% elseif row == 'USER' %}
-                                            <div class="past_blue mx-2 my-1">
-                                                Utilisateurs
-                                            </div><br>
-                                        {% elseif row == 'CMAIL' %}
-                                            <div class="past_pink mx-2 my-1">
-                                                Recevoir commandes par email
-                                            </div><br>
-                                        {% elseif row == 'ACHPX' %}
-                                            <div class="past_yellow mx-2 my-1">
-                                                Visu des prix dans commandes
-                                            </div><br>
                                         {% elseif row == 'USRAC' %}
                                             <div class="past_orange mx-2 my-1">
                                                 Utilisateur Actif
-                                            </div><br>
-                                        {% elseif row == 'VUBLS' %}
-                                            <div class="past_pink mx-2 my-1">
-                                                Voir les Bons de Livraisons
-                                            </div><br>
-                                        {% elseif row == 'VUFAC' %}
-                                            <div class="past_yellow mx-2 my-1">
-                                                Voir les Factures
-                                            </div><br>
-                                        {% elseif row == 'VUREF' %}
-                                            <div class="past_orange mx-2 my-1">
-                                                Voir les ref constructeur (dans catalogue)
-                                            </div><br>
-                                        {% elseif row == 'VUREF' %}
-                                            <div class="past_pink mx-2 my-1">
-                                                Voir les ref constructeur (dans catalogue)
-                                            </div><br>
-                                        {% elseif row == 'VUSOC' %}
-                                            <div class="past_blue mx-2 my-1">
-                                                Voir les Doc sur la socitété 
-                                            </div><br>
-                                        {% elseif row == 'VUTEC' %}
-                                            <div class="past_orange mx-2 my-1">
-                                                Voir les Infos technique
                                             </div><br>
                                         {% endif %}
                                     {% endfor %}
@@ -495,14 +455,6 @@
                                 <option value="USRAC" selected>Utilisateur Actif</option>
                                 <option value="ADUSR" selected>Administrateur d autres utilisateurs</option>
                                 <option value="ACHAT" >Peut passer des commandes</option>
-                                <option value="SUMYR">Super administrateur RECODE</option>
-                                <option value="CMAIL" >Recevoir commandes par email</option>
-                                <option value="TMAIL" >Recevoir les infos tickets par email</option>
-                                <option value="VUBLS">Voir les Bons de Livraisons</option>
-                                <option value="VUFAC" >Voir les Factures</option>
-                                <option value="VUREF" >Voir les ref constructeur (dans catalogue)</option>
-                                <option value="VUSOC">Voir les Doc sur la socitété </option>
-                                <option value="VUTEC">Voir les Infos technique </option>
                             </select>
                         </div>
                     </div>
@@ -566,14 +518,6 @@
                                 <option value="USRAC">Utilisateur Actif</option>
                                 <option value="ADUSR" >Administrateur</option>
                                 <option value="ACHAT" >Peut passer des commandes</option>
-                                <option value="SUMYR">Super administrateur RECODE</option>
-                                <option value="CMAIL" >Recevoir commandes par email</option>
-                                <option value="TMAIL" >Recevoir les infos tickets par email</option>
-                                <option value="VUBLS">Voir les Bons de Livraisons</option>
-                                <option value="VUFAC" >Voir les Factures</option>
-                                <option value="VUREF" >Voir les ref constructeur (dans catalogue)</option>
-                                <option value="VUSOC">Voir les Doc sur la socitété </option>
-                                <option value="VUTEC">Voir les Infos technique </option>
                             </select>
                         </div>
                     </div>
@@ -1250,11 +1194,9 @@
             $('#user__role_edit').selectpicker('val', arraySelect);
             $('#user__role_edit').selectpicker('refresh');
             arraySelect = [];
-            $("#user__parc_edit> option").each(function(){this.remove();});
             $("#user__site_edit > option").each(function (){
                 for(i = 0; i < data.clients.length; i++) {
                     if (this.value == data.clients[i].cli__id){
-                        $('#user__parc_edit').append('<option value="'+data.clients[i].cli__id+'">'+ ' ( ' + data.clients[i].cli__id + ' ) ' + data.clients[i].cli__nom+'</option>');
                         arraySelect.push(this.value);
                     }
                 }
@@ -1400,8 +1342,6 @@
                     "luc__order": 1
                   };
 
-                  
-                  
                   let relation = postUserRelation(relation_data);
                   resolve(relation); 
                 }
@@ -1477,15 +1417,11 @@
                             console.error(error);
                         });
 
-
                 }).catch(function(error){
                     console.log(error);
                 })
                 
             }
-
-            
-
         }
 
         let returnBodyUser = function(){
@@ -1764,14 +1700,6 @@
                             role += '<div class="past_yellow mx-2 my-1"> Administrateur Recode</div><br>';
                         }else if(user[i].roles[y] == "ADUSR"){
                             role += '<div class="past_blue mx-2 my-1"> Administrateur</div><br>';
-                        }else if(user[i].roles[y] == "ACHAT"){
-                            role += '<div class="past_pink mx-2 my-1"> Achat</div><br>';
-                        }else if(user[i].roles[y] == "USER"){
-                            role += '<div class="past_blue mx-2 my-1"> Utilisateur</div><br>';
-                        }else if(user[i].roles[y] == "CMAIL"){
-                            role += '<div class="past_pink mx-2 my-1"> Recevoir des commandes par email</div><br>';
-                        }else if(user[i].roles[y] == "ACHPX"){
-                            role += '<div class="past_yellow mx-2 my-1"> Visu des prix dans commandes</div><br>';
                         }else if(user[i].roles[y] == "USRAC"){
                             role += '<div class="past_orange mx-2 my-1"> Utilisateur Actif</div><br>';
                         }else if(user[i].roles[y] == "VUBLS"){
@@ -1841,34 +1769,14 @@
                 //role : 
                 if(user[i].roles.length > 0){
                     for(y=0; y<user[i].roles.length; y++ ){
-                        if(user[i].roles[y] == "SUMYR"){
-                            role += '<div class="past_yellow mx-2 my-1"> Administrateur Recode</div><br>';
-                        }else if(user[i].roles[y] == "ADUSR"){
+                        if(user[i].roles[y] == "ADUSR"){
                             role += '<div class="past_blue mx-2 my-1"> Administrateur</div><br>';
                         }else if(user[i].roles[y] == "ACHAT"){
                             role += '<div class="past_pink mx-2 my-1"> Achat</div><br>';
-                        }else if(user[i].roles[y] == "USER"){
-                            role += '<div class="past_blue mx-2 my-1"> Utilisateur</div><br>';
-                        }else if(user[i].roles[y] == "CMAIL"){
-                            role += '<div class="past_pink mx-2 my-1"> Recevoir des commandes par email</div><br>';
                         }else if(user[i].roles[y] == "ACHPX"){
                             role += '<div class="past_yellow mx-2 my-1"> Visu des prix dans commandes</div><br>';
                         }else if(user[i].roles[y] == "USRAC"){
                             role += '<div class="past_orange mx-2 my-1"> Utilisateur Actif</div><br>';
-                        }else if(user[i].roles[y] == "VUBLS"){
-                            role += '<div class="past_pink mx-2 my-1"> Voir les Bons de Livraisons</div><br>';
-                        }else if(user[i].roles[y] == "VUFAC"){
-                            role += '<div class="past_yellow mx-2 my-1"> Voir les Factures</div><br>';
-                        }else if(user[i].roles[y] == "VUREF"){
-                            role += '<div class="past_pink mx-2 my-1"> Voir les ref constructeur (dans catalogue)</div><br>';
-                        }else if(user[i].roles[y] == "VUSOC"){
-                            role += '<div class="past_blue mx-2 my-1"> Voir les Doc sur la socitété </div><br>';
-                        }else if(user[i].roles[y] == "VUTEC"){
-                            role += '<div class="past_orange mx-2 my-1"> Voir les Infos technique</div><br>';
-                        }else if(user[i].roles[y] == "TMAIL"){
-                            role += '<div class="past_orange mx-2 my-1"> Recevoir les infos tickets par email</div><br>';
-                        }else{
-                            role += '<div class="past_blue mx-2 my-1"> + 1 Role présent non configuré dans l affichage ( contacter Anthony ) </div><br>';
                         }
                     }
 
@@ -1900,12 +1808,9 @@
             }
             userTable.draw();
         }
-        
         setInterval(function realTime(){
             renderUserTableReal()
         }, 1000) ;
-        
-      
         let renderMatosTable = function (){
             //let matos = getParcSossukeRequest();
           
@@ -1965,7 +1870,6 @@
 
         let handleFmm =function() {
             let value = JSON.parse($('#mat__model').val());
-            
             let results = {
                 'mat__pn' : $('#mat__pn').val() , 
                 'mat__marque': value.Marque ,
@@ -2027,7 +1931,6 @@
             if(!valideNom($forms['mat__sn'])){
                 return 'Merci de renseigner le numéro de S/N';
             }
-           
             return false ;
         }
 
@@ -2067,7 +1970,6 @@
 
 
     $("#postLogoButton").on( 'click' , function(){
-
         if (!checkFileExtension()) {
             alert("Merci de choisir un fichier de type:  .png");
             return $("#logoInput").val('');
@@ -2079,7 +1981,6 @@
     function checkFileExtension() {
         fileName = $('#logoInput').val();
         extension = fileName.substring(fileName.lastIndexOf('.') + 1);
-      
         if(extension === 'png' || extension === 'PNG' ){
             return true;
         }
