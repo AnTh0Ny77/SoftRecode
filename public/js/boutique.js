@@ -71,14 +71,8 @@ $(document).ready(function(){
                         { title: 'Etat' },
                         { title: 'Prix/date' },
                         { title: 'Memo' },
-                        { title: 'EXT de Garantie' },
-                        { title: '' , 'render' : function(data){
-                            if(data != "" && data != null){
-                                return '<img src="public/img/boutique/'+ data +'"  width="40px">';
-                            }else {
-                                return '<img src="public/img/boutique/no.png"  width="40px">';
-                            }
-                        }  },
+                        { title: 'EXT de Garantie' }
+                       
                     ],
                     createdRow: function (row, data, index) {
                         $(row).attr('data-toggle', "modal");

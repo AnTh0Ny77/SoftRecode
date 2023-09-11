@@ -574,6 +574,7 @@
                 <div class="modal-body">
                     <div class="col-11 d-flex justify-content-start">
                         <div class="col-12">
+                            <small class="form-text text-muted"> Article</small>
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" id="mat__model">
                                    {% for pn in pn_list %}
                                         <option value="{{pn|json_encode()}}" >{{pn.famille ~ " " ~  pn.Marque ~ " " ~ pn.afmm__modele }}   </option>
@@ -583,18 +584,18 @@
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6">
-                            <small class="form-text text-muted"> Doit etre unique</small>
+                            <small class="form-text text-muted">S/N ( Doit etre unique )</small>
                             <input class="form-control my-2 input-recode" id="mat__sn" placeholder="S/N" rows="2" required ></input>
                         </div>
                         <div class="col-6">
-                            <small class="form-text text-muted"> Optionnel</small>
+                            <small class="form-text text-muted">P/N ( Optionnel )</small>
                             <input class="form-control my-2 input-recode" id="mat__pn" placeholder="P/N" rows="2" required ></input>
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6 mb-1">
-                            <small class="form-text text-muted"> Numero de la commande recode </small>
-                            <input class="form-control my-2 input-recode" id="mat__idnec" placeholder="Numéro fiche Eurocomputeur" rows="2"  ></input>
+                            <small class="form-text text-muted"> Numero de la commande recode</small>
+                            <input class="form-control my-2 input-recode" id="mat__idnec" placeholder="Numéro de la commande recode" rows="2"  ></input>
                             
                         </div>
                         <div class="col-6  mb-1">
@@ -605,14 +606,12 @@
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6">
-                            <small class="form-text text-muted"> Si un abonnement existe pour cette machine</small>
-                            <input class="form-control my-2 input-recode" id="mat__contrat_id" placeholder="Numéro du contrat chez Recode" rows="2"  ></input>
-                            
+                            <small class="form-text text-muted"> Numéro du contrat chez Recode</small>
+                            <input class="form-control my-2 input-recode" id="mat__contrat_id" placeholder="Numéro du contrat chez Recode" rows="2"></input>
                         </div>
                         <div class="col-6">
-                            <small class="form-text text-muted"> Correspond Numero du client</small>
-                            <input class="form-control my-2 input-recode" id="mat__ident" placeholder="Numéro identification du client" rows="2" ></input>
-                            
+                            <small class="form-text text-muted"> Numéro identification du client</small>
+                            <input class="form-control my-2 input-recode" id="mat__ident" placeholder="Numéro identification du client" rows="2"></input>
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
@@ -629,14 +628,11 @@
                         <div class="col-6">
                             <small class="form-text text-muted"> La date sera prise en compte si une garantie est présente </small>
                             <input class="form-control my-2 input-recode" type="date" id="mat__date_offg" ></input>
-                           
                         </div>
-                        
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <div class="alert alert-secondary past_pastel" id="alert_matos_crea" role="alert">
-                        
+                    <div class="alert alert-secondary past_pastel" id="alert_matos_crea" role="alert"> 
                     </div>
                     <button class="btn btn-recode-important"  type="button" id="button_matos_crea">Ajouter</button>
                 </div>
@@ -644,8 +640,6 @@
         </div>
     </div>
 </div>
-
-
 
 <!--modal logo -->
 <div class="modal fade" id="modalLogo" tabindex="-1" role="dialog" aria-labelledby="modalmatosAjout"
@@ -734,6 +728,7 @@
                 <div class="modal-body">
                     <div class="col-11 d-flex justify-content-start">
                         <div class="col-12">
+                            <small class="form-text text-muted">Article</small>
                             <input type="hidden" id="mat__id_edit">
                             <input type="text" class="form-control my-2 input-recode" id="mat__model_edit" readonly>
                             
@@ -741,19 +736,19 @@
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6">
-                            <small class="form-text text-muted"> Doit etre unique</small>
+                            <small class="form-text text-muted">S/N  ( Doit etre unique ) </small>
                             <input class="form-control my-2 input-recode" id="mat__sn_edit" placeholder="S/N" rows="2" required readonly></input>     
                         </div>
                         <div class="col-6">
-                            <small class="form-text text-muted"> Optionnel</small>
+                            <small class="form-text text-muted">P/N ( Optionnel ) </small>
                             <input class="form-control my-2 input-recode" id="mat__pn_edit" placeholder="P/N" rows="2" required ></input>
                             
                         </div>
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6 mb-1">
-                            <small class="form-text text-muted"> Numero de la commande recode </small>
-                            <input class="form-control my-2 input-recode" id="mat__idnec_edit" placeholder="Numéro fiche Eurocomputeur" rows="2"   ></input>
+                            <small class="form-text text-muted"> Numero de  commande recode </small>
+                            <input class="form-control my-2 input-recode" id="mat__idnec_edit" placeholder="Numéro de commande Recode" rows="2"   ></input>
                             
                         </div>
                         <div class="col-6  mb-1">
@@ -764,7 +759,7 @@
                     </div>
                     <div class="col-11 mb-2 d-flex justify-content-start">
                         <div class="col-6">
-                            <small class="form-text text-muted"> Si un abonnement existe pour cette machine</small>
+                            <small class="form-text text-muted">Numéro du contrat chez Recode </small>
                             <input class="form-control my-2 input-recode" id="mat__contrat_id_edit" placeholder="Numéro du contrat chez Recode" rows="2" readonly ></input>
                             
                         </div>
@@ -1862,9 +1857,14 @@
                 'mat__memo' : $('#mat__memo_edit').val(),
                 'mat__idnec' : $('#mat__idnec_edit').val() , 
                 'mat__kw_tg' : $('#mat__kw_tg_edit').val() , 
-                'mat__date_offg' : $('#mat__date_offg_edit').val() ,
                 'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528'
             };
+            
+            // Vérifiez si l'input #mat__date_offg_edit a une valeur
+            let dateOffgValue = $('#mat__date_offg_edit').val();
+            if (dateOffgValue) {
+                results['mat__date_offg'] = dateOffgValue;
+            }
             postMatosRequest(results)
         })
 
@@ -1879,12 +1879,16 @@
                 'mat__cli__id' : $('#cli__id').val(),
                 'mat__memo' : $('#mat__memo').val(),
                 'mat__kw_tg': $('#mat__kw_tg').val(),
-                'mat__date_offg': $('#mat__date_offg').val() , 
                 'mat__contrat_id' : $('#mat__contrat_id').val(), 
                 "mat__ident" : $('#mat__ident').val(),
                 'mat__idnec' : $('#mat__idnec').val() , 
                 'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528'
             };
+              // Vérifiez si l'input #mat__date_offg_edit a une valeur
+              let dateOffgValue = $('#mat__date_offg').val();
+              if (dateOffgValue) {
+                  results['mat__date_offg'] = dateOffgValue;
+              }
             let verif = handleMatosForms(results)
             if(verif) {return verif}
             postMatosRequest(results)
