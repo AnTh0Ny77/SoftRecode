@@ -193,7 +193,7 @@
                                                       </div>
                                                       <div>
                                                                 {% if  ( commande.devis__etat == 'IMP' or  commande.devis__etat == 'VLD'  or  commande.devis__etat == 'VLA' ) and user.user__prix_acces > 0  %}
-                                                                        <a href="public\archive_pdf\BL\BL_{{commande.devis__id}}.pdf" class="badge badge-link" target="_blank">
+                                                                        <a href="apiBL?cmd__id={{commande.devis__id}}" class="badge badge-link" target="_blank">
                                                                                 <i class="far fa-file-pdf fa-5x"></i>
                                                                                 <h5>Bon de livraison</h5>
                                                                         </a>
