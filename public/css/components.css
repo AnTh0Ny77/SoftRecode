@@ -35,6 +35,7 @@
 .container-body
 {
     min-height: 94vh;
+    background-color: #e9ecef;
 }
 
 .navbar{

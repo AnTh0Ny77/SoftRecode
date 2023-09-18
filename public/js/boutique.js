@@ -121,7 +121,7 @@ $(document).ready(function(){
                     language: {
                         lengthMenu: "Voir _MENU_ articles par page",
                         zeroRecords: "Aucuns résultats",
-                        info: "Page: _PAGE_ sur _PAGES_ au total",
+                        info: "",
                         infoEmpty: "Aucuns articles",
                         infoFiltered: "(résultats sur _MAX_ articles disponibles)",
                         search: "Rechercher"
