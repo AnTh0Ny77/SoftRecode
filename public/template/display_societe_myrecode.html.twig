@@ -1884,11 +1884,15 @@
                 'mat__idnec' : $('#mat__idnec').val() , 
                 'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528'
             };
+          
               // Vérifiez si l'input #mat__date_offg_edit a une valeur
               let dateOffgValue = $('#mat__date_offg').val();
               if (dateOffgValue) {
                   results['mat__date_offg'] = dateOffgValue;
+              }else {
+                results['mat__date_offg'] = null;
               }
+              
             let verif = handleMatosForms(results)
             if(verif) {return verif}
             postMatosRequest(results)
@@ -1903,6 +1907,7 @@
                 async: true ,
                 data: JSON.stringify(body), 
                 success: function (data, status, xhttp) {
+                  
                     results = data.data
                     renderMatosTable()   
                 },

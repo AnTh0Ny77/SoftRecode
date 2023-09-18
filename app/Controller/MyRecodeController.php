@@ -189,6 +189,27 @@ class MyRecodeController extends BasicController {
         );
     }
 
+
+    public static function nom_fichier_propre($nom_fichier){
+        $nom_fichier = trim($nom_fichier);
+        $nom_fichier = str_replace(" ",          '_', $nom_fichier);
+        $nom_fichier = str_replace("-",          '_', $nom_fichier);
+        $nom_fichier = str_replace("'",          '_', $nom_fichier);
+        $nom_fichier = str_replace("iso-8859-1", '',  $nom_fichier);
+        $nom_fichier = str_replace('=E9',        'e', $nom_fichier);
+        $nom_fichier = str_replace('=Q',         '',  $nom_fichier);
+        $nom_fichier = str_replace('=',          '',  $nom_fichier);
+        $nom_fichier = str_replace('?',          '',  $nom_fichier);
+        $search =array('À','Á','Â','Ã','Ä','Å','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ò','Ó','Ô','Õ','Ö','Ù','Ú','Û','Ü','Ý','à','á','â','ã','ä','å','ç','è','é','ê','ë','ì','í','î','ï','ð','ò','ó','ô','õ','ö','ù','ú','û','ü','ý','ÿ');
+        $replace=array('A','A','A','A','A','A','C','E','E','E','E','I','I','I','I','O','O','O','O','O','U','U','U','U','Y','a','a','a','a','a','a','c','e','e','e','e','i','i','i','i','o','o','o','o','o','o','u','u','u','u','y','y');
+        $nom_fichier = str_replace($search, $replace, $nom_fichier); // supprime les accents
+        $nom_fichier = preg_replace('/([^_.a-zA-Z0-9]+)/', '', $nom_fichier);
+        return $nom_fichier;
+
+    }
+
+
+
     public static function displayTickets(){
         self::init();
         self::security();
@@ -240,15 +261,17 @@ class MyRecodeController extends BasicController {
                     $ticket['memo']  =  $ticket['info']['tkl__memo'];
 
                     if ($ticket['tk__lu'] == 9 ) {
+
                         self::updateTicket($ticket , $token , 9 , $Api );
+
                     }else{
-                        if ($_SESSION['user']->id_utilisateur ==  $ticket['last']) {
+                        if ($_SESSION['user']->id_utilisateur ==  $ticket['last']  and $ticket['tk__lu'] != 9 ) {
                             self::updateTicket($ticket , $token , 5 , $Api );
                         }
                         $groups_array = $groups->get_groups($_SESSION['user']->id_utilisateur);
                         if (!empty($groups_array)) {
                             foreach ($groups_array as  $value) {
-                                    if ( intval($value->id_groupe) ==  intval($ticket['last'])) {
+                                    if ( intval($value->id_groupe) ==  intval($ticket['last']) and $ticket['tk__lu'] != 9 ) {
                                         self::updateTicket($ticket , $token , 5 , $Api );
                                     }
                             }
@@ -313,7 +336,6 @@ class MyRecodeController extends BasicController {
                         }else{
                             $date_sortie = '';
                         }
-                       
                     }
                 }
                 $ticket['lignes'][0]['entities'][0] = [
@@ -353,7 +375,7 @@ class MyRecodeController extends BasicController {
                     }
 
                     if (!empty($_FILES)){
-                        $fileName = $_FILES['file']['name'];
+                        $fileName = self::nom_fichier_propre($_FILES['file']['name']);
                         $tempPath = $_FILES['file']['tmp_name'];
                         $fileSize = $_FILES['file']['size'];
                        
@@ -372,9 +394,10 @@ class MyRecodeController extends BasicController {
                     }
                    
                         $id_ligne =  self::PostLigne($_POST ,$dest , $Api, $token);
-                   
                         $ticket = self::PostChamps($id_ligne,$_POST,$Api,$token);
-                    if ($fileSize > 111) {
+
+
+                    if ($fileSize > 111){
                         move_uploaded_file($tempPath, __DIR__ .'/' .$fileName);
                         $file = $Api->postFile($token, fopen(__DIR__ . '/' .$fileName , 'r') ,$id_ligne);
                         unlink(__DIR__ .'/' .$fileName);
