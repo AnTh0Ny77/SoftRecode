@@ -490,9 +490,17 @@ case '/SoftRecode/printContrat';
 case '/SoftRecode/printContratList';
 	require __DIR__ . '/pages/utilities/printContratList.php';
 		break;
-
 case '/SoftRecode/PRINTFORMAT';
 	require __DIR__ .'/pages/utilities/printFormat.php'; break;
+
+/*""Yb    db     dP""b8 88  dP      dP"Yb  888888 888888 88  dP""b8 888888 
+88__dP   dPYb   dP   `" 88odP      dP   Yb 88__   88__   88 dP   `" 88__   
+88""Yb  dP__Yb  Yb      88"Yb      Yb   dP 88""   88""   88 Yb      88""   
+88oodP dP""""Yb  YboodP 88  Yb      YbodP  88     88     88  YboodP 88888*/
+
+case '/SoftRecode/import_parc'.$get_data;
+	require __DIR__ .'/pages/import_parc.php'; break;
+
 
 /*P"Y8 888888    db    888888 
 `Ybo."   88     dPYb     88   
@@ -517,11 +525,8 @@ case '/SoftRecode/time_logoff'.$get_data;
 	require __DIR__ .'/pages/time_logoff.php'; break;
 case '/SoftRecode/time_recap'.$get_data;
 	require __DIR__ .'/pages/time_recap.php'; break;
-
-
 case '/SoftRecode/restore';
 	require __DIR__ . '/pages/restore_fact.php';break;
-
 case '/SoftRecode/font';
 	require __DIR__ .'/vendor/tecnickcom/tcpdf/fonts/convertfont.php'; break;
 
