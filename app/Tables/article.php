@@ -864,7 +864,7 @@ public function getModels()
 public function getModelsMyRecode()
 {
 	$request = $this->Db->Pdo->query(
-	'SELECT   k.kw__lib as famille , m.am__marque as Marque , afmm__modele
+	'SELECT   k.kw__lib as famille , m.am__marque as Marque , afmm__modele , k.kw__value as fam 
 	FROM art_fmm
 	INNER JOIN art_marque as m ON afmm__marque = m.am__id
 	INNER JOIN keyword as k on afmm__famille = k.kw__value 
