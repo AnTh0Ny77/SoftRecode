@@ -6,6 +6,7 @@ require_once  '././vendor/autoload.php';
 use DateTime;
 use App\Database;
 use App\Tables\Cmd;
+use App\Tables\Article;
 use App\Api\ResponseHandler;
 
 class ApiCommandeTransfert{
@@ -26,6 +27,7 @@ class ApiCommandeTransfert{
     }
 
     public static function post(){
+
         $responseHandler = new ResponseHandler;
         $Database = new Database('devis');
         $Database->DbConnect();
@@ -37,6 +39,7 @@ class ApiCommandeTransfert{
                 'msg' => 'le body ne peut pas etre vide'
             ], 401, 'bad request');
         } 
+
         if (empty($body['secret'])) {
             return $responseHandler->handleJsonResponse([
                 'msg' => 'opération non autorisée'
@@ -53,6 +56,12 @@ class ApiCommandeTransfert{
                 'msg' => $test
             ], 401, 'bad request');
         }
+
+        //insere la commande : 
+
+        //boucle et insere les lignes  :  
+
+        //renvoi l id de commande :
 
     }
 
@@ -105,7 +114,52 @@ class ApiCommandeTransfert{
         }
 
         return false;
-        
+    }
+
+    public static  function transformLigne($ligne , $cmd__id , $index , $database ){
+
+        $Article = new Article($database);
+
+        $pn = $Article->get_pn_long($ligne['sar__ref_constructeur']);
+
+
+        if ($pn['apn__famille'] != 'ACC') {
+            $id_fmm = $Article->return_id_fmm_for_myrecode($pn['apn__pn']);
+            $id_fmm = $id_fmm['id__fmm']  ;
+        }else { 
+            $id_fmm = 101 ;
+        }
+
+        $results = [];
+        $results['cmdl__cmd__id'] = $cmd__id;
+        $results['cmdl__ordre'] = $index;
+        $results['cmdl__prestation'] = 'VTE';
+        $results['cmdl__id__fmm'] = $id_fmm['id__fmm']; 
+        $results['cmdl__pn'] = $pn['apn__pn'];
+        $results['cmdl__designation'] = $ligne['sar__description'];
+        $results['cmdl__etat'] = $ligne['sav__etat'];
+        $results['cmdl__garantie_base'] = $ligne['sav__gar_std'];
+        $results['cmdl__qte_cmd'] = $ligne['scl__qte'];
+        $results['cmdl__puht'] = $ligne['scl__prix_unit'];
+
+        if (!empty($ligne['scl__gar_mois'])) {
+            $results['cmdl__garantie_option'] = $ligne['scl__gar_mois'];
+            $results['cmdl__garantie_puht'] = $ligne['scl__gar_mois'];
+        }else {
+            $results['cmdl__garantie_option'] = null;
+            $results['cmdl__garantie_puht'] = null;
+        }
+      
+        return $results;
+
+    }
+
+    public static function insertCmd(){
+
+    }
+
+    public static function insertLigne(){
+
     }
 
 }

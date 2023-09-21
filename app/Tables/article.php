@@ -458,6 +458,21 @@ class Article extends Table
 		
   }
 
+
+  public function return_id_fmm_for_myrecode($pn_id){
+		
+	$pn_court = preg_replace("#[^!A-Za-z0-9%]+#", "", $pn_id);
+	$pn_court = strtoupper($pn_court);
+	$SQL = 'SELECT *
+	FROM liaison_fmm_pn 
+	WHERE id__pn = "' . $pn_court . '"
+	ORDER BY id__fmm';
+	$request = $this->Db->Pdo->query($SQL);
+	$data = $request->fetch(PDO::FETCH_ASSOC);
+	return $data;
+	
+}
+
 	public function get_pn_list(): array
 	{
 
@@ -509,6 +524,17 @@ class Article extends Table
 
 		if (!empty($data->apn__image))
 			$data->apn__image = base64_encode($data->apn__image);
+
+		return $data;
+  }
+
+  public function get_pn_long($pn_name)
+  {
+		$SQL = 'SELECT a.* 
+		FROM art_pn as a  
+		WHERE apn__pn_long = "'. $pn_name .'"';
+		$request = $this->Db->Pdo->query($SQL);
+		$data = $request->fetch(PDO::FETCH_ASSOC);
 
 		return $data;
   }

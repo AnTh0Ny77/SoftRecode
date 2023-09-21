@@ -2107,6 +2107,33 @@ class Cmd extends Table
 
 
 
+  public function insert($array){
+    $request = $this->Db->Pdo->prepare(
+      'INSERT INTO cmd (
+        cmd__date_devis , cmd__user__id_devis, cmd__client__id_fact ,
+        cmd__client__id_livr, cmd__contact__id_fact,
+        cmd__note_client, 
+        cmd__etat )
+        VALUES ( 
+        :cmd__date_devis, :cmd__user__id_devis, :cmd__client__id_fact, 
+        :cmd__client__id_livr, :cmd__contact__id_fact, 
+        :cmd__note_client, :cmd__etat )'
+    );
+    $request->bindValue(":cmd__date_devis", $array['cmd__date_devis']);
+    $request->bindValue(":cmd__user__id_devis", $array['cmd__user__id_devis']);
+    $request->bindValue(":cmd__client__id_fact", $array['scm__client_id_fact']);
+    $request->bindValue(":cmd__client__id_livr", $array['scm__client_id_livr']);
+    $request->bindValue(":devis__contact__id", $contact);
+    $request->bindValue(":devis__note_client", $comClient);
+    $request->bindValue(":devis__note_interne", $comInterne);
+    $request->bindValue(":devis__etat", $etat);
+    $request->bindValue(":devis__modele", $modele);
+    $request->bindValue(":devis__id_contact_livraison", $contact_livraison);
+    $request->bindValue(":nom_devis", $titreDevis);
+    $request->execute();
+    $idDevis = $this->Db->Pdo->lastInsertId();
+
+  }
 
 
 
