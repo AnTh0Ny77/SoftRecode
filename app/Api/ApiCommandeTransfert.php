@@ -65,7 +65,7 @@ class ApiCommandeTransfert{
             }
         }
         return $responseHandler->handleJsonResponse([
-            'data' => 'tranfert effectué avec succès'
+            'data' => $cmd__id ,
         ], 200, 'ok');
     }
 
