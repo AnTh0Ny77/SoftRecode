@@ -66,7 +66,7 @@ class ApiCommandeTransfert{
         }
         return $responseHandler->handleJsonResponse([
             'data' => $cmd__id ,
-        ], 200, 'ok');
+        ], 200, $cmd__id);
     }
 
     public static function checkBody($body){
