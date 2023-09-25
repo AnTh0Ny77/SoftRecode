@@ -19,6 +19,7 @@ use App\Controller\TicketsDisplayController;
 use App\Controller\UserMyRecodeController;
 use App\Controller\MyRecodeSocieteController;
 use App\Controller\MyRecodeBoutiqueController;
+use App\Api\ApiCommandeTransfert;
 use App\Controller\MachineController;
 use App\Controller\SeoController;
 
@@ -233,9 +234,10 @@ else
 			echo MyRecodeBoutiqueController::displayList();
 			break;
 
+		case '/SoftRecode/apiCmdTransfert'.$get_data;
+			echo ApiCommandeTransfert::index($_SERVER['REQUEST_METHOD']);
+			break;
 
-		
-			
 		case '/SoftRecode/demo'.$get_data;
 			var_dump(test::testFilesRequest());
 			break;

@@ -461,12 +461,10 @@ class Article extends Table
 
   public function return_id_fmm_for_myrecode($pn_id){
 		
-	$pn_court = preg_replace("#[^!A-Za-z0-9%]+#", "", $pn_id);
-	$pn_court = strtoupper($pn_court);
+	
 	$SQL = 'SELECT *
 	FROM liaison_fmm_pn 
-	WHERE id__pn = "' . $pn_court . '"
-	ORDER BY id__fmm';
+	WHERE id__pn = "' . $pn_id . '"';
 	$request = $this->Db->Pdo->query($SQL);
 	$data = $request->fetch(PDO::FETCH_ASSOC);
 	return $data;

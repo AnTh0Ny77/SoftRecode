@@ -39,7 +39,6 @@ class ApiCommandeTransfert{
                 'msg' => 'le body ne peut pas etre vide'
             ], 401, 'bad request');
         } 
-
         if (empty($body['secret'])) {
             return $responseHandler->handleJsonResponse([
                 'msg' => 'opération non autorisée'
@@ -49,20 +48,25 @@ class ApiCommandeTransfert{
                 'msg' => 'opération non autorisée'
             ], 401, 'bad request');
         }
-
         $test = self::checkBody($body);
         if ($test != false ) {
             return $responseHandler->handleJsonResponse([
                 'msg' => $test
             ], 401, 'bad request');
         }
-
-        //insere la commande : 
-
-        //boucle et insere les lignes  :  
-
-        //renvoi l id de commande :
-
+        $cmd__id = self::insertCmd($Database ,$body );
+        $index = 1 ;
+        foreach ($body['ligne'] as $value) {
+            $temp = self::transformLigne($value,$cmd__id,$index ,$Database);
+            $cmdl__id = self::insertLigne($Database , $temp , $index );
+            $index ++ ;
+            if (!empty($temp['cmdl__garantie_option'])) {
+                self::insertgarantie($Database,$cmdl__id,$temp);
+            }
+        }
+        return $responseHandler->handleJsonResponse([
+            'data' => 'tranfert effectué avec succès'
+        ], 200, 'ok');
     }
 
     public static function checkBody($body){
@@ -112,6 +116,21 @@ class ApiCommandeTransfert{
         if (empty($ligne['scl__qte'])) {
             return 'scl__qte';
         }
+        if (empty($ligne['sar__description'])) {
+            return 'sar__description';
+        }
+        if (empty($ligne['sav__etat'])) {
+            return 'sav__etat';
+        }
+        if (empty($ligne['sav__gar_std'])) {
+            return 'sav__gar_std';
+        }
+        if (empty($ligne['sar__ref_constructeur'])) {
+            return 'sar__ref_constructeur';
+        }
+        if (empty($ligne['sar__ref_constructeur'])) {
+            return 'sar__ref_constructeur';
+        }
 
         return false;
     }
@@ -119,13 +138,15 @@ class ApiCommandeTransfert{
     public static  function transformLigne($ligne , $cmd__id , $index , $database ){
 
         $Article = new Article($database);
-
         $pn = $Article->get_pn_long($ligne['sar__ref_constructeur']);
-
-
         if ($pn['apn__famille'] != 'ACC') {
             $id_fmm = $Article->return_id_fmm_for_myrecode($pn['apn__pn']);
-            $id_fmm = $id_fmm['id__fmm']  ;
+            if (empty($id_fmm)) {
+                $id_fmm = 101 ;
+            }else{
+                $id_fmm = $id_fmm['id__fmm']  ;
+            }
+            
         }else { 
             $id_fmm = 101 ;
         }
@@ -134,7 +155,7 @@ class ApiCommandeTransfert{
         $results['cmdl__cmd__id'] = $cmd__id;
         $results['cmdl__ordre'] = $index;
         $results['cmdl__prestation'] = 'VTE';
-        $results['cmdl__id__fmm'] = $id_fmm['id__fmm']; 
+        $results['cmdl__id__fmm'] = $id_fmm; 
         $results['cmdl__pn'] = $pn['apn__pn'];
         $results['cmdl__designation'] = $ligne['sar__description'];
         $results['cmdl__etat'] = $ligne['sav__etat'];
@@ -144,7 +165,7 @@ class ApiCommandeTransfert{
 
         if (!empty($ligne['scl__gar_mois'])) {
             $results['cmdl__garantie_option'] = $ligne['scl__gar_mois'];
-            $results['cmdl__garantie_puht'] = $ligne['scl__gar_mois'];
+            $results['cmdl__garantie_puht'] = $ligne['scl__gar_prix'];
         }else {
             $results['cmdl__garantie_option'] = null;
             $results['cmdl__garantie_puht'] = null;
@@ -154,12 +175,82 @@ class ApiCommandeTransfert{
 
     }
 
-    public static function insertCmd(){
+    public static function insertgarantie($Db , $cmdl__id , $ligne){
+        $request = $Db->Pdo->prepare('INSERT INTO cmd_garantie 
+            (cmdg__ordre, 
+            cmdg__id__cmdl, 
+            cmdg__type, 
+            cmdg__prix, 
+            cmdg__prix_barre
+            )
+            VALUES (:cmdg__ordre, 
+            :cmdg__id__cmdl, 
+            :cmdg__type, 
+            :cmdg__prix, 
+            :cmdg__prix_barre)');
 
+            $request->bindValue(":cmdg__ordre", 1);
+            $request->bindValue(":cmdg__id__cmdl", $cmdl__id);
+            $request->bindValue(":cmdg__type", $ligne['cmdl__garantie_option']);
+            $request->bindValue(":cmdg__prix", $ligne['cmdl__garantie_puht']);
+            $request->bindValue(":cmdg__prix_barre",null);
+            $request->execute();
+        $id = $Db->Pdo->lastInsertId();
+        return $id;
     }
 
-    public static function insertLigne(){
 
+    public static function insertLigne( $Db , $ligne , $index){
+        $request = $Db->Pdo->prepare('INSERT INTO cmd_ligne 
+        (cmdl__ordre, cmdl__cmd__id,  cmdl__prestation, cmdl__id__fmm, cmdl__designation, cmdl__etat, cmdl__garantie_base, cmdl__qte_cmd, cmdl__puht, cmdl__pn)
+        VALUES (:cmdl__ordre, 
+        :cmdl__cmd__id, 
+        :cmdl__prestation, 
+        :cmdl__id__fmm, 
+        :cmdl__designation, 
+        :cmdl__etat, 
+        :cmdl__garantie_base, 
+        :cmdl__qte_cmd,
+        :cmdl__puht ,
+        :cmdl__pn )');
+        $request->bindValue(":cmdl__ordre", $index);
+        $request->bindValue(":cmdl__cmd__id",  $ligne['cmdl__cmd__id']);
+        $request->bindValue(":cmdl__prestation", $ligne['cmdl__prestation']);
+        $request->bindValue(":cmdl__id__fmm", $ligne['cmdl__id__fmm']);
+        $request->bindValue(":cmdl__designation", $ligne['cmdl__designation']);
+        $request->bindValue(":cmdl__etat", $ligne['cmdl__etat']);
+        $request->bindValue(":cmdl__garantie_base",  $ligne['cmdl__garantie_base']);
+        $request->bindValue(":cmdl__qte_cmd",$ligne['cmdl__qte_cmd']);
+        $request->bindValue(":cmdl__puht", $ligne['cmdl__puht']);
+        $request->bindValue(":cmdl__pn", $ligne['cmdl__pn']);
+        $request->execute();
+        $id = $Db->Pdo->lastInsertId();
+        return $id;
     }
+
+    public static function insertCmd($Db , $body ){
+        $Client = new \App\Tables\Client($Db );
+        $date = date("Y-m-d H:i:s");
+        $client = $Client->getOne($body['scm__client_id_fact']);
+        $request = $Db->Pdo->prepare('INSERT INTO cmd 
+        (cmd__date_devis,   cmd__user__id_devis,    cmd__client__id_fact,   cmd__client__id_livr,     cmd__etat,  cmd__modele_devis,  cmd__tva,   cmd__nom_devis)
+        VALUES (:cmd__date_devis, :cmd__user__id_devis, :cmd__client__id_fact, :cmd__client__id_livr, :cmd__etat, :cmd__modele_devis, :cmd__tva, :cmd__nom_devis)');
+        $request->bindValue(":cmd__date_devis", $date);
+        $request->bindValue(":cmd__user__id_devis", $body['scm__user_id']);
+        $request->bindValue(":cmd__client__id_fact", $body['scm__client_id_fact']);
+        $request->bindValue(":cmd__client__id_livr", $body['scm__client_id_livr']);
+        $request->bindValue(":cmd__modele_devis","STT");
+        $request->bindValue(":cmd__tva", $client->client__tva);
+        $request->bindValue(":cmd__nom_devis", "Commande MyRecode");
+        $request->bindValue(":cmd__etat", 'ATN');
+        $request->execute();
+        $id = $Db->Pdo->lastInsertId();
+        return $id;
+    }
+
+  
+
+
+    
 
 }
