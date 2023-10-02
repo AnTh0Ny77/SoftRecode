@@ -247,10 +247,4 @@ class ApiCommandeTransfert{
         $id = $Db->Pdo->lastInsertId();
         return $id;
     }
-
-  
-
-
-    
-
 }

@@ -1,0 +1,157 @@
+{% extends 'new_layout.twig' %}
+
+{% block style %}
+<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+<link rel="stylesheet" href="public/css/forms-myrecode.css">
+<link rel="stylesheet" href="public/css/cards-myrecode.css">
+<link rel="stylesheet" href="public/css/font-family.css">
+<style type="text/css">
+    .past_purple {
+        background-color: #A7BFE3;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+
+    .past_pink {
+        background-color: #F9D7E7;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+
+    .past_greeen {
+        background-color: #CBE5BE;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_yellow {
+        background-color: #FFF681;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_blue {
+        background-color: #90A4C3;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_pastel {
+        background-color: #FBDEDA;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_orange {
+        background-color: #F1CB9D;
+        float: left;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .past_red {
+        background-color: #2D2B76;
+        float: left;
+        color: antiquewhite;
+        padding: 3px 5px 3px 5px;
+        border-radius: 5px;
+    }
+    .text-calm{
+        font-family: 'Times New Roman', Times, serif !important;
+        font-weight: 300 !important;
+        box-shadow: none !important;
+    }
+    .link-reco{
+        text-decoration: none;
+        color: black;
+    }
+    #mbmax{
+        margin-bottom: 150px !important;
+    }
+</style>
+{% endblock %}
+{% block main %}
+<main role="main" class="container-fluid my-3 col-11 container-body" >
+    <h3 class="recode-p"><i class="fad fa-building"></i></i> Administration Publicités MyRecode</h3>
+    <div class="d-flex justify-content-start mt-4"  id="sticky-test">
+        <div class="col-9 card-recode-admin ">
+            <h4 class="recode-p"><i class="fas fa-users"></i> Liste</h4>
+         
+            <table id="table_id" class="display mt-3">
+                <div class="my-2 float-right">
+                    <button class="btn btn-recode-important" data-toggle="modal" data-target="#modalUser">Ajouter</button>
+                </div>
+                <thead>
+                    <tr >
+                        <th>Titre</th>
+                        <th>Lien</th>
+                        <th>Texte</th>
+                        <th>Client</th>
+                        <th>Image</th>
+                        
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for add in list %}
+                       
+                        <tr>
+                            <td>
+                                {{ add.ad__titre }}
+                            </td>
+                            <td>
+                                {{ add.ad__lien }}
+                            </td>
+                            <td>
+                                {{ add.ad__txt }}
+                            </td>
+                            <td>
+                                
+                            </td>
+                            <td>
+
+                            </td>
+                            <td>
+                                
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+
+       var userTable =  $('#table_id').DataTable({
+            paging: true,
+            lengthMenu: [50],
+            bLengthChange : false ,
+            paging: true,             
+            bPaginate: false,  
+        
+            language: {
+                lengthMenu: "",
+                zeroRecords: "Aucuns résultats",
+                info: "",
+                infoEmpty: "Aucuns résultats",
+                infoFiltered: " ",
+                search: "Rechercher"
+            }
+        });
+    });
+    </script>
+
+{% endblock %}

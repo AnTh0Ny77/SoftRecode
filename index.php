@@ -19,6 +19,7 @@ use App\Controller\TicketsDisplayController;
 use App\Controller\UserMyRecodeController;
 use App\Controller\MyRecodeSocieteController;
 use App\Controller\MyRecodeBoutiqueController;
+use App\Controller\AddOfficeController;
 use App\Api\ApiCommandeTransfert;
 use App\Controller\MachineController;
 use App\Controller\SeoController;
@@ -174,6 +175,10 @@ else
 
 		case '/SoftRecode/myRecode-ticket'.$get_data;
 			echo MyRecodeController::displayTickets();
+			break;
+
+		case '/SoftRecode/add-myrecode'.$get_data;
+			echo AddOfficeController::displayList();
 			break;
 
 		case '/SoftRecode/seo'.$get_data;
