@@ -85,7 +85,7 @@
          
             <table id="table_id" class="display mt-3">
                 <div class="my-2 float-right">
-                    <button class="btn btn-recode-important" data-toggle="modal" data-target="#modalUser">Ajouter</button>
+                    <button class="btn btn-recode-important" data-toggle="modal" data-target="#modalAjout">Ajouter</button>
                 </div>
                 <thead>
                     <tr >
@@ -118,7 +118,7 @@
 
                             </td>
                             <td>
-                                
+
                             </td>
                         </tr>
                     {% endfor %}
@@ -127,6 +127,33 @@
         </div>
     </div>
 </main>
+
+<div class="modal fade" id="modalAjout" tabindex="-1" role="dialog" aria-labelledby="modalmatosAjout"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title">Ajouter une publicité</h5>
+                  
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" id="postAdd" method="post" enctype="multipart/form-data" >
+                <div class="modal-body">
+                    
+                   
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-recode-important"  id="postAjout" type="button">Ajouter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
 {% block script %}
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
