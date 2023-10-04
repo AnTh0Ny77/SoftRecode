@@ -144,9 +144,38 @@
             </div>
             <form action="" id="postAdd" method="post" enctype="multipart/form-data" >
                 <div class="modal-body">
-                    
-                   
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-6">
+                            <small class="form-text text-muted"> Titre</small>
+                            <input class="form-control my-2 input-recode" name="add__titre" id="add__titre"  rows="2" ></input>
+                        </div>
+                        <div class="col-6">
+                            <small class="form-text text-muted"> Lien</small>
+                            <input class="form-control my-2 input-recode" name="add__lien" id="add__lien"  rows="2" ></input>
+                        </div>
+                    </div>
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-12">
+                            <small class="form-text text-muted"> Texte</small>
+                            <input class="form-control my-2 input-recode" name="add__titre" id="add__titre"  rows="2" ></input>
+                        </div>
+                        
+                    </div>
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-12">
+                            <small class="form-text text-muted"> Clients</small>
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" id="add__client">
+                                  
+                            </select> 
+                    </div>
                 </div>
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-12">
+                            <small class="form-text text-muted"> Image</small>
+                            <input class="form-control" name="logoInput" type="file" id="logoInput">
+                    </div>
+                   </div>
+                
                 <div class="modal-footer">
                     <button class="btn btn-recode-important"  id="postAjout" type="button">Ajouter</button>
                 </div>

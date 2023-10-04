@@ -171,10 +171,10 @@
                                             <div class="past_pink mx-2 my-1">
                                                 Peut passer des commandes
                                             </div><br>
-                                        {# {% elseif row == 'USRAC' %}
+                                        {% elseif row == 'SMTIK' %}
                                             <div class="past_orange mx-2 my-1">
-                                                Utilisateur Actif
-                                            </div><br> #}
+                                                Voir seulement mes tickets
+                                            </div><br>
                                         {% endif %}
                                     {% endfor %}
                                 {% endif %}    
@@ -456,6 +456,7 @@
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" multiple  name="user__role" id="user__role"  >
                                 <option value="USRAC" selected>Utilisateur Actif</option>
                                 <option value="ADUSR" selected>Administrateur d autres utilisateurs</option>
+                                <option value="SMTIK" >Voir seulment mes tickets</option>
                                 <option value="ACHAT" >Peut passer des commandes</option>
                             </select>
                         </div>
@@ -519,6 +520,7 @@
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" multiple  name="user__role" id="user__role_edit"  >
                                 <option value="USRAC">Utilisateur Actif</option>
                                 <option value="ADUSR" >Administrateur</option>
+                                <option value="SMTIK" >Voir seulment mes tickets</option>
                                 <option value="ACHAT" >Peut passer des commandes</option>
                             </select>
                         </div>
@@ -1715,6 +1717,8 @@
                             role += '<div class="past_orange mx-2 my-1"> Voir les Infos technique</div><br>';
                         }else if(user[i].roles[y] == "TMAIL"){
                             role += '<div class="past_orange mx-2 my-1"> Recevoir les infos tickets par email</div><br>';
+                        }else if(user[i].roles[y] == "SMTIK"){
+                            role += '<div class="past_orange mx-2 my-1"> Voir seulement mes tickets</div><br>';
                         }
                     }
 
@@ -1777,6 +1781,8 @@
                             role += '<div class="past_pink mx-2 my-1"> Achat</div><br>';
                         }else if(user[i].roles[y] == "ACHPX"){
                             role += '<div class="past_yellow mx-2 my-1"> Visu des prix dans commandes</div><br>';
+                        }else if(user[i].roles[y] == "SMTIK"){
+                            role += '<div class="past_orange mx-2 my-1"> Voir seulement mes tickets</div><br>';
                         }
                     }
 
