@@ -157,7 +157,7 @@
                     <div class="col-11 d-flex justify-content-start">
                         <div class="col-12">
                             <small class="form-text text-muted"> Texte</small>
-                            <input class="form-control my-2 input-recode" name="add__titre" id="add__titre"  rows="2" ></input>
+                            <input class="form-control my-2 input-recode" name="add__txt" id="add__txt"  rows="2" ></input>
                         </div>
                         
                     </div>
@@ -175,7 +175,7 @@
                     <div class="col-11 mb-3 d-flex justify-content-start">
                         <div class="col-12">
                             <small class="form-text text-muted"> Image</small>
-                            <input class="form-control" name="logoInput" type="file" id="logoInput">
+                            <input class="form-control" name="add__img" type="file" id="add__img">
                     </div>
                    </div>
                 
@@ -194,7 +194,7 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
-       var userTable =  $('#table_id').DataTable({
+        var userTable =  $('#table_id').DataTable({
             paging: true,
             lengthMenu: [50],
             bLengthChange : false ,
@@ -210,6 +210,107 @@
                 search: "Rechercher"
             }
         });
+
+
+        $('#postAjout').on('click',function(){
+            
+            let valid_titre = validateTitre();
+
+            let valid_lien = validateLien();
+
+            let valid_text = validateText();
+
+            if(valid_text === 42 && valid_lien === 42 && valid_text === 42  ){
+                
+                let valid_image = validateImage();
+
+                if(valid_image === 42 ){
+                    alert('tu peux poster');
+                }
+            }
+
+        })
+
+
+        function validateTitre() {
+            var input = document.getElementById("add__titre");
+            var value = input.value.trim(); // Supprimer les espaces avant et après le texte
+        
+            if (value.length < 3) {
+              // Le texte est trop court
+              input.setCustomValidity("Le titre doit avoir au moins 3 caractères.");
+            } else if (value.length > 35) {
+              // Le texte est trop long
+              input.setCustomValidity("Le titre ne peut pas dépasser 35 caractères.");
+            } else {
+                return 42 ;
+            }
+        }
+
+
+        function validateLien() {
+            var input = document.getElementById("add__lien");
+            var value = input.value.trim(); // Supprimer les espaces avant et après le texte
+        
+            if (value.length < 10) {
+              // Le texte est trop court
+              input.setCustomValidity("Le lien doit avoir au moins 10 caractères.");
+            } else if (value.length > 150) {
+              // Le texte est trop long
+              input.setCustomValidity("Le lien ne peut pas dépasser 70 caractères.");
+            } else {
+              // La longueur du texte est valide
+              return 42 ;
+            }
+          }
+
+
+          function validateText() {
+            var input = document.getElementById("add__txt");
+            var value = input.value.trim(); // Supprimer les espaces avant et après le texte
+        
+            if (value.length < 5) {
+              // Le texte est trop court
+              input.setCustomValidity("Le texte doit avoir au moins 5 caractères.");
+            } else if (value.length > 250) {
+              // Le texte est trop long
+              input.setCustomValidity("Le texte ne peut pas dépasser 250 caractères.");
+            } else {
+              // La longueur du texte est valide
+              return 42 ;
+            }
+          }
+
+
+          function validateImage() {
+            var input = document.getElementById("add__img");
+            var file = input.files[0];
+          
+            // Vérifier si un fichier a été sélectionné
+            if (file) {
+              // Vérifier le type de fichier (PNG)
+              if (file.type !== "image/png") {
+                alert("Le fichier doit être au format PNG.");
+                input.value = ""; // Effacer le champ de saisie
+                return;
+              }
+              
+              // Créer un objet Image
+              var img = new Image();
+              // Charger le fichier image en utilisant URL.createObjectURL AVANT le contrôle des dimensions
+              img.src = URL.createObjectURL(file);
+          
+              img.onload = function() {
+                if (img.width === 280 && img.height === 280) {
+                  // L'image est de la bonne taille
+                    return 42 ;
+                } else {
+                  alert("L'image doit faire exactement 280x280 pixels.");
+                  input.value = ""; // Effacer le champ de saisie
+                }
+              };
+            }
+          }
     });
     </script>
 
