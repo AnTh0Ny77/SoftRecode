@@ -28,16 +28,16 @@ class AddOfficeController extends BasicController {
         echo 'Rafraichissemnt de jeton API IMPOSSIBLE';die();}$token =  $refresh['token']['token'];}
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-        $list = $Api->getAdd($token , ['all' => 'vgvhnoza7875z85acc114cz5']);
-        $list = $list['data'];
+        $list_client = $Api->PostListClient($token,false)['data'];
+        $list = $Api->getAdd($token , ['all' => 'vgvhnoza7875z85acc114cz5'])['data'];
       
 
         return self::$twig->render(
             'display_add_list.html.twig',
             [
                 'user' => $_SESSION['user'], 
-                'list' => $list 
+                'list' => $list , 
+                'list_client' => $list_client
             ]
         );
     }

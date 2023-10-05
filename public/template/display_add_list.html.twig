@@ -165,11 +165,14 @@
                         <div class="col-12">
                             <small class="form-text text-muted"> Clients</small>
                             <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" id="add__client">
-                                  
+                                {% for clientTT in list_client %}
+                                
+                                    <option value="{{clientTT.cli__id}}">{{ " ( " ~ clientTT.cli__id ~ " ) " ~ clientTT.cli__nom}}</option>
+                            {% endfor %}
                             </select> 
                     </div>
                 </div>
-                    <div class="col-11 d-flex justify-content-start">
+                    <div class="col-11 mb-3 d-flex justify-content-start">
                         <div class="col-12">
                             <small class="form-text text-muted"> Image</small>
                             <input class="form-control" name="logoInput" type="file" id="logoInput">
