@@ -30,7 +30,6 @@ class AddOfficeController extends BasicController {
 
         $list_client = $Api->PostListClient($token,false)['data'];
         $list = $Api->getAdd($token , ['all' => 'vgvhnoza7875z85acc114cz5'])['data'];
-      
 
         return self::$twig->render(
             'display_add_list.html.twig',

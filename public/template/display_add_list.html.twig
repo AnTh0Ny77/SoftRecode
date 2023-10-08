@@ -74,13 +74,16 @@
     #mbmax{
         margin-bottom: 150px !important;
     }
+    #client_row{
+        width: 170px;
+    }
 </style>
 {% endblock %}
 {% block main %}
 <main role="main" class="container-fluid my-3 col-11 container-body" >
     <h3 class="recode-p"><i class="fad fa-building"></i></i> Administration Publicités MyRecode</h3>
     <div class="d-flex justify-content-start mt-4"  id="sticky-test">
-        <div class="col-9 card-recode-admin ">
+        <div class="col-11 card-recode-admin ">
             <h4 class="recode-p"><i class="fas fa-users"></i> Liste</h4>
          
             <table id="table_id" class="display mt-3">
@@ -89,10 +92,11 @@
                 </div>
                 <thead>
                     <tr >
+                        <th></th>
                         <th>Titre</th>
                         <th>Lien</th>
                         <th>Texte</th>
-                        <th>Client</th>
+                        <th id="client_row">Client</th>
                         <th>Image</th>
                         
                         <th></th>
@@ -102,23 +106,27 @@
                     {% for add in list %}
                        
                         <tr>
+                            <td>{{add|json_encode()}}</td>
                             <td>
-                                {{ add.ad__titre }}
+                                <b>{{ add.ad__titre }}</b>
                             </td>
                             <td>
-                                {{ add.ad__lien }}
+                                <a href="{{ add.ad__lien }}" class=""> {{ add.ad__lien }}</a><br>
+                                
                             </td>
                             <td>
                                 {{ add.ad__txt }}
                             </td>
                             <td>
-                                
+                                {% for entry in add.relation %}
+                                <a href="myRecode" class=""> {{  " ("~  entry.cli__id ~ ") " ~ entry.cli__nom }}</a><br>
+                                {% endfor %}
                             </td>
                             <td>
-
+                                <img src="public/img/login.png" width="30" alt="">
                             </td>
                             <td>
-
+                                <button data-toggle="modal" data-target="#modalEdit"  class="btn btn-recode-small">Modifier</button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -164,7 +172,7 @@
                     <div class="col-11 d-flex justify-content-start">
                         <div class="col-12">
                             <small class="form-text text-muted"> Clients</small>
-                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" data-live-search="true" id="add__client">
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" multiple data-live-search="true" id="add__client">
                                 {% for clientTT in list_client %}
                                 
                                     <option value="{{clientTT.cli__id}}">{{ " ( " ~ clientTT.cli__id ~ " ) " ~ clientTT.cli__nom}}</option>
@@ -182,6 +190,71 @@
                 <div class="modal-footer">
                     <button class="btn btn-recode-important"  id="postAjout" type="button">Ajouter</button>
                 </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" 
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title">Modifier une publicité</h5>
+                  
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="" id="postAddEdit" method="post" enctype="multipart/form-data" >
+                <div class="modal-body">
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-6">
+                            <small class="form-text text-muted"> Titre</small>
+                            <input class="form-control my-2 input-recode" name="add__titre" id="add__titreEdit"  rows="2" ></input>
+                        </div>
+                        <div class="col-6">
+                            <small class="form-text text-muted"> Lien</small>
+                            <input class="form-control my-2 input-recode" name="add__lien" id="add__lienEdit"  rows="2" ></input>
+                        </div>
+                    </div>
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-12">
+                            <small class="form-text text-muted"> Texte</small>
+                            <input class="form-control my-2 input-recode" name="add__txt" id="add__txtEdit"  rows="2" ></input>
+                        </div>
+                        
+                    </div>
+                    <div class="col-11 d-flex justify-content-start">
+                        <div class="col-12">
+                            <small class="form-text text-muted"> Clients</small>
+                            <select class="form-control my-2 form-control input-recode selectpicker text-calm text-muted" multiple data-live-search="true" id="add__clientEdit">
+                                {% for clientTT in list_client %}
+                                
+                                    <option value="{{clientTT.cli__id}}">{{ " ( " ~ clientTT.cli__id ~ " ) " ~ clientTT.cli__nom}}</option>
+                            {% endfor %}
+                            </select> 
+                    </div>
+                </div>
+                    <div class="col-11 mb-3 d-flex justify-content-start">
+                        <div class="col-8">
+                            <small class="form-text text-muted"> Image</small>
+                            <input class="form-control" name="add__img" type="file" id="add__imgEdit">
+                        </div>
+                        <div class="col-4">
+                            <small class="form-text text-muted"> Image</small>
+                            
+                        </div>
+                   </div>
+                
+                <div class="modal-footer">
+                    <button class="btn btn-recode-important"  id="postAjoutEdit" type="button">Modifier</button>
+                </div>
+                </div>
             </form>
         </div>
     </div>
@@ -194,12 +267,25 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
+        //const prod = "http://192.168.1.105/api" ; 
+        const prod = "http://localhost/RESTapi/"; 
+
         var userTable =  $('#table_id').DataTable({
             paging: true,
             lengthMenu: [50],
             bLengthChange : false ,
             paging: true,             
             bPaginate: false,  
+            columns: [
+                { "visible": false } ,
+                null,
+                null,
+                null,
+                null,
+                null, 
+                null
+                
+            ],
         
             language: {
                 lengthMenu: "",
@@ -215,20 +301,26 @@
         $('#postAjout').on('click',function(){
             
             let valid_titre = validateTitre();
+            if(valid_titre === 42 ){
+                let valid_lien = validateLien();
+                if(valid_lien === 42 ){
+                    let valid_text = validateText();
+                    if(valid_text === 42){
+                        let valid_image = 42;
+                        if(valid_image === 42 ){
+                            let body = renderBody();
+                            postAddAsync(body).then(function(){
 
-            let valid_lien = validateLien();
-
-            let valid_text = validateText();
-
-            if(valid_text === 42 && valid_lien === 42 && valid_text === 42  ){
-                
-                let valid_image = validateImage();
-
-                if(valid_image === 42 ){
-                    alert('tu peux poster');
+                            window.location.href = 'add-myrecode';
+            
+                            }).catch(function(error){
+                                console.log(error);
+                            })
+                            //relations ::
+                        }
+                    }
                 }
             }
-
         })
 
 
@@ -238,10 +330,11 @@
         
             if (value.length < 3) {
               // Le texte est trop court
-              input.setCustomValidity("Le titre doit avoir au moins 3 caractères.");
+              alert("Le titre doit avoir au moins 3 caractères.");
+
             } else if (value.length > 35) {
               // Le texte est trop long
-              input.setCustomValidity("Le titre ne peut pas dépasser 35 caractères.");
+              alert("Le titre ne peut pas dépasser 35 caractères.");
             } else {
                 return 42 ;
             }
@@ -254,10 +347,10 @@
         
             if (value.length < 10) {
               // Le texte est trop court
-              input.setCustomValidity("Le lien doit avoir au moins 10 caractères.");
+              alert("Le lien doit avoir au moins 10 caractères.");
             } else if (value.length > 150) {
               // Le texte est trop long
-              input.setCustomValidity("Le lien ne peut pas dépasser 70 caractères.");
+              alert("Le lien ne peut pas dépasser 70 caractères.");
             } else {
               // La longueur du texte est valide
               return 42 ;
@@ -271,10 +364,10 @@
         
             if (value.length < 5) {
               // Le texte est trop court
-              input.setCustomValidity("Le texte doit avoir au moins 5 caractères.");
+              alert("Le texte doit avoir au moins 5 caractères.");
             } else if (value.length > 250) {
               // Le texte est trop long
-              input.setCustomValidity("Le texte ne peut pas dépasser 250 caractères.");
+              alert("Le texte ne peut pas dépasser 250 caractères.");
             } else {
               // La longueur du texte est valide
               return 42 ;
@@ -311,6 +404,39 @@
               };
             }
           }
+
+          let renderBody = function(){
+            
+            let body = {
+                'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528', 
+                'ad__titre' : $('#add__titre').val(),
+                'ad__lien' : $('#add__lien').val() , 
+                'ad__txt' : $('#add__txt').val() , 
+                'ad__img' : 'test.png' , 
+                'relation' : $('#add__client').val()
+            };
+
+            return body;
+           
+        }
+
+        let postAddAsync = function (body) {
+            return new Promise((resolve, reject) => {
+                $.ajax(prod + '/add', {
+                    type: 'POST',
+                    method: 'POST',
+                    crossDomain: true,
+                    data: JSON.stringify(body),
+                    success: function (data, status, xhttp) {
+                        resolve(data.data);
+                        console.log(data);
+                    },
+                    error: function (jqXhr, textStatus, errorMessage) {
+                        reject(jqXhr.responseJSON.msg);
+                    }
+                });
+            });
+        };
     });
     </script>
 
