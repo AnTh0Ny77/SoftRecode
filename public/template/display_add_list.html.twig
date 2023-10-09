@@ -351,7 +351,7 @@
                     let valid_text = validateText();
                     if(valid_text === 42){
                         let valid_image = validateImage();
-                        console.log(valid_image);
+                        
                        
                         if(valid_image === 42 ){
                           
@@ -386,6 +386,7 @@
                     if(valid_text === 42){
                         
                         let valid_image = validateImageEdit();
+                        console.log(valid_image);
                         if(valid_image === 42 ){
                             $('#postLoaderEdit').removeClass('d-none');
                             $('#postAjoutEdit').attr("disabled", true);
@@ -531,16 +532,17 @@
             // Charger le fichier image en utilisant URL.createObjectURL AVANT le contrôle des dimensions
             img.src = URL.createObjectURL(file);
           
+            let test = null ;
             img.onload = function() {
               if (img.width === 280 && img.height === 280) {
-                
+                test = 42 ;
               }else {
                 alert("L'image doit faire exactement 280x280 pixels.");
                 input.value = ""; 
                 return;
               }
             };
-            return 42;
+            return test;
             
           }
 
@@ -567,7 +569,7 @@
                     img.onload = function() {
                         if (img.width === 280 && img.height === 280) {
                         
-                        return 42;
+                        
                         } else {
 
                         alert("L'image doit faire exactement 280x280 pixels.");
@@ -575,9 +577,8 @@
                         return ;
                         }
                     };
-              } else {
-                  return 42;
-              }
+                    return 42;
+              } else return 42
           }
           
 
