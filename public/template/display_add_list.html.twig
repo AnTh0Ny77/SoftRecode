@@ -119,7 +119,7 @@
                             </td>
                             <td>
                                 {% for entry in add.relation %}
-                                <a href="myRecode" class=""> {{  " ("~  entry.cli__id ~ ") " ~ entry.cli__nom }}</a><br>
+                                <a href="displaySocieteMyRecode?cli__id={{entry.cli__id}}" class=""> {{  " ("~  entry.cli__id ~ ") " ~ entry.cli__nom }}</a><br>
                                 {% endfor %}
                             </td>
                             <td>
@@ -350,11 +350,8 @@
                 if(valid_lien === 42 ){
                     let valid_text = validateText();
                     if(valid_text === 42){
-                        let valid_image = validateImage();
-                        
-                       
-                        if(valid_image === 42 ){
-                          
+                        validateImage42()
+                        .then(function(resultat) {
                             $('#postLoader').removeClass('d-none');
                             $('#postAjout').attr("disabled", true);
                             let body = renderBody();
@@ -365,8 +362,11 @@
                             }).catch(function(error){
                                 console.log(error);
                             })
-                            //relations ::
-                        }
+                        })
+                        .catch(function(erreur) {
+                           
+                        });
+                       
                     }
                 }
             }
@@ -535,16 +535,56 @@
             let test = null ;
             img.onload = function() {
               if (img.width === 280 && img.height === 280) {
-                test = 42 ;
+                return 42 
               }else {
                 alert("L'image doit faire exactement 280x280 pixels.");
                 input.value = ""; 
                 return;
               }
             };
-            return test;
+            
             
           }
+
+
+          function validateImage42() {
+            return new Promise(function(resolve, reject) {
+              var input = document.getElementById("add__img");
+              var file = input.files[0];
+          
+              // Vérifier si un fichier a été sélectionné
+              if (!file) {
+                alert("Veuillez sélectionner une image.");
+                reject("Veuillez sélectionner une image.");
+                return;
+              }
+          
+              // Vérifier le type de fichier (PNG)
+              if (file.type !== "image/png") {
+                alert("Le fichier doit être au format PNG.");
+                input.value = ""; // Effacer le champ de saisie
+                reject("Le fichier doit être au format PNG.");
+                return;
+              }
+          
+              // Créer un objet Image
+              var img = new Image();
+          
+              // Charger le fichier image en utilisant URL.createObjectURL AVANT le contrôle des dimensions
+              img.src = URL.createObjectURL(file);
+          
+              img.onload = function() {
+                if (img.width === 280 && img.height === 280) {
+                  resolve(42); // Résolvez la promesse avec la valeur 42
+                } else {
+                  alert("L'image doit faire exactement 280x280 pixels.");
+                  input.value = "";
+                  reject("L'image doit faire exactement 280x280 pixels.");
+                }
+              };
+            });
+          }
+          
 
 
 
