@@ -104,7 +104,7 @@
                 </thead>
                 <tbody>
                     {% for add in list %}
-                       
+                      
                         <tr>
                             <td>{{add|json_encode()}}</td>
                             <td>
@@ -123,10 +123,11 @@
                                 {% endfor %}
                             </td>
                             <td>
-                                <img src="public/img/login.png" width="30" alt="">
+                                <img src="{{add.img}}"  width="30"> 
+                                
                             </td>
                             <td>
-                                <button data-toggle="modal" data-target="#modalEdit"  class="btn btn-recode-small">Modifier</button>
+                                <button data-toggle="modal" data-target="#modalEdit"  class="btn btn-recode-small editButton">Modifier</button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -150,7 +151,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="" id="postAdd" method="post" enctype="multipart/form-data" >
+            <form action="add-myrecode" id="postAdd" method="post" enctype="multipart/form-data" >
                 <div class="modal-body">
                     <div class="col-11 d-flex justify-content-start">
                         <div class="col-6">
@@ -188,6 +189,9 @@
                    </div>
                 
                 <div class="modal-footer">
+                    <div class="spinner-border d-none" id="postLoader" role="status">
+                        <span class="visually-hidden"></span>
+                      </div>
                     <button class="btn btn-recode-important"  id="postAjout" type="button">Ajouter</button>
                 </div>
             </div>
@@ -215,17 +219,18 @@
                     <div class="col-11 d-flex justify-content-start">
                         <div class="col-6">
                             <small class="form-text text-muted"> Titre</small>
-                            <input class="form-control my-2 input-recode" name="add__titre" id="add__titreEdit"  rows="2" ></input>
+                            <input type="hidden" name="add__idEdit" id="add__idEdit">
+                            <input class="form-control my-2 input-recode" name="add__titreEdit" id="add__titreEdit" readonly  rows="2" ></input>
                         </div>
                         <div class="col-6">
                             <small class="form-text text-muted"> Lien</small>
-                            <input class="form-control my-2 input-recode" name="add__lien" id="add__lienEdit"  rows="2" ></input>
+                            <input class="form-control my-2 input-recode" name="add__lienEdit" id="add__lienEdit"  rows="2" ></input>
                         </div>
                     </div>
                     <div class="col-11 d-flex justify-content-start">
                         <div class="col-12">
                             <small class="form-text text-muted"> Texte</small>
-                            <input class="form-control my-2 input-recode" name="add__txt" id="add__txtEdit"  rows="2" ></input>
+                            <input class="form-control my-2 input-recode" name="add__txtEdit" id="add__txtEdit"  rows="2" ></input>
                         </div>
                         
                     </div>
@@ -243,17 +248,19 @@
                     <div class="col-11 mb-3 d-flex justify-content-start">
                         <div class="col-8">
                             <small class="form-text text-muted"> Image</small>
-                            <input class="form-control" name="add__img" type="file" id="add__imgEdit">
+                            <input class="form-control" name="add__imgEdit" type="file" id="add__imgEdit">
                         </div>
-                        <div class="col-4">
-                            <small class="form-text text-muted"> Image</small>
-                            
-                        </div>
+                        
                    </div>
                 
+                
                 <div class="modal-footer">
+                    <div class="spinner-border d-none" id="postLoaderEdit" role="status">
+                        <span class="visually-hidden"></span>
+                      </div>
                     <button class="btn btn-recode-important"  id="postAjoutEdit" type="button">Modifier</button>
                 </div>
+
                 </div>
             </form>
         </div>
@@ -267,8 +274,8 @@
 <script type="text/javascript">
     $(document).ready(function(){
 
-        //const prod = "http://192.168.1.105/api" ; 
-        const prod = "http://localhost/RESTapi/"; 
+        const prod = "http://192.168.1.105/api" ; 
+        //const prod = "http://localhost/RESTapi/"; 
 
         var userTable =  $('#table_id').DataTable({
             paging: true,
@@ -286,6 +293,32 @@
                 null
                 
             ],
+            createdRow: function (row, data, index) {
+              
+                $(row).on('click' , function(){
+
+                    if (isJSONValid(data[0])){
+                        data = JSON.parse(data[0]);
+                    }else {
+                        data = data ;
+                    }
+                   
+                    $('#add__titreEdit').val(data.ad__titre)
+                    $('#add__lienEdit').val(data.ad__lien)
+                    $('#add__txtEdit').val(data.ad__txt)
+                    $('#add__idEdit').val(data.ad__id)
+                    $('#add__clientEdit').selectpicker('deselectAll')
+                    array_temp = [];
+                    for($i=0; $i< data.relation.length; $i ++ ){
+                        array_temp.push(data.relation[$i].cli__id)
+                    }
+                    $('#add__clientEdit').selectpicker('val', array_temp);
+                    $('#add__clientEdit').selectpicker('refresh');
+                })
+               
+              
+            },
+
         
             language: {
                 lengthMenu: "",
@@ -298,6 +331,17 @@
         });
 
 
+        function isJSONValid(str) {
+            try {
+              JSON.parse(str);
+              return true;
+            } catch (e) {
+               
+              return false;
+            }
+          }
+
+
         $('#postAjout').on('click',function(){
             
             let valid_titre = validateTitre();
@@ -306,12 +350,17 @@
                 if(valid_lien === 42 ){
                     let valid_text = validateText();
                     if(valid_text === 42){
-                        let valid_image = 42;
+                        let valid_image = validateImage();
+                        console.log(valid_image);
+                       
                         if(valid_image === 42 ){
+                          
+                            $('#postLoader').removeClass('d-none');
+                            $('#postAjout').attr("disabled", true);
                             let body = renderBody();
                             postAddAsync(body).then(function(){
 
-                            window.location.href = 'add-myrecode';
+                            $('#postAdd').submit();
             
                             }).catch(function(error){
                                 console.log(error);
@@ -324,8 +373,59 @@
         })
 
 
+        $('#postAjoutEdit').on('click',function(){
+            
+           
+            let valid_titre = validateTitreEdit();
+            if(valid_titre === 42 ){
+                
+                let valid_lien = validateLienEdit();
+                if(valid_lien === 42 ){
+                    
+                    let valid_text = validateTextEdit();
+                    if(valid_text === 42){
+                        
+                        let valid_image = validateImageEdit();
+                        if(valid_image === 42 ){
+                            $('#postLoaderEdit').removeClass('d-none');
+                            $('#postAjoutEdit').attr("disabled", true);
+                            let body = renderBodyEdit();
+                          
+                            postAddAsync( body).then(function(){
+
+                            $('#postAddEdit').submit();
+            
+                            }).catch(function(error){
+                                console.log(error);
+                            })
+                            //relations ::
+                        }
+                    }
+                }
+            }
+        })
+
+
+
         function validateTitre() {
             var input = document.getElementById("add__titre");
+            var value = input.value.trim(); // Supprimer les espaces avant et après le texte
+        
+            if (value.length < 3) {
+              // Le texte est trop court
+              alert("Le titre doit avoir au moins 3 caractères.");
+
+            } else if (value.length > 35) {
+              // Le texte est trop long
+              alert("Le titre ne peut pas dépasser 35 caractères.");
+            } else {
+                return 42 ;
+            }
+        }
+
+
+        function validateTitreEdit() {
+            var input = document.getElementById("add__titreEdit");
             var value = input.value.trim(); // Supprimer les espaces avant et après le texte
         
             if (value.length < 3) {
@@ -358,8 +458,42 @@
           }
 
 
+          function validateLienEdit() {
+            var input = document.getElementById("add__lienEdit");
+            var value = input.value.trim(); // Supprimer les espaces avant et après le texte
+        
+            if (value.length < 10) {
+              // Le texte est trop court
+              alert("Le lien doit avoir au moins 10 caractères.");
+            } else if (value.length > 150) {
+              // Le texte est trop long
+              alert("Le lien ne peut pas dépasser 70 caractères.");
+            } else {
+              // La longueur du texte est valide
+              return 42 ;
+            }
+          }
+
+
           function validateText() {
             var input = document.getElementById("add__txt");
+            var value = input.value.trim(); // Supprimer les espaces avant et après le texte
+        
+            if (value.length < 5) {
+              // Le texte est trop court
+              alert("Le texte doit avoir au moins 5 caractères.");
+            } else if (value.length > 250) {
+              // Le texte est trop long
+              alert("Le texte ne peut pas dépasser 250 caractères.");
+            } else {
+              // La longueur du texte est valide
+              return 42 ;
+            }
+          }
+
+
+          function validateTextEdit() {
+            var input = document.getElementById("add__txtEdit");
             var value = input.value.trim(); // Supprimer les espaces avant et après le texte
         
             if (value.length < 5) {
@@ -380,30 +514,72 @@
             var file = input.files[0];
           
             // Vérifier si un fichier a été sélectionné
-            if (file) {
-              // Vérifier le type de fichier (PNG)
-              if (file.type !== "image/png") {
-                alert("Le fichier doit être au format PNG.");
-                input.value = ""; // Effacer le champ de saisie
+            if (!file) {
+              alert("Veuillez sélectionner une image.");
+              return;
+            }
+          
+            // Vérifier le type de fichier (PNG)
+            if (file.type !== "image/png") {
+              alert("Le fichier doit être au format PNG.");
+              input.value = ""; // Effacer le champ de saisie
+              return;
+            }
+          
+            // Créer un objet Image
+            var img = new Image();
+            // Charger le fichier image en utilisant URL.createObjectURL AVANT le contrôle des dimensions
+            img.src = URL.createObjectURL(file);
+          
+            img.onload = function() {
+              if (img.width === 280 && img.height === 280) {
+                
+              }else {
+                alert("L'image doit faire exactement 280x280 pixels.");
+                input.value = ""; 
                 return;
               }
-              
-              // Créer un objet Image
-              var img = new Image();
-              // Charger le fichier image en utilisant URL.createObjectURL AVANT le contrôle des dimensions
-              img.src = URL.createObjectURL(file);
-          
-              img.onload = function() {
-                if (img.width === 280 && img.height === 280) {
-                  // L'image est de la bonne taille
-                    return 42 ;
-                } else {
-                  alert("L'image doit faire exactement 280x280 pixels.");
-                  input.value = ""; // Effacer le champ de saisie
-                }
-              };
-            }
+            };
+            return 42;
+            
           }
+
+
+
+          function validateImageEdit() {
+            var input = document.getElementById("add__imgEdit");
+            var file = input.files[0];
+
+            if (file) {
+              // Vérifier le type de fichier (PNG)
+                    if (file.type !== "image/png") {
+                        alert("Le fichier doit être au format PNG.");
+                        input.value = ""; // Effacer le champ de saisie
+                        return;
+                    }
+                    
+                    // Créer un objet Image
+                    var img = new Image();
+                    
+                    // Charger le fichier image en utilisant URL.createObjectURL AVANT le contrôle des dimensions
+                    img.src = URL.createObjectURL(file);
+                    
+                    img.onload = function() {
+                        if (img.width === 280 && img.height === 280) {
+                        
+                        return 42;
+                        } else {
+
+                        alert("L'image doit faire exactement 280x280 pixels.");
+                        input.value = ""; // Effacer le champ de saisie
+                        return ;
+                        }
+                    };
+              } else {
+                  return 42;
+              }
+          }
+          
 
           let renderBody = function(){
             
@@ -414,6 +590,24 @@
                 'ad__txt' : $('#add__txt').val() , 
                 'ad__img' : 'test.png' , 
                 'relation' : $('#add__client').val()
+            };
+
+            return body;
+           
+        }
+
+
+        let renderBodyEdit = function(){
+            
+            let body = {
+                'secret' : 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528', 
+                '__PUT' : 'yes',
+                'ad__titre' : $('#add__titreEdit').val(),
+                'ad__lien' : $('#add__lienEdit').val() , 
+                'ad__txt' : $('#add__txtEdit').val() , 
+                'ad__id' : $('#add__idEdit').val(),
+                'ad__img' : 'test.png' , 
+                'relation' : $('#add__clientEdit').val()
             };
 
             return body;
