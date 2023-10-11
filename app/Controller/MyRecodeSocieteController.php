@@ -122,7 +122,7 @@ class MyRecodeSocieteController extends BasicController {
                 mkdir($dossierAdmin, 0777, true);
             }
             $emplacement = $dossier .  '/' . $option .  $extension;
-            file_put_contents($emplacement, $file);
+            move_uploaded_file($file , $emplacement );
         }else{
             mkdir($dossier, 0777, true);
             $dossierTech = $dossier . '/tech';
@@ -130,7 +130,7 @@ class MyRecodeSocieteController extends BasicController {
             mkdir($dossierTech, 0777, true);
             mkdir($dossierAdmin, 0777, true);
             $emplacement = $dossier . '/' . $option .  $extension;
-            file_put_contents($emplacement, $file);
+            move_uploaded_file($file , $emplacement );
         }
     }
 
@@ -259,8 +259,8 @@ class MyRecodeSocieteController extends BasicController {
             $logo = "data:image/png;base64," . base64_encode(file_get_contents('O:/myRecode/' . $image_name . '/' . $image_name . '.png'));
         }
 
+        $emplacement = 'O:\myRecode/' . $_GET['cli__id'] ;
 
-        $emplacement = 'O:/myRecode/' . self::ajouterZeros($_GET['cli__id']) ;
         if (!empty($_POST['docNameAd'])) {
             self::supprimerFichier($emplacement . '/administratif' . '/' . $_POST['docNameAd']);
         }
@@ -281,7 +281,6 @@ class MyRecodeSocieteController extends BasicController {
 
         $admin_list = self::listerDocumentsDansRepertoire($emplacement . '/administratif' );
         $tech_list = self::listerDocumentsDansRepertoire($emplacement. '/tech' );
-
       
         header("Access-Control-Allow-Origin: *");
         return self::$twig->render(
