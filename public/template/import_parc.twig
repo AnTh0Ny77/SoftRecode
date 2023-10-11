@@ -1,47 +1,116 @@
-{% block style %}
-<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
-<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
-<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
-<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
-<link rel="stylesheet" href="public/css/dashboard.css">
-{% endblock %}
-
+{% extends 'new_layout.twig' %}
+	{% block style %}
+	<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+	<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+	<link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css">
+	<link rel="stylesheet" href="public/css/dashboard.css">
+	{% endblock %}
 {% block main %}
+
+
+
+
 <main role="main" class="container-fluid my-3 col-11 container-body">
 {# Titre #}
 	<div class="col-12 d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
 		<div class="h2">
-			<i class="fad fa-file-import"></i> Importation de parc matériel pour le client : xxxxxx
+			<i class="fad fa-file-import"></i> Importation de parc matériel en lot <em>(Fichier .CSV)</em>
 			<span id="time"></span>
 		</div>
-		
 	</div>
+
 {# Bloc Ombragé #}
 <div class="row">
 	<div class="col-12">
 		<div class="card shadow mb-4">
-			<form action="import_parc" method='POST'>
+			<form action="import_parc" method='POST' enctype="multipart/form-data">
 			<br>
+
+				{% if visu_get %}
 				<div class="row">
-					<div class="col-3">
+					<div class="col-6">
 						<div class="input-group input-group-lg ">
-							<span class="input-group-text h3" >nom fichier</span>
-							<input type="text" name="pincode" size="5" maxlength="20" class="form-control" aria-describedby="inputGroup-sizing-lg" Autofocus>
+							<span class="input-group-text h3" >Fichier .CSV</span>
+							<input type="file" id="file_csv" name="file_csv" accept=".csv" Autofocus class="form-control" required/>
 							<button type="submit" class="btn btn-success" name="btn_ok">Go</button>
 						</div>
 					</div>
-					<div class="col-9">
+					<div class="col-6">
 						<div class="h4">{{msg_info|raw}}</div>
 					</div>
 				</div>
-				<hr>
+				<br>
+				<div class="h4">
+					Model de ficher XLS<br>
+				</div>
+				<en><b>Sauvegardez sous le type "CSV séparateur point-virgule (*.csv)</b></em><br>"
+				<img src="public/img/modele_import.png">
+				<br>
+				<div class="h4">
+					Infos :
+				</div>
+				<em>
+					<b>mat__cli__id</b> ID du client<br>
+					<b>mat__type</b> Abreviation du type de materiel br>(Liste ci dessous)<br>
+					<b>mat__marque</b> La Marque<br>
+					<b>mat__model</b> Le modèle<br>
+					<b>mat__pn</b> Le PN (Avec tiret)<br>
+					<b>mat__sn</b> Le Serial number<br>
+					<b>mat__idnec</b> Le numero de notre BL<br>
+					<b>mat__ident</b> Identifcation du client<br>
+					<b>mat__memo</b> Informations divers<br>
+					<b>mat__date_in</b> Date d'aquisition (format jj/mm/aaa)<br>
+					<b>mat__kw__tg</b> Abréviation du Type de garntie (iste ci dessous)<br>
+					<b>mat__date_offg</b> Date de fin de garantie (format jj/mm/aaa)<br>
+					<b>mat__actif</b> 1 = actif, 0 = non actif (par defaut =1)<br>
+					<hr>
+					<b>mat__type</b><br>
+					ACC Accessoire / Option<br>
+					BLC Lecteur code barre<br>
+					BPT PDA et Tablette<br>
+					BTE Terminal embarqué<br>
+					BTM Terminal mobile<br>
+					CON Consommable<br>
+					ICA Imprimante Caisse<br>
+					ILZ Imprimante laser<br>
+					IMA Imprimante Matriciel<br>
+					ITH Imprimante thermique<br>
+					MCL Client léger<br>
+					MEC Ecran<br>
+					MPC Ordinateur fixe<br>
+					MPO Ordinateur portable<br>
+					PID Pièce détachée<br>
+					RES Réseau<br>
+					SER Service<br>
+					SOF Soft<br>
+					TEL Téléphonie<br>
+					<hr>
+					<b>mat__kw_tg</b><br>
+					AUT Autre<br>
+					GCO Garantie Constructeur<br>
+					GNO NON garantie<br>
+					GRE Garantie RECODE<br>
+					LOC Location RECODE<br>
+					MNT Maintenance RECODE<br>
+
+
+				</em>
+
+				{% endif %}
+
+				{% if visu_btn_ok %}
 				<div class="row">
 					<div class="col-12">
+						<div class="h4">{{msg_info|raw}}</div>
+						<br>
 						<div class="h2 mx-2">Résultat de l'import</div>
 						{{html|raw}}
 					</div>
 				</div>
+				{% endif %}
+
 			</form>
 		</div>
 	</div>
