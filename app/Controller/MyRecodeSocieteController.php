@@ -260,7 +260,7 @@ class MyRecodeSocieteController extends BasicController {
         }
 
 
-        $emplacement = 'zTest/' .$_GET['cli__id'] ;
+        $emplacement = 'O:/myRecode/' .$_GET['cli__id'] ;
         if (!empty($_POST['docNameAd'])) {
             self::supprimerFichier($emplacement . '/administratif' . '/' . $_POST['docNameAd']);
         }
