@@ -110,6 +110,62 @@ class MyRecodeSocieteController extends BasicController {
         }
     }
 
+    public static function InsereDoc( $path, $option , $file , $extension) {
+        $dossier = $path ;
+        if (is_dir($dossier)){
+            $dossierTech = $dossier . '/tech';
+            $dossierAdmin = $dossier . '/administratif';
+            if (!is_dir($dossierTech)){
+                mkdir($dossierTech, 0777, true);
+            }
+            if (!is_dir($dossierAdmin)) {
+                mkdir($dossierAdmin, 0777, true);
+            }
+            $emplacement = $dossier .  '/' . $option .  $extension;
+            file_put_contents($emplacement, $file);
+        }else{
+            mkdir($dossier, 0777, true);
+            $dossierTech = $dossier . '/tech';
+            $dossierAdmin = $dossier . '/administratif';
+            mkdir($dossierTech, 0777, true);
+            mkdir($dossierAdmin, 0777, true);
+            $emplacement = $dossier . '/' . $option .  $extension;
+            file_put_contents($emplacement, $file);
+        }
+    }
+
+    public static function listerDocumentsDansRepertoire($cheminRepertoire) {
+        $documents = array();
+        if (is_dir($cheminRepertoire)) {
+            $fichiers = scandir($cheminRepertoire);
+    
+            foreach ($fichiers as $fichier) {
+                // Ignorer les répertoires spéciaux "." et ".."
+                if ($fichier != "." && $fichier != "..") {
+                    // Vérifier si le chemin complet est un fichier
+                    $cheminFichier = $cheminRepertoire . DIRECTORY_SEPARATOR . $fichier;
+                    if (is_file($cheminFichier)) {
+                        $documents[] = $fichier;
+                    }
+                }
+            }
+        }
+        return $documents;
+    }
+
+    public static function supprimerFichier($cheminFichier) {
+        if (file_exists($cheminFichier)) {
+            if (unlink($cheminFichier)) {
+                return true; // Le fichier a été supprimé avec succès.
+            } else {
+                return false; // Erreur lors de la suppression du fichier.
+            }
+        } else {
+            return false; // Le fichier n'existe pas.
+        }
+    }
+     
+
     public static function  sauvegarderFichierPNG($emplacement, $nomFichier, $fichierTemporaire){
             // Déplacer le fichier temporaire vers l'emplacement souhaité
             if (move_uploaded_file($_FILES[$fichierTemporaire]['tmp_name'], $emplacement . '/' . $nomFichier . '.png')) {
@@ -130,6 +186,13 @@ class MyRecodeSocieteController extends BasicController {
         } else {
             return $chaine;
         }
+    }
+
+     public static function detecterExtensionFichier($fichier) {
+        $nomFichier = $fichier['name'];
+        $extension = pathinfo($nomFichier, PATHINFO_EXTENSION);
+    
+        return $extension;
     }
     
     
@@ -195,6 +258,30 @@ class MyRecodeSocieteController extends BasicController {
             $temp = self::sauvegarderFichierPNG($emplacement, $nomFichier, $fichierTemporaire);
             $logo = "data:image/png;base64," . base64_encode(file_get_contents('O:/myRecode/' . $image_name . '/' . $image_name . '.png'));
         }
+
+
+        $emplacement = 'zTest/' .$_GET['cli__id'] ;
+        if (!empty($_POST['docNameAd'])) {
+            self::supprimerFichier($emplacement . '/administratif' . '/' . $_POST['docNameAd']);
+        }
+
+        if (!empty($_POST['docNameTec'])) {
+            self::supprimerFichier($emplacement . '/tech' . '/' . $_POST['docNameTec']);
+        }
+
+         //post///
+         if (!empty($_POST['docRadio'])) {
+            if ($_POST['docRadio'] === 'ad') {
+                $tempPath = 'administratif/';
+            }else {$tempPath = 'tech/';}
+            $extension = self::detecterExtensionFichier($_FILES['DocInput']);
+            $nomFichierOriginal = $_FILES['DocInput']['name'];
+            self::InsereDoc($emplacement , $tempPath , $_FILES['DocInput']['tmp_name'] , $nomFichierOriginal );
+        }
+
+        $admin_list = self::listerDocumentsDansRepertoire($emplacement . '/administratif' );
+        $tech_list = self::listerDocumentsDansRepertoire($emplacement. '/tech' );
+
       
         header("Access-Control-Allow-Origin: *");
         return self::$twig->render(
@@ -206,7 +293,9 @@ class MyRecodeSocieteController extends BasicController {
                 'pn_list' => $pn_list , 
                 'list_client' => $list_client ,
                 'avendre_list' => $list_avendre , 
-                'logo' => $logo
+                'logo' => $logo , 
+                'admin_list' => $admin_list , 
+                'tech_list' => $tech_list
             ]
         );
     }
