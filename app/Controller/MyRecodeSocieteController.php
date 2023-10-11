@@ -259,7 +259,7 @@ class MyRecodeSocieteController extends BasicController {
             $logo = "data:image/png;base64," . base64_encode(file_get_contents('O:/myRecode/' . $image_name . '/' . $image_name . '.png'));
         }
 
-        $emplacement = 'O:\myRecode/' . $_GET['cli__id'] ;
+        $emplacement = 'O:\myRecode/' . self::ajouterZeros($_GET['cli__id']) ;
 
         if (!empty($_POST['docNameAd'])) {
             self::supprimerFichier($emplacement . '/administratif' . '/' . $_POST['docNameAd']);
