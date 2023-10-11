@@ -102,6 +102,20 @@
     /* Green */
 }
 
+.btn-recode-small-danger {
+    background-color: #e14d0d;
+    /* Green */
+    border: none;
+    color: white;
+    padding: 6px 13px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 11px;
+}
+
+
+
 .pastille-recode {
     background-color: #4CAF50;
     /* Green */

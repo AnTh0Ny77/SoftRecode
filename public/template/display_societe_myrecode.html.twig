@@ -243,10 +243,10 @@
                 </table>
             </div>
         </div>  
-                <div class="d-flex justify-content-center  mt-4 mb-5" id="mbmax">
+                <div class="d-flex justify-content-center  mt-4 " id="mbmax">
                 
                     <div class="col-3 card-recode-admin mr-4">
-                        <h4 class="recode-p"><i class="fas fa-file-signature"></i> Documents et imports</h4>
+                        <h4 class="recode-p"><i class="fas fa-file-signature"></i> Abonnements et imports</h4>
                     
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
@@ -405,8 +405,108 @@
                             </tbody>
                         </table>
                     </div>
-                </div>          
+                </div>  
+
+
+                <div class="d-flex justify-content-start mb-5" id="mbmax">
+                    <div class="col-8 card-recode-admin mr-4">
+                        <h4 class="recode-p"><i class="fas fa-file-signature"></i> Document administratifs et techniques</h4>
+                        <div class="my-2 float-right">
+                            <button class="btn btn-recode-small" data-toggle="modal" data-target="#modalDoc">Ajouter</button>
+                        </div>
+                        <div class="col-12 my-3 d-flex">
+                            <div class="col-6 ">
+                                <h6 class="recode-p"><i class="fas fa-layer-group"></i> Administratifs</h6>
+                                <ul class="list-group my-3">
+                                    {% if admin_list %}
+                                        {% for doc in admin_list %}
+                                            <li class="list-group-item"><a href="http://" target="_blank" >{{doc}}</a> 
+                                                <div class="my-2 float-right">
+                                                    <form action="displaySocieteMyRecode?cli__id={{client.cli__id}}" method="post" >
+                                                        <input type="hidden" name="docNameAd" value="{{doc}}">
+                                                        <button class="btn btn-recode-small-danger" type="submit">X</button>
+                                                    </form>  
+                                                </div>
+                                            </li>   
+                                        {% endfor %}
+
+                                    {% else %}
+                                        <b>Aucun document disponible</b>
+                                    {% endif %}
+                                    
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <h6 class="recode-p"><i class="fas fa-layer-group"></i> Techniques</h6>
+                                <ul class="list-group my-3">
+                                    {% if tech_list %}
+                                        {% for doc in tech_list %}
+                                            <li class="list-group-item"><a href="http://" target="_blank" >{{doc}}</a> 
+                                                <div class="my-2 float-right">
+                                                    <form action="displaySocieteMyRecode?cli__id={{client.cli__id}}" method="post" >
+                                                        <input type="hidden" name="docNameTec" value="{{doc}}">
+                                                        <button class="btn btn-recode-small-danger" type="submit">X</button>
+                                                    </form>  
+                                                </div>
+                                            </li>   
+                                        {% endfor %}
+                                    {% else %}
+                                        <b>Aucun document disponible</b>   
+                                    {% endif %}  
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>        
 </main>
+
+<!--modal doc -->
+<div class="modal fade" id="modalDoc" tabindex="-1" role="dialog" aria-labelledby="modalDoc"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title">Document</h5>
+                    {# <p class="my-2"><i class="far fa-question-circle"></i> Le logo doit etre de type .png</p> #}
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="displaySocieteMyRecode?cli__id={{client.cli__id}}" id="postDoc" method="post" enctype="multipart/form-data" >
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <div class="d-flex my-3">
+                            <label for="formFile" class="form-label">Importer dans le : </label>
+                            <div class="form-check mx-3">
+                                <input class="form-check-input" value="ad" type="radio" name="docRadio" id="flexRadioDefault1">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                Répertoire administratif
+                                </label>
+                            </div>
+                            <div class="form-check  mx-3">
+                                <input class="form-check-input" value="te" type="radio" name="docRadio" id="flexRadioDefault2" checked>
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                Répertoire technique
+                                </label>
+                            </div>
+                        </div>
+                            
+                        <label for="formFile" class="form-label">Choisir un Document</label>
+                        <input type="hidden" name="cliDoc" value="{{client.cli__id}}">
+                        <input class="form-control" name="DocInput" type="file" id="DocInput">
+                      </div>
+                </div>
+              
+                <div class="modal-footer">
+                    <button class="btn btn-recode-important"  id="postDocButton" type="button">Importer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Modal  Utilisateur création-->
 <div class="modal fade" id="modalUser" tabindex="-1" role="dialog" aria-labelledby="modalUser"
@@ -1133,6 +1233,11 @@
         });
 
 
+        $('#postDocButton').on('click' , function(){
+            docTest(10000000);
+        })
+        
+
         var matosTable =  $('#table_mat').DataTable({
             paging: false,             
             bPaginate: false,  
@@ -1219,6 +1324,32 @@
             });
             $('#user__parc_edit').selectpicker('val', arraySelect);
            
+        }
+
+        let docTest = function ( tailleMaxEnOctets) {
+            var inputFichier = document.getElementById('DocInput');
+           
+            if (inputFichier.files.length === 0) {
+              alert('Veuillez sélectionner un fichier.');
+              return;
+            }
+          
+            var fichier = inputFichier.files[0];
+            var extension = fichier.name.split('.').pop().toLowerCase();
+          
+            var extensionsAutorisees = ['png', 'jpeg', 'doc', 'docx', 'pdf' , 'jpg'];
+          
+            if (extensionsAutorisees.indexOf(extension) === -1) {
+              alert('Le type de fichier n\'est pas autorisé.');
+              return;
+            }
+          
+            if (fichier.size > tailleMaxEnOctets) {
+              alert('Le fichier est trop volumineux.');
+              return;
+            }
+
+            $('#postDoc').submit();
         }
 
         let functionMatosTableModal = function (data){
@@ -2008,5 +2139,5 @@
     };
 
 </script>
-<script type="text/javascript" src="public/js/boutique.js"></script>
+<script type="text/javascript" src="public/js/boutique.js"></script> 
 {% endblock %}
