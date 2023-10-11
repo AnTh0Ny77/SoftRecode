@@ -121,7 +121,7 @@ class MyRecodeSocieteController extends BasicController {
             if (!is_dir($dossierAdmin)) {
                 mkdir($dossierAdmin, 0777, true);
             }
-            $emplacement = $dossier .  '/' . $option .  $extension;
+            $emplacement = $dossier .  '/' . $option .  self::nom_fichier_propre($extension);
             move_uploaded_file($file , $emplacement );
         }else{
             mkdir($dossier, 0777, true);
@@ -129,7 +129,7 @@ class MyRecodeSocieteController extends BasicController {
             $dossierAdmin = $dossier . '/administratif';
             mkdir($dossierTech, 0777, true);
             mkdir($dossierAdmin, 0777, true);
-            $emplacement = $dossier . '/' . $option .  $extension;
+            $emplacement = $dossier . '/' . $option .  self::nom_fichier_propre($extension);
             move_uploaded_file($file , $emplacement );
         }
     }
@@ -193,6 +193,23 @@ class MyRecodeSocieteController extends BasicController {
         $extension = pathinfo($nomFichier, PATHINFO_EXTENSION);
     
         return $extension;
+    }
+
+    public static function nom_fichier_propre($nom_fichier){
+        $nom_fichier = trim($nom_fichier);
+        $nom_fichier = str_replace(" ",          '_', $nom_fichier);
+        $nom_fichier = str_replace("-",          '_', $nom_fichier);
+        $nom_fichier = str_replace("'",          '_', $nom_fichier);
+        $nom_fichier = str_replace("iso-8859-1", '',  $nom_fichier);
+        $nom_fichier = str_replace('=E9',        'e', $nom_fichier);
+        $nom_fichier = str_replace('=Q',         '',  $nom_fichier);
+        $nom_fichier = str_replace('=',          '',  $nom_fichier);
+        $nom_fichier = str_replace('?',          '',  $nom_fichier);
+        $search =array('À','Á','Â','Ã','Ä','Å','Ç','È','É','Ê','Ë','Ì','Í','Î','Ï','Ò','Ó','Ô','Õ','Ö','Ù','Ú','Û','Ü','Ý','à','á','â','ã','ä','å','ç','è','é','ê','ë','ì','í','î','ï','ð','ò','ó','ô','õ','ö','ù','ú','û','ü','ý','ÿ');
+        $replace=array('A','A','A','A','A','A','C','E','E','E','E','I','I','I','I','O','O','O','O','O','U','U','U','U','Y','a','a','a','a','a','a','c','e','e','e','e','i','i','i','i','o','o','o','o','o','o','u','u','u','u','y','y');
+        $nom_fichier = str_replace($search, $replace, $nom_fichier); // supprime les accents
+        $nom_fichier = preg_replace('/([^_.a-zA-Z0-9]+)/', '', $nom_fichier);
+        return strtoupper($nom_fichier);
     }
     
     
