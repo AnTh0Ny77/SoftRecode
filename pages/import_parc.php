@@ -168,12 +168,13 @@ if ($btn_ok)
 	// affichage résultat
 	$html .= '<hr>';
 	$html .= 'Nombre de ligne dans le fichier : '.$nb_lg.'<br>';
-	$html .= 'Nombre de champs par ligne : '.$nb_champs_lg_reference.'<br>';
 	$html .= 'Nombre de ligne de tete : '.$nb_lg_tete.'<br>';
 	$html .= 'Nombre de ligne intégrées : '.$nb_lg_ok.'<br>';
 	$html .= 'Nombre de ligne avec Erreur : '.$nb_lg_notok; if (strlen($html_lg_insert_err) > 0) $html.=' ( sur les lignes : '.$html_lg_insert_err.' )';$html.='<br>';
 	$html .= 'Nombre de ligne vide : '.$nb_lg_vide.'<br>';
+	$html .= '<hr>';
 	$html .= 'ID de la table materiel de : '.$id_first.' à '.$id_last.'<br>';
+	$html .= 'Nombre de champs par ligne : '.$nb_champs_lg_reference.'<br>';
 	$html .= '<hr>';
 	$html .= '<em>Extrais du fichier intégré (3 premières et dernière lignes) <br>';
 	$html .= $html_ex_start.'...<br>'.$html_ex_end.'<br>';
