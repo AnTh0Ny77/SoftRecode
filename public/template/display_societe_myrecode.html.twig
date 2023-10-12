@@ -78,7 +78,7 @@
 {% endblock %}
 {% block main %}
 <main role="main" class="container-fluid my-3 col-11 container-body" >
-    <h3 class="recode-p"><i class="fad fa-building"></i></i> Administration MyRecode.fr</h3>
+    <h3 class="recode-p"><i class="far fa-hexagon fa-lg fa-fw "></i> Administration MyRecode.fr</h3>
    
     <div class="d-flex justify-content-center mt-4"  id="sticky-test">
             <div class="  col-3 card-recode-admin mr-3">
@@ -99,12 +99,12 @@
                     </li>
                         {% if client.tickets|length > 0 %}
                             <li class="list-group-item">
-                                <div class="past_greeen">
-                                    <a href="myRecode?search={{client.cli__nom}}&tk__id=&tk__groupe=&TypeFilter=TKM" class="link-reco"><i class="fas fa-ticket"></i> {{ client.tickets|length ~ " tickets en cours" }}</a>
+                                <div class="">
+                                    <a href="myRecode?search={{client.cli__nom}}&tk__id=&tk__groupe=&TypeFilter=TKM" class=""><i class="fas fa-ticket"></i> {{ client.tickets|length ~ " tickets crées" }}</a>
                                 </div>
                             </li>
                         {% endif %}
-                    <li class="list-group-item">
+                    {# <li class="list-group-item">
                         <div class="">
                             <form method="post" action="societe_crea">
                                 <input type="hidden" name="hidden_client" value="{{client.cli__id}}">
@@ -113,13 +113,17 @@
                             
                            
                         </div>
-                    </li>
+                    </li> #}
                     <li class="list-group-item">
                     
                     </li>
                     <li class="list-group-item d-flex justify-content-between">
                         {% if logo %}
-                            <img src="{{logo}}"  width="100px"> <button data-toggle="modal" data-target="#modalLogo" class="btn btn-recode-important"><i class="fas fa-layer-plus"></i></button>
+                            <img src="{{logo}}"  width="100px"> 
+                            <div>
+                                <button data-toggle="modal" data-target="#modalLogo" class="btn btn-recode-important"><i class="fas fa-layer-plus"></i></button>
+                            </div>
+                           
                         {% else %}
                             <p class="text-danger"> Aucun logo pour cette société</p> <button data-toggle="modal" data-target="#modalLogo" class="btn btn-recode-important"><i class="fas fa-layer-plus"></i></button>
                         {% endif %}
@@ -243,7 +247,7 @@
                 </table>
             </div>
         </div>  
-                <div class="d-flex justify-content-center  mt-4 " id="mbmax">
+                <div class="d-flex justify-content-center  mt-4 ">
                 
                     <div class="col-3 card-recode-admin mr-4">
                         <h4 class="recode-p"><i class="fas fa-file-signature"></i> Abonnements et imports</h4>
@@ -267,29 +271,15 @@
                                 </div>
                             </li>
                             <li class="list-group-item">
-                                <div class="past_greeen">
-                                    <a href="import_parc" class="link-reco"><i class="far fa-file-import"></i> Import Parc Materiels (csv) </a>
+                                <div class="">
+                                    <a href="import_parc" class=""><i class="far fa-file-import"></i> Import Parc Materiels (csv) </a>
                                 </div>
                             </li>
                            
                             <li class="list-group-item">
                                
                             </li>
-                            {# <li class="list-group-item d-flex justify-content-between">
-                                <div class="past_pastel" id="sco__type_port_d">
-                                    <i class="fas fa-folder-open"></i> Documents administratifs
-                                </div> 
-                                <button data-toggle="modal" data-target="#modalAd"
-                                    class="btn btn-recode-important"><i class="fas fa-layer-plus"></i>
-                                </button>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between">
-                                <div class="past_pink" id="sco__type_port_d">
-                                    <i class="fas fa-file-code"></i> Documents techniques
-                                </div>
-                                <button data-toggle="modal" data-target="#modalLogo" class="btn btn-recode-important"><i class="fas fa-layer-plus"></i>
-                                </button>
-                            </li> #}
+                           
                         </ul>
                     </div>
                 
@@ -407,12 +397,31 @@
                     </div>
                 </div>  
 
+                <div class="d-flex justify-content-center mt-3" id="mbmax">
+                    <div class="col-3 card-recode-admin mr-4">
+                        <h4 class="recode-p"><i class="fas fa-cart-plus"></i> Promotions </h4>
+                        <ul class="list-group list-group-flush">
+                          
+                            <li class="list-group-item">
+                                <div class="">
+                                    <a href="add-myrecode" class=""><i class="fas fa-cart-plus"></i> administration des promotions </a>
+                                </div>
+                            </li>
 
-                <div class="d-flex justify-content-start mb-5" id="mbmax">
-                    <div class="col-8 card-recode-admin mr-4">
+                            {% for add in add_list %}
+                                <li class="list-group-item">
+                                    <h6 class="recode-p">{{add.ad__titre}}</h6>
+                                    <small>{{add.ad__txt}}</small><br>
+                                    <a href="{{add.ad__lien}}" target="_blank">{{add.ad__lien}}</a>
+                                </li>
+                                
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-9 card-recode-admin ">
                         <h4 class="recode-p"><i class="fas fa-file-signature"></i> Document administratifs et techniques</h4>
                         <div class="my-2 float-right">
-                            <button class="btn btn-recode-small" data-toggle="modal" data-target="#modalDoc">Ajouter</button>
+                            <button class="btn btn-recode-important" data-toggle="modal" data-target="#modalDoc">Ajouter</button>
                         </div>
                         <div class="col-12 my-3 d-flex">
                             <div class="col-6 ">
@@ -421,7 +430,7 @@
                                     {% if admin_list %}
                                         {% for doc in admin_list %}
                                         {% set nombreAvecZeros = client.cli__id|slice(-6)|default('000000') %}
-                                            <li class="list-group-item"><a href="O:\myRecode/{{nombreAvecZeros}}\administratif\{{doc}}" target="_blank" >{{doc}}</a> 
+                                            <li class="list-group-item"><a href="/public/o_myrecode/{{nombreAvecZeros}}/administratif/{{doc}}" target="_blank" >{{doc}}</a> 
                                                 <div class="my-2 float-right">
                                                     <form action="displaySocieteMyRecode?cli__id={{client.cli__id}}" method="post" >
                                                         <input type="hidden" name="docNameAd" value="{{doc}}">
@@ -430,11 +439,9 @@
                                                 </div>
                                             </li>   
                                         {% endfor %}
-
                                     {% else %}
                                         <b>Aucun document disponible</b>
                                     {% endif %}
-                                    
                                 </ul>
                             </div>
                             <div class="col-6">
@@ -443,7 +450,7 @@
                                     {% if tech_list %}
                                         {% for doc in tech_list %}
                                         {% set nombreAvecZeros = client.cli__id|slice(-6)|default('000000') %}
-                                            <li class="list-group-item"><a href="O:\myRecode/{{nombreAvecZeros}}\tech\{{doc}}" target="_blank" >{{doc}}</a> 
+                                            <li class="list-group-item"><a href="/public/o_myrecode/{{nombreAvecZeros}}/tech/{{doc}}" target="_blank" >{{doc}}</a> 
                                                 <div class="my-2 float-right">
                                                     <form action="displaySocieteMyRecode?cli__id={{client.cli__id}}" method="post" >
                                                         <input type="hidden" name="docNameTec" value="{{doc}}">
@@ -477,7 +484,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="displaySocieteMyRecode?cli__id={{client.cli__id}}" id="postDoc" method="post" enctype="multipart/form-data" >
+            <form action="displaySocieteMyRecode?cli__id={{client.cli__id}}" id="postDoc" method="post" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="mb-3">
                         <div class="d-flex my-3">
