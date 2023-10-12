@@ -8,6 +8,7 @@ use App\Tables\User;
 use DateTime;
 use App\Tables\Tickets;
 use App\Apiservice\ApiTest;
+use App\Apiservice\ApiGenerique;
 use App\Tables\Article;
 use App\Tables\Abonnement;
 use App\Database;
@@ -220,6 +221,7 @@ class MyRecodeSocieteController extends BasicController {
         $Database = new Database('devis');
         $Database->DbConnect();
         $Api = new ApiTest();
+        $RequestBuider =  new ApiGenerique();
 
         $Article = new Article($Database);
         $Abonnement = new Abonnement($Database);
@@ -286,7 +288,7 @@ class MyRecodeSocieteController extends BasicController {
             self::supprimerFichier($emplacement . '/tech' . '/' . $_POST['docNameTec']);
         }
 
-         //post///
+        
          if (!empty($_POST['docRadio'])) {
             if ($_POST['docRadio'] === 'ad') {
                 $tempPath = 'administratif/';
@@ -298,7 +300,10 @@ class MyRecodeSocieteController extends BasicController {
 
         $admin_list = self::listerDocumentsDansRepertoire($emplacement . '/administratif' );
         $tech_list = self::listerDocumentsDansRepertoire($emplacement. '/tech' );
-      
+        
+        $add_list = $RequestBuider->Build( 'GET', '/add', $token , ['cli__id' => $_GET['cli__id'] ]  , false )['data'];
+        
+
         header("Access-Control-Allow-Origin: *");
         return self::$twig->render(
             'display_societe_myrecode.html.twig',
@@ -311,7 +316,8 @@ class MyRecodeSocieteController extends BasicController {
                 'avendre_list' => $list_avendre , 
                 'logo' => $logo , 
                 'admin_list' => $admin_list , 
-                'tech_list' => $tech_list
+                'tech_list' => $tech_list , 
+                'add_list' => $add_list
             ]
         );
     }

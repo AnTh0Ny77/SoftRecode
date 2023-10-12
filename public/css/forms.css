@@ -45,6 +45,19 @@
     display: inline-block !important;
     font-size: 14px !important;
 }
+
+.btn-recode-important-fixed {
+    background-color: #4CAF50 !important;
+    /* Green */
+    border: none !important;
+    color: white !important;
+    padding: 12px 27px !important;
+    text-align: center !important;
+    text-decoration: none !important;
+   
+    font-size: 14px !important;
+    max-height: 55px !important;
+}
 .btn-recode-warning{
     background-color: #F77D24; /* Green */
     border: none;

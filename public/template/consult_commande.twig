@@ -206,7 +206,7 @@
                                                       </div>
                                                       <div>
                                                         {% if   ( commande.devis__etat == 'VLD' or  commande.devis__etat == 'VLA' ) and user.user__prix_acces > 0  %}
-                                                                <a href="public\archive_pdf\FC\{{commande.cmd__id_facture}}F-{{commande.devis__id}}-{{commande.client__id}}C.pdf"  target="_blank" class="badge badge-link">
+                                                                <a href="public\archive_pdf\FC\{{commande.cmd__id_facture}}F-{{commande.devis__id}}D-{{commande.client__id}}C.pdf"  target="_blank" class="badge badge-link">
                                                                         <i class="far fa-file-pdf fa-5x"></i>
                                                                         <h5>Facture</h5>
                                                                 </a>
