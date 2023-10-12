@@ -429,8 +429,7 @@
                                 <ul class="list-group my-3">
                                     {% if admin_list %}
                                         {% for doc in admin_list %}
-                                        {% set nombreAvecZeros = client.cli__id|slice(-6)|default('000000') %}
-                                            <li class="list-group-item"><a href="/public/o_myrecode/{{nombreAvecZeros}}/administratif/{{doc}}" target="_blank" >{{doc}}</a> 
+                                            <li class="list-group-item"><a href="public/o_myrecode/{{'%06d'|format(client.cli__id)}}/administratif/{{doc}}" target="_blank" >{{doc}}</a> 
                                                 <div class="my-2 float-right">
                                                     <form action="displaySocieteMyRecode?cli__id={{client.cli__id}}" method="post" >
                                                         <input type="hidden" name="docNameAd" value="{{doc}}">
@@ -449,8 +448,7 @@
                                 <ul class="list-group my-3">
                                     {% if tech_list %}
                                         {% for doc in tech_list %}
-                                        {% set nombreAvecZeros = client.cli__id|slice(-6)|default('000000') %}
-                                            <li class="list-group-item"><a href="/public/o_myrecode/{{nombreAvecZeros}}/tech/{{doc}}" target="_blank" >{{doc}}</a> 
+                                            <li class="list-group-item"><a href="public/o_myrecode/{{'%06d'|format(client.cli__id)}}/tech/{{doc}}" target="_blank" >{{doc}}</a> 
                                                 <div class="my-2 float-right">
                                                     <form action="displaySocieteMyRecode?cli__id={{client.cli__id}}" method="post" >
                                                         <input type="hidden" name="docNameTec" value="{{doc}}">
