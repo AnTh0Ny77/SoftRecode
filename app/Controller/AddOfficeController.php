@@ -30,7 +30,7 @@ class AddOfficeController extends BasicController {
 
         if (!empty($_POST['add__titre'])) {
             $emplacement = "O:\myRecode\Promo"; 
-            $nomFichier = self::nom_fichier_propre($_POST['add__titre']); 
+            $nomFichier = strtoupper(self::nom_fichier_propre($_POST['add__titre'])); 
             $nomFichier = $nomFichier . '.PNG';
             $fichierTemporaire = 'add__img'; 
             $temp = self::sauvegarderFichierPNG($emplacement, $nomFichier, $fichierTemporaire);
@@ -38,7 +38,7 @@ class AddOfficeController extends BasicController {
 
         if (!empty($_POST['add__titreEdit'])) {
             $emplacement = "O:\myRecode\Promo"; 
-            $nomFichier = self::nom_fichier_propre($_POST['add__titreEdit']); 
+            $nomFichier = strtoupper(self::nom_fichier_propre($_POST['add__titreEdit'])); 
             $nomFichier = $nomFichier . '.PNG';
             $fichierTemporaire = 'add__imgEdit'; 
             $temp = self::sauvegarderFichierPNG($emplacement, $nomFichier, $fichierTemporaire);
@@ -50,7 +50,7 @@ class AddOfficeController extends BasicController {
         foreach ($list as $key => $value) {
             $temp = [
                 'relation' => $value['relation'] , 
-                'ad__img' => self::nom_fichier_propre($value['ad__titre']). '.PNG',
+                'ad__img' => strtoupper(self::nom_fichier_propre($value['ad__titre'])). '.PNG',
                 'ad__lien' => $value['ad__lien'] , 
                 'ad__id' => $value['ad__id'] ,
                 'ad__txt' => $value['ad__txt'] , 

@@ -196,7 +196,7 @@ class MyRecodeSocieteController extends BasicController {
         return $extension;
     }
 
-    public static function nom_fichier_propre($nom_fichier){
+    public static function nom_fichier_propre($nom_fichier ){
         $nom_fichier = trim($nom_fichier);
         $nom_fichier = str_replace(" ",          '_', $nom_fichier);
         $nom_fichier = str_replace("-",          '_', $nom_fichier);
@@ -210,8 +210,10 @@ class MyRecodeSocieteController extends BasicController {
         $replace=array('A','A','A','A','A','A','C','E','E','E','E','I','I','I','I','O','O','O','O','O','U','U','U','U','Y','a','a','a','a','a','a','c','e','e','e','e','i','i','i','i','o','o','o','o','o','o','u','u','u','u','y','y');
         $nom_fichier = str_replace($search, $replace, $nom_fichier); // supprime les accents
         $nom_fichier = preg_replace('/([^_.a-zA-Z0-9]+)/', '', $nom_fichier);
-        return strtoupper($nom_fichier);
+        return $nom_fichier;
     }
+
+    
     
     
 
