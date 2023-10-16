@@ -134,9 +134,92 @@ class ApiList
                     break;
             }
         }
+
+
+        $list_facturable = $Cmd->get_by_client_id_livr()($_GET['cli__id'] , 10000);
+
+        $response_livr = [
+            'CMD' => [] , 
+            'IMP' => [] , 
+            'VLD' => [], 
+            'ABN' => [] , 
+            'VLA' => []
+        ];
+
+
+        foreach ($list_facturable as  $value) {
+            switch ($value->cmd__etat) {
+                case 'ABN':
+                    $temp = [
+                        "cmd__id" => $value->cmd__id , 
+                        "cmd__date_cmd" =>  $value->cmd__date_cmd,
+                        "cmd__date_envoi" =>  $value->cmd__date_envoi,
+                        "cmd__date_fact" =>  $value->cmd__date_fact,
+                        "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
+                        "cmd__nom_devis" =>  $value->cmd__nom_devis,
+                        "cmd__id_facture" =>  $value->cmd__id_facture
+                    ];
+                    array_push($response_livr['ABN'], $temp);
+                    break;
+                case 'CMD':
+                    $temp = [
+                        "cmd__id" => $value->cmd__id , 
+                        "cmd__date_cmd" =>  $value->cmd__date_cmd,
+                        "cmd__date_envoi" =>  $value->cmd__date_envoi,
+                        "cmd__date_fact" =>  $value->cmd__date_fact,
+                        "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
+                        "cmd__nom_devis" =>  $value->cmd__nom_devis,
+                        "cmd__id_facture" =>  $value->cmd__id_facture
+                    ];
+                    array_push($response_livr['CMD'],  $temp);
+                    break;
+
+                case 'VLA':
+                    $temp = [
+                        "cmd__id" => $value->cmd__id , 
+                        "cmd__date_cmd" =>  $value->cmd__date_cmd,
+                        "cmd__date_envoi" =>  $value->cmd__date_envoi,
+                        "cmd__date_fact" =>  $value->cmd__date_fact,
+                        "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
+                        "cmd__nom_devis" =>  $value->cmd__nom_devis,
+                        "cmd__id_facture" =>  $value->cmd__id_facture
+                    ];
+                    array_push($response_livr['VLA'], $temp);
+                    break;
+                case 'VLD':
+                    $temp = [
+                        "cmd__id" => $value->cmd__id , 
+                        "cmd__date_cmd" =>  $value->cmd__date_cmd,
+                        "cmd__date_envoi" =>  $value->cmd__date_envoi,
+                        "cmd__date_fact" =>  $value->cmd__date_fact,
+                        "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
+                        "cmd__nom_devis" =>  $value->cmd__nom_devis,
+                        "cmd__id_facture" =>  $value->cmd__id_facture
+                    ];
+                    array_push($response_livr['VLD'],  $temp);
+                    break;
+                case 'IMP':
+                    $temp = [
+                        "cmd__id" => $value->cmd__id , 
+                        "cmd__date_cmd" =>  $value->cmd__date_cmd,
+                        "cmd__date_envoi" =>  $value->cmd__date_envoi,
+                        "cmd__date_fact" =>  $value->cmd__date_fact,
+                        "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
+                        "cmd__nom_devis" =>  $value->cmd__nom_devis,
+                        "cmd__id_facture" =>  $value->cmd__id_facture
+                    ];
+                    array_push($response_livr['IMP'] ,  $temp );
+                    break;
+            }
+        }
+
+        $definitive_array = [
+            'fact' => $response , 
+            'livr' => $response_livr
+        ];
         
         return $responseHandler->handleJsonResponse([
-            'data' =>  $response
+            'data' =>  $definitive_array
         ], 200, 'ok');
     }
 
