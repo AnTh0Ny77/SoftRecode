@@ -212,13 +212,13 @@ class ApiList
             }
         }
 
-        $definitive_array = [
-            'fact' => $response , 
-            'livr' => $response_livr
-        ];
+        // $definitive_array = [
+        //     'fact' => $response , 
+        //     'livr' => $response_livr
+        // ];
         
         return $responseHandler->handleJsonResponse([
-            'data' =>  $definitive_array
+            'data' =>  $response
         ], 200, 'ok');
     }
 
