@@ -78,7 +78,9 @@ class ApiList
                         "cmd__date_fact" =>  $value->cmd__date_fact,
                         "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
                         "cmd__nom_devis" =>  $value->cmd__nom_devis,
-                        "cmd__id_facture" =>  $value->cmd__id_facture
+                        "cmd__id_facture" =>  $value->cmd__id_facture , 
+                        "cli__id_fact" => $value->cli__id_fact , 
+                        "cli__id_livr" => $value->cli__id_livr
                     ];
                     array_push($response['ABN'], $temp);
                     break;
@@ -90,7 +92,9 @@ class ApiList
                         "cmd__date_fact" =>  $value->cmd__date_fact,
                         "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
                         "cmd__nom_devis" =>  $value->cmd__nom_devis,
-                        "cmd__id_facture" =>  $value->cmd__id_facture
+                        "cmd__id_facture" =>  $value->cmd__id_facture , 
+                        "cli__id_fact" => $value->cli__id_fact , 
+                        "cli__id_livr" => $value->cli__id_livr
                     ];
                     array_push($response['CMD'],  $temp);
                     break;
@@ -103,7 +107,9 @@ class ApiList
                         "cmd__date_fact" =>  $value->cmd__date_fact,
                         "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
                         "cmd__nom_devis" =>  $value->cmd__nom_devis,
-                        "cmd__id_facture" =>  $value->cmd__id_facture
+                        "cmd__id_facture" =>  $value->cmd__id_facture , 
+                        "cli__id_fact" => $value->cli__id_fact , 
+                        "cli__id_livr" => $value->cli__id_livr
                     ];
                     array_push($response['VLA'], $temp);
                     break;
@@ -115,7 +121,9 @@ class ApiList
                         "cmd__date_fact" =>  $value->cmd__date_fact,
                         "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
                         "cmd__nom_devis" =>  $value->cmd__nom_devis,
-                        "cmd__id_facture" =>  $value->cmd__id_facture
+                        "cmd__id_facture" =>  $value->cmd__id_facture , 
+                        "cli__id_fact" => $value->cli__id_fact , 
+                        "cli__id_livr" => $value->cli__id_livr
                     ];
                     array_push($response['VLD'],  $temp);
                     break;
@@ -127,7 +135,9 @@ class ApiList
                         "cmd__date_fact" =>  $value->cmd__date_fact,
                         "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
                         "cmd__nom_devis" =>  $value->cmd__nom_devis,
-                        "cmd__id_facture" =>  $value->cmd__id_facture
+                        "cmd__id_facture" =>  $value->cmd__id_facture , 
+                        "cli__id_fact" => $value->cli__id_fact , 
+                        "cli__id_livr" => $value->cli__id_livr
                     ];
                     array_push($response['IMP'] ,  $temp );
                     break;
@@ -156,7 +166,9 @@ class ApiList
                         "cmd__date_fact" =>  $value->cmd__date_fact,
                         "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
                         "cmd__nom_devis" =>  $value->cmd__nom_devis,
-                        "cmd__id_facture" =>  $value->cmd__id_facture
+                        "cmd__id_facture" =>  $value->cmd__id_facture , 
+                        "cli__id_fact" => $value->cli__id_fact , 
+                        "cli__id_livr" => $value->cli__id_livr
                     ];
                     array_push($response_livr['ABN'], $temp);
                     break;
@@ -168,7 +180,9 @@ class ApiList
                         "cmd__date_fact" =>  $value->cmd__date_fact,
                         "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
                         "cmd__nom_devis" =>  $value->cmd__nom_devis,
-                        "cmd__id_facture" =>  $value->cmd__id_facture
+                        "cmd__id_facture" =>  $value->cmd__id_facture , 
+                        "cli__id_fact" => $value->cli__id_fact , 
+                        "cli__id_livr" => $value->cli__id_livr
                     ];
                     array_push($response_livr['CMD'],  $temp);
                     break;
@@ -181,7 +195,9 @@ class ApiList
                         "cmd__date_fact" =>  $value->cmd__date_fact,
                         "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
                         "cmd__nom_devis" =>  $value->cmd__nom_devis,
-                        "cmd__id_facture" =>  $value->cmd__id_facture
+                        "cmd__id_facture" =>  $value->cmd__id_facture , 
+                        "cli__id_fact" => $value->cli__id_fact , 
+                        "cli__id_livr" => $value->cli__id_livr
                     ];
                     array_push($response_livr['VLA'], $temp);
                     break;
@@ -193,7 +209,9 @@ class ApiList
                         "cmd__date_fact" =>  $value->cmd__date_fact,
                         "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
                         "cmd__nom_devis" =>  $value->cmd__nom_devis,
-                        "cmd__id_facture" =>  $value->cmd__id_facture
+                        "cmd__id_facture" =>  $value->cmd__id_facture , 
+                        "cli__id_fact" => $value->cli__id_fact , 
+                        "cli__id_livr" => $value->cli__id_livr
                     ];
                     array_push($response_livr['VLD'],  $temp);
                     break;
@@ -205,7 +223,9 @@ class ApiList
                         "cmd__date_fact" =>  $value->cmd__date_fact,
                         "cmd__code_cmd_client" =>  $value->cmd__code_cmd_client,
                         "cmd__nom_devis" =>  $value->cmd__nom_devis,
-                        "cmd__id_facture" =>  $value->cmd__id_facture
+                        "cmd__id_facture" =>  $value->cmd__id_facture , 
+                        "cli__id_fact" => $value->cli__id_fact , 
+                        "cli__id_livr" => $value->cli__id_livr
                     ];
                     array_push($response_livr['IMP'] ,  $temp );
                     break;
