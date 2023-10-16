@@ -15,29 +15,22 @@ $_SESSION['user']->commandes_cours = $Stats->get_user_commnandes($_SESSION['user
 $_SESSION['user']->devis_cours = $Stats->get_user_devis($_SESSION['user']->id_utilisateur);
 use App\Methods\Pdfunctions;
 use App\Methods\Devis_functions;
-
 //URL bloqué si pas de connexion :
 if (empty($_SESSION['user']->id_utilisateur)) 
 	header('location: login');
-
 // mise a blanc des variables.
 $search       = '';
 $search_len   = 0;
-
-
 //si une redirection arrive d'une autre page par le biais de la variable de session :
-if (!empty($_SESSION['search_switch'])) 
-{
+if (!empty($_SESSION['search_switch'])) {
 	$_POST['search'] =  $_SESSION['search_switch'];
 	$_SESSION['search_switch'] = '';
 }
 // recup des info et verif 
 $search = strtoupper(trim($_POST['search']));
 $search_len = strlen($search);
-
 //switch sur la variable de recherche : 
-if (!empty($search)) 
-{
+if (!empty($search)){
 	// recherche de mots clés
 	if ($search == 'STATM')                        header('location: stat_marge');
 	if ($search == 'STAT')                         header('location: stat');
@@ -49,9 +42,14 @@ if (!empty($search))
 	if ($search == 'ABO')                          header('location: abonnement');
 	if ($search == 'CAT')                          header('location: ArtCataloguePN');
 
-	switch ($search_len) 
-	{
+	switch ($search_len){
 		//si la chaine fait une longueur 6 et qu'elle ne contient que des numérics
+		case ($search == 4 and ctype_digit($search)):
+			//groupe de ticket : 
+		break;
+		case ($search == 5 and ctype_digit($search)):
+			//ticket : 
+		break;
 		case ($search == 6 and ctype_digit($search)):
 			//je fais une recherche par id 
 			$client = $Client->search_client_devis($search);
@@ -60,24 +58,21 @@ if (!empty($search))
 				$client_results->client__dt_last_modif = $date_modif->format('d/m/Y');
 			}
 			//Si le résultat est bien unique : 
-			if (count($client) == 1) 
-			{
+			if (count($client) == 1){
 				$client = $Client->getOne($client[0]->client__id);
 				//compte les contacts : 
 				$count_contact = $Contact->count_contact($client->client__id);
 				//liste des 3 principaux contacts
 				$contact_list = $Contact->get_contact_search($client->client__id ,3 );
 				//si la liste des contacts est plus grande que les 3 contact proposés : 
-				if (intval($count_contact[0]["COUNT(*)"]) > count($contact_list)) 
-				{
+				if (intval($count_contact[0]["COUNT(*)"]) > count($contact_list)){
 				       $extendre_contacts = intval($count_contact[0]["COUNT(*)"]) - count($contact_list) ;
 				}
 				else $extendre_contacts = false ;
 				//liste des quinze dernière commmandes : 
 				$cmd_list = $Cmd->get_by_client_id($client->client__id , 10 );
 				//format les dates de la commande : 
-				foreach ($cmd_list as $cmd) 
-				{
+				foreach ($cmd_list as $cmd){
 					$date =  new DateTime($cmd->cmd__date_devis);
 					$cmd->cmd__date_devis =  $date->format('d/m/Y');
 				}
@@ -90,8 +85,7 @@ if (!empty($search))
 				}
 				// Donnée transmise au template : 
 				echo $twig->render(
-					'consult_client.twig',
-					[
+					'consult_client.twig',[
 						'user' => $_SESSION['user'],
 						'client' => $client ,
 						'contact_list' => $contact_list ,
@@ -100,8 +94,7 @@ if (!empty($search))
 						'alert' => $alert
 					]);
 			}
-			else 
-			{
+			else{
 				$client_list = $client ;  
 				 // Donnée transmise au template : 
 				 echo $twig->render(
@@ -111,7 +104,6 @@ if (!empty($search))
 						'client_list' => $client_list 
 					]);
 			}
-
 			break;
 		
 		//si la chaine fait une longueur 7 et qu'elle ne contient que des numérics
@@ -120,59 +112,50 @@ if (!empty($search))
 			$commande = $Cmd->GetById($search);
 			$liste_actions = $Pistage->get_pist_by_id($search);
 			$lignes = $Cmd->devisLigne($search);
-
-			foreach ($lignes as $ligne) 
-			{
+			foreach ($lignes as $ligne){
 				if (!empty($ligne->devl__modele)) 
 				{
 					$ligne->spec = $Stocks->select_empty_heritage($ligne->devl__modele , true , true);
 				}
 				else $ligne->spec = " ";
-				
 			}
 
-			if ($commande->devis__etat == 'VLD' || $commande->devis__etat == 'VLA') 
-			{
+			if ($commande->devis__etat == 'VLD' || $commande->devis__etat == 'VLA'){
 				$totaux = Pdfunctions::totalFacturePDF($commande, $lignes );
 				foreach ($totaux as $key => $results){
 				       $results = number_format(floatVal($results), 2, ',', ' ');
 					$totaux[$key] = $results;
 				}
-			}
-			else 
-			{
+			}else{
 				$totaux = Pdfunctions::totalFacturePRO($commande, $lignes );
 				foreach ($totaux as $key => $results) {
 					$results = number_format(floatVal($results), 2, ',', ' ');
 					$totaux[$key] = $results ;
-					
 				}
 			}
 			
 			//formatte les dates pour l'utilisateur : 
 			$date =  new DateTime($commande->devis__date_crea);
 			$commande->devis__date_crea =  $date->format('d/m/Y');
-			if (!empty($commande->cmd__date_cmd)) 
-			{
+			if (!empty($commande->cmd__date_cmd)){
 				$date =  new DateTime($commande->cmd__date_cmd);
 				$commande->cmd__date_cmd =  $date->format('d/m/Y');
 			}
-			if (!empty($commande->cmd__date_fact)) 
-			{
+			if (!empty($commande->cmd__date_fact)){
 				$date =  new DateTime($commande->cmd__date_fact);
 				$commande->cmd__date_fact =  $date->format('d/m/Y');
 			}
 			
-				echo $twig->render(
-					'consult_commande.twig',
-					[
-						'user' => $_SESSION['user'],
-						'commande' => $commande ,
-						'etat_list' => $etat_list,
-						'lignes' => $lignes , 
-						'totaux' => $totaux ,
-						'liste_action' => $liste_actions
-					]);
+			echo $twig->render(
+				'consult_commande.twig',
+				[
+					'user' => $_SESSION['user'],
+					'commande' => $commande ,
+					'etat_list' => $etat_list,
+					'lignes' => $lignes , 
+					'totaux' => $totaux ,
+					'liste_action' => $liste_actions
+				]);
 			break;
 		
 		//par default je recherche un client : 
