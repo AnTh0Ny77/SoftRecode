@@ -70,11 +70,8 @@
                                                         <h5><span class="text-muted font-italic"><small>Vendeur : </small></span><b>{{client.prenom_vendeur ~ " " ~ client.nom_vendeur}}</b></h5>
                                                         <h5><span class="text-muted font-italic"><small>Commentaire : </small></span>{{client.client__comment|raw}}</h5>
                                                         <h5><span class="text-muted font-italic"><small>Configuration spéciale : </small></span>{{client.client__memo_config}}</h5>
-                                                
                                                 </div>
-
                                         </div>
-                                        
                                 </div>
                         </div>
                         {% if alert %}
@@ -162,13 +159,9 @@
                                                                                 </custom-button-list-contact>
                                                                         </td>
                                                                 </tr>
-                                                       
-                                                        {% endif %}
-                                                       
+                                                        {% endif %} 
                                                 </tbody>
-                                                
                                         </table>
-                                       
                                       {% else %}
                                         <div class="alert alert-warning" role="alert">
                                                 <h5><span class="text-muted font-italic">
@@ -177,7 +170,6 @@
                                                 </h5>
                                         </div>
                                       {% endif %}
-                                
                                 </div>
                         </div>
                         <!--commandes-->
@@ -191,9 +183,7 @@
                                        
                                 </div>
                                 <div class="card-body">
-
                                 
-
                                 {% if commandes_list %}
                                 <table class="table table-sm">
                                         <tbody id="list_contact">
@@ -201,7 +191,12 @@
                                                         <tr>
                                                                 <td>
                                                                         <p>
-                                                                                N°: <b>{{commande.cmd__id}}</b> <span class="mx-2 text-muted font-italic"> Fait le: <b>{{commande.cmd__date_devis}}</b></span>
+                                                                                N°: <b>{{commande.cmd__id}}</b> <span class="mx-2 text-muted font-italic"> Fait le: <b>
+                                                                                        {{commande.cmd__date_devis}} 
+                                                                                        {% if commande.cmd__code_cmd_client %}
+                                                                                        <br>{{commande.cmd__code_cmd_client}}
+                                                                                        
+                                                                                {% endif %}</b></span>
                                                                                 <span class="mx-2 font-italic">
                                                                                         {% if commande.cmd__nom_devis %}
                                                                                         <i class="far fa-file-signature" data-toggle="tooltip" data-placement="top" title="Titre : {{commande.cmd__nom_devis}}"></i>
@@ -219,7 +214,6 @@
                                                                                         {% endif %}
                                                                                 </span>
                                                                         </p>
-                                                                        
                                                                 </td>
                                                                 <td>
                                                                         <p>
@@ -255,7 +249,6 @@
                                                 {% endfor %}
                                         </tbody>
                                 </table>
-
                                 {% else %}
                                         <div class="alert alert-warning" role="alert">
                                                 <h5><span class=" font-italic">
@@ -266,14 +259,12 @@
                                 {% endif %}
                                 </div>
                         </div>
-
                 </div>
                 <!--partie droite reliée a totoro -->
                 <div class="col-4">
                         <div class="card shadow border my-2">
                                 <div class="card-header text-primary d-flex flex-row justify-content-between">
                                         <h4><i class="far fa-exclamation-triangle"></i> Incidents</h4>
-                                
                                 </div>
                         </div>
                 </div>   
@@ -283,10 +274,6 @@
                <h3>Une erreur est survenue!</h3>
         </div>
         {% endif %}
-
-
-                
-
 </main>
 {% endblock %}
 
