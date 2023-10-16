@@ -135,7 +135,7 @@ class ApiList
         }
 
 
-        // $list_facturable = $Cmd->get_by_client_id_livr()($_GET['cli__id'] , 10000);
+         $list_facturable = $Cmd->get_by_client_id_livr()($_GET['cli__id'] , 10000);
 
         // $response_livr = [
         //     'CMD' => [] , 
