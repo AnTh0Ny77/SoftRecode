@@ -32,8 +32,7 @@ class ApiList
         }
     }
 
-    public static function get()
-    {
+    public static function get(){
         $responseHandler = new ResponseHandler;
         //controle du client 
         if (empty($_GET['cli__id'])) {
