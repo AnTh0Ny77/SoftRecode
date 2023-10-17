@@ -42,15 +42,106 @@ if (!empty($search)){
 	if ($search == 'ABO')                          header('location: abonnement');
 	if ($search == 'CAT')                          header('location: ArtCataloguePN');
 
+	
+	if ($search_len == 4 or $search_len == 5) {
+		if (ctype_digit($search)) {
+			header('location: myRecode?search='.$search.'');
+			die();
+		}
+	}
+
+	$chaineEnMinuscules = strtolower($search);
+
+	if (substr($chaineEnMinuscules, 0, 2) === 'cc') {
+		if ($Cmd->GetByCC(substr($search, 2))) {
+			$etat_list = $Keyword->get_etat();
+			$commande = $Cmd->GetById($search);
+			$liste_actions = $Pistage->get_pist_by_id($search);
+			$lignes = $Cmd->devisLigne($search);
+			foreach ($lignes as $ligne){
+				if (!empty($ligne->devl__modele)) 
+				{
+					$ligne->spec = $Stocks->select_empty_heritage($ligne->devl__modele , true , true);
+				}
+				else $ligne->spec = " ";
+			}
+
+			if ($commande->devis__etat == 'VLD' || $commande->devis__etat == 'VLA'){
+				$totaux = Pdfunctions::totalFacturePDF($commande, $lignes );
+				foreach ($totaux as $key => $results){
+				       $results = number_format(floatVal($results), 2, ',', ' ');
+					$totaux[$key] = $results;
+				}
+			}else{
+				$totaux = Pdfunctions::totalFacturePRO($commande, $lignes );
+				foreach ($totaux as $key => $results) {
+					$results = number_format(floatVal($results), 2, ',', ' ');
+					$totaux[$key] = $results ;
+				}
+			}
+			
+			//formatte les dates pour l'utilisateur : 
+			$date =  new DateTime($commande->devis__date_crea);
+			$commande->devis__date_crea =  $date->format('d/m/Y');
+			if (!empty($commande->cmd__date_cmd)){
+				$date =  new DateTime($commande->cmd__date_cmd);
+				$commande->cmd__date_cmd =  $date->format('d/m/Y');
+			}
+			if (!empty($commande->cmd__date_fact)){
+				$date =  new DateTime($commande->cmd__date_fact);
+				$commande->cmd__date_fact =  $date->format('d/m/Y');
+			}
+			
+			echo $twig->render(
+				'consult_commande.twig',
+				[
+					'user' => $_SESSION['user'],
+					'commande' => $commande ,
+					'etat_list' => $etat_list,
+					'lignes' => $lignes , 
+					'totaux' => $totaux ,
+					'liste_action' => $liste_actions
+				]);
+
+			die();
+		}
+		else{
+			$client_list = $client ;  
+				 // Donnée transmise au template : 
+				 $client_list = [];
+				 echo $twig->render(
+					'consult_client_list.twig',
+					[
+						'user' => $_SESSION['user'],
+						'client_list' => $client_list 
+					]);
+				die();
+		}
+	}
+
+	if (substr($chaineEnMinuscules, 0, 2) === 'cp') {
+		$client_list = $Client->search_client_cp(substr($search, 2));
+			foreach ($client_list as $client) 
+			{
+				$date_modif = new DateTime($client->client__dt_last_modif);
+				$client->client__dt_last_modif = $date_modif->format('d/m/Y');
+			}
+		// Donnée transmise au template : 
+		echo $twig->render(
+			'consult_client_list.twig',
+			[
+				'user' => $_SESSION['user'],
+				'client_list' => $client_list
+			]
+		);
+		die();
+	}
+
+
 	switch ($search_len){
 		//si la chaine fait une longueur 6 et qu'elle ne contient que des numérics
-		case ($search == 4 and ctype_digit($search)):
-			//groupe de ticket : 
-		break;
-		case ($search == 5 and ctype_digit($search)):
-			//ticket : 
-		break;
 		case ($search == 6 and ctype_digit($search)):
+			
 			//je fais une recherche par id 
 			$client = $Client->search_client_devis($search);
 			foreach ($client as $client_results) {
@@ -108,6 +199,7 @@ if (!empty($search)){
 		
 		//si la chaine fait une longueur 7 et qu'elle ne contient que des numérics
 		case (strlen($search) == 7 and ctype_digit($search) and $Cmd->GetById($search)):
+			
 			$etat_list = $Keyword->get_etat();
 			$commande = $Cmd->GetById($search);
 			$liste_actions = $Pistage->get_pist_by_id($search);

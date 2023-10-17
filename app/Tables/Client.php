@@ -197,6 +197,20 @@ class Client extends Table
     }
 
 
+    public function search_client_cp($recherche)
+    {
+        $request = "SELECT  LPAD(client__id,6,0) as client__id, client__societe ,  client__ville , client__cp  , client__adr1 , client__dt_last_modif , client__tel,
+        u.prenom as prenom_vendeur, u.nom as nom_vendeur 
+        FROM client 
+        LEFT JOIN utilisateur as u ON u.id_utilisateur =  client__id_vendeur
+        WHERE client__id  > 10 AND client__cp  =  '".$recherche."'  ORDER BY  client__societe ASC  LIMIT 24 ";
+
+        $send = $this->Db->Pdo->query($request);
+        $data = $send->fetchAll(PDO::FETCH_OBJ);
+        return $data;
+    }
+
+
 
     public function search_client_return_id($recherche)
     {
