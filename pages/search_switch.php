@@ -275,6 +275,11 @@ if (!empty($search)){
 				foreach ($cmd_list as $cmd) {
 					$date =  new DateTime($cmd->cmd__date_devis);
 					$cmd->cmd__date_devis =  $date->format('d/m/Y');
+					$date =  new DateTime($cmd->cmd__date_envoi);
+					$cmd->cmd__date_envoi =  $date->format('d/m/Y');
+					$date =  new DateTime($cmd->cmd__date_cmd);
+					$cmd->cmd__date_cmd =  $date->format('d/m/Y');
+					
 				}
 				// Donnée transmise au template : 
 				echo $twig->render(

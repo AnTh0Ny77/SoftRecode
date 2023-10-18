@@ -189,37 +189,39 @@
                                         <tbody id="list_contact">
                                                 {% for commande in commandes_list %}
                                                         <tr>
+                                                                <td class="text-center">
+                                                                        <h5>{{commande.cmd__id}}</h5>
+                                                                </td>
                                                                 <td>
                                                                         <p>
-                                                                                N°: <b>{{commande.cmd__id}}</b> <span class="mx-2 text-muted font-italic"> Fait le: <b>
-                                                                                        {{commande.cmd__date_devis}} 
-                                                                                        {% if commande.cmd__code_cmd_client %}
-                                                                                        <br>{{commande.cmd__code_cmd_client}}
-                                                                                        
-                                                                                {% endif %}</b></span>
-                                                                                <span class="mx-2 font-italic">
+                                                                               
+                                                                                <span class="mx-2 text-muted font-italic"> 
+                                                                                        {% if commande.cmd__date_cmd %}
+                                                                                                Cmd: <b>  {{commande.cmd__date_cmd}}  </b>
+                                                                                        {% else %}
+                                                                                               <b> Devis non-validé </b> 
+                                                                                        {% endif %}
+                                                                                       
+                                                                                        {% if commande.cmd__date_cmd %}
+                                                                                                -Lvr: <b> {{commande.cmd__date_devis}} </b>
+                                                                                        {% else %}
+                                                                                                <b>Non expédié </b>
+                                                                                        {% endif %}
+                                                                                        {% if commande.cmd__client__id_livr and  commande.cmd__client__id_livr != commande.client__id %}
+                                                                                                {{client.client__livraison_societe}}">
+                                                                                        {% endif %}
+                                                                                        <br>
                                                                                         {% if commande.cmd__nom_devis %}
-                                                                                        <i class="far fa-file-signature" data-toggle="tooltip" data-placement="top" title="Titre : {{commande.cmd__nom_devis}}"></i>
-                                                                                        {% else %}
-                                                                                        <i class="far fa-file-signature" data-toggle="tooltip" data-placement="top" title="Titre : non-renseigné"></i>
+                                                                                                 {{commande.cmd__nom_devis}} - 
+                                                                                                
                                                                                         {% endif %}
-                                                                                </span>
-                                                                                <span class="mx-2 font-italic">
-                                                                                        {% if commande.cmd__client__id_livr != commande.client__id %}
-                                                                                        <i class="far fa-truck" data-toggle="tooltip" data-placement="top"
-                                                                                                title="Livré chez {{client.client__livraison_societe}}"></i>
-                                                                                        {% else %}
-                                                                                        <i class="far fa-truck" data-toggle="tooltip" data-placement="top"
-                                                                                                title="Livré chez {{client.client__societe}}"></i>
-                                                                                        {% endif %}
+                                                                                        {% if commande.cmd__code_cmd_client %}
+                                                                                                 {{commande.cmd__code_cmd_client}}
+                                                                                        {% endif %}        
                                                                                 </span>
                                                                         </p>
                                                                 </td>
-                                                                <td>
-                                                                        <p>
-                                                                                <span class="mx-2 text-muted font-italic">Etat: </span><b>{{commande.kw__lib}}</b>
-                                                                        </p>
-                                                                </td>
+                                                                
                                                                 <td>
                                                                         <div class="d-flex flex-row">
                                                                                 <a target="_blank" class="btn btn-link mx-1" href="http://intranet/tel_prise_04s.php?id_cmd={{commande.cmd__id}}" data-toggle="tooltip"

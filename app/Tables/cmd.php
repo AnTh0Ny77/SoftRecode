@@ -185,7 +185,7 @@ class Cmd extends Table
     LEFT JOIN keyword as k ON cmd__etat = k.kw__value AND  k.kw__type = 'stat'
     LEFT JOIN keyword as k3 ON cmd__tva = k3.kw__value AND k3.kw__type = 'tva'
     LEFT JOIN utilisateur as u ON cmd__user__id_devis = u.id_utilisateur
-    WHERE cmd__client__id_fact = '" . $id_client . "' AND cmd__etat <> 'PBL' ORDER BY cmd__date_devis DESC LIMIT " . $limit . " ");
+    WHERE  ( cmd__client__id_fact = '" . $id_client . "' OR cmd__client__id_livr = '" . $id_client . "' ) AND cmd__etat <> 'PBL' ORDER BY cmd__date_devis DESC LIMIT " . $limit . " ");
     $data = $request->fetchAll(PDO::FETCH_OBJ);
     return $data;
   }

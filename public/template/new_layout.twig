@@ -78,7 +78,15 @@
 				</button>
 		</div>
 		<div class="d-flex flex-row ">
-			<custom-search-menu method="POST" class="my-auto" url='search_switch'></custom-search-menu>
+			<custom-search-menu method="POST" class="my-auto" url='search_switch' data-toggle="tooltip" data-placement="top" title="
+					Recherche par : <br>
+					4 = groupe de ticket <br>
+					5 = ticket <br>
+					6 = client <br>
+					7 = commande <br>
+					CCxxx… = commande par : code commande client <br>
+					CP99999 = client par : code postal" >
+			</custom-search-menu>
 			<ul class="navbar-nav px-3">
 				<li class="nav-item text-nowrap ">
 					<a class="nav-link text-light" href="unlog">Se deconnecter <i class="fad fa-sign-out text-danger"></i></a>
