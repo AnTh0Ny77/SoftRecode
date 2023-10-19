@@ -195,11 +195,11 @@
                                                                 <td>
                                                                         <p>
                                                                                
-                                                                                <span class="mx-2 text-muted font-italic"> 
+                                                                                <span class="text-muted font-italic">
                                                                                         {% if commande.cmd__date_cmd %}
-                                                                                                Cmd: <b>  {{commande.cmd__date_cmd}}  </b>
+                                                                                        Cmd: <b>  {{commande.cmd__date_cmd}}  </b>
                                                                                         {% else %}
-                                                                                               <b> Devis non-validé </b> 
+                                                                                                <b> Devis non-validé </b> 
                                                                                         {% endif %}
                                                                                        
                                                                                         {% if commande.cmd__date_cmd %}
@@ -208,15 +208,16 @@
                                                                                                 <b>Non expédié </b>
                                                                                         {% endif %}
                                                                                         {% if commande.cmd__client__id_livr and  commande.cmd__client__id_livr != commande.client__id %}
-                                                                                                {{client.client__livraison_societe}}">
+                                                                                                {{client.client__livraison_societe}}"
                                                                                         {% endif %}
                                                                                         <br>
                                                                                         {% if commande.cmd__nom_devis %}
-                                                                                                 {{commande.cmd__nom_devis}} - 
+                                                                                       
+                                                                                        {{  commande.cmd__nom_devis}} - 
                                                                                                 
                                                                                         {% endif %}
                                                                                         {% if commande.cmd__code_cmd_client %}
-                                                                                                 {{commande.cmd__code_cmd_client}}
+                                                                                                {{commande.cmd__code_cmd_client}}
                                                                                         {% endif %}        
                                                                                 </span>
                                                                         </p>

@@ -45,7 +45,7 @@ else
 			require __DIR__ .'/pages/login.php'; break;
 
 		//recherches :
-		case '/SoftRecode/search_switch';
+		case '/SoftRecode/search_switch'.$get_data;
 			require __DIR__ . '/pages/search_switch.php'; break;
 		//recherches :
 		case '/SoftRecode/search_switch_notifs'.$get_data;

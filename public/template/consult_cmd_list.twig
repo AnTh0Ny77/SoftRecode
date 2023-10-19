@@ -1,0 +1,71 @@
+{% extends 'new_layout.twig' %}
+
+
+  {% block style %}
+  <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+  {% endblock %}
+ 
+ 
+{% block main %}
+        <main role="main" class="container my-3 col-11 container-body"> 
+              {% if list %}
+             
+              <div class="d-flex justify-content-center">
+                        <table  class="table table-striped col-8">
+                                <thead>
+                                        <tr>
+                                          <th scope="col" class="text-center"><h5>Numéro de commande</h5></th>
+                                          <th scope="col" class="text-center"><h5>N°/Client/CP/Ville</h5></th>
+                                          <th scope="col" class="text-center"><h5>Titre</h5></th>
+                                          <th scope="col" class="text-center"><h5>Code commande client</h5></th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        {% for commande in list %}
+                                                <tr>
+                                                    <td class="text-center align-middle">
+                                                        <div class="d-flex text-center align-middle">
+                                                            <a href="search_switch?search={{commande.devis__id}}"> 
+                                                                <h4 class="mx-3  ">
+                                                                    {{commande.devis__id}}
+                                                                </h4>      
+                                                            </a>     
+                                                        </div>
+                                                    </td>
+                                                        <td class="text-center align-middle"> 
+                                                                <div class="d-flex text-center align-middle">
+                                                                    <a href="search_switch?search={{commande.client__id}}"> 
+                                                                        <h6 class="mx-3  ">
+                                                                            {{     " ("  ~ commande.client__id ~ ")  " ~ commande.client__societe ~ " -  " ~  commande.client__cp ~ " - " ~ commande.client__ville  }}
+                                                                        </h6>      
+                                                                    </a>     
+                                                                </div>
+                                                        </td>
+                                                        <td class="text-center align-middle">{{commande.cmd__nom_devis}}</td>
+                                                        <td class="text-center align-middle">{{commande.cmd__code_cmd_client}}</td>
+                                                </tr>
+                                        {% endfor %}
+                                      </tbody>
+                              </table>
+              </div>
+                
+              {% else %}
+              <div class="alert alert-danger" role="alert">
+                {{alert}}
+              </div>
+              {% endif %}
+        </main>
+{% endblock %}
+     
+    
+{% block script %}
+<!-- Optional JavaScript -->
+<script  type="text/javascript" src="public/js/devisFunction.js"></script> 
+<!-- jQuery first, then Bootstrap JS -->
+<script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+{% endblock %}

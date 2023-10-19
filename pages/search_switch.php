@@ -26,8 +26,16 @@ if (!empty($_SESSION['search_switch'])) {
 	$_POST['search'] =  $_SESSION['search_switch'];
 	$_SESSION['search_switch'] = '';
 }
+
+
 // recup des info et verif 
-$search = strtoupper(trim($_POST['search']));
+if (!empty($_POST['search']))$search = strtoupper(trim($_POST['search']));
+
+
+//traitement d un params GET
+if (!empty($_GET['search'])) $search = strtoupper(trim($_GET['search']));
+
+
 $search_len = strlen($search);
 //switch sur la variable de recherche : 
 if (!empty($search)){
@@ -53,9 +61,56 @@ if (!empty($search)){
 	$chaineEnMinuscules = strtolower($search);
 
 	if (substr($chaineEnMinuscules, 0, 2) === 'cc') {
-		if ($Cmd->GetByCC(substr($search, 2))) {
+
+		$list = $Cmd->GetByCC(substr($search, 2));
+		$alert = '';
+
+		if (empty($list)) $alert = ' Aucun résultats pour le code commande : '. substr($search, 2) ;
+
+		echo $twig->render(
+			'consult_cmd_list.twig',[
+				'user' => $_SESSION['user'],
+				'list' => $list ,
+				'alert' => $alert
+		]);
+		die();
+
+	}
+
+	if (substr($chaineEnMinuscules, 0, 2) === 'cp') {
+		$client_list = $Client->search_client_cp(substr($search, 2));
+			foreach ($client_list as $client) 
+			{
+				$date_modif = new DateTime($client->client__dt_last_modif);
+				$client->client__dt_last_modif = $date_modif->format('d/m/Y');
+			}
+		// Donnée transmise au template : 
+		echo $twig->render(
+			'consult_client_list.twig',
+			[
+				'user' => $_SESSION['user'],
+				'client_list' => $client_list
+			]
+		);
+		die();
+	}
+
+	if ($search_len == 7 and ctype_digit($search) and  substr($search, 0, 1) === '4'){
+
+		$commande = $Cmd->GetByNumFact($search);
+		if(empty($commande)){
+			$list = [];
+			$alert = "Aucun résultat pour le numero de facture : ". $search;
+			echo $twig->render(
+				'consult_cmd_list.twig',[
+					'user' => $_SESSION['user'],
+					'list' => $list ,
+					'alert' => $alert
+			]);
+			die();
+		}
+
 			$etat_list = $Keyword->get_etat();
-			$commande = $Cmd->GetById($search);
 			$liste_actions = $Pistage->get_pist_by_id($search);
 			$lignes = $Cmd->devisLigne($search);
 			foreach ($lignes as $ligne){
@@ -102,39 +157,7 @@ if (!empty($search)){
 					'totaux' => $totaux ,
 					'liste_action' => $liste_actions
 				]);
-
 			die();
-		}
-		else{
-			$client_list = $client ;  
-				 // Donnée transmise au template : 
-				 $client_list = [];
-				 echo $twig->render(
-					'consult_client_list.twig',
-					[
-						'user' => $_SESSION['user'],
-						'client_list' => $client_list 
-					]);
-				die();
-		}
-	}
-
-	if (substr($chaineEnMinuscules, 0, 2) === 'cp') {
-		$client_list = $Client->search_client_cp(substr($search, 2));
-			foreach ($client_list as $client) 
-			{
-				$date_modif = new DateTime($client->client__dt_last_modif);
-				$client->client__dt_last_modif = $date_modif->format('d/m/Y');
-			}
-		// Donnée transmise au template : 
-		echo $twig->render(
-			'consult_client_list.twig',
-			[
-				'user' => $_SESSION['user'],
-				'client_list' => $client_list
-			]
-		);
-		die();
 	}
 
 
@@ -183,7 +206,7 @@ if (!empty($search)){
 						'etendre_contact' =>  $extendre_contacts ,
 						'commandes_list' => $cmd_list , 
 						'alert' => $alert
-					]);
+				]);
 			}
 			else{
 				$client_list = $client ;  
