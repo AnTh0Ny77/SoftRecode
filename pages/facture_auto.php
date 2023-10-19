@@ -81,6 +81,10 @@ if ($_SESSION['user']->user__facture_acces < 10 )
    $date = date_format($date,'m-Y');
    $arrayFacturable = json_encode($abonnement_facturable);
    $count_list = count($abonnement_liste);
+   $count = 0 ;
+   foreach ($abonnement_liste as $key => $value) {
+      if (!empty($value->array)) $count ++ ;
+   }
    $total_price = array_sum($total_price);
    $total_price =  number_format($total_price, 2, ',', ' ');
     // Donnée transmise au template : 
@@ -90,7 +94,7 @@ if ($_SESSION['user']->user__facture_acces < 10 )
     'arrayfacturable'=> $arrayFacturable, 
     'date' => $date ,
     'premiere_echeance' => $array_premiere_echeance,
-    'count_list' => $count_list , 
+    'count_list' => $count , 
     'total_price' => $total_price
     ]);
  }

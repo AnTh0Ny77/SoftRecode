@@ -33,29 +33,22 @@ if(empty($_SESSION['user']))
 }
 
 //si une facture a été faite = variable pour l'alerte: 
-if(!empty($_SESSION['factureEtoile'])) 
-{
+if(!empty($_SESSION['factureEtoile'])) {
     $_POST['hiddenCommentaire'] = $_SESSION['factureEtoile'];
     $_SESSION['factureEtoile'] = "";
 }
 
-
-
 // si une commande à été postée: 
-if (!empty($_POST['hiddenCommentaire'])) 
-{
+if (!empty($_POST['hiddenCommentaire'])){
 
-//gestion de la date de facturation
-if (!empty($_POST['date_fact']) ) 
-{
-    $date = date($_POST['date_fact']);
-    setcookie("date_facture_cookies", $date, time()+3600);
-    $date = new DateTime($_POST['date_fact']);
-    $date = date($_POST['date_fact'] . " H:i:s");
-    // $date = $date->format('Y-m-d H:i:s'); 
-}
-else 
-{
+    //gestion de la date de facturation
+    if (!empty($_POST['date_fact']) ) {
+        $date = date($_POST['date_fact']);
+        setcookie("date_facture_cookies", $date, time()+3600);
+        $date = new DateTime($_POST['date_fact']);
+        $date = date($_POST['date_fact'] . " H:i:s");
+        // $date = $date->format('Y-m-d H:i:s'); 
+    }else {
     if(empty($_COOKIE['date_facture_cookies'])) 
     {
         $date = date("Y-m-d H:i:s");
@@ -63,8 +56,7 @@ else
         $date = new DateTime($date);
         $date = $date->format('Y-m-d H:i:s'); 
     }
-    else
-    {
+    else{
         
         $date = date($_COOKIE['date_facture_cookies']);
         setcookie("date_facture_cookies", $date, time()+3600);
@@ -75,10 +67,8 @@ else
 $commande_temporaire = $Cmd->GetById($_POST['hiddenCommentaire']);
 $ligne_temporaire = $Cmd->devisLigne($_POST['hiddenCommentaire']);
 
-
 //controle si la facture  n'est pas deja une facture :
-if ($commande_temporaire->devis__etat == 'VLD') 
-{
+if ($commande_temporaire->devis__etat == 'VLD'){
     $_SESSION['facture'] = $_POST['hiddenCommentaire'];
     header('location: facture');
     die();
@@ -88,14 +78,12 @@ if ($commande_temporaire->devis__etat == 'VLD')
 //controle si le total n'est pas a zero : 
 $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);        
        
-    if (empty(floatval($totaux[3]))) 
-    {
+    if (empty(floatval($totaux[3]))){
        $_SESSION['facture'] = $_POST['hiddenCommentaire'];
        $_SESSION['facture_zero'] = 'TTZ';
        header('location: facture');
     }
-    else 
-    {
+    else {
             // 2 changer le status de la commande et attribuer un numero de facture:
             $Cmd->commande2facture($_POST['hiddenCommentaire']);
             $General->updateAll('cmd', $date , 'cmd__date_fact' , 'cmd__id', $_POST['hiddenCommentaire'] );
