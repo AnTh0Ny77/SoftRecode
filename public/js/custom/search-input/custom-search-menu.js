@@ -31,6 +31,9 @@ class customSearchMenu extends HTMLElement
                 const button = document.createElement('button');
                 button.setAttribute('type', 'button');
                 button.setAttribute('class', 'btn btn-primary btn-success btn-sm btn-rounded mx-2');
+                button.setAttribute('data-toggle', 'tooltip');
+                button.setAttribute('data-placement', 'top');
+                button.setAttribute('title' , 'Recherche par : <br>4 = groupe de ticket <br>5 = ticket <br>6 = client <br>7 = commande <br>CCxxx… = commande par : code commande client <br>CP99999 = client par : code postal');
                 button.innerHTML = '<i class="fas fa-search"></i>';
                 formRow.append(button);
 
