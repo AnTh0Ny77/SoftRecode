@@ -209,10 +209,8 @@ if ( isset($_SESSION['facture_zero']) && $_SESSION['facture_zero'] == 'TTZ')
 {
   $visuelFiche = 'Total à Zero';
   $_SESSION['facture_zero'] = '';
-}
-else
-{
-  $visuelFiche = null;
+}else{
+    $visuelFiche = null;
 }
 
 

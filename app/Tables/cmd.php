@@ -917,7 +917,7 @@ class Cmd extends Table
                         <td style='border-bottom: 1px #ccc solid'> " . $item->prestaLib . " <br> " . $item->kw__lib . " <br> " . $temp . " mois</td>
                         <td style='border-bottom: 1px #ccc solid; width: 55%;'> 
                             <br> <small>désignation :</small> <b>" . $item->devl__designation . "</b><br>"
-              . $item->famille__lib . " " . $item->marque . " " . $item->modele . " " . $item->devl__modele  . " " . $item->devl__note_interne .
+              . $item->famille__lib . " " . $item->marque . " " . $item->modele . " " . $item->devl__modele  . " " . $item->devl__note_client .
               "</td>
                          <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite . " </strong></td>
                           <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
@@ -932,7 +932,7 @@ class Cmd extends Table
             <td><small>Commentaire:</small></td>
           </tr>
           <tr>
-            <td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%'> <?php echo  $command->devis__note_interne ?> </td>
+            <td style='border-bottom: 1px black solid; border-top: 1px black solid; width: 100%'> <?php echo  $command->devis__note_client ?> </td>
           </tr>
         </table>
 
