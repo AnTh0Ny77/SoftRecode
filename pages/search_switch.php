@@ -111,8 +111,8 @@ if (!empty($search)){
 		}
 
 			$etat_list = $Keyword->get_etat();
-			$liste_actions = $Pistage->get_pist_by_id($search);
-			$lignes = $Cmd->devisLigne($search);
+			$liste_actions = $Pistage->get_pist_by_id($commande->devis__id);
+			$lignes = $Cmd->devisLigne($commande->devis__id);
 			foreach ($lignes as $ligne){
 				if (!empty($ligne->devl__modele)) 
 				{
