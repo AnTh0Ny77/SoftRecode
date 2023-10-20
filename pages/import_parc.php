@@ -79,6 +79,8 @@ if ($btn_ok)
 		$nb_lg ++;
 		$lg_ok = TRUE;
 		$line = trim(fgets($contenu));
+		$line = mb_convert_encoding($line, 'UTF-8', 'auto');
+		// print $nb_lg.'<br>'.$line.'<br>'.$line2.'<br>'.substr($line,0,12).'<br>';
 
 		// recherche de ligne ENTETE
 		if (substr($line,0,12) == 'mat__cli__id')
@@ -120,6 +122,23 @@ if ($btn_ok)
 					$temp = $tab_tete[$i]; $$temp = $tab_lg[$i];
 				} // ce qui oblige a la presence d'une ligne entete mais permet le mixte de ses colonnes
 
+				// verification de champs...
+				$msg_info_integration = 'Le format de ficheir est OK<br>';
+				$msg_err_date_offg = $msg_err_date_in = '';
+				if (strlen($mat__date_offg) <> 10) // la date n'est pas au bon format ! ou vide => 01/01/2000
+				{
+					$mat__date_offg = '01/01/2000';
+					$msg_err_date_offg = '<font color=red>Au moins une date de fin de garantie n\'etait pas valide ou vide, elle a été rempalcé par 01/01/2000 </font><br>';
+				}
+				if (strlen($mat__date_in) <> 10) // la date n'est pas au bon format ! ou vide => 01/01/2000
+				{
+					$mat__date_in = '01/01/2000';
+					$msg_err_date_in = '<font color=red>Au moins une date d\'aquisition n\'etait pas valide ou vide, elle a été rempalcé par 01/01/2000 </font><br>';
+				}
+				$msg_err = $msg_err_date_offg.$msg_err_date_in;
+				if (strlen($msg_err) > 0)
+					$msg_info_integration = $msg_err;
+				// print dtfr2dtsql($mat__date_in).'<br>';
 				// ajout de materiel
 				$body = [
 				"secret"             => 'heAzqxwcrTTTuyzegva^5646478§§uifzi77..!yegezytaa9143ww98314528',
@@ -175,6 +194,9 @@ if ($btn_ok)
 	$html .= '<hr>';
 	$html .= 'ID de la table materiel de : '.$id_first.' à '.$id_last.'<br>';
 	$html .= 'Nombre de champs par ligne : '.$nb_champs_lg_reference.'<br>';
+	$html .= '<hr>';
+	$html .= '<em><font color=red>Info d\'intégration </font></em><br>';
+	$html .= $msg_info_integration.'<br>';
 	$html .= '<hr>';
 	$html .= '<em>Extrais du fichier intégré (3 premières et dernière lignes) <br>';
 	$html .= $html_ex_start.'...<br>'.$html_ex_end.'<br>';
