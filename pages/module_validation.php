@@ -45,8 +45,7 @@ switch ($_POST['nature_demande'])
                         move_uploaded_file($_FILES['file_devis']['tmp_name'], $cheminDeDestination);
                 }
                 /////////////////////////////////
-
-
+                
                 //met à jour les commentaires / quantites  : 
                 // foreach($tableau_commantaire as $value) 
                 // {

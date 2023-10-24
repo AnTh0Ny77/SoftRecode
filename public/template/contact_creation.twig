@@ -1,0 +1,167 @@
+{% extends 'new_layout.twig' %}
+{% block style %}
+    <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+    <link rel="stylesheet" type="text/css" href="public/datatable/datatables.min.css" >
+    <link rel="stylesheet" href="public/css/dashboard.css">
+{% endblock %}
+{% block main %}
+    <main role="main" class="container-fluid my-3 col-11 container-body">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                {% if modif %}
+                <h1 class="h2">Modification de contact</h1>
+                {% else %}
+                <h1 class="h2">Creation de contact</h1>
+                {% endif %}
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group mr-2"></div>
+                </div>
+            </div>
+        <div class="d-flex flex-wrap flex-row justify-content-start my-4"> 
+            <div class="col-md-8">
+                <div class="card shadow mb-4 h-100">
+                    <div class="card-body  ">
+                        {% if alert %}
+                        <div class="alert alert-warning" role="alert">
+                            La societe n'existe pas 
+                        </div>
+                        {% endif %}
+                        {% if alert_modif %}
+                                <div class="alert alert-success mt-2" role="alert">
+                                    Contact modifié avec succès ! 
+                                </div>
+                        {% endif %}
+                        {% if alertSucces %}
+                                <div class="alert alert-success mt-2" role="alert">
+                                    Contact crée avec succès ! 
+                                </div>
+                        {% endif %}
+                        <form id="" method="POST" action="contactCrea">
+                            <input type="hidden" value="{{modif.contact__id}}" name="modif_id">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputState">Fonction *</label>
+                                        <select id="inputStateContact" class="form-control" name="fonctionContact" required>
+                                            {% for keyword in keywordList %}
+                                                {% if modif.contact__fonction == keyword.kw__value %}
+                                                    <option value={{keyword.kw__value}} selected>{{keyword.kw__lib}}</option>
+                                                {% else %}
+                                                    <option value={{keyword.kw__value}}>{{keyword.kw__lib}}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="inputCiv">Civilité</label>
+                                        <select id="inputCiv" class="form-control" name="civiliteContact" required>
+                                            {% if modif.contact__civ == 'M.' %}
+                                                <option value="M." selected>Mr</option>
+                                            {% else %}
+                                                <option value="M.">Mr</option>
+                                            {% endif %}
+
+                                            {% if modif.contact__civ == 'Mme' %}
+                                                <option value="Mme" selected>Mme</option>
+                                            {% else %}
+                                                <option value="Mme">Mme</option>
+                                            {% endif %}
+
+                                            {% if modif.contact__civ == 'Melle' %}
+                                                <option value="Melle" selected>Melle</option>
+                                            {% else %}
+                                                <option value="Melle">Melle</option>
+                                            {% endif %}
+
+                                            {% if modif.contact__civ == 'Service' %}
+                                                <option value="Service" selected>Service</option>
+                                            {% else %}
+                                                <option value="Service">Service</option>
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputCity">Nom</label>
+                                        <input type="text" class="form-control" value='{{modif.contact__nom}}' name="nomContact" id="nomContact" maxlength="50" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="inputCity">Prenom</label>
+                                        <input type="text" class="form-control" value='{{modif.contact__prenom}}' name="prenomContact" maxlength="50" id="prenomContact">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label for="inputZip">Telephone</label>
+                                        <input type="tel" class="form-control"  value="{{modif.contact__telephone}}" name="telContact" maxlength="25" id="telContact">
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="inputZip">Fax </label>
+                                        <input type="tel" class="form-control"name="faxContact" value="{{modif.contact__fax}}" maxlength="25" id="faxContact">
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="inputCity">Mail</label>
+                                        <input type="email" class="form-control" value="{{modif.contact__email}}" name="mailContact" maxlength="200" id="mailContact" >
+                                    </div>
+                                </div>
+                                {% if  modif == null %}
+                                    <div class="">
+                                        <label for="exampleInputPassword1">Societe</label>
+                                        <div class="d-flex col-md-6">
+                                            <select class="selectpicker show-tick"  data-live-search="true" data-width="100%"  name="sociteContact" required>        
+                                                {% for client in clientList %}
+                                                    {% if preselected == client.client__id  %}
+                                                        <option value="{{client.client__id}}" selected>{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                                                    {% else %}
+                                                        <option value="{{client.client__id}}">{{ client.client__societe ~ ' (' ~ client.client__id ~ ') -' ~ client.client__cp ~ " " ~ client.client__ville}}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>   
+                                {% endif %} 
+                            <div class="modal-footer justify-content-end">
+                                <div>
+                                    <button type="submit" class="btn btn-success" id="postContact">Modifier</button>
+                                </div>
+                            </div>
+                        </form>   
+                    </div>   
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Modal -->
+    <div class="modal fade " id="ModalSociete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Choix du client </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table id="ClientTable" class="table  display " style="width:100%"> 
+                        <thead>
+                            <tr><th>Id</th><th>Nom</th><th>CP</th><th>Ville</th></tr>
+                        </thead>
+                        <tbody class="trClick">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer"> 
+                </div>
+            </div>
+        </div>
+    </div>   
+{% endblock %}
+{% block script %}
+    <script  type="text/javascript" src="public/js/devisFunction.js"></script> 
+    <script  type="text/javascript" src="public/datatable/datatables.min.js"></script>
+    <script  type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script  type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+    <script type="text/javascript" src="public/ckE2/build/ckeditor.js"></script>
+    <script type="text/javascript" src="public/js/creaContact.js"></script>
+{% endblock %}
