@@ -31,6 +31,22 @@ switch ($_POST['nature_demande'])
                        }
                 }
 
+
+                //traitement du document signé : 
+                if (!empty($_FILES['file_devis']) && $_FILES['file_devis']['error'] === UPLOAD_ERR_OK) {
+                        $nomDuFichier = $_FILES['file_devis']['name'];
+                        $extension = pathinfo($nomDuFichier, PATHINFO_EXTENSION);
+                        $nouveauNom = $_POST['id_devis'] .'.' . $extension;
+                        $dossierDeDestination = 'public/devis';
+                        if (!file_exists($dossierDeDestination)) {
+                                mkdir($dossierDeDestination, 0777, true);
+                        }
+                        $cheminDeDestination = $dossierDeDestination . '/' . $nouveauNom;
+                        move_uploaded_file($_FILES['file_devis']['tmp_name'], $cheminDeDestination);
+                }
+                /////////////////////////////////
+
+
                 //met à jour les commentaires / quantites  : 
                 // foreach($tableau_commantaire as $value) 
                 // {

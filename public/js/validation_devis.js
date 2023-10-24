@@ -1,5 +1,27 @@
 $(document).ready(function() 
 {
+
+
+	function isFileValid() {
+		const inputElement = document.getElementById('file_devis');
+		
+		if (inputElement.files.length === 0) {
+			alert("Aucun fichier n'a été sélectionné.");
+			return false;
+		}
+		
+		const allowedExtensions = ['pdf', 'png', 'jpg', 'jpeg'];
+		const fileName = inputElement.files[0].name;
+		const fileExtension = fileName.split('.').pop().toLowerCase();
+		
+		if (!allowedExtensions.includes(fileExtension)) {
+			alert("Le fichier doit être au format PDF, PNG, JPG ou JPEG.");
+			return false;
+		}
+		
+		return true;
+	}
+	
 	// CKEDITOR.config.height = '5em';
 	$(function()
 	{
@@ -109,7 +131,8 @@ $(document).ready(function()
 	{
 		//transmet la nature de l 'action : avoir facture etc ... 
 		let value = $(this).val();
-		$('#nature_demande').val(value)
+		$('#nature_demande').val(value);
+		$('#tableau_garantie').val('');
 
 		//différents tableau à mettre a jour : 
 		let tableau_des_garanties = [] ;
@@ -148,7 +171,8 @@ $(document).ready(function()
 		// $('#tableau_commentaires').val(JSON.stringify(tableau_des_commentaires));
 		$('#tableau_garantie').val(JSON.stringify(tableau_des_garanties));
 		//poste le formulaire
-		$('#form_validation').submit();
+		if (isFileValid()) {$('#form_validation').submit();}
+		
 	})
 
 

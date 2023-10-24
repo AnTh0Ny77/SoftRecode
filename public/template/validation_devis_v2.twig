@@ -27,7 +27,7 @@
 {% else %}
 <main role="main" class="container-fluid my-3 col-11 container-body">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-                <h1 class="h2"> Validation du devis N°: <b>{{devis.devis__id}}</b></h1>
+                <h1 class="h2"> Validation du devis N°: <b>{{devis.devis__id}} </b></h1>
                 <div class="btn-toolbar mb-2 mb-md-0">
                         <div class="btn-group mr-2">
                                 {% if user.user__facture_acces > 10 %}
@@ -44,7 +44,7 @@
                         </div>
                 </div>
         </div>
-<form action="validation_module" method="POST" id="form_validation">
+<form action="validation_module" method="POST" id="form_validation" enctype="multipart/form-data">
         <input type="hidden" name="id_devis" value="{{devis.devis__id}}">
         <input type="hidden" name="nature_demande" id="nature_demande" value="VLDDEVIS">
         <input type="hidden" name="tableau_garantie" id="tableau_garantie">
@@ -142,6 +142,10 @@
                                                         <div class="mt-2">
                                                                 <label for="codeClient">Code commande Client</label>
                                                                 <input type="text" value="{{devis.cmd__code_cmd_client}}" id="codeClient" name="code_commande_client" class="form-control">
+                                                        </div>
+                                                        <div class="mt-2">
+                                                                <label for="codeClient">Devis validé par le client * <small> ( obligatoire ) </small></label>
+                                                                <input type="file"  id="file_devis" name="file_devis" class="form-control" required>
                                                         </div>
                                                 </div>
                                         </div>
