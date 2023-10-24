@@ -36,6 +36,20 @@ if (!empty($_POST['search']))$search = strtoupper(trim($_POST['search']));
 if (!empty($_GET['search'])) $search = strtoupper(trim($_GET['search']));
 
 
+function fichierExiste($nom) {
+	$extensionsAutorisees = ['png', 'pdf', 'jpeg', 'jpg' , 'PNG' , 'PDF' , 'JPEG' , 'jpg'];
+	
+	foreach ($extensionsAutorisees as $extension) {
+		$cheminFichier = "public/devis/".$nom.".". $extension;
+		
+		if (file_exists($cheminFichier)) {
+			return $nom.".". $extension;
+		}
+	}
+	return false;
+}
+
+
 $search_len = strlen($search);
 //switch sur la variable de recherche : 
 if (!empty($search)){
@@ -146,6 +160,11 @@ if (!empty($search)){
 				$date =  new DateTime($commande->cmd__date_fact);
 				$commande->cmd__date_fact =  $date->format('d/m/Y');
 			}
+
+
+			//verifie si le devis signé est présent
+			$devis_signe = false;
+			if (fichierExiste($commande->devis__id)) {$devis_signe = fichierExiste($commande->devis__id);} 
 			
 			echo $twig->render(
 				'consult_commande.twig',
@@ -155,7 +174,9 @@ if (!empty($search)){
 					'etat_list' => $etat_list,
 					'lignes' => $lignes , 
 					'totaux' => $totaux ,
-					'liste_action' => $liste_actions
+					'devis_signe' => $devis_signe , 
+					'liste_action' => $liste_actions ,
+					'devis_signe' => $devis_signe
 				]);
 			die();
 	}
@@ -260,6 +281,10 @@ if (!empty($search)){
 				$date =  new DateTime($commande->cmd__date_fact);
 				$commande->cmd__date_fact =  $date->format('d/m/Y');
 			}
+
+			//verifie si le devis signé est présent
+			$devis_signe = false;
+			if (fichierExiste($commande->devis__id)) {$devis_signe = fichierExiste($commande->devis__id);} 
 			
 			echo $twig->render(
 				'consult_commande.twig',
@@ -269,7 +294,8 @@ if (!empty($search)){
 					'etat_list' => $etat_list,
 					'lignes' => $lignes , 
 					'totaux' => $totaux ,
-					'liste_action' => $liste_actions
+					'liste_action' => $liste_actions , 
+					'devis_signe' => $devis_signe
 				]);
 			break;
 		

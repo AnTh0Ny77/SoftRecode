@@ -192,6 +192,20 @@
                                                                 {% endif %}
                                                       </div>
                                                       <div>
+                                                        {% if  devis_signe and user.user__prix_acces > 0 %}
+                                                                  <a href="public\devis/{{devis_signe}}" target="_blank" class="badge badge-link">
+                                                                          <i class="far fa-file-pdf fa-5x"></i>
+                                                                          <h5>Devis validé</h5>
+                                                                  </a>
+                                                                  
+                                                          {% else %}
+                                                                  <button class="btn btn-link disabled btn-sm">
+                                                                          <i class="far fa-file-pdf fa-3x"></i>
+                                                                          <h6>Devis validé</h6>
+                                                                  </button>
+                                                          {% endif %}
+                                                </div>
+                                                      <div>
                                                                 {% if  ( commande.devis__etat == 'IMP' or  commande.devis__etat == 'VLD'  or  commande.devis__etat == 'VLA' ) and user.user__prix_acces > 0  %}
                                                                         <a href="apiBL?cmd__id={{commande.devis__id}}" class="badge badge-link" target="_blank">
                                                                                 <i class="far fa-file-pdf fa-5x"></i>

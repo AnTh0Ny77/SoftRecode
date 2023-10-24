@@ -10,7 +10,7 @@ $(document).ready(function()
 			return false;
 		}
 		
-		const allowedExtensions = ['pdf', 'png', 'jpg', 'jpeg'];
+		const allowedExtensions = ['pdf', 'png', 'jpg', 'jpeg' , 'PDF' , 'PNG' , 'JPG' , 'JPEG'];
 		const fileName = inputElement.files[0].name;
 		const fileExtension = fileName.split('.').pop().toLowerCase();
 		
