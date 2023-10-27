@@ -1,295 +1,281 @@
 {% extends 'new_layout.twig' %}
-
-
 {% block style %}
-<link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
-<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
-<link rel="stylesheet" href="public/css/dashboard.css">
-
+        <link href="vendor/fontawesome/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="public/css/dashboard.css">
 {% endblock %}
 {% block main %}
-<main role="main" class=" container-fluid my-3 col-11 container-body">
-       
-        {% if client %}
-        <!-- 1ere ligne -->
-        <div class="d-flex flex-wrap flex-row justify-content-between col-12">
-                <!--partie gauche avec les partie client contact et commandes-->
-                <div class="col-8">
-                        <!--client-->
-                        <div class="card shadow border my-2">
-                                <div class="card-header text-primary d-flex flex-row justify-content-between">
-                                        <h4>{{'(' ~ client.client__id ~ ')' ~ ' ' ~ client.client__societe}}
-                                        {% if client.client__bloque %}
-                                                <span class="mx-3 text-danger"><b>Client bloqué <i class="fas fa-exclamation"></i></b></span>
-                                        {% endif  %}
-                                        </h4>
-                                        <div class="d-flex">
-                                                <custom-form-button method='POST' url='societe_crea' name='hidden_client' value='{{client.client__id}}'
-                                                        logo='<i class="fal fa-file-edit"></i>' data-toggle="tooltip" data-placement="top" title="Modifier {{client.client__societe}}">
-                                                </custom-form-button>
-                                                <a target="_blank" class="btn btn-primary mx-2" href="http://intranet/tel_prise_03.php?id_client={{client.client__id}}" data-toggle="tooltip" data-placement="top" title="Consulter {{client.client__societe}} sur l'intranet">
-                                                        <i class="fas fa-network-wired"  ></i>
-                                                </a>
-                                                <a target="_blank" class="btn btn-primary mx-1" href="http://intranet/crm_visu.php?id_client={{client.client__id}}" data-toggle="tooltip"
-                                                        data-placement="top" title="Consulter {{client.client__societe}} sur le CRM">
-                                                        <i class="far fa-solar-system"></i>
-                                                </a>
-                                                <a  class="btn btn-primary mx-1" href="tickets-handle-forms?TypeTickets=DP&Client={{client.client__id}}"
-                                                        data-toggle="tooltip" data-placement="top" title="faire une demande de prix pour {{client.client__societe}} ">
-                                                        <i class="fas fa-dollar-sign"></i>
-                                                </a>
-                                                <form method="post" action="transfertClient">
-                                                        <input type="hidden" value="{{client.client__id}}" name="client__id">
-                                                        <button class="btn btn-primary mx-1" data-toggle="tooltip" data-placement="top" title="Transferer les données du client dans MyRecode" ><i class="fas fa-exchange-alt"></i></button>
-                                                </form>
+        <main role="main" class=" container-fluid my-3 col-11 container-body">
+                {% if client %}
+                <!-- 1ere ligne -->
+                <div class="d-flex flex-wrap flex-row justify-content-between col-12">
+                        <!--partie gauche avec les partie client contact et commandes-->
+                        <div class="col-8">
+                                <!--client-->
+                                <div class="card shadow border my-2">
+                                        <div class="card-header text-primary d-flex flex-row justify-content-between">
+                                                <h4>{{'(' ~ client.client__id ~ ')' ~ ' ' ~ client.client__societe}}
+                                                        {% if client.client__bloque %}
+                                                                <span class="mx-3 text-danger"><b>Client bloqué <i class="fas fa-exclamation"></i></b></span>
+                                                        {% endif  %}
+                                                </h4>
+                                                <div class="d-flex">
+                                                        <custom-form-button method='POST' url='societe_crea' name='hidden_client' value='{{client.client__id}}'
+                                                                logo='<i class="fal fa-file-edit"></i>' data-toggle="tooltip" data-placement="top" title="Modifier {{client.client__societe}}">
+                                                        </custom-form-button>
+                                                        <a target="_blank" class="btn btn-primary mx-2" href="http://intranet/tel_prise_03.php?id_client={{client.client__id}}" data-toggle="tooltip" data-placement="top" title="Consulter {{client.client__societe}} sur l'intranet">
+                                                                <i class="fas fa-network-wired"  ></i>
+                                                        </a>
+                                                        <a target="_blank" class="btn btn-primary mx-1" href="http://intranet/crm_visu.php?id_client={{client.client__id}}" data-toggle="tooltip"
+                                                                data-placement="top" title="Consulter {{client.client__societe}} sur le CRM">
+                                                                <i class="far fa-solar-system"></i>
+                                                        </a>
+                                                        <a  class="btn btn-primary mx-1" href="tickets-handle-forms?TypeTickets=DP&Client={{client.client__id}}"
+                                                                data-toggle="tooltip" data-placement="top" title="faire une demande de prix pour {{client.client__societe}} ">
+                                                                <i class="fas fa-dollar-sign"></i>
+                                                        </a>
+                                                        <form method="post" action="transfertClient">
+                                                                <input type="hidden" value="{{client.client__id}}" name="client__id">
+                                                                <button class="btn btn-primary mx-1" data-toggle="tooltip" data-placement="top" title="Transferer les données du client dans MyRecode" ><i class="fas fa-exchange-alt"></i></button>
+                                                        </form>
+                                                </div>
                                         </div>
-                                      
-                                </div>
-                                <div class="card-body">
-                                        <div class="d-flex flex-row justify-content-between">
-                                                <!--partie gauche du body-card-->
-                                                <div class="col-6">
-                                                        <h5> {{client.client__adr1 ~ ' ' ~ client.client__adr2 ~ ' '}}
-                                                        </h5>      
-                                                        <h5> 
-                                                                {{client.client__cp ~ ' ' ~ client.client__ville}}<br>
-                                                                {% if client.client__pays %}
-                                                                        {{' ' ~ client.client__pays}}
-                                                                {% else %}
-                                                                        {{' FRANCE'}}
+                                        <div class="card-body">
+                                                <div class="d-flex flex-row justify-content-between">
+                                                        <!--partie gauche du body-card-->
+                                                        <div class="col-6">
+                                                                <h5> {{client.client__adr1 ~ ' ' ~ client.client__adr2 ~ ' '}}
+                                                                </h5>      
+                                                                <h5> 
+                                                                        {{client.client__cp ~ ' ' ~ client.client__ville}}<br>
+                                                                        {% if client.client__pays %}
+                                                                                {{' ' ~ client.client__pays}}
+                                                                        {% else %}
+                                                                                {{' FRANCE'}}
+                                                                        {% endif %}
+                                                                </h5>
+                                                                <h5><span class="text-muted font-italic"><small> Téléphone : </small></span> <b>{{boTel(client.client__tel)}}</b></h5>
+                                                                <h5><span class="text-muted font-italic"><small> Fax : </small></span><b>{{client.client__fax}}</b></h5>
+                                                        </div>
+                                                        <!--partie droite du body-card-->
+                                                        <div class="col-6 d-flex flex-column ">
+                                                                <h5><span class="text-muted font-italic"><small>TVA : </small></span><b>{{client.lib__tva}}</b></h5>
+                                                                {% if client.client__tva_intracom  %}
+                                                                        <h5><span class="text-muted font-italic"><small>N° Intracom : </small></span><b>{{client.client__tva_intracom}}</b></h5>
                                                                 {% endif %}
-                                                        </h5>
-                                                        <h5><span class="text-muted font-italic"><small> Téléphone : </small></span> <b>{{boTel(client.client__tel)}}</b></h5>
-                                                        <h5><span class="text-muted font-italic"><small> Fax : </small></span><b>{{client.client__fax}}</b></h5>
-                                                </div>
-                                                <!--partie droite du body-card-->
-                                                <div class="col-6 d-flex flex-column ">
-                                                        <h5><span class="text-muted font-italic"><small>TVA : </small></span><b>{{client.lib__tva}}</b></h5>
-                                                        {% if client.client__tva_intracom  %}
-                                                                <h5><span class="text-muted font-italic"><small>N° Intracom : </small></span><b>{{client.client__tva_intracom}}</b></h5>
-                                                        {% endif %}
-                                                        <h5><span class="text-muted font-italic"><small>Vendeur : </small></span><b>{{client.prenom_vendeur ~ " " ~ client.nom_vendeur}}</b></h5>
-                                                        <h5><span class="text-muted font-italic"><small>Commentaire : </small></span>{{client.client__comment|raw}}</h5>
-                                                        <h5><span class="text-muted font-italic"><small>Configuration spéciale : </small></span>{{client.client__memo_config}}</h5>
+                                                                <h5><span class="text-muted font-italic"><small>Vendeur : </small></span><b>{{client.prenom_vendeur ~ " " ~ client.nom_vendeur}}</b></h5>
+                                                                <h5><span class="text-muted font-italic"><small>Commentaire : </small></span>{{client.client__comment|raw}}</h5>
+                                                                <h5><span class="text-muted font-italic"><small>Configuration spéciale : </small></span>{{client.client__memo_config}}</h5>
+                                                        </div>
                                                 </div>
                                         </div>
                                 </div>
-                        </div>
-                        {% if alert %}
-                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                                        <strong>{{alert}}
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                        </button>
-                              </div>  
-                        {% endif %}
-                        <!--contact-->
-                        <div class="card shadow border my-2">
-                                <div class="card-header text-primary d-flex flex-row justify-content-between">
-                                        <h4><i class="fal fa-user"></i> Contacts</h4>
-                                        <custom-form-button method='POST' url='contactCrea' name='hidden_client_2' value='{{client.client__id}}'
-                                                logo='<i class="far fa-plus"></i>' data-toggle="tooltip" data-placement="top"
-                                                title="Créer un nouveau contact pour :  {{client.client__societe}}">
-                                        </custom-form-button>
-                                </div>
-                                <div class="card-body">
-                                      {% if contact_list %}
-                                        <table class="table table-sm">
-                                                <tbody  id="list_contact">
-                                                       {% for contact in contact_list %}
-                                                        <tr>
-                                                                <td>
-                                                                        <p>
-                                                                                <b>{{contact.contact__civ ~ " " ~ contact.contact__prenom ~ " " ~ contact.contact__nom ~ " "}}</b>
-                                                                                <span class="mx-2 text-muted font-italic">{{~ " " ~ contact.kw__lib}}</span>
-                                                                        </p>   
-                                                                </td>
-                                                                <td>
-                                                                        <p>
-                                                                                <h6>
-                                                                                        <span class="mx-2"><i class="far fa-phone-office"></i> :
-                                                                                                <b>
-                                                                                                        {% if contact.contact__telephone %}
-                                                                                                                {{boTel(contact.contact__telephone)}}
-                                                                                                        
-                                                                                                                
-                                                                                                        {% endif %}
-                                                                                                </b>
-                                                                                        </span>
-                                                                                        <span class="mx-2"><i class="fas fa-mobile-android-alt"></i> : 
-                                                                                                <b>
-                                                                                                        {% if contact.contact__gsm %}
-                                                                                                                {{boTel(contact.contact__gsm)}}
-                                                                                                       
-                                                                                                                
-                                                                                                        {% endif %}
-                                                                                                </b>
-                                                                                        </span>
-                                                                                        <span>
-                                                                                                {% if contact.contact__email %}
-                                                                                                        <a href="mailto:{{contact.contact__email}}" class="badge badge-light"><i class="far fa-envelope-open-text"></i> :
-                                                                                                                <b>{{contact.contact__email}}</b></a>
-                                                                                                {% endif %}
-                                                                                               
-                                                                                        </span>
-                                                                                </h6>
-                                                                             
-                                                                        </p>
-                                                                </td>
-                                                                <td>
-                                                                        <custom-form-button-mini method='POST' url='contactCrea' name='contact_select' value='{{contact.contact__id}}'
-                                                                                logo='<i class="far fa-user-edit"></i>'>
-                                                                        </custom-form-button-mini>
-
-                                                                </td>
-                                                        </tr> 
-                                                       {% endfor %}
-                                                        {% if etendre_contact %}
+                                {% if alert %}
+                                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                                <strong>        {{alert}}
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                </button>
+                                        </div>  
+                                {% endif %}
+                                <!--contact-->
+                                <div class="card shadow border my-2">
+                                        <div class="card-header text-primary d-flex flex-row justify-content-between">
+                                                <h4><i class="fal fa-user"></i> Contacts</h4>
+                                                <custom-form-button method='POST' url='contactCrea' name='hidden_client_2' value='{{client.client__id}}'
+                                                        logo='<i class="far fa-plus"></i>' data-toggle="tooltip" data-placement="top"
+                                                        title="Créer un nouveau contact pour :  {{client.client__societe}}">
+                                                </custom-form-button>
+                                        </div>
+                                        <div class="card-body">
+                                        {% if contact_list %}
+                                                <table class="table table-sm">
+                                                        <tbody  id="list_contact">
+                                                        {% for contact in contact_list %}
                                                                 <tr>
                                                                         <td>
-
+                                                                                <p>
+                                                                                        <b>{{contact.contact__civ ~ " " ~ contact.contact__prenom ~ " " ~ contact.contact__nom ~ " "}}</b>
+                                                                                        <span class="mx-2 text-muted font-italic">{{~ " " ~ contact.kw__lib}}</span>
+                                                                                </p>   
                                                                         </td>
                                                                         <td>
-
+                                                                                <p>
+                                                                                        <h6>
+                                                                                                <span class="mx-2"><i class="far fa-phone-office"></i> :
+                                                                                                        <b>
+                                                                                                                {% if contact.contact__telephone %}
+                                                                                                                        {{boTel(contact.contact__telephone)}}
+                                                                                                                
+                                                                                                                        
+                                                                                                                {% endif %}
+                                                                                                        </b>
+                                                                                                </span>
+                                                                                                <span class="mx-2"><i class="fas fa-mobile-android-alt"></i> : 
+                                                                                                        <b>
+                                                                                                                {% if contact.contact__gsm %}
+                                                                                                                        {{boTel(contact.contact__gsm)}}
+                                                                                                        
+                                                                                                                        
+                                                                                                                {% endif %}
+                                                                                                        </b>
+                                                                                                </span>
+                                                                                                <span>
+                                                                                                        {% if contact.contact__email %}
+                                                                                                                <a href="mailto:{{contact.contact__email}}" class="badge badge-light"><i class="far fa-envelope-open-text"></i> :
+                                                                                                                        <b>{{contact.contact__email}}</b></a>
+                                                                                                        {% endif %}
+                                                                                                
+                                                                                                </span>
+                                                                                        </h6>
+                                                                                
+                                                                                </p>
                                                                         </td>
                                                                         <td>
-                                                                                <custom-button-list-contact  url='tableContact' name='AjaxContactTable' value='{{client.client__id}}'
-                                                                                        logo=' <i class="far fa-arrow-to-bottom"></i> {{etendre_contact}} ' target="list_contact" >
-                                                                                </custom-button-list-contact>
+                                                                                <custom-form-button-mini method='POST' url='contactCrea' name='contact_select' value='{{contact.contact__id}}'
+                                                                                        logo='<i class="far fa-user-edit"></i>'>
+                                                                                </custom-form-button-mini>
+
+                                                                        </td>
+                                                                </tr> 
+                                                        {% endfor %}
+                                                                {% if etendre_contact %}
+                                                                        <tr>
+                                                                                <td>
+
+                                                                                </td>
+                                                                                <td>
+
+                                                                                </td>
+                                                                                <td>
+                                                                                        <custom-button-list-contact  url='tableContact' name='AjaxContactTable' value='{{client.client__id}}'
+                                                                                                logo=' <i class="far fa-arrow-to-bottom"></i> {{etendre_contact}} ' target="list_contact" >
+                                                                                        </custom-button-list-contact>
+                                                                                </td>
+                                                                        </tr>
+                                                                {% endif %} 
+                                                        </tbody>
+                                                </table>
+                                        {% else %}
+                                                <div class="alert alert-warning" role="alert">
+                                                        <h5>
+                                                                <span class="text-muted font-italic">
+                                                                        Aucun contact n'existe pour ce client 
+                                                                </span>
+                                                        </h5>
+                                                </div>
+                                        {% endif %}
+                                        </div>
+                                </div>
+                                <!--commandes-->
+                                <div class="card shadow border my-2">
+                                        <div class="card-header text-primary d-flex flex-row justify-content-between">
+                                                <h4><i class="fal fa-file-alt"></i> Commandes</h4>
+                                                <custom-form-button method='POST' url='DevisV2' name='create_devis' value='{{client.client__id}}'
+                                                        logo='<i class="far fa-plus"></i>' data-toggle="tooltip" data-placement="top"
+                                                        title="Créer un nouveau devis pour :  {{client.client__societe}}">
+                                                </custom-form-button>
+                                        
+                                        </div>
+                                        <div class="card-body">
+                                        
+                                        {% if commandes_list %}
+                                        <table class="table table-sm">
+                                                <tbody id="list_contact">
+                                                        {% for commande in commandes_list %}
+                                                                <tr>
+                                                                        <td class="text-center">
+                                                                                <h5><a href="search_switch?search={{commande.cmd__id}}">{{commande.cmd__id}}</a></h5>
+                                                                        </td>
+                                                                        <td>
+                                                                                <p>
+                                                                                        <span class="text-muted font-italic">
+                                                                                                {% if commande.cmd__date_cmd %}
+                                                                                                        Cmd: <b>  {{commande.cmd__date_cmd}}  </b>
+                                                                                                {% else %}
+                                                                                                        <b> Devis non-validé </b> 
+                                                                                                {% endif %}
+                                        
+                                                                                                {% if commande.cmd__date_cmd %}
+                                                                                                        -Lvr: <b> {{commande.cmd__date_devis}} </b>
+                                                                                                {% else %}
+                                                                                                        <b>Non expédié </b>
+                                                                                                {% endif %}
+                                                                                                {% if commande.cmd__client__id_livr and  commande.cmd__client__id_livr != commande.client__id %}
+                                                                                                        {{client.client__livraison_societe}}
+                                                                                                {% endif %}
+                                                                                                <br>
+                                                                                                {% if commande.cmd__nom_devis %}
+                                                                                                        {{  commande.cmd__nom_devis}}        
+                                                                                                {% endif %}
+                                                                                                {% if commande.cmd__code_cmd_client %}
+                                                                                                        <i class="fad fa-closed-captioning"></i> :  {{commande.cmd__code_cmd_client}}
+                                                                                                {% endif %}        
+                                                                                        </span>
+                                                                                </p>
+                                                                        </td>
+                                                                        <td>
+                                                                                <div class="d-flex flex-row">
+                                                                                                <a target="_blank" class="btn btn-link mx-1" href="http://intranet/tel_prise_04s.php?id_cmd={{commande.cmd__id}}" data-toggle="tooltip"
+                                                                                                        data-placement="top" title="Consulter la commande: {{commande.cmd__id}} sur l'intranet">
+                                                                                                        <i class="fas fa-network-wired"></i>
+                                                                                                </a>
+                                                                                                <custom-form-button-mini method='POST' url='search_switch' name='search' value='{{commande.cmd__id}}'
+                                                                                                        logo='<i class="far fa-search"></i>' data-toggle="tooltip" data-placement="top"
+                                                                                                        title="Consulter la commande: {{commande.cmd__id}}">
+                                                                                                </custom-form-button-mini> 
+                                                                                                <custom-form-button-mini method='POST' url='DevisV2' name='DupliquerDevis' value='{{commande.cmd__id}}'
+                                                                                                        logo='<i class="far fa-copy"></i>' data-toggle="tooltip" data-placement="top"
+                                                                                                        title="Dupliquer la commande: {{commande.cmd__id}}">
+                                                                                                </custom-form-button-mini>
+                                                                                        {% if commande.cmd__etat == 'ATN' %}
+                                                                                                <custom-form-button-mini method='POST' url='DevisV2' name='modif' value='{{commande.cmd__id}}'
+                                                                                                        logo='<i class="far fa-edit"></i>' data-toggle="tooltip" data-placement="top"
+                                                                                                        title="Modifier la commande: {{commande.cmd__id}}">
+                                                                                                </custom-form-button-mini>
+                                                                                        {% endif %}
+                                                                                </div>
                                                                         </td>
                                                                 </tr>
-                                                        {% endif %} 
+                                                        {% endfor %}
                                                 </tbody>
                                         </table>
-                                      {% else %}
-                                        <div class="alert alert-warning" role="alert">
-                                                <h5><span class="text-muted font-italic">
-                                                Aucun contact n'existe pour ce client 
-                                                </span>
-                                                </h5>
+                                        {% else %}
+                                                <div class="alert alert-warning" role="alert">
+                                                        <h5><span class=" font-italic">
+                                                                        Aucune commande n'existe pour ce client ( facturé )
+                                                                </span>
+                                                        </h5>
+                                                </div>
+                                        {% endif %}
                                         </div>
-                                      {% endif %}
                                 </div>
                         </div>
-                        <!--commandes-->
-                        <div class="card shadow border my-2">
-                                <div class="card-header text-primary d-flex flex-row justify-content-between">
-                                        <h4><i class="fal fa-file-alt"></i> Commandes</h4>
-                                        <custom-form-button method='POST' url='DevisV2' name='create_devis' value='{{client.client__id}}'
-                                                logo='<i class="far fa-plus"></i>' data-toggle="tooltip" data-placement="top"
-                                                title="Créer un nouveau devis pour :  {{client.client__societe}}">
-                                        </custom-form-button>
-                                       
-                                </div>
-                                <div class="card-body">
-                                
-                                {% if commandes_list %}
-                                <table class="table table-sm">
-                                        <tbody id="list_contact">
-                                                {% for commande in commandes_list %}
-                                                        <tr>
-                                                                <td class="text-center">
-                                                                        <h5><a href="search_switch?search={{commande.cmd__id}}">{{commande.cmd__id}}</a></h5>
-                                                                </td>
-                                                                <td>
-                                                                        <p>
-                                                                               
-                                                                                <span class="text-muted font-italic">
-                                                                                        {% if commande.cmd__date_cmd %}
-                                                                                        Cmd: <b>  {{commande.cmd__date_cmd}}  </b>
-                                                                                        {% else %}
-                                                                                                <b> Devis non-validé </b> 
-                                                                                        {% endif %}
-                                                                                       
-                                                                                        {% if commande.cmd__date_cmd %}
-                                                                                                -Lvr: <b> {{commande.cmd__date_devis}} </b>
-                                                                                        {% else %}
-                                                                                                <b>Non expédié </b>
-                                                                                        {% endif %}
-                                                                                        {% if commande.cmd__client__id_livr and  commande.cmd__client__id_livr != commande.client__id %}
-                                                                                                {{client.client__livraison_societe}}
-                                                                                        {% endif %}
-                                                                                        <br>
-                                                                                        {% if commande.cmd__nom_devis %}
-                                                                                       
-                                                                                        {{  commande.cmd__nom_devis}} - 
-                                                                                                
-                                                                                        {% endif %}
-                                                                                        {% if commande.cmd__code_cmd_client %}
-                                                                                                {{commande.cmd__code_cmd_client}}
-                                                                                        {% endif %}        
-                                                                                </span>
-                                                                        </p>
-                                                                </td>
-                                                                
-                                                                <td>
-                                                                        <div class="d-flex flex-row">
-                                                                                <a target="_blank" class="btn btn-link mx-1" href="http://intranet/tel_prise_04s.php?id_cmd={{commande.cmd__id}}" data-toggle="tooltip"
-                                                                                        data-placement="top" title="Consulter la commande: {{commande.cmd__id}} sur l'intranet">
-                                                                                        <i class="fas fa-network-wired"></i>
-                                                                                </a>
-                                                                                <custom-form-button-mini method='POST' url='search_switch' name='search' value='{{commande.cmd__id}}'
-                                                                                        logo='<i class="far fa-search"></i>' data-toggle="tooltip" data-placement="top"
-                                                                                        title="Consulter la commande: {{commande.cmd__id}}">
-                                                                                </custom-form-button-mini> 
-                                                                                <custom-form-button-mini method='POST' url='DevisV2' name='DupliquerDevis' value='{{commande.cmd__id}}'
-                                                                                        logo='<i class="far fa-copy"></i>' data-toggle="tooltip" data-placement="top"
-                                                                                        title="Dupliquer la commande: {{commande.cmd__id}}">
-                                                                                </custom-form-button-mini>
-                                                                                {% if commande.cmd__etat == 'ATN' %}
-                                                                                <custom-form-button-mini method='POST' url='DevisV2' name='modif' value='{{commande.cmd__id}}'
-                                                                                        logo='<i class="far fa-edit"></i>' data-toggle="tooltip" data-placement="top"
-                                                                                        title="Modifier la commande: {{commande.cmd__id}}">
-                                                                                </custom-form-button-mini>
-                                                                                
-                                                                                {% endif %}
-
-                                                                        </div>
-                                                                       
-                                                                </td>
-                                                        </tr>
-                                                {% endfor %}
-                                        </tbody>
-                                </table>
-                                {% else %}
-                                        <div class="alert alert-warning" role="alert">
-                                                <h5><span class=" font-italic">
-                                                                Aucune commande n'existe pour ce client ( facturé )
-                                                        </span>
-                                                </h5>
+                        <!--partie droite reliée a totoro -->
+                        <div class="col-4">
+                                {# <div class="card shadow border my-2">
+                                        <div class="card-header text-primary d-flex flex-row justify-content-between">
+                                                <h4><i class="far fa-exclamation-triangle"></i> Incidents</h4>
                                         </div>
-                                {% endif %}
-                                </div>
-                        </div>
+                                </div> #}
+                        </div>   
                 </div>
-                <!--partie droite reliée a totoro -->
-                <div class="col-4">
-                        {# <div class="card shadow border my-2">
-                                <div class="card-header text-primary d-flex flex-row justify-content-between">
-                                        <h4><i class="far fa-exclamation-triangle"></i> Incidents</h4>
-                                </div>
-                        </div> #}
-                </div>   
-        </div>
-        {% else %}
-        <div class="alert alert-danger" role="alert">
-               <h3>Une erreur est survenue!</h3>
-        </div>
-        {% endif %}
-</main>
+                {% else %}
+                        <div class="alert alert-danger" role="alert">
+                                <h3>Une erreur est survenue!</h3>
+                        </div>
+                {% endif %}
+        </main>
 {% endblock %}
-
 {% block script %}
-<!-- jQuery first, then Bootstrap JS -->
-<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
-<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
-<script type="text/javascript">
-         //initialization des tooltips 
-                $(function () 
-                {
+        <!-- jQuery first, then Bootstrap JS -->
+        <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+        <script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+        <script type="text/javascript">
+                //initialization des tooltips 
+                $(function (){
                         $('[data-toggle="tooltip"]').tooltip({ html: true })
                 })
-</script>
-
+        </script>
 {% endblock %}

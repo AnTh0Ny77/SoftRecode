@@ -1,6 +1,8 @@
 <?php
 require "./vendor/autoload.php";
 require "./App/twigloader.php";
+use App\Apiservice\ApiTest;
+use App\Apiservice\ApiGenerique;
 session_start();
 $Database = new App\Database('devis');
 $Database->DbConnect();
@@ -286,23 +288,68 @@ switch ($_SERVER['REQUEST_URI'])
 		
 
 		//si une validation de pn à été posté 
-		if (!empty($_POST['pn_id'])) 
-		{
-		
+		if (!empty($_POST['pn_id'])){
+
 			$date = date("Y-m-d H:i:s");
 			$General->updateAll('art_pn' , $_POST['desc-courte'], 'apn__desc_short' , 'apn__pn', $_POST['pn_id'] );
 			$General->updateAll('art_pn', $_POST['desc-longue'], 'apn__desc_long', 'apn__pn', $_POST['pn_id']);
 			$General->updateAll('art_pn', $_SESSION['user']->id_utilisateur, 'apn__id_user_modif', 'apn__pn', $_POST['pn_id']);
 			$General->updateAll('art_pn', $_POST['desc-com'], 'apn__design_com', 'apn__pn', $_POST['pn_id']);
 			$General->updateAll('art_pn', $date, 'apn__date_modif', 'apn__pn', $_POST['pn_id']);
-			
-				if (!empty($_FILES['modele_image']['tmp_name']))
-				{
-					$blob_image = file_get_contents($_FILES['modele_image']['tmp_name']);
-					$General->updateAll('art_pn', $blob_image, 'apn__image', 'apn__pn', $_POST['pn_id']);
-				}
-				
+			if (!empty($_FILES['modele_image']['tmp_name'])){
+				$blob_image = file_get_contents($_FILES['modele_image']['tmp_name']);
+				$General->updateAll('art_pn', $blob_image, 'apn__image', 'apn__pn', $_POST['pn_id']);
+			}
 			$General->updateAll('art_pn', 1 , 'apn__actif', 'apn__pn', $_POST['pn_id']);
+			//////////creation ou update dans l api MyRecode ://///////////// 
+			//partie gestion du token /////////////////////////////////////////////////////////////////////
+			//////////////////////////////////////////////////////////////////////////////////////////////
+			$Api = new ApiTest();
+			if (empty($_SESSION['user']->refresh_token)) {
+				$token = $Api->login($_SESSION['user']->email, 'test');
+				if ($token['code'] != 200) {echo 'Connexion LOGIN à L API IMPOSSIBLE';die();}
+				$_SESSION['user']->refresh_token = $token['data']['refresh_token'];
+				$token =  $token['data']['token'];
+			} else {
+				$refresh = $Api->refresh($_SESSION['user']->refresh_token);
+				if ($refresh['code'] != 200) { echo 'Rafraichissemnt de jeton API IMPOSSIBLE';die();}
+				$token =  $refresh['token']['token'];
+			}
+			////////////////////////////////////////////////////////////////////////////////////////////////////
+        	////////////////////////////////////////////////////////////////////////////////////////////////////
+			$pn_transfert = $Article->get_pn_for_myrecode_by_pn_court($_POST['pn_id']);
+			$fileName = '';
+			$imageInfo = getimagesizefromstring($pn_transfert['apn__image']);
+			if ($imageInfo !== false) {
+				$mime = $imageInfo['mime'];
+				$allowedMimeTypes = [
+					'image/jpeg' => 'jpg',
+					'image/png'  => 'png',
+					'image/jpg'  => 'jpg',
+				];
+				if (isset($allowedMimeTypes[$mime])) {
+					$extension = $allowedMimeTypes[$mime];
+					$fileName = $_POST['pn_id'] . '.' . $extension;
+					$folderPath = 'public/pn/';
+					$filePath = $folderPath . $fileName;
+					file_put_contents($filePath, $pn_transfert['apn__image']);
+					
+				}
+			}
+
+			$body = [
+				"sar__model" => $pn_transfert['afmm__modele'], 
+				"sar__ref_constructeur" => $pn_transfert['apn__pn_long'], 
+				"sar__description" => $pn_transfert['apn__desc_short'], 
+				"sar__image" => $fileName , 
+				"sar__marque" =>  $pn_transfert['marque'] , 
+				"sar__famille" => $pn_transfert['famille']
+			];
+
+			$RequestBuider =  new ApiGenerique();
+			$response = $RequestBuider->Build( 'POST', '/ShopArticle', $token , $body , true )['data'];
+			
+			////////////////////////////////////////////////////////////////
 			header('location: ArtCataloguePN');
 			break;
 		}
@@ -315,6 +362,8 @@ switch ($_SERVER['REQUEST_URI'])
 		{
 			$pn = $Article->get_pn_byID($_POST['pn_id']);
 		}
+
+		
 
 		// $pn->apn__image = base64_encode($pn->apn__image);
 		$pn->specs = $Stocks->get_specs_pn_show($pn->apn__pn);
