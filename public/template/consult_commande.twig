@@ -53,7 +53,7 @@
                                                                        </custom-form-button-mini>
                                                                 </div>
                                                                 <div class="card-body">
-                                                                                <h5 class="card-title">({{commande.devis__id_client_livraison}}) {{commande.client__livraison_societe}}</h5>
+                                                                                <h5 class="card-title"><a href="search_switch?search={{commande.devis__id_client_livraison}}">({{commande.devis__id_client_livraison}})</a> {{commande.client__livraison_societe}}</h5>
                                                                                 <h6 class="card-subtitle mb-2 text-muted"> {{commande.client__livraison__adr1}} <br> {{commande.client__livraison__adr2  }}<br>
                                                                                         {{commande.client__livraison_cp ~ " " ~ commande.client__livraison_ville}}
                                                                                                 {% if commande. client__pays_livraison %}
@@ -72,7 +72,7 @@
                                                                        </custom-form-button-mini>
                                                                 </div>
                                                                 <div class="card-body">
-                                                                                <h5 class="card-title">({{commande.client__id}}) {{commande.client__societe}}</h5>
+                                                                                <h5 class="card-title"><a href="search_switch?search={{commande.client__id}}">({{commande.client__id}})</a> {{commande.client__societe}}</h5>
                                                                                 <h6 class="card-subtitle mb-2 text-muted"> {{commande.client__adr1 }}  <br> {{ commande.client__adr2 }} <br> 
 
                                                                                         {{ commande.client__cp ~ " " ~ commande.client__ville}}
@@ -97,7 +97,7 @@
                                                                                 </custom-form-button-mini>
                                                                         </div>
                                                                         <div class="card-body">
-                                                                                <h5 class="card-title">({{commande.client__id}}) {{commande.client__societe}}</h5>
+                                                                                <h5 class="card-title"><a href="search_switch?search={{commande.client__id}}">({{commande.client__id}})</a> {{commande.client__societe}}</h5>
                                                                                 <h6 class="card-subtitle mb-2 text-muted"> {{commande.client__adr1 }} <br> {{ commande.client__adr2 }} <br> {{ commande.client__cp ~ " " ~
                                                                                         commande.client__ville}}
                                                                                         {% if commande.client__pays %}

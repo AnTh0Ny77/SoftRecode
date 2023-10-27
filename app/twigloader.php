@@ -1,6 +1,6 @@
 <?php
-
- require_once  './vendor/autoload.php';
+require_once 'TwigCustomFunction.php';
+require_once  './vendor/autoload.php';
  $loader = new \Twig\Loader\FilesystemLoader('./public/template/');
  
        $twig = new \Twig\Environment($loader, [
@@ -9,4 +9,6 @@
        ]);
     
        $twig->addExtension(new \Twig\Extension\DebugExtension());
+       $customFunction = new TwigCustomFunction();
+       $twig->addExtension($customFunction);
 ?>

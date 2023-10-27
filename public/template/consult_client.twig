@@ -49,16 +49,17 @@
                                         <div class="d-flex flex-row justify-content-between">
                                                 <!--partie gauche du body-card-->
                                                 <div class="col-6">
-                                                        <h5> {{client.client__adr1 ~ ' ' ~ client.client__adr2 ~ ' '}}</h5>      
+                                                        <h5> {{client.client__adr1 ~ ' ' ~ client.client__adr2 ~ ' '}}
+                                                        </h5>      
                                                         <h5> 
-                                                                {{client.client__cp ~ ' ' ~ client.client__ville}}
+                                                                {{client.client__cp ~ ' ' ~ client.client__ville}}<br>
                                                                 {% if client.client__pays %}
-                                                                {{' ' ~ client.client__pays}}
+                                                                        {{' ' ~ client.client__pays}}
                                                                 {% else %}
-                                                                {{' FRANCE'}}
+                                                                        {{' FRANCE'}}
                                                                 {% endif %}
                                                         </h5>
-                                                        <h5><span class="text-muted font-italic"><small> Téléphone : </small></span> <b>{{client.client__tel}}</b></h5>
+                                                        <h5><span class="text-muted font-italic"><small> Téléphone : </small></span> <b>{{boTel(client.client__tel)}}</b></h5>
                                                         <h5><span class="text-muted font-italic"><small> Fax : </small></span><b>{{client.client__fax}}</b></h5>
                                                 </div>
                                                 <!--partie droite du body-card-->
@@ -109,18 +110,18 @@
                                                                                         <span class="mx-2"><i class="far fa-phone-office"></i> :
                                                                                                 <b>
                                                                                                         {% if contact.contact__telephone %}
-                                                                                                                {{contact.contact__telephone}}
-                                                                                                        {% else %}
-                                                                                                                <small>Non-renseigné</small>
+                                                                                                                {{boTel(contact.contact__telephone)}}
+                                                                                                        
+                                                                                                                
                                                                                                         {% endif %}
                                                                                                 </b>
                                                                                         </span>
                                                                                         <span class="mx-2"><i class="fas fa-mobile-android-alt"></i> : 
                                                                                                 <b>
                                                                                                         {% if contact.contact__gsm %}
-                                                                                                                {{contact.contact__gsm}}
-                                                                                                        {% else %}
-                                                                                                                <small>Non-renseigné</small>
+                                                                                                                {{boTel(contact.contact__gsm)}}
+                                                                                                       
+                                                                                                                
                                                                                                         {% endif %}
                                                                                                 </b>
                                                                                         </span>
@@ -128,8 +129,6 @@
                                                                                                 {% if contact.contact__email %}
                                                                                                         <a href="mailto:{{contact.contact__email}}" class="badge badge-light"><i class="far fa-envelope-open-text"></i> :
                                                                                                                 <b>{{contact.contact__email}}</b></a>
-                                                                                                {% else %}
-                                                                                                <i class="far fa-envelope-open-text"></i> : <small>Non-renseigné</small>
                                                                                                 {% endif %}
                                                                                                
                                                                                         </span>
@@ -190,7 +189,7 @@
                                                 {% for commande in commandes_list %}
                                                         <tr>
                                                                 <td class="text-center">
-                                                                        <h5>{{commande.cmd__id}}</h5>
+                                                                        <h5><a href="search_switch?search={{commande.cmd__id}}">{{commande.cmd__id}}</a></h5>
                                                                 </td>
                                                                 <td>
                                                                         <p>
@@ -265,11 +264,11 @@
                 </div>
                 <!--partie droite reliée a totoro -->
                 <div class="col-4">
-                        <div class="card shadow border my-2">
+                        {# <div class="card shadow border my-2">
                                 <div class="card-header text-primary d-flex flex-row justify-content-between">
                                         <h4><i class="far fa-exclamation-triangle"></i> Incidents</h4>
                                 </div>
-                        </div>
+                        </div> #}
                 </div>   
         </div>
         {% else %}

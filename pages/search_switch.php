@@ -50,6 +50,8 @@ function fichierExiste($nom) {
 }
 
 
+
+
 $search_len = strlen($search);
 //switch sur la variable de recherche : 
 if (!empty($search)){
