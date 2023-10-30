@@ -1119,7 +1119,7 @@ class Stock extends Table
 			$liaison = $request->fetchAll(PDO::FETCH_OBJ);
 
 			if (count($liaison) > 1)
-				$model->pn = null;
+				$model->pn = $liaison;
 			$model->count_relation =  intval(count($liaison));
 			if (count($liaison) == 1)
 				$model->pn = $liaison[0]->id__pn;
@@ -1157,24 +1157,29 @@ class Stock extends Table
 
 				if ($model->count_relation > 1 ){
 					$list_pn = '';
-						foreach ($model->pn as $keys => $spec) {
-							if ($keys === array_key_last($model->pn)) {
-								$list_pn .=  ' "'. $spec->id__pn . '" ';
-							}
-							else $list_pn .=  ' "' .  $spec->id__pn . '", ';
-							
+					foreach ($model->pn as $keys => $spec) {
+						if ($keys === array_key_last($model->pn)) {
+							$list_pn .=  " '{$spec->id__pn}' ";
 						}
-						
-					$SQL = 'SELECT a.apn__pn_long , a.apn__pn , a.apn__famille  
-					FROM art_pn as a  
-					WHERE a.apn__pn IN  (' . $list_pn . ')';
+						else $list_pn .=  " '{$spec->id__pn}', ";
+					}
+					
+					$SQL = "SELECT a.apn__pn_long , a.apn__pn , a.apn__famille  
+							FROM art_pn as a  
+							WHERE a.apn__pn IN ($list_pn)";
+				}
+				elseif ($model->count_relation == 1) {
+					$SQL = "SELECT  a.apn__pn_long , a.apn__pn , a.apn__famille  
+							FROM art_pn as a   
+							WHERE a.apn__pn = '{$model->pn}'";
 				}
 				else {
-					$SQL = 'SELECT  a.apn__pn_long , a.apn__pn , a.apn__famille  
-					FROM art_pn as a   
-					WHERE a.apn__pn = "' . $model->pn . '"
-					';
+					$SQL = "SELECT  a.apn__pn_long , a.apn__pn , a.apn__famille  
+							FROM art_pn as a   
+							WHERE 1 != 1";
 				}
+
+				
 
 
 				$request = $this->Db->Pdo->query($SQL);
