@@ -333,7 +333,6 @@ switch ($_SERVER['REQUEST_URI'])
 					$folderPath = 'public/pn/';
 					$filePath = $folderPath . $fileName;
 					file_put_contents($filePath, $pn_transfert['apn__image']);
-					
 				}
 			}
 
@@ -345,10 +344,8 @@ switch ($_SERVER['REQUEST_URI'])
 				"sar__marque" =>  $pn_transfert['marque'] , 
 				"sar__famille" => $pn_transfert['famille']
 			];
-
 			$RequestBuider =  new ApiGenerique();
 			$response = $RequestBuider->Build( 'POST', '/ShopArticle', $token , $body , true )['data'];
-			
 			////////////////////////////////////////////////////////////////
 			header('location: ArtCataloguePN');
 			break;
