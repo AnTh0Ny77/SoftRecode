@@ -53,7 +53,6 @@ if (!empty($_GET['config_demande'])) {
 	if (!empty($_GET['config_reconstruire'])) 
 			$_SESSION['config']['reconstruire'] = true ;
 	
-	
 	if (!empty($_GET['config_hs']))
 		$_SESSION['config']['hs'] = true;
 
@@ -119,8 +118,7 @@ if (!empty($_POST['retour_pn'])) {
 	$alert_delete = true ;
 }
 
-if (!empty($_POST['recherche_guide'])) 
-{
+if (!empty($_POST['recherche_guide'])) {
 	$_SESSION['config']['search'] = '';
 	$forms_data = $Stocks->get_famille_forms($_POST['famille']);
 	$pn_list = $Stocks->find_pn_spec( $_POST);

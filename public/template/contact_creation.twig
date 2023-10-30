@@ -94,12 +94,9 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-3">
                                         <label for="inputZip">Telephone</label>
-                                        <input type="tel" class="form-control"  value="{{modif.contact__telephone}}" name="telContact" maxlength="25" id="telContact">
+                                        <input type="tel" class="form-control" pattern="^[0-9\s+\-]+$" value="{{modif.contact__telephone}}" name="telContact" maxlength="25" id="telContact">
                                     </div>
-                                    <div class="form-group col-md-3">
-                                        <label for="inputZip">Fax </label>
-                                        <input type="tel" class="form-control"name="faxContact" value="{{modif.contact__fax}}" maxlength="25" id="faxContact">
-                                    </div>
+                                  
                                     <div class="form-group col-md-6">
                                         <label for="inputCity">Mail</label>
                                         <input type="email" class="form-control" value="{{modif.contact__email}}" name="mailContact" maxlength="200" id="mailContact" >

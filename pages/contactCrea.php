@@ -125,7 +125,7 @@ $user = $_SESSION['user'];
  $clientList = $Client->getAll();
 
 // Donnée transmise au template : 
-echo $twig->render('contactCrea.twig',[ 
+echo $twig->render('contact_creation.twig',[ 
     'user'=>$user , 
     'keywordList' => $keywordList, 
     'alert' => $alert , 

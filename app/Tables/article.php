@@ -581,8 +581,7 @@ class Article extends Table
 		return $data;
 	}
 
-  public function get_pn_byID($pn_name)
-  {
+  public function get_pn_byID($pn_name){
 	  	//compare le champs input dénué de caractère spéciaux et en majuscules : 
 	  	$pn_court = preg_replace("#[^!A-Za-z0-9%]+#", "", $pn_name);
 		$pn_court = strtoupper($pn_court);
@@ -595,11 +594,8 @@ class Article extends Table
 		WHERE apn__pn = "'. $pn_court .'"';
 		$request = $this->Db->Pdo->query($SQL);
 		$data = $request->fetch(PDO::FETCH_OBJ);
-
-
 	
-		if (!empty($data))
-		{
+		if (!empty($data)){
 			$request = $this->Db->Pdo->query(
 				'SELECT  m.am__marque as marque
 				FROM art_fmm as a

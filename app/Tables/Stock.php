@@ -1128,31 +1128,55 @@ class Stock extends Table
 				$model->pn = null;
 				$model->count_relation =  intval(count($liaison));
 
+				/////marque  ::::
+				// if ($model->count_relation > 1 ){
+				// 	$list_pn = '';
+				// 	if(!empty($model->pn)){
+						
+				// 		foreach ($model->pn as $keys => $spec) {
+					
+				// 			if ($keys === array_key_last($model->pn)) {
+				// 				$list_pn .=  ' "' . $spec->id__pn . '" ';
+				// 			} else $list_pn .=  ' "' .  $spec->id__pn . '", ';
+				// 		}
+				// 		$SQL = 'SELECT a.apn__pn_long , a.apn__pn , a.apn__famille  
+				// 		FROM art_pn as a  
+				// 		WHERE a.apn__pn IN  ( ' . $list_pn . ' )';
+				// 	}else{
+				// 		$SQL = 'SELECT a.apn__pn_long , a.apn__pn , a.apn__famille  
+				// 		FROM art_pn as a  
+				// 		WHERE a.apn__pn IN  (  0000 )';
+				// 	}
+					
+				// }
+				// else {
+				// 	$SQL = 'SELECT  a.apn__pn_long , a.apn__pn , a.apn__famille  
+				// 	FROM art_pn as a   
+				// 	WHERE a.apn__pn = "' . $model->pn . '"';
+				// }	
+
 				if ($model->count_relation > 1 ){
 					$list_pn = '';
-					if(!empty($model->pn)){
-						
 						foreach ($model->pn as $keys => $spec) {
-					
 							if ($keys === array_key_last($model->pn)) {
-								$list_pn .=  ' "' . $spec->id__pn . '" ';
-							} else $list_pn .=  ' "' .  $spec->id__pn . '", ';
+								$list_pn .=  ' "'. $spec->id__pn . '" ';
+							}
+							else $list_pn .=  ' "' .  $spec->id__pn . '", ';
+							
 						}
-						$SQL = 'SELECT a.apn__pn_long , a.apn__pn , a.apn__famille  
-						FROM art_pn as a  
-						WHERE a.apn__pn IN  ( ' . $list_pn . ' )';
-					}else{
-						$SQL = 'SELECT a.apn__pn_long , a.apn__pn , a.apn__famille  
-						FROM art_pn as a  
-						WHERE a.apn__pn IN  (  0000 )';
-					}
-					
+						
+					$SQL = 'SELECT a.apn__pn_long , a.apn__pn , a.apn__famille  
+					FROM art_pn as a  
+					WHERE a.apn__pn IN  (' . $list_pn . ')';
 				}
 				else {
 					$SQL = 'SELECT  a.apn__pn_long , a.apn__pn , a.apn__famille  
 					FROM art_pn as a   
-					WHERE a.apn__pn = "' . $model->pn . '"';
-				}		
+					WHERE a.apn__pn = "' . $model->pn . '"
+					';
+				}
+
+
 				$request = $this->Db->Pdo->query($SQL);
 				$model_data = $request->fetchAll(PDO::FETCH_OBJ);
 				if (!empty($model_data) and count($model_data) == 1)
