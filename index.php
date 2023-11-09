@@ -23,6 +23,7 @@ use App\Controller\AddOfficeController;
 use App\Api\ApiCommandeTransfert;
 use App\Controller\MachineController;
 use App\Controller\SeoController;
+use App\Controller\PlanningController;
 
 $request = $_SERVER['REQUEST_URI'];
 
@@ -179,6 +180,10 @@ else
 
 		case '/SoftRecode/add-myrecode'.$get_data;
 			echo AddOfficeController::displayList();
+			break;
+
+		case '/SoftRecode/planning'.$get_data;
+			echo PlanningController::planning();
 			break;
 
 		case '/SoftRecode/seo'.$get_data;
