@@ -114,8 +114,7 @@ if (empty($_SESSION['user']->id_utilisateur)) {
 		$Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date, $creation_societe, ' création de societe: ');
 	  
 		//redirection vers la page de consultation : 
-		$_SESSION['search_switch'] = str_pad($creation_societe, 6, '0', STR_PAD_LEFT);
-		header('location: search_switch');
+		header('location: search_switch?search='.str_pad($creation_societe, 6, '0', STR_PAD_LEFT));
 	}
 
 	// si une modif de client à été effectué : 
@@ -182,8 +181,7 @@ if (empty($_SESSION['user']->id_utilisateur)) {
 		$Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date, $_POST['modif__id'], ' modification de societe: ');
 		$alertModif = true;
 		//redirection vers la page de consultation : 
-		$_SESSION['search_switch'] = str_pad($creation_societe, 6, '0', STR_PAD_LEFT);
-		header('location: search_switch');
+		header('location: search_switch?search='.str_pad($_POST['modif__id'], 6, '0', STR_PAD_LEFT));
 	}
 	// Donnée transmise au template : 
 	echo $twig->render('societe_crea.twig', [
