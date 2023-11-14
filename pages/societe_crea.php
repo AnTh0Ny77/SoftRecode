@@ -99,6 +99,9 @@ if (empty($_SESSION['user']->id_utilisateur)) {
 		$creation_totoro = $Client->getOne($creation_societe);
 		$creation =  $ContactTotoro->insertSociete($creation_totoro);
 
+		function ajoutZeros($chaine) {
+			return str_pad($chaine, 6, '0', STR_PAD_LEFT);
+		}
 		
 		if (!empty($_POST['facturation_auto'])) 
 		{
@@ -113,7 +116,7 @@ if (empty($_SESSION['user']->id_utilisateur)) {
 		$Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date, $creation_societe, ' création de societe: ');
 	  
 		//redirection vers la page de consultation : 
-		$_SESSION['search_switch'] = $creation_societe;
+		$_SESSION['search_switch'] = ajoutZeros($creation_societe);
 		header('location: search_switch');
 	}
 
@@ -181,7 +184,7 @@ if (empty($_SESSION['user']->id_utilisateur)) {
 		$Pisteur->addPiste($_SESSION['user']->id_utilisateur, $date, $_POST['modif__id'], ' modification de societe: ');
 		$alertModif = true;
 		//redirection vers la page de consultation : 
-		$_SESSION['search_switch'] = $_POST['modif__id'];
+		$_SESSION['search_switch'] = ajoutZeros($_POST['modif__id']);
 		header('location: search_switch');
 	}
 	// Donnée transmise au template : 
