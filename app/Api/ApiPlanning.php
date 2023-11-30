@@ -23,6 +23,9 @@ class ApiPlanning
             case 'GET':
                 return self::get();
                 break;
+            case 'POST':
+                return self::post();
+                break;
             default:
                 return $responseHandler->handleJsonResponse([
                     'msg' =>  'Aucune opération n est prévue avec cette méthode'
@@ -37,7 +40,31 @@ class ApiPlanning
         return $responseHandler->handleJsonResponse([
             'data' =>  $list_time 
         ], 200, 'OK mais pas de commandes');
+    }
 
+    public static function post(){
+        $responseHandler = new ResponseHandler;
+        $body = json_decode(file_get_contents('php://input'), true);
+
+
+    }
+
+    public function addOne($body){
+        $request = $this->Db->Pdo->prepare("INSERT INTO  time_out (
+        to__user , to__out , to__in , to__motif , to__info , to__abs_user , to__abs_dt , to__abs_etat 
+        )VALUES (
+        :to__user , :to__out, :to__in , :to__motif , :to__info , :to__abs_user , :to__abs_dt , :to__abs_etat )");
+        $request->bindValue(":to__user ", $body['to__user']);
+        $request->bindValue(":to__out", $body['to__out']);
+        $request->bindValue(":to__in",  $body['to__in']);
+        $request->bindValue(":to__motif", $body['to__motif']);
+        $request->bindValue(":to__info",  $body['to__info']);
+        $request->bindValue(":to__abs_user",  $body['to__abs_user']);
+        $request->bindValue(":to__abs_dt", $body['to__abs_dt']);
+        $request->bindValue(":to__abs_etat", $body['to__abs_etat']);
+        $request->bindValue(":to__abs_etat", $body['to__abs_etat']);
+        $request->execute();
+        return true;
     }
 
     static function getTimes(){
