@@ -8,6 +8,7 @@ use App\Api\ApiDevis;
 use App\Api\ApiFacture;
 use App\Api\ApiTickets;
 use App\Api\ApiBoutique;
+use App\Api\apiPlanning;
 use App\Api\Demo as test;
 use App\Apiservice\ApiTest;
 use App\Api\ApiListDocTickets;
@@ -210,6 +211,10 @@ else
 
 		case '/SoftRecode/apiList'.$get_data;
 			echo ApiList::index($_SERVER['REQUEST_METHOD']);
+			break;
+
+		case '/SoftRecode/apiPlanning'.$get_data;
+			echo apiPlanning::index($_SERVER['REQUEST_METHOD']);
 			break;
 
 		case '/SoftRecode/apiListDocuments'.$get_data;
