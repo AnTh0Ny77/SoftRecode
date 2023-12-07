@@ -57,7 +57,7 @@ class ApiCommandeTransfert{
                 'msg' => $test
             ], 401, 'bad request');
         }
-        var_dump(self::insertCmd($Database ,$body ));
+        var_dump($Database);
         die();
         $cmd__id = self::insertCmd($Database ,$body );
        
@@ -235,8 +235,6 @@ class ApiCommandeTransfert{
     }
 
     public static function insertCmd($Db , $body ){
-        var_dump($Client);
-        die();
         $Client = new Client($Db );
         
         $date = date("Y-m-d H:i:s");
