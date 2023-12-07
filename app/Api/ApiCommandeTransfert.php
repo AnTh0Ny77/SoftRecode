@@ -56,7 +56,7 @@ class ApiCommandeTransfert{
        
         
         if ($test != false ) {
-            var_dump('hey');
+            var_dump($responseHandler);
             die();
             return $responseHandler->handleJsonResponse([
                 'msg' => $test
