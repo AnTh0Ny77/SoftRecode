@@ -50,14 +50,15 @@ class ApiCommandeTransfert{
         }
         
         $test = self::checkBody($body);
-        var_dump('hey');
-        die();
+        
         if ($test != false ) {
             return $responseHandler->handleJsonResponse([
                 'msg' => $test
             ], 401, 'bad request');
         }
         $cmd__id = self::insertCmd($Database ,$body );
+        var_dump('hey');
+        die();
         $index = 1 ;
         foreach ($body['ligne'] as $value) {
             $temp = self::transformLigne($value,$cmd__id,$index ,$Database);
