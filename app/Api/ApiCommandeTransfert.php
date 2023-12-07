@@ -56,8 +56,7 @@ class ApiCommandeTransfert{
        
         
         if ($test != false ) {
-            var_dump($responseHandler);
-            die();
+           
             return $responseHandler->handleJsonResponse([
                 'msg' => $test
             ], 401, 'bad request');
@@ -82,6 +81,8 @@ class ApiCommandeTransfert{
     public static function checkBody($body){
 
         if (empty($body['scm__user_id'])) {
+            var_dump('ici');
+            die();
            return 'scm__user_id est manquant ';
         }
 
