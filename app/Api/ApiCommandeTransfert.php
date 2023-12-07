@@ -62,9 +62,10 @@ class ApiCommandeTransfert{
         $cmd__id = self::insertCmd($Database ,$body );
         
         $index = 1 ;
+        var_dump($body['ligne']);
+        die();
         foreach ($body['ligne'] as $value) {
-            var_dump('hey');
-            die();
+           
             $temp = self::transformLigne($value,$cmd__id,$index ,$Database);
            
             $cmdl__id = self::insertLigne($Database , $temp , $index );
