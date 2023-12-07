@@ -56,9 +56,10 @@ class ApiCommandeTransfert{
                 'msg' => $test
             ], 401, 'bad request');
         }
-        $cmd__id = self::insertCmd($Database ,$body );
-        var_dump('hey');
+        var_dump(self::insertCmd($Database ,$body ));
         die();
+        $cmd__id = self::insertCmd($Database ,$body );
+       
         $index = 1 ;
         foreach ($body['ligne'] as $value) {
             $temp = self::transformLigne($value,$cmd__id,$index ,$Database);
