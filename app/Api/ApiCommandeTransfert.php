@@ -50,18 +50,14 @@ class ApiCommandeTransfert{
             ], 401, 'bad request');
         }
 
-       
+        // $test = self::checkBody($body);
         
-        $test = self::checkBody($body);
-       
-        
-        
-        if ($test != false ) {
+        // if ($test != false ) {
            
-            return $responseHandler->handleJsonResponse([
-                'msg' => $test
-            ], 401, 'bad request');
-        }
+        //     return $responseHandler->handleJsonResponse([
+        //         'msg' => $test
+        //     ], 401, 'bad request');
+        // }
         
         $cmd__id = self::insertCmd($Database ,$body );
       
