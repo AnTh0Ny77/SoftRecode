@@ -49,10 +49,14 @@ class ApiCommandeTransfert{
                 'msg' => 'opération non autorisée'
             ], 401, 'bad request');
         }
+
+        return $responseHandler->handleJsonResponse([
+            'msg' => 'debug'
+        ], 999, 'debug');
+        die();
         
         $test = self::checkBody($body);
-        var_dump($test);
-        die();
+        
         if ($test != false ) {
             return $responseHandler->handleJsonResponse([
                 'msg' => $test
