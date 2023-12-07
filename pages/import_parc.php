@@ -138,6 +138,8 @@ if ($btn_ok)
 				$msg_err = $msg_err_date_offg.$msg_err_date_in;
 				if (strlen($msg_err) > 0)
 					$msg_info_integration = $msg_err;
+				if (strlen($mat__actif) == 0)
+					$mat__actif = '1'; // c'est 1 par default
 				// print dtfr2dtsql($mat__date_in).'<br>';
 				// ajout de materiel
 				$body = [
@@ -157,7 +159,8 @@ if ($btn_ok)
 				"mat__contrat_id"    => $mat__contrat_id,
 				"mat__contrat_ligne" => $mat__contrat_ligne,
 				"mat__actif"         => $mat__actif 
-				]; //var_dump($body);
+				]; 
+				 var_dump($body); print '<br>';
 				// tentative d'integration dans la table.
 				$info_api = $Api->postMachine('', $body);
 				$code_retour = $info_api['code'];
@@ -171,6 +174,7 @@ if ($btn_ok)
 					$nb_lg_notok ++;
 					$nb_lg_ok --;
 					$html_lg_insert_err .= $nb_lg.', ';
+					// print $code_retour.'<br>';
 				}
 			}
 			else 
