@@ -7,6 +7,7 @@ use DateTime;
 use App\Database;
 use App\Tables\Cmd;
 use App\Tables\Article;
+use App\Tables\Client;
 use App\Api\ResponseHandler;
 
 class ApiCommandeTransfert{
@@ -234,7 +235,8 @@ class ApiCommandeTransfert{
     }
 
     public static function insertCmd($Db , $body ){
-        $Client = new \App\Tables\Client($Db );
+        $Client = new Client($Db );
+        
         $date = date("Y-m-d H:i:s");
         $client = $Client->getOne($body['scm__client_id_fact']);
         $request = $Db->Pdo->prepare('INSERT INTO cmd 
