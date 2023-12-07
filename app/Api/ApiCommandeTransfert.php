@@ -51,14 +51,14 @@ class ApiCommandeTransfert{
         }
         
         $test = self::checkBody($body);
-        
+        var_dump('hey');
+        die();
         if ($test != false ) {
             return $responseHandler->handleJsonResponse([
                 'msg' => $test
             ], 401, 'bad request');
         }
-        var_dump('hey');
-        die();
+        
         $cmd__id = self::insertCmd($Database ,$body );
        
         $index = 1 ;
