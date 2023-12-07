@@ -54,6 +54,8 @@ class ApiCommandeTransfert{
         
         $test = self::checkBody($body);
        
+        var_dump($test);
+        die();
         
         if ($test != false ) {
            
@@ -81,8 +83,7 @@ class ApiCommandeTransfert{
     public static function checkBody($body){
 
         if (empty($body['scm__user_id'])) {
-            var_dump('ici');
-            die();
+           
            return 'scm__user_id est manquant ';
         }
 
