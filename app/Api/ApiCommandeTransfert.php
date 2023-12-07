@@ -236,7 +236,8 @@ class ApiCommandeTransfert{
 
     public static function insertCmd($Db , $body ){
         $Client = new Client($Db );
-        
+        var_dump($Client);
+        die();
         $date = date("Y-m-d H:i:s");
         $client = $Client->getOne($body['scm__client_id_fact']);
         $request = $Db->Pdo->prepare('INSERT INTO cmd 
