@@ -69,9 +69,9 @@ class ApiCommandeTransfert{
           
             $cmdl__id = self::insertLigne($Database , $temp , $index );
             $index ++ ;
-            // if (!empty($temp['cmdl__garantie_option'])) {
-            //     self::insertgarantie($Database,$cmdl__id,$temp);
-            // }
+            if (!empty($temp['cmdl__garantie_option'])) {
+                self::insertgarantie($Database,$cmdl__id,$temp);
+            }
         }
         return $responseHandler->handleJsonResponse([
             'data' => $cmd__id ,
