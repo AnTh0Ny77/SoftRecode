@@ -51,7 +51,7 @@ class ApiCommandeTransfert{
         }
         
         $test = self::checkBody($body);
-        var_dump('hey');
+        var_dump($test);
         die();
         if ($test != false ) {
             return $responseHandler->handleJsonResponse([
