@@ -39,33 +39,40 @@ class ApiPlanning
         $list_time = self::getTimes();
         return $responseHandler->handleJsonResponse([
             'data' =>  $list_time 
-        ], 200, 'OK mais pas de commandes');
+        ], 200, 'OK');
     }
 
     public static function post(){
         $responseHandler = new ResponseHandler;
         $body = json_decode(file_get_contents('php://input'), true);
-
+        
+        $insert = self::addOne($body);
+       
+        return $responseHandler->handleJsonResponse([
+            'data' =>  true
+        ], 200, 'OK');
 
     }
 
-    public function addOne($body){
-        $request = $this->Db->Pdo->prepare("INSERT INTO  time_out (
-        to__user , to__out , to__in , to__motif , to__info , to__abs_user , to__abs_dt , to__abs_etat 
-        )VALUES (
-        :to__user , :to__out, :to__in , :to__motif , :to__info , :to__abs_user , :to__abs_dt , :to__abs_etat )");
-        $request->bindValue(":to__user ", $body['to__user']);
-        $request->bindValue(":to__out", $body['to__out']);
-        $request->bindValue(":to__in",  $body['to__in']);
-        $request->bindValue(":to__motif", $body['to__motif']);
-        $request->bindValue(":to__info",  $body['to__info']);
-        $request->bindValue(":to__abs_user",  $body['to__abs_user']);
-        $request->bindValue(":to__abs_dt", $body['to__abs_dt']);
-        $request->bindValue(":to__abs_etat", $body['to__abs_etat']);
-        $request->bindValue(":to__abs_etat", $body['to__abs_etat']);
+    public static function addOne($body){
+        $Database = new Database('devis');
+        $Database->DbConnect();
+        $request = $Database->Pdo->prepare("INSERT INTO time_out (
+            to__user, to__out, to__in, to__motif, to__info, to__abs_user, to__abs_dt, to__abs_etat
+            ) VALUES (
+            :to__user, :to__out, :to__in, :to__motif, :to__info, :to__abs_user, :to__abs_dt, :to__abs_etat)");
+        $request->bindParam(":to__user", $body['to__user']);
+        $request->bindParam(":to__out", $body['to__out']);
+        $request->bindParam(":to__in", $body['to__in']);
+        $request->bindParam(":to__motif", $body['to__motif']);
+        $request->bindParam(":to__info", $body['to__info']);
+        $request->bindParam(":to__abs_user", $body['to__abs_user']);
+        $request->bindParam(":to__abs_dt", $body['to__abs_dt']);
+        $request->bindParam(":to__abs_etat", $body['to__abs_etat']);
         $request->execute();
         return true;
     }
+    
 
     static function getTimes(){
         $Database = new Database('devis');
