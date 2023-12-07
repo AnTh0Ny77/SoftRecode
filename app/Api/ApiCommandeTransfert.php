@@ -50,8 +50,7 @@ class ApiCommandeTransfert{
             ], 401, 'bad request');
         }
 
-        var_dump('hey');
-        die();
+       
         
         $test = self::checkBody($body);
         var_dump('hey');
