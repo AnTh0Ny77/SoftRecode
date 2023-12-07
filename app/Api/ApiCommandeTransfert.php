@@ -66,8 +66,7 @@ class ApiCommandeTransfert{
         foreach ($body['ligne'] as $value) {
            
             $temp = self::transformLigne($value,$cmd__id,$index ,$Database);
-            var_dump($temp);
-            die();
+          
             $cmdl__id = self::insertLigne($Database , $temp , $index );
             $index ++ ;
             // if (!empty($temp['cmdl__garantie_option'])) {
@@ -148,6 +147,7 @@ class ApiCommandeTransfert{
 
         $Article = new Article($database);
         $pn = $Article->get_pn_long($ligne['sar__ref_constructeur']);
+
         if ($pn['apn__famille'] != 'ACC') {
             $id_fmm = $Article->return_id_fmm_for_myrecode($pn['apn__pn']);
             if (empty($id_fmm)) {
