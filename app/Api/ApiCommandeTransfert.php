@@ -62,12 +62,12 @@ class ApiCommandeTransfert{
         $cmd__id = self::insertCmd($Database ,$body );
         
         $index = 1 ;
-        var_dump($body['ligne']);
-        die();
+        
         foreach ($body['ligne'] as $value) {
            
             $temp = self::transformLigne($value,$cmd__id,$index ,$Database);
-           
+            var_dump($temp);
+            die();
             $cmdl__id = self::insertLigne($Database , $temp , $index );
             $index ++ ;
             // if (!empty($temp['cmdl__garantie_option'])) {
