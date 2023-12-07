@@ -57,7 +57,7 @@ class ApiCommandeTransfert{
                 'msg' => $test
             ], 401, 'bad request');
         }
-        var_dump($Database);
+        var_dump('hey');
         die();
         $cmd__id = self::insertCmd($Database ,$body );
        
