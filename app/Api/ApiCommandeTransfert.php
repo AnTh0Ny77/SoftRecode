@@ -134,15 +134,13 @@ class ApiCommandeTransfert{
         if (empty($ligne['sav__etat'])) {
             return 'sav__etat';
         }
-        if (empty($ligne['sav__gar_std'])) {
+        if (!isset($ligne['sav__gar_std'])) {
             return 'sav__gar_std';
         }
         if (empty($ligne['sar__ref_constructeur'])) {
             return 'sar__ref_constructeur';
         }
-        if (empty($ligne['sar__ref_constructeur'])) {
-            return 'sar__ref_constructeur';
-        }
+        
 
         return false;
     }
