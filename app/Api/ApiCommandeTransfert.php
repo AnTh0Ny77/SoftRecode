@@ -50,10 +50,13 @@ class ApiCommandeTransfert{
             ], 401, 'bad request');
         }
 
-        var_dump('hey');
-        die();
+        // var_dump('hey');
+        // die();
         
         $test = self::checkBody($body);
+        return $responseHandler->handleJsonResponse([
+            'msg' => $test
+        ], 401, 'bad request');
         
         if ($test != false ) {
             return $responseHandler->handleJsonResponse([
