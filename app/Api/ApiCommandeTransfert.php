@@ -54,8 +54,7 @@ class ApiCommandeTransfert{
         
         $test = self::checkBody($body);
        
-        var_dump($test);
-        die();
+        
         
         if ($test != false ) {
            
@@ -65,7 +64,7 @@ class ApiCommandeTransfert{
         }
         
         $cmd__id = self::insertCmd($Database ,$body );
-       
+      
         $index = 1 ;
         foreach ($body['ligne'] as $value) {
             $temp = self::transformLigne($value,$cmd__id,$index ,$Database);
