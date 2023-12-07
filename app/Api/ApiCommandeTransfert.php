@@ -66,9 +66,9 @@ class ApiCommandeTransfert{
             $temp = self::transformLigne($value,$cmd__id,$index ,$Database);
             $cmdl__id = self::insertLigne($Database , $temp , $index );
             $index ++ ;
-            if (!empty($temp['cmdl__garantie_option'])) {
-                self::insertgarantie($Database,$cmdl__id,$temp);
-            }
+            // if (!empty($temp['cmdl__garantie_option'])) {
+            //     self::insertgarantie($Database,$cmdl__id,$temp);
+            // }
         }
         return $responseHandler->handleJsonResponse([
             'data' => $cmd__id ,
@@ -149,7 +149,7 @@ class ApiCommandeTransfert{
             if (empty($id_fmm)) {
                 $id_fmm = 101 ;
             }else{
-                $id_fmm = $id_fmm['id__fmm']  ;
+                $id_fmm = $id_fmm['id__fmm'];
             }
             
         }else { 
