@@ -74,7 +74,6 @@ if ($commande_temporaire->devis__etat == 'VLD'){
     die();
 }
 
-
 //controle si le total n'est pas a zero : 
 $totaux = Pdfunctions::totalFacturePDF($commande_temporaire, $ligne_temporaire);        
        

@@ -223,7 +223,7 @@ ob_start();
 					if ($command->cmd__code_cmd_client) {
 						echo "<br> Code cmd: " . $command->cmd__code_cmd_client;
 					}
-?>
+				?>
 				</strong>
 			</td>
 		</tr>
