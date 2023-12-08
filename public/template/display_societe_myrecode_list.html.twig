@@ -80,8 +80,7 @@
                     <tbody>
                         {% for client in list %}
                         <tr>
-                            <td>({{client.cli__id}})</td>
-                            <td><b>{{client.cli__nom}}</b><br><i>{{client.cli__adr1 ~ " " ~ client.cli__ville}}</i></td>
+                            <td><b>{{client.cli__nom }} {{boTel(client.cli__id)}} </b><br><i>{{client.cli__adr1 ~ " " ~ client.cli__ville}} </i></td>
                             <td>{% if client.users|length > 0 %}
                                     {% if client.users|length == 1 %}
                                         <div class="past_purple">
