@@ -703,6 +703,7 @@ class Cmd extends Table
   public function classicReliquat($cmd)
   {
     $lignes = $this->devisLigne($cmd);
+	
 
     $NewLines = [];
     foreach ($lignes as $ligne) {
@@ -745,6 +746,7 @@ class Cmd extends Table
       $count = 0;
 
       foreach ($NewLines as $lines) {
+
         $count += 1;
         $insertObject = new stdClass;
         $insertObject->idDevis = $idReliquat;
@@ -757,10 +759,11 @@ class Cmd extends Table
         $insertObject->comInt = $lines->devl__note_interne;
         $insertObject->comClient = $lines->devl__note_client;
         $insertObject->idfmm = $lines->id__fmm;
+		$insertObject->pn = $lines->devl__modele;
         $insertObject->extension = $lines->cmdl__garantie_option;
         $insertObject->prixGarantie = $lines->cmdl__garantie_puht;
-
         $createLine = $this->insertLineReliquat($insertObject);
+
       }
 
       $command = $this->getById(intval($idReliquat));
@@ -771,6 +774,8 @@ class Cmd extends Table
       $clientView = $Client->getOne($command->client__id);
       $user = $User->getByID($clientView->client__id_vendeur);
       $userCMD = $User->getByID($command->cmd__user__id_cmd);
+	  $Global = new App\Tables\General($Database);
+	  $Stocks = new App\Tables\Stock($Database);
 
       $societeLivraison = false;
 
@@ -882,7 +887,7 @@ class Cmd extends Table
 					if ($command->cmd__code_cmd_client) {
 						echo "<br> Code cmd: " . $command->cmd__code_cmd_client;
 					}
-?>
+				?>
               </strong>
             </td>
           </tr>
@@ -897,34 +902,50 @@ class Cmd extends Table
           </tr>
           <?php
           foreach ($commandLignes as $item) {
-            if ($item->cmdl__garantie_option > $item->devl__mois_garantie) {
+            if (empty($ligne->devl__note_client)) $ligne->devl__note_client = "";
+            if (empty($ligne->devl__note_interne)) $ligne->devl__note_interne = "";
+            
+            if ($item->cmdl__garantie_option > $item->devl__mois_garantie){
               $temp = $item->cmdl__garantie_option;
-            } else {
+            } 
+            else {
               if (!empty($item->devl__mois_garantie)) {
                 $temp = $item->devl__mois_garantie;
-              } else {
+              } 
+              else{
                 $temp = "";
               }
             }
-
-            if (!empty($item->cmdl__sous_ref)) {
+            if (!empty($item->cmdl__sous_ref)){
               $background_color = 'background-color: #F1F1F1;';
-            } else {
+            } 
+            else{
               $background_color = '';
             }
+            if (!empty($item->devl__modele)) {
+              $spec = $Stocks->select_empty_heritage($item->devl__modele , true , false);
+              $pn =  '<br>PN: '.$item->apn__pn_long . " <br>" .  $spec   ;
+            }
+            else {
+              $pn = '';
+            }
+            if (!empty($item->cmdl__dp)) {
+              $item->cmdl__dp  = '<br> Numéro de DP: ' .$item->cmdl__dp ;
+            }else $item->cmdl__dp = '';
 
             echo "<tr style='font-size: 100%; " . $background_color . "'>
-                        <td style='border-bottom: 1px #ccc solid'> " . $item->prestaLib . " <br> " . $item->kw__lib . " <br> " . $temp . " mois</td>
-                        <td style='border-bottom: 1px #ccc solid; width: 55%;'> 
-                            <br> <small>désignation :</small> <b>" . $item->devl__designation . "</b><br>"
-              . $item->famille__lib . " " . $item->marque . " " . $item->modele . " " . $item->devl__modele  . " " . $item->devl__note_client .
-              "</td>
-                         <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite . " </strong></td>
-                          <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
-                         <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
-                      </tr>";
+                  <td style='border-bottom: 1px #ccc solid'> " . $item->prestaLib . " <br> " . $item->kw__lib . " <br> " . $temp . " mois</td>
+                  <td style='border-bottom: 1px #ccc solid; width: 55%;'> 
+                    <br> <small>désignation :</small> <b>" . $item->devl__designation . "</b><br>"
+              . $item->famille__lib . " " . $item->marque . " Modèle:" . $item->modele . "  " . $pn .  " " . $item->devl__note_interne . " ". $item->devl__note_client. $item->cmdl__dp."
+              </td>
+                  <td style='border-bottom: 1px #ccc solid; text-align: center'><strong> "  . $item->devl_quantite . " </strong></td>
+                    <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
+                  <td style='border-bottom: 1px #ccc solid; border-left: 1px #ccc solid; text-align: right'><strong>  </strong></td>
+                  </tr>";
           }
-          ?>
+		    ?>
+          
         </table>
 
         <table style=" margin-top: 50px; width: 100%">
@@ -1535,11 +1556,11 @@ class Cmd extends Table
     'INSERT INTO  cmd_ligne (
      cmdl__cmd__id, cmdl__prestation,  cmdl__designation ,
      cmdl__etat  ,cmdl__garantie_base , cmdl__qte_cmd  ,  
-     cmdl__puht , cmdl__note_client  ,  cmdl__ordre , cmdl__id__fmm , cmdl__garantie_option , cmdl__garantie_puht , cmdl__qte_livr , cmdl__note_interne)
+     cmdl__puht , cmdl__note_client  ,  cmdl__ordre , cmdl__id__fmm , cmdl__garantie_option , cmdl__garantie_puht , cmdl__qte_livr , cmdl__note_interne , cmdl__pn)
      VALUES (
      :devl__devis__id, :devl__type,  :devl__designation,
      :devl__etat, :devl__mois_garantie , :devl_quantite,  
-     :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm , :cmdl__garantie_option , :cmdl__garantie_puht , :cmdl__qte_livr , :cmdl__note_interne)'
+     :devl_puht , :devl__note_client ,  :devl__ordre , :id__fmm , :cmdl__garantie_option , :cmdl__garantie_puht , :cmdl__qte_livr , :cmdl__note_interne , :cmdl__pn)'
     );
     $verifOrdre = $this->Db->Pdo->query(
       'SELECT MAX(cmdl__ordre) as maxOrdre from cmd_ligne WHERE cmdl__cmd__id = ' . $object->idDevis . ' '
@@ -1560,6 +1581,7 @@ class Cmd extends Table
       $requestLigne->bindValue(":cmdl__garantie_option", $object->extension);
       $requestLigne->bindValue(":cmdl__garantie_puht", floatVal($object->prixGarantie));
       $requestLigne->bindValue(":cmdl__qte_livr", null);
+	  $requestLigne->bindValue(":cmdl__pn",$object->pn);
       $requestLigne->execute();
       return $requestLigne;
   }
