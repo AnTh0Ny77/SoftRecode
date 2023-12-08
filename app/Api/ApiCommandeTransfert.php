@@ -7,6 +7,7 @@ use DateTime;
 use App\Database;
 use App\Tables\Cmd;
 use App\Tables\Article;
+use App\Tables\Client;
 use App\Api\ResponseHandler;
 
 class ApiCommandeTransfert{
@@ -48,16 +49,24 @@ class ApiCommandeTransfert{
                 'msg' => 'opération non autorisée'
             ], 401, 'bad request');
         }
-        $test = self::checkBody($body);
-        if ($test != false ) {
-            return $responseHandler->handleJsonResponse([
-                'msg' => $test
-            ], 401, 'bad request');
-        }
+
+        // $test = self::checkBody($body);
+        
+        // if ($test != false ) {
+           
+        //     return $responseHandler->handleJsonResponse([
+        //         'msg' => $test
+        //     ], 401, 'bad request');
+        // }
+        
         $cmd__id = self::insertCmd($Database ,$body );
+        
         $index = 1 ;
+        
         foreach ($body['ligne'] as $value) {
+           
             $temp = self::transformLigne($value,$cmd__id,$index ,$Database);
+          
             $cmdl__id = self::insertLigne($Database , $temp , $index );
             $index ++ ;
             if (!empty($temp['cmdl__garantie_option'])) {
@@ -72,6 +81,7 @@ class ApiCommandeTransfert{
     public static function checkBody($body){
 
         if (empty($body['scm__user_id'])) {
+           
            return 'scm__user_id est manquant ';
         }
 
@@ -122,15 +132,13 @@ class ApiCommandeTransfert{
         if (empty($ligne['sav__etat'])) {
             return 'sav__etat';
         }
-        if (empty($ligne['sav__gar_std'])) {
+        if (!isset($ligne['sav__gar_std'])) {
             return 'sav__gar_std';
         }
         if (empty($ligne['sar__ref_constructeur'])) {
             return 'sar__ref_constructeur';
         }
-        if (empty($ligne['sar__ref_constructeur'])) {
-            return 'sar__ref_constructeur';
-        }
+        
 
         return false;
     }
@@ -139,12 +147,13 @@ class ApiCommandeTransfert{
 
         $Article = new Article($database);
         $pn = $Article->get_pn_long($ligne['sar__ref_constructeur']);
+
         if ($pn['apn__famille'] != 'ACC') {
             $id_fmm = $Article->return_id_fmm_for_myrecode($pn['apn__pn']);
             if (empty($id_fmm)) {
                 $id_fmm = 101 ;
             }else{
-                $id_fmm = $id_fmm['id__fmm']  ;
+                $id_fmm = $id_fmm['id__fmm'];
             }
             
         }else { 
@@ -229,7 +238,8 @@ class ApiCommandeTransfert{
     }
 
     public static function insertCmd($Db , $body ){
-        $Client = new \App\Tables\Client($Db );
+        $Client = new Client($Db );
+        
         $date = date("Y-m-d H:i:s");
         $client = $Client->getOne($body['scm__client_id_fact']);
         $request = $Db->Pdo->prepare('INSERT INTO cmd 

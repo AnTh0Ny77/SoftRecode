@@ -117,7 +117,7 @@ if ($btn_verif)
 	foreach ($dateRange as $date) 
 	{
 		$ce_jour = $date->format('Y-m-d');
-		if (getWorkingDays($ce_jour,date('Y-m-d', strtotime($ce_jour. ' + 1 days')))) // si c'est un jour travaillé
+		if (getWorkingDays($ce_jour,date('Y-m-d', strtotime($ce_jour. ' + 1 days'))) AND $date->format('w') > 0) // si c'est un jour travaillé
 		{
 			// jour
 			$num_jour               = $date->format('w');
