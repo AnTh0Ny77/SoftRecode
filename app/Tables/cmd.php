@@ -13,6 +13,7 @@ use DateTime;
 use App\Tables\Client;
 use App\Tables\Contact;
 use App\Tables\User;
+use App\Tables\Stock;
 
 class Cmd extends Table
 {
@@ -1074,7 +1075,7 @@ class Cmd extends Table
       $commandLignes = $this->devisLigne($idReliquat);
       $Client = new Client($this->Db);
       $Contact = new Contact($this->Db);
-	  $Stocks = new App\Tables\Stock($this->Db);
+	  $Stocks = new Stock($this->Db);
       $clientView = $Client->getOne($command->client__id);
       $User = new User($this->Db);
       $user = $User->getByID($clientView->client__id_vendeur);
