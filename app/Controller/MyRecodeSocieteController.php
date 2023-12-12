@@ -20,7 +20,7 @@ class MyRecodeSocieteController extends BasicController {
         self::security();
         $Api = new ApiTest();
         if (empty($_SESSION['user']->refresh_token)) {
-            $token = $Api->login($_SESSION['user']->email , '123');
+            $token = $Api->login('test@test.fr' , 'test');
             if ($token['code'] != 200) {
                 echo 'Connexion LOGIN à L API IMPOSSIBLE';
                 die();
