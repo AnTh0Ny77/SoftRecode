@@ -7,8 +7,7 @@ class TwigCustomFunction extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('boTel', [$this, 'boTel'] ),
-            new TwigFunction('ajouterZeros', [$this, 'ajouterZeros']),
+            new TwigFunction('boTel', [$this, 'boTel'] )
         ];
     }
 
@@ -25,18 +24,7 @@ class TwigCustomFunction extends AbstractExtension
         return $botel; // indique la valeur à renvoyer 
     } 
 
-    public function ajouterZeros($chaine) {
-        $longueurChaine = strlen($chaine);
-        
-        if ($longueurChaine < 6) {
-            $zerosManquants = 6 - $longueurChaine;
-            $chaine = str_repeat('0', $zerosManquants) . $chaine;
-        } elseif ($longueurChaine > 6) {
-            $chaine = substr($chaine, 0, 6); // Si la chaîne est plus longue, on la tronque à 6 caractères
-        }
     
-        return $chaine;
-    }
 
   
 }
