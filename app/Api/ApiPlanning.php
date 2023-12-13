@@ -36,6 +36,13 @@ class ApiPlanning
 
     public static function get(){
         $responseHandler = new ResponseHandler;
+
+        if (!empty($_GET['user'])) {
+            $list_time = self::getUserTimes($_GET['user']);
+            return $responseHandler->handleJsonResponse([
+                'data' =>  $list_time 
+            ], 200, 'OK');
+        }
         $list_time = self::getTimes();
         return $responseHandler->handleJsonResponse([
             'data' =>  $list_time 
@@ -81,6 +88,17 @@ class ApiPlanning
         FROM time_out as t
         LEFT JOIN utilisateur as u ON u.id_utilisateur  = t.to__user
         LIMIT 20000");
+        $data = $request->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    }
+
+    static function getUserTimes($user){
+        $Database = new Database('devis');
+        $Database->DbConnect();
+        $request = $Database->Pdo->query("SELECT DISTINCT  t.* , u.prenom , u.nom
+        FROM time_out as t
+        LEFT JOIN utilisateur as u ON u.id_utilisateur  = t.to__user
+        WHERE t.to__user = ".$user." LIMIT 20000");
         $data = $request->fetchAll(PDO::FETCH_ASSOC);
         return $data;
     }
