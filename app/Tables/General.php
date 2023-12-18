@@ -27,9 +27,7 @@ class General extends Table
       ('UPDATE  '.$table.'
       SET '. $column .' = ? 
       WHERE '.$condition.' = ?');
-        
     $update->execute([$data, $clause]);
-
   }
 
   public function findBy(string $table , string $field , $search ,int $limit , ?string $order ) : array 
