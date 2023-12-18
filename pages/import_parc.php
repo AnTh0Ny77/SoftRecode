@@ -93,6 +93,7 @@ if ($btn_ok)
 			$html_ex_start .= $line.'<br>';
 			$tab_tete = str_getcsv($line,';');
 		}
+		
 
 		// recherche de ligne VIDE
 		if (strlen($line) == 0)
