@@ -49,7 +49,7 @@ class ApiPlanning
     }
 
     public static function post(){
-        
+
         $responseHandler = new ResponseHandler;
         $body = json_decode(file_get_contents('php://input'), true);
 
@@ -66,7 +66,6 @@ class ApiPlanning
         }
         
         $insert = self::addOne($body);
-       
         return $responseHandler->handleJsonResponse([
             'data' =>  true
         ], 200, 'OK');
