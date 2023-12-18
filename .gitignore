@@ -64,5 +64,7 @@
 /public/img/tickets/
 /public/devis/
 /public/pn/
+/pages/ajax/visio/
+*.pdf
 
 # End of https://www.gitignore.io/api/symfony
