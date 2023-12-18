@@ -36,7 +36,6 @@ class ApiPlanning
 
     public static function get(){
         $responseHandler = new ResponseHandler;
-
         if (!empty($_GET['user'])) {
             $list_time = self::getUserTimes($_GET['user']);
             return $responseHandler->handleJsonResponse([
@@ -50,16 +49,29 @@ class ApiPlanning
     }
 
     public static function post(){
+        
         $responseHandler = new ResponseHandler;
         $body = json_decode(file_get_contents('php://input'), true);
+
+        if (!empty($body['cadre']) and !empty($body['abs__id'])) {
+            $data = [
+                'ANL' ,
+                $body['cadre'] , 
+                $body['motif']
+            ]; 
+            self::refuseAbs($data,$body['abs__id']);
+            return $responseHandler->handleJsonResponse([
+                'data' =>  true
+            ], 200, 'OK');
+        }
         
         $insert = self::addOne($body);
        
         return $responseHandler->handleJsonResponse([
             'data' =>  true
         ], 200, 'OK');
-
     }
+
 
     public static function addOne($body){
         $Database = new Database('devis');
@@ -101,6 +113,16 @@ class ApiPlanning
         WHERE t.to__user = ".$user." LIMIT 20000");
         $data = $request->fetchAll(PDO::FETCH_ASSOC);
         return $data;
+    }
+
+    static function refuseAbs( $data, $clause ){
+        $Database = new Database('devis');
+        $Database->DbConnect();
+        $request = $Database->Pdo->prepare
+        ('UPDATE time_out
+        SET to__abs_etat = ? , to__abs_veto_user = ? , to__abs_veto_motif = ? 
+        WHERE to__id = ?');
+        $update->execute([$data, $clause]);
     }
 
     static function traiterDate($dateSQL){
