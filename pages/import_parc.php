@@ -66,6 +66,7 @@ if ($btn_ok)
 
 	$visu_btn_ok = TRUE;
 	$visu_get = FALSE;
+	$nb_champs_lg_reference = 0;
 
 	$file_tmp = $_FILES['file_csv']['tmp_name'];//fichier_csv = nom du input type file.
 	$fic_nom  = $_FILES['file_csv']['name'];//fichier_csv = nom du input type file.

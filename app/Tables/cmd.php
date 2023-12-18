@@ -775,8 +775,7 @@ class Cmd extends Table
       $clientView = $Client->getOne($command->client__id);
       $user = $User->getByID($clientView->client__id_vendeur);
       $userCMD = $User->getByID($command->cmd__user__id_cmd);
-	  $Global = new App\Tables\General($Database);
-	  $Stocks = new App\Tables\Stock($this->Db);
+      $Stocks = new Stock($this->Db);
 
       $societeLivraison = false;
 
