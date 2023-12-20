@@ -636,7 +636,7 @@ $tab_html .= lg_mc_tab_html($tot_vm, "MC Marge commercial sur vente","Total",$to
 $tab_html .= lg_mc_tab_html($tot_vn, "MC Marge commercial sur vente","Neuf",$v01);
 $tab_html .= lg_mc_tab_html($tot_vo, "MC Marge commercial sur vente","Occasion",$v02);
 $tab_html .= lg_mc_tab_html($tot_pr, "MB de production","",$tot_pr);
-$tab_html .= lg_mc_tab_html($tot_mcmb, "MB + MC","",$tot_ca);
+$tab_html .= lg_mc_tab_html($tot_mcmb, "MB + MC (MB Globale)","",$tot_ca);
 
 $debug_info = '<br>';
 $somme_stk_evol = $somme_stk_fin - $somme_stk_deb;
