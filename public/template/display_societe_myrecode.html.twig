@@ -342,12 +342,16 @@
                                         {{row.mat__memo}}
                                     </td>
                                     <td>
-                                        {% if row.mat__ident %}
-                                        Commande N°: <b>{{row.mat__ident}}</b><br>
+                                        {% if row.mat__idnec %}
+                                        Commande N°: <b>{{row.mat__idnec}}</b><br>
                                         {% else %}
                                         Commande non renseignée
                                         {% endif %}
                                         <br>
+                                        {% if row.mat__ident %}
+                                        N° client: <b>{{row.mat__ident}}</b><br>
+                                        <br>
+                                        {% endif %}
                                         {% if row.mat__contrat_id %}
                                         Contrat N°: <b>{{row.mat__contrat_id}}</b>
                                         {% else %}
