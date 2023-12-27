@@ -42,7 +42,12 @@ class ApiPlanning
                 'data' =>  $list_time 
             ], 200, 'OK');
         }
+
+        $updateValidation = self::updateValidation();
+
         $list_time = self::getTimes();
+
+        
         return $responseHandler->handleJsonResponse([
             'data' =>  $list_time 
         ], 200, 'OK');
@@ -52,7 +57,6 @@ class ApiPlanning
 
         $responseHandler = new ResponseHandler;
         $body = json_decode(file_get_contents('php://input'), true);
-
         if (!empty($body['cadre']) and !empty($body['abs__id'])) {
             $data = [
                 'ANL' ,
@@ -69,6 +73,18 @@ class ApiPlanning
         return $responseHandler->handleJsonResponse([
             'data' =>  true
         ], 200, 'OK');
+    }
+
+    public static function updateValidation(){
+        $Database = new Database('devis');
+        $Database->DbConnect();
+      
+        $thresholdTime = date('Y-m-d H:i:s', strtotime('-72 hours'));
+        $sql = "UPDATE time_out SET to__abs_etat = 'VLD' WHERE to__abs_dt <= :thresholdTime";
+    
+        $stmt = $Database->Pdo->prepare($sql);
+        $stmt->bindParam(':thresholdTime', $thresholdTime, PDO::PARAM_STR);
+        $stmt->execute();
     }
 
 
