@@ -88,6 +88,7 @@ if ($btn_ok)
 		{
 			$nb_lg_tete ++;
 			$lg_ok = FALSE;
+			$line = str_replace(' ', '', $line);
 			// nombre de champs (le chiffre doit etre de 13 les champs sont : mat__cli__id;mat__type;mat__marque;mat__model;mat__pn;mat__sn;mat__idnec;mat__date_in;mat__kw_tg;mat__date_offg;mat__contrat_id;mat__contrat_ligne;mat__actif)
 			$nb_champs_lg_reference = substr_count($line, ';') + 1;
 			$html_ex_start .= $line.'<br>';
@@ -96,7 +97,7 @@ if ($btn_ok)
 		
 
 		// recherche de ligne VIDE
-		if (strlen($line) == 0)
+		if (strlen($line) < 15) // il ne peut y avoir que des ;  c'est mieux de comparé < 15 que == 0
 		{
 			$nb_lg_vide ++;
 			$lg_ok = FALSE;
@@ -125,7 +126,7 @@ if ($btn_ok)
 				} // ce qui oblige a la presence d'une ligne entete mais permet le mixte de ses colonnes
 
 				// verification de champs...
-				$msg_info_integration = 'Le format de ficheir est OK<br>';
+				$msg_info_integration = 'Le format de fichier est OK<br>';
 				$msg_err_date_offg = $msg_err_date_in = '';
 				if (strlen($mat__date_offg) <> 10) // la date n'est pas au bon format ! ou vide => 01/01/2000
 				{
@@ -162,7 +163,7 @@ if ($btn_ok)
 				"mat__contrat_ligne" => $mat__contrat_ligne,
 				"mat__actif"         => $mat__actif 
 				]; 
-				 var_dump($body); print '<br>';
+				// var_dump($body); print '<br>';
 				// tentative d'integration dans la table.
 				$info_api = $Api->postMachine('', $body);
 				$code_retour = $info_api['code'];
