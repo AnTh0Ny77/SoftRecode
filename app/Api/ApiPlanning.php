@@ -76,14 +76,18 @@ class ApiPlanning
     }
 
     public static function updateValidation(){
+
         $Database = new Database('devis');
         $Database->DbConnect();
-      
+
         $thresholdTime = date('Y-m-d H:i:s', strtotime('-72 hours'));
+
         $sql = "UPDATE time_out SET to__abs_etat = 'VLD' WHERE to__abs_dt <= :thresholdTime AND to__abs_etat = 'DEM' ";
-    
+
         $stmt = $Database->Pdo->prepare($sql);
+
         $stmt->bindParam(':thresholdTime', $thresholdTime, PDO::PARAM_STR);
+        
         $stmt->execute();
     }
 
