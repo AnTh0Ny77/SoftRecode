@@ -548,7 +548,7 @@ class ApiTest extends BasicController {
 		$client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
 		try {
 			$response = $client->post($env_uri .  '/materielSossuke', [
-				'headers' => self::makeHeaders($token),
+				
 				'json' => $body
 			]);
 		} catch (GuzzleHttp\Exception\ClientException $exeption) {
