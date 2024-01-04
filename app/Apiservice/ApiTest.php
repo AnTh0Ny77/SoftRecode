@@ -599,17 +599,36 @@ class ApiTest extends BasicController {
 		$base_uri = $config->api->host;
 		$env_uri = $config->api->env_uri;
 		$client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
-		$body = [
-			"cli__id" => $clientSoft->client__id,
-			"cli__nom" => $clientSoft->client__societe,
-			"cli__id_mere" => $clientSoft->client__id,
-			"cli__adr1" => $clientSoft->client__adr1,
-			"cli__adr2" => $clientSoft->client__adr2,
-			"cli__cp" => $clientSoft->client__cp,
-			"cli__ville" => $clientSoft->client__ville,
-			"cli__pays" => $clientSoft->client__pays,
-			'cli__tel' => $clientSoft->client__tel
-		];
+
+		if (!empty($clientSoft->client__id_vendeur) and $clientSoft->client__id_vendeur == 78 ) {
+			$body = [
+				"cli__id" => $clientSoft->client__id,
+				"cli__nom" => $clientSoft->client__societe,
+				"cli__id_mere" => $clientSoft->client__id,
+				"cli__adr1" => $clientSoft->client__adr1,
+				"cli__adr2" => $clientSoft->client__adr2,
+				"cli__cp" => $clientSoft->client__cp,
+				"cli__ville" => $clientSoft->client__ville,
+				"cli__pays" => $clientSoft->client__pays,
+				'cli__tel' => $clientSoft->client__tel , 
+				'cli__com1' => $clientSoft->client__id_vendeur, 
+				'cli__com2' => 32
+			];
+		}else{
+			$body = [
+				"cli__id" => $clientSoft->client__id,
+				"cli__nom" => $clientSoft->client__societe,
+				"cli__id_mere" => $clientSoft->client__id,
+				"cli__adr1" => $clientSoft->client__adr1,
+				"cli__adr2" => $clientSoft->client__adr2,
+				"cli__cp" => $clientSoft->client__cp,
+				"cli__ville" => $clientSoft->client__ville,
+				"cli__pays" => $clientSoft->client__pays,
+				'cli__tel' => $clientSoft->client__tel , 
+				'cli__com1' => $clientSoft->client__id_vendeur
+			];
+		}
+		
 		try {
 			$response = $client->post($env_uri . '/transfert', [
 				'headers' => self::makeHeaders($token),

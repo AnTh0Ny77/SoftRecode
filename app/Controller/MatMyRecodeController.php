@@ -66,8 +66,6 @@ class MatMyRecodeController extends BasicController {
                         $model = $value->abl__designation;
                         $type = "PID";
                     }
-
-                   
                    
                     if (!empty($exist['data'])){
                         $body = [
@@ -109,7 +107,6 @@ class MatMyRecodeController extends BasicController {
                         $new = $Api->postMachine($token,$body);
                     }
             }
-           
             return true;
         }else{
             return false ;
