@@ -243,8 +243,8 @@ class ApiCommandeTransfert{
         $date = date("Y-m-d H:i:s");
         $client = $Client->getOne($body['scm__client_id_fact']);
         $request = $Db->Pdo->prepare('INSERT INTO cmd 
-        (cmd__date_devis,   cmd__user__id_devis,    cmd__client__id_fact,   cmd__client__id_livr,     cmd__etat,  cmd__modele_devis,  cmd__tva,   cmd__nom_devis)
-        VALUES (:cmd__date_devis, :cmd__user__id_devis, :cmd__client__id_fact, :cmd__client__id_livr, :cmd__etat, :cmd__modele_devis, :cmd__tva, :cmd__nom_devis)');
+        (cmd__date_devis,   cmd__user__id_devis,    cmd__client__id_fact,   cmd__client__id_livr,     cmd__etat,  cmd__modele_devis,  cmd__tva,   cmd__nom_devis , cmd__note_client , cmd__note_livr)
+        VALUES (:cmd__date_devis, :cmd__user__id_devis, :cmd__client__id_fact, :cmd__client__id_livr, :cmd__etat, :cmd__modele_devis, :cmd__tva, :cmd__nom_devis , :cmd__note_client , :cmd__note_livr )');
         $request->bindValue(":cmd__date_devis", $date);
         $request->bindValue(":cmd__user__id_devis", $body['scm__user_id']);
         $request->bindValue(":cmd__client__id_fact", $body['scm__client_id_fact']);
@@ -253,6 +253,8 @@ class ApiCommandeTransfert{
         $request->bindValue(":cmd__tva", $client->client__tva);
         $request->bindValue(":cmd__nom_devis", "Commande MyRecode");
         $request->bindValue(":cmd__etat", 'ATN');
+        $request->bindValue(":cmd__note_client", $body['scm__ref_client']);
+        $request->bindValue(":cmd__note_livr", $body['scm__memo_client']);
         $request->execute();
         $id = $Db->Pdo->lastInsertId();
         return $id;
