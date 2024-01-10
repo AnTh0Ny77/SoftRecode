@@ -68,6 +68,18 @@ class ApiPlanning
                 'data' =>  true
             ], 200, 'OK');
         }
+
+        if (!empty($body['annul_user_id']) and !empty($body['annul_abs_id'])) {
+            $data = [
+                'ANL' ,
+                $body['annul_user_id'] , 
+                'Annulation par le demandeur'
+            ]; 
+            self::refuseAbs($data,$body['annul_abs_id']);
+            return $responseHandler->handleJsonResponse([
+                'data' =>  true
+            ], 200, 'OK');
+        }
         
         $insert = self::addOne($body);
         return $responseHandler->handleJsonResponse([
