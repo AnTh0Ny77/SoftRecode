@@ -64,7 +64,7 @@ class MatMyRecodeController extends BasicController {
                     }else {
                         $marque = $value->marque;
                         $model = $value->abl__designation;
-                        $type = "";
+                        $type = "PID";
                     }
                    
                     if (!empty($exist['data'])){
@@ -74,7 +74,7 @@ class MatMyRecodeController extends BasicController {
                             "mat__id" => $exist['data']['mat__id'] , 
                             "mat__sn" =>        $value->abl__sn,  
                             "mat__cli__id" =>   $abn->ab__client__id_fact, 
-                            "mat__type" =>   "", 
+                            "mat__type" =>    $type, 
                             "mat__marque" =>  $marque, 
                             "mat__model" =>  $model, 
                             "mat__pn" =>  "" , 
@@ -92,7 +92,7 @@ class MatMyRecodeController extends BasicController {
                         $body = [
                             "mat__sn" =>        $value->abl__sn,  
                             "mat__cli__id" =>   $abn->ab__client__id_fact, 
-                            "mat__type" =>   "", 
+                            "mat__type" =>    $type, 
                             "mat__marque" =>  $marque, 
                             "mat__model" =>  $model, 
                             "mat__pn" =>  "" , 
