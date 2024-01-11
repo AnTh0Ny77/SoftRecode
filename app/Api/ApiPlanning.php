@@ -56,36 +56,26 @@ class ApiPlanning
         $responseHandler = new ResponseHandler;
         $body = json_decode(file_get_contents('php://input'), true);
         if (!empty($body['cadre']) and !empty($body['abs__id'])) {
-            $data = [
-                'ANL' ,
-                $body['cadre'] , 
-                $body['motif']
-            ]; 
-            self::refuseAbs($data,$body['abs__id']);
+    
+            self::refuseAbs('ANL'  , $body['cadre']  ,   $body['motif'] ,$body['abs__id']);
 
             $data =  self::getOne($body['abs__id']);
 
             return $responseHandler->handleJsonResponse([
                 'data' =>  $data 
             ], 200, 'OK');
-
         }
 
         if (!empty($body['annul_user_id']) and !empty($body['annul_abs_id'])) {
-            $data = [
-                'ANL' ,
-                $body['annul_user_id'] , 
-                'Annulation par le demandeur'
-            ]; 
-            self::refuseAbs($data,$body['annul_abs_id']);
 
+            self::refuseAbs('ANL' , $body['annul_user_id'] ,  'Annulation par le demandeur' ,$body['annul_abs_id']);
             $data =  self::getOne($body['annul_abs_id']);
 
             return $responseHandler->handleJsonResponse([
                 'data' =>  $data 
             ], 200, 'OK');
         }
-        
+
         $insert = self::addOne($body);
         return $responseHandler->handleJsonResponse([
             'data' =>  true
@@ -128,7 +118,6 @@ class ApiPlanning
         return true;
     }
     
-
     static function getTimes(){
         $Database = new Database('devis');
         $Database->DbConnect();
@@ -145,12 +134,12 @@ class ApiPlanning
         $Database->DbConnect();
         $request = $Database->Pdo->prepare("SELECT DISTINCT  t.* , u.prenom , u.nom 
         FROM time_out as t
-        WHERE t.to__id = :id 
         LEFT JOIN utilisateur as u ON u.id_utilisateur  = t.to__user
+        WHERE t.to__id = :id 
         LIMIT 1");
         $request->bindParam(':id', $id, PDO::PARAM_INT);
         $request->execute();
-        $data = $request->fetc(PDO::FETCH_ASSOC);
+        $data = $request->fetch(PDO::FETCH_ASSOC);
         return $data;
     }
 
@@ -165,14 +154,13 @@ class ApiPlanning
         return $data;
     }
 
-    static function refuseAbs( $data, $clause ){
+    static function refuseAbs( $etat, $veto , $motif ,  $clause ){
         $Database = new Database('devis');
         $Database->DbConnect();
-        $request = $Database->Pdo->prepare
-        ('UPDATE time_out
+        $update = $Database->Pdo->prepare('UPDATE time_out
         SET to__abs_etat = ? , to__abs_veto_user = ? , to__abs_veto_motif = ? 
         WHERE to__id = ?');
-        $update->execute([$data, $clause]);
+        $update->execute([$etat, $veto , $motif  , $clause]);
     }
 
     static function traiterDate($dateSQL){
