@@ -124,6 +124,7 @@ class ApiPlanning
         $request = $Database->Pdo->query("SELECT DISTINCT  t.* , u.prenom , u.nom
         FROM time_out as t
         LEFT JOIN utilisateur as u ON u.id_utilisateur  = t.to__user
+        WHERE t.to__abs_etat <> 'ANL'
         LIMIT 20000");
         $data = $request->fetchAll(PDO::FETCH_ASSOC);
         return $data;
