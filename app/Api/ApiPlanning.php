@@ -44,9 +44,7 @@ class ApiPlanning
         }
 
         $updateValidation = self::updateValidation();
-
         $list_time = self::getTimes();
-
 
         return $responseHandler->handleJsonResponse([
             'data' =>  $list_time 
@@ -64,9 +62,13 @@ class ApiPlanning
                 $body['motif']
             ]; 
             self::refuseAbs($data,$body['abs__id']);
+
+            $data =  self::getOne($body['abs__id']);
+
             return $responseHandler->handleJsonResponse([
-                'data' =>  true
+                'data' =>  $data 
             ], 200, 'OK');
+
         }
 
         if (!empty($body['annul_user_id']) and !empty($body['annul_abs_id'])) {
@@ -76,8 +78,11 @@ class ApiPlanning
                 'Annulation par le demandeur'
             ]; 
             self::refuseAbs($data,$body['annul_abs_id']);
+
+            $data =  self::getOne($body['annul_abs_id']);
+
             return $responseHandler->handleJsonResponse([
-                'data' =>  true
+                'data' =>  $data 
             ], 200, 'OK');
         }
         
@@ -132,6 +137,20 @@ class ApiPlanning
         LEFT JOIN utilisateur as u ON u.id_utilisateur  = t.to__user
         LIMIT 20000");
         $data = $request->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    }
+
+    static function getOne($id){
+        $Database = new Database('devis');
+        $Database->DbConnect();
+        $request = $Database->Pdo->prepare("SELECT DISTINCT  t.* , u.prenom , u.nom 
+        FROM time_out as t
+        WHERE t.to__id = :id 
+        LEFT JOIN utilisateur as u ON u.id_utilisateur  = t.to__user
+        LIMIT 1");
+        $request->bindParam(':id', $id, PDO::PARAM_INT);
+        $request->execute();
+        $data = $request->fetc(PDO::FETCH_ASSOC);
         return $data;
     }
 
