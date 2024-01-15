@@ -37,6 +37,7 @@ Class BasicController
 		}					
 	}
 
+
 	public static function check_post(array $array_post , string $redirection)
 	{
 		foreach($array_post as $post)

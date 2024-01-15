@@ -20,22 +20,8 @@ class MyRecodeController extends BasicController {
         $Api = new ApiTest();
         $groups = new UserGroup(self::$Db);
         $me = false ;
-        if (empty($_SESSION['user']->refresh_token)) {
-            $token = $Api->login($_SESSION['user']->email , 'test');
-            if ($token['code'] != 200) {
-                echo 'Connexion LOGIN à L API IMPOSSIBLE';
-                die();
-            }
-            $_SESSION['user']->refresh_token = $token['data']['refresh_token'] ; 
-            $token =  $token['data']['token'];
-        }else{
-            $refresh = $Api->refresh($_SESSION['user']->refresh_token);
-            if ( $refresh['code'] != 200) {
-                echo 'Rafraichissemnt de jeton API IMPOSSIBLE';
-                die();
-            }
-            $token =  $refresh['token']['token'];
-        }
+        $token =  $Api->handleSessionToken2();
+
         // $test = $Api->getFiles($token , 105333 , 'scoreJPG.jpg');
         // var_dump($test);
         // die();
@@ -221,22 +207,7 @@ class MyRecodeController extends BasicController {
         $Api = new ApiTest();
         $alert = false;
         
-        if (empty($_SESSION['user']->refresh_token)){
-            $token = $Api->login($_SESSION['user']->email , 'test');
-            if ($token['code'] != 200) {
-                echo 'Connexion LOGIN à L API IMPOSSIBLE';
-                die();
-            }
-            $_SESSION['user']->refresh_token = $token['data']['refresh_token'] ; 
-            $token =  $token['data']['token'];
-        }else{
-            $refresh = $Api->refresh($_SESSION['user']->refresh_token);
-            if ( $refresh['code'] != 200) {
-                echo 'Rafraichissemnt de jeton API IMPOSSIBLE';
-                die();
-            }
-            $token =  $refresh['token']['token'];
-        }
+        $token =  $Api->handleSessionToken2();
        
         if (!empty($_GET['tk__id'])){
             

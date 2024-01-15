@@ -9,6 +9,12 @@ use App\Controller\BasicController;
 use \GuzzleHttp\ClientException;
 use ZipArchive;
 
+
+if (session_status() === PHP_SESSION_NONE) {
+	session_start();
+  }
+
+
 class ApiTest extends BasicController {
 
 
@@ -34,6 +40,47 @@ class ApiTest extends BasicController {
 		];
 	}
 
+	
+
+	public static function handleSessionToken2(){
+
+		$config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+		
+		$backdoor = $config->api->backdoor;
+
+		if (property_exists($_SESSION['user'], 'refresh_token')) {
+
+			$refresh = self::refresh($_SESSION['user']->refresh_token);
+
+			$message = $refresh['code'] != 200 ? true : false;
+			
+			if ($message){
+
+				$token = self::login($_SESSION['user']->email,$backdoor);
+
+				$message = $token['code'] != 200 ? true : false;
+
+				if ($message) return $message ;
+		
+				$_SESSION['user']->refresh_token = $token['data']['refresh_token']; 
+		
+				return  $token['data']['token'];
+			}
+			
+            return  $refresh['token']['token'];
+		}
+		
+        $token = self::login($_SESSION['user']->email ,  $backdoor );
+
+        $message = $token['code'] != 200 ? true : false;
+
+		if ($message) return $message ;
+
+        $_SESSION['user']->refresh_token = $token['data']['refresh_token']; 
+
+        return  $token['data']['token'];
+	}
+
 	public static function refresh($refreshToken){
 		$config =json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
 		$base_uri = $config->api->host;
@@ -54,7 +101,7 @@ class ApiTest extends BasicController {
 		$config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
 		$base_uri = $config->api->host;
 		$env_uri = $config->api->env_uri;
-		$client = new Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+		$client = new Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false) , 'http_errors' => false]);
 		try {
 			$response = $client->post($env_uri . '/login',  ['json' => ['user__mail' => $username, 'user__password' => $password]]);
 		} catch (ClientException $exeption){

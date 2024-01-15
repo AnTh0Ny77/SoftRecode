@@ -1,6 +1,7 @@
 {
     "api": {
         "host": "http://localhost/" ,
-        "env_uri" : "/RESTapi/"
+        "env_uri" : "/RESTapi/" , 
+        "backdoor" : "THISISABACKDOOR777andTHISisDANG3rous!!"
     }
 }
