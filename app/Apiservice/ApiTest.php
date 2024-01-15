@@ -85,7 +85,7 @@ class ApiTest extends BasicController {
 		$config =json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
 		$base_uri = $config->api->host;
 		$env_uri = $config->api->env_uri;
-		$client = new Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+		$client = new Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false) , 'http_errors' => false]);
 		try {
 			$response = $client->post($env_uri .'/refresh',  ['json' => ['refresh_token' => $refreshToken]]);
 		} catch (ClientException $exeption){

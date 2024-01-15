@@ -20,6 +20,7 @@ class MyRecodeController extends BasicController {
         $Api = new ApiTest();
         $groups = new UserGroup(self::$Db);
         $me = false ;
+        
         $token =  $Api->handleSessionToken2();
 
         // $test = $Api->getFiles($token , 105333 , 'scoreJPG.jpg');
