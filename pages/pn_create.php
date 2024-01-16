@@ -302,6 +302,7 @@ switch ($_SERVER['REQUEST_URI'])
 			}
 			$General->updateAll('art_pn', 1 , 'apn__actif', 'apn__pn', $_POST['pn_id']);
 
+			$Api = new ApiTest();
 			$token =  $Api->handleSessionToken2();
 			
 			$pn_transfert = $Article->get_pn_for_myrecode_by_pn_court($_POST['pn_id']);
