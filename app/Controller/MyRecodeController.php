@@ -148,6 +148,12 @@ class MyRecodeController extends BasicController {
         if(!empty($_GET['AuthorFilter'])){
             if ($_GET['AuthorFilter'] == 2 ){
                 $filters['Author'] = 2 ;
+
+                $definitive_edition = array_filter($definitive_edition, function ($item) use ($groups) {
+                    $lastLigne = end($item['lignes']);
+                    reset($item['lignes']);
+                    return in_array($lastLigne['tkl__user_id_dest']['user__id'], $groups);
+                });
             }
         }
         
