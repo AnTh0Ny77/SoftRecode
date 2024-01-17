@@ -28,16 +28,16 @@ $(document).ready(function (){
         url: "ajaxMyrecode",
         data:{"id": user},
         success: function (data){
-         
+            console.log(data);
             dataSet = JSON.parse(data);
-            console.log(dataSet['2'].length);
             
-            if (dataSet['2'].length >  0) {
-                $('#NBTKM').text(dataSet['1'].length);
+            
+            if (dataSet['2']  >  0) {
+                $('#NBTKM').text(dataSet['2']);
                 $('#notifTKM').removeClass('d-none');
             }
-            if (dataSet['1'].length >  0) {
-                $('#NBTKMC').text(dataSet['2'].length);
+            if (dataSet['1']  >  0) {
+                $('#NBTKMC').text(dataSet['1']);
                 $('#notifcoursTKM').removeClass('d-none');
             }
         },

@@ -18,11 +18,14 @@ class MyRecodeController extends BasicController {
         self::init();
         self::security();
         $Api = new ApiTest();
-        $groups = new UserGroup(self::$Db);
+        $groupsSossuke = new UserGroup(self::$Db);
         $me = false ;
         
         $token =  $Api->handleSessionToken2();
 
+        $user = $Api->getMyRecodeUser($token);
+        
+        $groups = $user['data']['user__groups'];
         // $test = $Api->getFiles($token , 105333 , 'scoreJPG.jpg');
         // var_dump($test);
         // die();
@@ -58,15 +61,18 @@ class MyRecodeController extends BasicController {
 
             if(!empty($_GET['AuthorFilter'])){
                 if ($_GET['AuthorFilter'] == 2 ){
-                    $groups_array = $groups->get_groups($_SESSION['user']->id_utilisateur);
-                        if (!empty($groups_array)) {
-                            foreach ($groups_array as  $value) {
-                                array_push( $query_exemple['tkl__user_id_dest'] ,$value->id_groupe);            
-                            }
-                        }
-                    array_push( $query_exemple['tkl__user_id_dest'] ,$_SESSION['user']->id_utilisateur);       
-                    $me = true ;   
+                     $groups_array = $groupsSossuke->get_groups($_SESSION['user']->id_utilisateur);
+                    //     if (!empty($groups_array)) {
+                    //         foreach ($groups_array as  $value) {
+                    //             array_push( $query_exemple['tkl__user_id_dest'] ,$value->id_groupe);            
+                    //         }
+                    //     }
+                    // array_push( $query_exemple['tkl__user_id_dest'] ,$_SESSION['user']->id_utilisateur);       
+                    // $me = true ;   
+
+                    $query_exemple['tkl__user_id_dest'] = $user['data']['user__groups'];
                 }
+                
             }
         }
         if (!empty($_GET['nonLu'])) {
@@ -138,23 +144,10 @@ class MyRecodeController extends BasicController {
         if (!empty($_GET['search']))
             $filters['search'] = $_GET['search'];
         
+        $filters['Author'] = 1 ;
         if(!empty($_GET['AuthorFilter'])){
             if ($_GET['AuthorFilter'] == 2 ){
-                $def_list = [];
-                $temp = [];
-                $groups_array = $groups->get_groups($_SESSION['user']->id_utilisateur);
-                if(!empty($groups_array)){
-                        foreach ($groups_array as  $value) {
-                            array_push( $temp ,$value->id_groupe);            
-                        }
-                }
-                array_push($temp,$_SESSION['user']->id_utilisateur); 
-                foreach($definitive_edition as $entry){
-                    if (in_array($entry['dest'] , $temp)) {
-                        array_push($def_list , $entry );
-                    }
-                }
-                $definitive_edition =  $def_list ;
+                $filters['Author'] = 2 ;
             }
         }
         

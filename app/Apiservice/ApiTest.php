@@ -531,6 +531,23 @@ class ApiTest extends BasicController {
 		return self::handleResponse($response);
 	}
 
+
+	public static function getMyRecodeUser($token) {
+		$config =json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+		$base_uri = $config->api->host;
+		$env_uri = $config->api->env_uri;
+		$client = new \GuzzleHttp\Client(['base_uri' =>$base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false)]);
+		try {
+		  $response = $client->get(  $env_uri .  '/user', [
+			'headers' => self::makeHeaders($token),
+			'http_errors' => false
+		  ]);
+		} catch (GuzzleHttp\Exception\ClientException $exeption) {
+		  $response = $exeption->getResponse();
+		}
+		return self::handleResponse($response);
+	}
+
 	public static function PostListClient($token,  $one) {
 		$config =json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
 		$base_uri = $config->api->host;

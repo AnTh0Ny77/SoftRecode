@@ -1,0 +1,7 @@
+{
+    "api": {
+        "host": "http://130.180.222.139:59085/" , 
+        "env_uri": "api" , 
+        "backdoor" : "THISISABACKDOOR777andTHISisDANG3rous!!"
+    }
+}
