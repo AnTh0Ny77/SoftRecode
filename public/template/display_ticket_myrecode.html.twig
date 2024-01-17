@@ -9,55 +9,59 @@
 <link rel="stylesheet" href="public/css/cards.css">
 <link rel="stylesheet" href="public/css/font-family.css">
 {% endblock %}
+
 {% block main %}
-<main role="main" class=" container-body background-recode ">
-  <div class="container pt-2  " >
-    <div class=" pt-2 ">
-        <div  class="col-12 col-sm-9 mx-auto">
-          <div class="d-flex justify-content-center">
-              <div class="col-4 text-white display-logo">
-				{{ include('display/display_logo_ticket.html.twig')}}
-              </div>
-          </div>
-		  {% if alert %}
-			<div class="alert alert-danger my-5" role="alert">
-					<h4 class="alert-heading">Attention</h4>
-					<p>{{alert}}</p>
-					<hr>
+<main role="main" class=" container-body background-recode">
+<div class="container pt-2">
+	<div class="pt-2">
+		<div class="col-12 col-sm-9 mx-auto">
+			<div class="d-flex justify-content-center">
+				<div class="col-4 text-white display-logo">
+					{{include('display/display_logo_ticket.html.twig')}}
+				</div>
 			</div>
-		  {% endif %}
-          <div class="form-group pt-2">
+			{% if alert %}
+			<div class="alert alert-danger my-5" role="alert">
+				<h4 class="alert-heading">Attention</h4>
+				<p>{{alert}}</p>
+				<hr>
+			</div>
+			{% endif %}
+			<div class="form-group pt-2">
 				<div class="card-recode d-flex flex-column col-12 ">
-					<h2 class="recode-orange-title"> Ticket {{ticket.tk__id}}</h2>
+					<h2 class="recode-orange-title">Ticket {{ticket.tk__id}}</h2>
 					{% if ticket.tk__groupe %}
-							<a class="recode-p" href="myRecode?search={{ticket.tk__groupe}}"> groupe N°{{ticket.tk__groupe}}</a><br>       
+						<a class="recode-p" href="myRecode?search={{ticket.tk__groupe}}">groupe N°{{ticket.tk__groupe}}</a><br>
 					{% endif %}
-					<p class="recode-p">{{ticket.tk__memo}}<br> 
-						<span class="text-dark font-weight-bold text-uppercase">En cours chez {{ ticket.dest.user__prenom ~ " " ~ ticket.dest.user__nom }}</span>
+					<p class="recode-p">{{ticket.tk__memo}}<br>
+						<span class="text-dark font-weight-bold text-uppercase">En cours chez {{ticket.dest.user__prenom}} {{ticket.dest.user__nom}}</span>
 					</p>
 				</div>
-            {% for ligne in ticket.lignes %}
-              		{{ include('display/display_ticket_lignes_myrecode.html.twig')}}
-            {% endfor %}
-            <form action="myRecode-ticket?tk__id={{ticket.tk__id}}" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="tk__id" value="{{ticket.tk__id}}">
-                {{ include('forms/forms_myrecode.html.twig')}}
-                <div class="d-flex flex-row align-items-center my-4">
-                    {% if ticket.tk__lu != 2 %}
-                        {% if ticket.tk__lu != 0 and ticket.tk__lu != 9  %}
-                            <a href="/SoftRecode/myRecode?nonLu={{ticket.tk__id}}" class="btn btn-recode-primary mx-1 col-12 col-md-6 col-lg-4" >Repasser en non lu</a>
-                        {% endif %}
-                        <button type="submit" class="btn btn-recode-important col-12  mx-1 col-md-6 col-lg-4" >Envoyer </button>
-                    {% endif %}
-                </div>
-            </form>
-          </div>
-        </div>
-    </div>
-  </div>
-  {{include('display/display_file_upload.html.twig')}}
+				{# Boucle sur les lignes du ticket  #}
+				{% for ligne in ticket.lignes %}
+					{{include('display/display_ticket_lignes_myrecode.html.twig')}}
+				{% endfor %}
+				
+				<form action="myRecode-ticket?tk__id={{ticket.tk__id}}" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="tk__id" value="{{ticket.tk__id}}">
+				{{include('forms/forms_myrecode.html.twig')}}
+				<div class="d-flex flex-row align-items-center my-4">
+					{% if ticket.tk__lu != 2 %}
+						{% if ticket.tk__lu != 0 and ticket.tk__lu != 9  %}
+							<a href="/SoftRecode/myRecode?nonLu={{ticket.tk__id}}" class="btn btn-recode-primary mx-1 col-12 col-md-6 col-lg-4" >Repasser en non lu</a>
+						{% endif %}
+						<button type="submit" class="btn btn-recode-important col-12  mx-1 col-md-6 col-lg-4">Envoyer</button>
+					{% endif %}
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{{include('display/display_file_upload.html.twig')}}
 </main>
 {% endblock %}
+
 {% block script %}
 <!-- jQuery first, then Bootstrap JS -->
 <script type="text/javascript" src="public/datatable/datatables.min.js"></script>
@@ -66,16 +70,17 @@
 <script type="text/javascript" src="public/js/display_ticket.js"></script>
 {# <script type="text/javascript" src="public/js/file_upload.js"></script> #}
 <script type="text/javascript">
-  $(function(ready){
-      $('#actionInput').on('change' , function(){
-        var type = $('#actionInput').find(":selected").val();
-        if(type === 'CIN'){
-              $('#dest').removeClass('d-none');
-        }else{
-			$('#dest').addClass('d-none');
-		}
-      })
-	})
+$(function(ready){
+	$('#actionInput').on('change' , function()
+	{
+		var type = $('#actionInput').find(":selected").val();
+		if(type === 'CIN')
+		{ $('#dest').removeClass('d-none'); }
+		else
+		{ $('#dest').addClass('d-none'); }
+	}
+	)
+})
 </script>
 
 {% endblock %}

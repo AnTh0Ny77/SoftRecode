@@ -1,122 +1,128 @@
 
+{# Lignes de ticket MyRecode #}
 
-
-{% if  ligne.tkl__user_id.user__id  < 2000 %}
-<div class="card-recode-ligne-recode d-flex flex-column my-2 bg-dialog-self ml-5">
+{# Determine si carte a gauche (en rose ecrit par client) ou a droite (blanc ecrit par recode) #}
+{% if ligne.tkl__user_id.user__id < 2000 %}
+	<div class="card-recode-ligne-recode d-flex flex-column my-2 bg-dialog-self ml-5">
 {% else %}
-<div class="card-recode-ligne-client d-flex flex-column my-2 mr-5">
+	<div class="card-recode-ligne-client d-flex flex-column my-2 mr-5">
 {% endif %}
 
+{# Premiere ligne de la carte #}
 <div class="recode-ligne-header mt-2 mb-4">
-    <h5>
-        <span class="font-weight-bold">
-            {{ligne.tkl__user_id.user__prenom ~ " " ~ ligne.tkl__user_id.user__nom ~  "  : " ~ ligne.tkl__memo}}
-        </span>
-        <span class="text-upercase">
-            le : {{ligne.tkl__dt}}
-        </span>
-    </h5>
+	<h5>
+	<span class="font-weight-bold">
+		{{ligne.tkl__user_id.user__prenom}} {{ligne.tkl__user_id.user__nom}} : {{ligne.tkl__memo}}
+	</span>
+	<span class="text-upercase">
+		le : {{ligne.tkl__dt}}
+	</span>
+	</h5>
 </div>
+
+{# Si la ligne contient des identifiants (Matos ou Societe ou Contact ou...) #}
 {% if ligne.entities %}
-    {% for entitie in ligne.entities %}
-            <div class="card-recode-secondary my-2 col-10 d-flex">
-                <div class=" col-10 col-md-6 col-lg-3 d-fex   align-items-center recode-div-pic">
-                    {% if entitie.picture %}
-                    <div class="d-flex justify-content-center ">
-                        <figure class="image col-6 col-md-10"><img class="subject-image" src="data:image/jpeg;base64,{{entitie.picture|raw}}"></figure>
-                    </div>
-                    {% else %}
-                    <div class="d-flex justify-content-center">
-                        <figure class="image col-6 col-md-10"><img class="subject-image" src="{{entitie.alternative}}"></figure>
-                    </div>
-                    {% endif %}
-                </div>
-                <div>
-                    <div class="mt-2"> 
-                        <h3 class="title-sujet">  <span class=" recode-p text-uppercase"> 
-                            {% if entitie.identifier %}
-                                {{  "(" ~ entitie.identifier ~ ")" }} 
-                            {% endif %} {{   entitie.name}}  </span> </h3>
-                    </div>
-                    <div class="d-fex align-item-center">
-                            {% if entitie.label %}
-                                {{entitie.label}}<br>
-                            {% endif %}
-                            {% if entitie.dt_off %}
-                               <a href="http://intranet/locator_query.php?filtre=sn{{entitie.additionals}}" target="_blank">{{entitie.additionals}} </a> 
-                            {% else %}
-                            {{entitie.additionals}} 
-                                
-                            {% endif %}
-                               
-                            {% if entitie.bl %}
-                              - BL N° <b> {{ entitie.bl }}</b>
-                            {% endif %}
-                            {% if entitie.gar %}
-                                <br>{{entitie.gar}}
-                                {% if entitie.dt_off  and entitie.dt_off != '01/01/1970'%}
-                                    Fin le {{entitie.dt_off}}
-                                {% elseif entitie.dt_off and  entitie.dt_off == '01/01/1970' and  gar != 'NON garantie' %}
-                                    <b>Vérifier la garantie</b>
-                                {% endif %}
-                            {% endif %}
-                            {% if entitie.gar %}
-                            
-                                    <br><a href="replaceMat?tk__id={{ticket.tk__id}}">Remplacer la Machine</a>
-                            {% endif %}
-                            {% if entitie.sortie %}
-                                <br> {{entitie.sortie}}
-                            {% endif %}
-                    </div>
-                </div>
-            </div>
-    {% endfor %}
+	{% for entitie in ligne.entities %}
+		<div class="card-recode-secondary my-2 col-10 d-flex">
+			<div class=" col-2 d-fex align-items-center recode-div-pic">
+				{% if entitie.picture %}
+				<div class="d-flex justify-content-center ">
+					<figure class="image"><img class="subject-image" src="data:image/jpeg;base64,{{entitie.picture|raw}}"></figure>
+				</div>
+				{% else %}
+				<div class="d-flex justify-content-center">
+					<figure class="image"><img class="subject-image" src="{{entitie.alternative}}"></figure>
+				</div>
+				{% endif %}
+			</div>
+			<div>
+				<div class="mt-2"> 
+					<h3 class="title-sujet">
+					<span class="recode-p text-uppercase">
+					{{entitie.name}}
+					{% if entitie.identifier %} ({{"%06d"|format(entitie.identifier)}}) {% endif %} {# Petite astuce pour forcer numero sur 6 chiffres #}
+					</span>
+					</h3>
+				</div>
+				<div class="d-fex align-item-center">
+					{% if entitie.label %}
+						{{entitie.label}}<br>
+					{% endif %}
+					{% if entitie.dt_off %}
+						<a href="http://intranet/locator_query.php?filtre=sn{{entitie.additionals}}" target="_blank">sn : {{entitie.additionals}}</a> 
+					{% else %}
+						{{entitie.additionals}}
+					{% endif %}
+					{% if entitie.bl %}
+							- BL N°<b>{{entitie.bl}}</b>
+					{% endif %}
+					{% if entitie.gar %}
+						<br>{{entitie.gar}}
+						{% if entitie.dt_off and entitie.dt_off != '01/01/1970'%}
+							Fin le {{entitie.dt_off}}
+						{% elseif entitie.dt_off and  entitie.dt_off == '01/01/1970' and  gar != 'NON garantie' %}
+							<b>Vérifier la garantie</b>
+						{% endif %}
+					{% endif %}
+					{% if entitie.gar %}
+						<br><a href="replaceMat?tk__id={{ticket.tk__id}}">Remplacer la Machine</a>
+					{% endif %}
+					{% if entitie.sortie %}
+						<br> {{entitie.sortie}}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	{% endfor %}
 {% endif %}
+
 <div class="mt-1">
-    {% for field in ligne.champs %}
-        {% if field.label %}
-        <div>
-            <h5 class="recode-display-field">  <span class="font-weight-bold"> {{field.tklc__nom_champ}} : </span> </h5>
-        </div>
-                <div class="card-recode-secondary  my-3 col-10 d-flex ">
-                    <div class=" col-10 col-md-6 col-lg-3 d-fex   align-items-center recode-div-pic">
-                        {% if field.picture %}
-                        <div class="d-flex justify-content-center ">
-                            <figure class="image col-6 col-md-10"><img class="subject-image" src="data:image/jpeg;base64,{{ field.picture|raw}}"></figure>
-                        </div>
-                        {% else %}
-                        <div class="d-flex justify-content-center">
-                            <figure class="image col-6 col-md-10"><img class="subject-image" src="{{field.alternative}}"></figure>
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div>
-                        <div class="mt-2">
-                            <h3 class="title-sujet">{{field.label}}</h3>
-                        </div>
-                        <div class="d-fex align-item-center">
-                            {{field.additionals}}
-                        </div>
-                    </div>
-                </div>
-        {% endif %}
-    {% if field.tklc__memo %}
-            <h5>
-                <span class="font-weight-bold"></span>
-                        {{field.tklc__memo | raw }}
-            </h5>
-        {% endif %}
-    {% endfor %}
-    
-    {% if ligne.logos %}
-        <div class="my-3">
-            {{ligne.logos  | raw }}
-        </div>
-    {% endif %}
-    {% if ligne.tkl__motif_ligne != 'cloture' %}
-        <h5>   <span class="font-weight-bold"> Destinataire : </span>
-                {{ligne.tkl__user_id_dest.user__prenom ~ " " ~ ligne.tkl__user_id_dest.user__nom}}
-        </h5>
-    {% endif %}
+	{% for field in ligne.champs %}
+		{% if field.label %}
+		<div>
+			<h5 class="recode-display-field">  <span class="font-weight-bold"> {{field.tklc__nom_champ}} : </span> </h5>
+		</div>
+				<div class="card-recode-secondary  my-3 col-10 d-flex ">
+					<div class=" col-10 col-md-6 col-lg-3 d-fex align-items-center recode-div-pic">
+						{% if field.picture %}
+						<div class="d-flex justify-content-center ">
+							<figure class="image col-6 col-md-10"><img class="subject-image" src="data:image/jpeg;base64,{{ field.picture|raw}}"></figure>
+						</div>
+						{% else %}
+						<div class="d-flex justify-content-center">
+							<figure class="image col-6 col-md-10"><img class="subject-image" src="{{field.alternative}}"></figure>
+						</div>
+						{% endif %}
+					</div>
+					<div>
+						<div class="mt-2">
+							<h3 class="title-sujet">{{field.label}}</h3>
+						</div>
+						<div class="d-fex align-item-center">
+							{{field.additionals}}
+						</div>
+					</div>
+				</div>
+		{% endif %}
+	
+	{% if field.tklc__memo %}
+			<h5>
+				<span class="font-weight-bold"></span>
+				{{field.tklc__memo|raw|nl2br}} {# pour voir le txt avec enrichisement HTML et avec les saut de lignes #}
+			</h5>
+		{% endif %}
+	{% endfor %}
+	
+	{% if ligne.logos %}
+		<div class="my-3">
+			{{ligne.logos|raw}}
+		</div>
+	{% endif %}
+
+	{% if ligne.tkl__motif_ligne != 'cloture' %}
+		<h5><span class="font-weight-bold">Destinataire : </span>
+			{{ligne.tkl__user_id_dest.user__prenom}} {{ligne.tkl__user_id_dest.user__nom}}
+		</h5>
+	{% endif %}
 </div>
 </div>
