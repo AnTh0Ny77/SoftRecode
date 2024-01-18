@@ -236,16 +236,10 @@ class MyRecodeController extends BasicController {
                         self::updateTicket($ticket , $token , 9 , $Api );
 
                     }else{
-                        if ($_SESSION['user']->id_utilisateur ==  $ticket['last']  and $ticket['tk__lu'] != 9 ) {
+                        $user = $Api->getMyRecodeUser($token);
+                        $groups = $user['data']['user__groups'];
+                        if (in_array($ticket['last'], $groups) and  $ticket['tk__lu'] != 9 ) {
                             self::updateTicket($ticket , $token , 5 , $Api );
-                        }
-                        $groups_array = $groups->get_groups($_SESSION['user']->id_utilisateur);
-                        if (!empty($groups_array)) {
-                            foreach ($groups_array as  $value) {
-                                    if ( intval($value->id_groupe) ==  intval($ticket['last']) and $ticket['tk__lu'] != 9 ) {
-                                        self::updateTicket($ticket , $token , 5 , $Api );
-                                    }
-                            }
                         }
                     }
                     
