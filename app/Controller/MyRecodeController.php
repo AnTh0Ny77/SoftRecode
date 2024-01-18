@@ -209,6 +209,7 @@ class MyRecodeController extends BasicController {
         
         $token =  $Api->handleSessionToken2();
        
+        
         if (!empty($_GET['tk__id'])){
             
             $query_exemple = [
@@ -217,6 +218,7 @@ class MyRecodeController extends BasicController {
              ];
             
             if (is_numeric($_GET['tk__id']) and strlen($_GET['tk__id']) ==  5 ){
+                
                 array_push( $query_exemple['tk__id'] ,$_GET['tk__id']);
                 $query_exemple['RECODE__PASS'] = "secret";
                 $list = $Api->getTicketList($token , $query_exemple);
@@ -231,14 +233,14 @@ class MyRecodeController extends BasicController {
                     $ticket['info'] = end($ticket['lignes']);
                     $ticket['memo']  =  $ticket['info']['tkl__memo'];
 
+                   
                     if ($ticket['tk__lu'] == 9 ) {
-
                         self::updateTicket($ticket , $token , 9 , $Api );
 
                     }else{
                         $user = $Api->getMyRecodeUser($token);
                         $groups = $user['data']['user__groups'];
-                        if (in_array($ticket['last'], $groups) and  $ticket['tk__lu'] != 9 ) {
+                        if (in_array($ticket['dest']['user__id'], $groups) and  $ticket['tk__lu'] != 9 ) {
                             self::updateTicket($ticket , $token , 5 , $Api );
                         }
                     }
@@ -253,6 +255,8 @@ class MyRecodeController extends BasicController {
                     foreach ($ticket['lignes'] as $key  => $entry) {
                         $ticket['lignes'][$key]['logos'] = $Api->les_fichiers('public/img/tickets/'.$entry['tkl__id'] , null);
                     }
+
+
                     
                     $date_time = new DateTime($ticket['info']['tkl__dt']);
                     $ticket['date'] = $date_time->format('d/m/Y H:i');
