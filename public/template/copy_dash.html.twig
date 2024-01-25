@@ -1,0 +1,140 @@
+{% extends 'new_layout_dev.twig' %}
+
+
+{% block style %}
+<link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="public/css/dashboard.css">
+{% endblock %}
+
+
+{% block main %}
+<main class="container-fluid my-3 container-body">
+
+{# TITRE #}
+<div class="d-flex justify-content-start flex-column mb-5 border-bottom">
+	<h1 class="h2">Tableau de bord <i class="fal fa-chart-network fa-lg fa-fw"></i></h1>
+</div>
+
+{# Icones Rapides #}
+<div class="d-flex flex-wrap flex-row justify-content-center">
+	{% set fa_style = 'fad' %} {# fal, far, fad, fas #}
+	<div class="card-body shadow my-2">
+		<div class="container text-center">
+			<div class="row d-flex flex-wrap justify-content-between mx-auto">
+	{# Nouveau Devis #}
+				{% if user.user__devis_acces > 0  %}
+				<div class="col">
+					<a href="DevisV2">
+					<i class="{{fa_style}} fa-file-edit fa-3x fa-fw"></i><br>Nouveau devis
+					</a>
+				</div>
+				{% endif %}
+	{# Abonnements #}
+				{% if user.user__devis_acces > 0  %}
+				<div class="col">
+					<a href="abonnement">
+					<i class="{{fa_style}} fa-calendar-alt fa-3x fa-fw"></i><br>Abonnement
+					</a>
+				</div>
+				{% endif %}
+	{# Intranet #}
+				<div class="col">
+					<a href="http://intranet/" target="_blank" >
+					<i class="{{fa_style}} fa-recycle fa-3x fa-fw"></i><br>Intranet
+					</a>
+				</div>
+	{# Tickets MyRecode #}
+				<div class="col">
+					<a href="myRecode">
+					<i class="{{fa_style}} fa-comment-alt-check fa-3x fa-fw"></i><br>Tickets MyRecode
+					</a>
+				</div>
+	{# Fiches Garantie #}
+				{% if user.user__cmd_acces > 0 %}
+				<div class="col">
+					<a href="fiches_garantie">
+					<i class="{{fa_style}} fa-layer-plus fa-3x fa-fw"></i><br>Fiche de garantie
+					</a>
+				</div>
+				{% endif %}
+	{# Nouveau client #}
+				<div class="col">
+					<a href="admin_client">
+					<i class="{{fa_style}} fa-user-tie fa-3x fa-fw"></i><br>Client
+					</a>
+				</div>
+	{# Catalogue #}
+				<div class="col">
+					<a href="ArtCataloguePN">
+					<i class="{{fa_style}} fa-clipboard-check fa-3x fa-fw"></i><br>Catalogue
+					</a>
+				</div>
+	{# Statistiques #}
+				{% if user.user__facture_acces > 5 %}
+				<div class="col">
+					<a href="stat">
+					<i class="{{fa_style}} fa-chart-pie fa-3x fa-fw"></i><br>Statistiques
+					</a>
+				</div>
+				{% endif %}
+	{# Facturation #}
+				{% if user.user__facture_acces > 5 %}
+				<div class="col">
+					<a href="facture">
+					<i class="{{fa_style}} fa-euro-sign fa-3x"></i><br>Facturation
+					</a>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+
+	<!--List info personnel -->
+	<div class="my-5">
+		<li class="list-group-item">
+			<i class="{{fa_style}} fa-chart-bar fa-3x"></i>
+			<span class="mx-5 text-primary"><a href="ficheTravail"><span class="mx-1 badge badge-info ">{{commandes_valides}}</span> commandes en cours de préparation</span></a>
+			<span class="mx-5 text-primary"><a href="mesDevis"><span class="mx-1 badge badge-primary ">{{devis_envoyes}}</span>  Devis envoyés les 15 derniers jours</span></a>
+		</li>
+	</div>
+	
+	<!--google form-->
+	<div class="container text-center">
+		<div class="row d-flex flex-wrap justify-content-between mx-auto">
+			<div class="col">
+				<form action="http://www.google.com/search" method="get" target="_blank" align=center >
+					<img src="public/img/google.png" style="width:12rem" >
+					<input type="search" class="form-control" name="q">
+					<button class="mx-4 mt-1 btn  border shadow " type="submit">Recherche</button>
+				</form>
+			</div>
+			<div class="col">
+				<a href="http://intranet">
+				<img src="public/img/site_intranet.png" width=220 border="0" title="Intranet (192.168.1.133)" class="border shadow">
+				</a>
+			</div>
+			<div class="col">
+				<a href="https://recode.fr">
+				<img src="public/img/site_recode.png" width=220 border="0" title="Recode.fr" class="border shadow ">
+				</a>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+</main>
+{% endblock %}
+
+
+
+{% block script %}
+<!-- Optional JavaScript -->
+<script type="text/javascript" src="public/datatable/datatables.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="public/bootstrap/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="public/js/dashboard.js"></script>
+{% endblock %}
