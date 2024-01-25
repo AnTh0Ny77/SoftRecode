@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function()
 		return heureMinutesFormat;
 	}
   
-  
+	
 	function ajusterDateFin(dateFin) {
 		// Convertir la date de fin en objet Date
 		var date = new Date(dateFin);
@@ -431,6 +431,11 @@ document.addEventListener('DOMContentLoaded', function()
 			default    : return 'black';
 		}
 	}
+
+
+	$('#calendar-container').on('click' , function(){
+		window.open('http://c.myrecode.fr', '_blank');
+	})
 
 });
 
