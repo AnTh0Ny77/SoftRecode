@@ -56,7 +56,7 @@ class ApiTest extends BasicController {
 			
 			if ($message){
 
-				$token = self::login($_SESSION['user']->email,$backdoor);
+				$token = self::login('anthony@recode.fr',$backdoor);
 
 				$message = $token['code'] != 200 ? true : false;
 
@@ -70,7 +70,7 @@ class ApiTest extends BasicController {
             return  $refresh['token']['token'];
 		}
 		
-        $token = self::login($_SESSION['user']->email ,  $backdoor );
+        $token = self::login('anthony@recode.fr',  $backdoor );
 
         $message = $token['code'] != 200 ? true : false;
 
@@ -96,6 +96,24 @@ class ApiTest extends BasicController {
 			'token' => (array) json_decode($response->getBody()->read(16384), TRUE)
 		];
 	}
+
+	public static function getPlanning($token){
+        $config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
+		$base_uri = $config->api->host;
+		$env_uri = $config->api->env_uri;
+		$client = new \GuzzleHttp\Client(['base_uri' => $base_uri, 'curl' => array(CURLOPT_SSL_VERIFYPEER => false) , 'http_errors' => false]);
+		try {
+			$response = $client->get(
+				$env_uri . '/planning' , 
+				['headers' => self::makeHeaders($token) ]
+				
+			);
+		} catch (GuzzleHttp\Exception\ClientException $exeption) {
+			$response = $exeption->getResponse();
+			exit();
+		}
+		return $response->getBody()->read(12047878);
+    }
 
 	public static function login($username, $password){
 		$config = json_decode(file_get_contents(__DIR__ . '/apiConfig.json'));
