@@ -170,6 +170,8 @@ $(document).ready(function(){
                             string = 'Franco à ' + dataSet.sco__francoa + ' €';
                             if (dataSet.sco__francoa) {
                                 $('#sco__francoa').val(dataSet.sco__francoa);
+                            }else{
+                                $('#sco__francoa').val(0);
                             }
 
                         } else if (dataSet.sco__type_port == 'NOFRC') {
@@ -211,6 +213,9 @@ $(document).ready(function(){
             if (verif) {
                 $('#alert_condition').text(verif);
             }else {
+                if ( $('#sco__type_port').val() == null ) {
+                    $('#sco__prix_port').val() == 0;
+                }
                 let body = {
                     "sco__cli_id_r": $('#cli__id').val() , 
                     "sco__type_port" : $('#sco__type_port').val(),
@@ -256,6 +261,8 @@ $(document).ready(function(){
                     return 'Le prix à partir duquel le franco s applique n est pas correctement renseigné'
                 }
                 
+            }else{
+                $('#sco__francoa').val('00');
             }
             return false;
         }
