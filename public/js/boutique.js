@@ -247,8 +247,6 @@ $(document).ready(function(){
            
         })
 
-        
-
         let verifyCondition = function(){
             if ( !valideNom($('#sco__cli_id_fact').val()) || isNaN($('#sco__cli_id_fact').val())) {
                 return 'L ID de la societe facturée semble etre erroné'
@@ -305,9 +303,8 @@ $(document).ready(function(){
                     return '<div class="past_pink"> '+string+'</div>'
                     break;
             }
-
         }
-        
+
         let extractObjectValues = function (arr) {
             const result = arr.map(obj => Object.values(obj));
             return result;
@@ -320,7 +317,6 @@ $(document).ready(function(){
               return 'Non Renseigné';
             }
           }
-
         
         $('#boutton_sav').on('click' , function(){
 
@@ -349,7 +345,6 @@ $(document).ready(function(){
                                 console.log(results);
                             }
                         });
-                        
                     }
                 }
         })

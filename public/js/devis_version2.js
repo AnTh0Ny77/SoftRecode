@@ -133,7 +133,7 @@ let verifie_post = function()
                 $('#button_crea_contact').addClass('d-none');
         }
 }
-//fonction qui rend possible l'aaccès au boutton de creation de contact livraison : 
+//fonction qui rend possible l'accès au boutton de creation de contact livraison : 
 let verifie_livraison = function()
 {
         let client_livraison = $('#clientLivraison').val();
